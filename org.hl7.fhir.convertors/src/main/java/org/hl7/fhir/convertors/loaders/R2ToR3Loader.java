@@ -54,7 +54,7 @@ import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRException;
 
-public class R2ToR3Loader extends BaseLoaderR5 implements IContextResourceLoader, VersionConvertorAdvisor30 {
+public class R2ToR3Loader extends BaseLoaderR3 implements VersionConvertorAdvisor30 {
 
   private List<CodeSystem> cslist = new ArrayList<>();
 

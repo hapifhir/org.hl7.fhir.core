@@ -41,6 +41,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.cache.PackageClient;
+import org.hl7.fhir.utilities.cache.BasePackageCacheManager;
 import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.i18n.I18nBase;
@@ -770,7 +771,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   }
   
   public void loadIg(String src, boolean recursive) throws IOException, FHIRException, Exception {
-    NpmPackage npm = pcm.loadPackage(src, null);
+    NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) ? pcm.loadPackage(src, null) : null;
     if (npm != null) {
       for (String s : npm.dependencies()) {
         if (!context.getLoadedPackages().contains(s)) {

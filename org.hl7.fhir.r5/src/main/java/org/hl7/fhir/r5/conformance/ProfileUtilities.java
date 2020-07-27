@@ -645,7 +645,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                 wt = "OperationOutcome";
               }
               if (!sd.getType().equals(wt)) {
-                boolean ok = isCompatibleType(wt, sd.getType());
+                boolean ok = isCompatibleType(wt, sd);
                 if (!ok) {
                   String smsg = "The profile "+u.getValue()+" has type "+sd.getType()+" which is not consistent with the stated type "+wt;
                   if (exception)
@@ -714,10 +714,17 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean isCompatibleType(String base, String type) {
-    StructureDefinition sd = context.fetchTypeDefinition(type);
+  private boolean isCompatibleType(String base, StructureDefinition sdt) {
+    StructureDefinition sdb = context.fetchTypeDefinition(base);
+    if (sdb.getType().equals(sdt.getType())) {
+      return true;
+    }
+    StructureDefinition sd = context.fetchTypeDefinition(sdt.getType());
     while (sd != null) {
-      if (sd.getType().equals(base)) {
+      if (sd.getType().equals(sdb.getType())) {
+        return true;
+      }
+      if (sd.getUrl().equals(sdb.getUrl())) {
         return true;
       }
       sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()); 
@@ -1201,7 +1208,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               }
               if (hasInnerDiffMatches(differential, currentBase.getPath(), diffCursor, diffLimit, base.getElement(), false)) {
                 if (baseHasChildren(base, currentBase)) { // not a new type here
-                  throw new Error("This situation is not yet (constrain slicing to 1..1 and fix base slice for inline structure - please report issue to grahame@fhir.org along with a test case that reproduces this error (@ "+cpath+" | "+currentBase.getPath()+")");
+                  throw new Error("This situation is not yet handled (constrain slicing to 1..1 and fix base slice for inline structure - please report issue to grahame@fhir.org along with a test case that reproduces this error (@ "+cpath+" | "+currentBase.getPath()+")");
                 } else {
                   StructureDefinition dt = getTypeForElement(differential, diffCursor, profileName, diffMatches, outcome);
                   contextName = dt.getUrl();
@@ -4608,6 +4615,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       this.snapshot = snapshot;
       this.prefixLength = prefixLength;
       this.base = base;
+      if (Utilities.isAbsoluteUrl(base)) {
+        throw new Error("Wrong!");
+      }
       this.name = name;
     }
 
@@ -4654,9 +4664,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       if (mandatory) {
         if (prefixLength == 0)
-          errors.add("Differential contains path "+path+" which is not found in the base");
+          errors.add("Differential contains path "+path+" which is not found in the in base "+name);
         else
-          errors.add("Differential contains path "+path+" which is actually "+actual+", which is not found in the base");
+          errors.add("Differential contains path "+path+" which is actually "+actual+", which is not found in the in base "+name);
       }
       return 0;
     }
@@ -4812,12 +4822,12 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (profile==null)
         ccmp = null; // this might happen before everything is loaded. And we don't so much care about sot order in this case
       else
-      ccmp = new ElementDefinitionComparer(true, profile.getSnapshot().getElement(), ed.getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name);
+      ccmp = new ElementDefinitionComparer(true, profile.getSnapshot().getElement(), resolveType(ed.getType().get(0).getWorkingCode()), child.getSelf().getPath().length(), cmp.name);
     } else if (ed.getType().size() == 1 && !ed.getType().get(0).getWorkingCode().equals("*")) {
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, sdNs(ed.getType().get(0).getWorkingCode()));
       if (profile==null)
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE__IN_ELEMENT_, sdNs(ed.getType().get(0).getWorkingCode()), ed.getPath()));
-      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), ed.getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name);
+      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), resolveType(ed.getType().get(0).getWorkingCode()), child.getSelf().getPath().length(), cmp.name);
     } else if (child.getSelf().getType().size() == 1) {
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, sdNs(child.getSelf().getType().get(0).getWorkingCode()));
       if (profile==null)
@@ -4858,6 +4868,16 @@ public class ProfileUtilities extends TranslatingUtilities {
 //      throw new Error("Not handled yet (sortElements: "+ed.getPath()+":"+typeCode(ed.getType())+")");
     }
     return ccmp;
+  }
+
+  private String resolveType(String code) {
+    if (Utilities.isAbsoluteUrl(code)) {
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, code);
+      if (sd != null) {
+        return sd.getType();
+      }
+    }
+    return code;
   }
 
   private static String sdNs(String type) {

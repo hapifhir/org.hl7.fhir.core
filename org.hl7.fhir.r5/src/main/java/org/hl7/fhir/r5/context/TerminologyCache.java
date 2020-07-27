@@ -469,6 +469,10 @@ public class TerminologyCache {
       }
     }   
   }
+
+  public String getFolder() {
+    return folder;
+  }
  
   
 }
