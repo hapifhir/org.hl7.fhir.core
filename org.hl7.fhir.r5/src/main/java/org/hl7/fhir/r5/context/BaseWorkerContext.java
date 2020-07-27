@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.context;
 
+import java.io.File;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -614,21 +616,28 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     p.setParameter("includeDefinition", false);
     p.setParameter("excludeNested", !heirarchical);
 
+    List<String> allErrors = new ArrayList<>();
+    
     // ok, first we try to expand locally
+    ValueSetExpanderSimple vse = new ValueSetExpanderSimple(this);
     try {
-      ValueSetExpanderSimple vse = new ValueSetExpanderSimple(this);
-      res = vse.doExpand(vs, p);
-      if (!res.getValueset().hasUrl()) {
-        throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET));
+      res = vse.expand(vs, p);
+      allErrors.addAll(vse.getAllErrors());
+      if (res.getValueset() != null) {
+        if (!res.getValueset().hasUrl()) {
+          throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET));
+        }
+        txCache.cacheExpansion(cacheToken, res, TerminologyCache.TRANSIENT);
+        return res;
       }
-      txCache.cacheExpansion(cacheToken, res, TerminologyCache.TRANSIENT);
-      return res;
     } catch (Exception e) {
+      allErrors.addAll(vse.getAllErrors());
+      e.printStackTrace();
     }
 
     // if that failed, we try to expand on the server
     if (noTerminologyServer) {
-      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
+      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, allErrors);
     }
     Map<String, String> params = new HashMap<String, String>();
     params.put("_limit", Integer.toString(expandCodesLimit ));
@@ -644,12 +653,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
     } catch (Exception e) {
-      res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN).setTxLink(txLog == null ? null : txLog.getLastId());
+      res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors).setTxLink(txLog == null ? null : txLog.getLastId());
     }
     txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
   }
-
 
   private boolean hasTooCostlyExpansion(ValueSet valueset) {
     return valueset != null && valueset.hasExpansion() && ToolingExtensions.hasExtension(valueset.getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY);
@@ -842,6 +850,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   // --------------------------------------------------------------------------------------------------------------------------------------------------------
   
   public void initTS(String cachePath) throws Exception {
+    if (!new File(cachePath).exists()) {
+      Utilities.createDirectory(cachePath);
+    }
     txCache = new TerminologyCache(lock, cachePath);
   }
 
@@ -1601,6 +1612,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       txClient.setRetryCount(value);
     }
     return this;
+  }
+
+  public String getTxCache() {
+    return txCache.getFolder();
+  }
+
+  public TerminologyClient getTxClient() {
+    return txClient;
   }
 
 }

@@ -87,6 +87,11 @@ public class SnapShotGenerationTests {
       return null;
     }
 
+    @Override
+    public IContextResourceLoader getNewLoader(NpmPackage npm) {
+      return this;
+    }
+
   }
 
   public enum TestFetchMode {

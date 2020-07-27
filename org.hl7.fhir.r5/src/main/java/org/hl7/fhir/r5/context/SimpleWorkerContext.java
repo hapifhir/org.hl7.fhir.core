@@ -88,6 +88,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
+import com.google.gson.JsonObject;
+
 import ca.uhn.fhir.parser.DataFormatException;
 
 /*
@@ -370,7 +372,46 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   
 
   @Override
-  public void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String... types) throws FileNotFoundException, IOException, FHIRException {
+  public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException {
+    return loadFromPackageInt(pi, loader, loader == null ? defaultTypesToLoad() : loader.getTypes());
+  }
+  
+  public static String[] defaultTypesToLoad() {
+    // there's no penalty for listing resources that don't exist, so we just all the relevant possibilities for all versions 
+    return new String[] {"CodeSystem", "ValueSet", "ConceptMap", "NamingSystem",
+                         "StructureDefinition", "StructureMap", 
+                         "SearchParameter", "OperationDefinition", "CapabilityStatement", "Conformance",
+                         "Questionnaire", "ImplementationGuide" };
+  }
+
+  @Override
+  public int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String[] types) throws FileNotFoundException, IOException, FHIRException {
+    return loadFromPackageInt(pi, loader, types);
+  }
+ 
+  @Override
+  public int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException {
+    return loadFromPackageAndDependenciesInt(pi, loader, pcm, pi.name()+"#"+pi.version());
+  }
+  public int loadFromPackageAndDependenciesInt(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm, String path) throws FileNotFoundException, IOException, FHIRException {
+    int t = 0;
+
+    for (String e : pi.dependencies()) {
+      if (!loadedPackages.contains(e) && !VersionUtilities.isCorePackage(e)) {
+        NpmPackage npm = pcm.loadPackage(e);
+        if (!version.equals(npm.fhirVersion())) {
+          System.out.println(formatMessage(I18nConstants.PACKAGE_VERSION_MISMATCH, e, version, npm.fhirVersion(), path));  
+        }
+        t = t + loadFromPackageAndDependenciesInt(npm, loader.getNewLoader(npm), pcm, path+" -> "+npm.name()+"#"+npm.version());
+      }
+    }
+    t = t + loadFromPackageInt(pi, loader, loader.getTypes());
+    return t;
+  }
+
+
+  public int loadFromPackageInt(NpmPackage pi, IContextResourceLoader loader, String... types) throws FileNotFoundException, IOException, FHIRException {
+    int t = 0;
     if (progress) {
       System.out.println("Load Package "+pi.name()+"#"+pi.version());
     }
@@ -388,6 +429,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       for (String s : pi.listResources(loader.getTypes())) {
         try {
           loadDefinitionItem(s, pi.load("package", s), loader, null, new PackageVersion(pi.id(), pi.version()));
+          t++;
         } catch (FHIRException e) {
           throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, s, pi.name(), pi.version(), e.getMessage()), e);
         }
@@ -399,6 +441,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
         try {
           registerResourceFromPackage(new PackageResourceLoader(pri, loader), new PackageVersion(pi.id(), pi.version()));
+          t++;
         } catch (FHIRException e) {
           throw new FHIRException(formatMessage(I18nConstants.ERROR_READING__FROM_PACKAGE__, pri.getFilename(), pi.name(), pi.version(), e.getMessage()), e);
         }
@@ -410,6 +453,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	  if (version == null) {
 	    version = pi.version();
 	  }
+	  return t;
 	}
 
   public void loadFromFile(String file, IContextResourceLoader loader) throws IOException, FHIRException {
@@ -756,6 +800,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
 
+
+ 
 
 
 }

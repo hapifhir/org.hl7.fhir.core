@@ -51,7 +51,7 @@ import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 
-public class R3ToR4Loader extends BaseLoaderR5 implements IContextResourceLoader, VersionConvertorAdvisor40 {
+public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader, VersionConvertorAdvisor40 {
 
   private List<CodeSystem> cslist = new ArrayList<>();
 

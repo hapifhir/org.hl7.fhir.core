@@ -33,6 +33,8 @@ package org.hl7.fhir.r5.terminologies;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -65,6 +67,7 @@ public interface ValueSetExpander {
     private String error;
     private TerminologyServiceErrorClass errorClass;
     private String txLink;
+    private List<String> allErrors = new ArrayList<>();
     
     public ValueSetExpansionOutcome(ValueSet valueset) {
       super();
@@ -76,18 +79,31 @@ public interface ValueSetExpander {
       this.valueset = valueset;
       this.error = error;
       this.errorClass = errorClass;
+      allErrors.add(error);
     }
     public ValueSetExpansionOutcome(ValueSetChecker service, String error, TerminologyServiceErrorClass errorClass) {
       super();
       this.valueset = null;
       this.error = error;
       this.errorClass = errorClass;
+      allErrors.add(error);
     }
     public ValueSetExpansionOutcome(String error, TerminologyServiceErrorClass errorClass) {
       this.valueset = null;
       this.error = error;
       this.errorClass = errorClass;
+      allErrors.add(error);
     }
+    public ValueSetExpansionOutcome(String error, TerminologyServiceErrorClass errorClass, List<String> errList) {
+      this.valueset = null;
+      this.error = error;
+      this.errorClass = errorClass;
+      this.allErrors.addAll(errList);
+      if (!allErrors.contains(error)) {
+        allErrors.add(error);
+      }
+    }
+    
     public ValueSet getValueset() {
       return valueset;
     }
@@ -104,7 +120,9 @@ public interface ValueSetExpander {
       this.txLink = txLink;
       return this;
     }
-
+    public List<String> getAllErrors() {
+      return allErrors;
+    }
 
   }
 /**

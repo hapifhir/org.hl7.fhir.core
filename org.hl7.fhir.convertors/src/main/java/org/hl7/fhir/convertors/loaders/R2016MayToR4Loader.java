@@ -55,7 +55,7 @@ import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.model.ValueSet;
 
-public class R2016MayToR4Loader extends BaseLoaderR5 implements IContextResourceLoader, VersionConvertorAdvisor40 {
+public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResourceLoader, VersionConvertorAdvisor40 {
 
   private List<CodeSystem> cslist = new ArrayList<>();
 

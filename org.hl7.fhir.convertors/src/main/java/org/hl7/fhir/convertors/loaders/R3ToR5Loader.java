@@ -58,6 +58,9 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.cache.NpmPackage;
+
+import com.google.gson.JsonSyntaxException;
 
 public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader, VersionConvertorAdvisor50 {
 
@@ -195,4 +198,5 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
   public org.hl7.fhir.r4.model.Resource convertR4(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
     return null;
   }
+
 }

@@ -239,27 +239,30 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (c.getAppContext() instanceof Element) {
         Element bnd = (Element) c.getAppContext();
         Base res = resolveInBundle(url, bnd);
-        if (res != null)
+        if (res != null) {
           return res;
+        }
       }
       Base res = resolveInBundle(url, c.getResource());
-      if (res != null)
+      if (res != null) {
         return res;
+      }
       res = resolveInBundle(url, c.getContainer());
-      if (res != null)
+      if (res != null) {
         return res;
+      }
 
-      if (externalHostServices != null)
+      if (externalHostServices != null) {
         return externalHostServices.resolveReference(c.getAppContext(), url, refContext);
-      else if (fetcher != null)
+      } else if (fetcher != null) {
         try {
           return fetcher.fetch(c.getAppContext(), url);
         } catch (IOException e) {
           throw new FHIRException(e);
         }
-      else
+      } else {
         throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET__RESOLVE__LOCALLY_2, url));
-
+      }
     }
 
    
@@ -1368,7 +1371,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                         if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
                           checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c, stack);
                         else
-                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_13, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()));
+                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_13, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), gen(c));
                       } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                         if (baseOnly) {
                           txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_14, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()));
@@ -1390,6 +1393,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING2, e.getMessage(), e.toString());
       }
     }
+  }
+
+  private String gen(Coding c) {
+    return c.getSystem()+"#"+c.getCode()+ (c.hasDisplay() ? " \""+c.getDisplay()+"\"" : "");
   }
 
   private boolean isValueSet(String url) {
@@ -1632,6 +1639,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if ("http://hl7.org/fhir/StructureDefinition/structuredefinition-normative-version".equals(extUrl)) {
       list.get(0).setExpression("Element"); // well, it can't be used anywhere but the list of places it can be used is quite long
+    }
+    if (!VersionUtilities.isThisOrLater("4.6", context.getVersion())) {
+      if (Utilities.existsInList(extUrl, "http://hl7.org/fhir/StructureDefinition/capabilitystatement-expectation", "http://hl7.org/fhir/StructureDefinition/capabilitystatement-prohibited")) {
+        list.get(0).setExpression("Element"); // well, they can't be used anywhere but the list of places they can be used is quite long        
+      }
     }
     return list;
   }

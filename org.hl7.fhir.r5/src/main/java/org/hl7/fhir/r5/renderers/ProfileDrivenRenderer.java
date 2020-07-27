@@ -611,7 +611,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 //                  x.an(v.get("id").primitiveValue());
 //                }
 //              }
-              System.out.print("c");
             } else if (!exemptFromRendering(child)) {
               List<ElementDefinition> grandChildren = getChildrenForPath(allElements, path+"."+p.getName());
               filterGrandChildren(grandChildren, path+"."+p.getName(), p);
@@ -807,9 +806,14 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
         String[] list = displayHint.split(";");
         for (String item : list) {
           String[] parts = item.split(":");
-          if (parts.length != 2)
-            throw new DefinitionException("error reading display hint: '"+displayHint+"'");
-          hints.put(parts[0].trim(), parts[1].trim());
+          if (parts.length == 1) {
+            hints.put("value", parts[0].trim());            
+          } else {
+            if (parts.length != 2) {
+              throw new DefinitionException("error reading display hint: '"+displayHint+"'");
+            }
+            hints.put(parts[0].trim(), parts[1].trim());
+          }
         }
       }
     }
