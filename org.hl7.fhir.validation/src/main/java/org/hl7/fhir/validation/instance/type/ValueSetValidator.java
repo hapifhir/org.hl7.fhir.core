@@ -2,10 +2,13 @@ package org.hl7.fhir.validation.instance.type;
 
 import java.util.List;
 
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -56,6 +59,23 @@ public class ValueSetValidator extends BaseValidator {
     String system = include.getChildValue("system");
     String version = include.getChildValue("version");
     boolean systemOk = true;
+    List<Element> valuesets = include.getChildrenByName("valueSet");
+    int i = 0;
+    for (Element ve : valuesets) {
+      String v = ve.getValue();
+      ValueSet vs = context.fetchResource(ValueSet.class, v);
+      if (vs == null) {
+        NodeStack ns = stack.push(ve, i, ve.getProperty().getDefinition(), ve.getProperty().getDefinition());
+
+        Resource rs = context.fetchResource(Resource.class, v);
+        if (rs != null) {
+          warning(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
+        } else {
+          warning(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_UNKNOWN, v);            
+        }
+      }
+      i++;
+    }
     List<Element> concepts = include.getChildrenByName("concept");
     List<Element> filters = include.getChildrenByName("filter");
     if (!Utilities.noString(system)) {
