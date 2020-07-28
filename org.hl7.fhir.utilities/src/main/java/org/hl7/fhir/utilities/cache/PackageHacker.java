@@ -119,6 +119,9 @@ public class PackageHacker {
     if (webref.equals("file://C:\\GitHub\\hl7.fhir.us.qicore#4.0.0\\output")) {
       return "http://hl7.org/fhir/us/qicore/STU4";
     }
+    if (webref.equals("file://C:\\GitHub\\hl7.fhir.us.cqfmeasures#2.0.0\\output")) {
+      return "http://hl7.org/fhir/us/cqfmeasures/STU2";
+    }
     return webref;  
   }
 
