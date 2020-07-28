@@ -1371,7 +1371,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                         if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
                           checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c, stack);
                         else
-                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_13, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), gen(c));
+                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_13, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), c.getSystem()+"#"+c.getCode());
                       } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                         if (baseOnly) {
                           txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_14, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()));
@@ -1393,10 +1393,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING2, e.getMessage(), e.toString());
       }
     }
-  }
-
-  private String gen(Coding c) {
-    return c.getSystem()+"#"+c.getCode()+ (c.hasDisplay() ? " \""+c.getDisplay()+"\"" : "");
   }
 
   private boolean isValueSet(String url) {
