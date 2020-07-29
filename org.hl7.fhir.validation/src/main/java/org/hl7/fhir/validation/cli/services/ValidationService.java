@@ -44,7 +44,7 @@ public class ValidationService {
       ValidationOutcome outcome = new ValidationOutcome();
 
       // Need to set file content to null as server can't handle json in json
-      fp.setFileContent(null);
+      //fp.setFileContent(null);
       outcome.setFileInfo(fp);
       operationOutcome.getIssue().forEach(outcome::addIssue);
       response.addOutcome(outcome);
