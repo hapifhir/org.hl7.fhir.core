@@ -21,6 +21,14 @@ import java.util.Set;
 
 public class ValidationService {
 
+  /*
+   * TEMPORARY METHOD
+   */
+  public static void validateFileInfo(FileInfo f) {
+    System.out.println("success");
+  }
+
+
   public static ValidationResponse validateSources(ValidationRequest request, ValidationEngine validator) throws Exception {
     if (request.getCliContext().getProfiles().size() > 0) {
       System.out.println("  .. validate " + request.listSourceFiles() + " against " + request.getCliContext().getProfiles().toString());
@@ -31,12 +39,12 @@ public class ValidationService {
 
     ValidationResponse response = new ValidationResponse();
     for (FileInfo fp : request.getFilesToValidate()) {
-      OperationOutcome operationOutcome = validator.validate(fp.getFileContent().getBytes(), fp.getFileType(),
+      OperationOutcome operationOutcome = validator.validate(fp.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fp.getFileType()),
         request.getCliContext().getProfiles());
       ValidationOutcome outcome = new ValidationOutcome();
 
       // Need to set file content to null as server can't handle json in json
-      fp.setFileContent(null);
+      //fp.setFileContent(null);
       outcome.setFileInfo(fp);
       operationOutcome.getIssue().forEach(outcome::addIssue);
       response.addOutcome(outcome);

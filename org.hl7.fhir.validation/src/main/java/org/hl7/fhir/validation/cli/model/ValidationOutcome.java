@@ -13,6 +13,13 @@ public class ValidationOutcome {
   @JsonProperty("issues")
   private List<ValidationIssue> issues = new ArrayList<>();
 
+  public ValidationOutcome() {}
+
+  public ValidationOutcome(FileInfo fileInfo, List<ValidationIssue> issues) {
+    this.fileInfo = fileInfo;
+    this.issues = issues;
+  }
+
   @JsonProperty("fileInfo")
   public FileInfo getFileInfo() {
     return fileInfo;
@@ -38,9 +45,7 @@ public class ValidationOutcome {
   public ValidationOutcome addIssue(OperationOutcome.OperationOutcomeIssueComponent outcome) {
     String text = outcome.getDetails().getText();
     text.replace("\'", "\"");
-    issues.add(new ValidationIssue()
-      .setSeverity(outcome.getSeverity().getDisplay())
-      .setDetails(outcome.getDetails().getText()));
+    issues.add(new ValidationIssue(outcome.getSeverity().getDisplay(), outcome.getDetails().getText()));
     return this;
   }
 

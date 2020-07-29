@@ -19,6 +19,14 @@ public class FileInfo {
     return fileName;
   }
 
+  public FileInfo() {}
+
+  public FileInfo(String fileName, String fileContent, String fileType) {
+    this.fileName = fileName;
+    this.fileContent = fileContent;
+    this.fileType = fileType;
+  }
+
   @JsonProperty("fileName")
   public FileInfo setFileName(String fileName) {
     this.fileName = fileName;
@@ -37,13 +45,22 @@ public class FileInfo {
   }
 
   @JsonProperty("fileType")
-  public Manager.FhirFormat getFileType() {
-    return Manager.FhirFormat.JSON;
+  public String getFileType() {
+    return fileType;
   }
 
   @JsonProperty("fileType")
   public FileInfo setFileType(String fileType) {
     this.fileType = fileType;
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return "FileInfo{" +
+      "fileName='" + fileName + '\'' +
+      ", fileContent='" + fileContent + '\'' +
+      ", fileType='" + fileType + '\'' +
+      '}';
   }
 }
