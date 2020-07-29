@@ -11,34 +11,34 @@ import java.util.*;
 public class CliContext {
 
   @JsonProperty("doNative")
-  private boolean doNative = false;
+  private boolean doNative = false; //
   @JsonProperty("anyExtensionsAllowed")
   private boolean anyExtensionsAllowed = true;
   @JsonProperty("hintAboutNonMustSupport")
-  private boolean hintAboutNonMustSupport = false;
+  private boolean hintAboutNonMustSupport = false; //
   @JsonProperty("recursive")
   private boolean recursive = false;
   @JsonProperty("doDebug")
   private boolean doDebug = false;
   @JsonProperty("assumeValidRestReferences")
-  private boolean assumeValidRestReferences = false;
+  private boolean assumeValidRestReferences = false; //
   @JsonProperty("canDoNative")
   private boolean canDoNative = false;
   @JsonProperty("noInternalCaching")
   private boolean noInternalCaching = false; // internal, for when debugging terminology validation
   @JsonProperty("noExtensibleBindingMessages")
-  private boolean noExtensibleBindingMessages = false;
+  private boolean noExtensibleBindingMessages = false; //
 
   @JsonProperty("map")
   private String map = null;
   @JsonProperty("output")
   private String output = null;
   @JsonProperty("txServer")
-  private String txServer = "http://tx.fhir.org";
+  private String txServer = "http://tx.fhir.org"; //
   @JsonProperty("sv")
   private String sv = "current";
   @JsonProperty("txLog")
-  private String txLog = null;
+  private String txLog = null; //
   @JsonProperty("mapLog")
   private String mapLog = null;
   @JsonProperty("lang")
@@ -46,14 +46,14 @@ public class CliContext {
   @JsonProperty("fhirpath")
   private String fhirpath = null;
   @JsonProperty("snomedCT")
-  private String snomedCT = "900000000000207008";
+  private String snomedCT = "900000000000207008"; //
   @JsonProperty("targetVer")
-  private String targetVer = null;
+  private String targetVer = null; //
 
   @JsonProperty("igs")
-  private List<String> igs = new ArrayList<String>();
+  private List<String> igs = new ArrayList<String>(); //
   @JsonProperty("questionnaires")
-  private List<String> questionnaires = new ArrayList<String>();
+  private List<String> questionnaires = new ArrayList<String>(); //
   @JsonProperty("profiles")
   private List<String> profiles = new ArrayList<String>();
   @JsonProperty("sources")
@@ -63,13 +63,13 @@ public class CliContext {
   private Validator.EngineMode mode = Validator.EngineMode.VALIDATION;
 
   @JsonProperty("securityChecks")
-  private boolean securityChecks = false;
+  private boolean securityChecks = false; //
   
   @JsonProperty("crumbTrails")
   private boolean crumbTrails = false;
   
   @JsonProperty("showTimes")
-  private boolean showTimes = false;
+  private boolean showTimes = false; //
   
   @JsonProperty("locale")
   private String locale = Locale.ENGLISH.getDisplayLanguage();

@@ -10,6 +10,12 @@ public class ValidationResponse {
   @JsonProperty("outcomes")
   public List<ValidationOutcome> outcomes = new ArrayList<>();
 
+  public ValidationResponse() {}
+
+  public ValidationResponse(List<ValidationOutcome> outcomes) {
+    this.outcomes = outcomes;
+  }
+
   @JsonProperty("outcomes")
   public List<ValidationOutcome> getOutcomes() {
     return outcomes;
