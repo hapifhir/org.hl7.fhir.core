@@ -513,7 +513,6 @@ public class FHIRToolingClient {
 	}
 	
 	@SuppressWarnings("unchecked")
-	
 	public <T extends Resource> OperationOutcome validate(Class<T> resourceClass, T resource, String id) {
 		ResourceRequest<T> result = null;
 		try {

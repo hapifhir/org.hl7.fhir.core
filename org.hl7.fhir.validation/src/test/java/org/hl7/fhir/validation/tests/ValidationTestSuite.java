@@ -98,7 +98,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   private String version;
   private String name;
 
-  private static final String DEF_TX = "http://tx.fhir.org";
+   private static final String DEF_TX = "http://tx.fhir.org";
+//  private static final String DEF_TX = "http://local.fhir.org:960";
   private static Map<String, ValidationEngine> ve = new HashMap<>();
   private static ValidationEngine vCurr;
 
