@@ -75,6 +75,7 @@ import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.model.OperationDefinition;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PlanDefinition;
@@ -91,8 +92,10 @@ import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCode
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
+import org.hl7.fhir.r5.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
+import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple;
@@ -751,6 +754,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         setTerminologyOptions(options, pIn);
         BundleEntryComponent be = batch.addEntry();
         be.setResource(pIn);
+        be.getRequest().setMethod(HTTPVerb.POST);
         be.getRequest().setUrl("ValueSet/$validate-code");
         be.setUserData("source", t);
         systems.add(t.getCoding().getSystem());
@@ -768,16 +772,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       for (int i = 0; i < batch.getEntry().size(); i++) {
         CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData("source");
         BundleEntryComponent r = resp.getEntry().get(i);
-        if (r.getResponse().getStatus().startsWith("2")) {
-          t.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(r.getResource())).setTxLink(txLog == null ? null : txLog.getLastId()));
-        } else {
+        if (r.getResource() instanceof Parameters) {
           t.setResult(processValidationResult((Parameters) r.getResource()));
+        } else {
+          t.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(r.getResource())).setTxLink(txLog == null ? null : txLog.getLastId()));          
         }
       }
     }    
   }
   
   private String getResponseText(Resource resource) {
+    if (resource instanceof OperationOutcome) {
+      return OperationOutcomeRenderer.toString((OperationOutcome) resource);
+    }
     return "Todo";
   }
 
