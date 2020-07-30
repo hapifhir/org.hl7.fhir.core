@@ -270,7 +270,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return null;
   }
 
-  private void renderLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode x, boolean title, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
+  private void renderLeaf(ResourceWrapper res, BaseWrapper ew, ElementDefinition defn, XhtmlNode parent, XhtmlNode x, boolean title, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     if (ew == null)
       return;
 
@@ -361,7 +361,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
           } else {
             x.an(rw.getId());
             ResourceRenderer rr = RendererFactory.factory(rw, context.copy().setAddGeneratedNarrativeHeader(false));
-            rr.render(x.blockquote(), rw);
+            rr.render(parent.blockquote(), rw);
           }
         }
       } else {
@@ -598,7 +598,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   private void generateByProfile(ResourceWrapper res, StructureDefinition profile, BaseWrapper e, List<ElementDefinition> allElements, ElementDefinition defn, List<ElementDefinition> children,  XhtmlNode x, String path, boolean showCodeDetails, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     if (children.isEmpty()) {
-      renderLeaf(res, e, defn, x, false, showCodeDetails, readDisplayHints(defn), path, indent);
+      renderLeaf(res, e, defn, x, x, false, showCodeDetails, readDisplayHints(defn), path, indent);
     } else {
       for (PropertyWrapper p : splitExtensions(profile, e.children())) {
         if (p.hasValues()) {
@@ -626,7 +626,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                     if (renderAsList(child) && p.getValues().size() > 1) {
                       XhtmlNode list = x.ul();
                       for (BaseWrapper v : p.getValues())
-                        renderLeaf(res, v, child, list.li(), false, showCodeDetails, displayHints, path, indent);
+                        renderLeaf(res, v, child, x, list.li(), false, showCodeDetails, displayHints, path, indent);
                     } else {
                       boolean first = true;
                       for (BaseWrapper v : p.getValues()) {
@@ -634,7 +634,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                           first = false;
                         else
                           para.tx(", ");
-                        renderLeaf(res, v, child, para, false, showCodeDetails, displayHints, path, indent);
+                        renderLeaf(res, v, child, x, para, false, showCodeDetails, displayHints, path, indent);
                       }
                     }
                   }
@@ -730,10 +730,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   private void addColumnValues(ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren, BaseWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
     for (ElementDefinition e : grandChildren) {
       PropertyWrapper p = v.getChildByName(e.getPath().substring(e.getPath().lastIndexOf(".")+1));
+      XhtmlNode td = tr.td();
       if (p == null || p.getValues().size() == 0 || p.getValues().get(0) == null)
-        tr.td().tx(" ");
-      else
-        renderLeaf(res, p.getValues().get(0), e, tr.td(), false, showCodeDetails, displayHints, path, indent);
+        td.tx(" ");
+      else {
+        renderLeaf(res, p.getValues().get(0), e, td, td, false, showCodeDetails, displayHints, path, indent);
+      }
     }
   }
 
