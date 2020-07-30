@@ -55,6 +55,7 @@ import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -88,6 +89,8 @@ import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
@@ -110,6 +113,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
 import com.google.gson.JsonObject;
+
+import ca.uhn.fhir.model.valueset.BundleEntrySearchModeEnum;
 
 public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext{
 
@@ -685,10 +690,99 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return validateCode(options.guessSystem(), c, vs);
   }
 
+
+  @Override
+  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs) {
+    if (options == null) {
+      options = ValidationOptions.defaults();
+    }
+    // 1st pass: what is in the cache? 
+    // 2nd pass: What can we do internally 
+    // 3rd pass: hit the server
+    for (CodingValidationRequest t : codes) {
+      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs) : null);
+      if (txCache != null) { 
+        t.setResult(txCache.getValidation(t.getCacheToken()));
+      }
+    }
+    if (options.isUseClient()) {
+      for (CodingValidationRequest t : codes) {
+        if (!t.hasResult()) {
+          try {
+            ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this); 
+            ValidationResult res = vsc.validateCode(t.getCoding());
+            if (txCache != null)
+              txCache.cacheValidation(t.getCacheToken(), res, TerminologyCache.TRANSIENT);
+            t.setResult(res);
+          } catch (Exception e) {
+          }
+        }
+      }      
+    }  
+
+    for (CodingValidationRequest t : codes) {
+      if (!t.hasResult()) {
+        if (!options.isUseServer()) {
+         t.setResult(new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS));
+        } else if (unsupportedCodeSystems.contains(t.getCoding().getSystem())) {
+          t.setResult(new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, t.getCoding().getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED));      
+        } else if (noTerminologyServer) {
+          t.setResult(new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE));
+        }
+      }
+    }
+    
+    if (expParameters == null)
+      throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
+    // for those that that failed, we try to validate on the server
+    Bundle batch = new Bundle();
+    batch.setType(BundleType.BATCH);
+    Set<String> systems = new HashSet<>();
+    for (CodingValidationRequest t : codes) {
+      if (!t.hasResult()) {
+        Parameters pIn = new Parameters();
+        pIn.addParameter().setName("coding").setValue(t.getCoding());
+        if (options.isGuessSystem())
+          pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
+        if (vs != null) {
+          pIn.addParameter().setName("valueSet").setResource(vs);
+        }
+        pIn.addParameter().setName("profile").setResource(expParameters);
+        setTerminologyOptions(options, pIn);
+        BundleEntryComponent be = batch.addEntry();
+        be.setResource(pIn);
+        be.getRequest().setUrl("ValueSet/$validate-code");
+        be.setUserData("source", t);
+        systems.add(t.getCoding().getSystem());
+      }
+    }
+    if (batch.getEntry().size() > 0) {
+      tlog("$batch validate for "+batch.getEntry().size()+" codes on systems "+systems.toString());
+      if (txClient == null) {
+        throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
+      }
+      if (txLog != null) {
+        txLog.clearLastId();
+      }
+      Bundle resp = txClient.validateBatch(batch);
+      for (int i = 0; i < batch.getEntry().size(); i++) {
+        CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData("source");
+        BundleEntryComponent r = resp.getEntry().get(i);
+        if (r.getResponse().getStatus().startsWith("2")) {
+          t.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(r.getResource())).setTxLink(txLog == null ? null : txLog.getLastId()));
+        } else {
+          t.setResult(processValidationResult((Parameters) r.getResource()));
+        }
+      }
+    }    
+  }
+  
+  private String getResponseText(Resource resource) {
+    return "Todo";
+  }
+
   @Override
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs) {
-    assert options != null;
-    
     if (options == null) {
       options = ValidationOptions.defaults();
     }
@@ -813,6 +907,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       pOut = txClient.validateCS(pin);
     else
       pOut = txClient.validateVS(pin);
+    return processValidationResult(pOut);
+  }
+
+  public ValidationResult processValidationResult(Parameters pOut) {
     boolean ok = false;
     String message = "No Message returned";
     String display = null;
@@ -1621,5 +1719,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   public TerminologyClient getTxClient() {
     return txClient;
   }
+
 
 }
