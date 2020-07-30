@@ -208,11 +208,13 @@ public class CodeSystemUtilities {
     defineCodeSystemProperty(cs, "child", "The concept identified in this property is a child of the concept on which it is a property. The property type will be 'code'. The meaning of parent/child relationships is defined by the hierarchyMeaning attribute", PropertyType.CODE);
   }
 
-  public static boolean isDeprecated(CodeSystem cs, ConceptDefinitionComponent def)  {
+  public static boolean isDeprecated(CodeSystem cs, ConceptDefinitionComponent def, boolean ignoreStatus)  {
     try {
       for (ConceptPropertyComponent p : def.getProperty()) {
-        if (p.getCode().equals("status") && p.hasValue() && p.hasValueCodeType() && p.getValueCodeType().getCode().equals("deprecated"))
-          return true;
+        if (!ignoreStatus) {
+          if (p.getCode().equals("status") && p.hasValue() && p.hasValueCodeType() && p.getValueCodeType().getCode().equals("deprecated"))
+            return true;
+        }
         // this, though status should also be set
         if (p.getCode().equals("deprecationDate") && p.hasValue() && p.getValue() instanceof DateTimeType) 
           return ((DateTimeType) p.getValue()).before(new DateTimeType(Calendar.getInstance()));

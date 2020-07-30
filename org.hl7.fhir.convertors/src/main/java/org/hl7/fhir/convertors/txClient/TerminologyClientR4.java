@@ -38,6 +38,7 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.conv40_50.TerminologyCapabilities40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
+import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
@@ -117,5 +118,10 @@ public class TerminologyClientR4 implements TerminologyClient {
   public int getRetryCount() throws FHIRException {
     return client.getRetryCount();
   }
-  
+ 
+  @Override
+  public Bundle validateBatch(Bundle batch) {
+    return (Bundle) VersionConvertor_40_50.convertResource(client.transaction((org.hl7.fhir.r4.model.Bundle) VersionConvertor_40_50.convertResource(batch)));
+  }
+
 }
