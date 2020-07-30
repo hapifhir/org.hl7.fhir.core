@@ -35,6 +35,7 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Parameters;
@@ -108,6 +109,11 @@ public class TerminologyClientR5 implements TerminologyClient {
   @Override
   public int getRetryCount() throws FHIRException {
     return client.getRetryCount();
+  }
+
+  @Override
+  public Bundle validateBatch(Bundle batch) {
+    return client.transaction(batch);
   }
 
 }

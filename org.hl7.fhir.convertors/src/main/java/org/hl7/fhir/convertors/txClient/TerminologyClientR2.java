@@ -35,8 +35,10 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.dstu2.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
@@ -116,6 +118,11 @@ public class TerminologyClientR2 implements TerminologyClient {
   public int getRetryCount() throws FHIRException {
     return client.getRetryCount();
   }
-  
-  
+   
+  @Override
+  public Bundle validateBatch(Bundle batch) {
+    return (Bundle) VersionConvertor_10_50.convertResource(client.transaction((org.hl7.fhir.dstu2.model.Bundle) VersionConvertor_10_50.convertResource(batch)));
+  }
+
+
 }
