@@ -24,6 +24,7 @@ import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.ExpressionNode.Kind;
 import org.hl7.fhir.r5.model.ExpressionNode.Operation;
+import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
@@ -66,26 +67,30 @@ public class StructureDefinitionValidator extends BaseValidator {
       sd.setSnapshot(null);
       StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
       if (warning(errors, IssueType.NOTFOUND, stack.getLiteralPath(), base != null, I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), "StructureDefinition, so can't check the differential")) {
-        List<ValidationMessage> msgs = new ArrayList<>();
-        ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
-        pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir", sd.getName());
-        if (msgs.size() > 0) {
-          for (ValidationMessage msg : msgs) {
-            // we need to set the location for the context 
-            String loc = msg.getLocation();
-            if (loc.contains("#")) {
-              msg.setLocation(stack.getLiteralPath()+".differential.element.where(path = '"+loc.substring(loc.indexOf("#")+1)+"')");
-            } else {
-              msg.setLocation(stack.getLiteralPath());
+        if (rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), sd.hasDerivation(), I18nConstants.SD_MUST_HAVE_DERIVATION, sd.getUrl())) {
+          if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
+            List<ValidationMessage> msgs = new ArrayList<>();
+            ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
+            pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir", sd.getName());
+            if (msgs.size() > 0) {
+              for (ValidationMessage msg : msgs) {
+                // we need to set the location for the context 
+                String loc = msg.getLocation();
+                if (loc.contains("#")) {
+                  msg.setLocation(stack.getLiteralPath()+".differential.element.where(path = '"+loc.substring(loc.indexOf("#")+1)+"')");
+                } else {
+                  msg.setLocation(stack.getLiteralPath());
+                }
+                errors.add(msg);
+              }
             }
-            errors.add(msg);
+            if (!snapshot.isEmpty()) {
+              int was = snapshot.size();
+              int is = sd.getSnapshot().getElement().size();
+              rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), was == is, I18nConstants.SNAPSHOT_EXISTING_PROBLEM, was, is);
+            }
           }
         }
-      }
-      if (!snapshot.isEmpty()) {
-        int was = snapshot.size();
-        int is = sd.getSnapshot().getElement().size();
-        rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), was == is, I18nConstants.SNAPSHOT_EXISTING_PROBLEM, was, is);
       }
     } catch (FHIRException | IOException e) {
       rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
