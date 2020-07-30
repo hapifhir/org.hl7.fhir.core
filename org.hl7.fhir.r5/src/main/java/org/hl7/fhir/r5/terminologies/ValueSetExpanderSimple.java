@@ -293,7 +293,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       if (exclusion.getCode().equals(def.getCode()))
         return; // excluded.
     }
-    if (!CodeSystemUtilities.isDeprecated(cs, def)) {
+    if (!CodeSystemUtilities.isDeprecated(cs, def, false)) {
       ValueSetExpansionContainsComponent np = null;
       boolean abs = CodeSystemUtilities.isNotSelectable(cs, def);
       boolean inc = CodeSystemUtilities.isInactive(cs, def);
