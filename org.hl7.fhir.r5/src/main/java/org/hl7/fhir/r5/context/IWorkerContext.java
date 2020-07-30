@@ -44,6 +44,8 @@ import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
+import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.ParserType;
 import org.hl7.fhir.r5.model.Bundle;
@@ -92,6 +94,53 @@ import com.google.gson.JsonSyntaxException;
  * @author Grahame
  */
 public interface IWorkerContext {
+
+  public class CodingValidationRequest {
+    private Coding coding;
+    private ValidationResult result;
+    private CacheToken cacheToken;
+    
+    public CodingValidationRequest(Coding coding) {
+      super();
+      this.coding = coding;
+    }
+
+    public ValidationResult getResult() {
+      return result;
+    }
+
+    public void setResult(ValidationResult result) {
+      this.result = result;
+    }
+
+    public Coding getCoding() {
+      return coding;
+    }
+
+    public boolean hasResult() {
+      return result != null;
+    }
+
+    /**
+     * internal logic; external users of batch validation should ignore this property
+     * 
+     * @return
+     */
+    public CacheToken getCacheToken() {
+      return cacheToken;
+    }
+
+    /**
+     * internal logic; external users of batch validation should ignore this property
+     * 
+     * @param cacheToken
+     */
+    public void setCacheToken(CacheToken cacheToken) {
+      this.cacheToken = cacheToken;
+    }
+    
+    
+  }
 
   public class PackageVersion {
     private String id;
@@ -619,6 +668,8 @@ public interface IWorkerContext {
    * @return
    */
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs);
+
+  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
   
   /**
    * returns the recommended tla for the type  (from the structure definitions)

@@ -333,6 +333,7 @@ public class I18nConstants {
   public static final String RESOURCE_RES_ID_PROHIBITED = "Resource_RES_ID_Prohibited";
   public static final String RESOURCE_TYPE_MISMATCH_FOR___ = "Resource_type_mismatch_for___";
   public static final String SAME_ID_ON_MULTIPLE_ELEMENTS__IN_ = "Same_id_on_multiple_elements__in_";
+  public static final String SD_MUST_HAVE_DERIVATION = "SD_MUST_HAVE_DERIVATION";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
   public static final String SEARCHPARAMETER_NOTFOUND = "SEARCHPARAMETER_NOTFOUND";

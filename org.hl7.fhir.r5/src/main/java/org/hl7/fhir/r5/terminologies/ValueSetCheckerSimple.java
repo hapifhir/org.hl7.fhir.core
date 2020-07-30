@@ -402,18 +402,21 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
 
   private boolean inComponent(ConceptSetComponent vsi, String system, String code, boolean only) throws FHIRException {
     for (UriType uri : vsi.getValueSet()) {
-      if (inImport(uri.getValue(), system, code))
+      if (inImport(uri.getValue(), system, code)) {
         return true;
+      }
     }
 
-    if (!vsi.hasSystem())
+    if (!vsi.hasSystem()) {
       return false;
-    
+    }
     if (only && system == null) {
       // whether we know the system or not, we'll accept the stated codes at face value
-      for (ConceptReferenceComponent cc : vsi.getConcept())
-        if (cc.getCode().equals(code)) 
+      for (ConceptReferenceComponent cc : vsi.getConcept()) {
+        if (cc.getCode().equals(code)) {
           return true;
+        }
+      }
     }
     
     if (!system.equals(vsi.getSystem()))
@@ -443,12 +446,15 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       List<ConceptDefinitionComponent> list = cs.getConcept();
       boolean ok = validateCodeInConceptList(code, cs, list);
       if (ok && vsi.hasConcept()) {
-        for (ConceptReferenceComponent cc : vsi.getConcept())
-          if (cc.getCode().equals(code)) 
+        for (ConceptReferenceComponent cc : vsi.getConcept()) {
+          if (cc.getCode().equals(code)) { 
             return true;
+          }
+        }
         return false;
-      } else
+      } else {
         return ok;
+      }
     }
   }
 

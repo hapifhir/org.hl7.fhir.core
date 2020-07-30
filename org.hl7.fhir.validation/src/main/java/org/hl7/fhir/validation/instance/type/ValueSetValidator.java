@@ -1,9 +1,11 @@
 package org.hl7.fhir.validation.instance.type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CodeSystem;
@@ -19,9 +21,25 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
+import org.hl7.fhir.validation.instance.type.ValueSetValidator.VSCodingValidationRequest;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class ValueSetValidator extends BaseValidator {
+
+  public class VSCodingValidationRequest extends CodingValidationRequest {
+
+    private NodeStack stack;
+
+    public VSCodingValidationRequest(NodeStack stack, Coding code) {
+      super(code);
+      this.stack = stack;
+    }
+
+    public NodeStack getStack() {
+      return stack;
+    }
+    
+  }
 
   public ValueSetValidator(IWorkerContext context, TimeTracker timeTracker) {
     super(context);
@@ -58,7 +76,6 @@ public class ValueSetValidator extends BaseValidator {
   private void validateValueSetInclude(List<ValidationMessage> errors, Element include, NodeStack stack) {
     String system = include.getChildValue("system");
     String version = include.getChildValue("version");
-    boolean systemOk = true;
     List<Element> valuesets = include.getChildrenByName("valueSet");
     int i = 0;
     for (Element ve : valuesets) {
@@ -79,13 +96,31 @@ public class ValueSetValidator extends BaseValidator {
     List<Element> concepts = include.getChildrenByName("concept");
     List<Element> filters = include.getChildrenByName("filter");
     if (!Utilities.noString(system)) {
+      boolean systemOk = true;
       int cc = 0;
+      List<VSCodingValidationRequest> batch = new ArrayList<>();
+      boolean first = true;
       for (Element concept : concepts) {
-        if (systemOk && !validateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version)) {
-          systemOk = false;
+        // we treat the first differently because we want to know if tbe system is worth validating. if it is, then we batch the rest
+        if (first) {
+          systemOk = validateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version);
+          first = false;
+        } else if (systemOk) {
+          batch.add(prepareValidateValueSetIncludeConcept(errors, concept, stack.push(concept, cc, null, null), system, version));
         }
         cc++;
       }    
+      if (batch.size() > 0) {
+        context.validateCodeBatch(ValidationOptions.defaults(), batch, null);
+        for (VSCodingValidationRequest cv : batch) {
+          if (version == null) {
+            warning(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode());
+          } else {
+            warning(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode());
+          }
+        }
+      }
+      
       int cf = 0;
       for (Element filter : filters) {
         if (systemOk && !validateValueSetIncludeFilter(errors, include, stack.push(filter, cf, null, null), system, version)) {
@@ -119,6 +154,15 @@ public class ValueSetValidator extends BaseValidator {
       }
     }
     return true;
+  }
+
+  private VSCodingValidationRequest prepareValidateValueSetIncludeConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String system, String version) {
+    String code = concept.getChildValue("code");
+    Coding c = new Coding(system, code, null);
+    if (version != null) {
+       c.setVersion(version);
+    }
+    return new VSCodingValidationRequest(stack, c);
   }
 
   private boolean validateValueSetIncludeFilter(List<ValidationMessage> errors, Element include, NodeStack push, String system, String version) {
