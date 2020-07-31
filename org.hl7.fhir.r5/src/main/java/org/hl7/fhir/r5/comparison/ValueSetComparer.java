@@ -210,7 +210,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
   private int countMatchesBySystem(List<ConceptSetComponent> list, ConceptSetComponent item) {
     int c = 0;
     for (ConceptSetComponent t : list) {
-      if (t.getSystem().equals(item.getSystem())) {
+      if (t.hasSystem() && t.getSystem().equals(item.getSystem())) {
         c++;
       }
     }
