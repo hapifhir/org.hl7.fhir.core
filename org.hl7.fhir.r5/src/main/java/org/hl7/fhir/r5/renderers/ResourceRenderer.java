@@ -7,6 +7,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -208,8 +209,9 @@ public abstract class ResourceRenderer extends DataRenderer {
       org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url);
       if (bundleElement != null) {
         String bundleUrl = null;
-        if (bundleElement.getNamedChild("resource").getChildValue("id") != null) {
-          bundleUrl = "#" + bundleElement.fhirType().toLowerCase() + "_" + bundleElement.getNamedChild("resource").getChildValue("id");
+        Element br = bundleElement.getNamedChild("resource");
+        if (br.getChildValue("id") != null) {
+          bundleUrl = "#" + br.fhirType().toLowerCase() + "_" + br.getChildValue("id");
         } else {
           bundleUrl = "#" +fullUrlToAnchor(bundleElement.getChildValue("fullUrl"));          
         }
