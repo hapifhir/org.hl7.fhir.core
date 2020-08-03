@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.cache.NpmPackage;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -35,6 +36,22 @@ import org.hl7.fhir.exceptions.FHIRException;
 public class VersionUtilities {
   
   
+  public static class VersionURLInfo {
+    private String version;
+    private String url;
+    public VersionURLInfo(String version, String url) {
+      super();
+      this.version = version;
+      this.url = url;
+    }
+    public String getVersion() {
+      return version;
+    }
+    public String getUrl() {
+      return url;
+    }
+  }
+
   public static final String CURRENT_VERSION = "4.4";
   public static final String CURRENT_FULL_VERSION = "4.4.0";
 
@@ -223,6 +240,20 @@ public class VersionUtilities {
       return CURRENT_FULL_VERSION;
     }
     throw new FHIRException("Unknown version "+version);
+  }
+
+  public static VersionURLInfo parseVersionUrl(String url) {
+    if (url.length() < 24) {
+      return null;
+    }
+    String v = url.substring(20, 24);
+    if (v.endsWith("/")) {
+      v = v.substring(0, v.length()-1);
+      if (Utilities.existsInList(v, "1.0", "1.4", "3.0", "4.0", "5.0", CURRENT_VERSION)) {
+        return new VersionURLInfo(v, "http://hl7.org/fhir/"+url.substring(24));
+      }
+    }
+    return null;
   }
 
 }
