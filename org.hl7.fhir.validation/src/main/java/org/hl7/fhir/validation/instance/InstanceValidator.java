@@ -1854,15 +1854,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("#") || Utilities.isAbsoluteUrl(url), I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url);        
       }
 
-      // now, do we check the URI target?
-      if (fetcher != null) {
-        boolean found;
-        try {
-          found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || fetcher.resolveURL(appContext, path, url);
-        } catch (IOException e1) {
-          found = false;
+      if (isCanonicalURLElement(e)) {
+        // for now, no validation. Need to think about authority.
+      } else {
+        // now, do we check the URI target?
+        if (fetcher != null) {
+          boolean found;
+          try {
+            found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || fetcher.resolveURL(appContext, path, url);
+          } catch (IOException e1) {
+            found = false;
+          }
+          rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
         }
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
       }
     }
     if (type.equals(ID)) {
@@ -2007,6 +2011,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     // for nothing to check
+  }
+
+  private boolean isCanonicalURLElement(Element e) {
+    if (e.getProperty() == null || e.getProperty().getDefinition() == null) {
+      return false;
+    }
+    String path = e.getProperty().getDefinition().getBase().getPath();
+    if (path == null) {
+      return false;
+    }
+    String[] p = path.split("\\."); 
+    if (p.length != 2) {
+      return false;
+    }
+    if (!"url".equals(p[1])) {
+      return false;
+    }
+    return Utilities.existsInList(p[0], VersionUtilities.getCanonicalResourceNames(context.getVersion()));
   }
 
   private boolean containsHtmlTags(String cnt) {
