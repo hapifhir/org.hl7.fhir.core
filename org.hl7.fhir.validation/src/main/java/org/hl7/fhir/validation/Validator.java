@@ -65,6 +65,7 @@ import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
 import org.hl7.fhir.validation.cli.ValidatorGui;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
@@ -171,6 +172,10 @@ public class Validator {
       Display.printCliArgumentsAndInfo(args);
       cliContext = Params.loadCliContext(args);
 
+      if (cliContext.getSv() == null) {
+        cliContext.setSv(determineVersion(cliContext));
+      }
+
       // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).  Version gets spit out a couple of lines later after we've loaded the context
       String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
       ValidationEngine validator = ValidationService.getValidator(cliContext, definitions);
@@ -204,5 +209,27 @@ public class Validator {
         }
       }
     }
+
   }
+
+  public static String determineVersion(CliContext cliContext) throws Exception {
+    if (cliContext.getMode() != EngineMode.VALIDATION) {
+      return "current";
+    }
+    System.out.println("Scanning for versions (no -version parameter):");
+    VersionSourceInformation versions = ValidationService.scanForVersions(cliContext);
+    for (String s : versions.getReport()) {
+      System.out.println("  "+s);      
+    }
+    if (versions.isEmpty()) {
+      System.out.println("-> Using Default version '"+VersionUtilities.CURRENT_VERSION+"'");
+      return "current";
+    }
+    if (versions.size() == 1) {
+      System.out.println("-> use version "+versions.version());
+      return versions.version();      
+    }
+    throw new Exception("-> Multiple versions found. Specify a particular version using the -version parameter");    
+  }
+  
 }

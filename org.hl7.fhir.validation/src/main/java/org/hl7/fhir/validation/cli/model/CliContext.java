@@ -36,7 +36,7 @@ public class CliContext {
   @JsonProperty("txServer")
   private String txServer = "http://tx.fhir.org";
   @JsonProperty("sv")
-  private String sv = "current";
+  private String sv = null;
   @JsonProperty("txLog")
   private String txLog = null;
   @JsonProperty("mapLog")
