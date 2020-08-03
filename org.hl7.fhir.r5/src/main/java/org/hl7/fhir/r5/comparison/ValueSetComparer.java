@@ -545,8 +545,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     if (t.hasLeft() && t.hasRight()) {
       ConceptSetComponent csL = (ConceptSetComponent) t.getLeft();
       ConceptSetComponent csR = (ConceptSetComponent) t.getRight();
-      // we assume both have systems 
-      if (csL.getSystem().equals(csR.getSystem())) {
+      if (csL.hasSystem() && csL.getSystem().equals(csR.getSystem())) {
         r.getCells().add(gen.new Cell(null, null, csL.getSystem(), null, null).span(2).center());        
       } else {
         r.getCells().add(gen.new Cell(null, null, csL.getSystem(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));        
