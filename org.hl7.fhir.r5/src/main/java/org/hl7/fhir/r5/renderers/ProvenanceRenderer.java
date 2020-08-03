@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ProvenanceRenderer extends ResourceRenderer {
@@ -19,7 +20,7 @@ public class ProvenanceRenderer extends ResourceRenderer {
     super(context);
   }
 
-  public boolean render(XhtmlNode x, DomainResource prv) throws UnsupportedEncodingException, IOException {
+  public boolean render(XhtmlNode x, Resource prv) throws UnsupportedEncodingException, IOException {
     return render(x, (Provenance) prv);
   }
   
@@ -149,5 +150,10 @@ public class ProvenanceRenderer extends ResourceRenderer {
   public String display(Provenance prv) throws UnsupportedEncodingException, IOException {
     return "Provenance for "+displayReference(prv, prv.getTargetFirstRep());
   }
-  
+ 
+  @Override
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return "Not done yet";
+  }
+
 }

@@ -84,7 +84,12 @@ public class ComparisonRenderer implements IEvaluationContext {
           first = false;
           b.append("<tr><td colspan=4><b>"+name+"</b></td></tr>\r\n");
         }
-        renderComparison(id, comp);
+        try {
+          renderComparison(id, comp);
+        } catch (Exception e) {
+          System.out.println("Exception rendering "+id+": "+e.getMessage());          
+          e.printStackTrace();
+        }
         b.append(comp.toTable());
         //"<li><a href=\""+comp.getId()+".html\">"+Utilities.escapeXml(comp.summary())+"</a></li>\r\n"
       }

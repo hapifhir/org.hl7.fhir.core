@@ -71,7 +71,7 @@ public class FHIRLexer {
   private String name;
 
   public FHIRLexer(String source, String name) throws FHIRLexerException {
-    this.source = source;
+    this.source = source == null ? "" : source;
     this.name = name == null ? "??" : name;
     currentLocation = new SourceLocation(1, 1);
     next();

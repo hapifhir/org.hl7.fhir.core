@@ -457,7 +457,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   @Override
   public boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException {
-    return !url.contains("example.org");
+    return !url.contains("example.org") && !url.startsWith("http://hl7.org/fhir/invalid");
   }
 
   @Override

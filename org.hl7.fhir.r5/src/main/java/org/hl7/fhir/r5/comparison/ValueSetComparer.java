@@ -210,7 +210,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
   private int countMatchesBySystem(List<ConceptSetComponent> list, ConceptSetComponent item) {
     int c = 0;
     for (ConceptSetComponent t : list) {
-      if (t.getSystem().equals(item.getSystem())) {
+      if (t.hasSystem() && t.getSystem().equals(item.getSystem())) {
         c++;
       }
     }
@@ -545,8 +545,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     if (t.hasLeft() && t.hasRight()) {
       ConceptSetComponent csL = (ConceptSetComponent) t.getLeft();
       ConceptSetComponent csR = (ConceptSetComponent) t.getRight();
-      // we assume both have systems 
-      if (csL.getSystem().equals(csR.getSystem())) {
+      if (csL.hasSystem() && csL.getSystem().equals(csR.getSystem())) {
         r.getCells().add(gen.new Cell(null, null, csL.getSystem(), null, null).span(2).center());        
       } else {
         r.getCells().add(gen.new Cell(null, null, csL.getSystem(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));        

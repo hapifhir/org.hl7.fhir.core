@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
 import org.hl7.fhir.validation.cli.model.*;
 
 import java.io.File;
@@ -52,6 +53,15 @@ public class ValidationService {
     return response;
   }
 
+  public static VersionSourceInformation scanForVersions(CliContext cliContext) throws Exception {
+    VersionSourceInformation versions = new VersionSourceInformation();
+    ValidationEngine ve = new ValidationEngine();
+    for (String src : cliContext.getIgs()) {
+      ve.scanForIgVersion(src, cliContext.isRecursive(), versions);
+    }
+    ve.scanForVersions(cliContext.getSources(), versions);
+    return versions;
+  }
   public static void validateSources(CliContext cliContext, ValidationEngine validator, long loadStart) throws Exception {
     validator.doneLoading(loadStart);
     if (cliContext.getProfiles().size() > 0) {
@@ -205,6 +215,7 @@ public class ValidationService {
     validator.setSecurityChecks(cliContext.isSecurityChecks());
     validator.setCrumbTrails(cliContext.isCrumbTrails());
     validator.setShowTimes(cliContext.isShowTimes());
+    validator.setFetcher(new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator));
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
     return validator;
   }

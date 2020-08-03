@@ -267,6 +267,11 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return res;
   }
 
+  public static SimpleWorkerContext fromNothing() throws FileNotFoundException, FHIRException, IOException  {
+    SimpleWorkerContext res = new SimpleWorkerContext();
+    return res;
+  }
+
   private void loadDefinitionItem(String name, InputStream stream, IContextResourceLoader loader, ILoadFilter filter, PackageVersion pi) throws IOException, FHIRException {
     if (name.endsWith(".xml"))
       loadFromFile(stream, name, loader, filter);

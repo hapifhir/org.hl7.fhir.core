@@ -34,6 +34,7 @@ import org.hl7.fhir.r5.utils.*;
 import org.hl7.fhir.r5.utils.IResourceValidator.*;
 import org.hl7.fhir.r5.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher.IPackageInstaller;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
@@ -163,7 +164,42 @@ POSSIBILITY OF SUCH DAMAGE.
  * @author Grahame Grieve
  *
  */
-public class ValidationEngine implements IValidatorResourceFetcher {
+public class ValidationEngine implements IValidatorResourceFetcher, IPackageInstaller {
+
+  public static class VersionSourceInformation {
+
+    private List<String> report = new ArrayList<>();
+    private List<String> versions = new ArrayList<>();
+    
+    public void see(String version, String src) {
+      version = VersionUtilities.getMajMin(version);
+      report.add(src+": "+version);
+      if (!versions.contains(version)) {
+        versions.add(version);
+        Collections.sort(versions);
+      }
+    }
+
+    public boolean isEmpty() {
+      return versions.isEmpty();
+    }
+
+    public int size() {
+      return versions.size();
+    }
+
+    public String version() {
+      return versions.get(0);
+    }
+
+    public List<String> getReport() {
+      if (report.isEmpty()) {
+        report.add("(nothing found)");
+      }
+      return report;
+    }
+
+  }
 
   public class ScanOutputItem {
     private String ref;
@@ -311,9 +347,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
   
   public ValidationEngine() throws IOException {
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    context = SimpleWorkerContext.fromNothing();
   }
     
-  public void setTerminologyServer(String src, String log, FhirPublication version) throws Exception {
+  public void setTerminologyServer(String src, String log, FhirPublication version) throws FHIRException, URISyntaxException {
     connectToTSServer(src, log, version);   
   }
   
@@ -342,7 +379,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     this.showTimes = showTimes;
   }
 
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString) throws Exception {
+  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString) throws FHIRException, IOException, URISyntaxException {
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     loadCoreDefinitions(src, false);
     context.setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
@@ -350,14 +387,14 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     this.version = vString;
   }
   
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString) throws Exception {
+  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString) throws FHIRException, IOException, URISyntaxException {
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     loadCoreDefinitions(src, false);
     setTerminologyServer(txsrvr, txLog, version);
     this.version = vString;
   }
   
-  public ValidationEngine(String src) throws Exception {
+  public ValidationEngine(String src) throws FHIRException, IOException {
     loadCoreDefinitions(src, false);
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
   }
@@ -370,7 +407,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     this.language = language;
   }
 
-  private void loadCoreDefinitions(String src, boolean recursive) throws Exception {
+  private void loadCoreDefinitions(String src, boolean recursive) throws FHIRException, IOException {
     if (pcm == null) {
       pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     }
@@ -435,7 +472,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return ep;
   }
 
-  private byte[] loadProfileSource(String src) throws Exception {
+  private byte[] loadProfileSource(String src) throws FHIRException, FileNotFoundException, IOException {
     if (Utilities.noString(src)) {
       throw new FHIRException("Profile Source '" + src + "' could not be processed");
     } else if (src.startsWith("https:") || src.startsWith("http:")) {
@@ -447,13 +484,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     }
   }
 
-  private byte[] loadProfileFromUrl(String src) throws Exception {
+  private byte[] loadProfileFromUrl(String src) throws FHIRException {
     try {
       URL url = new URL(src+"?nocache=" + System.currentTimeMillis());
       URLConnection c = url.openConnection();
       return IOUtils.toByteArray(c.getInputStream());
     } catch (Exception e) {
-      throw new Exception("Unable to find definitions at URL '"+src+"': "+e.getMessage(), e);
+      throw new FHIRException("Unable to find definitions at URL '"+src+"': "+e.getMessage(), e);
   }
     }
 
@@ -464,9 +501,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return TextFile.fileToBytes(src);
   }
 
-  /** explore should be true if we're trying to load an -ig parameter, and false if we're loading source **/
+  /** explore should be true if we're trying to load an -ig parameter, and false if we're loading source 
+   * @throws IOException **/
   
-  private Map<String, byte[]> loadIgSource(String src, boolean recursive, boolean explore) throws Exception {
+  private Map<String, byte[]> loadIgSource(String src, boolean recursive, boolean explore) throws FHIRException, IOException {
     // src can be one of the following:
     // - a canonical url for an ig - this will be converted to a package id and loaded into the cache
     // - a package id for an ig - this will be loaded into the cache
@@ -510,11 +548,60 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
       return fetchByPackage(src);
     }
-    throw new Exception("Unable to find/resolve/read -ig "+src);
+    throw new FHIRException("Unable to find/resolve/read -ig "+src);
+  }
+
+  private Map<String, byte[]> loadIgSourceForVersion(String src, boolean recursive, boolean explore, VersionSourceInformation versions) throws FHIRException, IOException {
+    if (src.startsWith("https:") || src.startsWith("http:")) {
+      String v = null;
+      if (src.contains("|")) {
+        v = src.substring(src.indexOf("|")+1);
+        src = src.substring(0, src.indexOf("|"));
+      }
+      String pid = pcm.getPackageId(src);
+      if (!Utilities.noString(pid)) {
+        versions.see(fetchVersionByPackage(pid+(v == null ? "" : "#"+v)), "Package "+src);
+        return null;
+      } else {
+        return fetchVersionFromUrl(src+(v == null ? "" : "|"+v), explore, versions);
+      }
+    }
+    
+    File f = new File(Utilities.path(src));
+    if (f.exists()) {
+      if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists()) {
+        versions.see(loadPackageForVersion(new FileInputStream(Utilities.path(src, "package.tgz")), Utilities.path(src, "package.tgz")), "Package "+src);
+        return null;
+      }
+      if (f.isDirectory() && new File(Utilities.path(src, "igpack.zip")).exists())
+        return readZip(new FileInputStream(Utilities.path(src, "igpack.zip")));
+      if (f.isDirectory() && new File(Utilities.path(src, "validator.pack")).exists())
+        return readZip(new FileInputStream(Utilities.path(src, "validator.pack")));
+      if (f.isDirectory())
+        return scanDirectory(f, recursive);
+      if (src.endsWith(".tgz")) {
+        versions.see(loadPackageForVersion(new FileInputStream(src), src), "Package "+src);
+        return null;
+      }
+      if (src.endsWith(".pack"))
+        return readZip(new FileInputStream(src));
+      if (src.endsWith("igpack.zip"))
+        return readZip(new FileInputStream(src));
+      FhirFormat fmt = checkIsResource(src);
+      if (fmt != null) {
+        Map<String, byte[]> res = new HashMap<String, byte[]>();
+        res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), TextFile.fileToBytesNCS(src));
+        return res;
+      }
+    } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
+      versions.see(fetchVersionByPackage(src), "Package "+src);
+      return null;
+    }
+    throw new FHIRException("Unable to find/resolve/read -ig "+src);
   }
 
   
-  private Map<String, byte[]> fetchFromUrl(String src, boolean explore) throws Exception {
+  private Map<String, byte[]> fetchFromUrl(String src, boolean explore) throws FHIRException, IOException {
     if (src.endsWith(".tgz"))
       return loadPackage(fetchFromUrlSpecific(src, false), src);
     if (src.endsWith(".pack"))
@@ -551,15 +638,59 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), cnt);
       return res;
     }    
-    throw new Exception("Unable to find/resolve/read -ig "+src);
+    throw new FHIRException("Unable to find/resolve/read -ig "+src);
   }
 
-  private InputStream fetchFromUrlSpecific(String source, boolean optional) throws Exception {
+  private Map<String, byte[]> fetchVersionFromUrl(String src, boolean explore, VersionSourceInformation versions) throws FHIRException, IOException {
+    if (src.endsWith(".tgz")) {
+      versions.see(loadPackageForVersion(fetchFromUrlSpecific(src, false), src), "From Package "+src);
+      return null;
+    }
+    if (src.endsWith(".pack"))
+      return readZip(fetchFromUrlSpecific(src, false));
+    if (src.endsWith("igpack.zip"))
+      return readZip(fetchFromUrlSpecific(src, false));
+
+    InputStream stream = null;
+    if (explore) {
+      stream = fetchFromUrlSpecific(Utilities.pathURL(src, "package.tgz"), true);
+      if (stream != null) {
+        versions.see(loadPackageForVersion(stream, Utilities.pathURL(src, "package.tgz")), "From Package at "+src);
+        return null;
+      }
+      // todo: these options are deprecated - remove once all IGs have been rebuilt post R4 technical correction
+      stream = fetchFromUrlSpecific(Utilities.pathURL(src, "igpack.zip"), true);
+      if (stream != null)
+        return readZip(stream);
+      stream = fetchFromUrlSpecific(Utilities.pathURL(src, "validator.pack"), true);
+      if (stream != null)
+        return readZip(stream);
+      stream = fetchFromUrlSpecific(Utilities.pathURL(src, "validator.pack"), true);
+      //// -----
+    }
+    
+    // ok, having tried all that... now we'll just try to access it directly
+    byte[] cnt;
+    if (stream == null)
+      cnt = fetchFromUrlSpecific(src, "application/json", true);
+    else
+      cnt = TextFile.streamToBytes(stream);
+    
+    FhirFormat fmt = checkIsResource(cnt, src);
+    if (fmt != null) {
+      Map<String, byte[]> res = new HashMap<String, byte[]>();
+      res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), cnt);
+      return res;
+    }    
+    throw new FHIRException("Unable to find/resolve/read -ig "+src);
+  }
+
+  private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException, IOException {
     try {
       URL url = new URL(source+"?nocache=" + System.currentTimeMillis());
       URLConnection c = url.openConnection();
       return c.getInputStream();
-    } catch (Exception e) {
+    } catch (IOException e) {
       if (optional)
         return null;
       else
@@ -567,13 +698,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     }
   }
 
-  private byte[] fetchFromUrlSpecific(String source, String contentType, boolean optional) throws Exception {
+  private byte[] fetchFromUrlSpecific(String source, String contentType, boolean optional) throws FHIRException, IOException {
     try {
       URL url = new URL(source+"?nocache=" + System.currentTimeMillis());
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setRequestProperty("Accept", contentType);
       return TextFile.streamToBytes(conn.getInputStream());
-    } catch (Exception e) {
+    } catch (IOException e) {
       if (optional)
         return null;
       else
@@ -604,11 +735,15 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return Utilities.existsInList(Utilities.getFileExtension(ff.getName()).toLowerCase(), "md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip");
   }
 
-  private Map<String, byte[]> loadPackage(InputStream stream, String name) throws Exception {
+  private Map<String, byte[]> loadPackage(InputStream stream, String name) throws FHIRException, IOException {
     return loadPackage(NpmPackage.fromPackage(stream));
   }
 
-  public Map<String, byte[]> loadPackage(NpmPackage pi) throws Exception {
+  private String loadPackageForVersion(InputStream stream, String name) throws FHIRException, IOException {
+    return NpmPackage.fromPackage(stream).fhirVersion();
+  }
+
+  public Map<String, byte[]> loadPackage(NpmPackage pi) throws FHIRException, IOException {
     context.getLoadedPackages().add(pi.name()+"#"+pi.version());
     Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (String s : pi.dependencies()) {
@@ -652,7 +787,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     System.out.println(message);
   }
 
-  private Map<String, byte[]> fetchByPackage(String src) throws Exception {
+  private Map<String, byte[]> fetchByPackage(String src) throws FHIRException, IOException {
     String id = src;
     String version = null;
     if (src.contains("#")) {
@@ -679,11 +814,44 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       return loadPackage(pi);
   }
 
-  private Map<String, byte[]> resolvePackage(String id, String v) throws Exception {
+  private String fetchVersionByPackage(String src) throws FHIRException, IOException {
+    String id = src;
+    String version = null;
+    if (src.contains("#")) {
+      id = src.substring(0, src.indexOf("#"));
+      version = src.substring(src.indexOf("#")+1);
+    }
+    if (pcm == null) {
+      log("Creating Package manager?");
+      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    }
+    if (version == null) {
+      version = pcm.getLatestVersion(id);
+    }
+    NpmPackage pi = null;
+    if (version == null) {
+      pi = pcm.loadPackageFromCacheOnly(id);
+      if (pi != null)
+        log("   ... Using version "+pi.version());
+    } else
+      pi = pcm.loadPackageFromCacheOnly(id, version);
+    if (pi == null) {
+      return resolvePackageForVersion(id, version);
+    } else {
+      return pi.fhirVersion();
+    }
+  }
+
+  private Map<String, byte[]> resolvePackage(String id, String v) throws FHIRException, IOException {
     NpmPackage pi = pcm.loadPackage(id, v);
     if (pi != null && v == null)
       log("   ... Using version "+pi.version());
     return loadPackage(pi);
+  }
+
+  private String resolvePackageForVersion(String id, String v) throws FHIRException, IOException {
+    NpmPackage pi = pcm.loadPackage(id, v);
+    return pi.fhirVersion();
   }
 
   public SimpleWorkerContext getContext() {
@@ -758,7 +926,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     }
   }
 
-  public void loadProfile(String src) throws Exception {
+  public void loadProfile(String src) throws FHIRException, IOException {
     if (context.hasResource(StructureDefinition.class, src))
       return;
     if (context.hasResource(ImplementationGuide.class, src))
@@ -770,7 +938,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     context.cacheResource(r);
   }
   
-  public void loadIg(String src, boolean recursive) throws IOException, FHIRException, Exception {
+  public void scanForIgVersion(String src, boolean recursive, VersionSourceInformation versions) throws IOException, FHIRException, Exception {
+    Map<String, byte[]> source = loadIgSourceForVersion(src, recursive, true, versions);
+    if (source != null && source.containsKey("version.info"))
+      versions.see(readInfoVersion(source.get("version.info")), "version.info in "+src);
+  }
+
+  public void loadIg(String src, boolean recursive) throws IOException, FHIRException {
     NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) ? pcm.loadPackage(src, null) : null;
     if (npm != null) {
       for (String s : npm.dependencies()) {
@@ -834,7 +1008,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return r;
   }
 
-  public Resource loadResourceByVersion(String version, byte[] content, String fn) throws IOException, Exception {
+  public Resource loadResourceByVersion(String version, byte[] content, String fn) throws IOException, FHIRException {
     Resource r;
     if (version.startsWith("3.0")) {
       org.hl7.fhir.dstu3.model.Resource res;
@@ -845,7 +1019,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else if (fn.endsWith(".txt") || fn.endsWith(".map") )
         res = new org.hl7.fhir.dstu3.utils.StructureMapUtilities(null).parse(new String(content));
       else
-        throw new Exception("Unsupported format for "+fn);
+        throw new FHIRException("Unsupported format for "+fn);
       r = VersionConvertor_30_50.convertResource(res, false);
     } else if (version.startsWith("4.0")) {
       org.hl7.fhir.r4.model.Resource res;
@@ -856,7 +1030,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else if (fn.endsWith(".txt") || fn.endsWith(".map") )
         res = new org.hl7.fhir.r4.utils.StructureMapUtilities(null).parse(new String(content), fn);
       else
-        throw new Exception("Unsupported format for "+fn);
+        throw new FHIRException("Unsupported format for "+fn);
       r = VersionConvertor_40_50.convertResource(res);
     } else if (version.startsWith("1.4")) {
       org.hl7.fhir.dstu2016may.model.Resource res;
@@ -865,7 +1039,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
-        throw new Exception("Unsupported format for "+fn);
+        throw new FHIRException("Unsupported format for "+fn);
       r = VersionConvertor_14_50.convertResource(res);
     } else if (version.startsWith("1.0")) {
       org.hl7.fhir.dstu2.model.Resource res;
@@ -874,7 +1048,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
-        throw new Exception("Unsupported format for "+fn);
+        throw new FHIRException("Unsupported format for "+fn);
       VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5();
       r = VersionConvertor_10_50.convertResource(res, advisor);
     } else if (version.equals(Constants.VERSION) || "current".equals(version)) {
@@ -887,9 +1061,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else if (fn.endsWith(".txt") || fn.endsWith(".map") )
         r = new org.hl7.fhir.r5.utils.StructureMapUtilities(null).parse(new String(content), fn);
       else
-        throw new Exception("Unsupported format for "+fn);
+        throw new FHIRException("Unsupported format for "+fn);
     } else
-      throw new Exception("Unsupported version "+version);
+      throw new FHIRException("Unsupported version "+version);
     return r;
   }
 
@@ -923,11 +1097,11 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     FhirFormat cntType = null;
   }
   
-  public Content loadContent(String source, String opName) throws Exception {
+  public Content loadContent(String source, String opName) throws FHIRException, IOException {
     Map<String, byte[]> s = loadIgSource(source, false, false);
     Content res = new Content();
     if (s.size() != 1)
-      throw new Exception("Unable to find resource " + source + " to "+opName);
+      throw new FHIRException("Unable to find resource " + source + " to "+opName);
     for (Entry<String, byte[]> t: s.entrySet()) {
       res.focus = t.getValue();
       if (t.getKey().endsWith(".json"))
@@ -939,13 +1113,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else if (t.getKey().endsWith(".txt") || t.getKey().endsWith(".map"))
         res.cntType = FhirFormat.TEXT; 
       else
-        throw new Exception("Todo: Determining resource type is not yet done");
+        throw new FHIRException("Todo: Determining resource type is not yet done");
     }
     return res;
   }
 
   // testing entry point
-  public OperationOutcome validate(FhirFormat format, InputStream stream, List<String> profiles) throws Exception {
+  public OperationOutcome validate(FhirFormat format, InputStream stream, List<String> profiles) throws FHIRException, IOException, EOperationOutcome {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     InstanceValidator validator = getValidator();
     validator.validate(null, messages, stream, format, asSdList(profiles));
@@ -966,13 +1140,13 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return list;
   }
     
-  public OperationOutcome validate(String source, List<String> profiles) throws Exception {
+  public OperationOutcome validate(String source, List<String> profiles) throws FHIRException, IOException {
     List<String> l = new ArrayList<String>();
     l.add(source);
     return (OperationOutcome)validate(l, profiles);
   }
     
-  public List<ScanOutputItem> validateScan(List<String> sources, Set<String> guides) throws Exception {
+  public List<ScanOutputItem> validateScan(List<String> sources, Set<String> guides) throws FHIRException, IOException, EOperationOutcome {
     List<String> refs = new ArrayList<String>();
     handleSources(sources, refs);
     
@@ -1048,7 +1222,28 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return null;
   }
 
-  public Resource validate(List<String> sources, List<String> profiles) throws Exception {
+  public void scanForVersions(List<String> sources, VersionSourceInformation versions) throws FHIRException, IOException {
+    List<String> refs = new ArrayList<String>();
+    handleSources(sources, refs);
+    for (String ref : refs) {
+      Content cnt = loadContent(ref, "validate");
+      String s = TextFile.bytesToString(cnt.focus);
+      if (s.contains("http://hl7.org/fhir/3.0")) {
+        versions.see("3.0", "Profile in "+ref);
+      }
+      if (s.contains("http://hl7.org/fhir/1.0")) {
+        versions.see("1.0", "Profile in "+ref);
+      }
+      if (s.contains("http://hl7.org/fhir/4.0")) {
+        versions.see("4.0", "Profile in "+ref);
+      }
+      if (s.contains("http://hl7.org/fhir/1.4")) {
+        versions.see("1.4", "Profile in "+ref);
+      }
+    }  
+  }
+  
+  public Resource validate(List<String> sources, List<String> profiles) throws FHIRException, IOException {
     List<String> refs = new ArrayList<String>();
     boolean asBundle = handleSources(sources, refs);
     Bundle results = new Bundle();
@@ -1065,7 +1260,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         results.addEntry().setResource(outcome);
       } catch (Exception e) {
         System.out.println("Validation Infrastructure fail validating "+ref+": "+e.getMessage());
-        throw e;
+        throw new FHIRException(e);
       }
     }
     if (asBundle)
@@ -1082,7 +1277,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     } 
   }
 
-  public OperationOutcome validateString(String location, String source, FhirFormat format, List<String> profiles) throws Exception {
+  public OperationOutcome validateString(String location, String source, FhirFormat format, List<String> profiles) throws FHIRException, IOException, EOperationOutcome, SAXException {
     return validate(location, source.getBytes(), format, profiles);
   }
 
@@ -1136,14 +1331,14 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return isBundle;
   }
 
-  public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles) throws Exception {
+  public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles) throws FHIRException, IOException, EOperationOutcome {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     InstanceValidator validator = getValidator();
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return messagesToOutcome(messages);
   }
 
-  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles) throws Exception {
+  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
       if (cntType == FhirFormat.JSON)
@@ -1161,7 +1356,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return messagesToOutcome(messages);
   }
 
-  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws Exception {
+  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
       if (cntType == FhirFormat.JSON)
@@ -1254,12 +1449,12 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return issue.getSeverity().toString()+" @ "+issue.getLocation() + " " +issue.getDetails().getText() +(source != null ? " (src = "+source+")" : "");    
   }
 
-  public org.hl7.fhir.r5.elementmodel.Element transform(String source, String map) throws Exception {
+  public org.hl7.fhir.r5.elementmodel.Element transform(String source, String map) throws FHIRException, IOException {
     Content cnt = loadContent(source, "validate");
     return transform(cnt.focus, cnt.cntType, map);
   }
   
-  public org.hl7.fhir.r5.elementmodel.Element transform(byte[] source, FhirFormat cntType, String mapUri) throws Exception {
+  public org.hl7.fhir.r5.elementmodel.Element transform(byte[] source, FhirFormat cntType, String mapUri) throws FHIRException, IOException {
     List<Base> outputs = new ArrayList<Base>();
     
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs));
@@ -1299,7 +1494,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return Manager.build(getContext(), structureDefinition);
   }
 
-  public DomainResource generate(String source, String version) throws Exception {
+  public DomainResource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = loadContent(source, "validate");
     Resource res = loadResourceByVersion(version, cnt.focus, source);
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
@@ -1307,25 +1502,25 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     return (DomainResource) res;
   }
   
-  public void convert(String source, String output) throws Exception {
+  public void convert(String source, String output) throws FHIRException, IOException {
     Content cnt = loadContent(source, "validate");
     Element e = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
     Manager.compose(context, e, new FileOutputStream(output), (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
   }
 
-  public String evaluateFhirPath(String source, String expression) throws Exception {
+  public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
     Content cnt = loadContent(source, "validate");
     FHIRPathEngine fpe = new FHIRPathEngine(context);
     Element e = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
     return fpe.evaluateToString(e, expression);
   }
 
-  public StructureDefinition snapshot(String source, String version) throws Exception {
+  public StructureDefinition snapshot(String source, String version) throws FHIRException, IOException {
     Content cnt = loadContent(source, "validate");
     Resource res = loadResourceByVersion(version, cnt.focus, Utilities.getFileNameForName(source));
    
     if (!(res instanceof StructureDefinition))
-      throw new Exception("Require a StructureDefinition for generating a snapshot");
+      throw new FHIRException("Require a StructureDefinition for generating a snapshot");
     StructureDefinition sd = (StructureDefinition) res;
     StructureDefinition base = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
     
@@ -1670,8 +1865,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
 
   @Override
   public boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException {
-    if (!url.startsWith("http://hl7.org/fhir"))
-      return true; // we don't bother with those.
+    if (!url.startsWith("http://") && !url.startsWith("https://")) { // ignore these 
+      return true;
+    }
     if (context.fetchResource(Resource.class, url) != null)
       return true;
     if (Utilities.existsInList(url, "http://hl7.org/fhir/sid/us-ssn", "http://hl7.org/fhir/sid/cvx", "http://hl7.org/fhir/sid/ndc", "http://hl7.org/fhir/sid/us-npi", "http://hl7.org/fhir/sid/icd-10", 
@@ -1679,6 +1875,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
        "http://hl7.org/fhir/workflow", "http://hl7.org/fhir/ConsentPolicy/opt-out", "http://hl7.org/fhir/ConsentPolicy/opt-in")) {
       return true;
     }
+    if (Utilities.existsInList(url, "http://loinc.org", "http://unitsofmeasure.org", "http://snomed.info/sct")) {
+       return true;
+     }
     if (fetcher != null) {
       return fetcher.resolveURL(appContext, path, url);
     };
@@ -1690,7 +1889,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     this.locale = locale;
   }
 
-  public void handleOutput(Resource r, String output, String version) throws Exception {
+  public void handleOutput(Resource r, String output, String version) throws FHIRException, IOException {
     if (output.startsWith("http://") || output.startsWith("http://")) {
       ByteArrayOutputStream bs = new ByteArrayOutputStream();
       handleOutputToStream(r, output, bs, version);
@@ -1719,7 +1918,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
     }
   }
 
-  private void handleOutputToStream(Resource r, String fn, OutputStream s, String version) throws Exception {
+  private void handleOutputToStream(Resource r, String fn, OutputStream s, String version) throws FHIRException, IOException {
     if (fn.endsWith(".html") || fn.endsWith(".htm") && r instanceof DomainResource)
       new XhtmlComposer(XhtmlComposer.HTML, true).compose(s, ((DomainResource) r).getText().getDiv());
     else if (version.startsWith("3.0")) {
@@ -1731,7 +1930,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else if (fn.endsWith(".txt") || fn.endsWith(".map") )
         TextFile.stringToStream(org.hl7.fhir.dstu3.utils.StructureMapUtilities.render((org.hl7.fhir.dstu3.model.StructureMap) res), s, false);
       else
-        throw new Exception("Unsupported format for "+fn);
+        throw new FHIRException("Unsupported format for "+fn);
     } else if (version.startsWith("4.0")) {
       org.hl7.fhir.r4.model.Resource res = VersionConvertor_40_50.convertResource(r);
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -1741,7 +1940,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else if (fn.endsWith(".txt") || fn.endsWith(".map") )
         TextFile.stringToStream(org.hl7.fhir.r4.utils.StructureMapUtilities.render((org.hl7.fhir.r4.model.StructureMap) res), s, false);
       else
-        throw new Exception("Unsupported format for "+fn);
+        throw new FHIRException("Unsupported format for "+fn);
     } else if (version.startsWith("1.4")) {
       org.hl7.fhir.dstu2016may.model.Resource res = VersionConvertor_14_50.convertResource(r);
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -1749,7 +1948,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         new org.hl7.fhir.dstu2016may.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu2016may.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else
-        throw new Exception("Unsupported format for "+fn);
+        throw new FHIRException("Unsupported format for "+fn);
     } else if (version.startsWith("1.0")) {
       VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5();
       org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_50.convertResource(r, advisor);
@@ -1758,7 +1957,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         new org.hl7.fhir.dstu2.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu2.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else
-        throw new Exception("Unsupported format for "+fn);
+        throw new FHIRException("Unsupported format for "+fn);
     } else if (version.equals(Constants.VERSION)) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         new XmlParser().setOutputStyle(org.hl7.fhir.r5.formats.IParser.OutputStyle.PRETTY).compose(s, r);
@@ -1767,9 +1966,9 @@ public class ValidationEngine implements IValidatorResourceFetcher {
       else if (fn.endsWith(".txt") || fn.endsWith(".map") )
         TextFile.stringToStream(org.hl7.fhir.r5.utils.StructureMapUtilities.render((org.hl7.fhir.r5.model.StructureMap) r), s, false);
       else
-        throw new Exception("Unsupported format for "+fn);
+        throw new FHIRException("Unsupported format for "+fn);
     } else
-      throw new Exception("Encounted unsupported configured version "+version+" loading "+fn);
+      throw new FHIRException("Encounted unsupported configured version "+version+" loading "+fn);
 
     s.close();
   }
@@ -1833,7 +2032,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         } else if (VersionUtilities.isR4Ver(version)) {
           return convertVersionNativeR4(targetVer, cnt, format);
         } else {
-          throw new Exception("Source version not supported yet: "+version);
+          throw new FHIRException("Source version not supported yet: "+version);
         }
       } catch (Exception e) {
         System.out.println("Conversion failed using Java convertor: "+e.getMessage());
@@ -1940,7 +2139,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
       }
     } else {
-      throw new Exception("Target Version not supported yet: "+targetVer);
+      throw new FHIRException("Target Version not supported yet: "+targetVer);
     }
   }
   
@@ -2009,7 +2208,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
       }
     } else {
-      throw new Exception("Target Version not supported yet: "+targetVer);
+      throw new FHIRException("Target Version not supported yet: "+targetVer);
     }
   }
 
@@ -2078,7 +2277,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
       }
     } else {
-      throw new Exception("Target Version not supported yet: "+targetVer);
+      throw new FHIRException("Target Version not supported yet: "+targetVer);
     }
   }
   
@@ -2147,7 +2346,7 @@ public class ValidationEngine implements IValidatorResourceFetcher {
         throw new FHIRException("Unsupported output format: "+cnt.cntType.toString());
       }
     } else {
-      throw new Exception("Target Version not supported yet: "+targetVer);
+      throw new FHIRException("Target Version not supported yet: "+targetVer);
     }
   }
 
@@ -2165,5 +2364,10 @@ public class ValidationEngine implements IValidatorResourceFetcher {
    }
     
   }
+
+  public FilesystemPackageCacheManager getPcm() {
+    return pcm;
+  }
+  
   
 }

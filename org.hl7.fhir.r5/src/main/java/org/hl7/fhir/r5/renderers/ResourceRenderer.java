@@ -7,6 +7,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -80,18 +81,23 @@ public abstract class ResourceRenderer extends DataRenderer {
     return x;
   }
 
-  public abstract boolean render(XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
+  public abstract boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
   
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     ProfileDrivenRenderer pr = new ProfileDrivenRenderer(context);
     return pr.render(x, r);
   }
   
-  public void describe(XhtmlNode x, DomainResource r) throws UnsupportedEncodingException, IOException {
+  public void describe(XhtmlNode x, Resource r) throws UnsupportedEncodingException, IOException {
+    x.tx(display(r));
+  }
+
+  public void describe(XhtmlNode x, ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     x.tx(display(r));
   }
 
   public abstract String display(Resource r) throws UnsupportedEncodingException, IOException;
+  public abstract String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException;
   
   public static void inject(DomainResource r, XhtmlNode x, NarrativeStatus status) {
     if (!x.hasAttribute("xmlns"))
@@ -151,7 +157,12 @@ public abstract class ResourceRenderer extends DataRenderer {
         new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, r.getReference().startsWith("#"));
       }
     } else if (tr != null && tr.getResource() != null) {
-      new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), r.getReference().startsWith("#"), r.getReference().startsWith("#"));
+      if (tr.getReference().startsWith("#")) {
+        // we already rendered this in this page
+        c.tx("See above ("+tr.getResource().fhirType()+"/"+tr.getResource().getId()+")");
+      } else {
+        new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), r.getReference().startsWith("#"), r.getReference().startsWith("#"));
+      }
     } else {
       c.addText(r.getReference());
     }
@@ -208,12 +219,13 @@ public abstract class ResourceRenderer extends DataRenderer {
       org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url);
       if (bundleElement != null) {
         String bundleUrl = null;
-        if (bundleElement.getNamedChild("resource").getChildValue("id") != null) {
-          bundleUrl = "#" + bundleElement.fhirType().toLowerCase() + "_" + bundleElement.getNamedChild("resource").getChildValue("id");
+        Element br = bundleElement.getNamedChild("resource");
+        if (br.getChildValue("id") != null) {
+          bundleUrl = "#" + br.fhirType().toLowerCase() + "_" + br.getChildValue("id");
         } else {
           bundleUrl = "#" +fullUrlToAnchor(bundleElement.getChildValue("fullUrl"));          
         }
-        return new ResourceWithReference(bundleUrl, new ResourceWrapperMetaElement(this.context, bundleElement));
+        return new ResourceWithReference(bundleUrl, new ResourceWrapperMetaElement(this.context, br));
       }
     }
 
@@ -247,6 +259,14 @@ public abstract class ResourceRenderer extends DataRenderer {
    }
 
    protected PropertyWrapper getProperty(ResourceWrapper res, String name) {
+     for (PropertyWrapper t : res.children()) {
+       if (t.getName().equals(name))
+         return t;
+     }
+     return null;
+   }
+
+   protected PropertyWrapper getProperty(BaseWrapper res, String name) {
      for (PropertyWrapper t : res.children()) {
        if (t.getName().equals(name))
          return t;

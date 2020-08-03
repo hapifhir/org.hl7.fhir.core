@@ -25,6 +25,7 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE = "Bundle_BUNDLE_Entry_NoFirstResource";
   public static final String BUNDLE_BUNDLE_ENTRY_NOFULLURL = "Bundle_BUNDLE_Entry_NoFullUrl";
   public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE = "Bundle_BUNDLE_Entry_NoProfile";
+  public static final String BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES = "BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND = "Bundle_BUNDLE_Entry_NotFound";
   public static final String BUNDLE_BUNDLE_ENTRY_ORPHAN = "Bundle_BUNDLE_Entry_Orphan";
   public static final String BUNDLE_BUNDLE_ENTRY_TYPE = "Bundle_BUNDLE_Entry_Type";
@@ -543,10 +544,14 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL = "VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL";
   public static final String VALIDATION_VAL_PROFILE_SIGNPOST_META = "VALIDATION_VAL_PROFILE_SIGNPOST_META";
   public static final String VALIDATION_VAL_PROFILE_SLICEORDER = "Validation_VAL_Profile_SliceOrder";
+  public static final String VALIDATION_VAL_PROFILE_OTHER_VERSION = "VALIDATION_VAL_PROFILE_OTHER_VERSION";
+  public static final String VALIDATION_VAL_PROFILE_THIS_VERSION_OK = "VALIDATION_VAL_PROFILE_THIS_VERSION_OK";
+  public static final String VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER = "VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER";
   public static final String VALIDATION_VAL_PROFILE_UNKNOWN = "Validation_VAL_Profile_Unknown";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE = "Validation_VAL_Profile_WrongType";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE2 = "Validation_VAL_Profile_WrongType2";
   public static final String VALIDATION_VAL_UNKNOWN_PROFILE = "Validation_VAL_Unknown_Profile";
+  
   public static final String VALUESET_INCLUDE_INVALID_CONCEPT_CODE = "VALUESET_INCLUDE_INVALID_CONCEPT_CODE";
   public static final String VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER = "VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER";
   public static final String VALUESET_NO_SYSTEM_WARNING = "VALUESET_NO_SYSTEM_WARNING";
