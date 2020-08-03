@@ -14,7 +14,3 @@ Other Code changes:
 * Fix NPE bug in value set comparison
 
 
-TODO before commit:
-* check version of contained resources 
-
-
