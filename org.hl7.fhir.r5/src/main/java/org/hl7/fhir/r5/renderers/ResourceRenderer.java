@@ -81,18 +81,23 @@ public abstract class ResourceRenderer extends DataRenderer {
     return x;
   }
 
-  public abstract boolean render(XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
+  public abstract boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome;
   
   public boolean render(XhtmlNode x, ResourceWrapper r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     ProfileDrivenRenderer pr = new ProfileDrivenRenderer(context);
     return pr.render(x, r);
   }
   
-  public void describe(XhtmlNode x, DomainResource r) throws UnsupportedEncodingException, IOException {
+  public void describe(XhtmlNode x, Resource r) throws UnsupportedEncodingException, IOException {
+    x.tx(display(r));
+  }
+
+  public void describe(XhtmlNode x, ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     x.tx(display(r));
   }
 
   public abstract String display(Resource r) throws UnsupportedEncodingException, IOException;
+  public abstract String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException;
   
   public static void inject(DomainResource r, XhtmlNode x, NarrativeStatus status) {
     if (!x.hasAttribute("xmlns"))
@@ -152,7 +157,12 @@ public abstract class ResourceRenderer extends DataRenderer {
         new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), true, r.getReference().startsWith("#"));
       }
     } else if (tr != null && tr.getResource() != null) {
-      new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), r.getReference().startsWith("#"), r.getReference().startsWith("#"));
+      if (tr.getReference().startsWith("#")) {
+        // we already rendered this in this page
+        c.tx("See above ("+tr.getResource().fhirType()+"/"+tr.getResource().getId()+")");
+      } else {
+        new ProfileDrivenRenderer(context).generateResourceSummary(c, tr.getResource(), r.getReference().startsWith("#"), r.getReference().startsWith("#"));
+      }
     } else {
       c.addText(r.getReference());
     }
@@ -215,7 +225,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         } else {
           bundleUrl = "#" +fullUrlToAnchor(bundleElement.getChildValue("fullUrl"));          
         }
-        return new ResourceWithReference(bundleUrl, new ResourceWrapperMetaElement(this.context, bundleElement));
+        return new ResourceWithReference(bundleUrl, new ResourceWrapperMetaElement(this.context, br));
       }
     }
 
@@ -249,6 +259,14 @@ public abstract class ResourceRenderer extends DataRenderer {
    }
 
    protected PropertyWrapper getProperty(ResourceWrapper res, String name) {
+     for (PropertyWrapper t : res.children()) {
+       if (t.getName().equals(name))
+         return t;
+     }
+     return null;
+   }
+
+   protected PropertyWrapper getProperty(BaseWrapper res, String name) {
      for (PropertyWrapper t : res.children()) {
        if (t.getName().equals(name))
          return t;

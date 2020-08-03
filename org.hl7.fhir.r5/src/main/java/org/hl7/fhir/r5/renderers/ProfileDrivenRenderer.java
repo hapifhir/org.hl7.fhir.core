@@ -92,7 +92,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   }
 
   @Override
-  public boolean render(XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException {
+  public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, new DirectWrappers.ResourceWrapperDirect(context, r));
   }
 
@@ -109,7 +109,6 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       }
       containedIds.clear();
       generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), false, 0);
-
     } catch (Exception e) {
       e.printStackTrace();
       x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
@@ -121,6 +120,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return "todo";
   }
+  
+  @Override
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return "Not done yet";
+  }
+
 //
 //  public void inject(Element er, XhtmlNode x, NarrativeStatus status, boolean pretty) {
 //    if (!x.hasAttribute("xmlns"))

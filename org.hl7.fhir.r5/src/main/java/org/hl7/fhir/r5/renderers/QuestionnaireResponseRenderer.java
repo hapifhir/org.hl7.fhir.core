@@ -44,7 +44,7 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
     super(context);
   }
   
-  public boolean render(XhtmlNode x, DomainResource q) throws UnsupportedEncodingException, IOException {
+  public boolean render(XhtmlNode x, Resource q) throws UnsupportedEncodingException, IOException {
     return render(x, (QuestionnaireResponse) q);
   }
   
@@ -848,6 +848,11 @@ public class QuestionnaireResponseRenderer extends ResourceRenderer {
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return "todo";
+  }
+
+  @Override
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return "Not done yet";
   }
 
 }

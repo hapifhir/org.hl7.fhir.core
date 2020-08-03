@@ -34,7 +34,7 @@ public class LiquidRenderer extends ResourceRenderer {
   }
   
   @Override
-  public boolean render(XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+  public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     LiquidEngine engine = new LiquidEngine(context.getWorker(), context.getServices());
     XhtmlNode xn;
     try {
@@ -54,6 +54,16 @@ public class LiquidRenderer extends ResourceRenderer {
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return "not done yet";
+  }
+
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    if (r.has("title")) {
+      return r.children("title").get(0).getBase().primitiveValue();
+    }
+    if (r.has("name")) {
+      return r.children("name").get(0).getBase().primitiveValue();
+    }
+    return "??";
   }
 
   @Override

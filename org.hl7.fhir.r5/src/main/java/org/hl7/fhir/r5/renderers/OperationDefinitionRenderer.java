@@ -30,7 +30,7 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
     super(context, rcontext);
   }
   
-  public boolean render(XhtmlNode x, DomainResource dr) throws IOException, FHIRException, EOperationOutcome {
+  public boolean render(XhtmlNode x, Resource dr) throws IOException, FHIRException, EOperationOutcome {
     return render(x, (OperationDefinition) dr);
   }
 
