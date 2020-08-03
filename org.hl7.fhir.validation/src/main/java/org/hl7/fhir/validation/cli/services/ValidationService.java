@@ -110,8 +110,8 @@ public class ValidationService {
   }
 
   public static void convertSources(CliContext cliContext, ValidationEngine validator) throws Exception {
-    validator.convert(cliContext.getSources().get(0), cliContext.getOutput());
     System.out.println(" ...convert");
+    validator.convert(cliContext.getSources().get(0), cliContext.getOutput());
   }
 
   public static void evaluateFhirpath(CliContext cliContext, ValidationEngine validator) throws Exception {
