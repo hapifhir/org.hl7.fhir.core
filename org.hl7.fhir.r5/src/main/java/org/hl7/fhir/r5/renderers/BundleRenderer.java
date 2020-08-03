@@ -37,12 +37,17 @@ public class BundleRenderer extends ResourceRenderer {
   }
 
   @Override
-  public boolean render(XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    return false;
+  public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    return render(x, (Bundle) r);
   }
 
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
+    return null;
+  }
+
+  @Override
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return null;
   }
 

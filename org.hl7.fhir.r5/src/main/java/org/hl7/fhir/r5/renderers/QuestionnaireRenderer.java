@@ -42,7 +42,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     super(context);
   }
   
-  public boolean render(XhtmlNode x, DomainResource q) throws UnsupportedEncodingException, IOException {
+  public boolean render(XhtmlNode x, Resource q) throws UnsupportedEncodingException, IOException {
     return render(x, (Questionnaire) q);
   }
   

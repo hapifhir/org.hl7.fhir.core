@@ -29,7 +29,7 @@ public class ListRenderer extends ResourceRenderer {
     super(context, rcontext);
   }
   
-  public boolean render(XhtmlNode x, DomainResource dr) throws FHIRFormatError, DefinitionException, IOException {
+  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (ListResource) dr);
   }
 
@@ -187,6 +187,14 @@ public class ListRenderer extends ResourceRenderer {
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return ((ListResource) r).getTitle();
+  }
+
+  @Override
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    if (r.has("title")) {
+      return r.children("title").get(0).getBase().primitiveValue();
+    }
+    return "??";
   }
 
   private void shortForRef(XhtmlNode x, Reference ref) throws UnsupportedEncodingException, IOException {
