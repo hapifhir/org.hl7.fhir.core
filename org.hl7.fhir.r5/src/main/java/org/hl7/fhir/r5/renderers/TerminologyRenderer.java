@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
@@ -42,6 +43,16 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
 
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return ((CanonicalResource) r).present();
+  }
+
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    if (r.has("title")) {
+      return r.children("title").get(0).getBase().primitiveValue();
+    }
+    if (r.has("name")) {
+      return r.children("name").get(0).getBase().primitiveValue();
+    }
+    return "??";
   }
 
   protected class TargetElementComponentWrapper {

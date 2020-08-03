@@ -15,6 +15,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction;
 import org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -29,7 +30,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     super(context, rcontext);
   }
   
-  public boolean render(XhtmlNode x, DomainResource dr) throws FHIRFormatError, DefinitionException, IOException {
+  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (CapabilityStatement) dr);
   }
 
@@ -147,6 +148,16 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     XhtmlNode tr = t.tr();
     tr.td().addText(name);
     tr.td().addText(value);
+  }
+
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    if (r.has("title")) {
+      return r.children("title").get(0).getBase().primitiveValue();
+    }
+    if (r.has("name")) {
+      return r.children("name").get(0).getBase().primitiveValue();
+    }
+    return "??";
   }
 
 }

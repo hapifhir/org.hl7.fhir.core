@@ -154,7 +154,7 @@ public class CodeSystemComparer extends CanonicalResourceComparer {
 
 
   private void compareConcepts(List<ConceptDefinitionComponent> left, List<ConceptDefinitionComponent> right, StructuralMatch<ConceptDefinitionComponent> combined,
-      List<ConceptDefinitionComponent> union, List<ConceptDefinitionComponent> intersection, CodeSystem csU, CodeSystem csI, CodeSystemComparison res, String path) {
+    List<ConceptDefinitionComponent> union, List<ConceptDefinitionComponent> intersection, CodeSystem csU, CodeSystem csI, CodeSystemComparison res, String path) {
     List<ConceptDefinitionComponent> matchR = new ArrayList<>();
     for (ConceptDefinitionComponent l : left) {
       ConceptDefinitionComponent r = findInList(right, l);

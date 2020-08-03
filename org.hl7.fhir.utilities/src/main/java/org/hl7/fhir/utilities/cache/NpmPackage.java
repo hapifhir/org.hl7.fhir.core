@@ -1057,6 +1057,26 @@ public class NpmPackage {
   public boolean isCore() {
     return "fhir.core".equals(JSONUtil.str(npm, "type"));
   }
+
+  public boolean hasCanonical(String url) {
+    if (url == null) {
+      return false;
+    }
+    String u = url.contains("|") ?  url.substring(0, url.indexOf("|")) : url;
+    String v = url.contains("|") ?  url.substring(url.indexOf("|")+1) : null;
+    NpmPackageFolder folder = folders.get("package");
+    if (folder != null) {
+      for (JsonElement e : folder.index.getAsJsonArray("files")) {
+        JsonObject o = (JsonObject) e;
+        if (u.equals(JSONUtil.str(o, "url"))) {
+          if (v == null || v.equals(JSONUtil.str(o, "version"))) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
   
   
 }

@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -22,7 +23,7 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
     super(context, rcontext);
   }
   
-  public boolean render(XhtmlNode x, DomainResource dr) throws FHIRFormatError, DefinitionException, IOException {
+  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (StructureDefinition) dr);
   }
 
@@ -42,6 +43,16 @@ public class StructureDefinitionRenderer extends ResourceRenderer {
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return ((StructureDefinition) r).present();
+  }
+
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    if (r.has("title")) {
+      return r.children("title").get(0).getBase().primitiveValue();
+    }
+    if (r.has("name")) {
+      return r.children("name").get(0).getBase().primitiveValue();
+    }
+    return "??";
   }
 
 }

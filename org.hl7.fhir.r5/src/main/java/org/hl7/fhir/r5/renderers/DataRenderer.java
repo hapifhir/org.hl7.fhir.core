@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -11,6 +12,7 @@ import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -23,6 +25,7 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
 import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
@@ -50,7 +53,7 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
-public class DataRenderer {
+public class DataRenderer extends Renderer {
   
   // -- 1. context --------------------------------------------------------------
   
@@ -193,7 +196,6 @@ public class DataRenderer {
     return lang;
   }
 
-
   private boolean isCanonical(String path) {
     if (!path.endsWith(".url")) 
       return false;
@@ -269,8 +271,19 @@ public class DataRenderer {
     return "to do";   
   }
 
-  public void render(XhtmlNode x, BaseWrapper type) {
-    x.tx("to do");       
+  public void render(XhtmlNode x, BaseWrapper type)  {
+    Base base = null;
+    try {
+      base = type.getBase();
+    } catch (FHIRException | IOException e) {
+      x.tx("Error: " + e.getMessage()); // this shouldn't happen - it's an error in the library itself
+      return;
+    }
+    if (base instanceof DataType) {
+      render(x, (DataType) base);
+    } else {
+      x.tx("to do: "+base.fhirType());
+    }
   }
   
   public void renderBase(XhtmlNode x, Base b) {
@@ -312,6 +325,10 @@ public class DataRenderer {
       renderSampledData(x, (SampledData) type);
     } else if (type instanceof Reference) {
       renderReference(x, (Reference) type);
+    } else if (type instanceof InstantType) {
+      x.tx(((InstantType) type).toHumanDisplay());
+    } else if (type instanceof BaseDateTimeType) {
+      x.tx(((BaseDateTimeType) type).toHumanDisplay());
     } else if (type.isPrimitive()) {
       x.tx(type.primitiveValue());
     } else {
@@ -367,31 +384,37 @@ public class DataRenderer {
   }
 
   protected void renderAnnotation(XhtmlNode x, Annotation a, boolean showCodeDetails) throws FHIRException {
-    StringBuilder s = new StringBuilder();
-    if (a.hasAuthor()) {
-      s.append("Author: ");
+    StringBuilder b = new StringBuilder();
+    if (a.hasText()) {
+      b.append(a.getText());
+    }
 
-      if (a.hasAuthorReference())
-        s.append(a.getAuthorReference().getReference());
-      else if (a.hasAuthorStringType())
-        s.append(a.getAuthorStringType().getValue());
+    if (a.hasText() && (a.hasAuthor() || a.hasTimeElement())) {
+      b.append(" (");
+    }
+
+    if (a.hasAuthor()) {
+      b.append("By ");
+      if (a.hasAuthorReference()) {
+        b.append(a.getAuthorReference().getReference());
+      } else if (a.hasAuthorStringType()) {
+        b.append(a.getAuthorStringType().getValue());
+      }
     }
 
 
     if (a.hasTimeElement()) {
-      if (s.length() > 0)
-        s.append("; ");
-
-      s.append("Made: ").append(a.getTimeElement().toHumanDisplay());
+      if (b.length() > 0) {
+        b.append(" ");
+      }
+      b.append("@").append(a.getTimeElement().toHumanDisplay());
+    }
+    if (a.hasText() && (a.hasAuthor() || a.hasTimeElement())) {
+      b.append(")");
     }
 
-    if (a.hasText()) {
-      if (s.length() > 0)
-        s.append("; ");
 
-      s.append("Annotation: ").append(a.getText());
-    }
-    x.addText(s.toString());
+    x.addText(b.toString());
   }
 
   public String displayCoding(Coding c) {
@@ -563,11 +586,13 @@ public class DataRenderer {
 
     if (ii.hasType()) {
       if (ii.getType().hasText())
-        s = ii.getType().getText()+" = "+s;
+        s = ii.getType().getText()+": "+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
-        s = ii.getType().getCoding().get(0).getDisplay()+" = "+s;
+        s = ii.getType().getCoding().get(0).getDisplay()+": "+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
-        s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getCode())+" = "+s;
+        s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getCode())+": "+s;
+    } else {
+      s = "id: "+s;      
     }
 
     if (ii.hasUse())
