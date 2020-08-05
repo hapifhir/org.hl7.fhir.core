@@ -86,6 +86,7 @@ import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.dstu3.model.ResourceType;
 import org.hl7.fhir.dstu3.utils.ResourceUtilities;
 import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.Utilities;
 
 /**
  * Helper class handling lower level HTTP transport concerns.
