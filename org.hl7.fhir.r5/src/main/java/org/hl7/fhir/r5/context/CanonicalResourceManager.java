@@ -85,7 +85,12 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       this.resource = resource;
     }
 
-    public abstract CanonicalResource loadResource() throws FHIRException;  
+    public abstract CanonicalResource loadResource() throws FHIRException;
+
+    @Override
+    public String toString() {
+      return type+"/"+id+": "+url+"|"+version;
+    }      
   }
 
   public class CanonicalListSorter implements Comparator<CanonicalResource> {
@@ -142,6 +147,12 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     public boolean hasVersion() {
       return resource != null ? resource.hasVersion() : proxy.getVersion() != null;
     }
+    
+    @Override
+    public String toString() {
+      return resource != null ? resource.fhirType()+"/"+resource.getId()+": "+resource.getUrl()+"|"+resource.getVersion() : proxy.toString();
+    }  
+
   }
 
   public class MetadataResourceVersionComparator<T1 extends CachedCanonicalResource<T>> implements Comparator<T1> {
