@@ -62,7 +62,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     boolean hasFlags = checkForFlags(q.getItem());
 
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
-    TableModel model = gen.new TableModel("qtree="+q.getId(), true);    
+    TableModel model = gen.new TableModel("qtree="+q.getId(), !forResource);    
     model.setAlternating(true);
     model.setDocoImg(context.getSpecificationLink() +"help16.png");
     model.setDocoRef(context.getSpecificationLink()+"formats.html#table");

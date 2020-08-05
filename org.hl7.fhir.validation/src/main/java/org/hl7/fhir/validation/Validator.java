@@ -161,11 +161,13 @@ public class Validator {
         System.out.println("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
       else {
         // first, prepare the context
-        String txLog = Params.getTerminologyServerLog(args);
-        String v = Common.getVersion(args);
-        String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
-        ValidationEngine validator = Common.getValidationEngine(v, definitions, txLog);
-        Params.checkIGFileReferences(args);
+        cliContext = Params.loadCliContext(args);
+        if (cliContext.getSv() == null) {
+          cliContext.setSv(determineVersion(cliContext));
+        }
+        String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
+        String definitions = VersionUtilities.packageForVersion(v) + "#" + v;        
+        ValidationEngine validator = ValidationService.getValidator(cliContext, definitions);
         ComparisonService.doLeftRightComparison(args, dest, validator);
       }
     } else {

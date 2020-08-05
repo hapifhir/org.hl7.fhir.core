@@ -122,6 +122,9 @@ public class PackageHacker {
     if (webref.equals("file://C:\\GitHub\\hl7.fhir.us.cqfmeasures#2.0.0\\output")) {
       return "http://hl7.org/fhir/us/cqfmeasures/STU2";
     }
+    if (webref.equals("file://C:\\GitHub\\hl7.fhir.uv.ips#1.0.0\\output")) {
+      return "http://hl7.org/fhir/uv/ips/STU1";
+    }
     return webref;  
   }
 
