@@ -1308,6 +1308,19 @@ public class Utilities {
     return false;
   }
 
+  public static String describeSize(int length) {
+    if (length > 1024 * 1024 * 1024) {
+      return ""+length / (1024 * 1024 * 1024)+"Gb";
+    }
+    if (length > 1024 * 1024) {
+      return ""+length / (1024 * 1024)+"Mb";
+    }
+    if (length > 1024) {
+      return ""+length / (1024)+"kb";
+    }
+    return ""+length +"b";
+  }
+
   
 
 
