@@ -386,7 +386,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return new String[] {"CodeSystem", "ValueSet", "ConceptMap", "NamingSystem",
                          "StructureDefinition", "StructureMap", 
                          "SearchParameter", "OperationDefinition", "CapabilityStatement", "Conformance",
-                         "Questionnaire", "ImplementationGuide" };
+                         "Questionnaire", "ImplementationGuide", "Measure" };
   }
 
   @Override
@@ -441,7 +441,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       }
     } else {
       if (types.length == 0) {
-        types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" };
+        types = new String[] { "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem", "Measures" };
       }
       for (PackageResourceInformation pri : pi.listIndexedResources(types)) {
         try {
