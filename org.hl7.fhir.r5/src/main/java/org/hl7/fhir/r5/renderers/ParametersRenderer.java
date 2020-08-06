@@ -77,7 +77,7 @@ public class ParametersRenderer extends ResourceRenderer {
         td = tr.td();
         XhtmlNode para = td.para();
         para.tx(rw.fhirType()+"/"+rw.getId());
-        para.an(rw.fhirType().toLowerCase()+"_"+rw.getId()).tx(" ");
+        para.an(rw.fhirType()+"_"+rw.getId()).tx(" ");
         XhtmlNode x = rw.getNarrative();
         if (x != null) {
           td.addChildren(x);
