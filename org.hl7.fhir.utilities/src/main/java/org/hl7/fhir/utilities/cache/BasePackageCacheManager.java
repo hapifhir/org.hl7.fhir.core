@@ -128,6 +128,9 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   }
 
   private String getPackageId(String canonical, String server) throws IOException {
+    if (canonical == null) {
+      return null;
+    }
     PackageClient pc = myClientFactory.apply(server);
     List<PackageClient.PackageInfo> res = pc.search(null, canonical, null, false);
     if (res.size() == 0) {
