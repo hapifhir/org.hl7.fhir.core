@@ -98,9 +98,11 @@ public class ClientUtils {
   public static final String DEFAULT_CHARSET = "UTF-8";
   public static final String HEADER_LOCATION = "location";
   private static boolean debugging = false;
+  public static final int TIMEOUT_SOCKET = 5000;
+  public static final int TIMEOUT_CONNECT = 1000;
 
   private HttpHost proxy;
-  private int timeout = 5000;
+  private int timeout = TIMEOUT_SOCKET;
   private String username;
   private String password;
   private ToolingClientLogger logger;
@@ -138,34 +140,34 @@ public class ClientUtils {
     this.password = password;
   }
 
-  public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat, int timeoutLoading) {
+  public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat, String message, int timeout) {
     HttpOptions options = new HttpOptions(optionsUri);
-    return issueResourceRequest(resourceFormat, options, timeoutLoading);
+    return issueResourceRequest(resourceFormat, options, message, timeout);
   }
 
-  public <T extends Resource> ResourceRequest<T> issueGetResourceRequest(URI resourceUri, String resourceFormat, int timeoutLoading) {
+  public <T extends Resource> ResourceRequest<T> issueGetResourceRequest(URI resourceUri, String resourceFormat, String message, int timeout) {
     HttpGet httpget = new HttpGet(resourceUri);
-    return issueResourceRequest(resourceFormat, httpget, timeoutLoading);
+    return issueResourceRequest(resourceFormat, httpget, message, timeout);
   }
 
-  public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, int timeoutLoading) {
+  public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, String message, int timeout) {
     HttpPut httpPut = new HttpPut(resourceUri);
-    return issueResourceRequest(resourceFormat, httpPut, payload, headers, timeoutLoading);
+    return issueResourceRequest(resourceFormat, httpPut, payload, headers, message, timeout);
   }
 
-  public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
+  public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, String message, int timeout) {
     HttpPut httpPut = new HttpPut(resourceUri);
-    return issueResourceRequest(resourceFormat, httpPut, payload, null, timeoutLoading);
+    return issueResourceRequest(resourceFormat, httpPut, payload, null, message, timeout);
   }
 
-  public <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, int timeoutLoading) {
+  public <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, String message, int timeout) {
     HttpPost httpPost = new HttpPost(resourceUri);
-    return issueResourceRequest(resourceFormat, httpPost, payload, headers, timeoutLoading);
+    return issueResourceRequest(resourceFormat, httpPost, payload, headers, message, timeout);
   }
 
 
-  public <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
-    return issuePostRequest(resourceUri, payload, resourceFormat, null, timeoutLoading);
+  public <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload, String resourceFormat, String message, int timeout) {
+    return issuePostRequest(resourceUri, payload, resourceFormat, null, message, timeout);
   }
 
   public Bundle issueGetFeedRequest(URI resourceUri, String resourceFormat) {
@@ -186,10 +188,10 @@ public class ClientUtils {
     }
   }
 
-  public Bundle postBatchRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
+  public Bundle postBatchRequest(URI resourceUri, byte[] payload, String resourceFormat, String message, int timeout) {
     HttpPost httpPost = new HttpPost(resourceUri);
     configureFhirRequest(httpPost, resourceFormat);
-    HttpResponse response = sendPayload(httpPost, payload, proxy, timeoutLoading);
+    HttpResponse response = sendPayload(httpPost, payload, proxy, message, timeout);
     return unmarshalFeed(response, resourceFormat);
   }
 
@@ -208,8 +210,8 @@ public class ClientUtils {
    * Request/Response Helper methods
    ***********************************************************/
 
-  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, int timeoutLoading) {
-    return issueResourceRequest(resourceFormat, request, null, timeoutLoading);
+  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, String message, int timeout) {
+    return issueResourceRequest(resourceFormat, request, null, message, timeout);
   }
 
   /**
@@ -217,8 +219,8 @@ public class ClientUtils {
    * @param options
    * @return
    */
-  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, byte[] payload, int timeoutLoading) {
-    return issueResourceRequest(resourceFormat, request, payload, null, timeoutLoading);
+  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, byte[] payload, String message, int timeout) {
+    return issueResourceRequest(resourceFormat, request, payload, null, message, timeout);
   }
 
   /**
@@ -226,11 +228,11 @@ public class ClientUtils {
    * @param options
    * @return
    */
-  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, byte[] payload, List<Header> headers, int timeoutLoading) {
+  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, byte[] payload, List<Header> headers, String message, int timeout) {
     configureFhirRequest(request, resourceFormat, headers);
     HttpResponse response = null;
     if(request instanceof HttpEntityEnclosingRequest && payload != null) {
-      response = sendPayload((HttpEntityEnclosingRequestBase)request, payload, proxy, timeoutLoading);
+      response = sendPayload((HttpEntityEnclosingRequestBase)request, payload, proxy, message, timeout);
     } else if (request instanceof HttpEntityEnclosingRequest && payload == null){
       throw new EFhirClientException("PUT and POST requests require a non-null payload");
     } else {
@@ -281,7 +283,7 @@ public class ClientUtils {
    * @return
    */
   @SuppressWarnings({ "resource", "deprecation" })
-  protected HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload, HttpHost proxy, int timeoutLoading) {
+  protected HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload, HttpHost proxy, String message, int timeout) {
     HttpResponse response = null;
     boolean ok = false;
     long t = System.currentTimeMillis();
@@ -291,8 +293,8 @@ public class ClientUtils {
         tryCount++;
         HttpClient httpclient = new DefaultHttpClient();
         HttpParams params = httpclient.getParams();
-        HttpConnectionParams.setConnectionTimeout(params, timeout);
-        HttpConnectionParams.setSoTimeout(params, timeout * timeoutLoading);
+        HttpConnectionParams.setConnectionTimeout(params, TIMEOUT_CONNECT);
+        HttpConnectionParams.setSoTimeout(params, timeout < 1 ? this.timeout : timeout * 1000);
 
         if(proxy != null) {
           httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
@@ -302,10 +304,17 @@ public class ClientUtils {
         response = httpclient.execute(request);
         ok = true;
       } catch(IOException ioe) {
-        System.out.println(ioe.getMessage()+" ("+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+")");
+        System.out.println(ioe.getMessage()+" ("+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+" for "+message+")");
         if (tryCount <= retryCount || (tryCount < 3 && ioe instanceof org.apache.http.conn.ConnectTimeoutException)) {
           ok = false;
+          try {
+            Thread.sleep(100);
+          } catch (InterruptedException e) {
+          }
         } else {
+          if (tryCount > 1) {
+            System.out.println("Giving up: "+ioe.getMessage()+" ("+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+" for "+message+")");
+          }
           throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);
         }
       }

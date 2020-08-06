@@ -544,6 +544,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   // ========================= Package Mgmt API =======================================================================
 
   private String getPackageIdFromBuildList(String canonical) throws IOException {
+    if (canonical == null) {
+      return null;
+    }
     checkBuildLoaded();
     if (buildInfo != null) {
       for (JsonElement n : buildInfo) {

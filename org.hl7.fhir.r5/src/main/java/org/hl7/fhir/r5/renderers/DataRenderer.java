@@ -56,17 +56,13 @@ import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 public class DataRenderer extends Renderer {
   
   // -- 1. context --------------------------------------------------------------
-  
-  protected RenderingContext context;
-  
+    
   public DataRenderer(RenderingContext context) {
-    super();
-    this.context = context;
+    super(context);
   }
 
   public DataRenderer(IWorkerContext worker) {
-    super();
-    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.RESOURCE);
+    super(worker);
   }
 
   // -- 2. Markdown support -------------------------------------------------------

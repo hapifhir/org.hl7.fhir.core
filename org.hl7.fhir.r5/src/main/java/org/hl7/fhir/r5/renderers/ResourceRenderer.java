@@ -220,7 +220,7 @@ public abstract class ResourceRenderer extends DataRenderer {
     if (rcontext != null) {
       BundleEntryComponent bundleResource = rcontext.resolve(url);
       if (bundleResource != null) {
-        String bundleUrl = "#" + bundleResource.getResource().getResourceType().name().toLowerCase() + "_" + bundleResource.getResource().getId(); 
+        String bundleUrl = "#" + bundleResource.getResource().getResourceType().name() + "_" + bundleResource.getResource().getId(); 
         return new ResourceWithReference(bundleUrl, new ResourceWrapperDirect(this.context, bundleResource.getResource()));
       }
       org.hl7.fhir.r5.elementmodel.Element bundleElement = rcontext.resolveElement(url);
@@ -228,7 +228,7 @@ public abstract class ResourceRenderer extends DataRenderer {
         String bundleUrl = null;
         Element br = bundleElement.getNamedChild("resource");
         if (br.getChildValue("id") != null) {
-          bundleUrl = "#" + br.fhirType().toLowerCase() + "_" + br.getChildValue("id");
+          bundleUrl = "#" + br.fhirType() + "_" + br.getChildValue("id");
         } else {
           bundleUrl = "#" +fullUrlToAnchor(bundleElement.getChildValue("fullUrl"));          
         }

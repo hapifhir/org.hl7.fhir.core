@@ -4616,7 +4616,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       this.prefixLength = prefixLength;
       this.base = base;
       if (Utilities.isAbsoluteUrl(base)) {
-        throw new Error("Wrong!");
+        this.base = urlTail(base);
       }
       this.name = name;
     }
@@ -5191,7 +5191,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 //  }
 //
 
-  private String urlTail(String profile) {
+  private static String urlTail(String profile) {
     return profile.contains("/") ? profile.substring(profile.lastIndexOf("/")+1) : profile;
   }
 
