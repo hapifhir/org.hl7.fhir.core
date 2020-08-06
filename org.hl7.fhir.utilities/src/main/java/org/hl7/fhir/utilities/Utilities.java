@@ -1308,20 +1308,24 @@ public class Utilities {
     return false;
   }
 
+  public static final int ONE_MB = 1024;
+  public static final String GB = "Gb";
+  public static final String MB = "Mb";
+  public static final String KB = "Kb";
+  public static final String BT = "b";
+
   public static String describeSize(int length) {
-    if (length > 1024 * 1024 * 1024) {
-      return ""+length / (1024 * 1024 * 1024)+"Gb";
+    if (length < 0) throw new IllegalArgumentException("File length of < 0  passed in...");
+
+    if (length > Math.pow(ONE_MB, 3)) {
+      return length / ((long) Math.pow(ONE_MB, 3)) + GB;
     }
-    if (length > 1024 * 1024) {
-      return ""+length / (1024 * 1024)+"Mb";
+    if (length > Math.pow(ONE_MB, 2)) {
+      return length / ((long) Math.pow(ONE_MB, 2)) + MB;
     }
-    if (length > 1024) {
-      return ""+length / (1024)+"kb";
+    if (length > ONE_MB) {
+      return length / (ONE_MB) + KB;
     }
-    return ""+length +"b";
+    return length + BT;
   }
-
-  
-
-
 }
