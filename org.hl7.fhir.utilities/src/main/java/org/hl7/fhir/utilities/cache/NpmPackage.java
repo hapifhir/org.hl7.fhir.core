@@ -336,8 +336,7 @@ public class NpmPackage {
             throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
           }
         }
-        loadSubFolders(rootPath, f);
-        
+        loadSubFolders(rootPath, f);        
       }
     }    
   }
@@ -536,13 +535,14 @@ public class NpmPackage {
 
   public List<PackageResourceInformation> listIndexedResources(String... types) throws IOException {
     List<PackageResourceInformation> res = new ArrayList<PackageResourceInformation>();
-    NpmPackageFolder folder = folders.get("package");
-    for (JsonElement e : folder.index.getAsJsonArray("files")) {
-      JsonObject fi = e.getAsJsonObject();
-      if (Utilities.existsInList(JSONUtil.str(fi, "resourceType"), types)) {
-        res.add(new PackageResourceInformation(folder.folder.getAbsolutePath(), fi));
+    for (NpmPackageFolder folder : folders.values()) {
+      for (JsonElement e : folder.index.getAsJsonArray("files")) {
+        JsonObject fi = e.getAsJsonObject();
+        if (Utilities.existsInList(JSONUtil.str(fi, "resourceType"), types)) {
+          res.add(new PackageResourceInformation(folder.folder.getAbsolutePath(), fi));
+        }
       }
-    }
+    } 
 //    Collections.sort(res, new PackageResourceInformationSorter());
     return res;
   }
