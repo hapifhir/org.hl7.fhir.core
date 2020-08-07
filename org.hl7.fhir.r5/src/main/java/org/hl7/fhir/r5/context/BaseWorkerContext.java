@@ -570,8 +570,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     CacheToken cacheToken = txCache.generateExpandToken(vs, hierarchical);
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
-    if (res != null)
+    if (res != null) {
       return res;
+    }
     Parameters p = expParameters.copy(); 
     p.setParameter("includeDefinition", false);
     p.setParameter("excludeNested", !hierarchical);

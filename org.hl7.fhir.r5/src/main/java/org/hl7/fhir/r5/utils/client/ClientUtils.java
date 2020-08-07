@@ -107,6 +107,7 @@ public class ClientUtils {
   private String password;
   private ToolingClientLogger logger;
   private int retryCount;
+  private HttpClient httpclient;
 
   public HttpHost getProxy() {
     return proxy;
@@ -291,14 +292,11 @@ public class ClientUtils {
     while (!ok) {
       try {
         tryCount++;
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpParams params = httpclient.getParams();
-        HttpConnectionParams.setConnectionTimeout(params, TIMEOUT_CONNECT);
-        HttpConnectionParams.setSoTimeout(params, timeout < 1 ? this.timeout : timeout * 1000);
-
-        if(proxy != null) {
-          httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+        if (httpclient == null) {
+          makeClient(proxy);
         }
+        HttpParams params = httpclient.getParams();
+        HttpConnectionParams.setSoTimeout(params, timeout < 1 ? this.timeout : timeout * 1000);
         request.setEntity(new ByteArrayEntity(payload));
         log(request);
         response = httpclient.execute(request);
@@ -313,13 +311,25 @@ public class ClientUtils {
           }
         } else {
           if (tryCount > 1) {
-            System.out.println("Giving up: "+ioe.getMessage()+" ("+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+" for "+message+")");
+            System.out.println("Giving up: "+ioe.getMessage()+" (R5 / "+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+" for "+message+")");
           }
           throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);
         }
       }
     }
     return response;
+  }
+
+  @SuppressWarnings("deprecation")
+  public void makeClient(HttpHost proxy) {
+    httpclient = new DefaultHttpClient();
+    HttpParams params = httpclient.getParams();
+    HttpConnectionParams.setConnectionTimeout(params, TIMEOUT_CONNECT);
+    HttpConnectionParams.setSoTimeout(params, timeout);
+    HttpConnectionParams.setSoKeepalive(params, true);
+    if(proxy != null) {
+      httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+    }
   }
 
   /**
@@ -331,13 +341,8 @@ public class ClientUtils {
   protected HttpResponse sendRequest(HttpUriRequest request) {
     HttpResponse response = null;
     try {
-      HttpClient httpclient = new DefaultHttpClient();
-      log(request);
-      HttpParams params = httpclient.getParams();
-      HttpConnectionParams.setConnectionTimeout(params, timeout);
-      HttpConnectionParams.setSoTimeout(params, timeout);
-      if(proxy != null) {
-        httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+      if (httpclient == null) {
+        makeClient(proxy);
       }
       response = httpclient.execute(request);
     } catch(IOException ioe) {
@@ -583,7 +588,9 @@ public class ClientUtils {
     HttpResponse response = null;
     try {
       log(request);
-      HttpClient httpclient = new DefaultHttpClient();
+      if (httpclient == null) {
+        makeClient(proxy);
+      }
       request.setEntity(new ByteArrayEntity(payload));
       response = httpclient.execute(request);
       log(response);
