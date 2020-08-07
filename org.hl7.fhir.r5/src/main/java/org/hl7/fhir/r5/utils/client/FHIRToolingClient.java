@@ -728,8 +728,9 @@ public class FHIRToolingClient {
     List<Header> headers = null;
     Parameters p = expParams == null ? new Parameters() : expParams.copy();
     p.addParameter().setName("valueSet").setResource(source);
-    for (String n : params.keySet())
+    for (String n : params.keySet()) {
       p.addParameter().setName(n).setValue(new StringType(params.get(n)));
+    }
     ResourceRequest<Resource> result = utils.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", params), 
         utils.getResourceAsByteArray(p, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), headers, "ValueSet/$expand?url="+source.getUrl(), TIMEOUT_OPERATION_EXPAND);
     result.addErrorStatus(410);//gone
