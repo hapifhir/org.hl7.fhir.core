@@ -144,7 +144,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
           throw new FHIRException(warningMessage);
       }
 
-      if (cs!=null && cs.getContent() == CodeSystemContentMode.COMPLETE) {
+      if (cs!=null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
         res = validateCode(code, cs);
       } else {
         // it's in the expansion, but we could find it in a code system
