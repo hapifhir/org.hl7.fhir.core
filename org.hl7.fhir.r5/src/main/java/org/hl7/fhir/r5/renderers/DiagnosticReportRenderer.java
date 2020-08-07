@@ -79,7 +79,7 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     if (dr.has("issued")) {
       tr = tbl.tr();
       tr.td().tx("Reported");
-      eff = (DataType) getProperty(dr, "effective[x]").value().getBase();
+      eff = (DataType) getProperty(dr, "issued").value().getBase();
       render(tr.td(), getProperty(dr, "issued").value());
     }
 
