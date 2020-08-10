@@ -426,7 +426,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (types.length == 0 &&  loader != null) {
       types = loader.getTypes();
     }
-    if (VersionUtilities.isR2Ver(pi.fhirVersion())) {
+    if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad()) {
       // can't lazy load R2 because of valueset/codesystem implementation
       if (types.length == 0) {
         types = new String[] { "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" };

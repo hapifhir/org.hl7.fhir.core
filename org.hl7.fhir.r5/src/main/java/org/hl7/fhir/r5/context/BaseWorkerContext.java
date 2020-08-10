@@ -896,13 +896,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private ValidationResult validateOnServer(ValueSet vs, Parameters pin) throws FHIRException {
-    if (vs != null)
+    if (vs != null) {
       pin.addParameter().setName("valueSet").setResource(vs);
-    for (ParametersParameterComponent pp : pin.getParameter())
-      if (pp.getName().equals("profile"))
+    }
+    for (ParametersParameterComponent pp : pin.getParameter()) {
+      if (pp.getName().equals("profile")) {
         throw new Error(formatMessage(I18nConstants.CAN_ONLY_SPECIFY_PROFILE_IN_THE_CONTEXT));
-    if (expParameters == null)
+      }
+    }
+    if (expParameters == null) {
       throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
+    }
     pin.addParameter().setName("profile").setResource(expParameters);
     if (txLog != null) {
       txLog.clearLastId();
@@ -911,10 +915,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
     }
     Parameters pOut;
-    if (vs == null)
+    if (vs == null) {
       pOut = txClient.validateCS(pin);
-    else
+    } else {
       pOut = txClient.validateVS(pin);
+    }
     return processValidationResult(pOut);
   }
 
