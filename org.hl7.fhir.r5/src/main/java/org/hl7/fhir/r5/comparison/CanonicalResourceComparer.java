@@ -11,7 +11,13 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CanonicalType;
+import org.hl7.fhir.r5.model.CapabilityStatement;
+import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -26,20 +32,17 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
 
 
   public abstract class CanonicalResourceComparison<T extends CanonicalResource> extends ResourceComparison {
-
     protected T left;
     protected T right;
     protected T union;
     protected T intersection;
     protected Map<String, StructuralMatch<String>> metadata = new HashMap<>();                                             
 
-
     public CanonicalResourceComparison(T left, T right) {
       super(left.getId(), right.getId());
       this.left = left;
       this.right = right;
     }
-
 
     public T getLeft() {
       return left;
@@ -53,11 +56,9 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       return union;
     }
 
-
     public T getIntersection() {
       return intersection;
     }
-
 
     public Map<String, StructuralMatch<String>> getMetadata() {
       return metadata;
@@ -67,16 +68,13 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       this.left = left;
     }
 
-
     public void setRight(T right) {
       this.right = right;
     }
 
-
     public void setUnion(T union) {
       this.union = union;
     }
-
 
     public void setIntersection(T intersection) {
       this.intersection = intersection;
@@ -96,7 +94,6 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       s = s + "<td>"+outcomeSummary()+"</td>";
       return "<tr style=\"background-color: "+color()+"\">"+s+"</tr>\r\n";
     }
-    
 
     @Override
     protected void countMessages(MessageCounts cnts) {
@@ -111,8 +108,8 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
   }
 
   protected void compareMetadata(CanonicalResource left, CanonicalResource right, Map<String, StructuralMatch<String>> comp, CanonicalResourceComparison<? extends CanonicalResource> res) {
-    comparePrimitives("url", left.getUrlElement(), right.getUrlElement(), comp, IssueSeverity.INFORMATION, res);
-    comparePrimitives("version", left.getVersionElement(), right.getVersionElement(), comp, IssueSeverity.INFORMATION, res);
+    comparePrimitives("url", left.getUrlElement(), right.getUrlElement(), comp, IssueSeverity.ERROR, res);
+    comparePrimitives("version", left.getVersionElement(), right.getVersionElement(), comp, IssueSeverity.ERROR, res);
     comparePrimitives("name", left.getNameElement(), right.getNameElement(), comp, IssueSeverity.INFORMATION, res);
     comparePrimitives("title", left.getTitleElement(), right.getTitleElement(), comp, IssueSeverity.INFORMATION, res);
     comparePrimitives("status", left.getStatusElement(), right.getStatusElement(), comp, IssueSeverity.INFORMATION, res);
@@ -122,6 +119,122 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     comparePrimitives("description", left.getDescriptionElement(), right.getDescriptionElement(), comp, IssueSeverity.NULL, res);
     comparePrimitives("purpose", left.getPurposeElement(), right.getPurposeElement(), comp, IssueSeverity.NULL, res);
     comparePrimitives("copyright", left.getCopyrightElement(), right.getCopyrightElement(), comp, IssueSeverity.INFORMATION, res);
+    compareCodeableConceptList("jurisdiction", left.getJurisdiction(), right.getJurisdiction(), comp, IssueSeverity.INFORMATION, res, res.getUnion().getJurisdiction(), res.getIntersection().getJurisdiction());
+  }
+
+  protected void compareCodeableConceptList(String name, List<CodeableConcept> left, List<CodeableConcept> right, Map<String, StructuralMatch<String>> comp, IssueSeverity level, CanonicalResourceComparison<? extends CanonicalResource> res, List<CodeableConcept> union, List<CodeableConcept> intersection ) {
+    List<CodeableConcept> matchR = new ArrayList<>();
+    StructuralMatch<String> combined = new StructuralMatch<String>();
+    for (CodeableConcept l : left) {
+      CodeableConcept r = findCodeableConceptInList(right, l);
+      if (r == null) {
+        union.add(l);
+        combined.getChildren().add(new StructuralMatch<String>(gen(l), vm(IssueSeverity.INFORMATION, "Removed the item '"+gen(l)+"'", fhirType()+"."+name, res.getMessages())));
+      } else {
+        matchR.add(r);
+        union.add(r);
+        intersection.add(r);
+        StructuralMatch<String> sm = new StructuralMatch<String>(gen(l), gen(r));
+        combined.getChildren().add(sm);
+      }
+    }
+    for (CodeableConcept r : right) {
+      if (!matchR.contains(r)) {
+        union.add(r);
+        combined.getChildren().add(new StructuralMatch<String>(vm(IssueSeverity.INFORMATION, "Added the item '"+gen(r)+"'", fhirType()+"."+name, res.getMessages()), gen(r)));        
+      }
+    }    
+    comp.put(name, combined);    
+  }
+  
+
+  private CodeableConcept findCodeableConceptInList(List<CodeableConcept> list, CodeableConcept item) {
+    for (CodeableConcept t : list) {
+      if (t.matches(item)) {
+        return t;
+      }
+    }
+    return null;
+  }
+  
+  protected String gen(CodeableConcept cc) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (Coding c : cc.getCoding()) {
+      b.append(gen(c));
+    }
+    return b.toString();
+  }
+
+  protected String gen(Coding c) {
+    return c.getSystem()+(c.hasVersion() ? "|"+c.getVersion() : "")+"#"+c.getCode();
+  }
+
+  protected void compareCanonicalList(String name, List<CanonicalType> left, List<CanonicalType> right, Map<String, StructuralMatch<String>> comp, IssueSeverity level, CanonicalResourceComparison<? extends CanonicalResource> res, List<CanonicalType> union, List<CanonicalType> intersection ) {
+    List<CanonicalType> matchR = new ArrayList<>();
+    StructuralMatch<String> combined = new StructuralMatch<String>();
+    for (CanonicalType l : left) {
+      CanonicalType r = findCanonicalInList(right, l);
+      if (r == null) {
+        union.add(l);
+        combined.getChildren().add(new StructuralMatch<String>(l.getValue(), vm(IssueSeverity.INFORMATION, "Removed the item '"+l.getValue()+"'", fhirType()+"."+name, res.getMessages())));
+      } else {
+        matchR.add(r);
+        union.add(r);
+        intersection.add(r);
+        StructuralMatch<String> sm = new StructuralMatch<String>(l.getValue(), r.getValue());
+        combined.getChildren().add(sm);
+      }
+    }
+    for (CanonicalType r : right) {
+      if (!matchR.contains(r)) {
+        union.add(r);
+        combined.getChildren().add(new StructuralMatch<String>(vm(IssueSeverity.INFORMATION, "Added the item '"+r.getValue()+"'", fhirType()+"."+name, res.getMessages()), r.getValue()));        
+      }
+    }    
+    comp.put(name, combined);    
+  }
+  
+  private CanonicalType findCanonicalInList(List<CanonicalType> list, CanonicalType item) {
+    for (CanonicalType t : list) {
+      if (t.getValue().equals(item.getValue())) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+  protected void compareCodeList(String name, List<CodeType> left, List<CodeType> right, Map<String, StructuralMatch<String>> comp, IssueSeverity level, CanonicalResourceComparison<? extends CanonicalResource> res, List<CodeType> union, List<CodeType> intersection ) {
+    List<CodeType> matchR = new ArrayList<>();
+    StructuralMatch<String> combined = new StructuralMatch<String>();
+    for (CodeType l : left) {
+      CodeType r = findCodeInList(right, l);
+      if (r == null) {
+        union.add(l);
+        combined.getChildren().add(new StructuralMatch<String>(l.getValue(), vm(IssueSeverity.INFORMATION, "Removed the item '"+l.getValue()+"'", fhirType()+"."+name, res.getMessages())));
+      } else {
+        matchR.add(r);
+        union.add(r);
+        intersection.add(r);
+        StructuralMatch<String> sm = new StructuralMatch<String>(l.getValue(), r.getValue());
+        combined.getChildren().add(sm);
+      }
+    }
+    for (CodeType r : right) {
+      if (!matchR.contains(r)) {
+        union.add(r);
+        combined.getChildren().add(new StructuralMatch<String>(vm(IssueSeverity.INFORMATION, "Added the item '"+r.getValue()+"'", fhirType()+"."+name, res.getMessages()), r.getValue()));        
+      }
+    }    
+    comp.put(name, combined);    
+  }
+  
+  private CodeType findCodeInList(List<CodeType> list, CodeType item) {
+    for (CodeType t : list) {
+      if (t.getValue().equals(item.getValue())) {
+        return t;
+      }
+    }
+    return null;
   }
 
   @SuppressWarnings("rawtypes")
@@ -130,9 +243,9 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
     if (l.isEmpty() && r.isEmpty()) {
       match = new StructuralMatch<>(null, null, null);
     } else if (l.isEmpty()) {
-      match = new StructuralMatch<>(null, r.primitiveValue(), vmI(IssueSeverity.INFORMATION, "Added this item", fhirType()+"."+name));
+      match = new StructuralMatch<>(null, r.primitiveValue(), vmI(IssueSeverity.INFORMATION, "Added the item '"+r.primitiveValue()+"'", fhirType()+"."+name));
     } else if (r.isEmpty()) {
-      match = new StructuralMatch<>(l.primitiveValue(), null, vmI(IssueSeverity.INFORMATION, "Removed this item", fhirType()+"."+name));
+      match = new StructuralMatch<>(l.primitiveValue(), null, vmI(IssueSeverity.INFORMATION, "Removed the item '"+l.primitiveValue()+"'", fhirType()+"."+name));
     } else if (!l.hasValue() && !r.hasValue()) {
       match = new StructuralMatch<>(null, null, vmI(IssueSeverity.INFORMATION, "No Value", fhirType()+"."+name));
     } else if (!l.hasValue()) {
@@ -191,6 +304,11 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
       r.getCells().add(missingCell(gen).span(2));
     }
     r.getCells().add(cellForMessages(gen, t.getMessages()));
+    int i = 0;
+    for (StructuralMatch<String> c : t.getChildren()) {
+      addRow(gen, r.getSubRows(), name+"["+i+"]", c);
+      i++;
+    }
   }
 
 

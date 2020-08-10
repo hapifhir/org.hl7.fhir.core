@@ -9,6 +9,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 public class StructuralMatch<T> {
 
+  private String name; // this is used in some contexts to carry name when T is a pretty abstract type
   private T left;
   private T right;
   private List<ValidationMessage> messages = new ArrayList<>();
@@ -101,7 +102,15 @@ public class StructuralMatch<T> {
     for (StructuralMatch<T> c : children) {
       c.countMessages(cnts);
     }
+  }
 
+  public String getName() {
+    return name;
+  }
+
+  public StructuralMatch<T> setName(String name) {
+    this.name = name;
+    return this;
   }
 
   
