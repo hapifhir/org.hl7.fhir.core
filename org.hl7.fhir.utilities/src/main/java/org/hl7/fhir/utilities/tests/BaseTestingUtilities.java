@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.tests;
 
 import org.apache.commons.io.IOUtils;
+import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -23,10 +24,10 @@ public class BaseTestingUtilities {
      * at the same directory level as the core project.
      */
     String dir = System.getenv("FHIR-TEST-CASES");
-    if (dir != null && new File(dir).exists()) {
+    if (dir != null && new CSFile(dir).exists()) {
       String n = Utilities.path(dir, Utilities.path(paths));
       // ok, we'll resolve this locally
-      return TextFile.fileToString(new File(n));
+      return TextFile.fileToString(new CSFile(n));
     } else {
       // resolve from the package
       String contents;
