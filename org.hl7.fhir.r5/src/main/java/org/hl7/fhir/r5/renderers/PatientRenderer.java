@@ -177,9 +177,17 @@ public class PatientRenderer extends ResourceRenderer {
     StringBuilder b = new StringBuilder();
     b.append(display(name));
     b.append(" ");
-    b.append(gender);
+    if (dob == null) {
+      b.append("??");
+    } else {
+      b.append(gender);
+    }
     b.append(" ");
-    b.append(display(dob));
+    if (dob == null) {
+      b.append("DoB Unknown");
+    } else {
+      b.append(display(dob));      
+    }
     if (id != null) {
       b.append(" ( ");      
       b.append(display(id));
@@ -191,9 +199,17 @@ public class PatientRenderer extends ResourceRenderer {
   public void describe(XhtmlNode x, HumanName name, String gender, DateType dob, Identifier id) throws UnsupportedEncodingException, IOException {
     render(x.b(), name);
     x.tx(" ");
-    x.tx(gender);
+    if (dob == null) {
+      x.tx("??");
+    } else {
+      x.tx(gender);
+    }
     x.tx(" ");
-    render(x, dob);
+    if (dob == null) {
+      x.tx("DoB Unknown");
+    } else {
+      render(x, dob);
+    }
     if (id != null) {
       x.tx(" ( ");      
       render(x, id);

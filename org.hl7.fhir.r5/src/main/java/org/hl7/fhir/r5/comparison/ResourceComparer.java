@@ -246,9 +246,9 @@ public class ResourceComparer {
     for (ValidationMessage vm : csc.messages) {
       XhtmlNode tr = tbl.tr();
       tr.style("background-color: "+colorForLevel(vm.getLevel()));
-      tr.td().tx(vm.getLocation());
-      tr.td().tx(vm.getMessage());
       tr.td().tx(vm.getLevel().getDisplay());
+      tr.td().tx(vm.getLocation());
+      tr.td().tx(vm.getMessage().replace("\"", "'"));
     }
     return div;
   }
@@ -267,6 +267,12 @@ public class ResourceComparer {
     }
   }
 
+  protected ValidationMessage vm(IssueSeverity level, String message, String path, List<ValidationMessage> genMessages) {
+    ValidationMessage vm = new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path, message, level == IssueSeverity.NULL ? IssueSeverity.INFORMATION : level);
+    genMessages.add(vm);
+    return vm;
+  }
+  
   private String colorForLevel(IssueSeverity level) {
     switch (level) {
     case ERROR:

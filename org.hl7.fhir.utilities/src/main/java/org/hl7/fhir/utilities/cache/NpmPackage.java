@@ -536,14 +536,16 @@ public class NpmPackage {
   public List<PackageResourceInformation> listIndexedResources(String... types) throws IOException {
     List<PackageResourceInformation> res = new ArrayList<PackageResourceInformation>();
     for (NpmPackageFolder folder : folders.values()) {
-      for (JsonElement e : folder.index.getAsJsonArray("files")) {
-        JsonObject fi = e.getAsJsonObject();
-        if (Utilities.existsInList(JSONUtil.str(fi, "resourceType"), types)) {
-          res.add(new PackageResourceInformation(folder.folder.getAbsolutePath(), fi));
+      if (folder.index != null) {
+        for (JsonElement e : folder.index.getAsJsonArray("files")) {
+          JsonObject fi = e.getAsJsonObject();
+          if (Utilities.existsInList(JSONUtil.str(fi, "resourceType"), types)) {
+            res.add(new PackageResourceInformation(folder.folder.getAbsolutePath(), fi));
+          }
         }
       }
     } 
-//    Collections.sort(res, new PackageResourceInformationSorter());
+    //    Collections.sort(res, new PackageResourceInformationSorter());
     return res;
   }
 
@@ -1076,6 +1078,15 @@ public class NpmPackage {
       }
     }
     return false;
+  }
+
+  public boolean canLazyLoad() {
+    for (NpmPackageFolder folder : folders.values()) {
+      if (folder.folder == null) {        
+        return false;
+      }
+    }
+    return true;
   }
   
   
