@@ -115,37 +115,31 @@ public class PackageHacker {
   }
 
   public static String fixPackageUrl(String webref) {
+    if (webref == null) {
+      return null;
+    }
     // workaround for past publishing problems
-    
-    if ("file://C:\\GitHub\\hl7.fhir.us.breast-radiology#0.2.0\\output".equals(webref)) {    return "http://hl7.org/fhir/us/breast-radiology/2020May"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.dme-orders#0.1.1\\output".equals(webref)) {          return "http://hl7.org/fhir/us/dme-orders/2020May"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.bser#1.0.0\\output".equals(webref)) {                return "http://hl7.org/fhir/us/bser"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.bser#1.0.0\\output".equals(webref)) {                return "http://hl7.org/fhir/us/bser/STU1"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.carin-bb#0.1.0\\output".equals(webref)) {            return "http://hl7.org/fhir/us/carin-bb/2020Feb"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.carin-rtpbc#0.1.0\\output".equals(webref)) {         return "http://hl7.org/fhir/us/carin-rtpbc/2020Feb"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.cqfmeasures#2.0.0\\output".equals(webref)) {         return "http://hl7.org/fhir/us/cqfmeasures"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.cqfmeasures#1.1.0\\output".equals(webref)) {         return "http://hl7.org/fhir/us/cqfmeasures/2020Feb"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.cqfmeasures#2.0.0\\output".equals(webref)) {         return "http://hl7.org/fhir/us/cqfmeasures/STU2"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.davinci-alerts#0.2.0\\output".equals(webref)) {      return "http://hl7.org/fhir/us/davinci-alerts/2020Feb"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.davinci-atr#0.1.0\\output".equals(webref)) {         return "http://hl7.org/fhir/us/davinci-atr/2020Feb";  }
-    if ("file://C:\\GitHub\\hl7.fhir.us.davinci-deqm#1.0.0\\output".equals(webref)) {        return "http://hl7.org/fhir/us/davinci-deqm"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.davinci-deqm#1.1.0\\output".equals(webref)) {        return "http://hl7.org/fhir/us/davinci-deqm/2020Feb"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.davinci-deqm#1.0.0\\output".equals(webref)) {        return "http://hl7.org/fhir/us/davinci-deqm/STU1"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.dme-orders#0.1.1\\output".equals(webref)) {          return "http://hl7.org/fhir/us/dme-orders\\2020May"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.ecr#1.0.0\\output".equals(webref)) {                 return "http://hl7.org/fhir/us/ecr"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.ecr#1.0.0\\output".equals(webref)) {                 return "http://hl7.org/fhir/us/ecr/STU1"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.mcode#1.0.0\\output".equals(webref)) {               return "http://hl7.org/fhir/us/mcode"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.mcode#1.0.0\\output".equals(webref)) {               return "http://hl7.org/fhir/us/mcode/STU1"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.odh#1.0.0\\output".equals(webref)) {                 return "http://hl7.org/fhir/us/odh"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.odh#1.0.0\\output".equals(webref)) {                 return "http://hl7.org/fhir/us/odh/STU1"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.qicore#4.0.0\\output".equals(webref)) {              return "http://hl7.org/fhir/us/qicore"; }
-    if ("file://C:\\GitHub\\hl7.fhir.us.qicore#4.0.0\\output".equals(webref)) {              return "http://hl7.org/fhir/us/qicore/STU4"; }
-    if ("file://C:\\GitHub\\hl7.fhir.uv.ips#1.0.0\\output".equals(webref)) {                 return "http://hl7.org/fhir/uv/ips"; }
-    if ("file://C:\\GitHub\\hl7.fhir.uv.ips#1.0.0\\output".equals(webref)) {                 return "http://hl7.org/fhir/uv/ips/STU1"; }
-    if ("file://C:\\GitHub\\hl7.fhir.uv.mhealth-framework#0.1.0\\output".equals(webref)) {   return "http://hl7.org/fhir/uv/mhealth-framework/2020May"; }
-    if ("file://C:\\GitHub\\hl7.fhir.uv.security-label-ds4p#0.1.0\\output".equals(webref)) { return "http://hl7.org/fhir/uv/security-label-ds4p/2020May"; }
-    if ("file://C:\\GitHub\\hl7.fhir.uv.shorthand#0.12.0\\output".equals(webref)) {          return "http://hl7.org/fhir/uv/shorthand/2020May"; }
-       
+    switch (webref) {
+    case "file://C:\\GitHub\\hl7.fhir.us.breast-radiology#0.2.0\\output":   return "http://hl7.org/fhir/us/breast-radiology/2020May"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.bser#1.0.0\\output":                return "http://hl7.org/fhir/us/bser/STU1"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.carin-bb#0.1.0\\output":            return "http://hl7.org/fhir/us/carin-bb/2020Feb"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.carin-rtpbc#0.1.0\\output":         return "http://hl7.org/fhir/us/carin-rtpbc/2020Feb"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.cqfmeasures#1.1.0\\output":         return "http://hl7.org/fhir/us/cqfmeasures/2020Feb"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.cqfmeasures#2.0.0\\output":         return "http://hl7.org/fhir/us/cqfmeasures/STU2"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.davinci-alerts#0.2.0\\output":      return "http://hl7.org/fhir/us/davinci-alerts/2020Feb"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.davinci-atr#0.1.0\\output":         return "http://hl7.org/fhir/us/davinci-atr/2020Feb";  
+    case "file://C:\\GitHub\\hl7.fhir.us.davinci-deqm#1.1.0\\output":        return "http://hl7.org/fhir/us/davinci-deqm/2020Feb"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.davinci-deqm#1.0.0\\output":        return "http://hl7.org/fhir/us/davinci-deqm/STU1"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.dme-orders#0.1.1\\output":          return "http://hl7.org/fhir/us/dme-orders/2020May"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.ecr#1.0.0\\output":                 return "http://hl7.org/fhir/us/ecr/STU1"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.mcode#1.0.0\\output":               return "http://hl7.org/fhir/us/mcode/STU1"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.odh#1.0.0\\output":                 return "http://hl7.org/fhir/us/odh/STU1"; 
+    case "file://C:\\GitHub\\hl7.fhir.us.qicore#4.0.0\\output":              return "http://hl7.org/fhir/us/qicore/STU4"; 
+    case "file://C:\\GitHub\\hl7.fhir.uv.ips#1.0.0\\output":                 return "http://hl7.org/fhir/uv/ips/STU1"; 
+    case "file://C:\\GitHub\\hl7.fhir.uv.mhealth-framework#0.1.0\\output":   return "http://hl7.org/fhir/uv/mhealth-framework/2020May"; 
+    case "file://C:\\GitHub\\hl7.fhir.uv.security-label-ds4p#0.1.0\\output": return "http://hl7.org/fhir/uv/security-label-ds4p/2020May"; 
+    case "file://C:\\GitHub\\hl7.fhir.uv.shorthand#0.12.0\\output":          return "http://hl7.org/fhir/uv/shorthand/2020May"; 
+    }
     return webref;  
   }
 

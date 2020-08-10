@@ -871,30 +871,6 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     return cell;
   }
 
-//
-//  private Cell propertyCell(HierarchicalTableGenerator gen, ConceptDefinitionComponent cd, PropertyComponent p, boolean right, CapabilityStatementComparison comp) {
-//    ConceptPropertyComponent cp = getProp(cd, p, right, comp);
-//    if (cp == null) {
-//      return missingCell(gen, right ? COLOR_NO_CELL_RIGHT : COLOR_NO_CELL_LEFT);
-//    } else {
-//      return gen.new Cell(null, null, cp.getValue().toString(), null, null);
-//    }
-//  }
-//
-//  public ConceptPropertyComponent getProp(ConceptDefinitionComponent cd, PropertyComponent p, boolean right, CapabilityStatementComparison comp) {
-//    String c = p.getCode();
-//    if (right) {
-//      c = comp.getPropMap().get(c);
-//    }
-//    ConceptPropertyComponent cp = null;
-//    for (ConceptPropertyComponent t : cd.getProperty()) {
-//      if (t.getCode().equals(c)) {
-//        cp = t;
-//      }
-//    }
-//    return cp;
-//  }
-
   @Override
   protected String fhirType() {
     return "CapabilityStatement";
