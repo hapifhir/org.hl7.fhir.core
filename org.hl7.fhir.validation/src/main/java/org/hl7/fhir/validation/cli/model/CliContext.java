@@ -1,6 +1,8 @@
 package org.hl7.fhir.validation.cli.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
 import org.hl7.fhir.validation.Validator;
 
 import java.util.*;
@@ -77,6 +79,9 @@ public class CliContext {
   @JsonProperty("locations")
   private Map<String, String> locations = new HashMap<String, String>();
 
+  // TODO: Mark what goes here?
+  private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
+
 
   @JsonProperty("map")
   public String getMap() {
@@ -98,6 +103,11 @@ public class CliContext {
   public CliContext setIgs(List<String> igs) {
     this.igs = igs;
     return this;
+  }
+
+  // TODO: Mark what goes here?
+  public List<BundleValidationRule> getBundleValidationRules() {
+   return bundleValidationRules;
   }
 
   public CliContext addIg(String ig) {

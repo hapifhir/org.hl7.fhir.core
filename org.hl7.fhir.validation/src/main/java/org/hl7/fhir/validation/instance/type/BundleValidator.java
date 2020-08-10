@@ -1,6 +1,7 @@
 package org.hl7.fhir.validation.instance.type;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,26 +12,32 @@ import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.EntrySummary;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 
 public class BundleValidator extends BaseValidator{
   public final static String URI_REGEX3 = "((http|https)://([A-Za-z0-9\\\\\\.\\:\\%\\$]*\\/)*)?(Account|ActivityDefinition|AllergyIntolerance|AdverseEvent|Appointment|AppointmentResponse|AuditEvent|Basic|Binary|BodySite|Bundle|CapabilityStatement|CarePlan|CareTeam|ChargeItem|Claim|ClaimResponse|ClinicalImpression|CodeSystem|Communication|CommunicationRequest|CompartmentDefinition|Composition|ConceptMap|Condition (aka Problem)|Consent|Contract|Coverage|DataElement|DetectedIssue|Device|DeviceComponent|DeviceMetric|DeviceRequest|DeviceUseStatement|DiagnosticReport|DocumentManifest|DocumentReference|EligibilityRequest|EligibilityResponse|Encounter|Endpoint|EnrollmentRequest|EnrollmentResponse|EpisodeOfCare|ExpansionProfile|ExplanationOfBenefit|FamilyMemberHistory|Flag|Goal|GraphDefinition|Group|GuidanceResponse|HealthcareService|ImagingManifest|ImagingStudy|Immunization|ImmunizationRecommendation|ImplementationGuide|Library|Linkage|List|Location|Measure|MeasureReport|Media|Medication|MedicationAdministration|MedicationDispense|MedicationRequest|MedicationStatement|MessageDefinition|MessageHeader|NamingSystem|NutritionOrder|Observation|OperationDefinition|OperationOutcome|Organization|Parameters|Patient|PaymentNotice|PaymentReconciliation|Person|PlanDefinition|Practitioner|PractitionerRole|Procedure|ProcedureRequest|ProcessRequest|ProcessResponse|Provenance|Questionnaire|QuestionnaireResponse|ReferralRequest|RelatedPerson|RequestGroup|ResearchStudy|ResearchSubject|RiskAssessment|Schedule|SearchParameter|Sequence|ServiceDefinition|Slot|Specimen|StructureDefinition|StructureMap|Subscription|Substance|SupplyDelivery|SupplyRequest|Task|TestScript|TestReport|ValueSet|VisionPrescription)\\/[A-Za-z0-9\\-\\.]{1,64}(\\/_history\\/[A-Za-z0-9\\-\\.]{1,64})?";
   private String serverBase;
+  private InstanceValidator validator;
 
-  public BundleValidator(IWorkerContext context, String serverBase) {
+  public BundleValidator(IWorkerContext context, String serverBase, InstanceValidator validator) {
     super(context);
     this.serverBase = serverBase;
+    this.validator = validator;
   }
 
-  public void validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials) {
+  public void validateBundle(List<ValidationMessage> errors, Element bundle, NodeStack stack, boolean checkSpecials, ValidatorHostContext hostContext) {
     List<Element> entries = new ArrayList<Element>();
     bundle.getNamedChildren(ENTRY, entries);
     String type = bundle.getNamedChildValue(TYPE);
@@ -68,7 +75,12 @@ public class BundleValidator extends BaseValidator{
       // We do not yet have rules requiring that the id and fullUrl match when dealing with messaging Bundles
       //      validateResourceIds(errors, entries, stack);
     }
+
+    int count = 0;
+    Map<String, Integer> counter = new HashMap<>(); 
+
     for (Element entry : entries) {
+      NodeStack estack = stack.push(entry, count, null, null);
       String fullUrl = entry.getNamedChildValue(FULL_URL);
       String url = getCanonicalURLForEntry(entry);
       String id = getIdForEntry(entry);
@@ -77,7 +89,30 @@ public class BundleValidator extends BaseValidator{
           rule(errors, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_MISMATCHIDURL, url, fullUrl, id);
         rule(errors, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild(RESOURCE).fhirType(), id))), I18nConstants.BUNDLE_BUNDLE_ENTRY_CANONICAL, url, fullUrl);
       }
+
+      // check bundle profile requests
+      if (entry.hasChild(RESOURCE)) {
+        String rtype = entry.getNamedChild(RESOURCE).fhirType();
+        int rcount = counter.containsKey(rtype) ? counter.get(rtype)+1 : 0;
+        counter.put(rtype, rcount);
+        for (BundleValidationRule bvr : validator.getBundleValidationRules()) {
+          if (meetsRule(bvr, rtype, rcount, count)) {
+            StructureDefinition defn = validator.getContext().fetchResource(StructureDefinition.class, bvr.getProfile());
+            if (defn == null) {
+              throw new Error(validator.getContext().formatMessage(I18nConstants.BUNDLE_RULE_PROFILE_UNKNOWN, bvr.getRule(), bvr.getProfile()));
+            } else {
+              Element res = entry.getNamedChild(RESOURCE);
+              NodeStack rstack = estack.push(res, -1, null, null);
+              signpost(errors, IssueType.INFORMATIONAL, res.line(), res.col(), stack.getLiteralPath(), !validator.isCrumbTrails(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM, defn.getUrl());
+              stack.resetIds();
+              validator.startInner(hostContext, errors, res, res, defn, rstack, false);
+            }
+          }
+        }      
+      }
+      
       // todo: check specials
+      count++;
     }
   }
 
@@ -371,5 +406,34 @@ public class BundleValidator extends BaseValidator{
     return url.startsWith("http://hl7.org/fhir/v3/") || url.startsWith("http://hl7.org/fhir/v2/");
   }
 
+
+  public boolean meetsRule(BundleValidationRule bvr, String rtype, int rcount, int count) {
+    if (bvr.getRule() == null) {
+      throw new Error(validator.getContext().formatMessage(I18nConstants.BUNDLE_RULE_NONE));
+    }
+    String rule =  bvr.getRule();
+    String t = rule.contains(":") ? rule.substring(0, rule.indexOf(":")) : Utilities.isInteger(rule) ? null : rule; 
+    String index = rule.contains(":") ? rule.substring(rule.indexOf(":")+1) : Utilities.isInteger(rule) ? rule : null;
+    if (Utilities.noString(t) && Utilities.noString(index)) {
+      throw new Error(validator.getContext().formatMessage(I18nConstants.BUNDLE_RULE_NONE));
+    }
+    if (!Utilities.noString(t)) {
+      if (!validator.getContext().getResourceNames().contains(t)) {
+        throw new Error(validator.getContext().formatMessage(I18nConstants.BUNDLE_RULE_UNKNOWN, t));
+      }
+    }
+    if (!Utilities.noString(index)) {
+      if (!Utilities.isInteger(index)) {
+        throw new Error(validator.getContext().formatMessage(I18nConstants.BUNDLE_RULE_INVALID_INDEX, index));
+      }
+    }
+    if (t == null) {
+      return Integer.toString(count).equals(index);
+    } else if (index == null) {
+      return t.equals(rtype);
+    } else {
+      return t.equals(rtype) && Integer.toString(rcount).equals(index);
+    }
+  }
 
 }

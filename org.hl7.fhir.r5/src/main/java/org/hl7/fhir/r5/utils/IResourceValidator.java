@@ -43,6 +43,8 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import com.google.gson.JsonObject;
@@ -55,6 +57,30 @@ import com.google.gson.JsonObject;
    *
    */
 public interface IResourceValidator {
+
+  public class BundleValidationRule {
+    private String rule;
+    private String profile;
+    private boolean checked;
+    
+    public BundleValidationRule(String rule, String profile) {
+      super();
+      this.rule = rule;
+      this.profile = profile;
+    }
+    public String getRule() {
+      return rule;
+    }
+    public String getProfile() {
+      return profile;
+    }
+    public boolean isChecked() {
+      return checked;
+    }
+    public void setChecked(boolean checked) {
+      this.checked = checked;
+    }    
+  }
 
   public enum ReferenceValidationPolicy {
     IGNORE, CHECK_TYPE_IF_EXISTS, CHECK_EXISTS, CHECK_EXISTS_AND_TYPE, CHECK_VALID;
@@ -189,6 +215,14 @@ public interface IResourceValidator {
   public void setCrumbTrails(boolean crumbTrails);
 
 
+  /** 
+   * Bundle validation rules allow for requesting particular entries in a bundle get validated against particular profiles
+   * Typically this is used from the command line to avoid having to construct profile just to validate a particular resource 
+   * in a bundle against a particular profile 
+   *  
+   * @return
+   */
+  public List<BundleValidationRule> getBundleValidationRules();
   /**
    * Validate suite
    *  
