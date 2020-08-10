@@ -22,6 +22,7 @@ import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
 import org.hl7.fhir.r5.model.Identifier;
@@ -45,6 +46,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -784,7 +786,11 @@ public class DataRenderer extends Renderer {
     if (s.getEvent().size() > 0) {
       CommaSeparatedStringBuilder c = new CommaSeparatedStringBuilder();
       for (DateTimeType p : s.getEvent()) {
-        c.append(p.toHumanDisplay());
+        if (p.hasValue()) {
+          c.append(p.toHumanDisplay());
+        } else if (!renderExpression(c, p)) {
+          c.append("??");
+        }        
       }
       b.append("Events: "+ c.toString());
     }
@@ -827,6 +833,15 @@ public class DataRenderer extends Renderer {
         b.append("Until "+rep.getBoundsPeriod().getEndElement().toHumanDisplay());
     }
     return b.toString();
+  }
+
+  private boolean renderExpression(CommaSeparatedStringBuilder c, PrimitiveType p) {
+    Extension exp = p.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/cqf-expression");
+    if (exp == null) {
+      return false;
+    }
+    c.append(exp.getValueExpression().getExpression());
+    return true;
   }
 
   private String displayEventCode(EventTiming when) {
