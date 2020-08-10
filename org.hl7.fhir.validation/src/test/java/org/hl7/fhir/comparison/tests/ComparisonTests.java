@@ -11,6 +11,8 @@ import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.comparison.CapabilityStatementComparer;
+import org.hl7.fhir.r5.comparison.CapabilityStatementComparer.CapabilityStatementComparison;
 import org.hl7.fhir.r5.comparison.CodeSystemComparer;
 import org.hl7.fhir.r5.comparison.CodeSystemComparer.CodeSystemComparison;
 import org.hl7.fhir.r5.comparison.ComparisonSession;
@@ -24,6 +26,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Resource;
@@ -154,6 +157,18 @@ public class ComparisonTests {
       String xmle = new XhtmlComposer(true).compose(pc.renderErrors(csc));
       String xml1 = new XhtmlComposer(true).compose(pc.renderMetadata(csc, "", ""));
       String xml2 = new XhtmlComposer(true).compose(pc.renderStructure(csc, "", "", "http://hl7.org/fhir"));
+//      String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
+      TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Structure") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
+      checkOutcomes(csc.getMessages(), content);
+    } else if (left instanceof CapabilityStatement && right instanceof CapabilityStatement) {
+      CapabilityStatementComparer pc = new CapabilityStatementComparer(session);
+      CapabilityStatementComparison csc = pc.compare((CapabilityStatement) left, (CapabilityStatement) right);
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-union.json")), csc.getUnion());
+      new org.hl7.fhir.r5.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "comparison", name + "-intersection.json")), csc.getIntersection());
+
+      String xmle = new XhtmlComposer(true).compose(pc.renderErrors(csc));
+      String xml1 = new XhtmlComposer(true).compose(pc.renderMetadata(csc, "", ""));
+      String xml2 = new XhtmlComposer(true).compose(pc.renderStatements(csc, "", ""));
 //      String xml3 = new XhtmlComposer(true).compose(cs.renderExpansion(csc, "", ""));
       TextFile.stringToFile(HEADER + hd("Messages") + xmle + BREAK + hd("Metadata") + xml1 + BREAK + hd("Structure") + xml2 + FOOTER, Utilities.path("[tmp]", "comparison", name + ".html"));
       checkOutcomes(csc.getMessages(), content);
