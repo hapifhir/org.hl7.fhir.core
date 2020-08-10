@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.utils;
 
+import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.Validator;
 import org.hl7.fhir.validation.cli.model.CliContext;
@@ -15,6 +16,7 @@ public class Params {
   public static final String OUTPUT = "-output";
   public static final String PROXY = "-proxy";
   public static final String PROFILE = "-profile";
+  public static final String BUNDLE = "-bundle";
   public static final String QUESTIONNAIRE = "-questionnaire";
   public static final String NATIVE = "-native";
   public static final String ASSUME_VALID_REST_REF = "-assumeValidRestReferences";
@@ -102,15 +104,21 @@ public class Params {
         } else {
           p = args[++i];
           cliContext.addProfile(p);
+        }        
+      } else if (args[i].equals(BUNDLE)) {
+        String p = null;
+        String r = null;
+        if (i + 1 == args.length) {
+          throw new Error("Specified -profile without indicating bundle rule ");
+        } else {
+          r = args[++i];
         }
-        if (p != null && i + 1 < args.length && args[i + 1].equals("@")) {
-          i++;
-          if (i + 1 == args.length) {
-            throw new Error("Specified -profile with @ without indicating profile location");
-          } else {
-            cliContext.addLocation(p, args[++i]);
-          }
+        if (i + 1 == args.length) {
+          throw new Error("Specified -profile without indicating profile source");
+        } else {
+          p = args[++i];
         }
+        cliContext.getBundleValidationRules().add(new BundleValidationRule(r, p));
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
           throw new Error("Specified -questionnaire without indicating questionnaire file");
