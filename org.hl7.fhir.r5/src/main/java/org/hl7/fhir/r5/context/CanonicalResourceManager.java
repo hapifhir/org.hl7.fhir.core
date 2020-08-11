@@ -227,6 +227,11 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
         drop(n.getId());
       }
     }
+    CachedCanonicalResource<T> existing = cr.hasVersion() ? map.get(cr.getUrl()+"|"+cr.getVersion()) : map.get(cr.getUrl()+"|#0");
+    if (existing != null) {
+      list.remove(existing);
+    }
+    
     list.add(cr);
     map.put(cr.getId(), cr); // we do this so we can drop by id
 
@@ -234,6 +239,8 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
       // first, this is the correct reosurce for this version (if it has a version)
       if (cr.hasVersion()) {
         map.put(cr.getUrl()+"|"+cr.getVersion(), cr);
+      } else {
+        map.put(cr.getUrl()+"|#0", cr);
       }
       updateList(cr.getUrl(), cr.getVersion());
     }

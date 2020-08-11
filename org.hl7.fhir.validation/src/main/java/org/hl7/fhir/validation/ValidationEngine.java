@@ -946,7 +946,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
 
   public void loadIg(String src, boolean recursive) throws IOException, FHIRException {
-    NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) ? pcm.loadPackage(src, null) : null;
+    NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) ? pcm.loadPackage(src, null) : null;
     if (npm != null) {
       for (String s : npm.dependencies()) {
         if (!context.getLoadedPackages().contains(s)) {
@@ -960,11 +960,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       String canonical = null;
       Map<String, byte[]> source = loadIgSource(src, recursive, true);
       String version = Constants.VERSION;
-      if (this.version != null)
+      if (this.version != null) {
         version = this.version;
-      if (source.containsKey("version.info"))
+      }
+      if (source.containsKey("version.info")) {
         version = readInfoVersion(source.get("version.info"));
-
+      }
       for (Entry<String, byte[]> t : source.entrySet()) {
         String fn = t.getKey();
         if (!exemptFile(fn)) {
