@@ -21,8 +21,8 @@ public class PackageCacheTests {
     if (!list.isEmpty()) {
       System.out.println("remaining packages: "+list.toString());
     }
-    Assertions.assertTrue(list.isEmpty());
-    NpmPackage npm = cache.loadPackage("hl7.fhir.pubpack", "0.0.3");
+    Assertions.assertTrue(list.isEmpty(), "List should be true but is "+list.toString());
+    NpmPackage npm = cache.loadPackage("hl7.fhir.pubpack", "0.0.7");
     npm.loadAllFiles();
     Assertions.assertNotNull(npm);
     File dir = new File(Utilities.path("[tmp]", "cache"));

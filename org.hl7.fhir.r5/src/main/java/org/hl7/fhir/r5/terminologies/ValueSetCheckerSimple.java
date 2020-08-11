@@ -139,12 +139,12 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
           throw new FHIRException(warningMessage);
       }
       if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
-        warningMessage = "Unable to resolve system "+system+" - system is not complete";
+        warningMessage = "Resolved system "+system+", but the definition is not complete";
         if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) // we're going to give it a go if it's a fragment
           throw new FHIRException(warningMessage);
       }
 
-      if (cs!=null) {
+      if (cs!=null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
         res = validateCode(code, cs);
       } else {
         // it's in the expansion, but we could find it in a code system
@@ -224,7 +224,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     ConceptDefinitionComponent cc = cs.hasUserData("tx.cs.special") ? ((SpecialCodeSystem) cs.getUserData("tx.cs.special")).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode());
     if (cc == null) {
       if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
-        return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, gen(code), cs.getUrl()));        
+        return new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, gen(code), cs.getUrl()));        
       } else {
         return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_, gen(code), cs.getUrl()));
       }
@@ -402,25 +402,28 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
 
   private boolean inComponent(ConceptSetComponent vsi, String system, String code, boolean only) throws FHIRException {
     for (UriType uri : vsi.getValueSet()) {
-      if (inImport(uri.getValue(), system, code))
+      if (inImport(uri.getValue(), system, code)) {
         return true;
+      }
     }
 
-    if (!vsi.hasSystem())
+    if (!vsi.hasSystem()) {
       return false;
-    
+    }
     if (only && system == null) {
       // whether we know the system or not, we'll accept the stated codes at face value
-      for (ConceptReferenceComponent cc : vsi.getConcept())
-        if (cc.getCode().equals(code)) 
+      for (ConceptReferenceComponent cc : vsi.getConcept()) {
+        if (cc.getCode().equals(code)) {
           return true;
+        }
+      }
     }
     
     if (!system.equals(vsi.getSystem()))
       return false;
     // ok, we need the code system
     CodeSystem cs = context.fetchCodeSystem(system);
-    if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
+    if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
       // make up a transient value set with
       ValueSet vs = new ValueSet();
       vs.setStatus(PublicationStatus.ACTIVE);
@@ -443,12 +446,15 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       List<ConceptDefinitionComponent> list = cs.getConcept();
       boolean ok = validateCodeInConceptList(code, cs, list);
       if (ok && vsi.hasConcept()) {
-        for (ConceptReferenceComponent cc : vsi.getConcept())
-          if (cc.getCode().equals(code)) 
+        for (ConceptReferenceComponent cc : vsi.getConcept()) {
+          if (cc.getCode().equals(code)) { 
             return true;
+          }
+        }
         return false;
-      } else
+      } else {
         return ok;
+      }
     }
   }
 

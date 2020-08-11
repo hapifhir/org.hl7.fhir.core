@@ -40,7 +40,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 
-public class XhtmlType extends Element {
+public class XhtmlType extends PrimitiveType<String> {
 
   private Narrative place;
   
@@ -72,11 +72,15 @@ public class XhtmlType extends Element {
   }
 
   @Override
-  public Element copy() {
+  public PrimitiveType<String> copy() {
     return null;
   }
 
-  public XhtmlNode getValue() {
+  public String getValue() {
+    return primitiveValue();
+  }
+
+  public XhtmlNode getXhtml() {
     return place == null ? new XhtmlNode(NodeType.Element, "div") : place.getDiv();
   }
 
@@ -104,7 +108,7 @@ public class XhtmlType extends Element {
   @Override
   public String primitiveValue() {
     try {
-      return new XhtmlComposer(false).compose(getValue());
+      return new XhtmlComposer(false).compose(getXhtml());
     } catch (IOException e) {
     }
     return null;
@@ -118,6 +122,16 @@ public class XhtmlType extends Element {
   @Override
   public boolean hasPrimitiveValue() {
     return true;
+  }
+
+  @Override
+  protected String encode(String theValue) {
+    return theValue;
+  }
+
+  @Override
+  protected String parse(String theValue) {
+    return theValue;
   }
   
 

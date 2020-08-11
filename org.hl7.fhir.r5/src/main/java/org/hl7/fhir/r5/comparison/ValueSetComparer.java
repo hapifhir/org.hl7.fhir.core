@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.ValueSet;
@@ -66,7 +68,26 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     @Override
     protected String summary() {
       return "ValueSet: "+left.present()+" vs "+right.present();
+    }
+
+    @Override
+    protected String fhirType() {
+      return "ValueSet";
     }         
+    @Override
+    protected void countMessages(MessageCounts cnts) {
+      super.countMessages(cnts);
+      if (includes != null) {
+        includes.countMessages(cnts);
+      }
+      if (excludes != null) {
+        excludes.countMessages(cnts);
+      }
+      if (expansion != null) {
+        expansion.countMessages(cnts);
+      }
+    }
+
   }
   
   public ValueSetComparer(ComparisonSession session) {
@@ -189,7 +210,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
   private int countMatchesBySystem(List<ConceptSetComponent> list, ConceptSetComponent item) {
     int c = 0;
     for (ConceptSetComponent t : list) {
-      if (t.getSystem().equals(item.getSystem())) {
+      if (t.hasSystem() && t.getSystem().equals(item.getSystem())) {
         c++;
       }
     }
@@ -372,16 +393,16 @@ public class ValueSetComparer extends CanonicalResourceComparer {
   }
 
   private void compareExpansions(ValueSet left, ValueSet right, ValueSetComparison res) {
-    ValueSet expL = left.hasExpansion() ? left : expand(left, res, "left");
-    ValueSet expR = left.hasExpansion() ? left : expand(right, res, "right");
+    ValueSet expL = left.hasExpansion() ? left : expand(left, res, "left", session.getContextLeft());
+    ValueSet expR = left.hasExpansion() ? left : expand(right, res, "right", session.getContextRight());
     if (expL != null && expR != null) {
       // ignore the parameters for now
       compareConcepts(expL.getExpansion().getContains(), expR.getExpansion().getContains(), res.forceExpansion(), res.getUnion().getExpansion().getContains(), res.getIntersection().getExpansion().getContains(), "ValueSet.expansion.contains", res);
     }
   }
   
-  private ValueSet expand(ValueSet vs, ValueSetComparison res, String name) {
-    ValueSetExpansionOutcome vse =session.getContext().expandVS(vs, true, false);
+  private ValueSet expand(ValueSet vs, ValueSetComparison res, String name, IWorkerContext ctxt) {
+    ValueSetExpansionOutcome vse = ctxt.expandVS(vs, true, false);
     if (vse.getValueset() != null) {
       return vse.getValueset();
     } else {
@@ -524,8 +545,7 @@ public class ValueSetComparer extends CanonicalResourceComparer {
     if (t.hasLeft() && t.hasRight()) {
       ConceptSetComponent csL = (ConceptSetComponent) t.getLeft();
       ConceptSetComponent csR = (ConceptSetComponent) t.getRight();
-      // we assume both have systems 
-      if (csL.getSystem().equals(csR.getSystem())) {
+      if (csL.hasSystem() && csL.getSystem().equals(csR.getSystem())) {
         r.getCells().add(gen.new Cell(null, null, csL.getSystem(), null, null).span(2).center());        
       } else {
         r.getCells().add(gen.new Cell(null, null, csL.getSystem(), null, null).setStyle("background-color: "+COLOR_DIFFERENT));        
@@ -681,6 +701,11 @@ public class ValueSetComparer extends CanonicalResourceComparer {
       XhtmlNode p = new XhtmlNode(NodeType.Element, "p");
       p.tx("Unable to generate expansion - see errors");
       return p;
+    }
+    if (csc.getExpansion().getChildren().isEmpty()) {
+      XhtmlNode p = new XhtmlNode(NodeType.Element, "p");
+      p.tx("Expansion is empty");
+      return p;      
     }
     // columns: code(+system), version, display , abstract, inactive,
     boolean hasSystem = csc.getExpansion().getChildren().isEmpty() ? false : getSystemVaries(csc.getExpansion(), csc.getExpansion().getChildren().get(0).either().getSystem());

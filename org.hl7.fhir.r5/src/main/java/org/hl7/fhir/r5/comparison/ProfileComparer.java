@@ -9,9 +9,11 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.UnusedTracker;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
@@ -63,16 +65,29 @@ public class ProfileComparer extends CanonicalResourceComparer {
     protected String summary() {
       return "Profile: "+left.present()+" vs "+right.present();
     }
+
+    @Override
+    protected String fhirType() {
+      return "StructureDefinition";
+    }
+    @Override
+    protected void countMessages(MessageCounts cnts) {
+      super.countMessages(cnts);
+      combined.countMessages(cnts);
+    }
+
   }
 
 
 
 
-  private ProfileUtilities utils;
+  private ProfileUtilities utilsLeft;
+  private ProfileUtilities utilsRight;
 
-  public ProfileComparer(ComparisonSession session, ProfileUtilities utils) {
+  public ProfileComparer(ComparisonSession session, ProfileUtilities utilsLeft, ProfileUtilities utilsRight) {
     super(session);
-    this.utils = utils;
+    this.utilsLeft = utilsLeft;
+    this.utilsRight = utilsRight;
   }
 
   @Override
@@ -110,8 +125,8 @@ public class ProfileComparer extends CanonicalResourceComparer {
     comparePrimitives("baseDefinition", left.getBaseDefinitionElement(), right.getBaseDefinitionElement(), res.getMetadata(), IssueSeverity.ERROR, res);
 
     if (left.getType().equals(right.getType())) {
-      DefinitionNavigator ln = new DefinitionNavigator(session.getContext(), left);
-      DefinitionNavigator rn = new DefinitionNavigator(session.getContext(), right);
+      DefinitionNavigator ln = new DefinitionNavigator(session.getContextLeft(), left);
+      DefinitionNavigator rn = new DefinitionNavigator(session.getContextRight(), right);
       StructuralMatch<ElementDefinition> sm = new StructuralMatch<ElementDefinition>(ln.current(), rn.current());
       compareElements(res, sm, ln.path(), null, ln, rn);
       res.combined = sm;
@@ -122,9 +137,9 @@ public class ProfileComparer extends CanonicalResourceComparer {
   private void check(StructureDefinition sd, String name) {
     if (sd == null)
       throw new DefinitionException("No StructureDefinition provided ("+name+": "+sd.getName()+")");
-    if (sd.getType().equals("Extension")) {
-      throw new DefinitionException("StructureDefinition is for an extension - use ExtensionComparer instead ("+name+": "+sd.getName()+")");
-    }
+//    if (sd.getType().equals("Extension")) {
+//      throw new DefinitionException("StructureDefinition is for an extension - use ExtensionComparer instead ("+name+": "+sd.getName()+")");
+//    }
     if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
       throw new DefinitionException("StructureDefinition is not for an profile - can't be compared ("+name+": "+sd.getName()+")");
     }
@@ -143,10 +158,10 @@ public class ProfileComparer extends CanonicalResourceComparer {
     }
     
     // not allowed to be different:   
-    ruleEqual(comp, res, left.current().getDefaultValue(), right.current().getDefaultValue(), "defaultValue", path);
-    ruleEqual(comp, res, left.current().getMeaningWhenMissingElement(), right.current().getMeaningWhenMissingElement(), "meaningWhenMissing", path);
-    ruleEqual(comp, res, left.current().getIsModifierElement(), right.current().getIsModifierElement(), "isModifier", path);
-    ruleEqual(comp, res, left.current().getIsSummaryElement(), right.current().getIsSummaryElement(), "isSummary", path);
+//    ruleEqual(comp, res, left.current().getDefaultValue(), right.current().getDefaultValue(), "defaultValue", path);
+//    ruleEqual(comp, res, left.current().getMeaningWhenMissingElement(), right.current().getMeaningWhenMissingElement(), "meaningWhenMissing", path);
+//    ruleEqual(comp, res, left.current().getIsModifierElement(), right.current().getIsModifierElement(), "isModifier", path); - this check belongs in the core
+//    ruleEqual(comp, res, left.current().getIsSummaryElement(), right.current().getIsSummaryElement(), "isSummary", path); - so does this
 
     // we ignore slicing right now - we're going to clone the root one anyway, and then think about clones 
     // simple stuff
@@ -317,15 +332,15 @@ public class ProfileComparer extends CanonicalResourceComparer {
     } else if (vRight == null) {
       vm(IssueSeverity.ERROR, "Removed "+name, path, comp.getMessages(), res.getMessages());
     } else if (!Base.compareDeep(vLeft, vRight, false)) {
-      vm(IssueSeverity.ERROR, name+" must be the same ("+toString(vLeft)+"/"+toString(vRight)+")", path, comp.getMessages(), res.getMessages());
+      vm(IssueSeverity.ERROR, name+" must be the same ("+toString(vLeft, true)+"/"+toString(vRight, false)+")", path, comp.getMessages(), res.getMessages());
     }
   }
 
-  private String toString(DataType val) throws IOException {
+  private String toString(DataType val, boolean left) throws IOException {
     if (val instanceof PrimitiveType) 
       return "\"" + ((PrimitiveType) val).getValueAsString()+"\"";
     
-    IParser jp = session.getContext().newJsonParser();
+    IParser jp = left ? session.getContextLeft().newJsonParser() : session.getContextRight().newJsonParser();
     return jp.composeString(val, "value");
   }
   
@@ -468,13 +483,13 @@ public class ProfileComparer extends CanonicalResourceComparer {
   private Collection<? extends TypeRefComponent> unionTypes(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, List<TypeRefComponent> left, List<TypeRefComponent> right) throws DefinitionException, IOException, FHIRFormatError {
     List<TypeRefComponent> result = new ArrayList<TypeRefComponent>();
     for (TypeRefComponent l : left) 
-      checkAddTypeUnion(comp, res, path, result, l);
+      checkAddTypeUnion(comp, res, path, result, l, session.getContextLeft());
     for (TypeRefComponent r : right) 
-      checkAddTypeUnion(comp, res, path, result, r);
+      checkAddTypeUnion(comp, res, path, result, r, session.getContextRight());
     return result;
   }    
 
-  private void checkAddTypeUnion(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, List<TypeRefComponent> results, TypeRefComponent nw) throws DefinitionException, IOException, FHIRFormatError {
+  private void checkAddTypeUnion(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, List<TypeRefComponent> results, TypeRefComponent nw, IWorkerContext ctxt) throws DefinitionException, IOException, FHIRFormatError {
     boolean pfound = false;
     boolean tfound = false;
     nw = nw.copy();
@@ -491,15 +506,15 @@ public class ProfileComparer extends CanonicalResourceComparer {
           ex.setProfile(null);
         } else {
           // both have profiles. Is one derived from the other? 
-          StructureDefinition sdex = session.getContext().fetchResource(StructureDefinition.class, ex.getProfile().get(0).getValue());
-          StructureDefinition sdnw = session.getContext().fetchResource(StructureDefinition.class, nw.getProfile().get(0).getValue());
+          StructureDefinition sdex = ((IWorkerContext) ex.getUserData("ctxt")).fetchResource(StructureDefinition.class, ex.getProfile().get(0).getValue());
+          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getProfile().get(0).getValue());
           if (sdex != null && sdnw != null) {
-            if (sdex == sdnw) {
+            if (sdex.getUrl().equals(sdnw.getUrl())) {
               pfound = true;
-            } else if (derivesFrom(sdex, sdnw)) {
+            } else if (derivesFrom(sdex, sdnw, ((IWorkerContext) ex.getUserData("ctxt")))) {
               ex.setProfile(nw.getProfile());
               pfound = true;
-            } else if (derivesFrom(sdnw, sdex)) {
+            } else if (derivesFrom(sdnw, sdex, ctxt)) {
               pfound = true;
             } else if (sdnw.getSnapshot().getElement().get(0).getPath().equals(sdex.getSnapshot().getElement().get(0).getPath())) {
               ProfileComparison compP = (ProfileComparison) session.compare(sdex, sdnw);
@@ -519,15 +534,15 @@ public class ProfileComparer extends CanonicalResourceComparer {
           ex.setTargetProfile(null);
         } else {
           // both have profiles. Is one derived from the other? 
-          StructureDefinition sdex = session.getContext().fetchResource(StructureDefinition.class, ex.getTargetProfile().get(0).getValue());
-          StructureDefinition sdnw = session.getContext().fetchResource(StructureDefinition.class, nw.getTargetProfile().get(0).getValue());
+          StructureDefinition sdex = ((IWorkerContext) ex.getUserData("ctxt")).fetchResource(StructureDefinition.class, ex.getTargetProfile().get(0).getValue());
+          StructureDefinition sdnw = ctxt.fetchResource(StructureDefinition.class, nw.getTargetProfile().get(0).getValue());
           if (sdex != null && sdnw != null) {
-            if (sdex == sdnw) {
+            if (matches(sdex, sdnw)) {
               tfound = true;
-            } else if (derivesFrom(sdex, sdnw)) {
+            } else if (derivesFrom(sdex, sdnw, ((IWorkerContext) ex.getUserData("ctxt")))) {
               ex.setTargetProfile(nw.getTargetProfile());
               tfound = true;
-            } else if (derivesFrom(sdnw, sdex)) {
+            } else if (derivesFrom(sdnw, sdex, ctxt)) {
               tfound = true;
             } else if (sdnw.getSnapshot().getElement().get(0).getPath().equals(sdex.getSnapshot().getElement().get(0).getPath())) {
               ProfileComparison compP = (ProfileComparison) session.compare(sdex, sdnw);
@@ -540,17 +555,33 @@ public class ProfileComparer extends CanonicalResourceComparer {
         }        
       }
     }
-    if (!tfound || !pfound)
+    if (!tfound || !pfound) {
+      nw.setUserData("ctxt", ctxt);
       results.add(nw);      
+    }
   }
 
-  private boolean derivesFrom(StructureDefinition left, StructureDefinition right) {
+  private boolean matches(StructureDefinition s1, StructureDefinition s2) {
+    if (!s1.getUrl().equals(s2.getUrl())) {
+      return false;
+    }
+    if (s1.getDerivation() == TypeDerivationRule.SPECIALIZATION && s2.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
+      return true; // arbitrary; we're just not interested in pursuing cross version differences
+    }
+    if (s1.hasVersion()) {
+      return  s1.getVersion().equals(s2.getVersion());
+    } else {
+      return !s2.hasVersion();
+    }
+  }
+
+  private boolean derivesFrom(StructureDefinition left, StructureDefinition right, IWorkerContext ctxt) {
     StructureDefinition sd = left;
     while (sd != null) {
       if (right.getUrl().equals(sd.getBaseDefinition())) {
         return true;
       }
-      sd = sd.hasBaseDefinition() ? session.getContext().fetchResource(StructureDefinition.class, sd.getBaseDefinition()) : null;
+      sd = sd.hasBaseDefinition() ? ctxt.fetchResource(StructureDefinition.class, sd.getBaseDefinition()) : null;
     }
     return false;
   }
@@ -574,14 +605,14 @@ public class ProfileComparer extends CanonicalResourceComparer {
           pfound = true;
           c.setProfile(r.getProfile());
         } else {
-          StructureDefinition sdl = resolveProfile(comp, res, path, l.getProfile().get(0).getValue(), comp.getLeft().getName());
-          StructureDefinition sdr = resolveProfile(comp, res, path, r.getProfile().get(0).getValue(), comp.getRight().getName());
+          StructureDefinition sdl = resolveProfile(comp, res, path, l.getProfile().get(0).getValue(), comp.getLeft().getName(), session.getContextLeft());
+          StructureDefinition sdr = resolveProfile(comp, res, path, r.getProfile().get(0).getValue(), comp.getRight().getName(), session.getContextRight());
           if (sdl != null && sdr != null) {
             if (sdl == sdr) {
               pfound = true;
-            } else if (derivesFrom(sdl, sdr)) {
+            } else if (derivesFrom(sdl, sdr, session.getContextLeft())) {
               pfound = true;
-            } else if (derivesFrom(sdr, sdl)) {
+            } else if (derivesFrom(sdr, sdl, session.getContextRight())) {
               c.setProfile(r.getProfile());
               pfound = true;
             } else if (sdl.getType().equals(sdr.getType())) {
@@ -601,14 +632,14 @@ public class ProfileComparer extends CanonicalResourceComparer {
           tfound = true;
           c.setTargetProfile(r.getTargetProfile());
         } else {
-          StructureDefinition sdl = resolveProfile(comp, res, path, l.getTargetProfile().get(0).getValue(), comp.getLeft().getName());
-          StructureDefinition sdr = resolveProfile(comp, res, path, r.getTargetProfile().get(0).getValue(), comp.getRight().getName());
+          StructureDefinition sdl = resolveProfile(comp, res, path, l.getTargetProfile().get(0).getValue(), comp.getLeft().getName(), session.getContextLeft());
+          StructureDefinition sdr = resolveProfile(comp, res, path, r.getTargetProfile().get(0).getValue(), comp.getRight().getName(), session.getContextRight());
           if (sdl != null && sdr != null) {
-            if (sdl == sdr) {
+            if (matches(sdl, sdr)) {
               tfound = true;
-            } else if (derivesFrom(sdl, sdr)) {
+            } else if (derivesFrom(sdl, sdr, session.getContextLeft())) {
               tfound = true;
-            } else if (derivesFrom(sdr, sdl)) {
+            } else if (derivesFrom(sdr, sdl, session.getContextRight())) {
               c.setTargetProfile(r.getTargetProfile());
               tfound = true;
             } else if (sdl.getType().equals(sdr.getType())) {
@@ -713,8 +744,8 @@ public class ProfileComparer extends CanonicalResourceComparer {
       return true;      
     } else {
       // ok, now we compare the value sets. This may be unresolvable. 
-      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSet());
-      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSet());
+      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSet(), session.getContextLeft());
+      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSet(), session.getContextRight());
       if (lvs == null) {
         vm(IssueSeverity.ERROR, "Unable to resolve left value set "+left.getValueSet().toString()+" at "+path, path, comp.getMessages(), res.getMessages());
         return true;
@@ -739,6 +770,9 @@ public class ProfileComparer extends CanonicalResourceComparer {
     if (!lvs.getUrl().equals(rvs.getUrl())) {
       return false;
     }
+    if (isCore(lvs) && isCore(rvs)) {
+      return true;
+    }
     if (lvs.hasVersion()) {
       if (!lvs.getVersion().equals(rvs.getVersion())) {
         return false;
@@ -747,6 +781,10 @@ public class ProfileComparer extends CanonicalResourceComparer {
       }
     }
     return true;
+  }
+
+  private boolean isCore(ValueSet vs) {
+    return vs.getUrl().startsWith("http://hl7.org/fhir/ValueSet");
   }
 
   private List<ElementDefinitionConstraintComponent> intersectConstraints(String path, List<ElementDefinitionConstraintComponent> left, List<ElementDefinitionConstraintComponent> right) {
@@ -771,7 +809,9 @@ public class ProfileComparer extends CanonicalResourceComparer {
         if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getXpath(), l.getXpath()) && r.getSeverity() == l.getSeverity()))
           found = true;
       if (!found) {
-        vm(IssueSeverity.INFORMATION,  "StructureDefinition "+comp.getLeft().getName()+" has a constraint that is removed in "+comp.getRight().getName()+" and it is uncertain whether they are compatible ("+l.getExpression()+")", path, comp.getMessages(), res.getMessages());
+        if (!Utilities.existsInList(l.getExpression(), "hasValue() or (children().count() > id.count())", "extension.exists() != value.exists()")) {
+          vm(IssueSeverity.INFORMATION,  "StructureDefinition "+comp.getLeft().getName()+" has a constraint that is removed in "+comp.getRight().getName()+" and it is uncertain whether they are compatible ("+l.getExpression()+")", path, comp.getMessages(), res.getMessages());
+        }
       }
       result.add(l);
     }
@@ -781,14 +821,16 @@ public class ProfileComparer extends CanonicalResourceComparer {
         if (Utilities.equals(r.getId(), l.getId()) || (Utilities.equals(r.getXpath(), l.getXpath()) && r.getSeverity() == l.getSeverity()))
           found = true;
       if (!found) {
-        vm(IssueSeverity.INFORMATION,  "StructureDefinition "+comp.getRight().getName()+" has added constraint that is not found in "+comp.getLeft().getName()+" and it is uncertain whether they are compatible ("+r.getExpression()+")", path, comp.getMessages(), res.getMessages());
+        if (!Utilities.existsInList(r.getExpression(), "hasValue() or (children().count() > id.count())", "extension.exists() != value.exists()")) {
+          vm(IssueSeverity.INFORMATION,  "StructureDefinition "+comp.getRight().getName()+" has added constraint that is not found in "+comp.getLeft().getName()+" and it is uncertain whether they are compatible ("+r.getExpression()+")", path, comp.getMessages(), res.getMessages());
+        }
       }
     }
     return result;
   }
 
-  private StructureDefinition resolveProfile(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, String url, String name) {
-    StructureDefinition sd = session.getContext().fetchResource(StructureDefinition.class, url);
+  private StructureDefinition resolveProfile(ProfileComparison comp, StructuralMatch<ElementDefinition> res, String path, String url, String name, IWorkerContext ctxt) {
+    StructureDefinition sd = ctxt.fetchResource(StructureDefinition.class, url);
     if (sd == null) {
       ValidationMessage vm = vmI(IssueSeverity.WARNING, "Unable to resolve profile "+url+" in profile "+name, path);
     }
@@ -809,8 +851,8 @@ public class ProfileComparer extends CanonicalResourceComparer {
     if (Base.compareDeep(left.getValueSet(), right.getValueSet(), false))
       union.setValueSet(left.getValueSet());
     else {
-      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSet());
-      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSet());
+      ValueSet lvs = resolveVS(comp.getLeft(), left.getValueSet(), session.getContextLeft());
+      ValueSet rvs = resolveVS(comp.getRight(), right.getValueSet(), session.getContextRight());
       if (lvs != null && rvs != null) {
         ValueSetComparison compP = (ValueSetComparison) session.compare(lvs, rvs);
         if (compP != null) {
@@ -825,15 +867,15 @@ public class ProfileComparer extends CanonicalResourceComparer {
     return union;
   }
 
-  private ValueSet resolveVS(StructureDefinition ctxtLeft, String vsRef) {
+  private ValueSet resolveVS(StructureDefinition ctxtLeft, String vsRef, IWorkerContext ctxt) {
     if (vsRef == null)
       return null;
-    return session.getContext().fetchResource(ValueSet.class, vsRef);
+    return ctxt.fetchResource(ValueSet.class, vsRef);
   }
 
   public XhtmlNode renderStructure(ProfileComparison comp, String id, String prefix, String corePath) throws FHIRException, IOException {
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(Utilities.path("[tmp]", "compare"), false, true);
-    gen.setTranslator(session.getContext().translator());
+    gen.setTranslator(session.getContextRight().translator());
     TableModel model = gen.initComparisonTable(corePath, id);
     genElementComp(null /* oome back to this later */, gen, model.getRows(), comp.combined, corePath, prefix, null, true);
     return gen.generate(model, prefix, 0, null);
@@ -849,7 +891,7 @@ public class ProfileComparer extends CanonicalResourceComparer {
     rows.add(row);
     String path = combined.either().getPath();
     row.setAnchor(path);
-      row.setColor(utils.getRowColor(combined.either(), false));
+      row.setColor(utilsRight.getRowColor(combined.either(), false));
       if (eitherHasSlicing(combined))
         row.setLineColor(1);
       else if (eitherHasSliceName(combined))
@@ -895,17 +937,17 @@ public class ProfileComparer extends CanonicalResourceComparer {
       String leftColor = !combined.hasLeft() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
       String rightColor = !combined.hasRight() ? COLOR_NO_ROW_LEFT : combined.hasErrors() ? COLOR_DIFFERENT : null;
       if (combined.hasLeft()) {
-        nc = utils.genElementNameCell(gen, combined.getLeft(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName);
+        nc = utilsRight.genElementNameCell(gen, combined.getLeft(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName);
       } else {
-        nc = utils.genElementNameCell(gen, combined.getRight(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName);
+        nc = utilsRight.genElementNameCell(gen, combined.getRight(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName);
       }
       if (combined.hasLeft()) {
-        frame(utils.genElementCells(gen, combined.getLeft(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName, nc), leftColor);
+        frame(utilsRight.genElementCells(gen, combined.getLeft(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName, nc), leftColor);
       } else {
         frame(spacers(row, 4, gen), leftColor);
       }
       if (combined.hasRight()) {
-        frame(utils.genElementCells(gen, combined.getRight(), "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used, ref, sName, nc), rightColor);
+        frame(utilsRight.genElementCells(gen, combined.getRight(), "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used, ref, sName, nc), rightColor);
       } else {
         frame(spacers(row, 4, gen), rightColor);
       }

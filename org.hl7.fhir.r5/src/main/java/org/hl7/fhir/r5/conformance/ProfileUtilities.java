@@ -411,10 +411,13 @@ public class ProfileUtilities extends TranslatingUtilities {
         String p = e.getPath();
   
         if (!Utilities.noString(e.getContentReference()) && path.startsWith(p)) {
-          if (path.length() > p.length())
+          if (path.length() > p.length()) {
             return getChildList(profile, e.getContentReference()+"."+path.substring(p.length()+1), null, diff);
-          else
+          } else if (e.getContentReference().startsWith("#")) {
+            return getChildList(profile, e.getContentReference().substring(1), null, diff);            
+          } else {
             return getChildList(profile, e.getContentReference(), null, diff);
+          }
           
         } else if (p.startsWith(path+".") && !p.equals(path)) {
           String tail = p.substring(path.length()+1);
@@ -642,7 +645,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                 wt = "OperationOutcome";
               }
               if (!sd.getType().equals(wt)) {
-                boolean ok = isCompatibleType(wt, sd.getType());
+                boolean ok = isCompatibleType(wt, sd);
                 if (!ok) {
                   String smsg = "The profile "+u.getValue()+" has type "+sd.getType()+" which is not consistent with the stated type "+wt;
                   if (exception)
@@ -711,10 +714,17 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean isCompatibleType(String base, String type) {
-    StructureDefinition sd = context.fetchTypeDefinition(type);
+  private boolean isCompatibleType(String base, StructureDefinition sdt) {
+    StructureDefinition sdb = context.fetchTypeDefinition(base);
+    if (sdb.getType().equals(sdt.getType())) {
+      return true;
+    }
+    StructureDefinition sd = context.fetchTypeDefinition(sdt.getType());
     while (sd != null) {
-      if (sd.getType().equals(base)) {
+      if (sd.getType().equals(sdb.getType())) {
+        return true;
+      }
+      if (sd.getUrl().equals(sdb.getUrl())) {
         return true;
       }
       sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()); 
@@ -1196,6 +1206,21 @@ public class ProfileUtilities extends TranslatingUtilities {
               if (!outcome.hasContentReference() && !outcome.hasType()) {
                 throw new DefinitionException(context.formatMessage(I18nConstants.NOT_DONE_YET));
               }
+              if (hasInnerDiffMatches(differential, currentBase.getPath(), diffCursor, diffLimit, base.getElement(), false)) {
+                if (baseHasChildren(base, currentBase)) { // not a new type here
+                  throw new Error("This situation is not yet handled (constrain slicing to 1..1 and fix base slice for inline structure - please report issue to grahame@fhir.org along with a test case that reproduces this error (@ "+cpath+" | "+currentBase.getPath()+")");
+                } else {
+                  StructureDefinition dt = getTypeForElement(differential, diffCursor, profileName, diffMatches, outcome);
+                  contextName = dt.getUrl();
+                  diffCursor++;
+                  start = diffCursor;
+                  while (differential.getElement().size() > diffCursor && pathStartsWith(differential.getElement().get(diffCursor).getPath(), cpath+"."))
+                    diffCursor++;
+                  diffCursor--;
+                  processPaths(indent+"  ", result, dt.getSnapshot(), differential, 1 /* starting again on the data type, but skip the root */, start, dt.getSnapshot().getElement().size()-1,
+                      diffCursor, url, getWebUrl(dt, webUrl, indent), profileName, cpath, outcome.getPath(), trimDifferential, contextName, resultPathBase, false, null, redirector, srcSD);
+                }
+              }
               start++;
               // result.getElement().remove(result.getElement().size()-1);
             } else 
@@ -1251,18 +1276,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               processPaths(indent+"  ", result, base, differential, baseCursor+1, diffCursor, baseLimit, diffLimit, url, webUrl, profileName, contextPathSrc, contextPathDst, trimDifferential, contextName, resultPathBase, false, null, redirector, srcSD);
               baseCursor = indexOfFirstNonChild(base, currentBase, baseCursor, baseLimit);
             } else {
-              if (outcome.getType().size() == 0) {
-                throw new DefinitionException(context.formatMessage(I18nConstants._HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), profileName));
-              }
-              if (outcome.getType().size() > 1) {
-                for (TypeRefComponent t : outcome.getType()) {
-                  if (!t.getWorkingCode().equals("Reference"))
-                    throw new DefinitionException(context.formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), typeCode(outcome.getType()), profileName));
-                }
-              }
-              StructureDefinition dt = getProfileForDataType(outcome.getType().get(0));
-              if (dt == null)
-                throw new DefinitionException(context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, outcome.getType().get(0), diffMatches.get(0).getPath()));
+              StructureDefinition dt = getTypeForElement(differential, diffCursor, profileName, diffMatches, outcome);
               contextName = dt.getUrl();
               int start = diffCursor;
               while (differential.getElement().size() > diffCursor && pathStartsWith(differential.getElement().get(diffCursor).getPath(), cpath+"."))
@@ -1549,6 +1563,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               outcome.setPath(fixedPathDest(contextPathDst, outcome.getPath(), redirector, contextPathSrc));
               updateFromBase(outcome, currentBase);
               outcome.setSlicing(null);
+              outcome.setMin(0); // were in a slice, so it's only a mandatory if it's explicitly marked so
               if (!outcome.getPath().startsWith(resultPathBase))
                 throw new DefinitionException(context.formatMessage(I18nConstants.ADDING_WRONG_PATH));
               result.getElement().add(outcome);
@@ -1611,6 +1626,23 @@ public class ProfileUtilities extends TranslatingUtilities {
     return res;
   }
 
+  public StructureDefinition getTypeForElement(StructureDefinitionDifferentialComponent differential, int diffCursor, String profileName,
+      List<ElementDefinition> diffMatches, ElementDefinition outcome) {
+    if (outcome.getType().size() == 0) {
+      throw new DefinitionException(context.formatMessage(I18nConstants._HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), profileName));
+    }
+    if (outcome.getType().size() > 1) {
+      for (TypeRefComponent t : outcome.getType()) {
+        if (!t.getWorkingCode().equals("Reference"))
+          throw new DefinitionException(context.formatMessage(I18nConstants._HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_, diffMatches.get(0).getPath(), differential.getElement().get(diffCursor).getPath(), typeCode(outcome.getType()), profileName));
+      }
+    }
+    StructureDefinition dt = getProfileForDataType(outcome.getType().get(0));
+    if (dt == null)
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNKNOWN_TYPE__AT_, outcome.getType().get(0), diffMatches.get(0).getPath()));
+    return dt;
+  }
+
   private String sliceNames(List<ElementDefinition> diffMatches) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (ElementDefinition ed : diffMatches) {
@@ -1624,7 +1656,10 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean isMatchingType(StructureDefinition sd, List<TypeRefComponent> types) {
     while (sd != null) {
       for (TypeRefComponent tr : types) {
-        if (sd.getType().equals(tr.getCode())) {
+        if (sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition") && sd.getType().equals(tr.getCode())) {
+          return true;
+        }
+        if (sd.getUrl().equals(tr.getCode())) {
           return true;
         }
       }
@@ -2480,9 +2515,12 @@ public class ProfileUtilities extends TranslatingUtilities {
       // condition : id 0..*
 
       if (derived.hasMustSupportElement()) {
-        if (!(base.hasMustSupportElement() && Base.compareDeep(derived.getMustSupportElement(), base.getMustSupportElement(), false)))
+        if (!(base.hasMustSupportElement() && Base.compareDeep(derived.getMustSupportElement(), base.getMustSupportElement(), false))) {
+          if (base.hasMustSupport() && base.getMustSupport() && !derived.getMustSupport()) {
+            messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, pn+"."+derived.getPath(), "Illegal constraint [must-support = false] when [must-support = true] in the base profile", ValidationMessage.IssueSeverity.ERROR));
+          }
           base.setMustSupportElement(derived.getMustSupportElement().copy());
-        else if (trimDifferential)
+        } else if (trimDifferential)
           derived.setMustSupportElement(null);
         else
           derived.getMustSupportElement().setUserData(DERIVATION_EQUALS, true);
@@ -2558,7 +2596,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (derived.hasIsSummaryElement()) {
         if (!Base.compareDeep(derived.getIsSummaryElement(), base.getIsSummaryElement(), false)) {
           if (base.hasIsSummary() && !context.getVersion().equals("1.4.0")) // work around a known issue with some 1.4.0 cosntraints
-            throw new Error(context.formatMessage(I18nConstants.ERROR_IN_PROFILE__AT__BASE_ISSUMMARY___DERIVED_ISSUMMARY__, pn, derived.getPath(), base.getIsSummaryElement().asStringValue(), derived.getIsSummaryElement().asStringValue()));
+            throw new Error(context.formatMessage(I18nConstants.ERROR_IN_PROFILE__AT__BASE_ISSUMMARY___DERIVED_ISSUMMARY__, purl, derived.getPath(), base.getIsSummaryElement().asStringValue(), derived.getIsSummaryElement().asStringValue()));
           base.setIsSummaryElement(derived.getIsSummaryElement().copy());
         } else if (trimDifferential)
           derived.setIsSummaryElement(null);
@@ -3077,18 +3115,27 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       } else if (t.hasProfile() && (!t.getWorkingCode().equals("Extension") || isProfiledType(t.getProfile()))) { // a profiled type
         String ref;
-        ref = pkp.getLinkForProfile(profile, t.getProfile().get(0).getValue());
-        if (ref != null) {
-          String[] parts = ref.split("\\|");
-          if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) {
-//            c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], "<" + parts[1] + ">", t.getCode()))); Lloyd
-            c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], parts[1], t.getWorkingCode())));
+        boolean pfirst = true;
+        for (CanonicalType p : t.getProfile()) {
+          if (pfirst) {
+            pfirst = false;
           } else {
-//            c.addPiece(checkForNoChange(t, gen.new Piece((t.getProfile().startsWith(corePath)? corePath: "")+parts[0], "<" + parts[1] + ">", t.getCode())));
-            c.addPiece(checkForNoChange(t, gen.new Piece((t.getProfile().get(0).getValue().startsWith(corePath+"StructureDefinition")? corePath: "")+parts[0], parts[1], t.getWorkingCode())));
-          }
-        } else
-          c.addPiece(checkForNoChange(t, gen.new Piece((t.getProfile().get(0).getValue().startsWith(corePath)? corePath: "")+ref, t.getWorkingCode(), null)));
+            c.addPiece(checkForNoChange(tl, gen.new Piece(null,", ", null)));
+          }          
+
+          ref = pkp.getLinkForProfile(profile, p.getValue());
+          if (ref != null) {
+            String[] parts = ref.split("\\|");
+            if (parts[0].startsWith("http:") || parts[0].startsWith("https:")) {
+              //            c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], "<" + parts[1] + ">", t.getCode()))); Lloyd
+              c.addPiece(checkForNoChange(t, gen.new Piece(parts[0], parts[1], t.getWorkingCode())));
+            } else {
+              //            c.addPiece(checkForNoChange(t, gen.new Piece((t.getProfile().startsWith(corePath)? corePath: "")+parts[0], "<" + parts[1] + ">", t.getCode())));
+              c.addPiece(checkForNoChange(t, gen.new Piece((p.getValue().startsWith(corePath+"StructureDefinition")? corePath: "")+parts[0], parts[1], t.getWorkingCode())));
+            }
+          } else
+            c.addPiece(checkForNoChange(t, gen.new Piece((p.getValue().startsWith(corePath)? corePath: "")+ref, t.getWorkingCode(), null)));
+        }
       } else {
         String tc = t.getWorkingCode();
         if (Utilities.isAbsoluteUrl(tc)) {
@@ -3440,22 +3487,28 @@ public class ProfileUtilities extends TranslatingUtilities {
           row.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
         }
       } else if (hasDef && element.getType().size() > 1) {
-        if (allAreReference(element.getType()))
+        if (allAreReference(element.getType())) {
           row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
-        else {
+        } else {
           row.setIcon("icon_choice.gif", HierarchicalTableGenerator.TEXT_ICON_CHOICE);
           typesRow = row;
         }
-      } else if (hasDef && element.getType().get(0).getWorkingCode() != null && element.getType().get(0).getWorkingCode().startsWith("@"))
+      } else if (hasDef && element.getType().get(0).getWorkingCode() != null && element.getType().get(0).getWorkingCode().startsWith("@")) {
         row.setIcon("icon_reuse.png", HierarchicalTableGenerator.TEXT_ICON_REUSE);
-      else if (hasDef && isPrimitive(element.getType().get(0).getWorkingCode()))
+      } else if (hasDef && isPrimitive(element.getType().get(0).getWorkingCode())) {
         row.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
-      else if (hasDef && element.getType().get(0).hasTarget())
+      } else if (hasDef && element.getType().get(0).hasTarget()) {
         row.setIcon("icon_reference.png", HierarchicalTableGenerator.TEXT_ICON_REFERENCE);
-      else if (hasDef && isDataType(element.getType().get(0).getWorkingCode()))
+      } else if (hasDef && isDataType(element.getType().get(0).getWorkingCode())) {
         row.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
-      else
+      } else if (hasDef && Utilities.existsInList(element.getType().get(0).getWorkingCode(), "Element", "BackboneElement")) {
+        row.setIcon("icon_element.gif", HierarchicalTableGenerator.TEXT_ICON_ELEMENT);
+      } else {
         row.setIcon("icon_resource.png", HierarchicalTableGenerator.TEXT_ICON_RESOURCE);
+      }
+      if (element.hasUserData("render.opaque")) {
+        row.setOpacity("0.5");
+      }
       UnusedTracker used = new UnusedTracker();
       String ref = defPath == null ? null : defPath + element.getId();
       String sName = tail(element.getPath());
@@ -4562,6 +4615,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       this.snapshot = snapshot;
       this.prefixLength = prefixLength;
       this.base = base;
+      if (Utilities.isAbsoluteUrl(base)) {
+        this.base = urlTail(base);
+      }
       this.name = name;
     }
 
@@ -4608,9 +4664,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       if (mandatory) {
         if (prefixLength == 0)
-          errors.add("Differential contains path "+path+" which is not found in the base");
+          errors.add("Differential contains path "+path+" which is not found in the in base "+name);
         else
-          errors.add("Differential contains path "+path+" which is actually "+actual+", which is not found in the base");
+          errors.add("Differential contains path "+path+" which is actually "+actual+", which is not found in the in base "+name);
       }
       return 0;
     }
@@ -4766,12 +4822,12 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (profile==null)
         ccmp = null; // this might happen before everything is loaded. And we don't so much care about sot order in this case
       else
-      ccmp = new ElementDefinitionComparer(true, profile.getSnapshot().getElement(), ed.getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name);
+      ccmp = new ElementDefinitionComparer(true, profile.getSnapshot().getElement(), resolveType(ed.getType().get(0).getWorkingCode()), child.getSelf().getPath().length(), cmp.name);
     } else if (ed.getType().size() == 1 && !ed.getType().get(0).getWorkingCode().equals("*")) {
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, sdNs(ed.getType().get(0).getWorkingCode()));
       if (profile==null)
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_PROFILE__IN_ELEMENT_, sdNs(ed.getType().get(0).getWorkingCode()), ed.getPath()));
-      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), ed.getType().get(0).getWorkingCode(), child.getSelf().getPath().length(), cmp.name);
+      ccmp = new ElementDefinitionComparer(false, profile.getSnapshot().getElement(), resolveType(ed.getType().get(0).getWorkingCode()), child.getSelf().getPath().length(), cmp.name);
     } else if (child.getSelf().getType().size() == 1) {
       StructureDefinition profile = context.fetchResource(StructureDefinition.class, sdNs(child.getSelf().getType().get(0).getWorkingCode()));
       if (profile==null)
@@ -4812,6 +4868,16 @@ public class ProfileUtilities extends TranslatingUtilities {
 //      throw new Error("Not handled yet (sortElements: "+ed.getPath()+":"+typeCode(ed.getType())+")");
     }
     return ccmp;
+  }
+
+  private String resolveType(String code) {
+    if (Utilities.isAbsoluteUrl(code)) {
+      StructureDefinition sd = context.fetchResource(StructureDefinition.class, code);
+      if (sd != null) {
+        return sd.getType();
+      }
+    }
+    return code;
   }
 
   private static String sdNs(String type) {
@@ -4961,7 +5027,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         slicing = child.getSlicing();        
       } else if (!name.equals(sliceName))
         slicing = null;
-      
+
       ElementDefinition based = getByPath(base, child.getPath());
       boolean doMin = (child.getMin() > 0) && (based == null || (child.getMin() != based.getMin()));
       boolean doMax = child.hasMax() && !child.getMax().equals("*") && (based == null || (!child.getMax().equals(based.getMax())));
@@ -4974,9 +5040,9 @@ public class ProfileUtilities extends TranslatingUtilities {
             r.assrt("count(f:"+name+slicer.criteria+") >= "+Integer.toString(child.getMin()), name+slicer.name+": minimum cardinality of '"+name+"' is "+Integer.toString(child.getMin()));
           if (doMax) 
             r.assrt("count(f:"+name+slicer.criteria+") <= "+child.getMax(), name+slicer.name+": maximum cardinality of '"+name+"' is "+child.getMax());
-          }
         }
       }
+    }
     for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
       if (inv.hasXpath()) {
         Section s = sch.section(ed.getPath());
@@ -4984,9 +5050,11 @@ public class ProfileUtilities extends TranslatingUtilities {
         r.assrt(inv.getXpath(), (inv.hasId() ? inv.getId()+": " : "")+inv.getHuman()+(inv.hasUserData(IS_DERIVED) ? " (inherited)" : ""));
       }
     }
-    for (ElementDefinition child : children) {
-      String name = tail(child.getPath());
-      generateForChildren(sch, xpath+"/f:"+name, child, structure, base);
+    if (!ed.hasContentReference()) {
+      for (ElementDefinition child : children) {
+        String name = tail(child.getPath());
+        generateForChildren(sch, xpath+"/f:"+name, child, structure, base);
+      }
     }
   }
 
@@ -5123,7 +5191,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 //  }
 //
 
-  private String urlTail(String profile) {
+  private static String urlTail(String profile) {
     return profile.contains("/") ? profile.substring(profile.lastIndexOf("/")+1) : profile;
   }
 

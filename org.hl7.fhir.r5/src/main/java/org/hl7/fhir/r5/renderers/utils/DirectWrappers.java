@@ -101,6 +101,11 @@ public class DirectWrappers {
     public ResourceWrapper getAsResource() {
       throw new Error("Not implemented yet");
     }
+
+    @Override
+    public String fhirType() {
+      return wrapped.getTypeCode();
+    }
   }
 
   public static class BaseWrapperDirect extends WrapperBaseImpl implements BaseWrapper {
@@ -137,6 +142,11 @@ public class DirectWrappers {
         return null;
       else
         return new PropertyWrapperDirect(context, p);
+    }
+
+    @Override
+    public String fhirType() {
+      return wrapped.fhirType();
     }
 
   }
@@ -236,6 +246,11 @@ public class DirectWrappers {
       }
       return false;
 
+    }
+
+    @Override
+    public String fhirType() {
+      return wrapped.fhirType();
     }
   }
 

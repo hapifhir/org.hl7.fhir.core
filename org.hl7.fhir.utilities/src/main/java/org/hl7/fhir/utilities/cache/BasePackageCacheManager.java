@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.cache;
 
 import org.apache.commons.lang3.Validate;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,6 +128,9 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   }
 
   private String getPackageId(String canonical, String server) throws IOException {
+    if (canonical == null) {
+      return null;
+    }
     PackageClient pc = myClientFactory.apply(server);
     List<PackageClient.PackageInfo> res = pc.search(null, canonical, null, false);
     if (res.size() == 0) {
@@ -153,6 +157,10 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
       this.url = url;
       this.version = version;
     }
+  }
+
+  public NpmPackage loadPackage(String idAndVer) throws FHIRException, IOException {
+    return loadPackage(idAndVer, null);
   }
 
 }

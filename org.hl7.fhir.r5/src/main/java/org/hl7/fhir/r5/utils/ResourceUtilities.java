@@ -72,19 +72,22 @@ public class ResourceUtilities {
 	}
 	
 	public static String getErrorDescription(OperationOutcome error) {  
-		if (error.hasText() && error.getText().hasDiv())
+		if (error.hasText() && error.getText().hasDiv()) {
 			return new XhtmlComposer(XhtmlComposer.XML).composePlainText(error.getText().getDiv());
+		}
 		
 		StringBuilder b = new StringBuilder();
-		for (OperationOutcomeIssueComponent t : error.getIssue())
-			if (t.getSeverity() == IssueSeverity.ERROR)
+		for (OperationOutcomeIssueComponent t : error.getIssue()) {
+			if (t.getSeverity() == IssueSeverity.ERROR) {
 				b.append("Error:" +t.getDetails()+"\r\n");
-			else if (t.getSeverity() == IssueSeverity.FATAL)
+			} else if (t.getSeverity() == IssueSeverity.FATAL) {
 				b.append("Fatal:" +t.getDetails()+"\r\n");
-			else if (t.getSeverity() == IssueSeverity.WARNING)
+			} else if (t.getSeverity() == IssueSeverity.WARNING) {
 				b.append("Warning:" +t.getDetails()+"\r\n");
-			else if (t.getSeverity() == IssueSeverity.INFORMATION)
+			} else if (t.getSeverity() == IssueSeverity.INFORMATION) {
 				b.append("Information:" +t.getDetails()+"\r\n");
+			}
+		}
 		return b.toString();
   }
 

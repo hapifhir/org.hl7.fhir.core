@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.FhirPublication;
+import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Patient;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -97,7 +98,8 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   private String version;
   private String name;
 
-  private static final String DEF_TX = "http://tx.fhir.org";
+   private static final String DEF_TX = "http://tx.fhir.org";
+//  private static final String DEF_TX = "http://local.fhir.org:960";
   private static Map<String, ValidationEngine> ve = new HashMap<>();
   private static ValidationEngine vCurr;
 
@@ -169,12 +171,18 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
         vCurr.loadIg(e.getAsString(), true);
       }
     }
+    if (content.has("crumb-trail")) {
+      val.setCrumbTrails(content.get("crumb-trail").getAsBoolean());
+    }
     if (content.has("supporting")) {
       for (JsonElement e : content.getAsJsonArray("supporting")) {
         String filename = e.getAsString();
         String contents = TestingUtilities.loadTestResource("validator", filename);
         CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
         val.getContext().cacheResource(mr);
+        if (mr instanceof ImplementationGuide) {
+          val.getImplementationGuides().add((ImplementationGuide) mr);
+        }
       }
     }
     if (content.has("profiles")) {
@@ -206,7 +214,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     else
       val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
     System.out.println(val.reportTimes());
-    checkOutcomes(errors, content);
+    checkOutcomes(errors, content, null);
     if (content.has("profile")) {
       System.out.print("** Profile: ");
       JsonObject profile = content.getAsJsonObject("profile");
@@ -219,6 +227,9 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
           String contents = TestingUtilities.loadTestResource("validator", filename);
           CanonicalResource mr = (CanonicalResource) loadResource(filename, contents);
           val.getContext().cacheResource(mr);
+          if (mr instanceof ImplementationGuide) {
+            val.getImplementationGuides().add((ImplementationGuide) mr);
+          }
         }
       }
       String filename = profile.get("source").getAsString();
@@ -234,7 +245,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       else
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, asSdList(sd));
       System.out.println(val.reportTimes());
-      checkOutcomes(errorsProfile, profile);
+      checkOutcomes(errorsProfile, profile, filename);
     }
     if (content.has("logical")) {
       JsonObject logical = content.getAsJsonObject("logical");
@@ -258,7 +269,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
           Assert.assertTrue(fp.evaluateToBoolean(null, le, le, le, fp.parse(exp)));
         }
       }
-      checkOutcomes(errorsLogical, logical);
+      checkOutcomes(errorsLogical, logical, "logical");
     }
   }
 
@@ -320,7 +331,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
   }
 
-  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus) {
+  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile) {
     JsonObject java = focus.getAsJsonObject("java");
     int ec = 0;
     int wc = 0;
@@ -348,11 +359,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       }
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
-      Assert.assertEquals("Test " + name + ": Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".", java.get("errorCount").getAsInt(), ec);
+      Assert.assertEquals("Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".", java.get("errorCount").getAsInt(), ec);
       if (java.has("warningCount"))
-        Assert.assertEquals( "Test " + name + ": Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".", java.get("warningCount").getAsInt(), wc);
+        Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".", java.get("warningCount").getAsInt(), wc);
       if (java.has("infoCount"))
-        Assert.assertEquals( "Test " + name + ": Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".", java.get("infoCount").getAsInt(), hc);
+        Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".", java.get("infoCount").getAsInt(), hc);
     }
     if (java.has("error-locations")) {
       JsonArray el = java.getAsJsonArray("error-locations");
@@ -446,7 +457,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
 
   @Override
   public boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException {
-    return !url.contains("example.org");
+    return !url.contains("example.org") && !url.startsWith("http://hl7.org/fhir/invalid");
   }
 
   @Override

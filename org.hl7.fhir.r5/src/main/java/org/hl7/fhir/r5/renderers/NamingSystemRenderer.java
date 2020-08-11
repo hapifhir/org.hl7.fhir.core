@@ -12,6 +12,7 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -28,7 +29,7 @@ public class NamingSystemRenderer extends ResourceRenderer {
     super(context, rcontext);
   }
   
-  public boolean render(XhtmlNode x, DomainResource dr) throws FHIRFormatError, DefinitionException, IOException {
+  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (NamingSystem) dr);
   }
 
@@ -123,6 +124,16 @@ public class NamingSystemRenderer extends ResourceRenderer {
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return ((NamingSystem) r).present();
+  }
+
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    if (r.has("title")) {
+      return r.children("title").get(0).getBase().primitiveValue();
+    }
+    if (r.has("name")) {
+      return r.children("name").get(0).getBase().primitiveValue();
+    }
+    return "??";
   }
 
 }

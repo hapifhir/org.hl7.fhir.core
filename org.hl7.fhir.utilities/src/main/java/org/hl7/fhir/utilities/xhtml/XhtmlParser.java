@@ -120,6 +120,7 @@ public class XhtmlParser {
 
   private Set<String> elements = new HashSet<String>();
   private Set<String> attributes = new HashSet<String>();  
+  private Map<String, String> entities = new HashMap<>();
   
   
   public XhtmlParser() {
@@ -522,8 +523,9 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
         readChar();
         if (peekChar() == '!') {
           String sc = readToCommentEnd();
-          if (sc.startsWith("DOCTYPE"))
-            throw new FHIRFormatError("Malformed XHTML: Found a DocType declaration, and these are not allowed (XXE security vulnerability protection)");
+          // moved the validator
+//          if (sc.startsWith("DOCTYPE"))
+//            throw new FHIRFormatError("Malformed XHTML: Found a DocType declaration, and these are not allowed (XXE security vulnerability protection)");
           node.addComment(sc).setLocation(markLocation());
         } else if (peekChar() == '?')
           node.addComment(readToTagEnd()).setLocation(markLocation());
@@ -786,6 +788,8 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
         readChar();
     }
     
+    boolean doctypeEntities = false;
+    
     boolean done = false;
     while (!done) {
       char c = peekChar();
@@ -799,8 +803,16 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
             s.append("--");
         } else 
           s.append('-');
-      } else if (simple && peekChar() == '>') {
+      } else if (doctypeEntities && c == ']') {
+        s.append(readChar());
+        if (peekChar() == '>') {
+          done = true;
+        }
+      } else if (simple && peekChar() == '>' && !doctypeEntities) {
         done = true;
+      } else if (c == '[' && s.toString().startsWith("DOCTYPE ")) {
+        doctypeEntities = true;
+        s.append(readChar());
       } else if (c != '\0')
         s.append(readChar());
       else if (mustBeWellFormed)
@@ -811,7 +823,28 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
       readChar();
       skipWhiteSpace();
     }
+    if (doctypeEntities) {
+      parseDoctypeEntities(s.toString());
+    }
     return s.toString();
+  }
+
+  private void parseDoctypeEntities(String s) {
+    while (s.contains("<!ENTITY")) {
+      s = s.substring(s.indexOf("<!ENTITY"));
+      int e = s.indexOf(">");
+      String ed = s.substring(0, e+1);
+      s = s.substring(e+1);
+      ed = ed.substring(8).trim();
+      e = ed.indexOf(" ");
+      String n = ed.substring(0, e).trim();
+      ed = ed.substring(e).trim();
+      e = ed.indexOf(" "); // SYSTEM
+      ed = ed.substring(e).trim();
+      String v = ed.substring(0, ed.length()-1);
+      entities.put(n, v);
+    }
+    
   }
 
   private boolean isNameChar(char ch)
@@ -1125,6 +1158,8 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
       s.append((char) 8221); 
     else if (c.equals("rdquo"))
       s.append((char) 201D); 
+    else if (entities.containsKey(c))
+      s.append(entities.get(c));
     else
       throw new FHIRFormatError("unable to parse character reference '" + c + "'' (last text = '" + lastText + "'" + descLoc());
   }

@@ -34,6 +34,7 @@ package org.hl7.fhir.r5.terminologies;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
@@ -52,4 +53,5 @@ public interface TerminologyClient {
   public TerminologyClient setRetryCount(int retryCount) throws FHIRException;
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
   public Parameters lookupCode(Map<String, String> params) throws FHIRException;
+  public Bundle validateBatch(Bundle batch);
 }

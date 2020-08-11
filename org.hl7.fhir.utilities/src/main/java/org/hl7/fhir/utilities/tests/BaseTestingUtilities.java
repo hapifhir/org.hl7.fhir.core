@@ -41,6 +41,7 @@ public class BaseTestingUtilities {
     }
   }
 
+  
   public static InputStream loadTestResourceStream(String... paths) throws IOException {
     String dir = System.getenv("FHIR-TEST-CASES");
     if (dir != null && new File(dir).exists()) {

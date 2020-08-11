@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
 import org.hl7.fhir.validation.cli.model.*;
 
 import java.io.File;
@@ -20,6 +21,14 @@ import java.util.List;
 import java.util.Set;
 
 public class ValidationService {
+
+  /*
+   * TEMPORARY METHOD
+   */
+  public static void validateFileInfo(FileInfo f) {
+    System.out.println("success");
+  }
+
 
   public static ValidationResponse validateSources(ValidationRequest request, ValidationEngine validator) throws Exception {
     if (request.getCliContext().getProfiles().size() > 0) {
@@ -31,12 +40,12 @@ public class ValidationService {
 
     ValidationResponse response = new ValidationResponse();
     for (FileInfo fp : request.getFilesToValidate()) {
-      OperationOutcome operationOutcome = validator.validate(fp.getFileContent().getBytes(), fp.getFileType(),
+      OperationOutcome operationOutcome = validator.validate(fp.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fp.getFileType()),
         request.getCliContext().getProfiles());
       ValidationOutcome outcome = new ValidationOutcome();
 
       // Need to set file content to null as server can't handle json in json
-      fp.setFileContent(null);
+      //fp.setFileContent(null);
       outcome.setFileInfo(fp);
       operationOutcome.getIssue().forEach(outcome::addIssue);
       response.addOutcome(outcome);
@@ -44,7 +53,17 @@ public class ValidationService {
     return response;
   }
 
-  public static void validateSources(CliContext cliContext, ValidationEngine validator) throws Exception {
+  public static VersionSourceInformation scanForVersions(CliContext cliContext) throws Exception {
+    VersionSourceInformation versions = new VersionSourceInformation();
+    ValidationEngine ve = new ValidationEngine();
+    for (String src : cliContext.getIgs()) {
+      ve.scanForIgVersion(src, cliContext.isRecursive(), versions);
+    }
+    ve.scanForVersions(cliContext.getSources(), versions);
+    return versions;
+  }
+  public static void validateSources(CliContext cliContext, ValidationEngine validator, long loadStart) throws Exception {
+    validator.doneLoading(loadStart);
     if (cliContext.getProfiles().size() > 0) {
       System.out.println("  .. validate " + cliContext.getSources() + " against " + cliContext.getProfiles().toString());
     } else {
@@ -91,8 +110,8 @@ public class ValidationService {
   }
 
   public static void convertSources(CliContext cliContext, ValidationEngine validator) throws Exception {
-    validator.convert(cliContext.getSources().get(0), cliContext.getOutput());
     System.out.println(" ...convert");
+    validator.convert(cliContext.getSources().get(0), cliContext.getOutput());
   }
 
   public static void evaluateFhirpath(CliContext cliContext, ValidationEngine validator) throws Exception {
@@ -194,6 +213,9 @@ public class ValidationService {
     validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
     validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
     validator.setSecurityChecks(cliContext.isSecurityChecks());
+    validator.setCrumbTrails(cliContext.isCrumbTrails());
+    validator.setShowTimes(cliContext.isShowTimes());
+    validator.setFetcher(new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator));
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
     return validator;
   }

@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
+import org.hl7.fhir.convertors.loaders.BaseLoaderR5.ILoaderKnowledgeProvider;
+import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -55,17 +57,18 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.cache.NpmPackage;
 
-public class R5ToR5Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor50 {
+import com.google.gson.JsonSyntaxException;
 
-  public R5ToR5Loader(String[] types) {
-    super(types);
+public class R5ToR5Loader extends BaseLoaderR5 implements VersionConvertorAdvisor50 {
+
+  public R5ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
+    super(types, lkp);
   }
 
   private List<CodeSystem> cslist = new ArrayList<>();
-  private boolean patchUrls;
-  private boolean killPrimitives;;
-  
+
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
     Resource r5 = null;
@@ -103,8 +106,8 @@ public class R5ToR5Loader extends BaseLoader implements IContextResourceLoader, 
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/4.0/"));
-          sd.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
+          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
           for (ElementDefinition ed : sd.getSnapshot().getElement()) 
             patchUrl(ed);
           for (ElementDefinition ed : sd.getDifferential().getElement()) 
@@ -115,13 +118,42 @@ public class R5ToR5Loader extends BaseLoader implements IContextResourceLoader, 
     return b;
   }
 
+  @Override
+  public Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
+    Resource r5 = null;
+    if (isJson)
+      r5 = new JsonParser().parse(stream);
+    else
+      r5 = new XmlParser().parse(stream);
+    setPath(r5);
+
+    if (!cslist.isEmpty()) {
+      throw new FHIRException("Error: Cannot have included code systems");
+    }
+    if (killPrimitives) {
+      throw new FHIRException("Cannot kill primitives when using deferred loading");      
+    }
+    if (patchUrls) {
+      if (r5 instanceof StructureDefinition) {
+        StructureDefinition sd = (StructureDefinition) r5;
+        sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
+        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+        for (ElementDefinition ed : sd.getSnapshot().getElement()) 
+          patchUrl(ed);
+        for (ElementDefinition ed : sd.getDifferential().getElement()) 
+          patchUrl(ed);
+      }
+    }
+    return r5;
+  }
+
   private void patchUrl(ElementDefinition ed) {
     for (TypeRefComponent tr : ed.getType()) {
       for (CanonicalType s : tr.getTargetProfile()) {
-        s.setValue(s.getValue().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/4.0/"));
+        s.setValue(s.getValue().replace(URL_BASE, URL_R4));
       }
       for (CanonicalType s : tr.getProfile()) {
-        s.setValue(s.getValue().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/4.0/"));
+        s.setValue(s.getValue().replace(URL_BASE, URL_R4));
       }
     }    
   }
@@ -157,24 +189,6 @@ public class R5ToR5Loader extends BaseLoader implements IContextResourceLoader, 
   @Override
   public CodeSystem getCodeSystem(ValueSet src) {
     return null;
-  }
-
-  public boolean isPatchUrls() {
-    return patchUrls;
-  }
-
-  public R5ToR5Loader setPatchUrls(boolean patchUrls) {
-    this.patchUrls = patchUrls;
-    return this;
-  }
-
-  public boolean isKillPrimitives() {
-    return killPrimitives;
-  }
-
-  public R5ToR5Loader setKillPrimitives(boolean killPrimitives) {
-    this.killPrimitives = killPrimitives;
-    return this;
   }
 
   @Override

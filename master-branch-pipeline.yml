@@ -8,9 +8,13 @@ trigger:
 pool:
   vmImage: "ubuntu-16.04"
 
+variables:
+- group: PGP_VAR_GROUP
+- group: SONATYPE_VAR_GROUP
+
 steps:
-  # Signing, for now, occurs for all builds, SNAPSHOT or release. So we need a valid
-  # signing key. The next two steps download the public and private keys from the
+  # We need a valid signing key. 
+  # The next two steps download the public and private keys from the
   # secure library files. 
   - task: DownloadSecureFile@1
     displayName: 'Download public key.'

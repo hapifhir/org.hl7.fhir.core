@@ -1,23 +1,27 @@
 package org.hl7.fhir.utilities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.cache.NpmPackage;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
+
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
+
+ * Redistributions of source code must retain the above copyright notice, this 
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
+ * Redistributions in binary form must reproduce the above copyright notice, 
      this list of conditions and the following disclaimer in the documentation 
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
+ * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
@@ -28,13 +32,29 @@ import org.hl7.fhir.exceptions.FHIRException;
   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
-  
+
  */
 
 
 public class VersionUtilities {
-  
-  
+
+
+  public static class VersionURLInfo {
+    private String version;
+    private String url;
+    public VersionURLInfo(String version, String url) {
+      super();
+      this.version = version;
+      this.url = url;
+    }
+    public String getVersion() {
+      return version;
+    }
+    public String getUrl() {
+      return url;
+    }
+  }
+
   public static final String CURRENT_VERSION = "4.4";
   public static final String CURRENT_FULL_VERSION = "4.4.0";
 
@@ -146,7 +166,7 @@ public class VersionUtilities {
   public static String getMajMin(String version) {
     if (version == null)
       return null;
-    
+
     if (Utilities.charCount(version, '.') == 1) {
       String[] p = version.split("\\.");
       return p[0]+"."+p[1];
@@ -223,6 +243,126 @@ public class VersionUtilities {
       return CURRENT_FULL_VERSION;
     }
     throw new FHIRException("Unknown version "+version);
+  }
+
+  public static VersionURLInfo parseVersionUrl(String url) {
+    if (url.length() < 24) {
+      return null;
+    }
+    String v = url.substring(20, 24);
+    if (v.endsWith("/")) {
+      v = v.substring(0, v.length()-1);
+      if (Utilities.existsInList(v, "1.0", "1.4", "3.0", "4.0", "5.0", CURRENT_VERSION)) {
+        return new VersionURLInfo(v, "http://hl7.org/fhir/"+url.substring(24));
+      }
+    }
+    return null;
+  }
+
+  public static List<String> getCanonicalResourceNames(String version) {
+    ArrayList<String> res = new ArrayList<String>();
+    if (isR2Ver(version) || isR2BVer(version)) {
+      res.add("ValueSet");
+      res.add("ConceptMap");
+      res.add("NamingSystem");
+      res.add("StructureDefinition");
+      res.add("DataElement");
+      res.add("Conformance");
+      res.add("OperationDefinition");
+      res.add("SearchParameter");
+      res.add("ImplementationGuide");
+      res.add("TestScript");
+    }
+    if (isR3Ver(version)) {
+      res.add("CapabilityStatement");
+      res.add("StructureDefinition");
+      res.add("ImplementationGuide");
+      res.add("SearchParameter");
+      res.add("MessageDefinition");
+      res.add("OperationDefinition");
+      res.add("CompartmentDefinition");
+      res.add("StructureMap");
+      res.add("GraphDefinition");
+      res.add("DataElement");
+      res.add("CodeSystem");
+      res.add("ValueSet");
+      res.add("ConceptMap");
+      res.add("ExpansionProfile");
+      res.add("Questionnaire");
+      res.add("ActivityDefinition");
+      res.add("ServiceDefinition");
+      res.add("PlanDefinition");
+      res.add("Measure");
+      res.add("TestScript");
+
+    }
+    if (isR4Ver(version)) {
+
+      res.add("ActivityDefinition");
+      res.add("CapabilityStatement");
+      res.add("ChargeItemDefinition");
+      res.add("CodeSystem");
+      res.add("CompartmentDefinition");
+      res.add("ConceptMap");
+      res.add("EffectEvidenceSynthesis");
+      res.add("EventDefinition");
+      res.add("Evidence");
+      res.add("EvidenceVariable");
+      res.add("ExampleScenario");
+      res.add("GraphDefinition");
+      res.add("ImplementationGuide");
+      res.add("Library");
+      res.add("Measure");
+      res.add("MessageDefinition");
+      res.add("NamingSystem");
+      res.add("OperationDefinition");
+      res.add("PlanDefinition");
+      res.add("Questionnaire");
+      res.add("ResearchDefinition");
+      res.add("ResearchElementDefinition");
+      res.add("RiskEvidenceSynthesis");
+      res.add("SearchParameter");
+      res.add("StructureDefinition");
+      res.add("StructureMap");
+      res.add("TerminologyCapabilities");
+      res.add("TestScript");
+      res.add("ValueSet");
+    }
+
+    if (isR5Ver(version)) {
+
+      res.add("ActivityDefinition");
+      res.add("CapabilityStatement");
+      res.add("CapabilityStatement2");
+      res.add("ChargeItemDefinition");
+      res.add("Citation");
+      res.add("CodeSystem");
+      res.add("CompartmentDefinition");
+      res.add("ConceptMap");
+      res.add("ConditionDefinition");
+      res.add("EventDefinition");
+      res.add("Evidence");
+      res.add("EvidenceReport");
+      res.add("EvidenceVariable");
+      res.add("ExampleScenario");
+      res.add("GraphDefinition");
+      res.add("ImplementationGuide");
+      res.add("Library");
+      res.add("Measure");
+      res.add("MessageDefinition");
+      res.add("NamingSystem");
+      res.add("OperationDefinition");
+      res.add("PlanDefinition");
+      res.add("Questionnaire");
+      res.add("SearchParameter");
+      res.add("StructureDefinition");
+      res.add("StructureMap");
+      res.add("TerminologyCapabilities");
+      res.add("TestScript");
+      res.add("ValueSet");
+
+    }
+    return res;
   }
 
 }

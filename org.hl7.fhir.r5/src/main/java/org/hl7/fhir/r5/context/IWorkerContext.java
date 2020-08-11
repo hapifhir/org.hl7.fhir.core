@@ -44,6 +44,8 @@ import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
+import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.ParserType;
 import org.hl7.fhir.r5.model.Bundle;
@@ -64,9 +66,12 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorCla
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.utilities.TranslationServices;
+import org.hl7.fhir.utilities.cache.BasePackageCacheManager;
 import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+
+import com.google.gson.JsonSyntaxException;
 
 
 /**
@@ -89,6 +94,53 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
  * @author Grahame
  */
 public interface IWorkerContext {
+
+  public class CodingValidationRequest {
+    private Coding coding;
+    private ValidationResult result;
+    private CacheToken cacheToken;
+    
+    public CodingValidationRequest(Coding coding) {
+      super();
+      this.coding = coding;
+    }
+
+    public ValidationResult getResult() {
+      return result;
+    }
+
+    public void setResult(ValidationResult result) {
+      this.result = result;
+    }
+
+    public Coding getCoding() {
+      return coding;
+    }
+
+    public boolean hasResult() {
+      return result != null;
+    }
+
+    /**
+     * internal logic; external users of batch validation should ignore this property
+     * 
+     * @return
+     */
+    public CacheToken getCacheToken() {
+      return cacheToken;
+    }
+
+    /**
+     * internal logic; external users of batch validation should ignore this property
+     * 
+     * @param cacheToken
+     */
+    public void setCacheToken(CacheToken cacheToken) {
+      this.cacheToken = cacheToken;
+    }
+    
+    
+  }
 
   public class PackageVersion {
     private String id;
@@ -118,9 +170,50 @@ public interface IWorkerContext {
   }
 
   public interface IContextResourceLoader {
-    Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
-
+    /** 
+     * @return List of the resource types that shoud be loaded
+     */
     String[] getTypes();
+    
+    /**
+     * Request to actually load the resources and do whatever is required
+     *  
+     * @param stream
+     * @param isJson
+     * @return A bundle because some single resources become multiple resources after loading
+     * @throws FHIRException
+     * @throws IOException
+     */
+    Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
+    
+    /**
+     * Load a single resources (lazy load)
+     * 
+     * @param stream
+     * @param isJson
+     * @return
+     * @throws FHIRException - throw this if you a single resource can't be returned - can't lazy load in this circumstance   
+     * @throws IOException
+     */
+    Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException;
+    
+    /** 
+     * get the path for references to this resource.
+     * @param resource
+     * @return null if not tracking paths
+     */
+    String getResourcePath(Resource resource);
+
+    /**
+     * called when a mew package is being loaded
+     * 
+     * this is called by loadPacakgeAndDependencies when a new package is loaded
+     * @param npm
+     * @return
+     * @throws IOException 
+     * @throws JsonSyntaxException 
+     */
+    IContextResourceLoader getNewLoader(NpmPackage npm) throws JsonSyntaxException, IOException;   
   }
 
 
@@ -575,6 +668,8 @@ public interface IWorkerContext {
    * @return
    */
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs);
+
+  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
   
   /**
    * returns the recommended tla for the type  (from the structure definitions)
@@ -630,7 +725,45 @@ public interface IWorkerContext {
   public String getLinkForUrl(String corePath, String s);
   public Map<String, byte[]> getBinaries();
 
-  void loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String[] types) throws FileNotFoundException, IOException, FHIRException;
+  /**
+   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
+   * 
+   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
+   * 
+   * @param pi - the package to load
+   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
+   * @return the number of resources loaded
+   */
+  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException;
+
+  /**
+   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
+   * 
+   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
+   *
+   * Deprecated - use the simpler method where the types come from the loader.
+   * 
+   * @param pi - the package to load
+   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
+   * @param types - which types of resources to load
+   * @return the number of resources loaded
+   */
+  @Deprecated
+  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String[] types) throws FileNotFoundException, IOException, FHIRException;
+
+  /**
+   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
+   * 
+   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
+   *
+   * This method also loads all the packages that the package depends on (recursively)
+   * 
+   * @param pi - the package to load
+   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
+   * @param pcm - used to find and load additional dependencies
+   * @return the number of resources loaded
+   */
+   int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
 
   public boolean hasPackage(String id, String ver);
 
