@@ -14,7 +14,7 @@ class JsonParserTestCase {
 
   @Test
   void test() throws FHIRFormatError, IOException {
-    Resource r = new JsonParser().parse(TestingUtilities.loadTestResourceStream("r3", "ActivityDefinition-referralPrimaryCareMentalHealth.json"));
+    Resource r = new JsonParser().parse(TestingUtilities.loadTestResourceStream("r3", "activitydefinition-referralprimarycarementalhealth.json"));
   }
 
 }

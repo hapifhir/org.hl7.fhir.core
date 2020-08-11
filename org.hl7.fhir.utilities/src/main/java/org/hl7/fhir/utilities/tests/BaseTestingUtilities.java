@@ -4,10 +4,9 @@ import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BaseTestingUtilities {
 
@@ -87,6 +86,4 @@ public class BaseTestingUtilities {
       }
     }
   }
-
-
 }
