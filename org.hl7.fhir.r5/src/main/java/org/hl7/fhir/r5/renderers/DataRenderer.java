@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.renderers;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -11,7 +12,9 @@ import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.Address;
 import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactPoint;
@@ -19,13 +22,16 @@ import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumeration;
+import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.HumanName;
 import org.hl7.fhir.r5.model.HumanName.NameUse;
 import org.hl7.fhir.r5.model.Identifier;
+import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Range;
+import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.SampledData;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -40,6 +46,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -48,20 +55,16 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
-public class DataRenderer {
+public class DataRenderer extends Renderer {
   
   // -- 1. context --------------------------------------------------------------
-  
-  protected RenderingContext context;
-  
+    
   public DataRenderer(RenderingContext context) {
-    super();
-    this.context = context;
+    super(context);
   }
 
   public DataRenderer(IWorkerContext worker) {
-    super();
-    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.RESOURCE);
+    super(worker);
   }
 
   // -- 2. Markdown support -------------------------------------------------------
@@ -191,7 +194,6 @@ public class DataRenderer {
     return lang;
   }
 
-
   private boolean isCanonical(String path) {
     if (!path.endsWith(".url")) 
       return false;
@@ -267,8 +269,19 @@ public class DataRenderer {
     return "to do";   
   }
 
-  public void render(XhtmlNode x, BaseWrapper type) {
-    x.tx("to do");       
+  public void render(XhtmlNode x, BaseWrapper type)  {
+    Base base = null;
+    try {
+      base = type.getBase();
+    } catch (FHIRException | IOException e) {
+      x.tx("Error: " + e.getMessage()); // this shouldn't happen - it's an error in the library itself
+      return;
+    }
+    if (base instanceof DataType) {
+      render(x, (DataType) base);
+    } else {
+      x.tx("to do: "+base.fhirType());
+    }
   }
   
   public void renderBase(XhtmlNode x, Base b) {
@@ -287,7 +300,7 @@ public class DataRenderer {
     } else if (type instanceof Annotation) {
       renderAnnotation(x, (Annotation) type);
     } else if (type instanceof Coding) {
-      renderCoding(x, (Coding) type);
+      renderCodingWithDetails(x, (Coding) type);
     } else if (type instanceof CodeableConcept) {
       renderCodeableConcept(x, (CodeableConcept) type);
     } else if (type instanceof Identifier) {
@@ -308,12 +321,28 @@ public class DataRenderer {
       renderTiming(x, (Timing) type);
     } else if (type instanceof SampledData) {
       renderSampledData(x, (SampledData) type);
+    } else if (type instanceof Reference) {
+      renderReference(x, (Reference) type);
+    } else if (type instanceof InstantType) {
+      x.tx(((InstantType) type).toHumanDisplay());
+    } else if (type instanceof BaseDateTimeType) {
+      x.tx(((BaseDateTimeType) type).toHumanDisplay());
     } else if (type.isPrimitive()) {
       x.tx(type.primitiveValue());
     } else {
       x.tx("No display for "+type.fhirType());      
     }
 
+  }
+
+  private void renderReference(XhtmlNode x, Reference ref) {
+     if (ref.hasDisplay()) {
+       x.tx(ref.getDisplay());
+     } else if (ref.hasReference()) {
+       x.tx(ref.getReference());
+     } else {
+       x.tx("??");
+     }
   }
 
   public void renderDateTime(XhtmlNode x, Base e) {
@@ -353,31 +382,37 @@ public class DataRenderer {
   }
 
   protected void renderAnnotation(XhtmlNode x, Annotation a, boolean showCodeDetails) throws FHIRException {
-    StringBuilder s = new StringBuilder();
-    if (a.hasAuthor()) {
-      s.append("Author: ");
+    StringBuilder b = new StringBuilder();
+    if (a.hasText()) {
+      b.append(a.getText());
+    }
 
-      if (a.hasAuthorReference())
-        s.append(a.getAuthorReference().getReference());
-      else if (a.hasAuthorStringType())
-        s.append(a.getAuthorStringType().getValue());
+    if (a.hasText() && (a.hasAuthor() || a.hasTimeElement())) {
+      b.append(" (");
+    }
+
+    if (a.hasAuthor()) {
+      b.append("By ");
+      if (a.hasAuthorReference()) {
+        b.append(a.getAuthorReference().getReference());
+      } else if (a.hasAuthorStringType()) {
+        b.append(a.getAuthorStringType().getValue());
+      }
     }
 
 
     if (a.hasTimeElement()) {
-      if (s.length() > 0)
-        s.append("; ");
-
-      s.append("Made: ").append(a.getTimeElement().toHumanDisplay());
+      if (b.length() > 0) {
+        b.append(" ");
+      }
+      b.append("@").append(a.getTimeElement().toHumanDisplay());
+    }
+    if (a.hasText() && (a.hasAuthor() || a.hasTimeElement())) {
+      b.append(")");
     }
 
-    if (a.hasText()) {
-      if (s.length() > 0)
-        s.append("; ");
 
-      s.append("Annotation: ").append(a.getText());
-    }
-    x.addText(s.toString());
+    x.addText(b.toString());
   }
 
   public String displayCoding(Coding c) {
@@ -401,6 +436,38 @@ public class DataRenderer {
 
   protected void renderCoding(XhtmlNode x, Coding c) {
     renderCoding(x, c, false);
+  }
+  
+  protected void renderCodingWithDetails(XhtmlNode x, Coding c) {
+    String s = "";
+    if (c.hasDisplayElement())
+      s = c.getDisplay();
+    if (Utilities.noString(s))
+      s = lookupCode(c.getSystem(), c.getCode());
+
+
+    String sn = describeSystem(c.getSystem());
+    if ("http://snomed.info/sct".equals(c.getSystem())) {
+      x.ah("https://browser.ihtsdotools.org/").tx(sn);      
+    } else if ("http://loinc.org".equals(c.getSystem())) {
+      x.ah("https://loinc.org/").tx(sn);            
+    } else {
+      CodeSystem cs = context.getWorker().fetchCodeSystem(c.getSystem());
+      if (cs != null && cs.hasUserData("path")) {
+        x.ah(cs.getUserString("path")).tx(sn);
+      } else {
+        x.tx(sn);
+      }
+    }
+    x.tx(" ");
+    x.tx(c.getCode());
+    if (!Utilities.noString(s)) {
+      x.tx(": ");
+      x.tx(s);
+    }
+    if (c.hasVersion()) {
+      x.tx(" (version = "+c.getVersion()+")");
+    }
   }
   
   protected void renderCoding(XhtmlNode x, Coding c, boolean showCodeDetails) {
@@ -517,11 +584,13 @@ public class DataRenderer {
 
     if (ii.hasType()) {
       if (ii.getType().hasText())
-        s = ii.getType().getText()+" = "+s;
+        s = ii.getType().getText()+": "+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
-        s = ii.getType().getCoding().get(0).getDisplay()+" = "+s;
+        s = ii.getType().getCoding().get(0).getDisplay()+": "+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
-        s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getCode())+" = "+s;
+        s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getCode())+": "+s;
+    } else {
+      s = "id: "+s;      
     }
 
     if (ii.hasUse())
@@ -717,7 +786,11 @@ public class DataRenderer {
     if (s.getEvent().size() > 0) {
       CommaSeparatedStringBuilder c = new CommaSeparatedStringBuilder();
       for (DateTimeType p : s.getEvent()) {
-        c.append(p.toHumanDisplay());
+        if (p.hasValue()) {
+          c.append(p.toHumanDisplay());
+        } else if (!renderExpression(c, p)) {
+          c.append("??");
+        }        
       }
       b.append("Events: "+ c.toString());
     }
@@ -760,6 +833,15 @@ public class DataRenderer {
         b.append("Until "+rep.getBoundsPeriod().getEndElement().toHumanDisplay());
     }
     return b.toString();
+  }
+
+  private boolean renderExpression(CommaSeparatedStringBuilder c, PrimitiveType p) {
+    Extension exp = p.getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/cqf-expression");
+    if (exp == null) {
+      return false;
+    }
+    c.append(exp.getValueExpression().getExpression());
+    return true;
   }
 
   private String displayEventCode(EventTiming when) {

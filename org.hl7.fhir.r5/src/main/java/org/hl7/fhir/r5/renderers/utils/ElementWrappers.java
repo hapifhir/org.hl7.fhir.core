@@ -60,7 +60,11 @@ public class ElementWrappers {
       if (context.getParser() == null) {
         System.out.println("Noe version specific parser provided");
       } 
-      return context.getParser().parseType(xml.toString(), type); 
+      if (context.getParser() == null) {
+        throw new Error("No type parser provided to renderer context");
+      } else {
+        return context.getParser().parseType(xml.toString(), type);
+      }
     }
 
     @Override
@@ -91,6 +95,11 @@ public class ElementWrappers {
         if (p.getName().equals(name))
           return p;
       return null;
+    }
+
+    @Override
+    public String fhirType() {
+      return element.fhirType();
     }
 
   }
@@ -232,6 +241,11 @@ public class ElementWrappers {
       }
       return false;
     }
+
+    @Override
+    public String fhirType() {
+      return wrapped.fhirType();
+    }
   }
 
   public static class PropertyWrapperMetaElement extends RendererWrapperImpl implements PropertyWrapper {
@@ -303,6 +317,11 @@ public class ElementWrappers {
     @Override
     public ResourceWrapper getAsResource() {
       return new ElementWrappers.ResourceWrapperMetaElement(context, values.get(0));
+    }
+
+    @Override
+    public String fhirType() {
+      return getTypeCode();
     }
 
   }

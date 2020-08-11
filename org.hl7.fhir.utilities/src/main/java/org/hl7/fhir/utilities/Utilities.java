@@ -42,6 +42,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
@@ -834,6 +835,14 @@ public class Utilities {
   }
 
 
+  public static String URLDecode(String ref) {
+    try {
+      return URLDecoder.decode(ref, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      throw new Error(e.getMessage());
+    }
+  }
+
   public static boolean charInSet(char value, char... array) {
     for (int i : array)
       if (value == i)
@@ -1299,6 +1308,24 @@ public class Utilities {
     return false;
   }
 
+  public static final int ONE_MB = 1024;
+  public static final String GB = "Gb";
+  public static final String MB = "Mb";
+  public static final String KB = "Kb";
+  public static final String BT = "b";
 
+  public static String describeSize(int length) {
+    if (length < 0) throw new IllegalArgumentException("File length of < 0  passed in...");
 
+    if (length > Math.pow(ONE_MB, 3)) {
+      return length / ((long) Math.pow(ONE_MB, 3)) + GB;
+    }
+    if (length > Math.pow(ONE_MB, 2)) {
+      return length / ((long) Math.pow(ONE_MB, 2)) + MB;
+    }
+    if (length > ONE_MB) {
+      return length / (ONE_MB) + KB;
+    }
+    return length + BT;
+  }
 }

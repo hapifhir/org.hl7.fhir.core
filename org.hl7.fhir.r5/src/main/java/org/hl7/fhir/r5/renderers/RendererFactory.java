@@ -4,6 +4,7 @@ import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 
 public class RendererFactory {
 
@@ -48,6 +49,10 @@ public class RendererFactory {
       return new QuestionnaireRenderer(context);
     }
 
+    if ("QuestionnaireResponse".equals(resourceName)) {
+      return new QuestionnaireResponseRenderer(context);
+    }
+
     if ("Patient".equals(resourceName)) {
       return new PatientRenderer(context);
     }
@@ -83,7 +88,7 @@ public class RendererFactory {
   }
 
 
-  public static ResourceRenderer factory(ResourceWrapper resource, RenderingContext context) {
+  public static ResourceRenderer factory(ResourceWrapper resource, RenderingContext context, ResourceContext resourceContext) {
     if (context.getTemplateProvider() != null) {
       String liquidTemplate = context.getTemplateProvider().findTemplate(context, resource.getName());
       if (liquidTemplate != null) {
@@ -98,7 +103,11 @@ public class RendererFactory {
       return new DiagnosticReportRenderer(context);
     }
 
-    return new ProfileDrivenRenderer(context);    
+    return new ProfileDrivenRenderer(context, resourceContext);    
+  }
+
+  public static ResourceRenderer factory(ResourceWrapper rw, RenderingContext lrc) {
+    return factory(rw, lrc, null);
   }
 
 

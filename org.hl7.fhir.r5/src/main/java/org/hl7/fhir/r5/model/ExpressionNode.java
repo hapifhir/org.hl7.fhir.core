@@ -76,7 +76,7 @@ public class ExpressionNode {
     // R3 functions
     Encode, Decode, Escape, Unescape, Trim, Split, Join, 
     // Local extensions to FHIRPath
-    HtmlChecks, AliasAs, Alias;
+    HtmlChecks1, HtmlChecks2, AliasAs, Alias;
 
     public static Function fromCode(String name) {
       if (name.equals("empty")) return Function.Empty;
@@ -134,8 +134,9 @@ public class ExpressionNode {
       if (name.equals("hasValue")) return Function.HasValue;
       if (name.equals("alias")) return Function.Alias;
       if (name.equals("aliasAs")) return Function.AliasAs;
-      if (name.equals("htmlChecks")) return Function.HtmlChecks;
-      if (name.equals("htmlchecks")) return Function.HtmlChecks; // support change of care from R3
+      if (name.equals("htmlChecks")) return Function.HtmlChecks1;
+      if (name.equals("htmlchecks")) return Function.HtmlChecks1; // support change of care from R3
+      if (name.equals("htmlChecks2")) return Function.HtmlChecks2;
       if (name.equals("encode")) return Function.Encode;
       if (name.equals("decode")) return Function.Decode;      
       if (name.equals("escape")) return Function.Escape;
@@ -226,7 +227,8 @@ public class ExpressionNode {
       case Trim : return "trim";
       case Split : return "split";
       case Join : return "join";
-      case HtmlChecks : return "htmlChecks";
+      case HtmlChecks1 : return "htmlChecks";
+      case HtmlChecks2 : return "htmlChecks2";
       case OfType : return "ofType";
       case Type : return "type";
       case ToInteger : return "toInteger";

@@ -61,6 +61,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.cache.NpmPackage.PackageResourceInformationSorter;
 import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
@@ -82,6 +83,50 @@ import com.google.gson.JsonObject;
  */
 public class NpmPackage {
 
+  public class PackageResourceInformationSorter implements Comparator<PackageResourceInformation> {
+    @Override
+    public int compare(PackageResourceInformation o1, PackageResourceInformation o2) {
+      return o1.filename.compareTo(o2.filename);
+    }
+  }
+  
+  public class PackageResourceInformation {
+    private String id;
+    private String type;
+    private String url;
+    private String version;
+    private String filename;
+    private String supplements;
+    
+    public PackageResourceInformation(String root, JsonObject fi) throws IOException {
+      super();
+      id = JSONUtil.str(fi, "id");
+      type = JSONUtil.str(fi, "resourceType");
+      url = JSONUtil.str(fi, "url");
+      version = JSONUtil.str(fi, "version");
+      filename = Utilities.path(root, JSONUtil.str(fi, "filename"));
+      supplements = JSONUtil.str(fi, "supplements");
+    }
+    public String getId() {
+      return id;
+    }
+    public String getType() {
+      return type;
+    }
+    public String getUrl() {
+      return url;
+    }
+    public String getVersion() {
+      return version;
+    }
+    public String getFilename() {
+      return filename;
+    }
+    public String getSupplements() {
+      return supplements;
+    }
+    
+  }
   public class IndexVersionSorter implements Comparator<JsonObject> {
 
     @Override
@@ -291,8 +336,7 @@ public class NpmPackage {
             throw new IOException("Error parsing "+ij.getAbsolutePath()+": "+e.getMessage(), e);
           }
         }
-        loadSubFolders(rootPath, f);
-        
+        loadSubFolders(rootPath, f);        
       }
     }    
   }
@@ -486,6 +530,22 @@ public class NpmPackage {
         res.addAll(folder.types.get(s));
     }
     Collections.sort(res);
+    return res;
+  }
+
+  public List<PackageResourceInformation> listIndexedResources(String... types) throws IOException {
+    List<PackageResourceInformation> res = new ArrayList<PackageResourceInformation>();
+    for (NpmPackageFolder folder : folders.values()) {
+      if (folder.index != null) {
+        for (JsonElement e : folder.index.getAsJsonArray("files")) {
+          JsonObject fi = e.getAsJsonObject();
+          if (Utilities.existsInList(JSONUtil.str(fi, "resourceType"), types)) {
+            res.add(new PackageResourceInformation(folder.folder.getAbsolutePath(), fi));
+          }
+        }
+      }
+    } 
+    //    Collections.sort(res, new PackageResourceInformationSorter());
     return res;
   }
 
@@ -994,6 +1054,39 @@ public class NpmPackage {
 
   public boolean isChangedByLoader() {
     return changedByLoader;
+  }
+
+  public boolean isCore() {
+    return "fhir.core".equals(JSONUtil.str(npm, "type"));
+  }
+
+  public boolean hasCanonical(String url) {
+    if (url == null) {
+      return false;
+    }
+    String u = url.contains("|") ?  url.substring(0, url.indexOf("|")) : url;
+    String v = url.contains("|") ?  url.substring(url.indexOf("|")+1) : null;
+    NpmPackageFolder folder = folders.get("package");
+    if (folder != null) {
+      for (JsonElement e : folder.index.getAsJsonArray("files")) {
+        JsonObject o = (JsonObject) e;
+        if (u.equals(JSONUtil.str(o, "url"))) {
+          if (v == null || v.equals(JSONUtil.str(o, "version"))) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  public boolean canLazyLoad() {
+    for (NpmPackageFolder folder : folders.values()) {
+      if (folder.folder == null) {        
+        return false;
+      }
+    }
+    return true;
   }
   
   

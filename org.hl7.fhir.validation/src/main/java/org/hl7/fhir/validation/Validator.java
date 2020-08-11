@@ -65,6 +65,7 @@ import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
 import org.hl7.fhir.validation.cli.ValidatorGui;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
@@ -131,6 +132,7 @@ public class Validator {
 
   public static void main(String[] args) throws Exception {
 
+    long loadStart = System.nanoTime();
     System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
     System.out.println("Detected Java version: " + System.getProperty("java.version") + " from " + System.getProperty("java.home") + " on " + System.getProperty("os.arch") + " (" + System.getProperty("sun.arch.data.model") + "bit). " + toMB(Runtime.getRuntime().maxMemory()) + "MB available");
     String proxy = getNamedParam(args, Params.PROXY);
@@ -159,16 +161,22 @@ public class Validator {
         System.out.println("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
       else {
         // first, prepare the context
-        String txLog = Params.getTerminologyServerLog(args);
-        String v = Common.getVersion(args);
-        String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
-        ValidationEngine validator = Common.getValidationEngine(v, definitions, txLog);
-        Params.checkIGFileReferences(args);
+        cliContext = Params.loadCliContext(args);
+        if (cliContext.getSv() == null) {
+          cliContext.setSv(determineVersion(cliContext));
+        }
+        String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
+        String definitions = VersionUtilities.packageForVersion(v) + "#" + v;        
+        ValidationEngine validator = ValidationService.getValidator(cliContext, definitions);
         ComparisonService.doLeftRightComparison(args, dest, validator);
       }
     } else {
       Display.printCliArgumentsAndInfo(args);
       cliContext = Params.loadCliContext(args);
+
+      if (cliContext.getSv() == null) {
+        cliContext.setSv(determineVersion(cliContext));
+      }
 
       // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).  Version gets spit out a couple of lines later after we've loaded the context
       String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
@@ -199,9 +207,31 @@ public class Validator {
         if (cliContext.getMode() == EngineMode.SCAN) {
           ValidationService.validateScan(cliContext, validator);
         } else {
-          ValidationService.validateSources(cliContext, validator);
+          ValidationService.validateSources(cliContext, validator, loadStart);
         }
       }
     }
+
   }
+
+  public static String determineVersion(CliContext cliContext) throws Exception {
+    if (cliContext.getMode() != EngineMode.VALIDATION) {
+      return "current";
+    }
+    System.out.println("Scanning for versions (no -version parameter):");
+    VersionSourceInformation versions = ValidationService.scanForVersions(cliContext);
+    for (String s : versions.getReport()) {
+      System.out.println("  "+s);      
+    }
+    if (versions.isEmpty()) {
+      System.out.println("-> Using Default version '"+VersionUtilities.CURRENT_VERSION+"'");
+      return "current";
+    }
+    if (versions.size() == 1) {
+      System.out.println("-> use version "+versions.version());
+      return versions.version();      
+    }
+    throw new Exception("-> Multiple versions found. Specify a particular version using the -version parameter");    
+  }
+  
 }

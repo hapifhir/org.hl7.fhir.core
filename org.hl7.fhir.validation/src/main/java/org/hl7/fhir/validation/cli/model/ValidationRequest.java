@@ -18,6 +18,13 @@ public class ValidationRequest {
     return cliContext;
   }
 
+  public ValidationRequest() {}
+
+  public ValidationRequest(CliContext cliContext, List<FileInfo> filesToValidate) {
+    this.cliContext = cliContext;
+    this.filesToValidate = filesToValidate;
+  }
+
   @JsonProperty("cliContext")
   public ValidationRequest setCliContext(CliContext cliContext) {
     this.cliContext = cliContext;

@@ -14,4 +14,13 @@ public interface IPackageCacheManager {
   String getPackageUrl(String packageId) throws IOException;
 
   NpmPackage loadPackage(String id, String version) throws FHIRException, IOException;
+  
+  /**
+   * 
+   * @param idAndVer - use id#ver
+   * @return
+   * @throws FHIRException
+   * @throws IOException
+   */
+  NpmPackage loadPackage(String idAndVer) throws FHIRException, IOException;
 }

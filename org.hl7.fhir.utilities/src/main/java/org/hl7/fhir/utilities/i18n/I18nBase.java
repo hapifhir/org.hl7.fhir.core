@@ -45,10 +45,10 @@ public abstract class I18nBase {
    * @param message The {@link String} message to search for within the current {@link Locale}
    * @return {@link Boolean#TRUE} if the message exists within the loaded {@link Locale}.
    */
-  private boolean messageExistsForLocale(String message) {
+  private boolean messageExistsForLocale(String message, boolean hasArgs) {
     checkResourceBundleIsLoaded();
     if (!i18nMessages.containsKey(message)) {
-      if (warnAboutMissingMessages ) {
+      if (warnAboutMissingMessages && (hasArgs || !message.contains(" "))) {
         System.out.println("Attempting to localize message " + message + ", but no such equivalent message exists for" +
             " the local " + getLocale());
       }
@@ -64,7 +64,7 @@ public abstract class I18nBase {
    */
   public String formatMessage(String theMessage, Object... theMessageArguments) {
     String message = theMessage;
-    if (messageExistsForLocale(theMessage)) {
+    if (messageExistsForLocale(theMessage, (theMessageArguments != null && theMessageArguments.length > 0))) {
       if (Objects.nonNull(theMessageArguments) && theMessageArguments.length > 0) {
         message = MessageFormat.format(i18nMessages.getString(theMessage), theMessageArguments);
       } else {

@@ -14,8 +14,10 @@ import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.BaseWrappers.ResourceWrapper;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class OperationOutcomeRenderer extends ResourceRenderer {
@@ -28,7 +30,7 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
     super(context, rcontext);
   }
   
-  public boolean render(XhtmlNode x, DomainResource dr) throws FHIRFormatError, DefinitionException, IOException {
+  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (OperationOutcome) dr);
   }
 
@@ -85,8 +87,20 @@ public class OperationOutcomeRenderer extends ResourceRenderer {
   }
 
   @Override
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
+    return "Not done yet";
+  }
+
+  @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
     return display((OperationOutcome) r);
   }
 
+  public static String toString(OperationOutcome oo) {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+    for (OperationOutcomeIssueComponent issue : oo.getIssue()) {
+      b.append(issue.getSeverity().toCode()+": "+issue.getDetails().getText());
+    }
+    return b.toString();
+  }
 }

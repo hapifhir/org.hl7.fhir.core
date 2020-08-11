@@ -48,23 +48,27 @@ import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
+import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.cache.NpmPackage;
 
-public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLoader, VersionConvertorAdvisor50 {
+import com.google.gson.JsonSyntaxException;
 
-  public R2016MayToR5Loader(String[] types) {
-    super(types);
+public class R2016MayToR5Loader extends BaseLoaderR5 implements VersionConvertorAdvisor50 {
+
+  public R2016MayToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
+    super(types, lkp);
   }
 
   private List<CodeSystem> cslist = new ArrayList<>();
-  private boolean patchUrls;
-  private boolean killPrimitives;;
-  
+
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
     Resource r2016may = null;
@@ -105,14 +109,55 @@ public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLo
         StructureDefinition sd = (StructureDefinition) be.getResource();
         new ProfileUtilities(null, null, null).setIds(sd, false);
         if (patchUrls) {
-          sd.setUrl(sd.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/2016May/"));
-          sd.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace").setValue(new UriType("http://hl7.org/fhir"));
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2016MAY));
+          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
         }
       }
     }
     return b;
   }
+  
+  @Override
+  public org.hl7.fhir.r5.model.Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
+    Resource r2016may = null;
+    if (isJson)
+      r2016may = new JsonParser().parse(stream);
+    else
+      r2016may = new XmlParser().parse(stream);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_14_50.convertResource(r2016may);
+    setPath(r5);
 
+    if (!cslist.isEmpty()) {
+      throw new FHIRException("Error: Cannot have included code systems");
+    }
+    if (killPrimitives) {
+      throw new FHIRException("Cannot kill primitives when using deferred loading");      
+    }
+    if (patchUrls) {
+      if (r5 instanceof StructureDefinition) {
+        StructureDefinition sd = (StructureDefinition) r5;
+        sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
+        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+        for (ElementDefinition ed : sd.getSnapshot().getElement()) 
+          patchUrl(ed);
+        for (ElementDefinition ed : sd.getDifferential().getElement()) 
+          patchUrl(ed);
+      }
+    }
+    return r5;
+  }
+
+  private void patchUrl(ElementDefinition ed) {
+    for (TypeRefComponent tr : ed.getType()) {
+      for (CanonicalType s : tr.getTargetProfile()) {
+        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU2016MAY));
+      }
+      for (CanonicalType s : tr.getProfile()) {
+        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU2016MAY));
+      }
+    }    
+  }
+  
   @Override
   public boolean ignoreEntry(BundleEntryComponent src) {
     return false;
@@ -146,27 +191,11 @@ public class R2016MayToR5Loader extends BaseLoader implements IContextResourceLo
     return null;
   }
 
-  public boolean isPatchUrls() {
-    return patchUrls;
-  }
-
-  public R2016MayToR5Loader setPatchUrls(boolean patchUrls) {
-    this.patchUrls = patchUrls;
-    return this;
-  }
-
-  public boolean isKillPrimitives() {
-    return killPrimitives;
-  }
-
-  public R2016MayToR5Loader setKillPrimitives(boolean killPrimitives) {
-    this.killPrimitives = killPrimitives;
-    return this;
-  }
-
   @Override
   public org.hl7.fhir.r4.model.Resource convertR4(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
     return null;
   }
+
+ 
 
 }

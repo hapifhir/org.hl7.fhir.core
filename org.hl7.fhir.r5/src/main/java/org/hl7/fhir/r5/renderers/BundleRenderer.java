@@ -7,6 +7,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent;
@@ -27,6 +28,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class BundleRenderer extends ResourceRenderer {
 
+  
   public BundleRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
@@ -36,12 +38,17 @@ public class BundleRenderer extends ResourceRenderer {
   }
 
   @Override
-  public boolean render(XhtmlNode x, DomainResource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    return false;
+  public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    return render(x, (Bundle) r);
   }
 
   @Override
   public String display(Resource r) throws UnsupportedEncodingException, IOException {
+    return null;
+  }
+
+  @Override
+  public String display(ResourceWrapper r) throws UnsupportedEncodingException, IOException {
     return null;
   }
 
@@ -57,7 +64,7 @@ public class BundleRenderer extends ResourceRenderer {
       // nothing
     } else {
       XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
-      root.para().addText("Bundle "+b.getId()+" of type "+b.get("type").primitiveValue());
+      root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ROOT, b.getId(), b.get("type").primitiveValue()));
       int i = 0;
       for (BaseWrapper be : entries) {
         i++;
@@ -65,10 +72,14 @@ public class BundleRenderer extends ResourceRenderer {
           root.an(makeInternalLink(be.get("fullUrl").primitiveValue()));
         }
         if (be.has("resource") && be.getChildByName("resource").getValues().get(0).has("id")) {
-          root.an(be.get("resource").fhirType().toLowerCase() + "_" + be.getChildByName("resource").getValues().get(0).get("id").primitiveValue());
+          root.an(be.get("resource").fhirType() + "_" + be.getChildByName("resource").getValues().get(0).get("id").primitiveValue());
         }
         root.hr();
-        root.para().addText("Entry "+Integer.toString(i)+(be.has("fullUrl") ? " - Full URL = " + be.get("fullUrl").primitiveValue() : ""));
+        if (be.has("fullUrl")) {
+          root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.get("fullUrl").primitiveValue()));
+        } else {
+          root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY, Integer.toString(i)));
+        }
 //        if (be.hasRequest())
 //          renderRequest(root, be.getRequest());
 //        if (be.hasSearch())
@@ -76,7 +87,7 @@ public class BundleRenderer extends ResourceRenderer {
 //        if (be.hasResponse())
 //          renderResponse(root, be.getResponse());
         if (be.has("resource")) {
-          root.para().addText("Resource "+be.get("resource").fhirType()+":");
+          root.para().addText(formatMessage(RENDER_BUNDLE_RESOURCE, be.get("resource").fhirType()));
           ResourceWrapper rw = be.getChildByName("resource").getAsResource();
           root.blockquote().addChildren(rw.getNarrative());
         }
@@ -88,24 +99,29 @@ public class BundleRenderer extends ResourceRenderer {
 
   public XhtmlNode render(Bundle b) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     if (b.getType() == BundleType.DOCUMENT) {
-      if (!b.hasEntry() || !(b.getEntryFirstRep().hasResource() && b.getEntryFirstRep().getResource() instanceof Composition))
+      if (!b.hasEntry() || !(b.getEntryFirstRep().hasResource() && b.getEntryFirstRep().getResource() instanceof Composition)) {
         throw new FHIRException("Invalid document - first entry is not a Composition");
+      }
       Composition dr = (Composition) b.getEntryFirstRep().getResource();
       return dr.getText().getDiv();
     } else if ((b.getType() == BundleType.COLLECTION && allEntresAreHistoryProvenance(b))) {
       return null;
     } else {
       XhtmlNode root = new XhtmlNode(NodeType.Element, "div");
-      root.para().addText("Bundle "+b.getId()+" of type "+b.getType().toCode());
+      root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ROOT, b.getId(), b.getType().toCode()));
       int i = 0;
       for (BundleEntryComponent be : b.getEntry()) {
         i++;
         if (be.hasFullUrl())
           root.an(makeInternalLink(be.getFullUrl()));
         if (be.hasResource() && be.getResource().hasId())
-          root.an(be.getResource().getResourceType().name().toLowerCase() + "_" + be.getResource().getId());
+          root.an(be.getResource().getResourceType().name() + "_" + be.getResource().getId());
         root.hr();
-        root.para().addText("Entry "+Integer.toString(i)+(be.hasFullUrl() ? " - Full URL = " + be.getFullUrl() : ""));
+        if (be.hasFullUrl()) {
+          root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY_URL, Integer.toString(i), be.getFullUrl()));
+        } else {
+          root.para().addText(formatMessage(RENDER_BUNDLE_HEADER_ENTRY, Integer.toString(i)));
+        }
         if (be.hasRequest())
           renderRequest(root, be.getRequest());
         if (be.hasSearch())
@@ -113,7 +129,7 @@ public class BundleRenderer extends ResourceRenderer {
         if (be.hasResponse())
           renderResponse(root, be.getResponse());
         if (be.hasResource()) {
-          root.para().addText("Resource "+be.getResource().fhirType()+":");
+          root.para().addText(formatMessage(RENDER_BUNDLE_RESOURCE, be.getResource().fhirType()));
           if (be.hasResource() && be.getResource() instanceof DomainResource) {
             DomainResource dr = (DomainResource) be.getResource();
             if ( dr.getText().hasDiv())
@@ -125,7 +141,7 @@ public class BundleRenderer extends ResourceRenderer {
     }
   }
 
-  private boolean allEntriesAreHistoryProvenance(List<BaseWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException {
+  public static boolean allEntriesAreHistoryProvenance(List<BaseWrapper> entries) throws UnsupportedEncodingException, FHIRException, IOException {
     for (BaseWrapper be : entries) {
       if (!"Provenance".equals(be.get("resource").fhirType())) {
         return false;
@@ -134,6 +150,7 @@ public class BundleRenderer extends ResourceRenderer {
     return !entries.isEmpty();
   }
   
+ 
   private boolean allEntresAreHistoryProvenance(Bundle b) {
     for (BundleEntryComponent be : b.getEntry()) {
       if (!(be.getResource() instanceof Provenance)) {
@@ -171,45 +188,47 @@ public class BundleRenderer extends ResourceRenderer {
 
   private void renderSearch(XhtmlNode root, BundleEntrySearchComponent search) {
     StringBuilder b = new StringBuilder();
-    b.append("Search: ");
+    b.append(formatMessage(RENDER_BUNDLE_SEARCH));
     if (search.hasMode())
-      b.append("mode = "+search.getMode().toCode());
+      b.append(formatMessage(RENDER_BUNDLE_SEARCH_MODE, search.getMode().toCode()));
     if (search.hasScore()) {
       if (search.hasMode())
         b.append(",");
-      b.append("score = "+search.getScore());
+      b.append(formatMessage(RENDER_BUNDLE_SEARCH_SCORE, search.getScore()));
     }
     root.para().addText(b.toString());    
   }
 
   private void renderResponse(XhtmlNode root, BundleEntryResponseComponent response) {
-    root.para().addText("Request:");
+    root.para().addText(formatMessage(RENDER_BUNDLE_RESPONSE));
     StringBuilder b = new StringBuilder();
     b.append(response.getStatus()+"\r\n");
     if (response.hasLocation())
-      b.append("Location: "+response.getLocation()+"\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_LOCATION, response.getLocation())+"\r\n");
     if (response.hasEtag())
-      b.append("E-Tag: "+response.getEtag()+"\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_ETAG, response.getEtag())+"\r\n");
     if (response.hasLastModified())
-      b.append("LastModified: "+response.getEtag()+"\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_LAST_MOD, response.getEtag())+"\r\n");
     root.pre().addText(b.toString());    
   }
 
   private void renderRequest(XhtmlNode root, BundleEntryRequestComponent request) {
-    root.para().addText("Response:");
+    root.para().addText(formatMessage(RENDER_BUNDLE_REQUEST));
     StringBuilder b = new StringBuilder();
     b.append(request.getMethod()+" "+request.getUrl()+"\r\n");
     if (request.hasIfNoneMatch())
-      b.append("If-None-Match: "+request.getIfNoneMatch()+"\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_IF_NON_MATCH, request.getIfNoneMatch())+"\r\n");
     if (request.hasIfModifiedSince())
-      b.append("If-Modified-Since: "+request.getIfModifiedSince()+"\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_IF_MOD, request.getIfModifiedSince())+"\r\n");
     if (request.hasIfMatch())
-      b.append("If-Match: "+request.getIfMatch()+"\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_IF_MATCH, request.getIfMatch())+"\r\n");
     if (request.hasIfNoneExist())
-      b.append("If-None-Exist: "+request.getIfNoneExist()+"\r\n");
+      b.append(formatMessage(RENDER_BUNDLE_IF_NONE, request.getIfNoneExist())+"\r\n");
     root.pre().addText(b.toString());    
   }
 
+
+  
   private String makeInternalLink(String fullUrl) {
     return fullUrl.replace(":", "-");
   }

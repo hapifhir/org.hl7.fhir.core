@@ -3,6 +3,13 @@ package org.hl7.fhir.r5.comparison;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
+import org.hl7.fhir.r5.comparison.ResourceComparer.ResourceComparison;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -14,11 +21,37 @@ import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ResourceComparer {
+ 
+  public static class MessageCounts {
+    private int errors;
+    private int warnings;
+    private int hints;
+    public int getErrors() {
+      return errors;
+    }
+    public int getWarnings() {
+      return warnings;
+    }
+    public int getHints() {
+      return hints;
+    }
+    public void error() {
+      errors++;
+    }
+    public void warning() {
+      warnings++;
+    }
+    public void hint() {
+      hints++;
+    }
+  }
 
-  public abstract class ResourceComparison {
+
+  public static abstract class ResourceComparison {
     private String id;
     private String leftId;
     private String rightId;
+    private MessageCounts cnts;
     
     public ResourceComparison(String leftId, String rightId) {
       super();
@@ -48,14 +81,144 @@ public class ResourceComparer {
     }
 
     protected abstract String summary();
+
+    protected abstract String fhirType();
+
+    protected abstract String toTable();
+    
+    protected String color() {
+      if (hasErrors()) {
+        return COLOR_DIFFERENT;
+      } else if (noChange()) {
+        return COLOR_NO_CHANGE;
+      } else { 
+        return COLOR_DIFFERENT_LESS;
+      }
+    }
+
+    protected boolean hasErrors() {
+      MessageCounts cnts = getCounts();
+      return cnts.getErrors() > 0;
+    }
+
+    protected boolean noChange() {
+      MessageCounts cnts = getCounts();
+      return cnts.getErrors() + cnts.getWarnings() + cnts.getHints() == 0;
+    }
+
+    protected String outcomeSummary() {
+      MessageCounts cnts = getCounts();
+      return 
+          Integer.toString(cnts.getErrors())+" "+Utilities.pluralize("Breaking Change", cnts.getErrors())+", "+
+          Integer.toString(cnts.getWarnings())+" "+Utilities.pluralize("Change", cnts.getWarnings())+", "+
+          Integer.toString(cnts.getHints())+" "+Utilities.pluralize("Note", cnts.getHints());
+    }
+
+    public MessageCounts getCounts() {
+      if (cnts == null) { 
+        cnts = new MessageCounts();
+        countMessages(cnts);
+      }
+      return cnts;
+    }
+
+    protected abstract void countMessages(MessageCounts cnts);
   }
   
+  
+  public static class PlaceHolderComparison extends ResourceComparison {
+    private CanonicalResource left;
+    private CanonicalResource right;
+    private Throwable e;
+
+    public PlaceHolderComparison(CanonicalResource left, CanonicalResource right) {
+      super(left == null ? right.getId() : left.getId(), right == null ? left.getId() : right.getId());
+      this.left = left;
+      this.right = right;
+    }
+
+    public PlaceHolderComparison(CanonicalResource left, CanonicalResource right, Throwable e) {
+      super(left == null ? right.getId() : left.getId(), right == null ? left.getId() : right.getId());
+      this.e = e;
+      this.left = left;
+      this.right = right;
+    }
+
+    @Override
+    protected String abbreviation() {
+      CanonicalResource cr = left == null ? right : left;
+      if (cr instanceof CodeSystem) {
+        return "cs";
+      } else if (cr instanceof ValueSet) {
+        return "vs";
+      } else if (cr instanceof StructureDefinition) {
+        return "sd";
+      } else {
+        return "xx";
+      }
+    }
+
+    @Override
+    protected String summary() {
+      if (e != null) {
+        return e.getMessage();
+      }
+      CanonicalResource cr = left == null ? right : left;
+      return cr.fhirType()+(left == null ? " Added" : " Removed");
+    }
+
+    @Override
+    protected String fhirType() {
+      CanonicalResource cr = left == null ? right : left;
+      return cr.fhirType();
+    }
+
+    @Override
+    protected String toTable() {
+      String s = null;
+      String color = null;
+      if (left != null && right != null && !left.getUrl().equals(right.getUrl())) {
+        s = "<td>"+left.getUrl()+"</td><td>"+right.getUrl()+"</td>";
+      } else if (left != null) {
+        s = "<td colspan=2>"+left.getUrl()+"</td>";        
+      } else {
+        s = "<td colspan=2>"+right.getUrl()+"</td>";        
+      }
+      if (left == null) {
+        s = s + "<td>Added</td>";
+        color = COLOR_NO_ROW_LEFT;
+      } else if (right == null) {
+        s = s + "<td>Removed</td>";        
+        color = COLOR_NO_ROW_RIGHT;
+      } else {
+        s = s + "<td><a href=\""+getId()+".html\">Failed<a></td>";
+        color = COLOR_ISSUE;
+      }
+      s = s + "<td>"+(e != null ? Utilities.escapeXml(e.getMessage()) : "")+"</td>";
+      return "<tr style=\"background-color: "+color+"\">"+s+"</tr>\r\n";
+    }
+
+    public Throwable getE() {
+      return e;
+    }
+
+    @Override
+    protected void countMessages(MessageCounts cnts) {
+      if (e != null) {
+        cnts.error();
+      }
+    }    
+    
+  }
+
   public final static String COLOR_NO_ROW_LEFT = "#ffffb3";
   public final static String COLOR_NO_CELL_LEFT = "#ffff4d";
   public final static String COLOR_NO_ROW_RIGHT = "#ffecb3";
   public final static String COLOR_NO_CELL_RIGHT = "#ffcc33";  
   public final static String COLOR_DIFFERENT = "#f0b3ff";
+  public final static String COLOR_DIFFERENT_LESS = "#f8e6ff";
   public final static String COLOR_ISSUE = "#ffad99";
+  public final static String COLOR_NO_CHANGE = "#ffffff";
 
   protected ComparisonSession session;
   
@@ -83,9 +246,9 @@ public class ResourceComparer {
     for (ValidationMessage vm : csc.messages) {
       XhtmlNode tr = tbl.tr();
       tr.style("background-color: "+colorForLevel(vm.getLevel()));
-      tr.td().tx(vm.getLocation());
-      tr.td().tx(vm.getMessage());
       tr.td().tx(vm.getLevel().getDisplay());
+      tr.td().tx(vm.getLocation());
+      tr.td().tx(vm.getMessage().replace("\"", "'"));
     }
     return div;
   }
@@ -104,6 +267,12 @@ public class ResourceComparer {
     }
   }
 
+  protected ValidationMessage vm(IssueSeverity level, String message, String path, List<ValidationMessage> genMessages) {
+    ValidationMessage vm = new ValidationMessage(Source.ProfileComparer, IssueType.INFORMATIONAL, path, message, level == IssueSeverity.NULL ? IssueSeverity.INFORMATION : level);
+    genMessages.add(vm);
+    return vm;
+  }
+  
   private String colorForLevel(IssueSeverity level) {
     switch (level) {
     case ERROR:

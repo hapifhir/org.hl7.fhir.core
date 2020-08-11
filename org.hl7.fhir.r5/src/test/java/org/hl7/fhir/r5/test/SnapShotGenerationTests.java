@@ -73,8 +73,23 @@ public class SnapShotGenerationTests {
     }
 
     @Override
+    public Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
+      return null;
+    }
+
+    @Override
     public String[] getTypes() {
       return types;
+    }
+
+    @Override
+    public String getResourcePath(Resource resource) {
+      return null;
+    }
+
+    @Override
+    public IContextResourceLoader getNewLoader(NpmPackage npm) {
+      return this;
     }
 
   }
@@ -451,12 +466,13 @@ public class SnapShotGenerationTests {
     messages = new ArrayList<ValidationMessage>();
 
     if (test.isFail()) {
+      boolean failed = true;
       try {
         if (test.isGen())
           testGen(true, test, context);
         else
           testSort(test, context);
-        Assertions.assertTrue(false, "Should have failed");
+        failed = false;
       } catch (Throwable e) {
         System.out.println("Error running test: " + e.getMessage());
         if (!Utilities.noString(test.regex)) {
@@ -464,10 +480,9 @@ public class SnapShotGenerationTests {
         } else if ("Should have failed".equals(e.getMessage())) {
           throw e;
         } else {
-          Assertions.assertTrue(true, "all ok");
         }
-
       }
+      Assertions.assertTrue(failed, "Should have failed");
     } else if (test.isGen())
       testGen(false, test, context);
     else
@@ -582,8 +597,12 @@ public class SnapShotGenerationTests {
 
   private StructureDefinition getSD(String url, SnapShotGenerationTestsContext context) throws DefinitionException, FHIRException, IOException {
     StructureDefinition sd = context.getByUrl(url);
-    if (sd == null)
+    if (sd == null) {
       sd = TestingUtilities.context().fetchResource(StructureDefinition.class, url);
+    } 
+    if (sd == null) {
+      throw new DefinitionException("Unable to find profile "+url);
+    }
     if (!sd.hasSnapshot()) {
       StructureDefinition base = getSD(sd.getBaseDefinition(), context);
       ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context(), messages, new TestPKP());

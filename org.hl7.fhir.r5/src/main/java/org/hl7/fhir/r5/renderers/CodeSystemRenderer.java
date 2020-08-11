@@ -19,6 +19,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
@@ -38,7 +39,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
   }
   
 
-  public boolean render(XhtmlNode x, DomainResource dr) throws FHIRFormatError, DefinitionException, IOException {
+  public boolean render(XhtmlNode x, Resource dr) throws FHIRFormatError, DefinitionException, IOException {
     return render(x, (CodeSystem) dr);
   }
   
@@ -138,6 +139,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     boolean display = false;
     boolean hierarchy = false;
     boolean version = false;
+    boolean ignoreStatus = false;
     List<PropertyComponent> properties = new ArrayList<>();
     for (PropertyComponent cp : cs.getProperty()) {
       if (showPropertyInTable(cp)) {
@@ -147,12 +149,15 @@ public class CodeSystemRenderer extends TerminologyRenderer {
         }
         if (exists) {
           properties.add(cp);
+          if ("status".equals(cp.getCode())) {
+            ignoreStatus = true;
+          }
         }
       }
     }
     for (ConceptDefinitionComponent c : cs.getConcept()) {
       commentS = commentS || conceptsHaveComments(c);
-      deprecated = deprecated || conceptsHaveDeprecated(cs, c);
+      deprecated = deprecated || conceptsHaveDeprecated(cs, c, ignoreStatus);
       display = display || conceptsHaveDisplay(c);
       version = version || conceptsHaveVersion(c);
       hierarchy = hierarchy || c.hasConcept();
@@ -255,11 +260,11 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     return false;
   }
 
-  private boolean conceptsHaveDeprecated(CodeSystem cs, ConceptDefinitionComponent c) {
-    if (CodeSystemUtilities.isDeprecated(cs, c))
+  private boolean conceptsHaveDeprecated(CodeSystem cs, ConceptDefinitionComponent c, boolean ignoreStatus) {
+    if (CodeSystemUtilities.isDeprecated(cs, c, ignoreStatus))
       return true;
     for (ConceptDefinitionComponent g : c.getConcept())
-      if (conceptsHaveDeprecated(cs, g))
+      if (conceptsHaveDeprecated(cs, g, ignoreStatus))
         return true;
     return false;
   }
@@ -325,7 +330,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     }
     if (deprecated) {
       td = tr.td();
-      Boolean b = CodeSystemUtilities.isDeprecated(cs, c);
+      Boolean b = CodeSystemUtilities.isDeprecated(cs, c, false);
       if (b !=  null && b) {
         smartAddText(td, getContext().getWorker().translator().translate("xhtml-gen-cs", "Deprecated", getContext().getLang()));
         hasExtensions = true;

@@ -14,6 +14,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Questionnaire;
@@ -107,7 +108,12 @@ public class NarrativeGenerationTests {
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
     IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-expected.xml"), new FileOutputStream(TestingUtilities.tempFile("narrative", test.getId() + "-expected.xml")));
-    DomainResource source = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-input.xml"));
+    DomainResource source;
+    if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + "-input.json")) {
+      source = (DomainResource) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-input.json"));
+    } else {
+      source = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-input.xml"));      
+    }
     DomainResource target = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-expected.xml"));
     RendererFactory.factory(source, rc).render(source);
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("narrative", test.getId() + "-actual.xml")), source);

@@ -8,6 +8,13 @@ public class ValidationIssue {
   @JsonProperty("details")
   private String details;
 
+  public ValidationIssue() {}
+
+  public ValidationIssue(String severity, String details) {
+    this.severity = severity;
+    this.details = details;
+  }
+
   @JsonProperty("severity")
   public String getSeverity() {
     return severity;

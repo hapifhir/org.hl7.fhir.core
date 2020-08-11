@@ -223,6 +223,14 @@ public class BaseValidator {
     return thePass;
   }
 
+  protected boolean signpost(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
+    if (!thePass) {
+      String message = context.formatMessage(theMessage, theMessageArguments);
+      addValidationMessage(errors, type, line, col, path, message, IssueSeverity.INFORMATION, theMessage).setSignpost(true);
+    }
+    return thePass;
+  }
+
   protected boolean txHint(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
       String message = context.formatMessage(theMessage, theMessageArguments);
@@ -346,7 +354,7 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean rule(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
+  protected boolean ruleHtml(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg, String html) {
     if (!thePass) {
       msg = context.formatMessage(msg, null);
       html = context.formatMessage(html, null);

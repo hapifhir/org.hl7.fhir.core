@@ -94,6 +94,7 @@ public class RenderingContext {
   private boolean inlineGraphics;
 
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
+  private boolean addGeneratedNarrativeHeader = true;
 
   /**
    * 
@@ -321,7 +322,8 @@ public class RenderingContext {
     res.profileUtilities = profileUtilities;
     res.definitionsTarget = definitionsTarget;
     res.destDir = destDir;
-
+    res.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
+    
     return res;
   }
 
@@ -380,6 +382,16 @@ public class RenderingContext {
     this.localPrefix = localPrefix;
     return this;
   }
+
+  public boolean isAddGeneratedNarrativeHeader() {
+    return addGeneratedNarrativeHeader;
+  }
+
+  public RenderingContext setAddGeneratedNarrativeHeader(boolean addGeneratedNarrativeHeader) {
+    this.addGeneratedNarrativeHeader = addGeneratedNarrativeHeader;
+    return this;
+   }
+
 
 
 

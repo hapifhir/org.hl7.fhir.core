@@ -137,7 +137,6 @@ This project is maintained by [Grahame Grieve][Link-grahameGithub] and [James Ag
 [Link-Publishing]: https://github.com/FHIR/fhir-test-cases/wiki/Publishing-Binaries
 [Link-PublishingRelease]: https://github.com/FHIR/fhir-test-cases/wiki/Detailed-Release-Instructions
 
-
 [Badge-BuildPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_apis/build/status/Master%20Branch%20Pipeline?branchName=master
 [Badge-SnapshotPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_apis/build/status/Module%20SNAPSHOT%20Publisher?branchName=master
 [Badge-dstu2SonatypeRelease]: https://img.shields.io/nexus/r/https/oss.sonatype.org/ca.uhn.hapi.fhir/org.hl7.fhir.dstu2.svg "Sonatype Releases"
