@@ -610,7 +610,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("profile")) {
       JsonArray array = json.getAsJsonArray("profile");
       for (int i = 0; i < array.size(); i++) {
-        res.getProfile().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getProfile().add(new UriType());
+        } else {
+          res.getProfile().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_profile")) {
@@ -659,7 +663,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("line")) {
       JsonArray array = json.getAsJsonArray("line");
       for (int i = 0; i < array.size(); i++) {
-        res.getLine().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getLine().add(new StringType());
+        } else {
+          res.getLine().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_line")) {
@@ -757,7 +765,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("profile")) {
       JsonArray array = json.getAsJsonArray("profile");
       for (int i = 0; i < array.size(); i++) {
-        res.getProfile().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getProfile().add(new UriType());
+        } else {
+          res.getProfile().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_profile")) {
@@ -772,7 +784,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("mustSupport")) {
       JsonArray array = json.getAsJsonArray("mustSupport");
       for (int i = 0; i < array.size(); i++) {
-        res.getMustSupport().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getMustSupport().add(new StringType());
+        } else {
+          res.getMustSupport().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_mustSupport")) {
@@ -816,7 +832,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("valueCode")) {
       JsonArray array = json.getAsJsonArray("valueCode");
       for (int i = 0; i < array.size(); i++) {
-        res.getValueCode().add(parseCode(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getValueCode().add(new CodeType());
+        } else {
+          res.getValueCode().add(parseCode(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_valueCode")) {
@@ -983,7 +1003,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("given")) {
       JsonArray array = json.getAsJsonArray("given");
       for (int i = 0; i < array.size(); i++) {
-        res.getGiven().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getGiven().add(new StringType());
+        } else {
+          res.getGiven().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_given")) {
@@ -998,7 +1022,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("prefix")) {
       JsonArray array = json.getAsJsonArray("prefix");
       for (int i = 0; i < array.size(); i++) {
-        res.getPrefix().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getPrefix().add(new StringType());
+        } else {
+          res.getPrefix().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_prefix")) {
@@ -1013,7 +1041,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("suffix")) {
       JsonArray array = json.getAsJsonArray("suffix");
       for (int i = 0; i < array.size(); i++) {
-        res.getSuffix().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getSuffix().add(new StringType());
+        } else {
+          res.getSuffix().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_suffix")) {
@@ -1083,7 +1115,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("event")) {
       JsonArray array = json.getAsJsonArray("event");
       for (int i = 0; i < array.size(); i++) {
-        res.getEvent().add(parseDateTime(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getEvent().add(new DateTimeType());
+        } else {
+          res.getEvent().add(parseDateTime(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_event")) {
@@ -1155,7 +1191,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("dayOfWeek")) {
       JsonArray array = json.getAsJsonArray("dayOfWeek");
       for (int i = 0; i < array.size(); i++) {
-        res.getDayOfWeek().add(parseEnumeration(array.get(i).getAsString(), Timing.DayOfWeek.NULL, new Timing.DayOfWeekEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getDayOfWeek().add(new Enumeration<Timing.DayOfWeek>());
+        } else {
+          res.getDayOfWeek().add(parseEnumeration(array.get(i).getAsString(), Timing.DayOfWeek.NULL, new Timing.DayOfWeekEnumFactory()));
+        }
       }
     };
     if (json.has("_dayOfWeek")) {
@@ -1170,7 +1210,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("timeOfDay")) {
       JsonArray array = json.getAsJsonArray("timeOfDay");
       for (int i = 0; i < array.size(); i++) {
-        res.getTimeOfDay().add(parseTime(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getTimeOfDay().add(new TimeType());
+        } else {
+          res.getTimeOfDay().add(parseTime(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_timeOfDay")) {
@@ -1185,7 +1229,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("when")) {
       JsonArray array = json.getAsJsonArray("when");
       for (int i = 0; i < array.size(); i++) {
-        res.getWhen().add(parseEnumeration(array.get(i).getAsString(), Timing.EventTiming.NULL, new Timing.EventTimingEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getWhen().add(new Enumeration<Timing.EventTiming>());
+        } else {
+          res.getWhen().add(parseEnumeration(array.get(i).getAsString(), Timing.EventTiming.NULL, new Timing.EventTimingEnumFactory()));
+        }
       }
     };
     if (json.has("_when")) {
@@ -1218,7 +1266,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("representation")) {
       JsonArray array = json.getAsJsonArray("representation");
       for (int i = 0; i < array.size(); i++) {
-        res.getRepresentation().add(parseEnumeration(array.get(i).getAsString(), ElementDefinition.PropertyRepresentation.NULL, new ElementDefinition.PropertyRepresentationEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getRepresentation().add(new Enumeration<ElementDefinition.PropertyRepresentation>());
+        } else {
+          res.getRepresentation().add(parseEnumeration(array.get(i).getAsString(), ElementDefinition.PropertyRepresentation.NULL, new ElementDefinition.PropertyRepresentationEnumFactory()));
+        }
       }
     };
     if (json.has("_representation")) {
@@ -1265,7 +1317,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("alias")) {
       JsonArray array = json.getAsJsonArray("alias");
       for (int i = 0; i < array.size(); i++) {
-        res.getAlias().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getAlias().add(new StringType());
+        } else {
+          res.getAlias().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_alias")) {
@@ -1333,7 +1389,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("condition")) {
       JsonArray array = json.getAsJsonArray("condition");
       for (int i = 0; i < array.size(); i++) {
-        res.getCondition().add(parseId(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getCondition().add(new IdType());
+        } else {
+          res.getCondition().add(parseId(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_condition")) {
@@ -1464,7 +1524,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("aggregation")) {
       JsonArray array = json.getAsJsonArray("aggregation");
       for (int i = 0; i < array.size(); i++) {
-        res.getAggregation().add(parseEnumeration(array.get(i).getAsString(), ElementDefinition.AggregationMode.NULL, new ElementDefinition.AggregationModeEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getAggregation().add(new Enumeration<ElementDefinition.AggregationMode>());
+        } else {
+          res.getAggregation().add(parseEnumeration(array.get(i).getAsString(), ElementDefinition.AggregationMode.NULL, new ElementDefinition.AggregationModeEnumFactory()));
+        }
       }
     };
     if (json.has("_aggregation")) {
@@ -2113,7 +2177,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("category")) {
       JsonArray array = json.getAsJsonArray("category");
       for (int i = 0; i < array.size(); i++) {
-        res.getCategory().add(parseEnumeration(array.get(i).getAsString(), AllergyIntolerance.AllergyIntoleranceCategory.NULL, new AllergyIntolerance.AllergyIntoleranceCategoryEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getCategory().add(new Enumeration<AllergyIntolerance.AllergyIntoleranceCategory>());
+        } else {
+          res.getCategory().add(parseEnumeration(array.get(i).getAsString(), AllergyIntolerance.AllergyIntoleranceCategory.NULL, new AllergyIntolerance.AllergyIntoleranceCategoryEnumFactory()));
+        }
       }
     };
     if (json.has("_category")) {
@@ -2463,7 +2531,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("policy")) {
       JsonArray array = json.getAsJsonArray("policy");
       for (int i = 0; i < array.size(); i++) {
-        res.getPolicy().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getPolicy().add(new UriType());
+        } else {
+          res.getPolicy().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_policy")) {
@@ -2912,7 +2984,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("instantiates")) {
       JsonArray array = json.getAsJsonArray("instantiates");
       for (int i = 0; i < array.size(); i++) {
-        res.getInstantiates().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getInstantiates().add(new UriType());
+        } else {
+          res.getInstantiates().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_instantiates")) {
@@ -2939,7 +3015,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("format")) {
       JsonArray array = json.getAsJsonArray("format");
       for (int i = 0; i < array.size(); i++) {
-        res.getFormat().add(parseCode(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getFormat().add(new CodeType());
+        } else {
+          res.getFormat().add(parseCode(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_format")) {
@@ -2954,7 +3034,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("patchFormat")) {
       JsonArray array = json.getAsJsonArray("patchFormat");
       for (int i = 0; i < array.size(); i++) {
-        res.getPatchFormat().add(parseCode(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getPatchFormat().add(new CodeType());
+        } else {
+          res.getPatchFormat().add(parseCode(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_patchFormat")) {
@@ -2969,7 +3053,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("implementationGuide")) {
       JsonArray array = json.getAsJsonArray("implementationGuide");
       for (int i = 0; i < array.size(); i++) {
-        res.getImplementationGuide().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getImplementationGuide().add(new UriType());
+        } else {
+          res.getImplementationGuide().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_implementationGuide")) {
@@ -3092,7 +3180,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("compartment")) {
       JsonArray array = json.getAsJsonArray("compartment");
       for (int i = 0; i < array.size(); i++) {
-        res.getCompartment().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getCompartment().add(new UriType());
+        } else {
+          res.getCompartment().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_compartment")) {
@@ -3209,7 +3301,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("referencePolicy")) {
       JsonArray array = json.getAsJsonArray("referencePolicy");
       for (int i = 0; i < array.size(); i++) {
-        res.getReferencePolicy().add(parseEnumeration(array.get(i).getAsString(), CapabilityStatement.ReferenceHandlingPolicy.NULL, new CapabilityStatement.ReferenceHandlingPolicyEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getReferencePolicy().add(new Enumeration<CapabilityStatement.ReferenceHandlingPolicy>());
+        } else {
+          res.getReferencePolicy().add(parseEnumeration(array.get(i).getAsString(), CapabilityStatement.ReferenceHandlingPolicy.NULL, new CapabilityStatement.ReferenceHandlingPolicyEnumFactory()));
+        }
       }
     };
     if (json.has("_referencePolicy")) {
@@ -3224,7 +3320,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("searchInclude")) {
       JsonArray array = json.getAsJsonArray("searchInclude");
       for (int i = 0; i < array.size(); i++) {
-        res.getSearchInclude().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getSearchInclude().add(new StringType());
+        } else {
+          res.getSearchInclude().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_searchInclude")) {
@@ -3239,7 +3339,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("searchRevInclude")) {
       JsonArray array = json.getAsJsonArray("searchRevInclude");
       for (int i = 0; i < array.size(); i++) {
-        res.getSearchRevInclude().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getSearchRevInclude().add(new StringType());
+        } else {
+          res.getSearchRevInclude().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_searchRevInclude")) {
@@ -3764,7 +3868,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("definition")) {
       JsonArray array = json.getAsJsonArray("definition");
       for (int i = 0; i < array.size(); i++) {
-        res.getDefinition().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getDefinition().add(new UriType());
+        } else {
+          res.getDefinition().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_definition")) {
@@ -4140,7 +4248,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("preAuthRef")) {
       JsonArray array = json.getAsJsonArray("preAuthRef");
       for (int i = 0; i < array.size(); i++) {
-        res.getPreAuthRef().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getPreAuthRef().add(new StringType());
+        } else {
+          res.getPreAuthRef().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_preAuthRef")) {
@@ -4190,7 +4302,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("careTeamLinkId")) {
       JsonArray array = json.getAsJsonArray("careTeamLinkId");
       for (int i = 0; i < array.size(); i++) {
-        res.getCareTeamLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getCareTeamLinkId().add(new PositiveIntType());
+        } else {
+          res.getCareTeamLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_careTeamLinkId")) {
@@ -4205,7 +4321,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("diagnosisLinkId")) {
       JsonArray array = json.getAsJsonArray("diagnosisLinkId");
       for (int i = 0; i < array.size(); i++) {
-        res.getDiagnosisLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getDiagnosisLinkId().add(new PositiveIntType());
+        } else {
+          res.getDiagnosisLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_diagnosisLinkId")) {
@@ -4220,7 +4340,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("procedureLinkId")) {
       JsonArray array = json.getAsJsonArray("procedureLinkId");
       for (int i = 0; i < array.size(); i++) {
-        res.getProcedureLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getProcedureLinkId().add(new PositiveIntType());
+        } else {
+          res.getProcedureLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_procedureLinkId")) {
@@ -4235,7 +4359,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("informationLinkId")) {
       JsonArray array = json.getAsJsonArray("informationLinkId");
       for (int i = 0; i < array.size(); i++) {
-        res.getInformationLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getInformationLinkId().add(new PositiveIntType());
+        } else {
+          res.getInformationLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_informationLinkId")) {
@@ -4516,7 +4644,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("noteNumber")) {
       JsonArray array = json.getAsJsonArray("noteNumber");
       for (int i = 0; i < array.size(); i++) {
-        res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getNoteNumber().add(new PositiveIntType());
+        } else {
+          res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_noteNumber")) {
@@ -4577,7 +4709,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("noteNumber")) {
       JsonArray array = json.getAsJsonArray("noteNumber");
       for (int i = 0; i < array.size(); i++) {
-        res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getNoteNumber().add(new PositiveIntType());
+        } else {
+          res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_noteNumber")) {
@@ -4618,7 +4754,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("noteNumber")) {
       JsonArray array = json.getAsJsonArray("noteNumber");
       for (int i = 0; i < array.size(); i++) {
-        res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getNoteNumber().add(new PositiveIntType());
+        } else {
+          res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_noteNumber")) {
@@ -4649,7 +4789,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("sequenceLinkId")) {
       JsonArray array = json.getAsJsonArray("sequenceLinkId");
       for (int i = 0; i < array.size(); i++) {
-        res.getSequenceLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getSequenceLinkId().add(new PositiveIntType());
+        } else {
+          res.getSequenceLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_sequenceLinkId")) {
@@ -4678,7 +4822,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("noteNumber")) {
       JsonArray array = json.getAsJsonArray("noteNumber");
       for (int i = 0; i < array.size(); i++) {
-        res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getNoteNumber().add(new PositiveIntType());
+        } else {
+          res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_noteNumber")) {
@@ -4729,7 +4877,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("noteNumber")) {
       JsonArray array = json.getAsJsonArray("noteNumber");
       for (int i = 0; i < array.size(); i++) {
-        res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getNoteNumber().add(new PositiveIntType());
+        } else {
+          res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_noteNumber")) {
@@ -4844,7 +4996,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("preAuthRef")) {
       JsonArray array = json.getAsJsonArray("preAuthRef");
       for (int i = 0; i < array.size(); i++) {
-        res.getPreAuthRef().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getPreAuthRef().add(new StringType());
+        } else {
+          res.getPreAuthRef().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_preAuthRef")) {
@@ -4914,7 +5070,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("protocol")) {
       JsonArray array = json.getAsJsonArray("protocol");
       for (int i = 0; i < array.size(); i++) {
-        res.getProtocol().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getProtocol().add(new UriType());
+        } else {
+          res.getProtocol().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_protocol")) {
@@ -5136,7 +5296,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("operator")) {
       JsonArray array = json.getAsJsonArray("operator");
       for (int i = 0; i < array.size(); i++) {
-        res.getOperator().add(parseEnumeration(array.get(i).getAsString(), CodeSystem.FilterOperator.NULL, new CodeSystem.FilterOperatorEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getOperator().add(new Enumeration<CodeSystem.FilterOperator>());
+        } else {
+          res.getOperator().add(parseEnumeration(array.get(i).getAsString(), CodeSystem.FilterOperator.NULL, new CodeSystem.FilterOperatorEnumFactory()));
+        }
       }
     };
     if (json.has("_operator")) {
@@ -5597,7 +5761,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("param")) {
       JsonArray array = json.getAsJsonArray("param");
       for (int i = 0; i < array.size(); i++) {
-        res.getParam().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getParam().add(new StringType());
+        } else {
+          res.getParam().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_param")) {
@@ -5694,7 +5862,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("mode")) {
       JsonArray array = json.getAsJsonArray("mode");
       for (int i = 0; i < array.size(); i++) {
-        res.getMode().add(parseEnumeration(array.get(i).getAsString(), Composition.CompositionAttestationMode.NULL, new Composition.CompositionAttestationModeEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getMode().add(new Enumeration<Composition.CompositionAttestationMode>());
+        } else {
+          res.getMode().add(parseEnumeration(array.get(i).getAsString(), Composition.CompositionAttestationMode.NULL, new Composition.CompositionAttestationModeEnumFactory()));
+        }
       }
     };
     if (json.has("_mode")) {
@@ -8235,7 +8407,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("payloadMimeType")) {
       JsonArray array = json.getAsJsonArray("payloadMimeType");
       for (int i = 0; i < array.size(); i++) {
-        res.getPayloadMimeType().add(parseCode(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getPayloadMimeType().add(new CodeType());
+        } else {
+          res.getPayloadMimeType().add(parseCode(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_payloadMimeType")) {
@@ -8254,7 +8430,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("header")) {
       JsonArray array = json.getAsJsonArray("header");
       for (int i = 0; i < array.size(); i++) {
-        res.getHeader().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getHeader().add(new StringType());
+        } else {
+          res.getHeader().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_header")) {
@@ -8941,7 +9121,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("preAuthRef")) {
       JsonArray array = json.getAsJsonArray("preAuthRef");
       for (int i = 0; i < array.size(); i++) {
-        res.getPreAuthRef().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getPreAuthRef().add(new StringType());
+        } else {
+          res.getPreAuthRef().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_preAuthRef")) {
@@ -8989,7 +9173,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("careTeamLinkId")) {
       JsonArray array = json.getAsJsonArray("careTeamLinkId");
       for (int i = 0; i < array.size(); i++) {
-        res.getCareTeamLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getCareTeamLinkId().add(new PositiveIntType());
+        } else {
+          res.getCareTeamLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_careTeamLinkId")) {
@@ -9004,7 +9192,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("diagnosisLinkId")) {
       JsonArray array = json.getAsJsonArray("diagnosisLinkId");
       for (int i = 0; i < array.size(); i++) {
-        res.getDiagnosisLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getDiagnosisLinkId().add(new PositiveIntType());
+        } else {
+          res.getDiagnosisLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_diagnosisLinkId")) {
@@ -9019,7 +9211,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("procedureLinkId")) {
       JsonArray array = json.getAsJsonArray("procedureLinkId");
       for (int i = 0; i < array.size(); i++) {
-        res.getProcedureLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getProcedureLinkId().add(new PositiveIntType());
+        } else {
+          res.getProcedureLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_procedureLinkId")) {
@@ -9034,7 +9230,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("informationLinkId")) {
       JsonArray array = json.getAsJsonArray("informationLinkId");
       for (int i = 0; i < array.size(); i++) {
-        res.getInformationLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getInformationLinkId().add(new PositiveIntType());
+        } else {
+          res.getInformationLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_informationLinkId")) {
@@ -9103,7 +9303,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("noteNumber")) {
       JsonArray array = json.getAsJsonArray("noteNumber");
       for (int i = 0; i < array.size(); i++) {
-        res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getNoteNumber().add(new PositiveIntType());
+        } else {
+          res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_noteNumber")) {
@@ -9200,7 +9404,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("noteNumber")) {
       JsonArray array = json.getAsJsonArray("noteNumber");
       for (int i = 0; i < array.size(); i++) {
-        res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getNoteNumber().add(new PositiveIntType());
+        } else {
+          res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_noteNumber")) {
@@ -9277,7 +9485,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("noteNumber")) {
       JsonArray array = json.getAsJsonArray("noteNumber");
       for (int i = 0; i < array.size(); i++) {
-        res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getNoteNumber().add(new PositiveIntType());
+        } else {
+          res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_noteNumber")) {
@@ -9308,7 +9520,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("sequenceLinkId")) {
       JsonArray array = json.getAsJsonArray("sequenceLinkId");
       for (int i = 0; i < array.size(); i++) {
-        res.getSequenceLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getSequenceLinkId().add(new PositiveIntType());
+        } else {
+          res.getSequenceLinkId().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_sequenceLinkId")) {
@@ -9337,7 +9553,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("noteNumber")) {
       JsonArray array = json.getAsJsonArray("noteNumber");
       for (int i = 0; i < array.size(); i++) {
-        res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getNoteNumber().add(new PositiveIntType());
+        } else {
+          res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_noteNumber")) {
@@ -9388,7 +9608,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("noteNumber")) {
       JsonArray array = json.getAsJsonArray("noteNumber");
       for (int i = 0; i < array.size(); i++) {
-        res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getNoteNumber().add(new PositiveIntType());
+        } else {
+          res.getNoteNumber().add(parsePositiveInt(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_noteNumber")) {
@@ -10136,7 +10360,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("programName")) {
       JsonArray array = json.getAsJsonArray("programName");
       for (int i = 0; i < array.size(); i++) {
-        res.getProgramName().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getProgramName().add(new StringType());
+        } else {
+          res.getProgramName().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_programName")) {
@@ -10199,7 +10427,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("daysOfWeek")) {
       JsonArray array = json.getAsJsonArray("daysOfWeek");
       for (int i = 0; i < array.size(); i++) {
-        res.getDaysOfWeek().add(parseEnumeration(array.get(i).getAsString(), HealthcareService.DaysOfWeek.NULL, new HealthcareService.DaysOfWeekEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getDaysOfWeek().add(new Enumeration<HealthcareService.DaysOfWeek>());
+        } else {
+          res.getDaysOfWeek().add(parseEnumeration(array.get(i).getAsString(), HealthcareService.DaysOfWeek.NULL, new HealthcareService.DaysOfWeekEnumFactory()));
+        }
       }
     };
     if (json.has("_daysOfWeek")) {
@@ -10892,7 +11124,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("binary")) {
       JsonArray array = json.getAsJsonArray("binary");
       for (int i = 0; i < array.size(); i++) {
-        res.getBinary().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getBinary().add(new UriType());
+        } else {
+          res.getBinary().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_binary")) {
@@ -11020,7 +11256,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("type")) {
       JsonArray array = json.getAsJsonArray("type");
       for (int i = 0; i < array.size(); i++) {
-        res.getType().add(parseCode(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getType().add(new CodeType());
+        } else {
+          res.getType().add(parseCode(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_type")) {
@@ -11035,7 +11275,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("package")) {
       JsonArray array = json.getAsJsonArray("package");
       for (int i = 0; i < array.size(); i++) {
-        res.getPackage().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getPackage().add(new StringType());
+        } else {
+          res.getPackage().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_package")) {
@@ -11332,7 +11576,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("alias")) {
       JsonArray array = json.getAsJsonArray("alias");
       for (int i = 0; i < array.size(); i++) {
-        res.getAlias().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getAlias().add(new StringType());
+        } else {
+          res.getAlias().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_alias")) {
@@ -11551,7 +11799,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("definition")) {
       JsonArray array = json.getAsJsonArray("definition");
       for (int i = 0; i < array.size(); i++) {
-        res.getDefinition().add(parseMarkdown(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getDefinition().add(new MarkdownType());
+        } else {
+          res.getDefinition().add(parseMarkdown(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_definition")) {
@@ -13381,7 +13633,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("resource")) {
       JsonArray array = json.getAsJsonArray("resource");
       for (int i = 0; i < array.size(); i++) {
-        res.getResource().add(parseCode(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getResource().add(new CodeType());
+        } else {
+          res.getResource().add(parseCode(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_resource")) {
@@ -13495,7 +13751,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("parameterName")) {
       JsonArray array = json.getAsJsonArray("parameterName");
       for (int i = 0; i < array.size(); i++) {
-        res.getParameterName().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getParameterName().add(new StringType());
+        } else {
+          res.getParameterName().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_parameterName")) {
@@ -13554,7 +13814,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("location")) {
       JsonArray array = json.getAsJsonArray("location");
       for (int i = 0; i < array.size(); i++) {
-        res.getLocation().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getLocation().add(new StringType());
+        } else {
+          res.getLocation().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_location")) {
@@ -13569,7 +13833,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("expression")) {
       JsonArray array = json.getAsJsonArray("expression");
       for (int i = 0; i < array.size(); i++) {
-        res.getExpression().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getExpression().add(new StringType());
+        } else {
+          res.getExpression().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_expression")) {
@@ -13614,7 +13882,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("alias")) {
       JsonArray array = json.getAsJsonArray("alias");
       for (int i = 0; i < array.size(); i++) {
-        res.getAlias().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getAlias().add(new StringType());
+        } else {
+          res.getAlias().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_alias")) {
@@ -14284,7 +14556,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("goalId")) {
       JsonArray array = json.getAsJsonArray("goalId");
       for (int i = 0; i < array.size(); i++) {
-        res.getGoalId().add(parseId(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getGoalId().add(new IdType());
+        } else {
+          res.getGoalId().add(parseId(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_goalId")) {
@@ -14639,7 +14915,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("daysOfWeek")) {
       JsonArray array = json.getAsJsonArray("daysOfWeek");
       for (int i = 0; i < array.size(); i++) {
-        res.getDaysOfWeek().add(parseEnumeration(array.get(i).getAsString(), PractitionerRole.DaysOfWeek.NULL, new PractitionerRole.DaysOfWeekEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getDaysOfWeek().add(new Enumeration<PractitionerRole.DaysOfWeek>());
+        } else {
+          res.getDaysOfWeek().add(parseEnumeration(array.get(i).getAsString(), PractitionerRole.DaysOfWeek.NULL, new PractitionerRole.DaysOfWeekEnumFactory()));
+        }
       }
     };
     if (json.has("_daysOfWeek")) {
@@ -15031,7 +15311,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("include")) {
       JsonArray array = json.getAsJsonArray("include");
       for (int i = 0; i < array.size(); i++) {
-        res.getInclude().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getInclude().add(new StringType());
+        } else {
+          res.getInclude().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_include")) {
@@ -15046,7 +15330,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("exclude")) {
       JsonArray array = json.getAsJsonArray("exclude");
       for (int i = 0; i < array.size(); i++) {
-        res.getExclude().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getExclude().add(new StringType());
+        } else {
+          res.getExclude().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_exclude")) {
@@ -15173,7 +15461,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("policy")) {
       JsonArray array = json.getAsJsonArray("policy");
       for (int i = 0; i < array.size(); i++) {
-        res.getPolicy().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getPolicy().add(new UriType());
+        } else {
+          res.getPolicy().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_policy")) {
@@ -15357,7 +15649,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("subjectType")) {
       JsonArray array = json.getAsJsonArray("subjectType");
       for (int i = 0; i < array.size(); i++) {
-        res.getSubjectType().add(parseCode(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getSubjectType().add(new CodeType());
+        } else {
+          res.getSubjectType().add(parseCode(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_subjectType")) {
@@ -16338,7 +16634,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("base")) {
       JsonArray array = json.getAsJsonArray("base");
       for (int i = 0; i < array.size(); i++) {
-        res.getBase().add(parseCode(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getBase().add(new CodeType());
+        } else {
+          res.getBase().add(parseCode(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_base")) {
@@ -16377,7 +16677,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("target")) {
       JsonArray array = json.getAsJsonArray("target");
       for (int i = 0; i < array.size(); i++) {
-        res.getTarget().add(parseCode(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getTarget().add(new CodeType());
+        } else {
+          res.getTarget().add(parseCode(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_target")) {
@@ -16392,7 +16696,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("comparator")) {
       JsonArray array = json.getAsJsonArray("comparator");
       for (int i = 0; i < array.size(); i++) {
-        res.getComparator().add(parseEnumeration(array.get(i).getAsString(), SearchParameter.SearchComparator.NULL, new SearchParameter.SearchComparatorEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getComparator().add(new Enumeration<SearchParameter.SearchComparator>());
+        } else {
+          res.getComparator().add(parseEnumeration(array.get(i).getAsString(), SearchParameter.SearchComparator.NULL, new SearchParameter.SearchComparatorEnumFactory()));
+        }
       }
     };
     if (json.has("_comparator")) {
@@ -16407,7 +16715,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("modifier")) {
       JsonArray array = json.getAsJsonArray("modifier");
       for (int i = 0; i < array.size(); i++) {
-        res.getModifier().add(parseEnumeration(array.get(i).getAsString(), SearchParameter.SearchModifierCode.NULL, new SearchParameter.SearchModifierCodeEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getModifier().add(new Enumeration<SearchParameter.SearchModifierCode>());
+        } else {
+          res.getModifier().add(parseEnumeration(array.get(i).getAsString(), SearchParameter.SearchModifierCode.NULL, new SearchParameter.SearchModifierCodeEnumFactory()));
+        }
       }
     };
     if (json.has("_modifier")) {
@@ -16422,7 +16734,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("chain")) {
       JsonArray array = json.getAsJsonArray("chain");
       for (int i = 0; i < array.size(); i++) {
-        res.getChain().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getChain().add(new StringType());
+        } else {
+          res.getChain().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_chain")) {
@@ -17110,7 +17426,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("context")) {
       JsonArray array = json.getAsJsonArray("context");
       for (int i = 0; i < array.size(); i++) {
-        res.getContext().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getContext().add(new StringType());
+        } else {
+          res.getContext().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_context")) {
@@ -17125,7 +17445,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("contextInvariant")) {
       JsonArray array = json.getAsJsonArray("contextInvariant");
       for (int i = 0; i < array.size(); i++) {
-        res.getContextInvariant().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getContextInvariant().add(new StringType());
+        } else {
+          res.getContextInvariant().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_contextInvariant")) {
@@ -17298,7 +17622,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("import")) {
       JsonArray array = json.getAsJsonArray("import");
       for (int i = 0; i < array.size(); i++) {
-        res.getImport().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getImport().add(new UriType());
+        } else {
+          res.getImport().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_import")) {
@@ -17526,7 +17854,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("listMode")) {
       JsonArray array = json.getAsJsonArray("listMode");
       for (int i = 0; i < array.size(); i++) {
-        res.getListMode().add(parseEnumeration(array.get(i).getAsString(), StructureMap.StructureMapTargetListMode.NULL, new StructureMap.StructureMapTargetListModeEnumFactory()));
+        if (array.get(i).isJsonNull()) {
+          res.getListMode().add(new Enumeration<StructureMap.StructureMapTargetListMode>());
+        } else {
+          res.getListMode().add(parseEnumeration(array.get(i).getAsString(), StructureMap.StructureMapTargetListMode.NULL, new StructureMap.StructureMapTargetListModeEnumFactory()));
+        }
       }
     };
     if (json.has("_listMode")) {
@@ -17582,7 +17914,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("variable")) {
       JsonArray array = json.getAsJsonArray("variable");
       for (int i = 0; i < array.size(); i++) {
-        res.getVariable().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getVariable().add(new StringType());
+        } else {
+          res.getVariable().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_variable")) {
@@ -17663,7 +17999,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("header")) {
       JsonArray array = json.getAsJsonArray("header");
       for (int i = 0; i < array.size(); i++) {
-        res.getHeader().add(parseString(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getHeader().add(new StringType());
+        } else {
+          res.getHeader().add(parseString(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_header")) {
@@ -18505,7 +18845,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("origin")) {
       JsonArray array = json.getAsJsonArray("origin");
       for (int i = 0; i < array.size(); i++) {
-        res.getOrigin().add(parseInteger(array.get(i).getAsLong()));
+        if (array.get(i).isJsonNull()) {
+          res.getOrigin().add(new IntegerType());
+        } else {
+          res.getOrigin().add(parseInteger(array.get(i).getAsLong()));
+        }
       }
     };
     if (json.has("_origin")) {
@@ -18524,7 +18868,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("link")) {
       JsonArray array = json.getAsJsonArray("link");
       for (int i = 0; i < array.size(); i++) {
-        res.getLink().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getLink().add(new UriType());
+        } else {
+          res.getLink().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_link")) {
@@ -19231,7 +19579,11 @@ public class JsonParser extends JsonParserBase {
     if (json.has("valueSet")) {
       JsonArray array = json.getAsJsonArray("valueSet");
       for (int i = 0; i < array.size(); i++) {
-        res.getValueSet().add(parseUri(array.get(i).getAsString()));
+        if (array.get(i).isJsonNull()) {
+          res.getValueSet().add(new UriType());
+        } else {
+          res.getValueSet().add(parseUri(array.get(i).getAsString()));
+        }
       }
     };
     if (json.has("_valueSet")) {
