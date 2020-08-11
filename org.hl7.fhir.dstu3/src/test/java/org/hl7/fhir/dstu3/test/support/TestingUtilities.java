@@ -17,6 +17,7 @@ import org.hl7.fhir.dstu3.context.IWorkerContext;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.tests.BaseTestingUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -29,7 +30,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
-public class TestingUtilities {
+public class TestingUtilities extends BaseTestingUtilities {
   private static final boolean SHOW_DIFF = true;
   
 	static public IWorkerContext context;
