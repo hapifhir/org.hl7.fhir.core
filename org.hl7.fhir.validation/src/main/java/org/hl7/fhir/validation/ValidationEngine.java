@@ -307,6 +307,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   private Locale locale;
   private List<ImplementationGuide> igs = new ArrayList<>();
   private boolean showTimes;
+  private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -1558,6 +1559,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.getContext().setLocale(locale);
     validator.setFetcher(this);
     validator.getImplementationGuides().addAll(igs);
+    validator.getBundleValidationRules().addAll(bundleValidationRules);
     return validator;
   }
 
@@ -2368,6 +2370,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   public FilesystemPackageCacheManager getPcm() {
     return pcm;
   }
-  
+ 
+  public List<BundleValidationRule> getBundleValidationRules() {
+    return bundleValidationRules;
+   }
+
   
 }

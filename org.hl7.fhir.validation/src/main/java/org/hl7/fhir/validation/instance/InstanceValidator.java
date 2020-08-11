@@ -364,6 +364,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean securityChecks;
   private ProfileUtilities profileUtilities;
   private boolean crumbTrails;
+  private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices) {
     super(theContext);
@@ -3624,7 +3625,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public void checkSpecials(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials) {
     // specific known special validations
     if (element.getType().equals(BUNDLE)) {
-      new BundleValidator(context, serverBase).validateBundle(errors, element, stack, checkSpecials);
+      new BundleValidator(context, serverBase, this).validateBundle(errors, element, stack, checkSpecials, hostContext);
     } else if (element.getType().equals("Observation")) {
       validateObservation(errors, element, stack);
     } else if (element.getType().equals("Questionnaire")) {
@@ -4816,6 +4817,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setSecurityChecks(boolean securityChecks) {
     this.securityChecks = securityChecks;
+  }
+
+  @Override
+  public List<BundleValidationRule> getBundleValidationRules() {
+    return bundleValidationRules ;
   }
 
 }

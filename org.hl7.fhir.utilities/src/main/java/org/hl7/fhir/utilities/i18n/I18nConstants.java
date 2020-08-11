@@ -543,6 +543,7 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_SIGNPOST = "VALIDATION_VAL_PROFILE_SIGNPOST";
   public static final String VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL = "VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL";
   public static final String VALIDATION_VAL_PROFILE_SIGNPOST_META = "VALIDATION_VAL_PROFILE_SIGNPOST_META";
+  public static final String VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM = "VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM";
   public static final String VALIDATION_VAL_PROFILE_SLICEORDER = "Validation_VAL_Profile_SliceOrder";
   public static final String VALIDATION_VAL_PROFILE_OTHER_VERSION = "VALIDATION_VAL_PROFILE_OTHER_VERSION";
   public static final String VALIDATION_VAL_PROFILE_THIS_VERSION_OK = "VALIDATION_VAL_PROFILE_THIS_VERSION_OK";
@@ -577,5 +578,11 @@ public class I18nConstants {
   public static final String _HAS_CHILDREN__AND_MULTIPLE_TYPES__IN_PROFILE_ = "_has_children__and_multiple_types__in_profile_";
   public static final String _HAS_CHILDREN__FOR_TYPE__IN_PROFILE__BUT_CANT_FIND_TYPE = "_has_children__for_type__in_profile__but_cant_find_type";
   public static final String _HAS_NO_CHILDREN__AND_NO_TYPES_IN_PROFILE_ = "_has_no_children__and_no_types_in_profile_";
+  
+  public static final String BUNDLE_RULE_NONE = "BUNDLE_RULE_NONE";
+  public static final String BUNDLE_RULE_UNKNOWN = "BUNDLE_RULE_UNKNOWN";
+  public static final String BUNDLE_RULE_INVALID_INDEX = "BUNDLE_RULE_INVALID_INDEX";
+  public static final String BUNDLE_RULE_PROFILE_UNKNOWN = "BUNDLE_RULE_PROFILE_UNKNOWN";
 }
+
 
