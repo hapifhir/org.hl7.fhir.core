@@ -216,6 +216,7 @@ public class ValidationService {
     validator.setCrumbTrails(cliContext.isCrumbTrails());
     validator.setShowTimes(cliContext.isShowTimes());
     validator.setFetcher(new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator));
+    validator.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
     return validator;
   }
