@@ -90,6 +90,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
+import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
@@ -154,6 +155,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private Object lock = new Object(); // used as a lock for the data that follows
   protected String version;
+  private String cacheId;
+  private Set<String> cached = new HashSet<>();
   
   private Map<String, Map<String, Resource>> allResourcesById = new HashMap<String, Map<String, Resource>>();
   // all maps are to the full URI
@@ -585,6 +588,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Parameters p = expParameters.copy(); 
     p.setParameter("includeDefinition", false);
     p.setParameter("excludeNested", !hierarchical);
+    if (cacheId != null) {
+      p.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
+    }
+    addDependentResources(p, vs);
     
     if (noTerminologyServer) {
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
@@ -654,8 +661,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       allErrors.addAll(vse.getAllErrors());
       e.printStackTrace();
     }
-
+    
     // if that failed, we try to expand on the server
+    if (cacheId != null) {
+      p.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
+    }
+    addDependentResources(p, vs);
     if (noTerminologyServer) {
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, allErrors);
     }
@@ -916,8 +927,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private ValidationResult validateOnServer(ValueSet vs, Parameters pin) throws FHIRException {
+    if (cacheId != null) {
+      pin.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
+    }
     if (vs != null) {
-      pin.addParameter().setName("valueSet").setResource(vs);
+      if (cacheId != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
+        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+"|"+vs.getVersion()));        
+      } else {
+        pin.addParameter().setName("valueSet").setResource(vs);
+        cached.add(vs.getUrl()+"|"+vs.getVersion());
+      }
       addDependentResources(pin, vs);
     }
     for (ParametersParameterComponent pp : pin.getParameter()) {
@@ -958,13 +977,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (CanonicalType c : inc.getValueSet()) {
       ValueSet vs = fetchResource(ValueSet.class, c.getValue());
       if (vs != null) {
-        pin.addParameter().setName("tx-resource").setResource(vs);
+        if (cacheId == null || !cached.contains(vs.getVUrl())) {
+          pin.addParameter().setName("tx-resource").setResource(vs);
+          cached.add(vs.getVUrl());
+        }
         addDependentResources(pin, vs);
       }
     }
     CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem());
     if (cs != null) {
-      pin.addParameter().setName("tx-resource").setResource(cs);
+      if (cacheId == null || !cached.contains(cs.getVUrl())) {
+        pin.addParameter().setName("tx-resource").setResource(cs);
+        cached.add(cs.getVUrl());
+      }
       // todo: supplements
     }   
   }
@@ -1774,8 +1799,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return null;
   }
 
-  
-
   public List<ImplementationGuide> allImplementationGuides() {
     List<ImplementationGuide> res = new ArrayList<>();
     guides.listAll(res);
@@ -1797,10 +1820,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       } catch (Exception e) {
 //        System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
       }
-
     }  
   }
-
 
   protected String tail(String url) {
     if (Utilities.noString(url)) {
@@ -1831,5 +1852,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return txClient;
   }
 
+  public String getCacheId() {
+    return cacheId;
+  }
+
+  public void setCacheId(String cacheId) {
+    this.cacheId = cacheId;
+  }
 
 }
