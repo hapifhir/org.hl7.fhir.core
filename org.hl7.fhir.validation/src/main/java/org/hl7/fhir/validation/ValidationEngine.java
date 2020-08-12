@@ -424,6 +424,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       context = SimpleWorkerContext.fromDefinitions(source, loaderForVersion(), new PackageVersion(src));
       grabNatives(source, "http://hl7.org/fhir");
     }
+    context.setCacheId(UUID.randomUUID().toString());
     context.setAllowLoadingDuplicates(true); // because of Forge
     context.setExpansionProfile(makeExpProfile());
     NpmPackage npmX = pcm.loadPackage("hl7.fhir.xver-extensions", "0.0.4");

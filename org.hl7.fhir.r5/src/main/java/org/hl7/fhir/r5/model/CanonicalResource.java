@@ -508,6 +508,10 @@ public abstract class CanonicalResource extends DomainResource {
         return toString();
       }      
 
+      public String getVUrl() {
+        return getUrl() + (hasVersion() ? "|"+getVersion() : "");
+      }
+
 // end addition
 
 }
