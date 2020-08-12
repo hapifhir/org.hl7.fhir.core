@@ -420,6 +420,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (progress) {
       System.out.println("Load Package "+pi.name()+"#"+pi.version());
     }
+    if (loadedPackages.contains(pi.id()+"#"+pi.version())) {
+      return 0;
+    }
     loadedPackages.add(pi.id()+"#"+pi.version());
 
     
