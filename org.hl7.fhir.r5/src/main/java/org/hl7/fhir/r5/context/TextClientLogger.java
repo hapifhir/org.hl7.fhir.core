@@ -40,11 +40,9 @@ import java.util.List;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
-public class TextClientLogger implements ToolingClientLogger {
+public class TextClientLogger extends BaseLogger implements ToolingClientLogger {
 
   private PrintStream file;
-  private int id = 0;
-  private String lastId;
   
   public TextClientLogger(String log) {
     if (log != null) {
@@ -59,9 +57,8 @@ public class TextClientLogger implements ToolingClientLogger {
   public void logRequest(String method, String url, List<String> headers, byte[] body) {
     if (file == null)
       return;
-    id++;
-    lastId = Integer.toString(id);
-    file.println("\r\n--- "+lastId+" -----------------\r\nRequest: \r\n");
+    String id = nextId();
+    file.println("\r\n--- "+id+" -----------------\r\nRequest: \r\n");
     file.println(method+" "+url+" HTTP/1.0");
     for (String s : headers)  
       file.println(Utilities.escapeXml(s));
@@ -89,14 +86,6 @@ public class TextClientLogger implements ToolingClientLogger {
       } catch (UnsupportedEncodingException e) {
       }
     }
-  }
-
-  public String getLastId() {
-    return lastId;
-  }
-
-  public void clearLastId() {
-    lastId = null;    
   }
 
 }
