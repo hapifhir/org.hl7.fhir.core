@@ -40,13 +40,11 @@ import java.util.List;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
-public class HTMLClientLogger implements ToolingClientLogger {
+public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger {
 
   private static final boolean DEBUG = false;
   
   private PrintStream file;
-  private int id = 0;
-  private String lastId;
   
   public HTMLClientLogger(String log) {
     if (log != null) {
@@ -61,12 +59,12 @@ public class HTMLClientLogger implements ToolingClientLogger {
   public void logRequest(String method, String url, List<String> headers, byte[] body) {
     if (file == null)
       return;
-    id++;
     if (DEBUG) {
       System.out.println("tx: " +method+" "+url+" "+present(body));
     }
-    lastId = Integer.toString(id);
-    file.println("<hr/><a name=\"l"+lastId+"\"> </a>");
+    String id = nextId();
+    file.println("<hr/><a name=\"l"+id+"\"> </a>");
+    file.println("<p>#"+id+"</p>");
     file.println("<pre>");
     file.println(method+" "+url+" HTTP/1.0");
     for (String s : headers)  
@@ -115,12 +113,5 @@ public class HTMLClientLogger implements ToolingClientLogger {
     }
   }
 
-  public String getLastId() {
-    return lastId;
-  }
-
-  public void clearLastId() {
-    lastId = null;    
-  }
 
 }
