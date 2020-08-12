@@ -90,6 +90,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   //  private static final String SECONDARY_SERVER = "http://local.fhir.org:960/packages";
   public static final String PACKAGE_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*$";
+  public static final String PACKAGE_VERSION_REGEX_OPT = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+(\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*)$";
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
   private static final String CACHE_VERSION = "3"; // second version - see wiki page
   private String cacheFolder;
