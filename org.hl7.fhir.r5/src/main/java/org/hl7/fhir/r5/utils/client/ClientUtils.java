@@ -261,7 +261,7 @@ public class ClientUtils {
    * @param request
    */
   protected void configureFhirRequest(HttpRequest request, String format, List<Header> headers) {
-    request.addHeader("User-Agent", "Java FHIR Client for FHIR");
+    request.addHeader("User-Agent", "hapi-fhir-tooling-client");
 
     if (format != null) {		
       request.addHeader("Accept",format);
