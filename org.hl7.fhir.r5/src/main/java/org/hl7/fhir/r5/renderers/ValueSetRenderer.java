@@ -6,17 +6,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.BooleanType;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -182,7 +188,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
         p.addText(" and may be missing codes, or include codes that are not valid");
       }
     }
-
+    
     generateVersionNotice(x, vs.getExpansion());
 
     CodeSystem allCS = null;
@@ -737,6 +743,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
             li.code(inc.getVersion()); 
           }
 
+          // for performance reasons, we do all the fetching in one batch
+          Map<String, ConceptDefinitionComponent> definitions = getConceptsForCodes(e, inc);
+          
           XhtmlNode t = li.table("none");
           boolean hasComments = false;
           boolean hasDefinition = false;
@@ -750,7 +759,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
           for (ConceptReferenceComponent c : inc.getConcept()) {
             XhtmlNode tr = t.tr();
             XhtmlNode td = tr.td();
-            ConceptDefinitionComponent cc = getConceptForCode(e, c.getCode(), inc);
+            ConceptDefinitionComponent cc = definitions.get(c.getCode()); 
             addCodeToTable(false, inc.getSystem(), c.getCode(), c.hasDisplay()? c.getDisplay() : cc != null ? cc.getDisplay() : "", td);
 
             td = tr.td();
@@ -844,24 +853,13 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
 
-  private ConceptDefinitionComponent getConceptForCode(CodeSystem e, String code, ConceptSetComponent inc) {
-    if (code == null) {
-      return null;
+  private Map<String, ConceptDefinitionComponent> getConceptsForCodes(CodeSystem e, ConceptSetComponent inc) {
+    if (e == null) {
+      e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
     }
-    // first, look in the code systems
-    if (e == null)
-    e = getContext().getWorker().fetchCodeSystem(inc.getSystem());
-    if (e != null) {
-      ConceptDefinitionComponent v = getConceptForCode(e.getConcept(), code);
-      if (v != null)
-        return v;
-    }
-
-    if (context.isNoSlowLookup())
-      return null;
     
-    if (!getContext().getWorker().hasCache()) {
-      ValueSetExpansionComponent vse;
+    ValueSetExpansionComponent vse = null;
+    if (!context.isNoSlowLookup() && !getContext().getWorker().hasCache()) {
       try {
         ValueSetExpansionOutcome vso = getContext().getWorker().expandVS(inc, false);   
         ValueSet valueset = vso.getValueset();
@@ -872,16 +870,39 @@ public class ValueSetRenderer extends TerminologyRenderer {
       } catch (TerminologyServiceException e1) {
         return null;
       }
-      if (vse != null) {
-        ConceptDefinitionComponent v = getConceptForCodeFromExpansion(vse.getContains(), code);
-      if (v != null)
-        return v;
     }
+    
+    Map<String, ConceptDefinitionComponent> results = new HashMap<>();
+    List<CodingValidationRequest> serverList = new ArrayList<>();
+    
+    // 1st pass, anything we can resolve internally
+    for (ConceptReferenceComponent cc : inc.getConcept()) {
+      String code = cc.getCode();
+      ConceptDefinitionComponent v = null;
+      if (e != null) {
+        v = getConceptForCode(e.getConcept(), code);
+      }
+      if (v == null && vse != null) {
+        v = getConceptForCodeFromExpansion(vse.getContains(), code);
+      }
+      if (v != null) {
+        results.put(code, v);
+      } else {
+        serverList.add(new CodingValidationRequest(new Coding(inc.getSystem(), code, null)));
+      }
     }
-
-    return getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), code, null).asConceptDefinition();
+    if (!context.isNoSlowLookup() && !serverList.isEmpty()) {
+      getContext().getWorker().validateCodeBatch(getContext().getTerminologyServiceOptions(), serverList, null);
+      for (CodingValidationRequest vr : serverList) {
+        ConceptDefinitionComponent v = vr.getResult().asConceptDefinition();
+        if (v != null) {
+          results.put(vr.getCoding().getCode(), v);
+        }
+      }
+    }
+    return results;
   }
-
+  
   private ConceptDefinitionComponent getConceptForCode(List<ConceptDefinitionComponent> list, String code) {
     for (ConceptDefinitionComponent c : list) {
     if (code.equals(c.getCode()))
