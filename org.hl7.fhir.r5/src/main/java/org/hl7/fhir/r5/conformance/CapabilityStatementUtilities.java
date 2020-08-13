@@ -240,8 +240,7 @@ public class CapabilityStatementUtilities {
       XhtmlNode tr = tbl.tr();
       tr.style("background-color: #dddddd");
       tr.td().b().addText(r.getType());
-      tr.td().tx("Present");
-     
+      tr.td().tx("Present");     
 
       if (o == null) {
         union.addResource(r);

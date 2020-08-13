@@ -10,8 +10,11 @@ import java.util.Map;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.comparison.ResourceComparer.MessageCounts;
+import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.BackboneElement;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
@@ -28,6 +31,8 @@ import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.PrimitiveType;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -406,7 +411,7 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
   }
   
   private void compareRestResource(StructuralMatch<Element> sm, CapabilityStatementRestResourceComponent l, CapabilityStatementRestResourceComponent r, String path, CapabilityStatementComparison res, CapabilityStatementRestResourceComponent union, CapabilityStatementRestResourceComponent intersection) {
-    compareStrings(path, sm.getMessages(), l.getProfile(), r.getProfile(), "profile", IssueSeverity.WARNING, res);
+    compareProfiles(path, sm, l.getProfileElement(), r.getProfileElement(), res, union, intersection);
     // todo: supported profiles
     compareStrings(path, sm.getMessages(), l.getDocumentation(), r.getDocumentation(), "documentation", IssueSeverity.INFORMATION, res);
     compareExpectations(sm, l, r, path, res, union, intersection);    
@@ -423,6 +428,57 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     compareItemPropertyList(sm, "searchRevInclude", l.getSearchRevInclude(), r.getSearchRevInclude(), path, res, union.getSearchRevInclude(), intersection.getSearchRevInclude(), IssueSeverity.WARNING);
     compareSearchParams(sm, l.getSearchParam(), r.getSearchParam(), path, res, union.getSearchParam(), intersection.getSearchParam());
     compareOperations(sm, l.getOperation(), r.getOperation(), path, res, union.getOperation(), intersection.getOperation());
+  }
+
+  private void compareProfiles(String path, StructuralMatch<Element> combined, CanonicalType left, CanonicalType right, CapabilityStatementComparison res, CapabilityStatementRestResourceComponent union, CapabilityStatementRestResourceComponent intersection) {
+    if (!left.hasValue() && !right.hasValue()) {
+      // nothing in this case 
+    } else if (!left.hasValue()) {
+      // the intersection is anything in right. The union is everything (or nothing, in this case)
+      intersection.setProfileElement(right.copy());
+      combined.getChildren().add(new StructuralMatch<Element>(vmI(IssueSeverity.WARNING, "Added this profile", path), right).setName("profile"));        
+    } else if (!right.hasValue()) {
+      // the intersection is anything in right. The union is everything (or nothing, in this case)
+      intersection.setProfileElement(left.copy());
+      combined.getChildren().add(new StructuralMatch<Element>(left, vmI(IssueSeverity.WARNING, "Removed this profile", path)).setName("profile"));        
+    } else {
+      // profiles on both sides...
+      StructureDefinition sdLeft = session.getContextLeft().fetchResource(StructureDefinition.class, left.getValue());
+      StructureDefinition sdRight = session.getContextRight().fetchResource(StructureDefinition.class, right.getValue());
+      if (sdLeft == null && sdRight == null) {
+        combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.ERROR, "Cannot compare profiles because neither is known", path)).setName("profile"));        
+      } else if (sdLeft == null) {
+        combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.ERROR, "Cannot compare profiles because '"+left.getValue()+"' is not known", path)).setName("profile"));        
+      } else if (sdRight == null) {
+        combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.ERROR, "Cannot compare profiles because '"+right.getValue()+"' is not known", path)).setName("profile"));                
+      } else if (sdLeft.getUrl().equals(sdRight.getUrl())) {
+        intersection.setProfileElement(left.copy());
+        union.setProfileElement(left.copy());
+        combined.getChildren().add(new StructuralMatch<Element>(left, right).setName("profile"));                
+      } else if (profileInherits(sdLeft, sdRight, session.getContextLeft())) {
+        // if left inherits from right:
+        intersection.setProfileElement(left.copy());
+        union.setProfileElement(right.copy());
+        combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.WARNING, "Changed this profile to a broader profile", path)).setName("profile"));                
+      } else if (profileInherits(sdRight, sdLeft, session.getContextRight())) {
+        intersection.setProfileElement(right.copy());
+        union.setProfileElement(left.copy());
+        combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.WARNING, "Changed this profile to a narrower one", path)).setName("profile"));                
+      } else {
+        combined.getChildren().add(new StructuralMatch<Element>(left, right, vmI(IssueSeverity.WARNING, "Different", path)).setName("profile"));                
+        throw new Error("Not done yet");
+      }
+    }
+  }
+
+  private boolean profileInherits(StructureDefinition sdFocus, StructureDefinition sdOther, IWorkerContext ctxt) {
+    while (sdFocus != null) {
+      if (sdFocus.getUrl().equals(sdOther.getUrl()) && sdFocus.getVersion().equals(sdOther.getVersion())) {
+        return true;
+      }
+      sdFocus = ctxt.fetchResource(StructureDefinition.class, sdFocus.getBaseDefinition());
+    }
+    return false;
   }
 
   private <T> void compareItemProperty(StructuralMatch<Element> combined, String name, PrimitiveType<T> left, PrimitiveType<T> right, String path, CapabilityStatementComparison res, PrimitiveType<T> union, PrimitiveType<T> intersection, IssueSeverity issueSeverity) {
@@ -846,9 +902,15 @@ public class CapabilityStatementComparer extends CanonicalResourceComparer {
     r.getCells().add(gen.new Cell(null, null, t.getName(), null, null));
     PrimitiveType left = t.hasLeft() ? (PrimitiveType) t.getLeft() : null;
     PrimitiveType right = t.hasRight() ? (PrimitiveType) t.getRight() : null;
-    r.getCells().add(style(gen.new Cell(null, null, left != null ? left.primitiveValue() : "", null, null), left != null ? left.primitiveValue() : null, right != null ? right.primitiveValue() : null, true));
+    CanonicalResource crL = left == null ? null : (CanonicalResource) session.getContextLeft().fetchResource(Resource.class, left.primitiveValue());
+    CanonicalResource crR = right == null ? null : (CanonicalResource) session.getContextRight().fetchResource(Resource.class, right.primitiveValue());
+    String refL = crL != null && crL.hasUserData("path") ? crL.getUserString("path") : null;
+    String dispL = crL != null && refL != null ? crL.present() : left == null ? "" : left.primitiveValue(); 
+    String refR = crR != null && crR.hasUserData("path") ? crR.getUserString("path") : null;
+    String dispR = crR != null && refR != null ? crR.present() : right == null ? "" : right.primitiveValue(); 
+    r.getCells().add(style(gen.new Cell(null, refL, dispL, null, null), left != null ? left.primitiveValue() : null, right != null ? right.primitiveValue() : null, true));
     r.getCells().add(gen.new Cell(null, null, "", null, null));
-    r.getCells().add(style(gen.new Cell(null, null, right != null ? right.primitiveValue() : "", null, null), left != null ? left.primitiveValue() : null, right != null ? right.primitiveValue() : null, false));
+    r.getCells().add(style(gen.new Cell(null, refR, dispR, null, null), left != null ? left.primitiveValue() : null, right != null ? right.primitiveValue() : null, false));
     r.getCells().add(gen.new Cell(null, null, "", null, null));
     r.getCells().add(cellForMessages(gen, t.getMessages()));
     return r;
