@@ -167,11 +167,11 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       } else {
         // well, we didn't find a code system - try the expansion? 
         // disabled waiting for discussion
-        throw new Error("No try the server");
+        throw new FHIRException("No try the server");
       }
     } else {
       // disabled waiting for discussion
-      throw new Error("No try the server");
+      throw new FHIRException("No try the server");
 //      inExpansion = checkExpansion(code);
     }
 
