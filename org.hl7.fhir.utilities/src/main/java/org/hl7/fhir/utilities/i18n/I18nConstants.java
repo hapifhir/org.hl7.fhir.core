@@ -230,6 +230,7 @@ public class I18nConstants {
   public static final String NEEDS_A_SNAPSHOT = "needs_a_snapshot";
   public static final String NODE_TYPE__IS_NOT_ALLOWED = "Node_type__is_not_allowed";
   public static final String NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "None_of_the_provided_codes_are_in_the_value_set_";
+  public static final String UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_";
   public static final String NOT_DONE_YET = "Not_done_yet";
   public static final String NOT_DONE_YET_CANT_FETCH_ = "not_done_yet_cant_fetch_";
   public static final String NOT_DONE_YET_VALIDATORHOSTSERVICESCHECKFUNCTION = "Not_done_yet_ValidatorHostServicescheckFunction";
@@ -363,7 +364,8 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_CONFIRM_1 = "Terminology_TX_Confirm_1";
   public static final String TERMINOLOGY_TX_CONFIRM_2 = "Terminology_TX_Confirm_2";
   public static final String TERMINOLOGY_TX_CONFIRM_3 = "Terminology_TX_Confirm_3";
-  public static final String TERMINOLOGY_TX_CONFIRM_4 = "Terminology_TX_Confirm_4";
+  public static final String TERMINOLOGY_TX_CONFIRM_4a = "Terminology_TX_Confirm_4a";
+  public static final String TERMINOLOGY_TX_CONFIRM_4b = "Terminology_TX_Confirm_4b";
   public static final String TERMINOLOGY_TX_CONFIRM_5 = "Terminology_TX_Confirm_5";
   public static final String TERMINOLOGY_TX_CONFIRM_6 = "Terminology_TX_Confirm_6";
   public static final String TERMINOLOGY_TX_DISPLAY_WRONG = "Terminology_TX_Display_Wrong";

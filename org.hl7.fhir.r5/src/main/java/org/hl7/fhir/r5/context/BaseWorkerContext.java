@@ -970,7 +970,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
       addDependentResources(pin, inc);
     }
-    
   }
 
   private void addDependentResources(Parameters pin, ConceptSetComponent inc) {

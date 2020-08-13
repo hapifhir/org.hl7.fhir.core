@@ -310,7 +310,7 @@ public class ClientUtils {
           } catch (InterruptedException e) {
           }
         } else {
-          if (tryCount > 1) {
+          if (tryCount > 4) {
             System.out.println("Giving up: "+ioe.getMessage()+" (R5 / "+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+" for "+message+")");
           }
           throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);

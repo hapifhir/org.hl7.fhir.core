@@ -36,6 +36,6 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 public interface ValueSetChecker {
 
-  boolean codeInValueSet(String system, String code) throws ETooCostly, EOperationOutcome, Exception;
+  Boolean codeInValueSet(String system, String code) throws ETooCostly, EOperationOutcome, Exception;
 
 }
