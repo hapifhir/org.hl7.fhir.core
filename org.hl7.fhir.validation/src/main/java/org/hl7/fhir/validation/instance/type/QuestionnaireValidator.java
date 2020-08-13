@@ -180,7 +180,6 @@ public class QuestionnaireValidator extends BaseValidator {
       }
     }
     if (hint(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, I18nConstants.QUESTIONNAIRE_QR_Q_NONE)) {
-      long t = System.nanoTime();
       Questionnaire qsrc = questionnaire.startsWith("#") ? loadQuestionnaire(element, questionnaire.substring(1)) : context.fetchResource(Questionnaire.class, questionnaire);
       if (warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire)) {
         boolean inProgress = "in-progress".equals(element.getNamedChildValue("status"));

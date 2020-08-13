@@ -159,13 +159,20 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       }
 
       if (cs != null /*&& (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)*/) {
+        if (!(cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
+          // we can't validate that here. 
+          throw new FHIRException("Unable to evaluate based on empty code system");
+        }
         res = validateCode(code, cs);
       } else {
-        // it's in the expansion, but we could find it in a code system
-        res = findCodeInExpansion(code);
+        // well, we didn't find a code system - try the expansion? 
+        // disabled waiting for discussion
+        throw new Error("No try the server");
       }
     } else {
-      inExpansion = checkExpansion(code);
+      // disabled waiting for discussion
+      throw new Error("No try the server");
+//      inExpansion = checkExpansion(code);
     }
 
     // then, if we have a value set, we check it's in the value set
