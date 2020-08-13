@@ -364,7 +364,8 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_CONFIRM_1 = "Terminology_TX_Confirm_1";
   public static final String TERMINOLOGY_TX_CONFIRM_2 = "Terminology_TX_Confirm_2";
   public static final String TERMINOLOGY_TX_CONFIRM_3 = "Terminology_TX_Confirm_3";
-  public static final String TERMINOLOGY_TX_CONFIRM_4 = "Terminology_TX_Confirm_4";
+  public static final String TERMINOLOGY_TX_CONFIRM_4a = "Terminology_TX_Confirm_4a";
+  public static final String TERMINOLOGY_TX_CONFIRM_4b = "Terminology_TX_Confirm_4b";
   public static final String TERMINOLOGY_TX_CONFIRM_5 = "Terminology_TX_Confirm_5";
   public static final String TERMINOLOGY_TX_CONFIRM_6 = "Terminology_TX_Confirm_6";
   public static final String TERMINOLOGY_TX_DISPLAY_WRONG = "Terminology_TX_Display_Wrong";
