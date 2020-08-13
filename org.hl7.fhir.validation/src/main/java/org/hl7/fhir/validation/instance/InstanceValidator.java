@@ -1138,7 +1138,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                         txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
                       else if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure()) {
                         if (binding.getStrength() == BindingStrength.REQUIRED)
-                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4, describeReference(binding.getValueSet(), valueset));
+                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(binding.getValueSet(), valueset), vr.getMessage(), system+"#"+code);
                         else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                           if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c, stack);
@@ -1357,7 +1357,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                         txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
                       else if (vr.getErrorClass() != null && !vr.getErrorClass().isInfrastructure()) {
                         if (binding.getStrength() == BindingStrength.REQUIRED)
-                          txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4, describeReference(binding.getValueSet(), valueset));
+                          txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_4a, describeReference(binding.getValueSet(), valueset), vr.getMessage(), theSystem+"#"+theCode);
                         else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                           if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c, stack);
