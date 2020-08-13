@@ -54,6 +54,7 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceDesignationComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -98,11 +99,18 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       }
     }
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
-      boolean ok = false;
+      Boolean result = false;
       for (Coding c : code.getCoding()) {
-        ok = ok || codeInValueSet(c.getSystem(), c.getCode());
+        Boolean ok = codeInValueSet(c.getSystem(), c.getCode());
+        if (ok == null && result == false) {
+          result = null;
+        } else if (ok) {
+          result = true;
+        }
       }
-      if (!ok) {
+      if (result == null) {
+        warnings.add(0, context.formatMessage(I18nConstants.UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));        
+      } else if (!result) {
         errors.add(0, context.formatMessage(I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));
       }
     }
@@ -119,7 +127,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     String warningMessage = null;
     // first, we validate the concept itself
 
-    ValidationResult res =null;
+    ValidationResult res = null;
     boolean inExpansion = false;
     String system = code.hasSystem() ? code.getSystem() : getValueSetSystem();
     if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
@@ -416,24 +424,34 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   }
 
   @Override
-  public boolean codeInValueSet(String system, String code) throws FHIRException {
+  public Boolean codeInValueSet(String system, String code) throws FHIRException {
+    Boolean result = false;
     if (valueset.hasExpansion()) {
       return checkExpansion(new Coding(system, code, null));
     } else if (valueset.hasCompose()) {
-      boolean ok = false;
       for (ConceptSetComponent vsi : valueset.getCompose().getInclude()) {
-        ok = ok || inComponent(vsi, system, code, valueset.getCompose().getInclude().size() == 1);
+        Boolean ok = inComponent(vsi, system, code, valueset.getCompose().getInclude().size() == 1);
+        if (ok == null && result == false) {
+          result = null;
+        } else if (ok) {
+          result = true;
+          break;
+        }
       }
       for (ConceptSetComponent vsi : valueset.getCompose().getExclude()) {
-        ok = ok && !inComponent(vsi, system, code, valueset.getCompose().getInclude().size() == 1);
+        Boolean nok = inComponent(vsi, system, code, valueset.getCompose().getInclude().size() == 1);
+        if (nok == null && result == false) {
+          result = null;
+        } else if (!nok) {
+          result = false;
+        }
       }
-      return ok;
     } 
 
-    return false;
+    return result;
   }
 
-  private boolean inComponent(ConceptSetComponent vsi, String system, String code, boolean only) throws FHIRException {
+  private Boolean inComponent(ConceptSetComponent vsi, String system, String code, boolean only) throws FHIRException {
     for (UriType uri : vsi.getValueSet()) {
       if (inImport(uri.getValue(), system, code)) {
         return true;
@@ -463,6 +481,9 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       vs.setUrl(Utilities.makeUuidUrn());
       vs.getCompose().addInclude(vsi);
       ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
+      if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
+        return null;
+      }
       return res.isOk();
     } else {
       if (vsi.hasFilter()) {
