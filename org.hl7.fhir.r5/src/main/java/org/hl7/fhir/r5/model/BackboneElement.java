@@ -1,25 +1,7 @@
 package org.hl7.fhir.r5.model;
 
 
-/*
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the \"License\");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an \"AS IS\" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,21 +31,17 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+
 import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * Base StructureDefinition for BackboneElement Type: Base definition for all elements that are defined inside a resource - but not those in a data type.
@@ -262,8 +240,69 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
         }
         
   }
+  
+  public void addModifierExtension(String url, DataType value) {
+    if (isDisallowExtensions())
+      throw new Error("Extensions are not allowed in this context");
+    Extension ex = new Extension();
+    ex.setUrl(url);
+    ex.setValue(value);
+    getModifierExtension().add(ex);    
+  }
 
+
+   @Override
+   public Extension getExtensionByUrl(String theUrl) {
+     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+     ArrayList<Extension> retVal = new ArrayList<Extension>();
+     Extension res = super.getExtensionByUrl(theUrl);
+     if (res != null) {
+       retVal.add(res);
+     }
+     for (Extension next : getModifierExtension()) {
+       if (theUrl.equals(next.getUrl())) {
+         retVal.add(next);
+       }
+     }
+     if (retVal.size() == 0)
+       return null;
+     else {
+       org.apache.commons.lang3.Validate.isTrue(retVal.size() == 1, "Url "+theUrl+" must have only one match");
+       return retVal.get(0);
+     }
+   }
+  
+   @Override
+   public void removeExtension(String theUrl) {
+     for (int i = getModifierExtension().size()-1; i >= 0; i--) {
+       if (theUrl.equals(getExtension().get(i).getUrl()))
+         getExtension().remove(i);
+     }
+     super.removeExtension(theUrl);
+   }
+   
+
+   /**
+    * Returns an unmodifiable list containing all extensions on this element which 
+    * match the given URL.
+    * 
+    * @param theUrl The URL. Must not be blank or null.
+    * @return an unmodifiable list containing all extensions on this element which 
+    * match the given URL
+    */
+   @Override
+   public List<Extension> getExtensionsByUrl(String theUrl) {
+     org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
+     ArrayList<Extension> retVal = new ArrayList<Extension>();
+     retVal.addAll(super.getExtensionsByUrl(theUrl));
+     for (Extension next : getModifierExtension()) {
+       if (theUrl.equals(next.getUrl())) {
+         retVal.add(next);
+       }
+     }
+     return java.util.Collections.unmodifiableList(retVal);
+   }
+   
 // end addition
 
 }
-

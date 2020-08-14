@@ -16,11 +16,20 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LDContextGeneratorTests {
 
 //  String basePath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir")).toString() + "/";
-  String basePath = "/Users/m091864/TEMP/R5/";
+//  String basePath = "E:/workspace/temp/R5/";
+
+  String outputDir = System.getProperty("user.home") + java.io.File.separator + "LDContexts" + java.io.File.separator + "R5" + java.io.File.separator;
+
+  private void mkdirs() {
+    File temp = new File(outputDir);
+    if(temp.exists() == false) {
+      temp.mkdirs();
+    }
+  }
 
   private void doTest(String name) throws IOException, FHIRException {
 
-    StructureDefinition sd = TestingUtilities.context().
+    StructureDefinition sd = (StructureDefinition) TestingUtilities.context().
       fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
 
     if(sd == null) {
@@ -33,7 +42,7 @@ public class LDContextGeneratorTests {
     // write each json string to a file
     // may be multiples if there were BackboneElements processed.
     for (String jsonName : renderedJson.keySet()){
-      TextFile.stringToFile(renderedJson.get(jsonName), basePath + jsonName.toLowerCase() + ".context.jsonld", false);
+      TextFile.stringToFile(renderedJson.get(jsonName), outputDir + jsonName.replace(':', '-').toLowerCase() + ".context.jsonld", false);
     }
 
   }
@@ -61,7 +70,7 @@ public class LDContextGeneratorTests {
         // write each json string to a file
         // may be multiples if there were BackboneElements processed.
         for (String jsonName : renderedJson.keySet()) {
-          TextFile.stringToFile(renderedJson.get(jsonName), basePath + jsonName.toLowerCase() + ".context.jsonld", false);
+          TextFile.stringToFile(renderedJson.get(jsonName), outputDir + jsonName.replace(':', '-').toLowerCase() + ".context.jsonld", false);
         }
 
       }
@@ -71,7 +80,9 @@ public class LDContextGeneratorTests {
 
   @Test
   public void testAll() throws FHIRException, IOException, UcumException {
-    doTestAll();
+    this.mkdirs();
+    System.out.println("Writing contexts to: " + outputDir);
+    this.doTestAll();
   }
 
 //  @Test

@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.
  */
@@ -1016,9 +996,13 @@ public class TestScript extends MetadataResource {
       public TestScriptOriginComponent copy() {
         TestScriptOriginComponent dst = new TestScriptOriginComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptOriginComponent dst) {
+        super.copyValues(dst);
         dst.index = index == null ? null : index.copy();
         dst.profile = profile == null ? null : profile.copy();
-        return dst;
       }
 
       @Override
@@ -1243,9 +1227,13 @@ public class TestScript extends MetadataResource {
       public TestScriptDestinationComponent copy() {
         TestScriptDestinationComponent dst = new TestScriptDestinationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptDestinationComponent dst) {
+        super.copyValues(dst);
         dst.index = index == null ? null : index.copy();
         dst.profile = profile == null ? null : profile.copy();
-        return dst;
       }
 
       @Override
@@ -1496,6 +1484,11 @@ public class TestScript extends MetadataResource {
       public TestScriptMetadataComponent copy() {
         TestScriptMetadataComponent dst = new TestScriptMetadataComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptMetadataComponent dst) {
+        super.copyValues(dst);
         if (link != null) {
           dst.link = new ArrayList<TestScriptMetadataLinkComponent>();
           for (TestScriptMetadataLinkComponent i : link)
@@ -1506,7 +1499,6 @@ public class TestScript extends MetadataResource {
           for (TestScriptMetadataCapabilityComponent i : capability)
             dst.capability.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1753,9 +1745,13 @@ public class TestScript extends MetadataResource {
       public TestScriptMetadataLinkComponent copy() {
         TestScriptMetadataLinkComponent dst = new TestScriptMetadataLinkComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptMetadataLinkComponent dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.description = description == null ? null : description.copy();
-        return dst;
       }
 
       @Override
@@ -2361,6 +2357,11 @@ public class TestScript extends MetadataResource {
       public TestScriptMetadataCapabilityComponent copy() {
         TestScriptMetadataCapabilityComponent dst = new TestScriptMetadataCapabilityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptMetadataCapabilityComponent dst) {
+        super.copyValues(dst);
         dst.required = required == null ? null : required.copy();
         dst.validated = validated == null ? null : validated.copy();
         dst.description = description == null ? null : description.copy();
@@ -2376,7 +2377,6 @@ public class TestScript extends MetadataResource {
             dst.link.add(i.copy());
         };
         dst.capabilities = capabilities == null ? null : capabilities.copy();
-        return dst;
       }
 
       @Override
@@ -2690,10 +2690,14 @@ public class TestScript extends MetadataResource {
       public TestScriptFixtureComponent copy() {
         TestScriptFixtureComponent dst = new TestScriptFixtureComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptFixtureComponent dst) {
+        super.copyValues(dst);
         dst.autocreate = autocreate == null ? null : autocreate.copy();
         dst.autodelete = autodelete == null ? null : autodelete.copy();
         dst.resource = resource == null ? null : resource.copy();
-        return dst;
       }
 
       @Override
@@ -3357,6 +3361,11 @@ public class TestScript extends MetadataResource {
       public TestScriptVariableComponent copy() {
         TestScriptVariableComponent dst = new TestScriptVariableComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptVariableComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.defaultValue = defaultValue == null ? null : defaultValue.copy();
         dst.description = description == null ? null : description.copy();
@@ -3365,7 +3374,6 @@ public class TestScript extends MetadataResource {
         dst.hint = hint == null ? null : hint.copy();
         dst.path = path == null ? null : path.copy();
         dst.sourceId = sourceId == null ? null : sourceId.copy();
-        return dst;
       }
 
       @Override
@@ -3550,12 +3558,16 @@ public class TestScript extends MetadataResource {
       public TestScriptSetupComponent copy() {
         TestScriptSetupComponent dst = new TestScriptSetupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptSetupComponent dst) {
+        super.copyValues(dst);
         if (action != null) {
           dst.action = new ArrayList<SetupActionComponent>();
           for (SetupActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3750,9 +3762,13 @@ public class TestScript extends MetadataResource {
       public SetupActionComponent copy() {
         SetupActionComponent dst = new SetupActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionComponent dst) {
+        super.copyValues(dst);
         dst.operation = operation == null ? null : operation.copy();
         dst.assert_ = assert_ == null ? null : assert_.copy();
-        return dst;
       }
 
       @Override
@@ -5013,6 +5029,11 @@ public class TestScript extends MetadataResource {
       public SetupActionOperationComponent copy() {
         SetupActionOperationComponent dst = new SetupActionOperationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionOperationComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.resource = resource == null ? null : resource.copy();
         dst.label = label == null ? null : label.copy();
@@ -5034,7 +5055,6 @@ public class TestScript extends MetadataResource {
         dst.sourceId = sourceId == null ? null : sourceId.copy();
         dst.targetId = targetId == null ? null : targetId.copy();
         dst.url = url == null ? null : url.copy();
-        return dst;
       }
 
       @Override
@@ -5291,9 +5311,13 @@ public class TestScript extends MetadataResource {
       public SetupActionOperationRequestHeaderComponent copy() {
         SetupActionOperationRequestHeaderComponent dst = new SetupActionOperationRequestHeaderComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionOperationRequestHeaderComponent dst) {
+        super.copyValues(dst);
         dst.field = field == null ? null : field.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -6930,6 +6954,11 @@ public class TestScript extends MetadataResource {
       public SetupActionAssertComponent copy() {
         SetupActionAssertComponent dst = new SetupActionAssertComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionAssertComponent dst) {
+        super.copyValues(dst);
         dst.label = label == null ? null : label.copy();
         dst.description = description == null ? null : description.copy();
         dst.direction = direction == null ? null : direction.copy();
@@ -6952,7 +6981,6 @@ public class TestScript extends MetadataResource {
         dst.validateProfileId = validateProfileId == null ? null : validateProfileId.copy();
         dst.value = value == null ? null : value.copy();
         dst.warningOnly = warningOnly == null ? null : warningOnly.copy();
-        return dst;
       }
 
       @Override
@@ -7288,6 +7316,11 @@ public class TestScript extends MetadataResource {
       public TestScriptTestComponent copy() {
         TestScriptTestComponent dst = new TestScriptTestComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptTestComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.description = description == null ? null : description.copy();
         if (action != null) {
@@ -7295,7 +7328,6 @@ public class TestScript extends MetadataResource {
           for (TestActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -7492,9 +7524,13 @@ public class TestScript extends MetadataResource {
       public TestActionComponent copy() {
         TestActionComponent dst = new TestActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestActionComponent dst) {
+        super.copyValues(dst);
         dst.operation = operation == null ? null : operation.copy();
         dst.assert_ = assert_ == null ? null : assert_.copy();
-        return dst;
       }
 
       @Override
@@ -7672,12 +7708,16 @@ public class TestScript extends MetadataResource {
       public TestScriptTeardownComponent copy() {
         TestScriptTeardownComponent dst = new TestScriptTeardownComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScriptTeardownComponent dst) {
+        super.copyValues(dst);
         if (action != null) {
           dst.action = new ArrayList<TeardownActionComponent>();
           for (TeardownActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -7835,8 +7875,12 @@ public class TestScript extends MetadataResource {
       public TeardownActionComponent copy() {
         TeardownActionComponent dst = new TeardownActionComponent();
         copyValues(dst);
-        dst.operation = operation == null ? null : operation.copy();
         return dst;
+      }
+
+      public void copyValues(TeardownActionComponent dst) {
+        super.copyValues(dst);
+        dst.operation = operation == null ? null : operation.copy();
       }
 
       @Override
@@ -9467,6 +9511,11 @@ public class TestScript extends MetadataResource {
       public TestScript copy() {
         TestScript dst = new TestScript();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestScript dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.version = version == null ? null : version.copy();
@@ -9527,7 +9576,6 @@ public class TestScript extends MetadataResource {
             dst.test.add(i.copy());
         };
         dst.teardown = teardown == null ? null : teardown.copy();
-        return dst;
       }
 
       protected TestScript typedCopy() {
@@ -9891,4 +9939,3 @@ public class TestScript extends MetadataResource {
 
 
 }
-

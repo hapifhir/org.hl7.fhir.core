@@ -1,24 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50;
 
-/*-
- * #%L
- * org.hl7.fhir.convertors
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+import org.hl7.fhir.convertors.VersionConvertor_30_50;
+
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -68,9 +51,9 @@ public class AuditEvent40_50 extends VersionConvertor_40_50 {
         if (src.hasRecorded())
             tgt.setRecordedElement(convertInstant(src.getRecordedElement()));
         if (src.hasOutcome())
-            tgt.setOutcomeElement(convertAuditEventOutcome(src.getOutcomeElement()));
+            tgt.getOutcome().addCoding().setSystem("http://terminology.hl7.org/CodeSystem/audit-event-outcome").setCode(src.getOutcome().toCode());
         if (src.hasOutcomeDesc())
-            tgt.setOutcomeDescElement(convertString(src.getOutcomeDescElement()));
+            tgt.getOutcome().setTextElement(convertString(src.getOutcomeDescElement()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPurposeOfEvent()) tgt.addPurposeOfEvent(convertCodeableConcept(t));
         for (org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentComponent t : src.getAgent()) tgt.addAgent(convertAuditEventAgentComponent(t));
         if (src.hasSource())
@@ -93,10 +76,10 @@ public class AuditEvent40_50 extends VersionConvertor_40_50 {
             tgt.setPeriod(convertPeriod(src.getPeriod()));
         if (src.hasRecorded())
             tgt.setRecordedElement(convertInstant(src.getRecordedElement()));
-        if (src.hasOutcome())
-            tgt.setOutcomeElement(convertAuditEventOutcome(src.getOutcomeElement()));
-        if (src.hasOutcomeDesc())
-            tgt.setOutcomeDescElement(convertString(src.getOutcomeDescElement()));
+        if (src.hasOutcome() && src.getOutcome().hasCoding("http://terminology.hl7.org/CodeSystem/audit-event-outcome"))
+          tgt.getOutcomeElement().setValueAsString(src.getOutcome().getCode("http://terminology.hl7.org/CodeSystem/audit-event-outcome"));
+      if (src.getOutcome().hasText())
+          tgt.setOutcomeDescElement(VersionConvertor_40_50.convertString(src.getOutcome().getTextElement()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPurposeOfEvent()) tgt.addPurposeOfEvent(convertCodeableConcept(t));
         for (org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentComponent t : src.getAgent()) tgt.addAgent(convertAuditEventAgentComponent(t));
         if (src.hasSource())
@@ -161,55 +144,6 @@ public class AuditEvent40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.AuditEvent.AuditEventOutcome> convertAuditEventOutcome(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.AuditEvent.AuditEventOutcome> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.AuditEvent.AuditEventOutcomeEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case _0:
-                tgt.setValue(org.hl7.fhir.r5.model.AuditEvent.AuditEventOutcome._0);
-                break;
-            case _4:
-                tgt.setValue(org.hl7.fhir.r5.model.AuditEvent.AuditEventOutcome._4);
-                break;
-            case _8:
-                tgt.setValue(org.hl7.fhir.r5.model.AuditEvent.AuditEventOutcome._8);
-                break;
-            case _12:
-                tgt.setValue(org.hl7.fhir.r5.model.AuditEvent.AuditEventOutcome._12);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.AuditEvent.AuditEventOutcome.NULL);
-                break;
-        }
-        return tgt;
-    }
-
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome> convertAuditEventOutcome(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.AuditEvent.AuditEventOutcome> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcomeEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case _0:
-                tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome._0);
-                break;
-            case _4:
-                tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome._4);
-                break;
-            case _8:
-                tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome._8);
-                break;
-            case _12:
-                tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome._12);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.AuditEvent.AuditEventOutcome.NULL);
-                break;
-        }
-        return tgt;
-    }
 
     public static org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentComponent convertAuditEventAgentComponent(org.hl7.fhir.r4.model.AuditEvent.AuditEventAgentComponent src) throws FHIRException {
         if (src == null)

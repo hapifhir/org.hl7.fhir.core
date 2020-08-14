@@ -1,18 +1,5 @@
 package org.hl7.fhir.dstu3.test;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.codec.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.dstu3.conformance.ProfileUtilities;
@@ -39,15 +26,110 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.exceptions.PathEngineException;
 import org.hl7.fhir.utilities.Utilities;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import junit.framework.Assert;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 
-@RunWith(Parameterized.class)
+@Disabled
 public class SnapShotGenerationTests {
+
+  private static FHIRPathEngine fp;
+
+  public static Stream<Arguments> data() throws IOException, FHIRFormatError {
+    SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext();
+    String contents = readFileFromClasspathAsString("snapshot-generation-tests.xml");
+    context.tests = (TestScript) new XmlParser().parse(contents);
+
+    context.checkTestsDetails();
+
+    List<Arguments> objects = new ArrayList<>();
+
+    for (TestScriptTestComponent e : context.tests.getTest()) {
+      objects.add(Arguments.of(e.getName(), e, context));
+    }
+    return objects.stream();
+  }
+
+  private static String readFileFromClasspathAsString(String theClasspath) throws IOException {
+    return IOUtils.toString(SnapShotGenerationTests.class.getResourceAsStream(theClasspath), Charsets.UTF_8);
+  }
+
+  @SuppressWarnings("deprecation")
+  @ParameterizedTest(name = "{index}: file {0}")
+  @MethodSource("data")
+  public void test(String name, TestScriptTestComponent test, SnapShotGenerationTestsContext context) throws IOException, FHIRException {
+    if (TestingUtilities.context == null)
+      TestingUtilities.context = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.home(), "publish", "definitions.xml.zip"));
+    if (fp == null)
+      fp = new FHIRPathEngine(TestingUtilities.context);
+    fp.setHostServices(context);
+
+    resolveFixtures(context);
+
+    SetupActionOperationComponent op = test.getActionFirstRep().getOperation();
+    StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
+    StructureDefinition base = getSD(source.getBaseDefinition(), context);
+    StructureDefinition output = source.copy();
+    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context, null, null);
+    pu.setIds(source, false);
+    pu.generateSnapshot(base, output, source.getUrl(), source.getName());
+    context.fixtures.put(op.getResponseId(), output);
+    context.snapshots.put(output.getUrl(), output);
+
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("c:\\temp", op.getResponseId() + ".xml")), output);
+    //ok, now the asserts:
+    for (int i = 1; i < test.getAction().size(); i++) {
+      SetupActionAssertComponent a = test.getAction().get(i).getAssert();
+      Assertions.assertTrue(fp.evaluateToBoolean(source, source, a.getExpression()), a.getLabel() + ": " + a.getDescription());
+    }
+  }
+
+  private StructureDefinition getSD(String url, SnapShotGenerationTestsContext context) throws DefinitionException, FHIRException {
+    StructureDefinition sd = TestingUtilities.context.fetchResource(StructureDefinition.class, url);
+    if (sd == null)
+      sd = context.snapshots.get(url);
+    if (sd == null)
+      sd = findContainedProfile(url, context);
+    return sd;
+  }
+
+  private StructureDefinition findContainedProfile(String url, SnapShotGenerationTestsContext context) throws DefinitionException, FHIRException {
+    for (Resource r : context.tests.getContained()) {
+      if (r instanceof StructureDefinition) {
+        StructureDefinition sd = (StructureDefinition) r;
+        if (sd.getUrl().equals(url)) {
+          StructureDefinition p = sd.copy();
+          ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context, null, null);
+          pu.setIds(p, false);
+          pu.generateSnapshot(getSD(p.getBaseDefinition(), context), p, p.getUrl(), p.getName());
+          return p;
+        }
+      }
+    }
+    return null;
+  }
+
+  private void resolveFixtures(SnapShotGenerationTestsContext context) {
+    if (context.fixtures == null) {
+      context.fixtures = new HashMap<>();
+      for (TestScriptFixtureComponent fd : context.tests.getFixture()) {
+        Resource r = TestingUtilities.context.fetchResource(Resource.class, fd.getResource().getReference());
+        context.fixtures.put(fd.getId(), r);
+      }
+    }
+  }
 
   private static class SnapShotGenerationTestsContext implements IEvaluationContext {
     private Map<String, Resource> fixtures;
@@ -65,24 +147,24 @@ public class SnapShotGenerationTests {
       Set<String> urls = new HashSet<String>();
       for (Resource r : tests.getContained()) {
         if (ids.contains(r.getId()))
-          throw new Error("Unsupported: duplicate contained resource on fixture id  "+r.getId());
+          throw new Error("Unsupported: duplicate contained resource on fixture id  " + r.getId());
         ids.add(r.getId());
         if (r instanceof MetadataResource) {
           MetadataResource md = (MetadataResource) r;
           if (urls.contains(md.getUrl()))
-            throw new Error("Unsupported: duplicate canonical url "+md.getUrl()+" on fixture id  "+r.getId());
+            throw new Error("Unsupported: duplicate canonical url " + md.getUrl() + " on fixture id  " + r.getId());
           urls.add(md.getUrl());
         }
       }
       for (TestScriptFixtureComponent r : tests.getFixture()) {
         if (ids.contains(r.getId()))
-          throw new Error("Unsupported: duplicate contained resource or fixture id  "+r.getId());
+          throw new Error("Unsupported: duplicate contained resource or fixture id  " + r.getId());
         ids.add(r.getId());
       }
       Set<String> names = new HashSet<String>();
       for (TestScriptTestComponent test : tests.getTest()) {
         if (names.contains(test.getName()))
-          throw new Error("Unsupported: duplicate name "+test.getName());
+          throw new Error("Unsupported: duplicate name " + test.getName());
         names.add(test.getName());
         if (test.getAction().size() < 2)
           throw new Error("Unsupported: multiple actions required");
@@ -90,9 +172,9 @@ public class SnapShotGenerationTests {
           throw new Error("Unsupported: first action must be an operation");
         SetupActionOperationComponent op = test.getActionFirstRep().getOperation();
         if (!CodingUtilities.matches(op.getType(), "http://hl7.org/fhir/testscript-operation-codes", "snapshot"))
-          throw new Error("Unsupported action operation type "+CodingUtilities.present(op.getType()));
+          throw new Error("Unsupported action operation type " + CodingUtilities.present(op.getType()));
         if (!"StructureDefinition".equals(op.getResource()))
-          throw new Error("Unsupported action operation resource "+op.getResource());
+          throw new Error("Unsupported action operation resource " + op.getResource());
         if (!op.hasResponseId())
           throw new Error("Unsupported action operation: no response id");
         if (!op.hasSourceId())
@@ -128,7 +210,7 @@ public class SnapShotGenerationTests {
     public Resource fetchFixture(String id) {
       if (fixtures.containsKey(id))
         return fixtures.get(id);
-      
+
       for (TestScriptFixtureComponent ds : tests.getFixture()) {
         if (id.equals(ds.getId()))
           throw new Error("not done yet");
@@ -153,7 +235,7 @@ public class SnapShotGenerationTests {
 
     @Override
     public boolean log(String argument, List<Base> focus) {
-      System.out.println(argument+": "+fp.convertToString(focus));
+      System.out.println(argument + ": " + fp.convertToString(focus));
       return true;
     }
 
@@ -190,106 +272,5 @@ public class SnapShotGenerationTests {
       // TODO Auto-generated method stub
       return null;
     }
-
-  }
-
-
-  private static FHIRPathEngine fp;
-
-  @Parameters(name = "{index}: file {0}")
-  public static Iterable<Object[]> data() throws IOException, FHIRFormatError {
-    SnapShotGenerationTestsContext context = new SnapShotGenerationTestsContext();
-    String contents = readFileFromClasspathAsString("snapshot-generation-tests.xml");
-    context.tests = (TestScript) new XmlParser().parse(contents);
-
-    context.checkTestsDetails();
-
-    List<Object[]> objects = new ArrayList<Object[]>(context.tests.getTest().size());
-
-    for (TestScriptTestComponent e : context.tests.getTest()) {
-      objects.add(new Object[] { e.getName(), e, context });
-    }
-    return objects;
-  }
-
-  private static String readFileFromClasspathAsString(String theClasspath) throws IOException {
-    return IOUtils.toString(SnapShotGenerationTests.class.getResourceAsStream(theClasspath), Charsets.UTF_8);
-  }
-
-
-  private final TestScriptTestComponent test;
-  private final String name;
-  private SnapShotGenerationTestsContext context;
-
-  public SnapShotGenerationTests(String name, TestScriptTestComponent e, SnapShotGenerationTestsContext context) {
-    this.name = name;
-    this.test = e;
-    this.context = context;
-  }
-
-  @SuppressWarnings("deprecation")
-  @Test
-  public void test() throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException {
-    if (TestingUtilities.context == null)
-      TestingUtilities.context = SimpleWorkerContext.fromPack(Utilities.path(TestingUtilities.home(), "publish", "definitions.xml.zip"));
-    if (fp == null)
-      fp = new FHIRPathEngine(TestingUtilities.context);
-    fp.setHostServices(context);
-
-    resolveFixtures();
-    
-    SetupActionOperationComponent op = test.getActionFirstRep().getOperation();
-    StructureDefinition source = (StructureDefinition) context.fetchFixture(op.getSourceId());
-    StructureDefinition base = getSD(source.getBaseDefinition()); 
-    StructureDefinition output = source.copy();
-    ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context, null, null);
-    pu.setIds(source, false);
-    pu.generateSnapshot(base, output, source.getUrl(), source.getName());
-    context.fixtures.put(op.getResponseId(), output);
-    context.snapshots.put(output.getUrl(), output);
-    
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("c:\\temp", op.getResponseId()+".xml")), output);
-    //ok, now the asserts:
-    for (int i = 1; i < test.getAction().size(); i++) {
-      SetupActionAssertComponent a = test.getAction().get(i).getAssert();
-      Assert.assertTrue(a.getLabel()+": "+a.getDescription(), fp.evaluateToBoolean(source, source, a.getExpression()));
-    }
-  }
-
-
-  private StructureDefinition getSD(String url) throws DefinitionException, FHIRException {
-    StructureDefinition sd = TestingUtilities.context.fetchResource(StructureDefinition.class, url);
-    if (sd == null)
-      sd = context.snapshots.get(url);
-    if (sd == null)
-      sd = findContainedProfile(url);
-    return sd;
-  }
-
-  private StructureDefinition findContainedProfile(String url) throws DefinitionException, FHIRException {
-    for (Resource r : context.tests.getContained()) {
-      if (r instanceof StructureDefinition) {
-        StructureDefinition sd = (StructureDefinition) r;
-        if  (sd.getUrl().equals(url)) {
-          StructureDefinition p = sd.copy();
-          ProfileUtilities pu = new ProfileUtilities(TestingUtilities.context, null, null);
-          pu.setIds(p, false);
-          pu.generateSnapshot(getSD(p.getBaseDefinition()), p, p.getUrl(), p.getName());
-          return p;
-        }
-      }
-    }
-    return null;
-  }
-
-  private void resolveFixtures() {
-    if (context.fixtures == null) {
-      context.fixtures = new HashMap<String, Resource>();
-      for (TestScriptFixtureComponent fd : context.tests.getFixture()) {
-        Resource r = TestingUtilities.context.fetchResource(Resource.class, fd.getResource().getReference());
-        context.fixtures.put(fd.getId(), r);
-      }
-    }
-
   }
 }

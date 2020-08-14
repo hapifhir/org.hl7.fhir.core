@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,19 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Represents a defined collection of entities that may be discussed or acted upon collectively but which are not expected to act collectively, and are not formally or legally recognized; i.e. a collection of entities that isn't an Organization.
  */
@@ -600,11 +583,15 @@ public class Group extends DomainResource {
       public GroupCharacteristicComponent copy() {
         GroupCharacteristicComponent dst = new GroupCharacteristicComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(GroupCharacteristicComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.value = value == null ? null : value.copy();
         dst.exclude = exclude == null ? null : exclude.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -894,10 +881,14 @@ public class Group extends DomainResource {
       public GroupMemberComponent copy() {
         GroupMemberComponent dst = new GroupMemberComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(GroupMemberComponent dst) {
+        super.copyValues(dst);
         dst.entity = entity == null ? null : entity.copy();
         dst.period = period == null ? null : period.copy();
         dst.inactive = inactive == null ? null : inactive.copy();
-        return dst;
       }
 
       @Override
@@ -1677,6 +1668,11 @@ public class Group extends DomainResource {
       public Group copy() {
         Group dst = new Group();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Group dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1699,7 +1695,6 @@ public class Group extends DomainResource {
           for (GroupMemberComponent i : member)
             dst.member.add(i.copy());
         };
-        return dst;
       }
 
       protected Group typedCopy() {
@@ -1954,4 +1949,3 @@ public class Group extends DomainResource {
 
 
 }
-

@@ -1,22 +1,8 @@
 package org.hl7.fhir.conversion.tests;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import com.google.gson.*;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.hl7.fhir.convertors.R3ToR4Loader;
+import org.hl7.fhir.convertors.loaders.R3ToR4Loader;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -25,16 +11,8 @@ import org.hl7.fhir.r4.context.SimpleWorkerContext;
 import org.hl7.fhir.r4.elementmodel.Element;
 import org.hl7.fhir.r4.elementmodel.Manager;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
-import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.MetadataResource;
-import org.hl7.fhir.r4.model.PractitionerRole;
-import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.ResourceFactory;
-import org.hl7.fhir.r4.model.StructureDefinition;
+import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r4.model.StructureMap;
-import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.IResourceValidator;
 import org.hl7.fhir.r4.utils.IResourceValidator.IValidatorResourceFetcher;
@@ -44,34 +22,34 @@ import org.hl7.fhir.r4.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.cache.PackageCacheManager;
+import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.xml.sax.SAXException;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.util.*;
+import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
-@RunWith(Parameterized.class)
+@Disabled
 public class R3R4ConversionTests implements ITransformerServices, IValidatorResourceFetcher {
 
   private static final boolean SAVING = true;
-  private PackageCacheManager pcm = null;
+  private FilesystemPackageCacheManager pcm = null;
 
-  @Parameters(name = "{index}: id {0}")
-  public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
+  public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
     if (!(new File(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")).exists()))
       throw new Error("You must set the default directory to the build directory when you execute these tests");
     r3r4Outcomes = (JsonObject) new com.google.gson.JsonParser().parse(
-        TextFile.fileToString(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")));
+      TextFile.fileToString(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")));
     rules = new IniFile(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "test-rules.ini"));
 
     String srcFile = Utilities.path(TestingUtilities.home(), "source", "release3", "examples.zip");
@@ -97,13 +75,13 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
     names.addAll(examples.keySet());
     Collections.sort(names);
 
-    List<Object[]> objects = new ArrayList<Object[]>(examples.size());
+    List<Arguments> objects = new ArrayList<>();
 
     for (String id : names) {
-      objects.add(new Object[] { id, examples.get(id) });
+      objects.add(Arguments.of(id, examples.get(id)));
     }
 
-    return objects;
+    return objects.stream();
   }
 
   private static SimpleWorkerContext contextR3;
@@ -111,20 +89,14 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
   private static JsonObject r3r4Outcomes;
   private static IniFile rules;
   private List<Resource> extras;
-  private final byte[] content;
-  private final String name;
   private String workingid;
   private static Map<String, Exception> loadErrors = new HashMap<String, Exception>();
   private static String filter;
 
-  public R3R4ConversionTests(String name, byte[] content) {
-    this.name = name;
-    this.content = content;
-  }
-
   @SuppressWarnings("deprecation")
-  @Test
-  public void test() throws Exception {
+  @ParameterizedTest(name = "{index}: id {0}")
+  @MethodSource("data")
+  public void test(String name, byte[] content) throws Exception {
     checkLoad();
     StructureMapUtilities smu4 = new StructureMapUtilities(contextR4, this);
     StructureMapUtilities smu3 = new StructureMapUtilities(contextR3, this);
@@ -141,7 +113,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
 
       // load the example (r3)
       org.hl7.fhir.r4.elementmodel.Element r3 = new org.hl7.fhir.r4.elementmodel.XmlParser(contextR3)
-          .parse(new ByteArrayInputStream(content));
+        .parse(new ByteArrayInputStream(content));
       tn = r3.fhirType();
       workingid = r3.getChildValue("id");
       if (SAVING) {
@@ -150,10 +122,10 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
         cnt = bso.toByteArray();
         Utilities.createDirectory(Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "test-output"));
         TextFile.bytesToFile(cnt, Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "test-output",
-            tn + "-" + workingid + ".input.json"));
+          tn + "-" + workingid + ".input.json"));
       }
 
-      String mapFile = Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "R3toR4", r3.fhirType()+".map");
+      String mapFile = Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "R3toR4", r3.fhirType() + ".map");
       if (new File(mapFile).exists()) {
         StructureMap sm = smu4.parse(TextFile.fileToString(mapFile), mapFile);
 
@@ -167,12 +139,12 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
         new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(bs, r4);
         if (SAVING) {
           TextFile.bytesToFile(bs.toByteArray(), Utilities.path(TestingUtilities.home(), "implementations", "r3maps",
-              "test-output", tn + "-" + workingid + ".r4.json"));
+            "test-output", tn + "-" + workingid + ".r4.json"));
           for (Resource r : extras) {
             bs = new ByteArrayOutputStream();
             new org.hl7.fhir.r4.formats.JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(bs, r);
             TextFile.bytesToFile(bs.toByteArray(), Utilities.path(TestingUtilities.home(), "implementations", "r3maps",
-                "test-output", r.fhirType() + "-" + r.getId() + ".r4.json"));
+              "test-output", r.fhirType() + "-" + r.getId() + ".r4.json"));
           }
         }
 
@@ -183,7 +155,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
         validator.validate(null, r4validationErrors, r4);
 
         // load the R4 to R3 map
-        mapFile = Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "R4toR3", getMapFor(r4.fhirType(), r3.fhirType())+".map");
+        mapFile = Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "R4toR3", getMapFor(r4.fhirType(), r3.fhirType()) + ".map");
         sm = smu3.parse(TextFile.fileToString(mapFile), mapFile);
 
         // convert to R3
@@ -196,11 +168,11 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
         new org.hl7.fhir.r4.elementmodel.JsonParser(contextR3).compose(ro3, bs, OutputStyle.PRETTY, null);
         if (SAVING)
           TextFile.bytesToFile(bs.toByteArray(), Utilities.path(TestingUtilities.home(), "implementations", "r3maps",
-              "test-output", tn + "-" + workingid + ".output.json"));
+            "test-output", tn + "-" + workingid + ".output.json"));
 
         // check(errors, tn, workingid);
         roundTripError = TestingUtilities.checkJsonSrcIsSame(new String(cnt), new String(bs.toByteArray()),
-            filter != null);
+          filter != null);
         if (roundTripError != null && roundTripError.equals(rules.getStringProperty(tn + "/" + workingid, "roundtrip")))
           roundTripError = null;
       } else {
@@ -227,7 +199,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
   }
 
   private void updateOutcomes(String tn, String id, Exception executionError,
-      List<ValidationMessage> r4validationErrors, String roundTripError) throws IOException {
+                              List<ValidationMessage> r4validationErrors, String roundTripError) throws IOException {
     JsonObject r = r3r4Outcomes.getAsJsonObject(tn);
     if (r == null) {
       r = new JsonObject();
@@ -264,7 +236,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(r3r4Outcomes);
     TextFile.stringToFile(json,
-        (Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")));
+      (Utilities.path(TestingUtilities.home(), "implementations", "r3maps", "outcomes.json")));
 
   }
 
@@ -305,23 +277,23 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
    * Supporting multiple versions at once is a little tricky. We're going to have
    * 2 contexts: - an R3 context which is used to read/write R3 instances - an R4
    * context which is used to perform the transforms
-   * 
+   *
    * R3 structure definitions are cloned into R3 context with a modified URL (as
    * 3.0/)
-   * 
+   *
    */
   private void checkLoad() throws IOException, FHIRException, Exception {
     if (contextR3 != null)
       return;
 
-    pcm = new PackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    R3ToR4Loader ldr = new R3ToR4Loader().setPatchUrls(true).setKillPrimitives(true);
+    pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    R3ToR4Loader ldr = (R3ToR4Loader) new R3ToR4Loader().setPatchUrls(true).setKillPrimitives(true);
 
     System.out.println("loading R3");
     contextR3 = new SimpleWorkerContext();
     contextR3.setAllowLoadingDuplicates(true);
     contextR3.setOverrideVersionNs("http://hl7.org/fhir/3.0/StructureDefinition");
-    contextR3.loadFromPackage(pcm.loadPackage("hl7.fhir.core", "3.0.1"), ldr, new String[] {});
+    contextR3.loadFromPackage(pcm.loadPackage("hl7.fhir.core", "3.0.1"), ldr, new String[]{});
 
     System.out.println("loading R4");
     contextR4 = new SimpleWorkerContext();
@@ -341,7 +313,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
         StructureDefinition sdn = sd.copy();
         sdn.setUrl(sdn.getUrl().replace("http://hl7.org/fhir/", "http://hl7.org/fhir/3.0/"));
         sdn.addExtension().setUrl("http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace")
-            .setValue(new UriType("http://hl7.org/fhir"));
+          .setValue(new UriType("http://hl7.org/fhir"));
         contextR3.cacheResource(sdn);
         contextR4.cacheResource(sdn);
       }
@@ -352,7 +324,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
     contextR3.setName("R3");
     contextR4.setName("R4");
 
- //   contextR4.setValidatorFactory(new InstanceValidatorFactory());
+    //   contextR4.setValidatorFactory(new InstanceValidatorFactory());
 // TODO: this has to be R% now...    contextR4.setValidatorFactory(new InstanceValidatorFactory());
 
     System.out.println("loading Maps");
@@ -389,13 +361,13 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
 
   @Override
   public void log(String message) {
-		System.out.println(message);
+    System.out.println(message);
   }
 
   @Override
   public Base createResource(Object appInfo, Base res, boolean atRootofTransform) {
     if (res instanceof Resource && (res.fhirType().equals("CodeSystem") || res.fhirType().equals("CareTeam")
-        || res.fhirType().equals("PractitionerRole"))) {
+      || res.fhirType().equals("PractitionerRole"))) {
       Resource r = (Resource) res;
       extras.add(r);
       r.setId(workingid + "-" + extras.size());
@@ -413,7 +385,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
     BaseWorkerContext context = (BaseWorkerContext) appInfo;
     if (context == contextR3) {
       StructureDefinition sd = context.fetchResource(StructureDefinition.class,
-          "http://hl7.org/fhir/3.0/StructureDefinition/" + name);
+        "http://hl7.org/fhir/3.0/StructureDefinition/" + name);
       if (sd == null)
         throw new FHIRException("Type not found: '" + name + "'");
       return Manager.build(context, sd);
@@ -445,7 +417,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
       if (vals.length == 2 && vals[0].equals("practitioner"))
         for (Resource r : extras) {
           if (r instanceof PractitionerRole
-              && ((PractitionerRole) r).getPractitioner().getReference().equals("Practitioner/" + vals[1])) {
+            && ((PractitionerRole) r).getPractitioner().getReference().equals("Practitioner/" + vals[1])) {
             results.add(r);
           }
         }
@@ -455,7 +427,7 @@ public class R3R4ConversionTests implements ITransformerServices, IValidatorReso
 
   @Override
   public Element fetch(Object appContext, String url)
-      throws FHIRFormatError, DefinitionException, IOException, FHIRException {
+    throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     return null;
   }
 

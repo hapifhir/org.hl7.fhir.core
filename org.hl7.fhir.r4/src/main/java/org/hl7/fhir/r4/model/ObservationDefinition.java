@@ -1,26 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-import java.math.BigDecimal;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,20 +31,22 @@ import java.math.BigDecimal;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
-import org.hl7.fhir.r4.model.Enumerations.AdministrativeGenderEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
+import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r4.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Set of definitional characteristics for a kind of observation or measurement produced or consumed by an orderable health care service.
  */
@@ -730,11 +712,15 @@ public class ObservationDefinition extends DomainResource {
       public ObservationDefinitionQuantitativeDetailsComponent copy() {
         ObservationDefinitionQuantitativeDetailsComponent dst = new ObservationDefinitionQuantitativeDetailsComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ObservationDefinitionQuantitativeDetailsComponent dst) {
+        super.copyValues(dst);
         dst.customaryUnit = customaryUnit == null ? null : customaryUnit.copy();
         dst.unit = unit == null ? null : unit.copy();
         dst.conversionFactor = conversionFactor == null ? null : conversionFactor.copy();
         dst.decimalPrecision = decimalPrecision == null ? null : decimalPrecision.copy();
-        return dst;
       }
 
       @Override
@@ -1310,6 +1296,11 @@ public class ObservationDefinition extends DomainResource {
       public ObservationDefinitionQualifiedIntervalComponent copy() {
         ObservationDefinitionQualifiedIntervalComponent dst = new ObservationDefinitionQualifiedIntervalComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ObservationDefinitionQualifiedIntervalComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.range = range == null ? null : range.copy();
         dst.context = context == null ? null : context.copy();
@@ -1322,7 +1313,6 @@ public class ObservationDefinition extends DomainResource {
         dst.age = age == null ? null : age.copy();
         dst.gestationalAge = gestationalAge == null ? null : gestationalAge.copy();
         dst.condition = condition == null ? null : condition.copy();
-        return dst;
       }
 
       @Override
@@ -2298,6 +2288,11 @@ public class ObservationDefinition extends DomainResource {
       public ObservationDefinition copy() {
         ObservationDefinition dst = new ObservationDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ObservationDefinition dst) {
+        super.copyValues(dst);
         if (category != null) {
           dst.category = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : category)
@@ -2327,7 +2322,6 @@ public class ObservationDefinition extends DomainResource {
         dst.normalCodedValueSet = normalCodedValueSet == null ? null : normalCodedValueSet.copy();
         dst.abnormalCodedValueSet = abnormalCodedValueSet == null ? null : abnormalCodedValueSet.copy();
         dst.criticalCodedValueSet = criticalCodedValueSet == null ? null : criticalCodedValueSet.copy();
-        return dst;
       }
 
       protected ObservationDefinition typedCopy() {
@@ -2375,4 +2369,3 @@ public class ObservationDefinition extends DomainResource {
 
 
 }
-

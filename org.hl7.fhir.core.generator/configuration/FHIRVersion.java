@@ -1,4 +1,4 @@
-﻿        public String toCode(int len) {
+public String toCode(int len) {
           return toCode().substring(0, len);
         }
 
@@ -59,4 +59,4 @@
         @Override
         public String toString() {
           return toCode();
-        }        
+        }

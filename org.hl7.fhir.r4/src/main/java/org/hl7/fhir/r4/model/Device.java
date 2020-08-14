@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,20 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A type of a manufactured item that is used in the provision of healthcare without being substantially changed through that activity. The device may be a medical or non-medical device.
  */
@@ -1033,13 +1015,17 @@ http://hl7.org/fhir/NamingSystem/iccbba-other-di.
       public DeviceUdiCarrierComponent copy() {
         DeviceUdiCarrierComponent dst = new DeviceUdiCarrierComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceUdiCarrierComponent dst) {
+        super.copyValues(dst);
         dst.deviceIdentifier = deviceIdentifier == null ? null : deviceIdentifier.copy();
         dst.issuer = issuer == null ? null : issuer.copy();
         dst.jurisdiction = jurisdiction == null ? null : jurisdiction.copy();
         dst.carrierAIDC = carrierAIDC == null ? null : carrierAIDC.copy();
         dst.carrierHRF = carrierHRF == null ? null : carrierHRF.copy();
         dst.entryType = entryType == null ? null : entryType.copy();
-        return dst;
       }
 
       @Override
@@ -1296,9 +1282,13 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDeviceNameComponent copy() {
         DeviceDeviceNameComponent dst = new DeviceDeviceNameComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDeviceNameComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.type = type == null ? null : type.copy();
-        return dst;
       }
 
       @Override
@@ -1525,9 +1515,13 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceSpecializationComponent copy() {
         DeviceSpecializationComponent dst = new DeviceSpecializationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceSpecializationComponent dst) {
+        super.copyValues(dst);
         dst.systemType = systemType == null ? null : systemType.copy();
         dst.version = version == null ? null : version.copy();
-        return dst;
       }
 
       @Override
@@ -1795,10 +1789,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceVersionComponent copy() {
         DeviceVersionComponent dst = new DeviceVersionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceVersionComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.component = component == null ? null : component.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -2103,6 +2101,11 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DevicePropertyComponent copy() {
         DevicePropertyComponent dst = new DevicePropertyComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DevicePropertyComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (valueQuantity != null) {
           dst.valueQuantity = new ArrayList<Quantity>();
@@ -2114,7 +2117,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           for (CodeableConcept i : valueCode)
             dst.valueCode.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2249,10 +2251,10 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     protected StringType modelNumber;
 
     /**
-     * The part number of thedevice.
+     * The part number of the device.
      */
     @Child(name = "partNumber", type = {StringType.class}, order=13, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The part number of the device", formalDefinition="The part number of thedevice." )
+    @Description(shortDefinition="The part number of the device", formalDefinition="The part number of the device." )
     protected StringType partNumber;
 
     /**
@@ -3018,7 +3020,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return {@link #partNumber} (The part number of thedevice.). This is the underlying object with id, value and extensions. The accessor "getPartNumber" gives direct access to the value
+     * @return {@link #partNumber} (The part number of the device.). This is the underlying object with id, value and extensions. The accessor "getPartNumber" gives direct access to the value
      */
     public StringType getPartNumberElement() { 
       if (this.partNumber == null)
@@ -3038,7 +3040,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @param value {@link #partNumber} (The part number of thedevice.). This is the underlying object with id, value and extensions. The accessor "getPartNumber" gives direct access to the value
+     * @param value {@link #partNumber} (The part number of the device.). This is the underlying object with id, value and extensions. The accessor "getPartNumber" gives direct access to the value
      */
     public Device setPartNumberElement(StringType value) { 
       this.partNumber = value;
@@ -3046,14 +3048,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return The part number of thedevice.
+     * @return The part number of the device.
      */
     public String getPartNumber() { 
       return this.partNumber == null ? null : this.partNumber.getValue();
     }
 
     /**
-     * @param value The part number of thedevice.
+     * @param value The part number of the device.
      */
     public Device setPartNumber(String value) { 
       if (Utilities.noString(value))
@@ -3648,7 +3650,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         children.add(new Property("serialNumber", "string", "The serial number assigned by the organization when the device was manufactured.", 0, 1, serialNumber));
         children.add(new Property("deviceName", "", "This represents the manufacturer's name of the device as provided by the device, from a UDI label, or by a person describing the Device.  This typically would be used when a person provides the name(s) or when the device represents one of the names available from DeviceDefinition.", 0, java.lang.Integer.MAX_VALUE, deviceName));
         children.add(new Property("modelNumber", "string", "The model number for the device.", 0, 1, modelNumber));
-        children.add(new Property("partNumber", "string", "The part number of thedevice.", 0, 1, partNumber));
+        children.add(new Property("partNumber", "string", "The part number of the device.", 0, 1, partNumber));
         children.add(new Property("type", "CodeableConcept", "The kind or type of device.", 0, 1, type));
         children.add(new Property("specialization", "", "The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.", 0, java.lang.Integer.MAX_VALUE, specialization));
         children.add(new Property("version", "", "The actual design of the device or software version running on the device.", 0, java.lang.Integer.MAX_VALUE, version));
@@ -3679,7 +3681,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         case 83787357: /*serialNumber*/  return new Property("serialNumber", "string", "The serial number assigned by the organization when the device was manufactured.", 0, 1, serialNumber);
         case 780988929: /*deviceName*/  return new Property("deviceName", "", "This represents the manufacturer's name of the device as provided by the device, from a UDI label, or by a person describing the Device.  This typically would be used when a person provides the name(s) or when the device represents one of the names available from DeviceDefinition.", 0, java.lang.Integer.MAX_VALUE, deviceName);
         case 346619858: /*modelNumber*/  return new Property("modelNumber", "string", "The model number for the device.", 0, 1, modelNumber);
-        case -731502308: /*partNumber*/  return new Property("partNumber", "string", "The part number of thedevice.", 0, 1, partNumber);
+        case -731502308: /*partNumber*/  return new Property("partNumber", "string", "The part number of the device.", 0, 1, partNumber);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The kind or type of device.", 0, 1, type);
         case 682815883: /*specialization*/  return new Property("specialization", "", "The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.", 0, java.lang.Integer.MAX_VALUE, specialization);
         case 351608024: /*version*/  return new Property("version", "", "The actual design of the device or software version running on the device.", 0, java.lang.Integer.MAX_VALUE, version);
@@ -4044,6 +4046,11 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public Device copy() {
         Device dst = new Device();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Device dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -4110,7 +4117,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
             dst.safety.add(i.copy());
         };
         dst.parent = parent == null ? null : parent.copy();
-        return dst;
       }
 
       protected Device typedCopy() {
@@ -4424,4 +4430,3 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
 
 }
-

@@ -1,24 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50;
 
-/*-
- * #%L
- * org.hl7.fhir.convertors
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -146,8 +128,10 @@ public class Medication40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.r5.model.Medication.MedicationIngredientComponent();
         copyElement(src, tgt);
-        if (src.hasItem())
-            tgt.setItem(convertType(src.getItem()));
+        if (src.hasItemCodeableConcept())
+            tgt.getItem().setConcept(convertCodeableConcept(src.getItemCodeableConcept()));
+        if (src.hasItemReference())
+          tgt.getItem().setReference(convertReference(src.getItemReference()));
         if (src.hasIsActive())
             tgt.setIsActiveElement(convertBoolean(src.getIsActiveElement()));
         if (src.hasStrength())
@@ -160,8 +144,10 @@ public class Medication40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent();
         copyElement(src, tgt);
-        if (src.hasItem())
-            tgt.setItem(convertType(src.getItem()));
+        if (src.getItem().hasConcept())
+          tgt.setItem(convertType(src.getItem().getConcept()));
+        if (src.getItem().hasReference())
+          tgt.setItem(convertType(src.getItem().getReference()));
         if (src.hasIsActive())
             tgt.setIsActiveElement(convertBoolean(src.getIsActiveElement()));
         if (src.hasStrengthRatio())

@@ -1,5 +1,4 @@
-﻿
-	private String system;
+private String system;
 	
   @Override
   public String getSystem() {
@@ -35,4 +34,3 @@
   public boolean hasDisplay() {
     return false;
   }
-  

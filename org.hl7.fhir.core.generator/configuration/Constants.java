@@ -8,7 +8,7 @@ package org.hl7.fhir.r5.model;
 
 public class Constants {
 
-  public final static String LOCAL_REF_REGEX = "({{rt}})\\\\/[A-Za-z0-9\\\\-\\\\.]{1,64}\";
+  public final static String LOCAL_REF_REGEX = "({{rt}})\\\\/[A-Za-z0-9\\\\-\\\\.]{1,64}";
   public final static String NS_SYSTEM_TYPE = "http://hl7.org/fhirpath/System.";
 
   public final static String VERSION = "{{version}}";

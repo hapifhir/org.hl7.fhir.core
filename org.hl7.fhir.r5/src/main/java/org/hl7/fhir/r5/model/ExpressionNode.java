@@ -1,24 +1,34 @@
 package org.hl7.fhir.r5.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
  */
+
 
 
 import java.util.ArrayList;
@@ -62,8 +72,11 @@ public class ExpressionNode {
     Empty, Not, Exists, SubsetOf, SupersetOf, IsDistinct, Distinct, Count, Where, Select, All, Repeat, Aggregate, Item /*implicit from name[]*/, As, Is, Single,
     First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, IndexOf, Substring, StartsWith, EndsWith, Matches, ReplaceMatches, Contains, Replace, Length,  
     Children, Descendants, MemberOf, Trace, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
-    HasValue, AliasAs, Alias, HtmlChecks, OfType, Type,
-    ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo;
+    HasValue, OfType, Type, ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo,
+    // R3 functions
+    Encode, Decode, Escape, Unescape, Trim, Split, Join, 
+    // Local extensions to FHIRPath
+    HtmlChecks1, HtmlChecks2, AliasAs, Alias;
 
     public static Function fromCode(String name) {
       if (name.equals("empty")) return Function.Empty;
@@ -121,8 +134,16 @@ public class ExpressionNode {
       if (name.equals("hasValue")) return Function.HasValue;
       if (name.equals("alias")) return Function.Alias;
       if (name.equals("aliasAs")) return Function.AliasAs;
-      if (name.equals("htmlChecks")) return Function.HtmlChecks;
-      if (name.equals("htmlchecks")) return Function.HtmlChecks; // support change of care from R3
+      if (name.equals("htmlChecks")) return Function.HtmlChecks1;
+      if (name.equals("htmlchecks")) return Function.HtmlChecks1; // support change of care from R3
+      if (name.equals("htmlChecks2")) return Function.HtmlChecks2;
+      if (name.equals("encode")) return Function.Encode;
+      if (name.equals("decode")) return Function.Decode;      
+      if (name.equals("escape")) return Function.Escape;
+      if (name.equals("unescape")) return Function.Unescape;
+      if (name.equals("trim")) return Function.Trim;      
+      if (name.equals("split")) return Function.Split;
+      if (name.equals("join")) return Function.Join;            
       if (name.equals("ofType")) return Function.OfType;      
       if (name.equals("type")) return Function.Type;      
       if (name.equals("toInteger")) return Function.ToInteger;
@@ -199,7 +220,15 @@ public class ExpressionNode {
       case HasValue : return "hasValue";
       case Alias : return "alias";
       case AliasAs : return "aliasAs";
-      case HtmlChecks : return "htmlChecks";
+      case Encode : return "encode";
+      case Decode : return "decode";
+      case Escape : return "escape";
+      case Unescape : return "unescape";
+      case Trim : return "trim";
+      case Split : return "split";
+      case Join : return "join";
+      case HtmlChecks1 : return "htmlChecks";
+      case HtmlChecks2 : return "htmlChecks2";
       case OfType : return "ofType";
       case Type : return "type";
       case ToInteger : return "toInteger";
@@ -217,7 +246,7 @@ public class ExpressionNode {
       case ConvertsToDateTime : return "convertsToDateTime";
       case ConvertsToTime : return "isTime";
       case ConformsTo : return "conformsTo";
-      default: return "??";
+      default: return "?custom?";
       }
     }
   }
@@ -309,7 +338,7 @@ public class ExpressionNode {
       case In : return "in";
       case Contains : return "contains";
       case MemberOf : return "memberOf";
-			default: return "??";
+			default: return "?custom?";
 			}
 		}
 	}
@@ -534,7 +563,7 @@ public class ExpressionNode {
 		case Constant: return uniqueId+": "+constant;
 		case Group: return uniqueId+": (Group)";
 		}
-		return "??";
+		return "?exp-kind?";
 	}
 
 	private void write(StringBuilder b) {
@@ -634,7 +663,7 @@ public class ExpressionNode {
 	}
 
 	private String location() {
-		return Integer.toString(start.line)+", "+Integer.toString(start.column);
+		return Integer.toString(start.getLine())+", "+Integer.toString(start.getColumn());
 	}
 
 	public TypeDetails getTypes() {

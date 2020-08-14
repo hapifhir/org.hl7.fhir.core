@@ -1,5 +1,4 @@
-﻿
-  public boolean hasTarget() {
+public boolean hasTarget() {
     return Utilities.existsInList(getCode(), "Reference", "canonical", "CodeableReference");
   }
   
@@ -64,7 +63,7 @@
     if (hasTargetProfile()) {
       res = res + "->(";
       boolean first = true;
-      for (CanonicalType s : getProfile()) {
+      for (CanonicalType s : getTargetProfile()) {
         if (first) first = false; else res = res + "|";
         res = res + s.getValue();
       }

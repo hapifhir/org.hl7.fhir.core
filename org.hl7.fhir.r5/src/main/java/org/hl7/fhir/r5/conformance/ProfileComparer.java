@@ -1,34 +1,38 @@
 package org.hl7.fhir.r5.conformance;
 
-import java.io.BufferedOutputStream;
-
-/*-
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
  */
 
 
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -37,19 +41,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.Map.Entry;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.r5.conformance.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
@@ -66,18 +68,19 @@ import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.renderers.RendererFactory;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.DefinitionNavigator;
+import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.KeyGenerator;
-import org.hl7.fhir.r5.utils.NarrativeGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.Logger.LogMessageType;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -114,90 +117,17 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     this.context = context;
     this.keygen = keygen;
     this.folder = folder;
-    if (!new File(Utilities.path(folder, "conparison-zip-marker.bin")).exists()) {
-      String f = Utilities.path(folder, "comparison.zip");
-      download("http://www.fhir.org/archive/comparison.zip", f);
-      unzip(f, folder);
+    for (Entry<String, byte[]> e : context.getBinaries().entrySet()) {
+      TextFile.bytesToFile(e.getValue(), Utilities.path(folder, e.getKey()));
     }
   }
-
-  private void download(String address, String filename) throws IOException {
-//    System.out.print("Download "+address+" to "+filename);
-    URL url = new URL(address);
-    URLConnection c = url.openConnection();
-    InputStream s = c.getInputStream();
-    FileOutputStream f = new FileOutputStream(filename);
-    transfer(s, f, 1024);
-    f.close();   
-//    System.out.println(" ... "+new File(filename).length()+" bytes");
-  }
-
-
-  public static void transfer(InputStream in, OutputStream out, int buffer) throws IOException {
-    byte[] read = new byte[buffer]; // Your buffer size.
-    while (0 < (buffer = in.read(read)))
-      out.write(read, 0, buffer);
-  }
-
-  /**
-   * Size of the buffer to read/write data
-   */
-  private static final int BUFFER_SIZE = 4096;
-  /**
-   * Extracts a zip file specified by the zipFilePath to a directory specified by
-   * destDirectory (will be created if does not exists)
-   * @param zipFilePath
-   * @param destDirectory
-   * @throws IOException
-   */
-  public void unzip(String zipFilePath, String destDirectory) throws IOException {
-      File destDir = new File(destDirectory);
-      if (!destDir.exists()) {
-          destDir.mkdir();
-      }
-      ZipInputStream zipIn = new ZipInputStream(new FileInputStream(zipFilePath));
-      ZipEntry entry = zipIn.getNextEntry();
-      // iterates over entries in the zip file
-      while (entry != null) {
-          String filePath = destDirectory + File.separator + entry.getName();
-          if (!entry.isDirectory()) {
-              // if the entry is a file, extracts it
-              extractFile(zipIn, filePath);
-          } else {
-              // if the entry is a directory, make the directory
-              File dir = new File(filePath);
-              dir.mkdir();
-          }
-          zipIn.closeEntry();
-          entry = zipIn.getNextEntry();
-      }
-      zipIn.close();
-  }
-  /**
-   * Extracts a zip entry (file entry)
-   * @param zipIn
-   * @param filePath
-   * @throws IOException
-   */
-  private void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
-      BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
-      byte[] bytesIn = new byte[BUFFER_SIZE];
-      int read = 0;
-      while ((read = zipIn.read(bytesIn)) != -1) {
-          bos.write(bytesIn, 0, read);
-      }
-      bos.close();
-  }
-
 
   public ProfileComparer(IWorkerContext context, String folder) throws IOException {
     super();
     this.context = context;
     this.folder = folder;
-    if (!new File(Utilities.path(folder, "conparison-zip-marker.bin")).exists()) {
-      String f = Utilities.path(folder, "comparison.zip");
-      download("https://www.fhir.org/archive/comparison.zip", f);
-      unzip(f, folder);
+    for (Entry<String, byte[]> e : context.getBinaries().entrySet()) {
+      TextFile.bytesToFile(e.getValue(), Utilities.path(folder, e.getKey()));
     }
   }
 
@@ -364,6 +294,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   private List<ProfileComparison> comparisons = new ArrayList<ProfileComparison>();
   private String id; 
   private String title;
+  private String leftPrefix;
+  private String rightPrefix;
   private String leftLink;
   private String leftName;
   private String rightLink;
@@ -846,22 +778,33 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
           try {
             le = context.expandVS(lvs, true, false);
             re = context.expandVS(rvs, true, false);
-            if (!closed(le.getValueset()) || !closed(re.getValueset())) 
-              throw new DefinitionException("unclosed value sets are not handled yet");
-            cvs = intersectByExpansion(path, le.getValueset(), re.getValueset());
-            if (!cvs.getCompose().hasInclude()) {
-              outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value sets "+lvs.getUrl()+" and "+rvs.getUrl()+" do not intersect", ValidationMessage.IssueSeverity.ERROR));
-              status(subset, ProfileUtilities.STATUS_ERROR);
-              return false;
+            if (le.getError() != null) {
+              outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value set "+lvs.getUrl()+" could not be expanded", ValidationMessage.IssueSeverity.ERROR));
+            } else if (re.getError() != null) {
+              outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value set "+rvs.getUrl()+" could not be expanded", ValidationMessage.IssueSeverity.ERROR));
+            } else if (!closed(le.getValueset())) { 
+              outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value set "+lvs.getUrl()+" is not closed, so can't be compased", ValidationMessage.IssueSeverity.ERROR));
+            } else if (!closed(re.getValueset())) { 
+              outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value set "+rvs.getUrl()+" is not closed, so can't be compased", ValidationMessage.IssueSeverity.ERROR));
+            } else {
+              cvs = intersectByExpansion(path, le.getValueset(), re.getValueset());
+              if (!cvs.getCompose().hasInclude()) {
+                outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "The value sets "+lvs.getUrl()+" and "+rvs.getUrl()+" do not intersect", ValidationMessage.IssueSeverity.ERROR));
+                status(subset, ProfileUtilities.STATUS_ERROR);
+                return false;
+              }
             }
           } catch (Exception e){
             outcome.messages.add(new ValidationMessage(Source.ProfileComparer, ValidationMessage.IssueType.STRUCTURE, path, "Unable to expand or process value sets "+lvs.getUrl()+" and "+rvs.getUrl()+": "+e.getMessage(), ValidationMessage.IssueSeverity.ERROR));
             status(subset, ProfileUtilities.STATUS_ERROR);
+            e.printStackTrace();
             return false;          
           }
         }
-        subBinding.setValueSet("#"+addValueSet(cvs));
-        superBinding.setValueSet("#"+addValueSet(unite(superset, outcome, path, lvs, rvs)));
+        if (cvs != null) {
+          subBinding.setValueSet("#"+addValueSet(cvs));
+          superBinding.setValueSet("#"+addValueSet(unite(superset, outcome, path, lvs, rvs)));
+        }
       }
     }
     return false;
@@ -1407,14 +1350,33 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     this.rightName = rightName;
   }
 
-  private String genPCLink(String leftName, String leftLink) {
-    if (leftLink == null)
-      return leftName;
-    else
-      return "<a href=\""+leftLink+"\">"+Utilities.escapeXml(leftName)+"</a>";
+  public String getLeftPrefix() {
+    return leftPrefix;
+  }
+
+  public void setLeftPrefix(String leftPrefix) {
+    this.leftPrefix = leftPrefix;
+  }
+
+  public String getRightPrefix() {
+    return rightPrefix;
+  }
+
+  public void setRightPrefix(String rightPrefix) {
+    this.rightPrefix = rightPrefix;
+  }
+
+  private String genPCLink(String name, String link, String prefix) {
+    if (link == null) {
+      return name;
+    } else if (!Utilities.isAbsoluteUrl(link) && !Utilities.noString(prefix)) {
+      return "<a href=\""+Utilities.pathURL(prefix, link)+"\">"+Utilities.escapeXml(name)+"</a>";
+    } else {
+      return "<a href=\""+link+"\">"+Utilities.escapeXml(name)+"</a>";
+    }
   }
   
-  private String genValueSets(String base) throws IOException {
+  private String genValueSets(String base) throws IOException, FHIRException, EOperationOutcome {
     StringBuilder b = new StringBuilder();
     b.append("<ul>\r\n");
     for (ValueSet vs : getValuesets()) {
@@ -1428,10 +1390,10 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     return b.toString();   
   }
   
-  private void genValueSetFile(String filename, ValueSet vs) throws IOException {
-    NarrativeGenerator gen = new NarrativeGenerator("", "http://hl7.org/fhir", context);
-    gen.setNoSlowLookup(true);
-    gen.generate(null, vs, false);
+  private void genValueSetFile(String filename, ValueSet vs) throws IOException, FHIRException, EOperationOutcome {
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
+    rc.setNoSlowLookup(true);
+    RendererFactory.factory(vs, rc).render(vs);
     String s = new XhtmlComposer(XhtmlComposer.HTML).compose(vs.getText().getDiv());
     StringBuilder b = new StringBuilder();
     b.append("<html>");
@@ -1462,8 +1424,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
 
     for (ProfileComparison cmp : getComparisons()) {
       b.append("<tr>");
-      b.append(" <td><a href=\""+cmp.getLeft().getUserString("path")+"\">"+Utilities.escapeXml(cmp.getLeft().getName())+"</a></td>");
-      b.append(" <td><a href=\""+cmp.getRight().getUserString("path")+"\">"+Utilities.escapeXml(cmp.getRight().getName())+"</a></td>");
+      b.append(" <td><a href=\""+fixLink(cmp.getLeft().getUserString("path"), leftPrefix)+"\">"+Utilities.escapeXml(cmp.getLeft().getName())+"</a></td>");
+      b.append(" <td><a href=\""+fixLink(cmp.getRight().getUserString("path"), rightPrefix)+"\">"+Utilities.escapeXml(cmp.getRight().getName())+"</a></td>");
       b.append(" <td><a href=\""+getId()+"."+cmp.getId()+".html\">Click Here</a></td>");
       b.append(" <td>"+cmp.getErrorCount()+"</td>");
       b.append(" <td>"+cmp.getWarningCount()+"</td>");
@@ -1475,6 +1437,10 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     return b.toString();
   }
 
+
+  private String fixLink(String path, String pfx) {
+    return (pfx == null || Utilities.isAbsoluteUrl(path)) ? path : Utilities.pathURL(pfx, path);
+  }
 
   private String genCmpMessages(ProfileComparison cmp) {
     StringBuilder b = new StringBuilder();
@@ -1515,11 +1481,11 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   private String genCompModel(StructureDefinition sd, String name, String base, String prefix, String dest) throws FHIRException, IOException {
     if (sd == null)
       return "<p style=\"color: maroon\">No "+name+" could be generated</p>\r\n";
-    return new XhtmlComposer(XhtmlComposer.HTML).compose(new ProfileUtilities(context, null, this).generateTable("??", sd, false, dest, false, base, true, prefix, prefix, false, false, null, true));
+    return new XhtmlComposer(XhtmlComposer.HTML).compose(new ProfileUtilities(context, null, this).generateTable("?gen-cm?", sd, false, dest, false, base, true, prefix, prefix, false, false, null, true));
   }
 
 
-  public String generate() throws IOException {
+  public String generate() throws IOException, FHIRException, EOperationOutcome {
     for (ValueSet vs : valuesets) {
       vs.setUserData("path", folder+"/"+getId()+"-vs-"+vs.getId()+".html");
     }
@@ -1527,8 +1493,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     // first page we produce is simply the index
     Map<String, String> vars = new HashMap<String, String>();
     vars.put("title", getTitle());
-    vars.put("left", genPCLink(getLeftName(), getLeftLink()));
-    vars.put("right", genPCLink(getRightName(), getRightLink()));
+    vars.put("left", genPCLink(getLeftName(), getLeftLink(), getLeftPrefix()));
+    vars.put("right", genPCLink(getRightName(), getRightLink(), getRightPrefix()));
     vars.put("table", genPCTable());
     vars.put("valuesets", genValueSets(folder+"/"+getId()+"-vs"));
     producePage(summaryTemplate(), Utilities.path(folder, getId()+".html"), vars);
@@ -1537,8 +1503,8 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
     for (ProfileComparison cmp : getComparisons()) {
       vars.clear();
       vars.put("title", getTitle());
-      vars.put("left", genPCLink(getLeftName(), getLeftLink()));
-      vars.put("right", genPCLink(getRightName(), getRightLink()));
+      vars.put("left", genPCLink(getLeftName(), getLeftLink(), getLeftPrefix()));
+      vars.put("right", genPCLink(getRightName(), getRightLink(), getRightPrefix()));
       vars.put("messages", genCmpMessages(cmp));
       vars.put("subset", genCompModel(cmp.getSubset(), "intersection", getId()+"."+cmp.getId(), "", folder));
       vars.put("superset", genCompModel(cmp.getSuperset(), "union", getId()+"."+cmp.getId(), "", folder));
@@ -1560,7 +1526,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
       String s1 = src.substring(0, i1);
       String s2 = src.substring(i1 + 2, i2).trim();
       String s3 = src.substring(i2+2);
-      String v = vars.containsKey(s2) ? vars.get(s2) : "???";
+      String v = vars.containsKey(s2) ? vars.get(s2) : "?pp??";
       src = s1+v+s3;
     }
     TextFile.stringToFile(src, path);
@@ -1644,7 +1610,7 @@ public class ProfileComparer implements ProfileKnowledgeProvider {
   @Override
   public String getLinkForProfile(StructureDefinition profile, String url) {
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
-    return sd == null ? null : sd.getUserString("path");
+    return sd == null ? null : sd.getUserString("path")+"|"+sd.present();
   }
 
   @Override

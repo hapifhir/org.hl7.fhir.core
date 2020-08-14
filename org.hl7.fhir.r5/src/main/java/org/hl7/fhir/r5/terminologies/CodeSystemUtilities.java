@@ -1,24 +1,34 @@
 package org.hl7.fhir.r5.terminologies;
 
-/*-
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
  */
+
 
 
 import java.util.ArrayList;
@@ -30,6 +40,7 @@ import java.util.Set;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
@@ -37,17 +48,19 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyComponent;
 import org.hl7.fhir.r5.model.CodeSystem.PropertyType;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.Meta;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.StandardsStatus;
 import org.hl7.fhir.utilities.Utilities;
 
 public class CodeSystemUtilities {
+
+  public static final String USER_DATA_CROSS_LINK = "cs.utils.cross.link";
 
   public static class CodeSystemNavigator {
 
@@ -195,11 +208,13 @@ public class CodeSystemUtilities {
     defineCodeSystemProperty(cs, "child", "The concept identified in this property is a child of the concept on which it is a property. The property type will be 'code'. The meaning of parent/child relationships is defined by the hierarchyMeaning attribute", PropertyType.CODE);
   }
 
-  public static boolean isDeprecated(CodeSystem cs, ConceptDefinitionComponent def)  {
+  public static boolean isDeprecated(CodeSystem cs, ConceptDefinitionComponent def, boolean ignoreStatus)  {
     try {
       for (ConceptPropertyComponent p : def.getProperty()) {
-        if (p.getCode().equals("status") && p.hasValue() && p.hasValueCodeType() && p.getValueCodeType().getCode().equals("deprecated"))
-          return true;
+        if (!ignoreStatus) {
+          if (p.getCode().equals("status") && p.hasValue() && p.hasValueCodeType() && p.getValueCodeType().getCode().equals("deprecated"))
+            return true;
+        }
         // this, though status should also be set
         if (p.getCode().equals("deprecationDate") && p.hasValue() && p.getValue() instanceof DateTimeType) 
           return ((DateTimeType) p.getValue()).before(new DateTimeType(Calendar.getInstance()));
@@ -279,17 +294,17 @@ public class CodeSystemUtilities {
     
   }
 
-  public static boolean hasOID(CodeSystem cs) {
+  public static boolean hasOID(CanonicalResource cs) {
     return getOID(cs) != null;
   }
 
-  public static String getOID(CodeSystem cs) {
+  public static String getOID(CanonicalResource cs) {
     if (cs.hasIdentifier() && "urn:ietf:rfc:3986".equals(cs.getIdentifierFirstRep().getSystem()) && cs.getIdentifierFirstRep().hasValue() && cs.getIdentifierFirstRep().getValue().startsWith("urn:oid:"))
         return cs.getIdentifierFirstRep().getValue().substring(8);
     return null;
   }
 
-  private static ConceptDefinitionComponent findCode(List<ConceptDefinitionComponent> list, String code) {
+  public static ConceptDefinitionComponent findCode(List<ConceptDefinitionComponent> list, String code) {
     for (ConceptDefinitionComponent c : list) {
       if (c.getCode().equals(code))
         return c;
@@ -344,6 +359,17 @@ public class CodeSystemUtilities {
         return p; 
     return null;
   }
+  
+  public static List<ConceptPropertyComponent> getPropertyValues(ConceptDefinitionComponent concept, String code) {
+    List<ConceptPropertyComponent> res = new ArrayList<>();
+    for (ConceptPropertyComponent p : concept.getProperty()) {
+      if (p.getCode().equals(code)) {
+        res.add(p); 
+      }
+    }
+    return res;
+  }
+
 
   // see http://hl7.org/fhir/R4/codesystem.html#hierachy
   // returns additional parents not in the heirarchy
@@ -416,4 +442,40 @@ public class CodeSystemUtilities {
     return null;
   }
 
+  public static void crossLinkCodeSystem(CodeSystem cs) {
+    String parent = getPropertyByUrl(cs, "http://hl7.org/fhir/concept-properties#parent");
+    if ((parent != null)) {
+      crossLinkConcepts(cs.getConcept(), cs.getConcept(), parent);
+    }
+  }
+
+  private static String getPropertyByUrl(CodeSystem cs, String url) {
+    for (PropertyComponent pc : cs.getProperty()) {
+      if (url.equals(pc.getUri())) {
+        return pc.getCode();
+      }
+    }
+    return null;
+  }
+
+  private static void crossLinkConcepts(List<ConceptDefinitionComponent> root, List<ConceptDefinitionComponent> focus, String parent) {
+    for (ConceptDefinitionComponent def : focus) {
+      List<ConceptPropertyComponent> pcl = getPropertyValues(def, parent);
+      for (ConceptPropertyComponent pc : pcl) {
+        String code = pc.getValue().primitiveValue();
+        ConceptDefinitionComponent tgt = findCode(root, code);
+        if (!tgt.hasUserData(USER_DATA_CROSS_LINK)) {
+          tgt.setUserData(USER_DATA_CROSS_LINK, new ArrayList<>());
+        }
+        @SuppressWarnings("unchecked")
+        List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) tgt.getUserData(USER_DATA_CROSS_LINK);
+        children.add(def);
+      }      
+      if (def.hasConcept()) {
+        crossLinkConcepts(root, def.getConcept(), parent);
+      }
+    }
+    
+  }
+  
 }

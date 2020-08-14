@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).
  */
@@ -628,6 +608,11 @@ public class ValueSet extends MetadataResource {
       public ValueSetComposeComponent copy() {
         ValueSetComposeComponent dst = new ValueSetComposeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSetComposeComponent dst) {
+        super.copyValues(dst);
         dst.lockedDate = lockedDate == null ? null : lockedDate.copy();
         dst.inactive = inactive == null ? null : inactive.copy();
         if (include != null) {
@@ -640,7 +625,6 @@ public class ValueSet extends MetadataResource {
           for (ConceptSetComponent i : exclude)
             dst.exclude.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -686,10 +670,10 @@ public class ValueSet extends MetadataResource {
         protected UriType system;
 
         /**
-         * The version of the code system that the codes are selected from, or the special version "*" for all versions.
+         * The version of the code system that the codes are selected from, or the special version '*' for all versions.
          */
         @Child(name = "version", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Specific version of the code system referred to", formalDefinition="The version of the code system that the codes are selected from, or the special version \"*\" for all versions." )
+        @Description(shortDefinition="Specific version of the code system referred to", formalDefinition="The version of the code system that the codes are selected from, or the special version '*' for all versions." )
         protected StringType version;
 
         /**
@@ -772,7 +756,7 @@ public class ValueSet extends MetadataResource {
         }
 
         /**
-         * @return {@link #version} (The version of the code system that the codes are selected from, or the special version "*" for all versions.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+         * @return {@link #version} (The version of the code system that the codes are selected from, or the special version '*' for all versions.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
          */
         public StringType getVersionElement() { 
           if (this.version == null)
@@ -792,7 +776,7 @@ public class ValueSet extends MetadataResource {
         }
 
         /**
-         * @param value {@link #version} (The version of the code system that the codes are selected from, or the special version "*" for all versions.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+         * @param value {@link #version} (The version of the code system that the codes are selected from, or the special version '*' for all versions.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
          */
         public ConceptSetComponent setVersionElement(StringType value) { 
           this.version = value;
@@ -800,14 +784,14 @@ public class ValueSet extends MetadataResource {
         }
 
         /**
-         * @return The version of the code system that the codes are selected from, or the special version "*" for all versions.
+         * @return The version of the code system that the codes are selected from, or the special version '*' for all versions.
          */
         public String getVersion() { 
           return this.version == null ? null : this.version.getValue();
         }
 
         /**
-         * @param value The version of the code system that the codes are selected from, or the special version "*" for all versions.
+         * @param value The version of the code system that the codes are selected from, or the special version '*' for all versions.
          */
         public ConceptSetComponent setVersion(String value) { 
           if (Utilities.noString(value))
@@ -990,7 +974,7 @@ public class ValueSet extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("system", "uri", "An absolute URI which is the code system from which the selected codes come from.", 0, 1, system));
-          children.add(new Property("version", "string", "The version of the code system that the codes are selected from, or the special version \"*\" for all versions.", 0, 1, version));
+          children.add(new Property("version", "string", "The version of the code system that the codes are selected from, or the special version '*' for all versions.", 0, 1, version));
           children.add(new Property("concept", "", "Specifies a concept to be included or excluded.", 0, java.lang.Integer.MAX_VALUE, concept));
           children.add(new Property("filter", "", "Select concepts by specify a matching criterion based on the properties (including relationships) defined by the system, or on filters defined by the system. If multiple filters are specified, they SHALL all be true.", 0, java.lang.Integer.MAX_VALUE, filter));
           children.add(new Property("valueSet", "canonical(ValueSet)", "Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets.", 0, java.lang.Integer.MAX_VALUE, valueSet));
@@ -1000,7 +984,7 @@ public class ValueSet extends MetadataResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -887328209: /*system*/  return new Property("system", "uri", "An absolute URI which is the code system from which the selected codes come from.", 0, 1, system);
-          case 351608024: /*version*/  return new Property("version", "string", "The version of the code system that the codes are selected from, or the special version \"*\" for all versions.", 0, 1, version);
+          case 351608024: /*version*/  return new Property("version", "string", "The version of the code system that the codes are selected from, or the special version '*' for all versions.", 0, 1, version);
           case 951024232: /*concept*/  return new Property("concept", "", "Specifies a concept to be included or excluded.", 0, java.lang.Integer.MAX_VALUE, concept);
           case -1274492040: /*filter*/  return new Property("filter", "", "Select concepts by specify a matching criterion based on the properties (including relationships) defined by the system, or on filters defined by the system. If multiple filters are specified, they SHALL all be true.", 0, java.lang.Integer.MAX_VALUE, filter);
           case -1410174671: /*valueSet*/  return new Property("valueSet", "canonical(ValueSet)", "Selects the concepts found in this value set (based on its value set definition). This is an absolute URI that is a reference to ValueSet.url.  If multiple value sets are specified this includes the union of the contents of all of the referenced value sets.", 0, java.lang.Integer.MAX_VALUE, valueSet);
@@ -1112,6 +1096,11 @@ public class ValueSet extends MetadataResource {
       public ConceptSetComponent copy() {
         ConceptSetComponent dst = new ConceptSetComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptSetComponent dst) {
+        super.copyValues(dst);
         dst.system = system == null ? null : system.copy();
         dst.version = version == null ? null : version.copy();
         if (concept != null) {
@@ -1129,7 +1118,6 @@ public class ValueSet extends MetadataResource {
           for (CanonicalType i : valueSet)
             dst.valueSet.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1451,6 +1439,11 @@ public class ValueSet extends MetadataResource {
       public ConceptReferenceComponent copy() {
         ConceptReferenceComponent dst = new ConceptReferenceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptReferenceComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.display = display == null ? null : display.copy();
         if (designation != null) {
@@ -1458,7 +1451,6 @@ public class ValueSet extends MetadataResource {
           for (ConceptReferenceDesignationComponent i : designation)
             dst.designation.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1754,10 +1746,14 @@ public class ValueSet extends MetadataResource {
       public ConceptReferenceDesignationComponent copy() {
         ConceptReferenceDesignationComponent dst = new ConceptReferenceDesignationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptReferenceDesignationComponent dst) {
+        super.copyValues(dst);
         dst.language = language == null ? null : language.copy();
         dst.use = use == null ? null : use.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -2071,10 +2067,14 @@ public class ValueSet extends MetadataResource {
       public ConceptSetFilterComponent copy() {
         ConceptSetFilterComponent dst = new ConceptSetFilterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptSetFilterComponent dst) {
+        super.copyValues(dst);
         dst.property = property == null ? null : property.copy();
         dst.op = op == null ? null : op.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -2599,6 +2599,11 @@ public class ValueSet extends MetadataResource {
       public ValueSetExpansionComponent copy() {
         ValueSetExpansionComponent dst = new ValueSetExpansionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSetExpansionComponent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.timestamp = timestamp == null ? null : timestamp.copy();
         dst.total = total == null ? null : total.copy();
@@ -2613,7 +2618,6 @@ public class ValueSet extends MetadataResource {
           for (ValueSetExpansionContainsComponent i : contains)
             dst.contains.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2975,9 +2979,13 @@ public class ValueSet extends MetadataResource {
       public ValueSetExpansionParameterComponent copy() {
         ValueSetExpansionParameterComponent dst = new ValueSetExpansionParameterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSetExpansionParameterComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -3634,6 +3642,11 @@ public class ValueSet extends MetadataResource {
       public ValueSetExpansionContainsComponent copy() {
         ValueSetExpansionContainsComponent dst = new ValueSetExpansionContainsComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSetExpansionContainsComponent dst) {
+        super.copyValues(dst);
         dst.system = system == null ? null : system.copy();
         dst.abstract_ = abstract_ == null ? null : abstract_.copy();
         dst.inactive = inactive == null ? null : inactive.copy();
@@ -3650,7 +3663,6 @@ public class ValueSet extends MetadataResource {
           for (ValueSetExpansionContainsComponent i : contains)
             dst.contains.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4887,6 +4899,11 @@ public class ValueSet extends MetadataResource {
       public ValueSet copy() {
         ValueSet dst = new ValueSet();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValueSet dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -4921,7 +4938,6 @@ public class ValueSet extends MetadataResource {
         dst.copyright = copyright == null ? null : copyright.copy();
         dst.compose = compose == null ? null : compose.copy();
         dst.expansion = expansion == null ? null : expansion.copy();
-        return dst;
       }
 
       protected ValueSet typedCopy() {
@@ -5323,4 +5339,3 @@ public class ValueSet extends MetadataResource {
 
 
 }
-

@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,20 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r4.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A record of an event made for purposes of maintaining a security log. Typical uses include detection of intrusion attempts and monitoring for inappropriate usage.
  */
@@ -1256,6 +1239,11 @@ public class AuditEvent extends DomainResource {
       public AuditEventAgentComponent copy() {
         AuditEventAgentComponent dst = new AuditEventAgentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEventAgentComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (role != null) {
           dst.role = new ArrayList<CodeableConcept>();
@@ -1279,7 +1267,6 @@ public class AuditEvent extends DomainResource {
           for (CodeableConcept i : purposeOfUse)
             dst.purposeOfUse.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1530,9 +1517,13 @@ public class AuditEvent extends DomainResource {
       public AuditEventAgentNetworkComponent copy() {
         AuditEventAgentNetworkComponent dst = new AuditEventAgentNetworkComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEventAgentNetworkComponent dst) {
+        super.copyValues(dst);
         dst.address = address == null ? null : address.copy();
         dst.type = type == null ? null : type.copy();
-        return dst;
       }
 
       @Override
@@ -1853,6 +1844,11 @@ public class AuditEvent extends DomainResource {
       public AuditEventSourceComponent copy() {
         AuditEventSourceComponent dst = new AuditEventSourceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEventSourceComponent dst) {
+        super.copyValues(dst);
         dst.site = site == null ? null : site.copy();
         dst.observer = observer == null ? null : observer.copy();
         if (type != null) {
@@ -1860,7 +1856,6 @@ public class AuditEvent extends DomainResource {
           for (Coding i : type)
             dst.type.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2523,6 +2518,11 @@ public class AuditEvent extends DomainResource {
       public AuditEventEntityComponent copy() {
         AuditEventEntityComponent dst = new AuditEventEntityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEventEntityComponent dst) {
+        super.copyValues(dst);
         dst.what = what == null ? null : what.copy();
         dst.type = type == null ? null : type.copy();
         dst.role = role == null ? null : role.copy();
@@ -2540,7 +2540,6 @@ public class AuditEvent extends DomainResource {
           for (AuditEventEntityDetailComponent i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2804,9 +2803,13 @@ public class AuditEvent extends DomainResource {
       public AuditEventEntityDetailComponent copy() {
         AuditEventEntityDetailComponent dst = new AuditEventEntityDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEventEntityDetailComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -3632,6 +3635,11 @@ public class AuditEvent extends DomainResource {
       public AuditEvent copy() {
         AuditEvent dst = new AuditEvent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AuditEvent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (subtype != null) {
           dst.subtype = new ArrayList<Coding>();
@@ -3659,7 +3667,6 @@ public class AuditEvent extends DomainResource {
           for (AuditEventEntityComponent i : entity)
             dst.entity.add(i.copy());
         };
-        return dst;
       }
 
       protected AuditEvent typedCopy() {
@@ -4087,4 +4094,3 @@ public class AuditEvent extends DomainResource {
 
 
 }
-

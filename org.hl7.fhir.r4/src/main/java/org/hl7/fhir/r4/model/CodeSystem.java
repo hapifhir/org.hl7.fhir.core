@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * The CodeSystem resource is used to declare the existence of and describe a code system or code system supplement and its key properties, and optionally define a part or all of its content.
  */
@@ -733,7 +713,7 @@ public class CodeSystem extends MetadataResource {
          * A list of operators that can be used with the filter.
          */
         @Child(name = "operator", type = {CodeType.class}, order=3, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Operators that can be used with filter", formalDefinition="A list of operators that can be used with the filter." )
+        @Description(shortDefinition="= | is-a | descendent-of | is-not-a | regex | in | not-in | generalizes | exists", formalDefinition="A list of operators that can be used with the filter." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/filter-operator")
         protected List<Enumeration<FilterOperator>> operator;
 
@@ -1076,6 +1056,11 @@ public class CodeSystem extends MetadataResource {
       public CodeSystemFilterComponent copy() {
         CodeSystemFilterComponent dst = new CodeSystemFilterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CodeSystemFilterComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         if (operator != null) {
@@ -1084,7 +1069,6 @@ public class CodeSystem extends MetadataResource {
             dst.operator.add(i.copy());
         };
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -1472,11 +1456,15 @@ public class CodeSystem extends MetadataResource {
       public PropertyComponent copy() {
         PropertyComponent dst = new PropertyComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PropertyComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.uri = uri == null ? null : uri.copy();
         dst.description = description == null ? null : description.copy();
         dst.type = type == null ? null : type.copy();
-        return dst;
       }
 
       @Override
@@ -2014,6 +2002,11 @@ public class CodeSystem extends MetadataResource {
       public ConceptDefinitionComponent copy() {
         ConceptDefinitionComponent dst = new ConceptDefinitionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptDefinitionComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.display = display == null ? null : display.copy();
         dst.definition = definition == null ? null : definition.copy();
@@ -2032,7 +2025,6 @@ public class CodeSystem extends MetadataResource {
           for (ConceptDefinitionComponent i : concept)
             dst.concept.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2330,10 +2322,14 @@ public class CodeSystem extends MetadataResource {
       public ConceptDefinitionDesignationComponent copy() {
         ConceptDefinitionDesignationComponent dst = new ConceptDefinitionDesignationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptDefinitionDesignationComponent dst) {
+        super.copyValues(dst);
         dst.language = language == null ? null : language.copy();
         dst.use = use == null ? null : use.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -2693,9 +2689,13 @@ public class CodeSystem extends MetadataResource {
       public ConceptPropertyComponent copy() {
         ConceptPropertyComponent dst = new ConceptPropertyComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConceptPropertyComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -2765,10 +2765,10 @@ public class CodeSystem extends MetadataResource {
     protected CanonicalType valueSet;
 
     /**
-     * The meaning of the hierarchy of concepts as represnted in this resource.
+     * The meaning of the hierarchy of concepts as represented in this resource.
      */
     @Child(name = "hierarchyMeaning", type = {CodeType.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="grouped-by | is-a | part-of | classified-with", formalDefinition="The meaning of the hierarchy of concepts as represnted in this resource." )
+    @Description(shortDefinition="grouped-by | is-a | part-of | classified-with", formalDefinition="The meaning of the hierarchy of concepts as represented in this resource." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/codesystem-hierarchy-meaning")
     protected Enumeration<CodeSystemHierarchyMeaning> hierarchyMeaning;
 
@@ -2823,10 +2823,10 @@ public class CodeSystem extends MetadataResource {
     protected List<PropertyComponent> property;
 
     /**
-     * Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meaning of the hierarchical relationships are.
+     * Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meanings of the hierarchical relationships are.
      */
     @Child(name = "concept", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Concepts in the code system", formalDefinition="Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meaning of the hierarchical relationships are." )
+    @Description(shortDefinition="Concepts in the code system", formalDefinition="Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meanings of the hierarchical relationships are." )
     protected List<ConceptDefinitionComponent> concept;
 
     private static final long serialVersionUID = -1735124584L;
@@ -3685,7 +3685,7 @@ public class CodeSystem extends MetadataResource {
     }
 
     /**
-     * @return {@link #hierarchyMeaning} (The meaning of the hierarchy of concepts as represnted in this resource.). This is the underlying object with id, value and extensions. The accessor "getHierarchyMeaning" gives direct access to the value
+     * @return {@link #hierarchyMeaning} (The meaning of the hierarchy of concepts as represented in this resource.). This is the underlying object with id, value and extensions. The accessor "getHierarchyMeaning" gives direct access to the value
      */
     public Enumeration<CodeSystemHierarchyMeaning> getHierarchyMeaningElement() { 
       if (this.hierarchyMeaning == null)
@@ -3705,7 +3705,7 @@ public class CodeSystem extends MetadataResource {
     }
 
     /**
-     * @param value {@link #hierarchyMeaning} (The meaning of the hierarchy of concepts as represnted in this resource.). This is the underlying object with id, value and extensions. The accessor "getHierarchyMeaning" gives direct access to the value
+     * @param value {@link #hierarchyMeaning} (The meaning of the hierarchy of concepts as represented in this resource.). This is the underlying object with id, value and extensions. The accessor "getHierarchyMeaning" gives direct access to the value
      */
     public CodeSystem setHierarchyMeaningElement(Enumeration<CodeSystemHierarchyMeaning> value) { 
       this.hierarchyMeaning = value;
@@ -3713,14 +3713,14 @@ public class CodeSystem extends MetadataResource {
     }
 
     /**
-     * @return The meaning of the hierarchy of concepts as represnted in this resource.
+     * @return The meaning of the hierarchy of concepts as represented in this resource.
      */
     public CodeSystemHierarchyMeaning getHierarchyMeaning() { 
       return this.hierarchyMeaning == null ? null : this.hierarchyMeaning.getValue();
     }
 
     /**
-     * @param value The meaning of the hierarchy of concepts as represnted in this resource.
+     * @param value The meaning of the hierarchy of concepts as represented in this resource.
      */
     public CodeSystem setHierarchyMeaning(CodeSystemHierarchyMeaning value) { 
       if (value == null)
@@ -4069,7 +4069,7 @@ public class CodeSystem extends MetadataResource {
     }
 
     /**
-     * @return {@link #concept} (Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meaning of the hierarchical relationships are.)
+     * @return {@link #concept} (Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meanings of the hierarchical relationships are.)
      */
     public List<ConceptDefinitionComponent> getConcept() { 
       if (this.concept == null)
@@ -4140,7 +4140,7 @@ public class CodeSystem extends MetadataResource {
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the code system and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the code system.", 0, 1, copyright));
         children.add(new Property("caseSensitive", "boolean", "If code comparison is case sensitive when codes within this system are compared to each other.", 0, 1, caseSensitive));
         children.add(new Property("valueSet", "canonical(ValueSet)", "Canonical reference to the value set that contains the entire code system.", 0, 1, valueSet));
-        children.add(new Property("hierarchyMeaning", "code", "The meaning of the hierarchy of concepts as represnted in this resource.", 0, 1, hierarchyMeaning));
+        children.add(new Property("hierarchyMeaning", "code", "The meaning of the hierarchy of concepts as represented in this resource.", 0, 1, hierarchyMeaning));
         children.add(new Property("compositional", "boolean", "The code system defines a compositional (post-coordination) grammar.", 0, 1, compositional));
         children.add(new Property("versionNeeded", "boolean", "This flag is used to signify that the code system does not commit to concept permanence across versions. If true, a version must be specified when referencing this code system.", 0, 1, versionNeeded));
         children.add(new Property("content", "code", "The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance.", 0, 1, content));
@@ -4148,7 +4148,7 @@ public class CodeSystem extends MetadataResource {
         children.add(new Property("count", "unsignedInt", "The total number of concepts defined by the code system. Where the code system has a compositional grammar, the basis of this count is defined by the system steward.", 0, 1, count));
         children.add(new Property("filter", "", "A filter that can be used in a value set compose statement when selecting concepts using a filter.", 0, java.lang.Integer.MAX_VALUE, filter));
         children.add(new Property("property", "", "A property defines an additional slot through which additional information can be provided about a concept.", 0, java.lang.Integer.MAX_VALUE, property));
-        children.add(new Property("concept", "", "Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meaning of the hierarchical relationships are.", 0, java.lang.Integer.MAX_VALUE, concept));
+        children.add(new Property("concept", "", "Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meanings of the hierarchical relationships are.", 0, java.lang.Integer.MAX_VALUE, concept));
       }
 
       @Override
@@ -4171,7 +4171,7 @@ public class CodeSystem extends MetadataResource {
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the code system and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the code system.", 0, 1, copyright);
         case -35616442: /*caseSensitive*/  return new Property("caseSensitive", "boolean", "If code comparison is case sensitive when codes within this system are compared to each other.", 0, 1, caseSensitive);
         case -1410174671: /*valueSet*/  return new Property("valueSet", "canonical(ValueSet)", "Canonical reference to the value set that contains the entire code system.", 0, 1, valueSet);
-        case 1913078280: /*hierarchyMeaning*/  return new Property("hierarchyMeaning", "code", "The meaning of the hierarchy of concepts as represnted in this resource.", 0, 1, hierarchyMeaning);
+        case 1913078280: /*hierarchyMeaning*/  return new Property("hierarchyMeaning", "code", "The meaning of the hierarchy of concepts as represented in this resource.", 0, 1, hierarchyMeaning);
         case 1248023381: /*compositional*/  return new Property("compositional", "boolean", "The code system defines a compositional (post-coordination) grammar.", 0, 1, compositional);
         case 617270957: /*versionNeeded*/  return new Property("versionNeeded", "boolean", "This flag is used to signify that the code system does not commit to concept permanence across versions. If true, a version must be specified when referencing this code system.", 0, 1, versionNeeded);
         case 951530617: /*content*/  return new Property("content", "code", "The extent of the content of the code system (the concepts and codes it defines) are represented in this resource instance.", 0, 1, content);
@@ -4179,7 +4179,7 @@ public class CodeSystem extends MetadataResource {
         case 94851343: /*count*/  return new Property("count", "unsignedInt", "The total number of concepts defined by the code system. Where the code system has a compositional grammar, the basis of this count is defined by the system steward.", 0, 1, count);
         case -1274492040: /*filter*/  return new Property("filter", "", "A filter that can be used in a value set compose statement when selecting concepts using a filter.", 0, java.lang.Integer.MAX_VALUE, filter);
         case -993141291: /*property*/  return new Property("property", "", "A property defines an additional slot through which additional information can be provided about a concept.", 0, java.lang.Integer.MAX_VALUE, property);
-        case 951024232: /*concept*/  return new Property("concept", "", "Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meaning of the hierarchical relationships are.", 0, java.lang.Integer.MAX_VALUE, concept);
+        case 951024232: /*concept*/  return new Property("concept", "", "Concepts that are in the code system. The concept definitions are inherently hierarchical, but the definitions must be consulted to determine what the meanings of the hierarchical relationships are.", 0, java.lang.Integer.MAX_VALUE, concept);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -4530,6 +4530,11 @@ public class CodeSystem extends MetadataResource {
       public CodeSystem copy() {
         CodeSystem dst = new CodeSystem();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CodeSystem dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -4584,7 +4589,6 @@ public class CodeSystem extends MetadataResource {
           for (ConceptDefinitionComponent i : concept)
             dst.concept.add(i.copy());
         };
-        return dst;
       }
 
       protected CodeSystem typedCopy() {
@@ -5048,4 +5052,3 @@ public class CodeSystem extends MetadataResource {
 // end addition
 
 }
-

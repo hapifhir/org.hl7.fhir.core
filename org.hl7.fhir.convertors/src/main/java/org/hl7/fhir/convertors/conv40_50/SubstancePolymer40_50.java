@@ -1,24 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50;
 
-/*-
- * #%L
- * org.hl7.fhir.convertors
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -63,7 +45,7 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
         if (src.hasGeometry())
             tgt.setGeometry(convertCodeableConcept(src.getGeometry()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCopolymerConnectivity()) tgt.addCopolymerConnectivity(convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.StringType t : src.getModification()) tgt.getModification().add(convertString(t));
+        for (org.hl7.fhir.r4.model.StringType t : src.getModification()) tgt.setModificationElement(convertString(t));
         for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerMonomerSetComponent t : src.getMonomerSet()) tgt.addMonomerSet(convertSubstancePolymerMonomerSetComponent(t));
         for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatComponent t : src.getRepeat()) tgt.addRepeat(convertSubstancePolymerRepeatComponent(t));
         return tgt;
@@ -79,7 +61,7 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
         if (src.hasGeometry())
             tgt.setGeometry(convertCodeableConcept(src.getGeometry()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCopolymerConnectivity()) tgt.addCopolymerConnectivity(convertCodeableConcept(t));
-        for (org.hl7.fhir.r5.model.StringType t : src.getModification()) tgt.getModification().add(convertString(t));
+        if (src.hasModification()) tgt.getModification().add(convertString(src.getModificationElement()));
         for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerMonomerSetComponent t : src.getMonomerSet()) tgt.addMonomerSet(convertSubstancePolymerMonomerSetComponent(t));
         for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatComponent t : src.getRepeat()) tgt.addRepeat(convertSubstancePolymerRepeatComponent(t));
         return tgt;
@@ -113,9 +95,9 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerMonomerSetStartingMaterialComponent tgt = new org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerMonomerSetStartingMaterialComponent();
         copyElement(src, tgt);
         if (src.hasMaterial())
-            tgt.setMaterial(convertCodeableConcept(src.getMaterial()));
+            tgt.setCode(convertCodeableConcept(src.getMaterial()));
         if (src.hasType())
-            tgt.setType(convertCodeableConcept(src.getType()));
+            tgt.setCategory(convertCodeableConcept(src.getType()));
         if (src.hasIsDefining())
             tgt.setIsDefiningElement(convertBoolean(src.getIsDefiningElement()));
         if (src.hasAmount())
@@ -128,10 +110,10 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerMonomerSetStartingMaterialComponent tgt = new org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerMonomerSetStartingMaterialComponent();
         copyElement(src, tgt);
-        if (src.hasMaterial())
-            tgt.setMaterial(convertCodeableConcept(src.getMaterial()));
+        if (src.hasCode())
+            tgt.setMaterial(convertCodeableConcept(src.getCode()));
         if (src.hasType())
-            tgt.setType(convertCodeableConcept(src.getType()));
+            tgt.setType(convertCodeableConcept(src.getCategory()));
         if (src.hasIsDefining())
             tgt.setIsDefiningElement(convertBoolean(src.getIsDefiningElement()));
         if (src.hasAmount())
@@ -175,9 +157,9 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitComponent tgt = new org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitComponent();
         copyElement(src, tgt);
         if (src.hasOrientationOfPolymerisation())
-            tgt.setOrientationOfPolymerisation(convertCodeableConcept(src.getOrientationOfPolymerisation()));
+            tgt.setOrientation(convertCodeableConcept(src.getOrientationOfPolymerisation()));
         if (src.hasRepeatUnit())
-            tgt.setRepeatUnitElement(convertString(src.getRepeatUnitElement()));
+            tgt.setUnitElement(convertString(src.getRepeatUnitElement()));
         if (src.hasAmount())
             tgt.setAmount(convertSubstanceAmount(src.getAmount()));
         for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent t : src.getDegreeOfPolymerisation()) tgt.addDegreeOfPolymerisation(convertSubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent(t));
@@ -190,10 +172,10 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitComponent tgt = new org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitComponent();
         copyElement(src, tgt);
-        if (src.hasOrientationOfPolymerisation())
-            tgt.setOrientationOfPolymerisation(convertCodeableConcept(src.getOrientationOfPolymerisation()));
-        if (src.hasRepeatUnit())
-            tgt.setRepeatUnitElement(convertString(src.getRepeatUnitElement()));
+        if (src.hasOrientation())
+            tgt.setOrientationOfPolymerisation(convertCodeableConcept(src.getOrientation()));
+        if (src.hasUnit())
+            tgt.setRepeatUnitElement(convertString(src.getUnitElement()));
         if (src.hasAmount())
             tgt.setAmount(convertSubstanceAmount(src.getAmount()));
         for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent t : src.getDegreeOfPolymerisation()) tgt.addDegreeOfPolymerisation(convertSubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent(t));

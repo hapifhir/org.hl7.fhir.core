@@ -1,5 +1,16 @@
 package org.hl7.fhir.utilities.cache;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.JSONUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,18 +22,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.cache.PackageClient.PackageInfo;
-import org.hl7.fhir.utilities.json.JSONUtil;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 public class PackageClient {
 
   public class PackageInfo {
@@ -32,7 +31,7 @@ public class PackageClient {
     private String description;
     private String url;
     private String canonical;
-    
+
     public PackageInfo(String id, String version, String fhirVersion, String description, String url, String canonical) {
       super();
       this.id = id;
@@ -60,22 +59,28 @@ public class PackageClient {
     public String getUrl() {
       return url;
     }
-    
+
     public String getCanonical() {
       return canonical;
     }
     @Override
     public String toString() {
-      return id+"#"+(version == null ? "??" : version)+(fhirVersion == null ? "": " ("+canonical+") for FHIR "+fhirVersion)+(url == null ? "" : " @"+url)+(description == null ? "" : " '"+description+"'");
-    }    
+      return id+"#"+(version == null ? "?pc-pi?" : version)+(fhirVersion == null ? "": " ("+canonical+") for FHIR "+fhirVersion)+(url == null ? "" : " @"+url)+(description == null ? "" : " '"+description+"'");
+    }
   }
- 
+
   private String address;
+  private String cacheFolder;
 
 
   public PackageClient(String address) {
     super();
     this.address = address;
+    try {
+      cacheFolder = Utilities.path(System.getProperty("user.home"), ".fhir", "package-client");
+      Utilities.createDirectory(cacheFolder);
+    } catch (IOException e) {
+    }
   }
 
   public boolean exists(String id, String ver) throws IOException {
@@ -89,15 +94,24 @@ public class PackageClient {
   }
 
   public InputStream fetch(String id, String ver) throws IOException {
-    return fetchUrl(Utilities.pathURL(address, id, ver));
+    return fetchCached(Utilities.pathURL(address, id, ver));
   }
 
   public InputStream fetch(PackageInfo info) throws IOException {
-    return fetchUrl(Utilities.pathURL(address, info.getId(), info.getVersion()));
+    return fetchCached(Utilities.pathURL(address, info.getId(), info.getVersion()));
   }
 
   public InputStream fetchNpm(String id, String ver) throws IOException {
-    return fetchUrl(Utilities.pathURL(address, id, "-", id+"-"+ver+".tgz"));    
+    return fetchCached(Utilities.pathURL(address, id, "-", id+"-"+ver+".tgz"));
+  }
+
+  public InputStream fetchCached(String url) throws IOException, FileNotFoundException {
+    return fetchUrl(url, null);
+  }
+
+  protected String fn(String url) {
+    String[] p = url.split("\\/");
+    return p[2]+"-"+p[p.length-2]+"-"+p[p.length-1]+".tgz";
   }
 
   public List<PackageInfo> getVersions(String id) throws IOException {
@@ -154,20 +168,23 @@ public class PackageClient {
     return null;
   }
  
-  private InputStream fetchUrl(String source) throws IOException {
+  private InputStream fetchUrl(String source, String accept) throws IOException {
     URL url = new URL(source);
     URLConnection c = url.openConnection();
+    if (accept != null) {
+      c.setRequestProperty("accept", accept);
+    }
     return c.getInputStream();
   }
   
   private JsonObject fetchJson(String source) throws IOException {
-    String src = TextFile.streamToString(fetchUrl(source));
+    String src = TextFile.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);
     return (JsonObject) new com.google.gson.JsonParser().parse(src);
   }
   
   private JsonArray fetchJsonArray(String source) throws IOException {
-    String src = TextFile.streamToString(fetchUrl(source));
+    String src = TextFile.streamToString(fetchUrl(source, "application/json"));
     //System.out.println(src);
     return (JsonArray) new com.google.gson.JsonParser().parse(src);
   }

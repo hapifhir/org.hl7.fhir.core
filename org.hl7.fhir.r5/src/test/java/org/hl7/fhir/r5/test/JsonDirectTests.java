@@ -13,16 +13,13 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Observation;
 import org.hl7.fhir.utilities.Utilities;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class JsonDirectTests {
 
-  @Before
-  public void setUp() throws Exception {
-  }
-
   @Test
+  @Disabled // Hard coded path here
   public void test() throws FHIRFormatError, FileNotFoundException, IOException {
     File src = new File(Utilities.path("[tmp]", "obs.xml"));
     File xml = new File(Utilities.path("[tmp]", "xml.xml"));

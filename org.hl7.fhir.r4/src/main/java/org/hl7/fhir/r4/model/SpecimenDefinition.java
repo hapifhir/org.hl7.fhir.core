@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,19 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A kind of specimen with associated set of requirements.
  */
@@ -724,6 +707,11 @@ public class SpecimenDefinition extends DomainResource {
       public SpecimenDefinitionTypeTestedComponent copy() {
         SpecimenDefinitionTypeTestedComponent dst = new SpecimenDefinitionTypeTestedComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SpecimenDefinitionTypeTestedComponent dst) {
+        super.copyValues(dst);
         dst.isDerived = isDerived == null ? null : isDerived.copy();
         dst.type = type == null ? null : type.copy();
         dst.preference = preference == null ? null : preference.copy();
@@ -740,7 +728,6 @@ public class SpecimenDefinition extends DomainResource {
           for (SpecimenDefinitionTypeTestedHandlingComponent i : handling)
             dst.handling.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1324,6 +1311,11 @@ public class SpecimenDefinition extends DomainResource {
       public SpecimenDefinitionTypeTestedContainerComponent copy() {
         SpecimenDefinitionTypeTestedContainerComponent dst = new SpecimenDefinitionTypeTestedContainerComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SpecimenDefinitionTypeTestedContainerComponent dst) {
+        super.copyValues(dst);
         dst.material = material == null ? null : material.copy();
         dst.type = type == null ? null : type.copy();
         dst.cap = cap == null ? null : cap.copy();
@@ -1336,7 +1328,6 @@ public class SpecimenDefinition extends DomainResource {
             dst.additive.add(i.copy());
         };
         dst.preparation = preparation == null ? null : preparation.copy();
-        return dst;
       }
 
       @Override
@@ -1534,8 +1525,12 @@ public class SpecimenDefinition extends DomainResource {
       public SpecimenDefinitionTypeTestedContainerAdditiveComponent copy() {
         SpecimenDefinitionTypeTestedContainerAdditiveComponent dst = new SpecimenDefinitionTypeTestedContainerAdditiveComponent();
         copyValues(dst);
-        dst.additive = additive == null ? null : additive.copy();
         return dst;
+      }
+
+      public void copyValues(SpecimenDefinitionTypeTestedContainerAdditiveComponent dst) {
+        super.copyValues(dst);
+        dst.additive = additive == null ? null : additive.copy();
       }
 
       @Override
@@ -1845,11 +1840,15 @@ public class SpecimenDefinition extends DomainResource {
       public SpecimenDefinitionTypeTestedHandlingComponent copy() {
         SpecimenDefinitionTypeTestedHandlingComponent dst = new SpecimenDefinitionTypeTestedHandlingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SpecimenDefinitionTypeTestedHandlingComponent dst) {
+        super.copyValues(dst);
         dst.temperatureQualifier = temperatureQualifier == null ? null : temperatureQualifier.copy();
         dst.temperatureRange = temperatureRange == null ? null : temperatureRange.copy();
         dst.maxDuration = maxDuration == null ? null : maxDuration.copy();
         dst.instruction = instruction == null ? null : instruction.copy();
-        return dst;
       }
 
       @Override
@@ -2341,6 +2340,11 @@ public class SpecimenDefinition extends DomainResource {
       public SpecimenDefinition copy() {
         SpecimenDefinition dst = new SpecimenDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SpecimenDefinition dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.typeCollected = typeCollected == null ? null : typeCollected.copy();
         if (patientPreparation != null) {
@@ -2359,7 +2363,6 @@ public class SpecimenDefinition extends DomainResource {
           for (SpecimenDefinitionTypeTestedComponent i : typeTested)
             dst.typeTested.add(i.copy());
         };
-        return dst;
       }
 
       protected SpecimenDefinition typedCopy() {
@@ -2460,4 +2463,3 @@ public class SpecimenDefinition extends DomainResource {
 
 
 }
-

@@ -2,25 +2,35 @@ package org.hl7.fhir.utilities.json;
 
 import java.io.File;
 
-/*-
- * #%L
- * org.hl7.fhir.utilities
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
  */
+
 
 
 import java.io.IOException;
@@ -62,7 +72,6 @@ public class JsonTrackingParser {
       return presentation;
     }
 
-    
   }
 
   public enum TokenType {
@@ -243,6 +252,16 @@ public class JsonTrackingParser {
     	char ch;
     	do {
     		ch = getNextChar();
+    		if (allowComments && ch == '/') {
+    		  char ch1 = getNextChar();
+    		  if (ch1 == '/') {
+    		    while (more() && !Utilities.charInSet(ch, '\r', '\n')) {
+    		      ch = getNextChar();
+    		    }
+    		  } else {
+    		    push(ch1);
+    		  }    		  
+    		}
     	} while (more() && Utilities.charInSet(ch, ' ', '\r', '\n', '\t'));
     	lastLocationAWS = location.copy();
 
@@ -322,7 +341,7 @@ public class JsonTrackingParser {
 
     public String consume(TokenType type) throws IOException {
       if (this.type != type)
-        throw error("JSON syntax error - found "+type.toString()+" expecting "+type.toString());
+        throw error("JSON syntax error - found "+this.type.toString()+" expecting "+type.toString());
       String result = value;
       next();
       return result;
@@ -339,6 +358,7 @@ public class JsonTrackingParser {
   private String itemName;
   private String itemValue;
   private boolean errorOnDuplicates = true;
+  private boolean allowComments = false;
 
   public static JsonObject parseJson(String source) throws IOException {
     return parse(source, null);
@@ -369,9 +389,14 @@ public class JsonTrackingParser {
   }
     
   public static JsonObject parse(String source, Map<JsonElement, LocationData> map, boolean allowDuplicates) throws IOException {
+    return parse(source, map, allowDuplicates, false);
+  }
+  
+  public static JsonObject parse(String source, Map<JsonElement, LocationData> map, boolean allowDuplicates, boolean allowComments) throws IOException {
 		JsonTrackingParser self = new JsonTrackingParser();
 		self.map = map;
 		self.setErrorOnDuplicates(!allowDuplicates);
+		self.setAllowComments(allowComments);
     return self.parse(Utilities.stripBOM(source));
 	}
 
@@ -619,6 +644,15 @@ public class JsonTrackingParser {
 
   public void setErrorOnDuplicates(boolean errorOnDuplicates) {
     this.errorOnDuplicates = errorOnDuplicates;
+  }
+
+  
+  public boolean isAllowComments() {
+    return allowComments;
+  }
+
+  public void setAllowComments(boolean allowComments) {
+    this.allowComments = allowComments;
   }
 
   public static void write(JsonObject json, File file) throws IOException {

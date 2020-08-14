@@ -9,6 +9,7 @@ import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +17,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LDContextGeneratorTests {
 
 //  String basePath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir")).toString() + "/";
-  String basePath = "/Users/m091864/TEMP/R4/";
+//  String basePath = "E:/workspace/temp/R4/";
+
+  String outputDir = System.getProperty("user.home") + java.io.File.separator + "LDContexts" + java.io.File.separator + "R4" + java.io.File.separator;
+
+  private void mkdirs() {
+    File temp = new File(outputDir);
+    if(temp.exists() == false) {
+      temp.mkdirs();
+    }
+  }
 
   private void doTest(String name) throws IOException, FHIRException {
     StructureDefinition sd = TestingUtilities.context().
@@ -35,7 +45,7 @@ public class LDContextGeneratorTests {
     // write each json string to a file
     // may be multiples if there were BackboneElements processed.
     for (String jsonName : renderedJson.keySet()){
-      TextFile.stringToFile(renderedJson.get(jsonName),basePath + jsonName.toLowerCase() + ".context.jsonld", false);
+      TextFile.stringToFile(renderedJson.get(jsonName), outputDir + jsonName.replace(':', '-').toLowerCase() + ".context.jsonld", false);
     }
 
    // TextFile.stringToFile(ldContextGenerator.generate(sd), outPath);
@@ -47,6 +57,7 @@ public class LDContextGeneratorTests {
    * @throws FHIRException
    */
   private void doTestAll() throws IOException, FHIRException {
+    System.out.println("Generating LD Contexts");
     List<StructureDefinition> sds = TestingUtilities.context().allStructures();
     ConcurrentHashMap<String, String> renderedJson;
 
@@ -63,7 +74,7 @@ public class LDContextGeneratorTests {
         // write each json string to a file
         // may be multiples if there were BackboneElements processed.
         for (String jsonName : renderedJson.keySet()) {
-          TextFile.stringToFile(renderedJson.get(jsonName), basePath + jsonName.toLowerCase() + ".context.jsonld", false);
+          TextFile.stringToFile(renderedJson.get(jsonName), outputDir + jsonName.replace(':', '-').toLowerCase() + ".context.jsonld", false);
         }
 
       }
@@ -72,6 +83,8 @@ public class LDContextGeneratorTests {
 
   @Test
   public void testAll() throws FHIRException, IOException, UcumException {
+    this.mkdirs();
+    System.out.println("Writing contexts to: " + outputDir);
     doTestAll();
   }
 

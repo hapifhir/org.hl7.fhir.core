@@ -1,26 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-import java.math.BigDecimal;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,20 +31,21 @@ import java.math.BigDecimal;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
+import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A summary of information based on the results of executing a TestScript.
  */
@@ -849,10 +830,14 @@ public class TestReport extends DomainResource {
       public TestReportParticipantComponent copy() {
         TestReportParticipantComponent dst = new TestReportParticipantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestReportParticipantComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.uri = uri == null ? null : uri.copy();
         dst.display = display == null ? null : display.copy();
-        return dst;
       }
 
       @Override
@@ -1032,12 +1017,16 @@ public class TestReport extends DomainResource {
       public TestReportSetupComponent copy() {
         TestReportSetupComponent dst = new TestReportSetupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestReportSetupComponent dst) {
+        super.copyValues(dst);
         if (action != null) {
           dst.action = new ArrayList<SetupActionComponent>();
           for (SetupActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1232,9 +1221,13 @@ public class TestReport extends DomainResource {
       public SetupActionComponent copy() {
         SetupActionComponent dst = new SetupActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionComponent dst) {
+        super.copyValues(dst);
         dst.operation = operation == null ? null : operation.copy();
         dst.assert_ = assert_ == null ? null : assert_.copy();
-        return dst;
       }
 
       @Override
@@ -1553,10 +1546,14 @@ public class TestReport extends DomainResource {
       public SetupActionOperationComponent copy() {
         SetupActionOperationComponent dst = new SetupActionOperationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionOperationComponent dst) {
+        super.copyValues(dst);
         dst.result = result == null ? null : result.copy();
         dst.message = message == null ? null : message.copy();
         dst.detail = detail == null ? null : detail.copy();
-        return dst;
       }
 
       @Override
@@ -1878,10 +1875,14 @@ public class TestReport extends DomainResource {
       public SetupActionAssertComponent copy() {
         SetupActionAssertComponent dst = new SetupActionAssertComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SetupActionAssertComponent dst) {
+        super.copyValues(dst);
         dst.result = result == null ? null : result.copy();
         dst.message = message == null ? null : message.copy();
         dst.detail = detail == null ? null : detail.copy();
-        return dst;
       }
 
       @Override
@@ -2200,6 +2201,11 @@ public class TestReport extends DomainResource {
       public TestReportTestComponent copy() {
         TestReportTestComponent dst = new TestReportTestComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestReportTestComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.description = description == null ? null : description.copy();
         if (action != null) {
@@ -2207,7 +2213,6 @@ public class TestReport extends DomainResource {
           for (TestActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2404,9 +2409,13 @@ public class TestReport extends DomainResource {
       public TestActionComponent copy() {
         TestActionComponent dst = new TestActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestActionComponent dst) {
+        super.copyValues(dst);
         dst.operation = operation == null ? null : operation.copy();
         dst.assert_ = assert_ == null ? null : assert_.copy();
-        return dst;
       }
 
       @Override
@@ -2584,12 +2593,16 @@ public class TestReport extends DomainResource {
       public TestReportTeardownComponent copy() {
         TestReportTeardownComponent dst = new TestReportTeardownComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestReportTeardownComponent dst) {
+        super.copyValues(dst);
         if (action != null) {
           dst.action = new ArrayList<TeardownActionComponent>();
           for (TeardownActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2747,8 +2760,12 @@ public class TestReport extends DomainResource {
       public TeardownActionComponent copy() {
         TeardownActionComponent dst = new TeardownActionComponent();
         copyValues(dst);
-        dst.operation = operation == null ? null : operation.copy();
         return dst;
+      }
+
+      public void copyValues(TeardownActionComponent dst) {
+        super.copyValues(dst);
+        dst.operation = operation == null ? null : operation.copy();
       }
 
       @Override
@@ -3647,6 +3664,11 @@ public class TestReport extends DomainResource {
       public TestReport copy() {
         TestReport dst = new TestReport();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TestReport dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.name = name == null ? null : name.copy();
         dst.status = status == null ? null : status.copy();
@@ -3667,7 +3689,6 @@ public class TestReport extends DomainResource {
             dst.test.add(i.copy());
         };
         dst.teardown = teardown == null ? null : teardown.copy();
-        return dst;
       }
 
       protected TestReport typedCopy() {
@@ -3839,4 +3860,3 @@ public class TestReport extends DomainResource {
 
 
 }
-

@@ -107,7 +107,7 @@ public class CarePlan10_50 {
         if (src.hasScheduled())
             tgt.setScheduled(VersionConvertor_10_50.convertType(src.getScheduled()));
         if (src.hasLocation())
-            tgt.setLocation(VersionConvertor_10_50.convertReference(src.getLocation()));
+            tgt.getLocation().setReference(VersionConvertor_10_50.convertReference(src.getLocation()));
         for (org.hl7.fhir.dstu2.model.Reference t : src.getPerformer()) tgt.addPerformer(VersionConvertor_10_50.convertReference(t));
         if (src.hasProduct())
             tgt.setProduct(VersionConvertor_10_50.convertType(src.getProduct()));
@@ -138,8 +138,8 @@ public class CarePlan10_50 {
             tgt.setProhibitedElement(VersionConvertor_10_50.convertBoolean(src.getDoNotPerformElement()));
         if (src.hasScheduled())
             tgt.setScheduled(VersionConvertor_10_50.convertType(src.getScheduled()));
-        if (src.hasLocation())
-            tgt.setLocation(VersionConvertor_10_50.convertReference(src.getLocation()));
+        if (src.getLocation().hasReference())
+            tgt.setLocation(VersionConvertor_10_50.convertReference(src.getLocation().getReference()));
         for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(VersionConvertor_10_50.convertReference(t));
         if (src.hasProduct())
             tgt.setProduct(VersionConvertor_10_50.convertType(src.getProduct()));

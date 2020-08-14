@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,18 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Nucleic acids are defined by three distinct elements: the base, sugar and linkage. Individual substance/moiety IDs will be created for each of these elements. The nucleotide sequence will be always entered in the 5’-3’ direction.
  */
@@ -618,6 +602,11 @@ public class SubstanceNucleicAcid extends DomainResource {
       public SubstanceNucleicAcidSubunitComponent copy() {
         SubstanceNucleicAcidSubunitComponent dst = new SubstanceNucleicAcidSubunitComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceNucleicAcidSubunitComponent dst) {
+        super.copyValues(dst);
         dst.subunit = subunit == null ? null : subunit.copy();
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.length = length == null ? null : length.copy();
@@ -634,7 +623,6 @@ public class SubstanceNucleicAcid extends DomainResource {
           for (SubstanceNucleicAcidSubunitSugarComponent i : sugar)
             dst.sugar.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -996,11 +984,15 @@ public class SubstanceNucleicAcid extends DomainResource {
       public SubstanceNucleicAcidSubunitLinkageComponent copy() {
         SubstanceNucleicAcidSubunitLinkageComponent dst = new SubstanceNucleicAcidSubunitLinkageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceNucleicAcidSubunitLinkageComponent dst) {
+        super.copyValues(dst);
         dst.connectivity = connectivity == null ? null : connectivity.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.name = name == null ? null : name.copy();
         dst.residueSite = residueSite == null ? null : residueSite.copy();
-        return dst;
       }
 
       @Override
@@ -1291,10 +1283,14 @@ public class SubstanceNucleicAcid extends DomainResource {
       public SubstanceNucleicAcidSubunitSugarComponent copy() {
         SubstanceNucleicAcidSubunitSugarComponent dst = new SubstanceNucleicAcidSubunitSugarComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceNucleicAcidSubunitSugarComponent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.name = name == null ? null : name.copy();
         dst.residueSite = residueSite == null ? null : residueSite.copy();
-        return dst;
       }
 
       @Override
@@ -1701,6 +1697,11 @@ public class SubstanceNucleicAcid extends DomainResource {
       public SubstanceNucleicAcid copy() {
         SubstanceNucleicAcid dst = new SubstanceNucleicAcid();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceNucleicAcid dst) {
+        super.copyValues(dst);
         dst.sequenceType = sequenceType == null ? null : sequenceType.copy();
         dst.numberOfSubunits = numberOfSubunits == null ? null : numberOfSubunits.copy();
         dst.areaOfHybridisation = areaOfHybridisation == null ? null : areaOfHybridisation.copy();
@@ -1710,7 +1711,6 @@ public class SubstanceNucleicAcid extends DomainResource {
           for (SubstanceNucleicAcidSubunitComponent i : subunit)
             dst.subunit.add(i.copy());
         };
-        return dst;
       }
 
       protected SubstanceNucleicAcid typedCopy() {
@@ -1752,4 +1752,3 @@ public class SubstanceNucleicAcid extends DomainResource {
 
 
 }
-

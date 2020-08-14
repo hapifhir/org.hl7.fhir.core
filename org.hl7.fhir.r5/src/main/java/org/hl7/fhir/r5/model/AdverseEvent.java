@@ -1,25 +1,7 @@
 package org.hl7.fhir.r5.model;
 
 
-/*
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the \"License\");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an \"AS IS\" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,20 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+
+import ca.uhn.fhir.model.api.annotation.Block;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * An event (i.e. any change to current patient status) that may be related to unintended effects on a patient or research subject.  The unintended effects may require additional monitoring, treatment or hospitalization or may result in death.  The AdverseEvent resource also extends to potential or avoided events that could have had such effects.
@@ -1798,10 +1777,10 @@ public class AdverseEvent extends DomainResource {
     protected List<Identifier> identifier;
 
     /**
-     * The current state of the data entry of the adverse event or potential adverse event.
+     * The current state of the adverse event or potential adverse event.
      */
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="in-progress | completed | entered-in-error | unknown", formalDefinition="The current state of the data entry of the adverse event or potential adverse event." )
+    @Description(shortDefinition="in-progress | completed | entered-in-error | unknown", formalDefinition="The current state of the adverse event or potential adverse event." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-status")
     protected Enumeration<AdverseEventStatus> status;
 
@@ -1817,7 +1796,7 @@ public class AdverseEvent extends DomainResource {
      * The overall type of event, intended for search and filtering purposes.
      */
     @Child(name = "category", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="product-problem | product-quality | product-use-error | wrong-dose | incorrect-prescribing-information | wrong-technique | wrong-route-of-administration | wrong-rate | wrong-duration | wrong-time | expired-drug | medical-device-use-error | problem-different-manufacturer | unsafe-physical-environment", formalDefinition="The overall type of event, intended for search and filtering purposes." )
+    @Description(shortDefinition="wrong-patient | procedure-mishap | medication-mishap | device | unsafe-physical-environment | hospital-aquired-infection | wrong-body-site", formalDefinition="The overall type of event, intended for search and filtering purposes." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/adverse-event-category")
     protected List<CodeableConcept> category;
 
@@ -1837,10 +1816,10 @@ public class AdverseEvent extends DomainResource {
     protected Reference subject;
 
     /**
-     * The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.
+     * The Encounter associated with the start of the AdverseEvent.
      */
     @Child(name = "encounter", type = {Encounter.class}, order=6, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The Encounter during which this AdverseEvent was created", formalDefinition="The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated." )
+    @Description(shortDefinition="The Encounter associated with the start of the AdverseEvent", formalDefinition="The Encounter associated with the start of the AdverseEvent." )
     protected Reference encounter;
 
     /**
@@ -2023,7 +2002,7 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (The current state of the data entry of the adverse event or potential adverse event.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (The current state of the adverse event or potential adverse event.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<AdverseEventStatus> getStatusElement() { 
       if (this.status == null)
@@ -2043,7 +2022,7 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @param value {@link #status} (The current state of the data entry of the adverse event or potential adverse event.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (The current state of the adverse event or potential adverse event.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public AdverseEvent setStatusElement(Enumeration<AdverseEventStatus> value) { 
       this.status = value;
@@ -2051,14 +2030,14 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return The current state of the data entry of the adverse event or potential adverse event.
+     * @return The current state of the adverse event or potential adverse event.
      */
     public AdverseEventStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value The current state of the data entry of the adverse event or potential adverse event.
+     * @param value The current state of the adverse event or potential adverse event.
      */
     public AdverseEvent setStatus(AdverseEventStatus value) { 
         if (this.status == null)
@@ -2214,7 +2193,7 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @return {@link #encounter} (The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.)
+     * @return {@link #encounter} (The Encounter associated with the start of the AdverseEvent.)
      */
     public Reference getEncounter() { 
       if (this.encounter == null)
@@ -2230,7 +2209,7 @@ public class AdverseEvent extends DomainResource {
     }
 
     /**
-     * @param value {@link #encounter} (The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.)
+     * @param value {@link #encounter} (The Encounter associated with the start of the AdverseEvent.)
      */
     public AdverseEvent setEncounter(Reference value) { 
       this.encounter = value;
@@ -2924,12 +2903,12 @@ public class AdverseEvent extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this adverse event by the performer or other systems which remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("status", "code", "The current state of the data entry of the adverse event or potential adverse event.", 0, 1, status));
+        children.add(new Property("status", "code", "The current state of the adverse event or potential adverse event.", 0, 1, status));
         children.add(new Property("actuality", "code", "Whether the event actually happened, or just had the potential to. Note that this is independent of whether anyone was affected or harmed or how severely.", 0, 1, actuality));
         children.add(new Property("category", "CodeableConcept", "The overall type of event, intended for search and filtering purposes.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("code", "CodeableConcept", "Specific event that occurred or that was averted, such as patient fall, wrong organ removed, or wrong blood transfused.", 0, 1, code));
         children.add(new Property("subject", "Reference(Patient|Group|Practitioner|RelatedPerson)", "This subject or group impacted by the event.", 0, 1, subject));
-        children.add(new Property("encounter", "Reference(Encounter)", "The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.", 0, 1, encounter));
+        children.add(new Property("encounter", "Reference(Encounter)", "The Encounter associated with the start of the AdverseEvent.", 0, 1, encounter));
         children.add(new Property("occurrence[x]", "dateTime|Period|Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence));
         children.add(new Property("detected", "dateTime", "Estimated or actual date the AdverseEvent began, in the opinion of the reporter.", 0, 1, detected));
         children.add(new Property("recordedDate", "dateTime", "The date on which the existence of the AdverseEvent was first recorded.", 0, 1, recordedDate));
@@ -2951,12 +2930,12 @@ public class AdverseEvent extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this adverse event by the performer or other systems which remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -892481550: /*status*/  return new Property("status", "code", "The current state of the data entry of the adverse event or potential adverse event.", 0, 1, status);
+        case -892481550: /*status*/  return new Property("status", "code", "The current state of the adverse event or potential adverse event.", 0, 1, status);
         case 528866400: /*actuality*/  return new Property("actuality", "code", "Whether the event actually happened, or just had the potential to. Note that this is independent of whether anyone was affected or harmed or how severely.", 0, 1, actuality);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "The overall type of event, intended for search and filtering purposes.", 0, java.lang.Integer.MAX_VALUE, category);
         case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Specific event that occurred or that was averted, such as patient fall, wrong organ removed, or wrong blood transfused.", 0, 1, code);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Practitioner|RelatedPerson)", "This subject or group impacted by the event.", 0, 1, subject);
-        case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounter during which AdverseEvent was created or to which the creation of this record is tightly associated.", 0, 1, encounter);
+        case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "The Encounter associated with the start of the AdverseEvent.", 0, 1, encounter);
         case -2022646513: /*occurrence[x]*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence);
         case 1687874001: /*occurrence*/  return new Property("occurrence[x]", "dateTime|Period|Timing", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence);
         case -298443636: /*occurrenceDateTime*/  return new Property("occurrence[x]", "dateTime", "The date (and perhaps time) when the adverse event occurred.", 0, 1, occurrence);
@@ -3434,17 +3413,17 @@ public class AdverseEvent extends DomainResource {
  /**
    * Search parameter: <b>category</b>
    * <p>
-   * Description: <b>product-problem | product-quality | product-use-error | wrong-dose | incorrect-prescribing-information | wrong-technique | wrong-route-of-administration | wrong-rate | wrong-duration | wrong-time | expired-drug | medical-device-use-error | problem-different-manufacturer | unsafe-physical-environment</b><br>
+   * Description: <b>wrong-patient | procedure-mishap | medication-mishap | device | unsafe-physical-environment | hospital-aquired-infection | wrong-body-site</b><br>
    * Type: <b>token</b><br>
    * Path: <b>AdverseEvent.category</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="category", path="AdverseEvent.category", description="product-problem | product-quality | product-use-error | wrong-dose | incorrect-prescribing-information | wrong-technique | wrong-route-of-administration | wrong-rate | wrong-duration | wrong-time | expired-drug | medical-device-use-error | problem-different-manufacturer | unsafe-physical-environment", type="token" )
+  @SearchParamDefinition(name="category", path="AdverseEvent.category", description="wrong-patient | procedure-mishap | medication-mishap | device | unsafe-physical-environment | hospital-aquired-infection | wrong-body-site", type="token" )
   public static final String SP_CATEGORY = "category";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>category</b>
    * <p>
-   * Description: <b>product-problem | product-quality | product-use-error | wrong-dose | incorrect-prescribing-information | wrong-technique | wrong-route-of-administration | wrong-rate | wrong-duration | wrong-time | expired-drug | medical-device-use-error | problem-different-manufacturer | unsafe-physical-environment</b><br>
+   * Description: <b>wrong-patient | procedure-mishap | medication-mishap | device | unsafe-physical-environment | hospital-aquired-infection | wrong-body-site</b><br>
    * Type: <b>token</b><br>
    * Path: <b>AdverseEvent.category</b><br>
    * </p>
@@ -3735,4 +3714,3 @@ public class AdverseEvent extends DomainResource {
 
 
 }
-

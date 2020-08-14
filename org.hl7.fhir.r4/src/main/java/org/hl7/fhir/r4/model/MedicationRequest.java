@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,19 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.util.*;
+
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * An order or request for both supply of the medication and the instructions for administration of the medication to a patient. The resource is called "MedicationRequest" rather than "MedicationPrescription" or "MedicationOrder" to generalize the use across inpatient and outpatient settings, including care plans, etc., and to harmonize with workflow patterns.
  */
@@ -999,6 +982,11 @@ public class MedicationRequest extends DomainResource {
       public MedicationRequestDispenseRequestComponent copy() {
         MedicationRequestDispenseRequestComponent dst = new MedicationRequestDispenseRequestComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationRequestDispenseRequestComponent dst) {
+        super.copyValues(dst);
         dst.initialFill = initialFill == null ? null : initialFill.copy();
         dst.dispenseInterval = dispenseInterval == null ? null : dispenseInterval.copy();
         dst.validityPeriod = validityPeriod == null ? null : validityPeriod.copy();
@@ -1006,7 +994,6 @@ public class MedicationRequest extends DomainResource {
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.expectedSupplyDuration = expectedSupplyDuration == null ? null : expectedSupplyDuration.copy();
         dst.performer = performer == null ? null : performer.copy();
-        return dst;
       }
 
       @Override
@@ -1206,9 +1193,13 @@ public class MedicationRequest extends DomainResource {
       public MedicationRequestDispenseRequestInitialFillComponent copy() {
         MedicationRequestDispenseRequestInitialFillComponent dst = new MedicationRequestDispenseRequestInitialFillComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationRequestDispenseRequestInitialFillComponent dst) {
+        super.copyValues(dst);
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.duration = duration == null ? null : duration.copy();
-        return dst;
       }
 
       @Override
@@ -1448,9 +1439,13 @@ public class MedicationRequest extends DomainResource {
       public MedicationRequestSubstitutionComponent copy() {
         MedicationRequestSubstitutionComponent dst = new MedicationRequestSubstitutionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationRequestSubstitutionComponent dst) {
+        super.copyValues(dst);
         dst.allowed = allowed == null ? null : allowed.copy();
         dst.reason = reason == null ? null : reason.copy();
-        return dst;
       }
 
       @Override
@@ -1511,7 +1506,7 @@ public class MedicationRequest extends DomainResource {
      * Whether the request is a proposal, plan, or an original order.
      */
     @Child(name = "intent", type = {CodeType.class}, order=3, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="proposal | plan | order | original-order | instance-order | option", formalDefinition="Whether the request is a proposal, plan, or an original order." )
+    @Description(shortDefinition="proposal | plan | order | original-order | reflex-order | filler-order | instance-order | option", formalDefinition="Whether the request is a proposal, plan, or an original order." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medicationrequest-intent")
     protected Enumeration<MedicationRequestIntent> intent;
 
@@ -3826,6 +3821,11 @@ public class MedicationRequest extends DomainResource {
       public MedicationRequest copy() {
         MedicationRequest dst = new MedicationRequest();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationRequest dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -3910,7 +3910,6 @@ public class MedicationRequest extends DomainResource {
           for (Reference i : eventHistory)
             dst.eventHistory.add(i.copy());
         };
-        return dst;
       }
 
       protected MedicationRequest typedCopy() {
@@ -4331,4 +4330,3 @@ public class MedicationRequest extends DomainResource {
 
 
 }
-

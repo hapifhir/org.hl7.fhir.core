@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * The Measure resource provides the definition of a quality measure.
  */
@@ -404,6 +384,11 @@ public class Measure extends MetadataResource {
       public MeasureGroupComponent copy() {
         MeasureGroupComponent dst = new MeasureGroupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureGroupComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         if (population != null) {
@@ -416,7 +401,6 @@ public class Measure extends MetadataResource {
           for (MeasureGroupStratifierComponent i : stratifier)
             dst.stratifier.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -691,10 +675,14 @@ public class Measure extends MetadataResource {
       public MeasureGroupPopulationComponent copy() {
         MeasureGroupPopulationComponent dst = new MeasureGroupPopulationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureGroupPopulationComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         dst.criteria = criteria == null ? null : criteria.copy();
-        return dst;
       }
 
       @Override
@@ -1033,6 +1021,11 @@ public class Measure extends MetadataResource {
       public MeasureGroupStratifierComponent copy() {
         MeasureGroupStratifierComponent dst = new MeasureGroupStratifierComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureGroupStratifierComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         dst.criteria = criteria == null ? null : criteria.copy();
@@ -1041,7 +1034,6 @@ public class Measure extends MetadataResource {
           for (MeasureGroupStratifierComponentComponent i : component)
             dst.component.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1315,10 +1307,14 @@ public class Measure extends MetadataResource {
       public MeasureGroupStratifierComponentComponent copy() {
         MeasureGroupStratifierComponentComponent dst = new MeasureGroupStratifierComponentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureGroupStratifierComponentComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         dst.criteria = criteria == null ? null : criteria.copy();
-        return dst;
       }
 
       @Override
@@ -1666,6 +1662,11 @@ public class Measure extends MetadataResource {
       public MeasureSupplementalDataComponent copy() {
         MeasureSupplementalDataComponent dst = new MeasureSupplementalDataComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureSupplementalDataComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         if (usage != null) {
           dst.usage = new ArrayList<CodeableConcept>();
@@ -1674,7 +1675,6 @@ public class Measure extends MetadataResource {
         };
         dst.description = description == null ? null : description.copy();
         dst.criteria = criteria == null ? null : criteria.copy();
-        return dst;
       }
 
       @Override
@@ -4528,6 +4528,11 @@ public class Measure extends MetadataResource {
       public Measure copy() {
         Measure dst = new Measure();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Measure dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -4629,7 +4634,6 @@ public class Measure extends MetadataResource {
           for (MeasureSupplementalDataComponent i : supplementalData)
             dst.supplementalData.add(i.copy());
         };
-        return dst;
       }
 
       protected Measure typedCopy() {
@@ -5157,4 +5161,3 @@ public class Measure extends MetadataResource {
 
 
 }
-

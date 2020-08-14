@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * The ResearchElementDefinition resource describes a "PICO" element that knowledge (evidence, assertion, recommendation) is about.
  */
@@ -1440,6 +1420,11 @@ public class ResearchElementDefinition extends MetadataResource {
       public ResearchElementDefinitionCharacteristicComponent copy() {
         ResearchElementDefinitionCharacteristicComponent dst = new ResearchElementDefinitionCharacteristicComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ResearchElementDefinitionCharacteristicComponent dst) {
+        super.copyValues(dst);
         dst.definition = definition == null ? null : definition.copy();
         if (usageContext != null) {
           dst.usageContext = new ArrayList<UsageContext>();
@@ -1456,7 +1441,6 @@ public class ResearchElementDefinition extends MetadataResource {
         dst.participantEffective = participantEffective == null ? null : participantEffective.copy();
         dst.participantEffectiveTimeFromStart = participantEffectiveTimeFromStart == null ? null : participantEffectiveTimeFromStart.copy();
         dst.participantEffectiveGroupMeasure = participantEffectiveGroupMeasure == null ? null : participantEffectiveGroupMeasure.copy();
-        return dst;
       }
 
       @Override
@@ -3829,6 +3813,11 @@ public class ResearchElementDefinition extends MetadataResource {
       public ResearchElementDefinition copy() {
         ResearchElementDefinition dst = new ResearchElementDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ResearchElementDefinition dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -3914,7 +3903,6 @@ public class ResearchElementDefinition extends MetadataResource {
           for (ResearchElementDefinitionCharacteristicComponent i : characteristic)
             dst.characteristic.add(i.copy());
         };
-        return dst;
       }
 
       protected ResearchElementDefinition typedCopy() {
@@ -4436,4 +4424,3 @@ public class ResearchElementDefinition extends MetadataResource {
 
 
 }
-

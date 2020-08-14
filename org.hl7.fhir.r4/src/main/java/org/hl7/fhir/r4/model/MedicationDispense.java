@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,24 +31,229 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.util.*;
+
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Indicates that a medication product is to be or has been dispensed for a named person/patient.  This includes a description of the medication product (supply) provided and the instructions for administering the medication.  The medication dispense is the result of a pharmacy system responding to a medication order.
  */
 @ResourceDef(name="MedicationDispense", profile="http://hl7.org/fhir/StructureDefinition/MedicationDispense")
 public class MedicationDispense extends DomainResource {
+
+    public enum MedicationDispenseStatus {
+        /**
+         * The core event has not started yet, but some staging activities have begun (e.g. initial compounding or packaging of medication). Preparation stages may be tracked for billing purposes.
+         */
+        PREPARATION, 
+        /**
+         * The dispensed product is ready for pickup.
+         */
+        INPROGRESS, 
+        /**
+         * The dispensed product was not and will never be picked up by the patient.
+         */
+        CANCELLED, 
+        /**
+         * The dispense process is paused while waiting for an external event to reactivate the dispense.  For example, new stock has arrived or the prescriber has called.
+         */
+        ONHOLD, 
+        /**
+         * The dispensed product has been picked up.
+         */
+        COMPLETED, 
+        /**
+         * The dispense was entered in error and therefore nullified.
+         */
+        ENTEREDINERROR, 
+        /**
+         * Actions implied by the dispense have been permanently halted, before all of them occurred.
+         */
+        STOPPED, 
+        /**
+         * The dispense was declined and not performed.
+         */
+        DECLINED, 
+        /**
+         * The authoring system does not know which of the status values applies for this medication dispense.  Note: this concept is not to be used for other - one of the listed statuses is presumed to apply, it's just now known which one.
+         */
+        UNKNOWN, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static MedicationDispenseStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("preparation".equals(codeString))
+          return PREPARATION;
+        if ("in-progress".equals(codeString))
+          return INPROGRESS;
+        if ("cancelled".equals(codeString))
+          return CANCELLED;
+        if ("on-hold".equals(codeString))
+          return ONHOLD;
+        if ("completed".equals(codeString))
+          return COMPLETED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        if ("stopped".equals(codeString))
+          return STOPPED;
+        if ("declined".equals(codeString))
+          return DECLINED;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown MedicationDispenseStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case PREPARATION: return "preparation";
+            case INPROGRESS: return "in-progress";
+            case CANCELLED: return "cancelled";
+            case ONHOLD: return "on-hold";
+            case COMPLETED: return "completed";
+            case ENTEREDINERROR: return "entered-in-error";
+            case STOPPED: return "stopped";
+            case DECLINED: return "declined";
+            case UNKNOWN: return "unknown";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case PREPARATION: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
+            case INPROGRESS: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
+            case CANCELLED: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
+            case ONHOLD: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
+            case COMPLETED: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
+            case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
+            case STOPPED: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
+            case DECLINED: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
+            case UNKNOWN: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case PREPARATION: return "The core event has not started yet, but some staging activities have begun (e.g. initial compounding or packaging of medication). Preparation stages may be tracked for billing purposes.";
+            case INPROGRESS: return "The dispensed product is ready for pickup.";
+            case CANCELLED: return "The dispensed product was not and will never be picked up by the patient.";
+            case ONHOLD: return "The dispense process is paused while waiting for an external event to reactivate the dispense.  For example, new stock has arrived or the prescriber has called.";
+            case COMPLETED: return "The dispensed product has been picked up.";
+            case ENTEREDINERROR: return "The dispense was entered in error and therefore nullified.";
+            case STOPPED: return "Actions implied by the dispense have been permanently halted, before all of them occurred.";
+            case DECLINED: return "The dispense was declined and not performed.";
+            case UNKNOWN: return "The authoring system does not know which of the status values applies for this medication dispense.  Note: this concept is not to be used for other - one of the listed statuses is presumed to apply, it's just now known which one.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case PREPARATION: return "Preparation";
+            case INPROGRESS: return "In Progress";
+            case CANCELLED: return "Cancelled";
+            case ONHOLD: return "On Hold";
+            case COMPLETED: return "Completed";
+            case ENTEREDINERROR: return "Entered in Error";
+            case STOPPED: return "Stopped";
+            case DECLINED: return "Declined";
+            case UNKNOWN: return "Unknown";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class MedicationDispenseStatusEnumFactory implements EnumFactory<MedicationDispenseStatus> {
+    public MedicationDispenseStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("preparation".equals(codeString))
+          return MedicationDispenseStatus.PREPARATION;
+        if ("in-progress".equals(codeString))
+          return MedicationDispenseStatus.INPROGRESS;
+        if ("cancelled".equals(codeString))
+          return MedicationDispenseStatus.CANCELLED;
+        if ("on-hold".equals(codeString))
+          return MedicationDispenseStatus.ONHOLD;
+        if ("completed".equals(codeString))
+          return MedicationDispenseStatus.COMPLETED;
+        if ("entered-in-error".equals(codeString))
+          return MedicationDispenseStatus.ENTEREDINERROR;
+        if ("stopped".equals(codeString))
+          return MedicationDispenseStatus.STOPPED;
+        if ("declined".equals(codeString))
+          return MedicationDispenseStatus.DECLINED;
+        if ("unknown".equals(codeString))
+          return MedicationDispenseStatus.UNKNOWN;
+        throw new IllegalArgumentException("Unknown MedicationDispenseStatus code '"+codeString+"'");
+        }
+        public Enumeration<MedicationDispenseStatus> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<MedicationDispenseStatus>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("preparation".equals(codeString))
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.PREPARATION);
+        if ("in-progress".equals(codeString))
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.INPROGRESS);
+        if ("cancelled".equals(codeString))
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.CANCELLED);
+        if ("on-hold".equals(codeString))
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.ONHOLD);
+        if ("completed".equals(codeString))
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.COMPLETED);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.ENTEREDINERROR);
+        if ("stopped".equals(codeString))
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.STOPPED);
+        if ("declined".equals(codeString))
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.DECLINED);
+        if ("unknown".equals(codeString))
+          return new Enumeration<MedicationDispenseStatus>(this, MedicationDispenseStatus.UNKNOWN);
+        throw new FHIRException("Unknown MedicationDispenseStatus code '"+codeString+"'");
+        }
+    public String toCode(MedicationDispenseStatus code) {
+      if (code == MedicationDispenseStatus.PREPARATION)
+        return "preparation";
+      if (code == MedicationDispenseStatus.INPROGRESS)
+        return "in-progress";
+      if (code == MedicationDispenseStatus.CANCELLED)
+        return "cancelled";
+      if (code == MedicationDispenseStatus.ONHOLD)
+        return "on-hold";
+      if (code == MedicationDispenseStatus.COMPLETED)
+        return "completed";
+      if (code == MedicationDispenseStatus.ENTEREDINERROR)
+        return "entered-in-error";
+      if (code == MedicationDispenseStatus.STOPPED)
+        return "stopped";
+      if (code == MedicationDispenseStatus.DECLINED)
+        return "declined";
+      if (code == MedicationDispenseStatus.UNKNOWN)
+        return "unknown";
+      return "?";
+      }
+    public String toSystem(MedicationDispenseStatus code) {
+      return code.getSystem();
+      }
+    }
 
     @Block()
     public static class MedicationDispensePerformerComponent extends BackboneElement implements IBaseBackboneElement {
@@ -258,9 +445,13 @@ public class MedicationDispense extends DomainResource {
       public MedicationDispensePerformerComponent copy() {
         MedicationDispensePerformerComponent dst = new MedicationDispensePerformerComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationDispensePerformerComponent dst) {
+        super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
         dst.actor = actor == null ? null : actor.copy();
-        return dst;
       }
 
       @Override
@@ -646,6 +837,11 @@ public class MedicationDispense extends DomainResource {
       public MedicationDispenseSubstitutionComponent copy() {
         MedicationDispenseSubstitutionComponent dst = new MedicationDispenseSubstitutionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationDispenseSubstitutionComponent dst) {
+        super.copyValues(dst);
         dst.wasSubstituted = wasSubstituted == null ? null : wasSubstituted.copy();
         dst.type = type == null ? null : type.copy();
         if (reason != null) {
@@ -658,7 +854,6 @@ public class MedicationDispense extends DomainResource {
           for (Reference i : responsibleParty)
             dst.responsibleParty.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -717,9 +912,9 @@ public class MedicationDispense extends DomainResource {
      * A code specifying the state of the set of dispense events.
      */
     @Child(name = "status", type = {CodeType.class}, order=2, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="preparation | in-progress | cancelled | on-hold | completed | entered-in-error | stopped | unknown", formalDefinition="A code specifying the state of the set of dispense events." )
+    @Description(shortDefinition="preparation | in-progress | cancelled | on-hold | completed | entered-in-error | stopped | declined | unknown", formalDefinition="A code specifying the state of the set of dispense events." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medicationdispense-status")
-    protected CodeType status;
+    protected Enumeration<MedicationDispenseStatus> status;
 
     /**
      * Indicates the reason why a dispense was not performed.
@@ -917,7 +1112,7 @@ public class MedicationDispense extends DomainResource {
     protected List<Provenance> eventHistoryTarget;
 
 
-    private static final long serialVersionUID = -726686920L;
+    private static final long serialVersionUID = -976967238L;
 
   /**
    * Constructor
@@ -929,7 +1124,7 @@ public class MedicationDispense extends DomainResource {
   /**
    * Constructor
    */
-    public MedicationDispense(CodeType status, Type medication) {
+    public MedicationDispense(Enumeration<MedicationDispenseStatus> status, Type medication) {
       super();
       this.status = status;
       this.medication = medication;
@@ -1066,12 +1261,12 @@ public class MedicationDispense extends DomainResource {
     /**
      * @return {@link #status} (A code specifying the state of the set of dispense events.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public CodeType getStatusElement() { 
+    public Enumeration<MedicationDispenseStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create MedicationDispense.status");
         else if (Configuration.doAutoCreate())
-          this.status = new CodeType(); // bb
+          this.status = new Enumeration<MedicationDispenseStatus>(new MedicationDispenseStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -1086,7 +1281,7 @@ public class MedicationDispense extends DomainResource {
     /**
      * @param value {@link #status} (A code specifying the state of the set of dispense events.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public MedicationDispense setStatusElement(CodeType value) { 
+    public MedicationDispense setStatusElement(Enumeration<MedicationDispenseStatus> value) { 
       this.status = value;
       return this;
     }
@@ -1094,16 +1289,16 @@ public class MedicationDispense extends DomainResource {
     /**
      * @return A code specifying the state of the set of dispense events.
      */
-    public String getStatus() { 
+    public MedicationDispenseStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value A code specifying the state of the set of dispense events.
      */
-    public MedicationDispense setStatus(String value) { 
+    public MedicationDispense setStatus(MedicationDispenseStatus value) { 
         if (this.status == null)
-          this.status = new CodeType();
+          this.status = new Enumeration<MedicationDispenseStatus>(new MedicationDispenseStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -2175,7 +2370,7 @@ public class MedicationDispense extends DomainResource {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -995410646: /*partOf*/ return this.partOf == null ? new Base[0] : this.partOf.toArray(new Base[this.partOf.size()]); // Reference
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeType
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<MedicationDispenseStatus>
         case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : new Base[] {this.statusReason}; // Type
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case 1998965455: /*medication*/ return this.medication == null ? new Base[0] : new Base[] {this.medication}; // Type
@@ -2212,7 +2407,8 @@ public class MedicationDispense extends DomainResource {
           this.getPartOf().add(castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          this.status = castToCode(value); // CodeType
+          value = new MedicationDispenseStatusEnumFactory().fromType(castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<MedicationDispenseStatus>
           return value;
         case 2051346646: // statusReason
           this.statusReason = castToType(value); // Type
@@ -2289,7 +2485,8 @@ public class MedicationDispense extends DomainResource {
         } else if (name.equals("partOf")) {
           this.getPartOf().add(castToReference(value));
         } else if (name.equals("status")) {
-          this.status = castToCode(value); // CodeType
+          value = new MedicationDispenseStatusEnumFactory().fromType(castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<MedicationDispenseStatus>
         } else if (name.equals("statusReason[x]")) {
           this.statusReason = castToType(value); // Type
         } else if (name.equals("category")) {
@@ -2508,6 +2705,11 @@ public class MedicationDispense extends DomainResource {
       public MedicationDispense copy() {
         MedicationDispense dst = new MedicationDispense();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationDispense dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2572,7 +2774,6 @@ public class MedicationDispense extends DomainResource {
           for (Reference i : eventHistory)
             dst.eventHistory.add(i.copy());
         };
-        return dst;
       }
 
       protected MedicationDispense typedCopy() {
@@ -2978,4 +3179,3 @@ public class MedicationDispense extends DomainResource {
 
 
 }
-

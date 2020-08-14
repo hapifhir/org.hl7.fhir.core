@@ -1,24 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50;
 
-/*-
- * #%L
- * org.hl7.fhir.convertors
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -83,7 +65,7 @@ public class Device40_50 extends VersionConvertor_40_50 {
         if (src.hasPartNumber())
             tgt.setPartNumberElement(convertString(src.getPartNumberElement()));
         if (src.hasType())
-            tgt.setType(convertCodeableConcept(src.getType()));
+            tgt.addType(convertCodeableConcept(src.getType()));
         for (org.hl7.fhir.r4.model.Device.DeviceSpecializationComponent t : src.getSpecialization()) tgt.addSpecialization(convertDeviceSpecializationComponent(t));
         for (org.hl7.fhir.r4.model.Device.DeviceVersionComponent t : src.getVersion()) tgt.addVersion(convertDeviceVersionComponent(t));
         for (org.hl7.fhir.r4.model.Device.DevicePropertyComponent t : src.getProperty()) tgt.addProperty(convertDevicePropertyComponent(t));
@@ -133,7 +115,7 @@ public class Device40_50 extends VersionConvertor_40_50 {
         if (src.hasPartNumber())
             tgt.setPartNumberElement(convertString(src.getPartNumberElement()));
         if (src.hasType())
-            tgt.setType(convertCodeableConcept(src.getType()));
+            tgt.setType(convertCodeableConcept(src.getTypeFirstRep()));
         for (org.hl7.fhir.r5.model.Device.DeviceSpecializationComponent t : src.getSpecialization()) tgt.addSpecialization(convertDeviceSpecializationComponent(t));
         for (org.hl7.fhir.r5.model.Device.DeviceVersionComponent t : src.getVersion()) tgt.addVersion(convertDeviceVersionComponent(t));
         for (org.hl7.fhir.r5.model.Device.DevicePropertyComponent t : src.getProperty()) tgt.addProperty(convertDevicePropertyComponent(t));

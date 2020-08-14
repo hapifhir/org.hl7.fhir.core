@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.
  */
@@ -1896,6 +1876,11 @@ public class Questionnaire extends MetadataResource {
       public QuestionnaireItemComponent copy() {
         QuestionnaireItemComponent dst = new QuestionnaireItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(QuestionnaireItemComponent dst) {
+        super.copyValues(dst);
         dst.linkId = linkId == null ? null : linkId.copy();
         dst.definition = definition == null ? null : definition.copy();
         if (code != null) {
@@ -1932,7 +1917,6 @@ public class Questionnaire extends MetadataResource {
           for (QuestionnaireItemComponent i : item)
             dst.item.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1974,42 +1958,6 @@ public class Questionnaire extends MetadataResource {
     return "Questionnaire.item";
 
   }
-
-      public QuestionnaireItemComponent getQuestion(String linkId) {
-        if (linkId == null)
-          return null;
-        for (QuestionnaireItemComponent i : getItem()) {
-          if (i.getLinkId().equals(linkId))
-            return i;
-          QuestionnaireItemComponent t = i.getQuestion(linkId);
-          if (t != null)
-            return t;
-        }
-        return null;
-      }
-
-      public QuestionnaireItemComponent getCommonGroup(QuestionnaireItemComponent q1, QuestionnaireItemComponent q2) {
-        if (q1 == null || q2 == null)
-          return null;
-        for (QuestionnaireItemComponent i : getItem()) {
-          QuestionnaireItemComponent t = i.getCommonGroup(q1, q2);
-          if (t != null)
-            return t;
-        }
-        if (containsQuestion(q1) && containsQuestion(q2))
-          return this;
-        return null;
-      }
-
-      public boolean containsQuestion(QuestionnaireItemComponent q) {
-        if (q == this)
-          return true;
-        for (QuestionnaireItemComponent i : getItem()) {
-          if (i.containsQuestion(q))
-            return true;
-        }
-        return false;
-      }
 
   }
 
@@ -2468,10 +2416,14 @@ public class Questionnaire extends MetadataResource {
       public QuestionnaireItemEnableWhenComponent copy() {
         QuestionnaireItemEnableWhenComponent dst = new QuestionnaireItemEnableWhenComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(QuestionnaireItemEnableWhenComponent dst) {
+        super.copyValues(dst);
         dst.question = question == null ? null : question.copy();
         dst.operator = operator == null ? null : operator.copy();
         dst.answer = answer == null ? null : answer.copy();
-        return dst;
       }
 
       @Override
@@ -2812,9 +2764,13 @@ public class Questionnaire extends MetadataResource {
       public QuestionnaireItemAnswerOptionComponent copy() {
         QuestionnaireItemAnswerOptionComponent dst = new QuestionnaireItemAnswerOptionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(QuestionnaireItemAnswerOptionComponent dst) {
+        super.copyValues(dst);
         dst.value = value == null ? null : value.copy();
         dst.initialSelected = initialSelected == null ? null : initialSelected.copy();
-        return dst;
       }
 
       @Override
@@ -3209,8 +3165,12 @@ public class Questionnaire extends MetadataResource {
       public QuestionnaireItemInitialComponent copy() {
         QuestionnaireItemInitialComponent dst = new QuestionnaireItemInitialComponent();
         copyValues(dst);
-        dst.value = value == null ? null : value.copy();
         return dst;
+      }
+
+      public void copyValues(QuestionnaireItemInitialComponent dst) {
+        super.copyValues(dst);
+        dst.value = value == null ? null : value.copy();
       }
 
       @Override
@@ -4780,6 +4740,11 @@ public class Questionnaire extends MetadataResource {
       public Questionnaire copy() {
         Questionnaire dst = new Questionnaire();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Questionnaire dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -4834,7 +4799,6 @@ public class Questionnaire extends MetadataResource {
           for (QuestionnaireItemComponent i : item)
             dst.item.add(i.copy());
         };
-        return dst;
       }
 
       protected Questionnaire typedCopy() {
@@ -5258,29 +5222,5 @@ public class Questionnaire extends MetadataResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
-  
-  public QuestionnaireItemComponent getQuestion(String linkId) {
-    if (linkId == null)
-      return null;
-    for (QuestionnaireItemComponent i : getItem()) {
-      if (i.getLinkId().equals(linkId))
-        return i;
-      QuestionnaireItemComponent t = i.getQuestion(linkId);
-      if (t != null)
-        return t;
-    }
-    return null;
-  }
-
-  public QuestionnaireItemComponent getCommonGroup(QuestionnaireItemComponent q1, QuestionnaireItemComponent q2) {
-    for (QuestionnaireItemComponent i : getItem()) {
-      QuestionnaireItemComponent t = i.getCommonGroup(q1, q2);
-      if (t != null)
-        return t;
-    }
-    return null;
-  }
-  
 
 }
-

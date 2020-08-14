@@ -1,24 +1,6 @@
 package org.hl7.fhir.dstu3.utils.client;
 
-/*-
- * #%L
- * org.hl7.fhir.dstu3
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 
 
@@ -58,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -132,6 +115,13 @@ public class ResourceAddress {
 		return baseServiceUri.resolve(nameForClass(resourceClass) +"/"+id+"/_history/"+version);
 	}
 	
+  public <T extends Resource> URI resolveGetUriFromResourceClassAndCanonical(Class<T> resourceClass, String canonicalUrl) {
+    if (canonicalUrl.contains("|"))
+      return baseServiceUri.resolve(nameForClass(resourceClass)+"?url="+canonicalUrl.substring(0, canonicalUrl.indexOf("|"))+"&version="+canonicalUrl.substring(canonicalUrl.indexOf("|")+1));      
+    else
+      return baseServiceUri.resolve(nameForClass(resourceClass)+"?url="+canonicalUrl);
+  }
+  
 	public URI resolveGetHistoryForAllResources(int count) {
 		if(count > 0) {
 			return appendHttpParameter(baseServiceUri.resolve("_history"), "_count", ""+count);
@@ -231,6 +221,11 @@ public class ResourceAddress {
 		return baseServiceUri.resolve(quick ? "metadata?_summary=true" : "metadata");
 	}
 	
+  public URI resolveMetadataTxCaps() {
+    return baseServiceUri.resolve("metadata?mode=terminology");
+  }
+
+  
 	/**
 	 * For now, assume this type of location header structure.
 	 * Generalize later: http://hl7connect.healthintersections.com.au/svc/fhir/318/_history/1
@@ -404,7 +399,7 @@ public class ResourceAddress {
 	}
 	
 	public static String getCalendarDateInIsoTimeFormat(Calendar calendar) {
-		SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss");//TODO Move out
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", new Locale("en", "US"));//TODO Move out
 		format.setTimeZone(TimeZone.getTimeZone("GMT"));
 	    return format.format(calendar.getTime());
 	}
@@ -435,8 +430,5 @@ public class ResourceAddress {
         }
     }
 	
-  public URI resolveMetadataTxCaps() {
-    return baseServiceUri.resolve("metadata?mode=terminology");
-  }  
 
 }

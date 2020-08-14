@@ -1,11 +1,9 @@
 package org.hl7.fhir.utilities.tests;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JsonParserTests {
 

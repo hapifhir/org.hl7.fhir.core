@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,27 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r4.model.Enumerations.BindingStrengthEnumFactory;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.r4.model.Enumerations.SearchParamType;
-import org.hl7.fhir.r4.model.Enumerations.SearchParamTypeEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).
  */
@@ -1089,6 +1065,11 @@ public class OperationDefinition extends MetadataResource {
       public OperationDefinitionParameterComponent copy() {
         OperationDefinitionParameterComponent dst = new OperationDefinitionParameterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationDefinitionParameterComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.use = use == null ? null : use.copy();
         dst.min = min == null ? null : min.copy();
@@ -1112,7 +1093,6 @@ public class OperationDefinition extends MetadataResource {
           for (OperationDefinitionParameterComponent i : part)
             dst.part.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1366,9 +1346,13 @@ public class OperationDefinition extends MetadataResource {
       public OperationDefinitionParameterBindingComponent copy() {
         OperationDefinitionParameterBindingComponent dst = new OperationDefinitionParameterBindingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationDefinitionParameterBindingComponent dst) {
+        super.copyValues(dst);
         dst.strength = strength == null ? null : strength.copy();
         dst.valueSet = valueSet == null ? null : valueSet.copy();
-        return dst;
       }
 
       @Override
@@ -1615,9 +1599,13 @@ public class OperationDefinition extends MetadataResource {
       public OperationDefinitionParameterReferencedFromComponent copy() {
         OperationDefinitionParameterReferencedFromComponent dst = new OperationDefinitionParameterReferencedFromComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationDefinitionParameterReferencedFromComponent dst) {
+        super.copyValues(dst);
         dst.source = source == null ? null : source.copy();
         dst.sourceId = sourceId == null ? null : sourceId.copy();
-        return dst;
       }
 
       @Override
@@ -1872,13 +1860,17 @@ public class OperationDefinition extends MetadataResource {
       public OperationDefinitionOverloadComponent copy() {
         OperationDefinitionOverloadComponent dst = new OperationDefinitionOverloadComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationDefinitionOverloadComponent dst) {
+        super.copyValues(dst);
         if (parameterName != null) {
           dst.parameterName = new ArrayList<StringType>();
           for (StringType i : parameterName)
             dst.parameterName.add(i.copy());
         };
         dst.comment = comment == null ? null : comment.copy();
-        return dst;
       }
 
       @Override
@@ -3714,6 +3706,11 @@ public class OperationDefinition extends MetadataResource {
       public OperationDefinition copy() {
         OperationDefinition dst = new OperationDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationDefinition dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
         dst.name = name == null ? null : name.copy();
@@ -3764,7 +3761,6 @@ public class OperationDefinition extends MetadataResource {
           for (OperationDefinitionOverloadComponent i : overload)
             dst.overload.add(i.copy());
         };
-        return dst;
       }
 
       protected OperationDefinition typedCopy() {
@@ -4269,4 +4265,3 @@ public class OperationDefinition extends MetadataResource {
 
 
 }
-

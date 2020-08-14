@@ -1,24 +1,34 @@
 package org.hl7.fhir.r5.elementmodel;
 
-/*-
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
  */
+
 
 
 import java.io.IOException;
@@ -37,17 +47,18 @@ import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.SnomedExpressions;
 import org.hl7.fhir.r5.utils.SnomedExpressions.Expression;
-import org.hl7.fhir.r5.utils.formats.Turtle;
-import org.hl7.fhir.r5.utils.formats.Turtle.Complex;
-import org.hl7.fhir.r5.utils.formats.Turtle.Section;
-import org.hl7.fhir.r5.utils.formats.Turtle.Subject;
-import org.hl7.fhir.r5.utils.formats.Turtle.TTLComplex;
-import org.hl7.fhir.r5.utils.formats.Turtle.TTLList;
-import org.hl7.fhir.r5.utils.formats.Turtle.TTLLiteral;
-import org.hl7.fhir.r5.utils.formats.Turtle.TTLObject;
-import org.hl7.fhir.r5.utils.formats.Turtle.TTLURL;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.turtle.Turtle;
+import org.hl7.fhir.utilities.turtle.Turtle.Complex;
+import org.hl7.fhir.utilities.turtle.Turtle.Section;
+import org.hl7.fhir.utilities.turtle.Turtle.Subject;
+import org.hl7.fhir.utilities.turtle.Turtle.TTLComplex;
+import org.hl7.fhir.utilities.turtle.Turtle.TTLList;
+import org.hl7.fhir.utilities.turtle.Turtle.TTLLiteral;
+import org.hl7.fhir.utilities.turtle.Turtle.TTLObject;
+import org.hl7.fhir.utilities.turtle.Turtle.TTLURL;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
@@ -69,7 +80,7 @@ public class TurtleParser extends ParserBase {
       try {
         src.parse(TextFile.streamToString(input));
       } catch (Exception e) {  
-        logError(-1, -1, "(document)", IssueType.INVALID, "Error parsing Turtle: "+e.getMessage(), IssueSeverity.FATAL);
+        logError(-1, -1, "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.ERROR_PARSING_TURTLE_, e.getMessage()), IssueSeverity.FATAL);
         return null;
       }
       return parse(src);  
@@ -101,7 +112,7 @@ public class TurtleParser extends ParserBase {
   private Element parse(Turtle src, TTLComplex cmp) throws FHIRException {
     TTLObject type = cmp.getPredicates().get("http://www.w3.org/2000/01/rdf-schema#type");
     if (type == null) {
-      logError(cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, "Unknown resource type (missing rdfs:type)", IssueSeverity.FATAL);
+      logError(cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE), IssueSeverity.FATAL);
       return null;
     }
     if (type instanceof TTLList) {
@@ -114,7 +125,7 @@ public class TurtleParser extends ParserBase {
       }
     }
     if (!(type instanceof TTLURL)) {
-      logError(cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, "Unexpected datatype for rdfs:type)", IssueSeverity.FATAL);
+      logError(cmp.getLine(), cmp.getCol(), "(document)", IssueType.INVALID, context.formatMessage(I18nConstants.UNEXPECTED_DATATYPE_FOR_RDFSTYPE), IssueSeverity.FATAL);
       return null;
     }
     String name = ((TTLURL) type).getUri();
@@ -134,9 +145,9 @@ public class TurtleParser extends ParserBase {
     return result;  
   }
   
-  private void parseChildren(Turtle src, String path, TTLComplex object, Element context, boolean primitive) throws FHIRException {
+  private void parseChildren(Turtle src, String path, TTLComplex object, Element element, boolean primitive) throws FHIRException {
 
-    List<Property> properties = context.getProperty().getChildProperties(context.getName(), null);
+    List<Property> properties = element.getProperty().getChildProperties(element.getName(), null);
     Set<String> processed = new HashSet<String>();
     if (primitive)
       processed.add(FHIR_URI_BASE + "value");
@@ -147,10 +158,10 @@ public class TurtleParser extends ParserBase {
       if (property.isChoice()) {
         for (TypeRefComponent type : property.getDefinition().getType()) {
           String eName = property.getName().substring(0, property.getName().length()-3) + Utilities.capitalize(type.getCode());
-          parseChild(src, object, context, processed, property, path, getFormalName(property, eName));
+          parseChild(src, object, element, processed, property, path, getFormalName(property, eName));
         }
       } else  {
-        parseChild(src, object, context, processed, property, path, getFormalName(property));
+        parseChild(src, object, element, processed, property, path, getFormalName(property));
       } 
     }
 
@@ -159,7 +170,7 @@ public class TurtleParser extends ParserBase {
       for (String u : object.getPredicates().keySet()) {
         if (!processed.contains(u)) {
           TTLObject n = object.getPredicates().get(u);
-          logError(n.getLine(), n.getCol(), path, IssueType.STRUCTURE, "Unrecognised predicate '"+u+"'", IssueSeverity.ERROR);         
+          logError(n.getLine(), n.getCol(), path, IssueType.STRUCTURE, context.formatMessage(I18nConstants.UNRECOGNISED_PREDICATE_, u), IssueSeverity.ERROR);
         }
       }
     }
@@ -181,13 +192,13 @@ public class TurtleParser extends ParserBase {
     }
   }
 
-  private void parseChildInstance(Turtle src, String npath, TTLComplex object, Element context, Property property, String name, TTLObject e) throws FHIRException {
+  private void parseChildInstance(Turtle src, String npath, TTLComplex object, Element element, Property property, String name, TTLObject e) throws FHIRException {
     if (property.isResource())
-      parseResource(src, npath, object, context, property, name, e);
+      parseResource(src, npath, object, element, property, name, e);
     else  if (e instanceof TTLComplex) {
       TTLComplex child = (TTLComplex) e;
       Element n = new Element(tail(name), property).markLocation(e.getLine(), e.getCol());
-      context.getChildren().add(n);
+      element.getChildren().add(n);
       if (property.isPrimitive(property.getType(tail(name)))) {
         parseChildren(src, npath, child, n, true);
         TTLObject val = child.getPredicates().get(FHIR_URI_BASE + "value");
@@ -198,13 +209,13 @@ public class TurtleParser extends ParserBase {
             // todo: check type
             n.setValue(value);
           } else
-            logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, "This property must be a Literal, not a "+e.getClass().getName(), IssueSeverity.ERROR);
+            logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_A_, e.getClass().getName()), IssueSeverity.ERROR);
         }
       } else 
         parseChildren(src, npath, child, n, false);
 
     } else 
-      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, "This property must be a URI or bnode, not a "+e.getClass().getName(), IssueSeverity.ERROR);
+      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_A_, e.getClass().getName()), IssueSeverity.ERROR);
   }
 
 
@@ -212,7 +223,7 @@ public class TurtleParser extends ParserBase {
     return name.substring(name.lastIndexOf(".")+1);
   }
 
-  private void parseResource(Turtle src, String npath, TTLComplex object, Element context, Property property, String name, TTLObject e) throws FHIRException {
+  private void parseResource(Turtle src, String npath, TTLComplex object, Element element, Property property, String name, TTLObject e) throws FHIRException {
     TTLComplex obj;
     if (e instanceof TTLComplex) 
       obj = (TTLComplex) e;
@@ -220,15 +231,15 @@ public class TurtleParser extends ParserBase {
       String url = ((TTLURL) e).getUri();
       obj = src.getObject(url);
       if (obj == null) {
-        logError(e.getLine(), e.getCol(), npath, IssueType.INVALID, "reference to "+url+" cannot be resolved", IssueSeverity.FATAL);
+        logError(e.getLine(), e.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.REFERENCE_TO__CANNOT_BE_RESOLVED, url), IssueSeverity.FATAL);
         return;
       }
     } else
-      throw new FHIRFormatError("Wrong type for resource");
+      throw new FHIRFormatError(context.formatMessage(I18nConstants.WRONG_TYPE_FOR_RESOURCE));
       
     TTLObject type = obj.getPredicates().get("http://www.w3.org/2000/01/rdf-schema#type");
     if (type == null) {
-      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, "Unknown resource type (missing rdfs:type)", IssueSeverity.FATAL);
+      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNKNOWN_RESOURCE_TYPE_MISSING_RDFSTYPE), IssueSeverity.FATAL);
       return;
   }
     if (type instanceof TTLList) {
@@ -241,7 +252,7 @@ public class TurtleParser extends ParserBase {
       }
     }
     if (!(type instanceof TTLURL)) {
-      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, "Unexpected datatype for rdfs:type)", IssueSeverity.FATAL);
+      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.UNEXPECTED_DATATYPE_FOR_RDFSTYPE), IssueSeverity.FATAL);
       return;
     }
     String rt = ((TTLURL) type).getUri();
@@ -253,7 +264,7 @@ public class TurtleParser extends ParserBase {
       return;
     
     Element n = new Element(tail(name), property).markLocation(object.getLine(), object.getCol());
-    context.getChildren().add(n);
+    element.getChildren().add(n);
     n.updateProperty(new Property(this.context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(n.getProperty()), property);
     n.setType(rt);
     parseChildren(src, npath, obj, n, false);
@@ -278,7 +289,7 @@ public class TurtleParser extends ParserBase {
     if (en == null)
       en = property.getDefinition().getPath();
     if (!en.endsWith("[x]")) 
-      throw new Error("Attempt to replace element name for a non-choice type");
+      throw new Error(context.formatMessage(I18nConstants.ATTEMPT_TO_REPLACE_ELEMENT_NAME_FOR_A_NONCHOICE_TYPE));
     return en.substring(0, en.lastIndexOf(".")+1)+elementName;
   }
   

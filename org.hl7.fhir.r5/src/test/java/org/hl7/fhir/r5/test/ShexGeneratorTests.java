@@ -12,12 +12,12 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ShExGenerator;
 import org.hl7.fhir.r5.conformance.ShExGenerator.HTMLLinkPolicy;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.ZipGenerator;
 import org.junit.Test;
+//import org.junit.jupiter.api.Test;
 
 public class ShexGeneratorTests {
 
@@ -26,8 +26,8 @@ public class ShexGeneratorTests {
     if(sd == null) {
       throw new FHIRException("StructuredDefinition for " + name + "was null");
     }
-    String outPath = "/Users/m091864/TEMP_SHEX/" + name.toLowerCase()+".shex";
-//    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase()+".shex");
+    String outPath = "E:/workspace/temp/TEMP_SHEX/" + name.toLowerCase()+".shex";
+//    Path outPath = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir"), name.toLowerCase() + ".shex");
     TextFile.stringToFile(new ShExGenerator(TestingUtilities.context()).generate(HTMLLinkPolicy.NONE, sd), outPath.toString());
   }
 
@@ -90,7 +90,15 @@ public class ShexGeneratorTests {
     zip.close();
   }
 
+  @Test
+  public void testAllergyIntolerance() throws FHIRException, IOException, UcumException {
+    doTest("AllergyIntolerance");
+  }
 
+  @Test
+  public void testCoding() throws FHIRException, IOException, UcumException {
+    doTest("Coding");
+  }
 
 //  @Test
 //  public void testAll() throws FHIRException, IOException {

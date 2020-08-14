@@ -1,26 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-import java.math.BigDecimal;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,20 +31,21 @@ import java.math.BigDecimal;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
+import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * An authorization for the provision of glasses and/or contact lenses to a patient.
  */
@@ -1521,6 +1502,11 @@ public class VisionPrescription extends DomainResource {
       public VisionPrescriptionLensSpecificationComponent copy() {
         VisionPrescriptionLensSpecificationComponent dst = new VisionPrescriptionLensSpecificationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(VisionPrescriptionLensSpecificationComponent dst) {
+        super.copyValues(dst);
         dst.product = product == null ? null : product.copy();
         dst.eye = eye == null ? null : eye.copy();
         dst.sphere = sphere == null ? null : sphere.copy();
@@ -1543,7 +1529,6 @@ public class VisionPrescription extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1817,9 +1802,13 @@ public class VisionPrescription extends DomainResource {
       public PrismComponent copy() {
         PrismComponent dst = new PrismComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PrismComponent dst) {
+        super.copyValues(dst);
         dst.amount = amount == null ? null : amount.copy();
         dst.base = base == null ? null : base.copy();
-        return dst;
       }
 
       @Override
@@ -2488,6 +2477,11 @@ public class VisionPrescription extends DomainResource {
       public VisionPrescription copy() {
         VisionPrescription dst = new VisionPrescription();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(VisionPrescription dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2504,7 +2498,6 @@ public class VisionPrescription extends DomainResource {
           for (VisionPrescriptionLensSpecificationComponent i : lensSpecification)
             dst.lensSpecification.add(i.copy());
         };
-        return dst;
       }
 
       protected VisionPrescription typedCopy() {
@@ -2685,4 +2678,3 @@ public class VisionPrescription extends DomainResource {
 
 
 }
-

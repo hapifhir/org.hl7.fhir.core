@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,24 +31,133 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Information about a medication that is used to support knowledge.
  */
 @ResourceDef(name="MedicationKnowledge", profile="http://hl7.org/fhir/StructureDefinition/MedicationKnowledge")
 public class MedicationKnowledge extends DomainResource {
+
+    public enum MedicationKnowledgeStatus {
+        /**
+         * The medication is available for use.
+         */
+        ACTIVE, 
+        /**
+         * The medication is not available for use.
+         */
+        INACTIVE, 
+        /**
+         * The medication was entered in error.
+         */
+        ENTEREDINERROR, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static MedicationKnowledgeStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("active".equals(codeString))
+          return ACTIVE;
+        if ("inactive".equals(codeString))
+          return INACTIVE;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown MedicationKnowledgeStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case ACTIVE: return "active";
+            case INACTIVE: return "inactive";
+            case ENTEREDINERROR: return "entered-in-error";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case ACTIVE: return "http://terminology.hl7.org/CodeSystem/medicationknowledge-status";
+            case INACTIVE: return "http://terminology.hl7.org/CodeSystem/medicationknowledge-status";
+            case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/medicationknowledge-status";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case ACTIVE: return "The medication is available for use.";
+            case INACTIVE: return "The medication is not available for use.";
+            case ENTEREDINERROR: return "The medication was entered in error.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case ACTIVE: return "Active";
+            case INACTIVE: return "Inactive";
+            case ENTEREDINERROR: return "Entered in Error";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class MedicationKnowledgeStatusEnumFactory implements EnumFactory<MedicationKnowledgeStatus> {
+    public MedicationKnowledgeStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("active".equals(codeString))
+          return MedicationKnowledgeStatus.ACTIVE;
+        if ("inactive".equals(codeString))
+          return MedicationKnowledgeStatus.INACTIVE;
+        if ("entered-in-error".equals(codeString))
+          return MedicationKnowledgeStatus.ENTEREDINERROR;
+        throw new IllegalArgumentException("Unknown MedicationKnowledgeStatus code '"+codeString+"'");
+        }
+        public Enumeration<MedicationKnowledgeStatus> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<MedicationKnowledgeStatus>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("active".equals(codeString))
+          return new Enumeration<MedicationKnowledgeStatus>(this, MedicationKnowledgeStatus.ACTIVE);
+        if ("inactive".equals(codeString))
+          return new Enumeration<MedicationKnowledgeStatus>(this, MedicationKnowledgeStatus.INACTIVE);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<MedicationKnowledgeStatus>(this, MedicationKnowledgeStatus.ENTEREDINERROR);
+        throw new FHIRException("Unknown MedicationKnowledgeStatus code '"+codeString+"'");
+        }
+    public String toCode(MedicationKnowledgeStatus code) {
+      if (code == MedicationKnowledgeStatus.ACTIVE)
+        return "active";
+      if (code == MedicationKnowledgeStatus.INACTIVE)
+        return "inactive";
+      if (code == MedicationKnowledgeStatus.ENTEREDINERROR)
+        return "entered-in-error";
+      return "?";
+      }
+    public String toSystem(MedicationKnowledgeStatus code) {
+      return code.getSystem();
+      }
+    }
 
     @Block()
     public static class MedicationKnowledgeRelatedMedicationKnowledgeComponent extends BackboneElement implements IBaseBackboneElement {
@@ -292,13 +383,17 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeRelatedMedicationKnowledgeComponent copy() {
         MedicationKnowledgeRelatedMedicationKnowledgeComponent dst = new MedicationKnowledgeRelatedMedicationKnowledgeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeRelatedMedicationKnowledgeComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (reference != null) {
           dst.reference = new ArrayList<Reference>();
           for (Reference i : reference)
             dst.reference.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -513,9 +608,13 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeMonographComponent copy() {
         MedicationKnowledgeMonographComponent dst = new MedicationKnowledgeMonographComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeMonographComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.source = source == null ? null : source.copy();
-        return dst;
       }
 
       @Override
@@ -818,10 +917,14 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeIngredientComponent copy() {
         MedicationKnowledgeIngredientComponent dst = new MedicationKnowledgeIngredientComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeIngredientComponent dst) {
+        super.copyValues(dst);
         dst.item = item == null ? null : item.copy();
         dst.isActive = isActive == null ? null : isActive.copy();
         dst.strength = strength == null ? null : strength.copy();
-        return dst;
       }
 
       @Override
@@ -1096,10 +1199,14 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeCostComponent copy() {
         MedicationKnowledgeCostComponent dst = new MedicationKnowledgeCostComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeCostComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.source = source == null ? null : source.copy();
         dst.cost = cost == null ? null : cost.copy();
-        return dst;
       }
 
       @Override
@@ -1319,9 +1426,13 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeMonitoringProgramComponent copy() {
         MedicationKnowledgeMonitoringProgramComponent dst = new MedicationKnowledgeMonitoringProgramComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeMonitoringProgramComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.name = name == null ? null : name.copy();
-        return dst;
       }
 
       @Override
@@ -1652,6 +1763,11 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeAdministrationGuidelinesComponent copy() {
         MedicationKnowledgeAdministrationGuidelinesComponent dst = new MedicationKnowledgeAdministrationGuidelinesComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeAdministrationGuidelinesComponent dst) {
+        super.copyValues(dst);
         if (dosage != null) {
           dst.dosage = new ArrayList<MedicationKnowledgeAdministrationGuidelinesDosageComponent>();
           for (MedicationKnowledgeAdministrationGuidelinesDosageComponent i : dosage)
@@ -1663,7 +1779,6 @@ public class MedicationKnowledge extends DomainResource {
           for (MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsComponent i : patientCharacteristics)
             dst.patientCharacteristics.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1896,13 +2011,17 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeAdministrationGuidelinesDosageComponent copy() {
         MedicationKnowledgeAdministrationGuidelinesDosageComponent dst = new MedicationKnowledgeAdministrationGuidelinesDosageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeAdministrationGuidelinesDosageComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (dosage != null) {
           dst.dosage = new ArrayList<Dosage>();
           for (Dosage i : dosage)
             dst.dosage.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2176,13 +2295,17 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsComponent copy() {
         MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsComponent dst = new MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeAdministrationGuidelinesPatientCharacteristicsComponent dst) {
+        super.copyValues(dst);
         dst.characteristic = characteristic == null ? null : characteristic.copy();
         if (value != null) {
           dst.value = new ArrayList<StringType>();
           for (StringType i : value)
             dst.value.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2414,13 +2537,17 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeMedicineClassificationComponent copy() {
         MedicationKnowledgeMedicineClassificationComponent dst = new MedicationKnowledgeMedicineClassificationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeMedicineClassificationComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (classification != null) {
           dst.classification = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : classification)
             dst.classification.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2616,9 +2743,13 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgePackagingComponent copy() {
         MedicationKnowledgePackagingComponent dst = new MedicationKnowledgePackagingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgePackagingComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
-        return dst;
       }
 
       @Override
@@ -2889,9 +3020,13 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeDrugCharacteristicComponent copy() {
         MedicationKnowledgeDrugCharacteristicComponent dst = new MedicationKnowledgeDrugCharacteristicComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeDrugCharacteristicComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -3265,6 +3400,11 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeRegulatoryComponent copy() {
         MedicationKnowledgeRegulatoryComponent dst = new MedicationKnowledgeRegulatoryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeRegulatoryComponent dst) {
+        super.copyValues(dst);
         dst.regulatoryAuthority = regulatoryAuthority == null ? null : regulatoryAuthority.copy();
         if (substitution != null) {
           dst.substitution = new ArrayList<MedicationKnowledgeRegulatorySubstitutionComponent>();
@@ -3277,7 +3417,6 @@ public class MedicationKnowledge extends DomainResource {
             dst.schedule.add(i.copy());
         };
         dst.maxDispense = maxDispense == null ? null : maxDispense.copy();
-        return dst;
       }
 
       @Override
@@ -3503,9 +3642,13 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeRegulatorySubstitutionComponent copy() {
         MedicationKnowledgeRegulatorySubstitutionComponent dst = new MedicationKnowledgeRegulatorySubstitutionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeRegulatorySubstitutionComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.allowed = allowed == null ? null : allowed.copy();
-        return dst;
       }
 
       @Override
@@ -3663,8 +3806,12 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeRegulatoryScheduleComponent copy() {
         MedicationKnowledgeRegulatoryScheduleComponent dst = new MedicationKnowledgeRegulatoryScheduleComponent();
         copyValues(dst);
-        dst.schedule = schedule == null ? null : schedule.copy();
         return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeRegulatoryScheduleComponent dst) {
+        super.copyValues(dst);
+        dst.schedule = schedule == null ? null : schedule.copy();
       }
 
       @Override
@@ -3867,9 +4014,13 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeRegulatoryMaxDispenseComponent copy() {
         MedicationKnowledgeRegulatoryMaxDispenseComponent dst = new MedicationKnowledgeRegulatoryMaxDispenseComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeRegulatoryMaxDispenseComponent dst) {
+        super.copyValues(dst);
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -4165,6 +4316,11 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledgeKineticsComponent copy() {
         MedicationKnowledgeKineticsComponent dst = new MedicationKnowledgeKineticsComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledgeKineticsComponent dst) {
+        super.copyValues(dst);
         if (areaUnderCurve != null) {
           dst.areaUnderCurve = new ArrayList<Quantity>();
           for (Quantity i : areaUnderCurve)
@@ -4176,7 +4332,6 @@ public class MedicationKnowledge extends DomainResource {
             dst.lethalDose50.add(i.copy());
         };
         dst.halfLifePeriod = halfLifePeriod == null ? null : halfLifePeriod.copy();
-        return dst;
       }
 
       @Override
@@ -4226,7 +4381,7 @@ public class MedicationKnowledge extends DomainResource {
     @Child(name = "status", type = {CodeType.class}, order=1, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="active | inactive | entered-in-error", formalDefinition="A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medicationknowledge-status")
-    protected CodeType status;
+    protected Enumeration<MedicationKnowledgeStatus> status;
 
     /**
      * Describes the details of the manufacturer of the medication product.  This is not intended to represent the distributor of a medication product.
@@ -4385,7 +4540,7 @@ public class MedicationKnowledge extends DomainResource {
     @Description(shortDefinition="The time course of drug absorption, distribution, metabolism and excretion of a medication from the body", formalDefinition="The time course of drug absorption, distribution, metabolism and excretion of a medication from the body." )
     protected List<MedicationKnowledgeKineticsComponent> kinetics;
 
-    private static final long serialVersionUID = -1585251548L;
+    private static final long serialVersionUID = -1230067857L;
 
   /**
    * Constructor
@@ -4421,12 +4576,12 @@ public class MedicationKnowledge extends DomainResource {
     /**
      * @return {@link #status} (A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public CodeType getStatusElement() { 
+    public Enumeration<MedicationKnowledgeStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create MedicationKnowledge.status");
         else if (Configuration.doAutoCreate())
-          this.status = new CodeType(); // bb
+          this.status = new Enumeration<MedicationKnowledgeStatus>(new MedicationKnowledgeStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -4441,7 +4596,7 @@ public class MedicationKnowledge extends DomainResource {
     /**
      * @param value {@link #status} (A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public MedicationKnowledge setStatusElement(CodeType value) { 
+    public MedicationKnowledge setStatusElement(Enumeration<MedicationKnowledgeStatus> value) { 
       this.status = value;
       return this;
     }
@@ -4449,19 +4604,19 @@ public class MedicationKnowledge extends DomainResource {
     /**
      * @return A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties.
      */
-    public String getStatus() { 
+    public MedicationKnowledgeStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value A code to indicate if the medication is in active use.  The status refers to the validity about the information of the medication and not to its medicinal properties.
      */
-    public MedicationKnowledge setStatus(String value) { 
-      if (Utilities.noString(value))
+    public MedicationKnowledge setStatus(MedicationKnowledgeStatus value) { 
+      if (value == null)
         this.status = null;
       else {
         if (this.status == null)
-          this.status = new CodeType();
+          this.status = new Enumeration<MedicationKnowledgeStatus>(new MedicationKnowledgeStatusEnumFactory());
         this.status.setValue(value);
       }
       return this;
@@ -5539,7 +5694,7 @@ public class MedicationKnowledge extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeType
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<MedicationKnowledgeStatus>
         case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // Reference
         case 1303858817: /*doseForm*/ return this.doseForm == null ? new Base[0] : new Base[] {this.doseForm}; // CodeableConcept
         case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Quantity
@@ -5572,7 +5727,8 @@ public class MedicationKnowledge extends DomainResource {
           this.code = castToCodeableConcept(value); // CodeableConcept
           return value;
         case -892481550: // status
-          this.status = castToCode(value); // CodeType
+          value = new MedicationKnowledgeStatusEnumFactory().fromType(castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<MedicationKnowledgeStatus>
           return value;
         case -1969347631: // manufacturer
           this.manufacturer = castToReference(value); // Reference
@@ -5644,7 +5800,8 @@ public class MedicationKnowledge extends DomainResource {
         if (name.equals("code")) {
           this.code = castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("status")) {
-          this.status = castToCode(value); // CodeType
+          value = new MedicationKnowledgeStatusEnumFactory().fromType(castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<MedicationKnowledgeStatus>
         } else if (name.equals("manufacturer")) {
           this.manufacturer = castToReference(value); // Reference
         } else if (name.equals("doseForm")) {
@@ -5835,6 +5992,11 @@ public class MedicationKnowledge extends DomainResource {
       public MedicationKnowledge copy() {
         MedicationKnowledge dst = new MedicationKnowledge();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationKnowledge dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.status = status == null ? null : status.copy();
         dst.manufacturer = manufacturer == null ? null : manufacturer.copy();
@@ -5917,7 +6079,6 @@ public class MedicationKnowledge extends DomainResource {
           for (MedicationKnowledgeKineticsComponent i : kinetics)
             dst.kinetics.add(i.copy());
         };
-        return dst;
       }
 
       protected MedicationKnowledge typedCopy() {
@@ -6247,4 +6408,3 @@ public class MedicationKnowledge extends DomainResource {
 
 
 }
-

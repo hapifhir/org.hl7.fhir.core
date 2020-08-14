@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,28 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.instance.model.api.IBaseConformance;
-import org.hl7.fhir.r4.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r4.model.Enumerations.FHIRVersionEnumFactory;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.r4.model.Enumerations.SearchParamType;
-import org.hl7.fhir.r4.model.Enumerations.SearchParamTypeEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A Capability Statement documents a set of capabilities (behaviors) of a FHIR Server for a particular version of FHIR that may be used as a statement of actual server functionality or a statement of required or desired server implementation.
  */
@@ -1552,10 +1527,14 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementSoftwareComponent copy() {
         CapabilityStatementSoftwareComponent dst = new CapabilityStatementSoftwareComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementSoftwareComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.version = version == null ? null : version.copy();
         dst.releaseDate = releaseDate == null ? null : releaseDate.copy();
-        return dst;
       }
 
       @Override
@@ -1875,10 +1854,14 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementImplementationComponent copy() {
         CapabilityStatementImplementationComponent dst = new CapabilityStatementImplementationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementImplementationComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.url = url == null ? null : url.copy();
         dst.custodian = custodian == null ? null : custodian.copy();
-        return dst;
       }
 
       @Override
@@ -2548,6 +2531,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementRestComponent copy() {
         CapabilityStatementRestComponent dst = new CapabilityStatementRestComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementRestComponent dst) {
+        super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
         dst.security = security == null ? null : security.copy();
@@ -2576,7 +2564,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           for (CanonicalType i : compartment)
             dst.compartment.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2892,6 +2879,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementRestSecurityComponent copy() {
         CapabilityStatementRestSecurityComponent dst = new CapabilityStatementRestSecurityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementRestSecurityComponent dst) {
+        super.copyValues(dst);
         dst.cors = cors == null ? null : cors.copy();
         if (service != null) {
           dst.service = new ArrayList<CodeableConcept>();
@@ -2899,7 +2891,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
             dst.service.add(i.copy());
         };
         dst.description = description == null ? null : description.copy();
-        return dst;
       }
 
       @Override
@@ -4240,6 +4231,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementRestResourceComponent copy() {
         CapabilityStatementRestResourceComponent dst = new CapabilityStatementRestResourceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementRestResourceComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.profile = profile == null ? null : profile.copy();
         if (supportedProfile != null) {
@@ -4285,7 +4281,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           for (CapabilityStatementRestResourceOperationComponent i : operation)
             dst.operation.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4550,9 +4545,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public ResourceInteractionComponent copy() {
         ResourceInteractionComponent dst = new ResourceInteractionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ResourceInteractionComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -4937,11 +4936,15 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementRestResourceSearchParamComponent copy() {
         CapabilityStatementRestResourceSearchParamComponent dst = new CapabilityStatementRestResourceSearchParamComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementRestResourceSearchParamComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.definition = definition == null ? null : definition.copy();
         dst.type = type == null ? null : type.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -5257,10 +5260,14 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementRestResourceOperationComponent copy() {
         CapabilityStatementRestResourceOperationComponent dst = new CapabilityStatementRestResourceOperationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementRestResourceOperationComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.definition = definition == null ? null : definition.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -5512,9 +5519,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public SystemInteractionComponent copy() {
         SystemInteractionComponent dst = new SystemInteractionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SystemInteractionComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -5899,6 +5910,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementMessagingComponent copy() {
         CapabilityStatementMessagingComponent dst = new CapabilityStatementMessagingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementMessagingComponent dst) {
+        super.copyValues(dst);
         if (endpoint != null) {
           dst.endpoint = new ArrayList<CapabilityStatementMessagingEndpointComponent>();
           for (CapabilityStatementMessagingEndpointComponent i : endpoint)
@@ -5911,7 +5927,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           for (CapabilityStatementMessagingSupportedMessageComponent i : supportedMessage)
             dst.supportedMessage.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -6140,9 +6155,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementMessagingEndpointComponent copy() {
         CapabilityStatementMessagingEndpointComponent dst = new CapabilityStatementMessagingEndpointComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementMessagingEndpointComponent dst) {
+        super.copyValues(dst);
         dst.protocol = protocol == null ? null : protocol.copy();
         dst.address = address == null ? null : address.copy();
-        return dst;
       }
 
       @Override
@@ -6389,9 +6408,13 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementMessagingSupportedMessageComponent copy() {
         CapabilityStatementMessagingSupportedMessageComponent dst = new CapabilityStatementMessagingSupportedMessageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementMessagingSupportedMessageComponent dst) {
+        super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
         dst.definition = definition == null ? null : definition.copy();
-        return dst;
       }
 
       @Override
@@ -6707,10 +6730,14 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatementDocumentComponent copy() {
         CapabilityStatementDocumentComponent dst = new CapabilityStatementDocumentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatementDocumentComponent dst) {
+        super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
         dst.profile = profile == null ? null : profile.copy();
-        return dst;
       }
 
       @Override
@@ -8567,6 +8594,11 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
       public CapabilityStatement copy() {
         CapabilityStatement dst = new CapabilityStatement();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatement dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
         dst.name = name == null ? null : name.copy();
@@ -8637,7 +8669,6 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
           for (CapabilityStatementDocumentComponent i : document)
             dst.document.add(i.copy());
         };
-        return dst;
       }
 
       protected CapabilityStatement typedCopy() {
@@ -9162,4 +9193,3 @@ public class CapabilityStatement extends MetadataResource implements IBaseConfor
 
 
 }
-

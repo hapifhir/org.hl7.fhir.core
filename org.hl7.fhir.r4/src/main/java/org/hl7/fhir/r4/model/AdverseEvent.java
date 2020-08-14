@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,20 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Actual or  potential/avoided event causing unintended physical injury resulting from or contributed to by medical care, a research study or other healthcare setting factors that requires additional monitoring, treatment, or hospitalization, or that results in death.
  */
@@ -378,13 +360,17 @@ public class AdverseEvent extends DomainResource {
       public AdverseEventSuspectEntityComponent copy() {
         AdverseEventSuspectEntityComponent dst = new AdverseEventSuspectEntityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AdverseEventSuspectEntityComponent dst) {
+        super.copyValues(dst);
         dst.instance = instance == null ? null : instance.copy();
         if (causality != null) {
           dst.causality = new ArrayList<AdverseEventSuspectEntityCausalityComponent>();
           for (AdverseEventSuspectEntityCausalityComponent i : causality)
             dst.causality.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -715,11 +701,15 @@ public class AdverseEvent extends DomainResource {
       public AdverseEventSuspectEntityCausalityComponent copy() {
         AdverseEventSuspectEntityCausalityComponent dst = new AdverseEventSuspectEntityCausalityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AdverseEventSuspectEntityCausalityComponent dst) {
+        super.copyValues(dst);
         dst.assessment = assessment == null ? null : assessment.copy();
         dst.productRelatedness = productRelatedness == null ? null : productRelatedness.copy();
         dst.author = author == null ? null : author.copy();
         dst.method = method == null ? null : method.copy();
-        return dst;
       }
 
       @Override
@@ -2235,6 +2225,11 @@ public class AdverseEvent extends DomainResource {
       public AdverseEvent copy() {
         AdverseEvent dst = new AdverseEvent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AdverseEvent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.actuality = actuality == null ? null : actuality.copy();
         if (category != null) {
@@ -2283,7 +2278,6 @@ public class AdverseEvent extends DomainResource {
           for (Reference i : study)
             dst.study.add(i.copy());
         };
-        return dst;
       }
 
       protected AdverseEvent typedCopy() {
@@ -2609,4 +2603,3 @@ public class AdverseEvent extends DomainResource {
 
 
 }
-

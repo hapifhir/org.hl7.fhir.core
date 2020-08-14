@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,20 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A task to be performed.
  */
@@ -918,6 +900,11 @@ public class Task extends DomainResource {
       public TaskRestrictionComponent copy() {
         TaskRestrictionComponent dst = new TaskRestrictionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TaskRestrictionComponent dst) {
+        super.copyValues(dst);
         dst.repetitions = repetitions == null ? null : repetitions.copy();
         dst.period = period == null ? null : period.copy();
         if (recipient != null) {
@@ -925,7 +912,6 @@ public class Task extends DomainResource {
           for (Reference i : recipient)
             dst.recipient.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1349,6 +1335,10 @@ public class Task extends DomainResource {
           this.value = new Dosage();
           return this.value;
         }
+        else if (name.equals("valueMeta")) {
+          this.value = new Meta();
+          return this.value;
+        }
         else
           return super.addChild(name);
       }
@@ -1356,9 +1346,13 @@ public class Task extends DomainResource {
       public ParameterComponent copy() {
         ParameterComponent dst = new ParameterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ParameterComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -1780,6 +1774,10 @@ public class Task extends DomainResource {
           this.value = new Dosage();
           return this.value;
         }
+        else if (name.equals("valueMeta")) {
+          this.value = new Meta();
+          return this.value;
+        }
         else
           return super.addChild(name);
       }
@@ -1787,9 +1785,13 @@ public class Task extends DomainResource {
       public TaskOutputComponent copy() {
         TaskOutputComponent dst = new TaskOutputComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TaskOutputComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -1918,6 +1920,7 @@ public class Task extends DomainResource {
      */
     @Child(name = "code", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Task Type", formalDefinition="A name or code (or both) briefly describing what the task involves." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/task-code")
     protected CodeableConcept code;
 
     /**
@@ -2017,14 +2020,14 @@ public class Task extends DomainResource {
     protected Resource ownerTarget;
 
     /**
-     * The principal physical location where the this task is performed.
+     * Principal physical location where the this task is performed.
      */
     @Child(name = "location", type = {Location.class}, order=22, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Where task occurs", formalDefinition="The principal physical location where the this task is performed." )
+    @Description(shortDefinition="Where task occurs", formalDefinition="Principal physical location where the this task is performed." )
     protected Reference location;
 
     /**
-     * The actual object that is the target of the reference (The principal physical location where the this task is performed.)
+     * The actual object that is the target of the reference (Principal physical location where the this task is performed.)
      */
     protected Location locationTarget;
 
@@ -3066,7 +3069,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return {@link #location} (The principal physical location where the this task is performed.)
+     * @return {@link #location} (Principal physical location where the this task is performed.)
      */
     public Reference getLocation() { 
       if (this.location == null)
@@ -3082,7 +3085,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @param value {@link #location} (The principal physical location where the this task is performed.)
+     * @param value {@link #location} (Principal physical location where the this task is performed.)
      */
     public Task setLocation(Reference value) { 
       this.location = value;
@@ -3090,7 +3093,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @return {@link #location} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (The principal physical location where the this task is performed.)
+     * @return {@link #location} The actual object that is the target of the reference. The reference library doesn't populate this, but you can use it to hold the resource if you resolve it. (Principal physical location where the this task is performed.)
      */
     public Location getLocationTarget() { 
       if (this.locationTarget == null)
@@ -3102,7 +3105,7 @@ public class Task extends DomainResource {
     }
 
     /**
-     * @param value {@link #location} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (The principal physical location where the this task is performed.)
+     * @param value {@link #location} The actual object that is the target of the reference. The reference library doesn't use these, but you can use it to hold the resource if you resolve it. (Principal physical location where the this task is performed.)
      */
     public Task setLocationTarget(Location value) { 
       this.locationTarget = value;
@@ -3517,7 +3520,7 @@ public class Task extends DomainResource {
         children.add(new Property("requester", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The creator of the task.", 0, 1, requester));
         children.add(new Property("performerType", "CodeableConcept", "The kind of participant that should perform the task.", 0, java.lang.Integer.MAX_VALUE, performerType));
         children.add(new Property("owner", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "Individual organization or Device currently responsible for task execution.", 0, 1, owner));
-        children.add(new Property("location", "Reference(Location)", "The principal physical location where the this task is performed.", 0, 1, location));
+        children.add(new Property("location", "Reference(Location)", "Principal physical location where the this task is performed.", 0, 1, location));
         children.add(new Property("reasonCode", "CodeableConcept", "A description or code indicating why this task needs to be performed.", 0, 1, reasonCode));
         children.add(new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this task needs to be performed.", 0, 1, reasonReference));
         children.add(new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Task.", 0, java.lang.Integer.MAX_VALUE, insurance));
@@ -3553,7 +3556,7 @@ public class Task extends DomainResource {
         case 693933948: /*requester*/  return new Property("requester", "Reference(Device|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The creator of the task.", 0, 1, requester);
         case -901444568: /*performerType*/  return new Property("performerType", "CodeableConcept", "The kind of participant that should perform the task.", 0, java.lang.Integer.MAX_VALUE, performerType);
         case 106164915: /*owner*/  return new Property("owner", "Reference(Practitioner|PractitionerRole|Organization|CareTeam|HealthcareService|Patient|Device|RelatedPerson)", "Individual organization or Device currently responsible for task execution.", 0, 1, owner);
-        case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The principal physical location where the this task is performed.", 0, 1, location);
+        case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "Principal physical location where the this task is performed.", 0, 1, location);
         case 722137681: /*reasonCode*/  return new Property("reasonCode", "CodeableConcept", "A description or code indicating why this task needs to be performed.", 0, 1, reasonCode);
         case -1146218137: /*reasonReference*/  return new Property("reasonReference", "Reference(Any)", "A resource reference indicating why this task needs to be performed.", 0, 1, reasonReference);
         case 73049818: /*insurance*/  return new Property("insurance", "Reference(Coverage|ClaimResponse)", "Insurance plans, coverage extensions, pre-authorizations and/or pre-determinations that may be relevant to the Task.", 0, java.lang.Integer.MAX_VALUE, insurance);
@@ -3981,6 +3984,11 @@ public class Task extends DomainResource {
       public Task copy() {
         Task dst = new Task();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Task dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -4048,7 +4056,6 @@ public class Task extends DomainResource {
           for (TaskOutputComponent i : output)
             dst.output.add(i.copy());
         };
-        return dst;
       }
 
       protected Task typedCopy() {
@@ -4534,4 +4541,3 @@ public class Task extends DomainResource {
 
 
 }
-

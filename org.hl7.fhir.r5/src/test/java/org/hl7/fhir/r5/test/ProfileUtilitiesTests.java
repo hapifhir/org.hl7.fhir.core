@@ -9,7 +9,6 @@ import java.util.List;
 import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
@@ -21,12 +20,11 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 
 public class ProfileUtilitiesTests {
 
-//  /**
+  //  /**
 //   * This is simple: we just create an empty differential, generate the snapshot, and then insist it must match the base 
 //   * 
 //   * @param context2
@@ -50,9 +48,9 @@ public class ProfileUtilitiesTests {
       ElementDefinition b = base.getSnapshot().getElement().get(i);
       ElementDefinition f = focus.getSnapshot().getElement().get(i);
       if (ok) {
-        if (!f.hasBase()) 
+        if (!f.hasBase())
           ok = false;
-        else if (!b.getPath().equals(f.getPath())) 
+        else if (!b.getPath().equals(f.getPath()))
           ok = false;
         else {
           b.setBase(null);
@@ -67,12 +65,12 @@ public class ProfileUtilitiesTests {
     if (!ok) {
       compareXml(base, focus);
       throw new FHIRException("Snap shot generation simple test failed");
-    } else 
+    } else
       System.out.println("Snap shot generation simple test passed");
   }
 
-  
-//
+
+  //
 //  /**
 //   * This is simple: we just create an empty differential, generate the snapshot, and then insist it must match the base. for a different resource with recursion 
 //   * 
@@ -88,14 +86,14 @@ public class ProfileUtilitiesTests {
     focus.setSnapshot(null);
     focus.setDifferential(null);
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test" );
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
     for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
       if (ok) {
         ElementDefinition b = base.getSnapshot().getElement().get(i);
         ElementDefinition f = focus.getSnapshot().getElement().get(i);
-        if (!f.hasBase() || !b.getPath().equals(f.getPath())) 
+        if (!f.hasBase() || !b.getPath().equals(f.getPath()))
           ok = false;
         else {
           f.setBase(null);
@@ -110,12 +108,12 @@ public class ProfileUtilitiesTests {
         }
       }
     }
-    
+
     if (!ok) {
       compareXml(base, focus);
       System.out.println("Snap shot generation simple test failed");
       throw new FHIRException("Snap shot generation simple test failed");
-    } else 
+    } else
       System.out.println("Snap shot generation simple test passed");
   }
 
@@ -801,8 +799,10 @@ public class ProfileUtilitiesTests {
 //    focus.setDifferential(null);
     String f1 = Utilities.path("c:", "temp", "base.xml");
     String f2 = Utilities.path("c:", "temp", "derived.xml");
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f1), base);;
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f2), focus);;
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f1), base);
+    ;
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f2), focus);
+    ;
     String diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
     List<String> command = new ArrayList<String>();
     command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
@@ -811,7 +811,4 @@ public class ProfileUtilitiesTests {
     builder.directory(new CSFile("c:\\temp"));
     builder.start();
   }
-  
-  
-  
 }

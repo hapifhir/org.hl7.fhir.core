@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.formats;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,10 +31,35 @@ package org.hl7.fhir.r4.formats;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
+// Generated on Tue, May 12, 2020 07:48+1000 for FHIR v4.0.1
+
+import org.hl7.fhir.r4.model.DateType;
+import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r4.model.IntegerType;
+import org.hl7.fhir.r4.model.OidType;
+import org.hl7.fhir.r4.model.CanonicalType;
+import org.hl7.fhir.r4.model.UriType;
+import org.hl7.fhir.r4.model.UuidType;
+import org.hl7.fhir.r4.model.UrlType;
+import org.hl7.fhir.r4.model.InstantType;
+import org.hl7.fhir.r4.model.BooleanType;
+import org.hl7.fhir.r4.model.Base64BinaryType;
+import org.hl7.fhir.r4.model.UnsignedIntType;
+import org.hl7.fhir.r4.model.MarkdownType;
+import org.hl7.fhir.r4.model.TimeType;
+import org.hl7.fhir.r4.model.IdType;
+import org.hl7.fhir.r4.model.PositiveIntType;
+import org.hl7.fhir.r4.model.DecimalType;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.utils.formats.Turtle.Complex;
+import org.xmlpull.v1.*;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.utils.formats.Turtle.Complex;
+import java.io.IOException;
 
 public class RdfParser extends RdfParserBase {
 
@@ -10130,7 +10137,7 @@ public class RdfParser extends RdfParserBase {
     for (int i = 0; i < element.getPartOf().size(); i++)
       composeReference(t, "MedicationAdministration", "partOf", element.getPartOf().get(i), i);
     if (element.hasStatusElement())
-      composeCode(t, "MedicationAdministration", "status", element.getStatusElement(), -1);
+      composeEnum(t, "MedicationAdministration", "status", element.getStatusElement(), -1);
     for (int i = 0; i < element.getStatusReason().size(); i++)
       composeCodeableConcept(t, "MedicationAdministration", "statusReason", element.getStatusReason().get(i), i);
     if (element.hasCategory())
@@ -10218,7 +10225,7 @@ public class RdfParser extends RdfParserBase {
     for (int i = 0; i < element.getPartOf().size(); i++)
       composeReference(t, "MedicationDispense", "partOf", element.getPartOf().get(i), i);
     if (element.hasStatusElement())
-      composeCode(t, "MedicationDispense", "status", element.getStatusElement(), -1);
+      composeEnum(t, "MedicationDispense", "status", element.getStatusElement(), -1);
     if (element.hasStatusReason())
       composeType(t, "MedicationDispense", "statusReason", element.getStatusReason(), -1);
     if (element.hasCategory())
@@ -10312,7 +10319,7 @@ public class RdfParser extends RdfParserBase {
     if (element.hasCode())
       composeCodeableConcept(t, "MedicationKnowledge", "code", element.getCode(), -1);
     if (element.hasStatusElement())
-      composeCode(t, "MedicationKnowledge", "status", element.getStatusElement(), -1);
+      composeEnum(t, "MedicationKnowledge", "status", element.getStatusElement(), -1);
     if (element.hasManufacturer())
       composeReference(t, "MedicationKnowledge", "manufacturer", element.getManufacturer(), -1);
     if (element.hasDoseForm())
@@ -15621,8 +15628,6 @@ public class RdfParser extends RdfParserBase {
       composeString(t, "SubstanceReferenceInformation", "comment", element.getCommentElement(), -1);
     for (int i = 0; i < element.getGene().size(); i++)
       composeSubstanceReferenceInformationSubstanceReferenceInformationGeneComponent(t, "SubstanceReferenceInformation", "gene", element.getGene().get(i), i);
-    for (int i = 0; i < element.getGene().size(); i++)
-      composeSubstanceReferenceInformationSubstanceReferenceInformationGeneComponent(t, "SubstanceReferenceInformation", "geneElement", element.getGene().get(i), i);
     for (int i = 0; i < element.getClassification().size(); i++)
       composeSubstanceReferenceInformationSubstanceReferenceInformationClassificationComponent(t, "SubstanceReferenceInformation", "classification", element.getClassification().get(i), i);
     for (int i = 0; i < element.getTarget().size(); i++)
@@ -18031,4 +18036,3 @@ public class RdfParser extends RdfParserBase {
   }
 
 }
-

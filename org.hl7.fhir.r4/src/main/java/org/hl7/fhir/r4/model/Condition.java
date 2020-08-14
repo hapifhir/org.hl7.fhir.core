@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,19 +31,19 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.util.*;
+
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A clinical condition, problem, diagnosis, or other event, situation, issue, or clinical concept that has risen to a level of concern.
  */
@@ -319,6 +301,11 @@ public class Condition extends DomainResource {
       public ConditionStageComponent copy() {
         ConditionStageComponent dst = new ConditionStageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConditionStageComponent dst) {
+        super.copyValues(dst);
         dst.summary = summary == null ? null : summary.copy();
         if (assessment != null) {
           dst.assessment = new ArrayList<Reference>();
@@ -326,7 +313,6 @@ public class Condition extends DomainResource {
             dst.assessment.add(i.copy());
         };
         dst.type = type == null ? null : type.copy();
-        return dst;
       }
 
       @Override
@@ -595,6 +581,11 @@ public class Condition extends DomainResource {
       public ConditionEvidenceComponent copy() {
         ConditionEvidenceComponent dst = new ConditionEvidenceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ConditionEvidenceComponent dst) {
+        super.copyValues(dst);
         if (code != null) {
           dst.code = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : code)
@@ -605,7 +596,6 @@ public class Condition extends DomainResource {
           for (Reference i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1959,6 +1949,11 @@ public class Condition extends DomainResource {
       public Condition copy() {
         Condition dst = new Condition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Condition dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2000,7 +1995,6 @@ public class Condition extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected Condition typedCopy() {
@@ -2496,4 +2490,3 @@ public class Condition extends DomainResource {
 
 
 }
-

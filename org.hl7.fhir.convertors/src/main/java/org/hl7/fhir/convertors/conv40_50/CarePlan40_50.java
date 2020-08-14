@@ -1,24 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50;
 
-/*-
- * #%L
- * org.hl7.fhir.convertors
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
@@ -308,7 +290,7 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         if (src.hasScheduled())
             tgt.setScheduled(convertType(src.getScheduled()));
         if (src.hasLocation())
-            tgt.setLocation(convertReference(src.getLocation()));
+            tgt.getLocation().setReference(convertReference(src.getLocation()));
         for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
         if (src.hasProduct())
             tgt.setProduct(convertType(src.getProduct()));
@@ -345,8 +327,8 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
         if (src.hasScheduled())
             tgt.setScheduled(convertType(src.getScheduled()));
-        if (src.hasLocation())
-            tgt.setLocation(convertReference(src.getLocation()));
+        if (src.getLocation().hasReference())
+            tgt.setLocation(convertReference(src.getLocation().getReference()));
         for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
         if (src.hasProduct())
             tgt.setProduct(convertType(src.getProduct()));

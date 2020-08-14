@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A formal computable definition of a graph of resources - that is, a coherent set of resources that form a graph by following references. The Graph Definition resource defines a set and makes rules about the set.
  */
@@ -914,6 +894,11 @@ public class GraphDefinition extends MetadataResource {
       public GraphDefinitionLinkComponent copy() {
         GraphDefinitionLinkComponent dst = new GraphDefinitionLinkComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(GraphDefinitionLinkComponent dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         dst.sliceName = sliceName == null ? null : sliceName.copy();
         dst.min = min == null ? null : min.copy();
@@ -924,7 +909,6 @@ public class GraphDefinition extends MetadataResource {
           for (GraphDefinitionLinkTargetComponent i : target)
             dst.target.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1391,6 +1375,11 @@ public class GraphDefinition extends MetadataResource {
       public GraphDefinitionLinkTargetComponent copy() {
         GraphDefinitionLinkTargetComponent dst = new GraphDefinitionLinkTargetComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(GraphDefinitionLinkTargetComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.params = params == null ? null : params.copy();
         dst.profile = profile == null ? null : profile.copy();
@@ -1404,7 +1393,6 @@ public class GraphDefinition extends MetadataResource {
           for (GraphDefinitionLinkComponent i : link)
             dst.link.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1454,7 +1442,7 @@ public class GraphDefinition extends MetadataResource {
          * Identifies the compartment.
          */
         @Child(name = "code", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Identifies the compartment", formalDefinition="Identifies the compartment." )
+        @Description(shortDefinition="Patient | Encounter | RelatedPerson | Practitioner | Device", formalDefinition="Identifies the compartment." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/compartment-type")
         protected Enumeration<CompartmentCode> code;
 
@@ -1863,12 +1851,16 @@ public class GraphDefinition extends MetadataResource {
       public GraphDefinitionLinkTargetCompartmentComponent copy() {
         GraphDefinitionLinkTargetCompartmentComponent dst = new GraphDefinitionLinkTargetCompartmentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(GraphDefinitionLinkTargetCompartmentComponent dst) {
+        super.copyValues(dst);
         dst.use = use == null ? null : use.copy();
         dst.code = code == null ? null : code.copy();
         dst.rule = rule == null ? null : rule.copy();
         dst.expression = expression == null ? null : expression.copy();
         dst.description = description == null ? null : description.copy();
-        return dst;
       }
 
       @Override
@@ -2952,6 +2944,11 @@ public class GraphDefinition extends MetadataResource {
       public GraphDefinition copy() {
         GraphDefinition dst = new GraphDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(GraphDefinition dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
         dst.name = name == null ? null : name.copy();
@@ -2983,7 +2980,6 @@ public class GraphDefinition extends MetadataResource {
           for (GraphDefinitionLinkComponent i : link)
             dst.link.add(i.copy());
         };
-        return dst;
       }
 
       protected GraphDefinition typedCopy() {
@@ -3303,4 +3299,3 @@ public class GraphDefinition extends MetadataResource {
 
 
 }
-

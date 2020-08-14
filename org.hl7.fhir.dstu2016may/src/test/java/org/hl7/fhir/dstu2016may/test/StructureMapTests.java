@@ -21,9 +21,10 @@ import org.hl7.fhir.dstu2016may.utils.StructureMapUtilities;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-
+@Disabled
 public class StructureMapTests {
 
   private void testParse(String path) throws FileNotFoundException, IOException, FHIRException {

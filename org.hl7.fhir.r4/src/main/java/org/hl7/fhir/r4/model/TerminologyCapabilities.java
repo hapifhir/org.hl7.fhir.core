@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,25 +31,23 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
- * A Terminology Capabilities documents a set of capabilities (behaviors) of a FHIR Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.
+ * A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.
  */
 @ResourceDef(name="TerminologyCapabilities", profile="http://hl7.org/fhir/StructureDefinition/TerminologyCapabilities")
 @ChildOrder(names={"url", "version", "name", "title", "status", "experimental", "date", "publisher", "contact", "description", "useContext", "jurisdiction", "purpose", "copyright", "kind", "software", "implementation", "lockedDate", "codeSystem", "expansion", "codeSearch", "validateCode", "translation", "closure"})
@@ -486,9 +466,13 @@ public class TerminologyCapabilities extends MetadataResource {
       public TerminologyCapabilitiesSoftwareComponent copy() {
         TerminologyCapabilitiesSoftwareComponent dst = new TerminologyCapabilitiesSoftwareComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TerminologyCapabilitiesSoftwareComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.version = version == null ? null : version.copy();
-        return dst;
       }
 
       @Override
@@ -735,9 +719,13 @@ public class TerminologyCapabilities extends MetadataResource {
       public TerminologyCapabilitiesImplementationComponent copy() {
         TerminologyCapabilitiesImplementationComponent dst = new TerminologyCapabilitiesImplementationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TerminologyCapabilitiesImplementationComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.url = url == null ? null : url.copy();
-        return dst;
       }
 
       @Override
@@ -1049,6 +1037,11 @@ public class TerminologyCapabilities extends MetadataResource {
       public TerminologyCapabilitiesCodeSystemComponent copy() {
         TerminologyCapabilitiesCodeSystemComponent dst = new TerminologyCapabilitiesCodeSystemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TerminologyCapabilitiesCodeSystemComponent dst) {
+        super.copyValues(dst);
         dst.uri = uri == null ? null : uri.copy();
         if (version != null) {
           dst.version = new ArrayList<TerminologyCapabilitiesCodeSystemVersionComponent>();
@@ -1056,7 +1049,6 @@ public class TerminologyCapabilities extends MetadataResource {
             dst.version.add(i.copy());
         };
         dst.subsumption = subsumption == null ? null : subsumption.copy();
-        return dst;
       }
 
       @Override
@@ -1597,6 +1589,11 @@ public class TerminologyCapabilities extends MetadataResource {
       public TerminologyCapabilitiesCodeSystemVersionComponent copy() {
         TerminologyCapabilitiesCodeSystemVersionComponent dst = new TerminologyCapabilitiesCodeSystemVersionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TerminologyCapabilitiesCodeSystemVersionComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.isDefault = isDefault == null ? null : isDefault.copy();
         dst.compositional = compositional == null ? null : compositional.copy();
@@ -1615,7 +1612,6 @@ public class TerminologyCapabilities extends MetadataResource {
           for (CodeType i : property)
             dst.property.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1878,13 +1874,17 @@ public class TerminologyCapabilities extends MetadataResource {
       public TerminologyCapabilitiesCodeSystemVersionFilterComponent copy() {
         TerminologyCapabilitiesCodeSystemVersionFilterComponent dst = new TerminologyCapabilitiesCodeSystemVersionFilterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TerminologyCapabilitiesCodeSystemVersionFilterComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         if (op != null) {
           dst.op = new ArrayList<CodeType>();
           for (CodeType i : op)
             dst.op.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2326,6 +2326,11 @@ public class TerminologyCapabilities extends MetadataResource {
       public TerminologyCapabilitiesExpansionComponent copy() {
         TerminologyCapabilitiesExpansionComponent dst = new TerminologyCapabilitiesExpansionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TerminologyCapabilitiesExpansionComponent dst) {
+        super.copyValues(dst);
         dst.hierarchical = hierarchical == null ? null : hierarchical.copy();
         dst.paging = paging == null ? null : paging.copy();
         dst.incomplete = incomplete == null ? null : incomplete.copy();
@@ -2335,7 +2340,6 @@ public class TerminologyCapabilities extends MetadataResource {
             dst.parameter.add(i.copy());
         };
         dst.textFilter = textFilter == null ? null : textFilter.copy();
-        return dst;
       }
 
       @Override
@@ -2585,9 +2589,13 @@ public class TerminologyCapabilities extends MetadataResource {
       public TerminologyCapabilitiesExpansionParameterComponent copy() {
         TerminologyCapabilitiesExpansionParameterComponent dst = new TerminologyCapabilitiesExpansionParameterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TerminologyCapabilitiesExpansionParameterComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
-        return dst;
       }
 
       @Override
@@ -2765,8 +2773,12 @@ public class TerminologyCapabilities extends MetadataResource {
       public TerminologyCapabilitiesValidateCodeComponent copy() {
         TerminologyCapabilitiesValidateCodeComponent dst = new TerminologyCapabilitiesValidateCodeComponent();
         copyValues(dst);
-        dst.translations = translations == null ? null : translations.copy();
         return dst;
+      }
+
+      public void copyValues(TerminologyCapabilitiesValidateCodeComponent dst) {
+        super.copyValues(dst);
+        dst.translations = translations == null ? null : translations.copy();
       }
 
       @Override
@@ -2944,8 +2956,12 @@ public class TerminologyCapabilities extends MetadataResource {
       public TerminologyCapabilitiesTranslationComponent copy() {
         TerminologyCapabilitiesTranslationComponent dst = new TerminologyCapabilitiesTranslationComponent();
         copyValues(dst);
-        dst.needsMap = needsMap == null ? null : needsMap.copy();
         return dst;
+      }
+
+      public void copyValues(TerminologyCapabilitiesTranslationComponent dst) {
+        super.copyValues(dst);
+        dst.needsMap = needsMap == null ? null : needsMap.copy();
       }
 
       @Override
@@ -3115,8 +3131,12 @@ public class TerminologyCapabilities extends MetadataResource {
       public TerminologyCapabilitiesClosureComponent copy() {
         TerminologyCapabilitiesClosureComponent dst = new TerminologyCapabilitiesClosureComponent();
         copyValues(dst);
-        dst.translation = translation == null ? null : translation.copy();
         return dst;
+      }
+
+      public void copyValues(TerminologyCapabilitiesClosureComponent dst) {
+        super.copyValues(dst);
+        dst.translation = translation == null ? null : translation.copy();
       }
 
       @Override
@@ -4666,6 +4686,11 @@ public class TerminologyCapabilities extends MetadataResource {
       public TerminologyCapabilities copy() {
         TerminologyCapabilities dst = new TerminologyCapabilities();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TerminologyCapabilities dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         dst.version = version == null ? null : version.copy();
         dst.name = name == null ? null : name.copy();
@@ -4706,7 +4731,6 @@ public class TerminologyCapabilities extends MetadataResource {
         dst.validateCode = validateCode == null ? null : validateCode.copy();
         dst.translation = translation == null ? null : translation.copy();
         dst.closure = closure == null ? null : closure.copy();
-        return dst;
       }
 
       protected TerminologyCapabilities typedCopy() {
@@ -5031,4 +5055,3 @@ public class TerminologyCapabilities extends MetadataResource {
 
 
 }
-

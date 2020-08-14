@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Defines the characteristics of a message that can be shared between systems, including the type of event that initiates the message, the content to be transmitted and what response(s), if any, are permitted.
  */
@@ -654,11 +634,15 @@ public class MessageDefinition extends MetadataResource {
       public MessageDefinitionFocusComponent copy() {
         MessageDefinitionFocusComponent dst = new MessageDefinitionFocusComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageDefinitionFocusComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.profile = profile == null ? null : profile.copy();
         dst.min = min == null ? null : min.copy();
         dst.max = max == null ? null : max.copy();
-        return dst;
       }
 
       @Override
@@ -908,9 +892,13 @@ public class MessageDefinition extends MetadataResource {
       public MessageDefinitionAllowedResponseComponent copy() {
         MessageDefinitionAllowedResponseComponent dst = new MessageDefinitionAllowedResponseComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageDefinitionAllowedResponseComponent dst) {
+        super.copyValues(dst);
         dst.message = message == null ? null : message.copy();
         dst.situation = situation == null ? null : situation.copy();
-        return dst;
       }
 
       @Override
@@ -2668,6 +2656,11 @@ public class MessageDefinition extends MetadataResource {
       public MessageDefinition copy() {
         MessageDefinition dst = new MessageDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageDefinition dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -2728,7 +2721,6 @@ public class MessageDefinition extends MetadataResource {
           for (CanonicalType i : graph)
             dst.graph.add(i.copy());
         };
-        return dst;
       }
 
       protected MessageDefinition typedCopy() {
@@ -2815,21 +2807,27 @@ public class MessageDefinition extends MetadataResource {
    * Search parameter: <b>parent</b>
    * <p>
    * Description: <b>A resource that is the parent of the definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b></b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MessageDefinition.parent</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="parent", path="", description="A resource that is the parent of the definition", type="token" )
+  @SearchParamDefinition(name="parent", path="MessageDefinition.parent", description="A resource that is the parent of the definition", type="reference", target={ActivityDefinition.class, PlanDefinition.class } )
   public static final String SP_PARENT = "parent";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>parent</b>
    * <p>
    * Description: <b>A resource that is the parent of the definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b></b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MessageDefinition.parent</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PARENT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PARENT);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MessageDefinition:parent</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PARENT = new ca.uhn.fhir.model.api.Include("MessageDefinition:parent").toLocked();
 
  /**
    * Search parameter: <b>context-type-value</b>
@@ -3153,4 +3151,3 @@ public class MessageDefinition extends MetadataResource {
 
 
 }
-

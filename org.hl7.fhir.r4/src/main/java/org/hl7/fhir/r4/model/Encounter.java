@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,18 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.util.*;
+
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r4.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * An interaction between a patient and healthcare provider(s) for the purpose of providing healthcare service(s) or assessing the health status of a patient.
  */
@@ -277,9 +262,7 @@ public class Encounter extends DomainResource {
          */
         PLANNED, 
         /**
-         * The patient is currently at this location, or was between the period specified.
-
-A system may update these records when the patient leaves the location to either reserved, or completed.
+         * The patient is currently at this location, or was between the period specified.A system may update these records when the patient leaves the location to either reserved, or completed.
          */
         ACTIVE, 
         /**
@@ -287,9 +270,7 @@ A system may update these records when the patient leaves the location to either
          */
         RESERVED, 
         /**
-         * The patient was at this location during the period specified.
-
-Not to be used when the patient is currently at the location.
+         * The patient was at this location during the period specified.Not to be used when the patient is currently at the location.
          */
         COMPLETED, 
         /**
@@ -592,9 +573,13 @@ Not to be used when the patient is currently at the location.
       public StatusHistoryComponent copy() {
         StatusHistoryComponent dst = new StatusHistoryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StatusHistoryComponent dst) {
+        super.copyValues(dst);
         dst.status = status == null ? null : status.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -799,9 +784,13 @@ Not to be used when the patient is currently at the location.
       public ClassHistoryComponent copy() {
         ClassHistoryComponent dst = new ClassHistoryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ClassHistoryComponent dst) {
+        super.copyValues(dst);
         dst.class_ = class_ == null ? null : class_.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -1090,6 +1079,11 @@ Not to be used when the patient is currently at the location.
       public EncounterParticipantComponent copy() {
         EncounterParticipantComponent dst = new EncounterParticipantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EncounterParticipantComponent dst) {
+        super.copyValues(dst);
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : type)
@@ -1097,7 +1091,6 @@ Not to be used when the patient is currently at the location.
         };
         dst.period = period == null ? null : period.copy();
         dst.individual = individual == null ? null : individual.copy();
-        return dst;
       }
 
       @Override
@@ -1388,10 +1381,14 @@ Not to be used when the patient is currently at the location.
       public DiagnosisComponent copy() {
         DiagnosisComponent dst = new DiagnosisComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DiagnosisComponent dst) {
+        super.copyValues(dst);
         dst.condition = condition == null ? null : condition.copy();
         dst.use = use == null ? null : use.copy();
         dst.rank = rank == null ? null : rank.copy();
-        return dst;
       }
 
       @Override
@@ -2032,6 +2029,11 @@ Not to be used when the patient is currently at the location.
       public EncounterHospitalizationComponent copy() {
         EncounterHospitalizationComponent dst = new EncounterHospitalizationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EncounterHospitalizationComponent dst) {
+        super.copyValues(dst);
         dst.preAdmissionIdentifier = preAdmissionIdentifier == null ? null : preAdmissionIdentifier.copy();
         dst.origin = origin == null ? null : origin.copy();
         dst.admitSource = admitSource == null ? null : admitSource.copy();
@@ -2053,7 +2055,6 @@ Not to be used when the patient is currently at the location.
         };
         dst.destination = destination == null ? null : destination.copy();
         dst.dischargeDisposition = dischargeDisposition == null ? null : dischargeDisposition.copy();
-        return dst;
       }
 
       @Override
@@ -2405,11 +2406,15 @@ Not to be used when the patient is currently at the location.
       public EncounterLocationComponent copy() {
         EncounterLocationComponent dst = new EncounterLocationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EncounterLocationComponent dst) {
+        super.copyValues(dst);
         dst.location = location == null ? null : location.copy();
         dst.status = status == null ? null : status.copy();
         dst.physicalType = physicalType == null ? null : physicalType.copy();
         dst.period = period == null ? null : period.copy();
-        return dst;
       }
 
       @Override
@@ -4148,6 +4153,11 @@ Not to be used when the patient is currently at the location.
       public Encounter copy() {
         Encounter dst = new Encounter();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Encounter dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -4223,7 +4233,6 @@ Not to be used when the patient is currently at the location.
         };
         dst.serviceProvider = serviceProvider == null ? null : serviceProvider.copy();
         dst.partOf = partOf == null ? null : partOf.copy();
-        return dst;
       }
 
       protected Encounter typedCopy() {
@@ -4810,4 +4819,3 @@ Not to be used when the patient is currently at the location.
 
 
 }
-

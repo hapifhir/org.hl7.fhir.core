@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Example of workflow instance.
  */
@@ -738,7 +718,7 @@ The primary difference between a medication statement and a medication administr
          */
         TASK, 
         /**
-         * A Terminology Capabilities documents a set of capabilities (behaviors) of a FHIR Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.
+         * A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.
          */
         TERMINOLOGYCAPABILITIES, 
         /**
@@ -1519,7 +1499,7 @@ The primary difference between a medication statement and a medication administr
             case SUPPLYDELIVERY: return "Record of delivery of what is supplied.";
             case SUPPLYREQUEST: return "A record of a request for a medication, substance or device used in the healthcare setting.";
             case TASK: return "A task to be performed.";
-            case TERMINOLOGYCAPABILITIES: return "A Terminology Capabilities documents a set of capabilities (behaviors) of a FHIR Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
+            case TERMINOLOGYCAPABILITIES: return "A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.";
             case TESTREPORT: return "A summary of information based on the results of executing a TestScript.";
             case TESTSCRIPT: return "A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.";
             case VALUESET: return "A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).";
@@ -2947,11 +2927,15 @@ The primary difference between a medication statement and a medication administr
       public ExampleScenarioActorComponent copy() {
         ExampleScenarioActorComponent dst = new ExampleScenarioActorComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExampleScenarioActorComponent dst) {
+        super.copyValues(dst);
         dst.actorId = actorId == null ? null : actorId.copy();
         dst.type = type == null ? null : type.copy();
         dst.name = name == null ? null : name.copy();
         dst.description = description == null ? null : description.copy();
-        return dst;
       }
 
       @Override
@@ -3485,6 +3469,11 @@ The primary difference between a medication statement and a medication administr
       public ExampleScenarioInstanceComponent copy() {
         ExampleScenarioInstanceComponent dst = new ExampleScenarioInstanceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExampleScenarioInstanceComponent dst) {
+        super.copyValues(dst);
         dst.resourceId = resourceId == null ? null : resourceId.copy();
         dst.resourceType = resourceType == null ? null : resourceType.copy();
         dst.name = name == null ? null : name.copy();
@@ -3499,7 +3488,6 @@ The primary difference between a medication statement and a medication administr
           for (ExampleScenarioInstanceContainedInstanceComponent i : containedInstance)
             dst.containedInstance.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3747,9 +3735,13 @@ The primary difference between a medication statement and a medication administr
       public ExampleScenarioInstanceVersionComponent copy() {
         ExampleScenarioInstanceVersionComponent dst = new ExampleScenarioInstanceVersionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExampleScenarioInstanceVersionComponent dst) {
+        super.copyValues(dst);
         dst.versionId = versionId == null ? null : versionId.copy();
         dst.description = description == null ? null : description.copy();
-        return dst;
       }
 
       @Override
@@ -3998,9 +3990,13 @@ The primary difference between a medication statement and a medication administr
       public ExampleScenarioInstanceContainedInstanceComponent copy() {
         ExampleScenarioInstanceContainedInstanceComponent dst = new ExampleScenarioInstanceContainedInstanceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExampleScenarioInstanceContainedInstanceComponent dst) {
+        super.copyValues(dst);
         dst.resourceId = resourceId == null ? null : resourceId.copy();
         dst.versionId = versionId == null ? null : versionId.copy();
-        return dst;
       }
 
       @Override
@@ -4460,6 +4456,11 @@ The primary difference between a medication statement and a medication administr
       public ExampleScenarioProcessComponent copy() {
         ExampleScenarioProcessComponent dst = new ExampleScenarioProcessComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExampleScenarioProcessComponent dst) {
+        super.copyValues(dst);
         dst.title = title == null ? null : title.copy();
         dst.description = description == null ? null : description.copy();
         dst.preConditions = preConditions == null ? null : preConditions.copy();
@@ -4469,7 +4470,6 @@ The primary difference between a medication statement and a medication administr
           for (ExampleScenarioProcessStepComponent i : step)
             dst.step.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4833,6 +4833,11 @@ The primary difference between a medication statement and a medication administr
       public ExampleScenarioProcessStepComponent copy() {
         ExampleScenarioProcessStepComponent dst = new ExampleScenarioProcessStepComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExampleScenarioProcessStepComponent dst) {
+        super.copyValues(dst);
         if (process != null) {
           dst.process = new ArrayList<ExampleScenarioProcessComponent>();
           for (ExampleScenarioProcessComponent i : process)
@@ -4845,7 +4850,6 @@ The primary difference between a medication statement and a medication administr
           for (ExampleScenarioProcessStepAlternativeComponent i : alternative)
             dst.alternative.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -5590,6 +5594,11 @@ The primary difference between a medication statement and a medication administr
       public ExampleScenarioProcessStepOperationComponent copy() {
         ExampleScenarioProcessStepOperationComponent dst = new ExampleScenarioProcessStepOperationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExampleScenarioProcessStepOperationComponent dst) {
+        super.copyValues(dst);
         dst.number = number == null ? null : number.copy();
         dst.type = type == null ? null : type.copy();
         dst.name = name == null ? null : name.copy();
@@ -5600,7 +5609,6 @@ The primary difference between a medication statement and a medication administr
         dst.receiverActive = receiverActive == null ? null : receiverActive.copy();
         dst.request = request == null ? null : request.copy();
         dst.response = response == null ? null : response.copy();
-        return dst;
       }
 
       @Override
@@ -5927,6 +5935,11 @@ The primary difference between a medication statement and a medication administr
       public ExampleScenarioProcessStepAlternativeComponent copy() {
         ExampleScenarioProcessStepAlternativeComponent dst = new ExampleScenarioProcessStepAlternativeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExampleScenarioProcessStepAlternativeComponent dst) {
+        super.copyValues(dst);
         dst.title = title == null ? null : title.copy();
         dst.description = description == null ? null : description.copy();
         if (step != null) {
@@ -5934,7 +5947,6 @@ The primary difference between a medication statement and a medication administr
           for (ExampleScenarioProcessStepComponent i : step)
             dst.step.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -7189,6 +7201,11 @@ The primary difference between a medication statement and a medication administr
       public ExampleScenario copy() {
         ExampleScenario dst = new ExampleScenario();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExampleScenario dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -7238,7 +7255,6 @@ The primary difference between a medication statement and a medication administr
           for (CanonicalType i : workflow)
             dst.workflow.add(i.copy());
         };
-        return dst;
       }
 
       protected ExampleScenario typedCopy() {
@@ -7539,4 +7555,3 @@ The primary difference between a medication statement and a medication administr
 
 
 }
-

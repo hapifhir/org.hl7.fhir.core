@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,20 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A record of a clinical assessment performed to determine what problem(s) may affect the patient and before planning the treatments or management strategies that are best to manage a patient's condition. Assessments are often 1:1 with a clinical consultation / encounter,  but this varies greatly depending on the clinical workflow. This resource is called "ClinicalImpression" rather than "ClinicalAssessment" to avoid confusion with the recording of assessment tools such as Apgar score.
  */
@@ -390,13 +372,17 @@ public class ClinicalImpression extends DomainResource {
       public ClinicalImpressionInvestigationComponent copy() {
         ClinicalImpressionInvestigationComponent dst = new ClinicalImpressionInvestigationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ClinicalImpressionInvestigationComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         if (item != null) {
           dst.item = new ArrayList<Reference>();
           for (Reference i : item)
             dst.item.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -681,10 +667,14 @@ public class ClinicalImpression extends DomainResource {
       public ClinicalImpressionFindingComponent copy() {
         ClinicalImpressionFindingComponent dst = new ClinicalImpressionFindingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ClinicalImpressionFindingComponent dst) {
+        super.copyValues(dst);
         dst.itemCodeableConcept = itemCodeableConcept == null ? null : itemCodeableConcept.copy();
         dst.itemReference = itemReference == null ? null : itemReference.copy();
         dst.basis = basis == null ? null : basis.copy();
-        return dst;
       }
 
       @Override
@@ -731,7 +721,7 @@ public class ClinicalImpression extends DomainResource {
      * Identifies the workflow status of the assessment.
      */
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="draft | completed | entered-in-error", formalDefinition="Identifies the workflow status of the assessment." )
+    @Description(shortDefinition="in-progress | completed | entered-in-error", formalDefinition="Identifies the workflow status of the assessment." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/clinicalimpression-status")
     protected Enumeration<ClinicalImpressionStatus> status;
 
@@ -2241,6 +2231,11 @@ public class ClinicalImpression extends DomainResource {
       public ClinicalImpression copy() {
         ClinicalImpression dst = new ClinicalImpression();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ClinicalImpression dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2297,7 +2292,6 @@ public class ClinicalImpression extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected ClinicalImpression typedCopy() {
@@ -2641,17 +2635,17 @@ public class ClinicalImpression extends DomainResource {
  /**
    * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>draft | completed | entered-in-error</b><br>
+   * Description: <b>in-progress | completed | entered-in-error</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalImpression.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="ClinicalImpression.status", description="draft | completed | entered-in-error", type="token" )
+  @SearchParamDefinition(name="status", path="ClinicalImpression.status", description="in-progress | completed | entered-in-error", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>draft | completed | entered-in-error</b><br>
+   * Description: <b>in-progress | completed | entered-in-error</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalImpression.status</b><br>
    * </p>
@@ -2660,4 +2654,3 @@ public class ClinicalImpression extends DomainResource {
 
 
 }
-

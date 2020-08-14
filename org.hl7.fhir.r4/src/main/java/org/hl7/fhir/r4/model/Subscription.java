@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,20 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r4.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * The subscription resource is used to define a push-based subscription from a server to another system. Once a subscription is registered with the server, the server checks every resource that is created or updated, and if the resource matches the given criteria, it sends a message on the defined "channel" so that another system can take an appropriate action.
  */
@@ -700,6 +683,11 @@ public class Subscription extends DomainResource {
       public SubscriptionChannelComponent copy() {
         SubscriptionChannelComponent dst = new SubscriptionChannelComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubscriptionChannelComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.endpoint = endpoint == null ? null : endpoint.copy();
         dst.payload = payload == null ? null : payload.copy();
@@ -708,7 +696,6 @@ public class Subscription extends DomainResource {
           for (StringType i : header)
             dst.header.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1284,6 +1271,11 @@ public class Subscription extends DomainResource {
       public Subscription copy() {
         Subscription dst = new Subscription();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Subscription dst) {
+        super.copyValues(dst);
         dst.status = status == null ? null : status.copy();
         if (contact != null) {
           dst.contact = new ArrayList<ContactPoint>();
@@ -1295,7 +1287,6 @@ public class Subscription extends DomainResource {
         dst.criteria = criteria == null ? null : criteria.copy();
         dst.error = error == null ? null : error.copy();
         dst.channel = channel == null ? null : channel.copy();
-        return dst;
       }
 
       protected Subscription typedCopy() {
@@ -1374,26 +1365,6 @@ public class Subscription extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam CRITERIA = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_CRITERIA);
-
- /**
-   * Search parameter: <b>add-tag</b>
-   * <p>
-   * Description: <b>A tag to be added to the resource matching the criteria</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="add-tag", path="", description="A tag to be added to the resource matching the criteria", type="token" )
-  public static final String SP_ADD_TAG = "add-tag";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>add-tag</b>
-   * <p>
-   * Description: <b>A tag to be added to the resource matching the criteria</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b></b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADD_TAG = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADD_TAG);
 
  /**
    * Search parameter: <b>contact</b>
@@ -1477,4 +1448,3 @@ public class Subscription extends DomainResource {
 
 
 }
-

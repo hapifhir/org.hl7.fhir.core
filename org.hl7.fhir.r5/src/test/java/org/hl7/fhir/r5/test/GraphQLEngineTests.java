@@ -1,5 +1,14 @@
 package org.hl7.fhir.r5.test;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.poi.util.IOUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseReference;
@@ -9,9 +18,9 @@ import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleLinkComponent;
 import org.hl7.fhir.r5.model.Bundle.SearchEntryMode;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.GraphQLEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -20,60 +29,31 @@ import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
 import org.hl7.fhir.utilities.graphql.NameValue;
 import org.hl7.fhir.utilities.graphql.Parser;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
-
-@RunWith(Parameterized.class)
 public class GraphQLEngineTests implements IGraphQLStorageServices {
 
-  @Parameters(name = "{index}: {0}")
-  public static Iterable<Object[]> data() throws FileNotFoundException, IOException, ParserConfigurationException, SAXException  {
+  public static Stream<Arguments> data() throws IOException, ParserConfigurationException, SAXException  {
     Document tests = XMLUtil.parseToDom(TestingUtilities.loadTestResource("r5", "graphql", "manifest.xml"));
     Element test = XMLUtil.getFirstChild(tests.getDocumentElement());
-    List<Object[]> objects = new ArrayList<Object[]>();
+    List<Arguments> objects = new ArrayList<>();
     while (test != null && test.getNodeName().equals("test")) {
-      objects.add(new Object[] { test.getAttribute("name"), test.getAttribute("source"), test.getAttribute("output"), 
-          test.getAttribute("context"), test.getAttribute("resource"), test.getAttribute("operation")} );
+      objects.add(Arguments.of(test.getAttribute("name"), test.getAttribute("source"), test.getAttribute("output"),
+          test.getAttribute("context"), test.getAttribute("resource"), test.getAttribute("operation")));
       test = XMLUtil.getNextSibling(test);
     }
-    return objects;
+    return objects.stream();
   }
 
-  private final String name;
-  private String source;
-  private String output;
-  private String context;
-  private String resource;
-  private String operation;
-
-  public GraphQLEngineTests(String name, String source, String output, String context, String resource, String operation) {
-    this.name = name;
-    this.source = source;
-    this.output = output;
-    this.context = context;
-    this.resource = resource;
-    this.operation = operation;
-  }
-
-  @Test
-  public void test() throws Exception {
+  @ParameterizedTest(name = "{index}: {0}")
+  @MethodSource("data")
+  public void test(String name, String source, String output, String context, String resource, String operation) throws Exception {
     InputStream stream = null;
     if (!Utilities.noString(context)) {
       String[] parts = context.split("/");
@@ -104,7 +84,7 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       msg = e.getMessage();
     }
     if (ok) {
-      assertTrue("Expected to fail, but didn't", !output.equals("$error"));
+      Assertions.assertTrue(!output.equals("$error"), "Expected to fail, but didn't");
       StringBuilder str = new StringBuilder();
       gql.getOutput().setWriteWrapper(false);
       gql.getOutput().write(str, 0);
@@ -112,10 +92,10 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "graphql", output), new FileOutputStream(TestingUtilities.tempFile("graphql", output)));
       TextFile.stringToFile(str.toString(), TestingUtilities.tempFile("graphql", output+".out"));
       msg = TestingUtilities.checkJsonIsSame(TestingUtilities.tempFile("graphql", output+".out"), TestingUtilities.tempFile("graphql", output));
-      assertTrue(msg, Utilities.noString(msg));
+      Assertions.assertTrue(Utilities.noString(msg), msg);
     }
     else
-      assertTrue("Error, but proper output was expected ("+msg+")", output.equals("$error"));
+      Assertions.assertTrue(output.equals("$error"), "Error, but proper output was expected ("+msg+")");
   }
 
   @Override

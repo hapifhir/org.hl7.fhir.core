@@ -80,7 +80,11 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
     for (String n : names) {
       ValueSet vs = enums.get(n);
       write("//   "+n+": "+vs.getDescription());
-      write(vs.getUserData("usages").toString());
+      if (vs.hasUserData("usages")) {
+        write(vs.getUserData("usages").toString());
+      } else {
+        write("?null?");        
+      }
       write("\r\n");
     }
     write("\r\n");

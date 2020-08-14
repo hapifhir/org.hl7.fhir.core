@@ -1,24 +1,36 @@
 package org.hl7.fhir.r5.context;
 
-/*-
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+import java.io.File;
+
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
  */
+
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,13 +38,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -41,10 +51,12 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.context.BaseWorkerContext.MetadataResourceVersionComparator;
+import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.BooleanType;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode;
@@ -53,13 +65,17 @@ import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.Constants;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.ImplementationGuide;
-import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.Library;
+import org.hl7.fhir.r5.model.Measure;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
 import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.model.OperationDefinition;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PlanDefinition;
@@ -69,33 +85,41 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
 import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.Bundle.BundleType;
+import org.hl7.fhir.r5.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetComposeComponent;
+import org.hl7.fhir.r5.renderers.OperationOutcomeRenderer;
+import org.hl7.fhir.r5.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.terminologies.ValueSetCheckerSimple;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.client.ToolingClientLogger;
 import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
-import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
+import org.hl7.fhir.utilities.i18n.I18nBase;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
 import com.google.gson.JsonObject;
 
-public abstract class BaseWorkerContext implements IWorkerContext {
+import ca.uhn.fhir.model.valueset.BundleEntrySearchModeEnum;
 
-  private Locale locale;
+public abstract class BaseWorkerContext extends I18nBase implements IWorkerContext{
 
   public class MetadataResourceVersionComparator<T extends CanonicalResource> implements Comparator<T> {
 
@@ -128,22 +152,27 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
 
   private Object lock = new Object(); // used as a lock for the data that follows
+  protected String version;
   
   private Map<String, Map<String, Resource>> allResourcesById = new HashMap<String, Map<String, Resource>>();
   // all maps are to the full URI
   private CanonicalResourceManager<CodeSystem> codeSystems = new CanonicalResourceManager<CodeSystem>(false);
   private Set<String> supportedCodeSystems = new HashSet<String>();
+  private Set<String> unsupportedCodeSystems = new HashSet<String>(); // know that the terminology server doesn't support them
   private CanonicalResourceManager<ValueSet> valueSets = new CanonicalResourceManager<ValueSet>(false);
   private CanonicalResourceManager<ConceptMap> maps = new CanonicalResourceManager<ConceptMap>(false);
   protected CanonicalResourceManager<StructureMap> transforms = new CanonicalResourceManager<StructureMap>(false);
   private CanonicalResourceManager<StructureDefinition> structures = new CanonicalResourceManager<StructureDefinition>(false);
+  private CanonicalResourceManager<Measure> measures = new CanonicalResourceManager<Measure>(false);
+  private CanonicalResourceManager<Library> libraries = new CanonicalResourceManager<Library>(false);
   private CanonicalResourceManager<ImplementationGuide> guides = new CanonicalResourceManager<ImplementationGuide>(false);
   private CanonicalResourceManager<CapabilityStatement> capstmts = new CanonicalResourceManager<CapabilityStatement>(false);
   private CanonicalResourceManager<SearchParameter> searchParameters = new CanonicalResourceManager<SearchParameter>(false);
   private CanonicalResourceManager<Questionnaire> questionnaires = new CanonicalResourceManager<Questionnaire>(false);
   private CanonicalResourceManager<OperationDefinition> operations = new CanonicalResourceManager<OperationDefinition>(false);
   private CanonicalResourceManager<PlanDefinition> plans = new CanonicalResourceManager<PlanDefinition>(false);
-  private List<NamingSystem> systems = new ArrayList<NamingSystem>();
+  private CanonicalResourceManager<NamingSystem> systems = new CanonicalResourceManager<NamingSystem>(false);
+  
   private UcumService ucumService;
   protected Map<String, byte[]> binaries = new HashMap<String, byte[]>();
 
@@ -166,19 +195,23 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   private boolean tlogging = true;
   
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
-    super();
     txCache = new TerminologyCache(lock, null);
+    setValidationMessageLanguage(getLocale());
   }
 
-  public BaseWorkerContext(CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles, 
+  public BaseWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
+    txCache = new TerminologyCache(lock, null);
+    setValidationMessageLanguage(locale);
+  }
+
+  public BaseWorkerContext(CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles,
       CanonicalResourceManager<ImplementationGuide> guides) throws FileNotFoundException, IOException, FHIRException {
-    super();
+    this();
     this.codeSystems = codeSystems;
     this.valueSets = valueSets;
     this.maps = maps;
     this.structures = profiles;
     this.guides = guides;
-    txCache = new TerminologyCache(lock, null);
   }
 
   protected void copy(BaseWorkerContext other) {
@@ -195,9 +228,11 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       plans.copy(other.plans);
       questionnaires.copy(other.questionnaires);
       operations.copy(other.operations);
-      systems.addAll(other.systems);
+      systems.copy(other.systems);
       guides.copy(other.guides);
       capstmts.copy(other.capstmts);
+      measures.copy(other.measures);
+      libraries.copy(libraries);
 
       allowLoadingDuplicates = other.allowLoadingDuplicates;
       tsServer = other.tsServer;
@@ -215,7 +250,78 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     }
   }
   
+  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies) {
+    // nothing yet
+  }
+
   public void cacheResource(Resource r) throws FHIRException {
+    cacheResourceFromPackage(r, null);  
+  }
+  
+
+  public void registerResourceFromPackage(CanonicalResourceProxy r, PackageVersion packageInfo) throws FHIRException {
+    synchronized (lock) {
+
+        String url = r.getUrl();
+        if (!allowLoadingDuplicates && hasResource(r.getType(), url)) {
+          // spcial workaround for known problems with existing packages
+          if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
+            return;
+          }
+          throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url));
+        }
+        switch(r.getType()) {
+          case "StructureDefinition":
+            if ("1.4.0".equals(version)) {
+              StructureDefinition sd = (StructureDefinition) r.getResource();
+              fixOldSD(sd);
+            }
+            structures.register(r, packageInfo);
+            break;
+          case "ValueSet":
+            valueSets.register(r, packageInfo);
+            break;
+          case "CodeSystem":
+            codeSystems.register(r, packageInfo);
+            break;
+          case "ImplementationGuide":
+            guides.register(r, packageInfo);
+            break;
+          case "CapabilityStatement":
+            capstmts.register(r, packageInfo);
+            break;
+          case "Measure":
+            measures.register(r, packageInfo);
+            break;
+          case "Library":
+            libraries.register(r, packageInfo);
+            break;
+          case "SearchParameter":
+            searchParameters.register(r, packageInfo);
+            break;
+          case "PlanDefinition":
+            plans.register(r, packageInfo);
+            break;
+          case "OperationDefinition":
+            operations.register(r, packageInfo);
+            break;
+          case "Questionnaire":
+            questionnaires.register(r, packageInfo);
+            break;
+          case "ConceptMap":
+            maps.register(r, packageInfo);
+            break;
+          case "StructureMap":
+            transforms.register(r, packageInfo);
+            break;
+          case "NamingSystem":
+            systems.register(r, packageInfo);
+            break;
+        }
+    }
+  }
+
+  public void cacheResourceFromPackage(Resource r, PackageVersion packageInfo) throws FHIRException {
     synchronized (lock) {
       Map<String, Resource> map = allResourcesById.get(r.fhirType());
       if (map == null) {
@@ -232,32 +338,58 @@ public abstract class BaseWorkerContext implements IWorkerContext {
           if (Utilities.existsInList(url, "http://hl7.org/fhir/SearchParameter/example")) {
             return;
           }
-          throw new DefinitionException("Duplicate Resource " + url);
+          throw new DefinitionException(formatMessage(I18nConstants.DUPLICATE_RESOURCE_, url));
         }
-        if (r instanceof StructureDefinition)
-          structures.see((StructureDefinition) m);
-        else if (r instanceof ValueSet)
-          valueSets.see((ValueSet) m);
-        else if (r instanceof CodeSystem)
-          codeSystems.see((CodeSystem) m);
-        else if (r instanceof ImplementationGuide)
-          guides.see((ImplementationGuide) m);
+        if (r instanceof StructureDefinition) {
+          StructureDefinition sd = (StructureDefinition) m;
+          if ("1.4.0".equals(version)) {
+            fixOldSD(sd);
+          }
+          structures.see(sd, packageInfo);
+        } else if (r instanceof ValueSet)
+          valueSets.see((ValueSet) m, packageInfo);
+        else if (r instanceof CodeSystem) {
+          CodeSystemUtilities.crossLinkCodeSystem((CodeSystem) r);
+          codeSystems.see((CodeSystem) m, packageInfo);
+        } else if (r instanceof ImplementationGuide)
+          guides.see((ImplementationGuide) m, packageInfo);
         else if (r instanceof CapabilityStatement)
-          capstmts.see((CapabilityStatement) m);
+          capstmts.see((CapabilityStatement) m, packageInfo);
+        else if (r instanceof Measure)
+          measures.see((Measure) m, packageInfo);
+        else if (r instanceof Library)
+          libraries.see((Library) m, packageInfo);        
         else if (r instanceof SearchParameter)
-          searchParameters.see((SearchParameter) m);
+          searchParameters.see((SearchParameter) m, packageInfo);
         else if (r instanceof PlanDefinition)
-          plans.see((PlanDefinition) m);
+          plans.see((PlanDefinition) m, packageInfo);
         else if (r instanceof OperationDefinition)
-          operations.see((OperationDefinition) m);
+          operations.see((OperationDefinition) m, packageInfo);
         else if (r instanceof Questionnaire)
-          questionnaires.see((Questionnaire) m);
+          questionnaires.see((Questionnaire) m, packageInfo);
         else if (r instanceof ConceptMap)
-          maps.see((ConceptMap) m);
+          maps.see((ConceptMap) m, packageInfo);
         else if (r instanceof StructureMap)
-          transforms.see((StructureMap) m);
+          transforms.see((StructureMap) m, packageInfo);
         else if (r instanceof NamingSystem)
-          systems.add((NamingSystem) r);
+          systems.see((NamingSystem) m, packageInfo);
+      }
+    }
+  }
+
+  public void fixOldSD(StructureDefinition sd) {
+    if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT && sd.getType().equals("Extension") && sd.getUrl().startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+      sd.setSnapshot(null);
+    }
+    for (ElementDefinition ed : sd.getDifferential().getElement()) {
+      if (ed.getPath().equals("Extension.url") || ed.getPath().endsWith(".extension.url") ) {
+        ed.setMin(1);
+        if (ed.hasBase()) {
+          ed.getBase().setMin(1);
+        }
+      }
+      if ("extension".equals(ed.getSliceName())) {
+        ed.setSliceName(null);
       }
     }
   }
@@ -306,7 +438,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         return laterVersion(newParts[i], oldParts[i]);
     }
     // This should never happen
-    throw new Error("Delimited versions have exact match for delimiter '"+delimiter+"' : "+newParts+" vs "+oldParts);
+    throw new Error(formatMessage(I18nConstants.DELIMITED_VERSIONS_HAVE_EXACT_MATCH_FOR_DELIMITER____VS_, delimiter, newParts, oldParts));
   }
   
   protected <T extends CanonicalResource> void seeMetadataResource(T r, Map<String, T> map, List<T> list, boolean addId) throws FHIRException {
@@ -421,43 +553,32 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
 
   @Override
-  public Locale getLocale() {
-    if (Objects.nonNull(locale)){
-      return locale;
-    } else {
-      return Locale.US;
-    }
-  }
-
-  @Override
-  public void setLocale(Locale locale) {
-    this.locale = locale;
-  }
-  @Override
   public ValueSetExpansionOutcome expandVS(ElementDefinitionBindingComponent binding, boolean cacheOk, boolean heirarchical) throws FHIRException {
     ValueSet vs = null;
     vs = fetchResource(ValueSet.class, binding.getValueSet());
     if (vs == null)
-      throw new FHIRException("Unable to resolve value Set "+binding.getValueSet());
+      throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_RESOLVE_VALUE_SET_, binding.getValueSet()));
     return expandVS(vs, cacheOk, heirarchical);
   }
   
   @Override
   public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException {
     ValueSet vs = new ValueSet();
+    vs.setStatus(PublicationStatus.ACTIVE);
     vs.setCompose(new ValueSetComposeComponent());
     vs.getCompose().getInclude().add(inc);
     CacheToken cacheToken = txCache.generateExpandToken(vs, hierarchical);
     ValueSetExpansionOutcome res;
     res = txCache.getExpansion(cacheToken);
-    if (res != null)
+    if (res != null) {
       return res;
+    }
     Parameters p = expParameters.copy(); 
     p.setParameter("includeDefinition", false);
     p.setParameter("excludeNested", !hierarchical);
     
     if (noTerminologyServer)
-      return new ValueSetExpansionOutcome("Error expanding ValueSet: running without terminology services", TerminologyServiceErrorClass.NOSERVICE);
+      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
     Map<String, String> params = new HashMap<String, String>();
     params.put("_limit", Integer.toString(expandCodesLimit ));
     params.put("_incomplete", "true");
@@ -477,65 +598,78 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   @Override
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical) {
     if (expParameters == null)
-      throw new Error("No Expansion Parameters provided");
+      throw new Error(formatMessage(I18nConstants.NO_EXPANSION_PARAMETERS_PROVIDED));
     Parameters p = expParameters.copy(); 
     return expandVS(vs, cacheOk, heirarchical, p);
   }
-  
+
   public ValueSetExpansionOutcome expandVS(ValueSet vs, boolean cacheOk, boolean heirarchical, Parameters p)  {
-    if (p == null)
-      throw new Error("No Parameters provided to expandVS");
+    if (p == null) {
+      throw new Error(formatMessage(I18nConstants.NO_PARAMETERS_PROVIDED_TO_EXPANDVS));
+    }
     if (vs.hasExpansion()) {
       return new ValueSetExpansionOutcome(vs.copy());
     }
-    if (!vs.hasUrl())
-      throw new Error("no value set");
-    
-      CacheToken cacheToken = txCache.generateExpandToken(vs, heirarchical);
-      ValueSetExpansionOutcome res;
-      if (cacheOk) {
-        res = txCache.getExpansion(cacheToken);
-        if (res != null)
-          return res;
+    if (!vs.hasUrl()) {
+      throw new Error(formatMessage(I18nConstants.NO_VALUE_SET_IN_URL));
+    }
+
+    CacheToken cacheToken = txCache.generateExpandToken(vs, heirarchical);
+    ValueSetExpansionOutcome res;
+    if (cacheOk) {
+      res = txCache.getExpansion(cacheToken);
+      if (res != null) {
+        return res;
       }
-      p.setParameter("includeDefinition", false);
-      p.setParameter("excludeNested", !heirarchical);
-      
-      // ok, first we try to expand locally
-      try {
-        ValueSetExpanderSimple vse = new ValueSetExpanderSimple(this);
-        res = vse.doExpand(vs, p);
-        if (!res.getValueset().hasUrl())
-          throw new Error("no url in expand value set");
+    }
+    p.setParameter("includeDefinition", false);
+    p.setParameter("excludeNested", !heirarchical);
+
+    List<String> allErrors = new ArrayList<>();
+    
+    // ok, first we try to expand locally
+    ValueSetExpanderSimple vse = new ValueSetExpanderSimple(this);
+    try {
+      res = vse.expand(vs, p);
+      allErrors.addAll(vse.getAllErrors());
+      if (res.getValueset() != null) {
+        if (!res.getValueset().hasUrl()) {
+          throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET));
+        }
         txCache.cacheExpansion(cacheToken, res, TerminologyCache.TRANSIENT);
         return res;
-      } catch (Exception e) {
       }
-      
-      // if that failed, we try to expand on the server
-      if (noTerminologyServer)
-        return new ValueSetExpansionOutcome("Error expanding ValueSet: running without terminology services", TerminologyServiceErrorClass.NOSERVICE);
-      Map<String, String> params = new HashMap<String, String>();
-      params.put("_limit", Integer.toString(expandCodesLimit ));
-      params.put("_incomplete", "true");
-      tlog("$expand on "+txCache.summary(vs));
-      try {
-        ValueSet result = txClient.expandValueset(vs, p, params);
-        if (!result.hasUrl())
-          result.setUrl(vs.getUrl());
-        if (!result.hasUrl())
-          throw new Error("no url in expand value set 2");
-        res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
-      } catch (Exception e) {
-        res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN).setTxLink(txLog == null ? null : txLog.getLastId());
+    } catch (Exception e) {
+      allErrors.addAll(vse.getAllErrors());
+      e.printStackTrace();
+    }
+
+    // if that failed, we try to expand on the server
+    if (noTerminologyServer) {
+      return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, allErrors);
+    }
+    Map<String, String> params = new HashMap<String, String>();
+    params.put("_limit", Integer.toString(expandCodesLimit ));
+    params.put("_incomplete", "true");
+    tlog("$expand on "+txCache.summary(vs));
+    try {
+      ValueSet result = txClient.expandValueset(vs, p, params);
+      if (!result.hasUrl()) {
+        result.setUrl(vs.getUrl());
       }
-      txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
-      return res;
+      if (!result.hasUrl()) {
+        throw new Error(formatMessage(I18nConstants.NO_URL_IN_EXPAND_VALUE_SET_2));
+      }
+      res = new ValueSetExpansionOutcome(result).setTxLink(txLog.getLastId());  
+    } catch (Exception e) {
+      res = new ValueSetExpansionOutcome(e.getMessage() == null ? e.getClass().getName() : e.getMessage(), TerminologyServiceErrorClass.UNKNOWN, allErrors).setTxLink(txLog == null ? null : txLog.getLastId());
+    }
+    txCache.cacheExpansion(cacheToken, res, TerminologyCache.PERMANENT);
+    return res;
   }
 
-
   private boolean hasTooCostlyExpansion(ValueSet valueset) {
-    return valueset != null && valueset.hasExpansion() && ToolingExtensions.hasExtension(valueset.getExpansion(), "http://hl7.org/fhir/StructureDefinition/valueset-toocostly");
+    return valueset != null && valueset.hasExpansion() && ToolingExtensions.hasExtension(valueset.getExpansion(), ToolingExtensions.EXT_EXP_TOOCOSTLY);
   }
   // --- validate code -------------------------------------------------------------------------------
   
@@ -560,9 +694,106 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     return validateCode(options.guessSystem(), c, vs);
   }
 
+
+  @Override
+  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs) {
+    if (options == null) {
+      options = ValidationOptions.defaults();
+    }
+    // 1st pass: what is in the cache? 
+    // 2nd pass: What can we do internally 
+    // 3rd pass: hit the server
+    for (CodingValidationRequest t : codes) {
+      t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs) : null);
+      if (txCache != null) { 
+        t.setResult(txCache.getValidation(t.getCacheToken()));
+      }
+    }
+    if (options.isUseClient()) {
+      for (CodingValidationRequest t : codes) {
+        if (!t.hasResult()) {
+          try {
+            ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this); 
+            ValidationResult res = vsc.validateCode(t.getCoding());
+            if (txCache != null)
+              txCache.cacheValidation(t.getCacheToken(), res, TerminologyCache.TRANSIENT);
+            t.setResult(res);
+          } catch (Exception e) {
+          }
+        }
+      }      
+    }  
+
+    for (CodingValidationRequest t : codes) {
+      if (!t.hasResult()) {
+        if (!options.isUseServer()) {
+         t.setResult(new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS));
+        } else if (unsupportedCodeSystems.contains(t.getCoding().getSystem())) {
+          t.setResult(new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, t.getCoding().getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED));      
+        } else if (noTerminologyServer) {
+          t.setResult(new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE));
+        }
+      }
+    }
+    
+    if (expParameters == null)
+      throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
+    // for those that that failed, we try to validate on the server
+    Bundle batch = new Bundle();
+    batch.setType(BundleType.BATCH);
+    Set<String> systems = new HashSet<>();
+    for (CodingValidationRequest t : codes) {
+      if (!t.hasResult()) {
+        Parameters pIn = new Parameters();
+        pIn.addParameter().setName("coding").setValue(t.getCoding());
+        if (options.isGuessSystem())
+          pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
+        if (vs != null) {
+          pIn.addParameter().setName("valueSet").setResource(vs);
+        }
+        pIn.addParameter().setName("profile").setResource(expParameters);
+        setTerminologyOptions(options, pIn);
+        BundleEntryComponent be = batch.addEntry();
+        be.setResource(pIn);
+        be.getRequest().setMethod(HTTPVerb.POST);
+        be.getRequest().setUrl("ValueSet/$validate-code");
+        be.setUserData("source", t);
+        systems.add(t.getCoding().getSystem());
+      }
+    }
+    if (batch.getEntry().size() > 0) {
+      tlog("$batch validate for "+batch.getEntry().size()+" codes on systems "+systems.toString());
+      if (txClient == null) {
+        throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
+      }
+      if (txLog != null) {
+        txLog.clearLastId();
+      }
+      Bundle resp = txClient.validateBatch(batch);
+      for (int i = 0; i < batch.getEntry().size(); i++) {
+        CodingValidationRequest t = (CodingValidationRequest) batch.getEntry().get(i).getUserData("source");
+        BundleEntryComponent r = resp.getEntry().get(i);
+        if (r.getResource() instanceof Parameters) {
+          t.setResult(processValidationResult((Parameters) r.getResource()));
+        } else {
+          t.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(r.getResource())).setTxLink(txLog == null ? null : txLog.getLastId()));          
+        }
+      }
+    }    
+  }
+  
+  private String getResponseText(Resource resource) {
+    if (resource instanceof OperationOutcome) {
+      return OperationOutcomeRenderer.toString((OperationOutcome) resource);
+    }
+    return "Todo";
+  }
+
   @Override
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs) {
-    assert options != null;
+    if (options == null) {
+      options = ValidationOptions.defaults();
+    }
     
     CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
     ValidationResult res = null;
@@ -584,12 +815,15 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     }
     
     if (!options.isUseServer()) {
-      return new ValidationResult(IssueSeverity.WARNING, "Unable to validate code without using server", TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);      
+      return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);
+    }
+    if (unsupportedCodeSystems.contains(code.getSystem())) {
+      return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, code.getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);      
     }
     
     // if that failed, we try to validate on the server
     if (noTerminologyServer) {
-      return new ValidationResult(IssueSeverity.ERROR,  "Error validating code: running without terminology services", TerminologyServiceErrorClass.NOSERVICE);
+      return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
     }
     String csumm =  txCache != null ? txCache.summary(code) : null;
     if (txCache != null) {
@@ -607,7 +841,9 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId());
     }
-    if (txCache != null)
+    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
+      unsupportedCodeSystems.add(code.getSystem());
+    } else if (txCache != null) // we never cache unsuppoted code systems - we always keep trying (but only once per run)
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     return res;
   }
@@ -660,25 +896,34 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   }
 
   private ValidationResult validateOnServer(ValueSet vs, Parameters pin) throws FHIRException {
-    if (vs != null)
+    if (vs != null) {
       pin.addParameter().setName("valueSet").setResource(vs);
-    for (ParametersParameterComponent pp : pin.getParameter())
-      if (pp.getName().equals("profile"))
-        throw new Error("Can only specify profile in the context");
-    if (expParameters == null)
-      throw new Error("No ExpansionProfile provided");
+    }
+    for (ParametersParameterComponent pp : pin.getParameter()) {
+      if (pp.getName().equals("profile")) {
+        throw new Error(formatMessage(I18nConstants.CAN_ONLY_SPECIFY_PROFILE_IN_THE_CONTEXT));
+      }
+    }
+    if (expParameters == null) {
+      throw new Error(formatMessage(I18nConstants.NO_EXPANSIONPROFILE_PROVIDED));
+    }
     pin.addParameter().setName("profile").setResource(expParameters);
     if (txLog != null) {
       txLog.clearLastId();
     }
     if (txClient == null) {
-      throw new FHIRException("Attempt to use Terminology server when no Terminology server is available");      
+      throw new FHIRException(formatMessage(I18nConstants.ATTEMPT_TO_USE_TERMINOLOGY_SERVER_WHEN_NO_TERMINOLOGY_SERVER_IS_AVAILABLE));
     }
     Parameters pOut;
-    if (vs == null)
+    if (vs == null) {
       pOut = txClient.validateCS(pin);
-    else
+    } else {
       pOut = txClient.validateVS(pin);
+    }
+    return processValidationResult(pOut);
+  }
+
+  public ValidationResult processValidationResult(Parameters pOut) {
     boolean ok = false;
     String message = "No Message returned";
     String display = null;
@@ -695,6 +940,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
           IssueType it = IssueType.fromCode(((StringType) p.getValue()).getValue());
           if (it == IssueType.UNKNOWN)
             err = TerminologyServiceErrorClass.UNKNOWN;
+          else if (it == IssueType.NOTFOUND)
+            err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
           else if (it == IssueType.NOTSUPPORTED)
             err = TerminologyServiceErrorClass.VALUESET_UNSUPPORTED;
         } catch (FHIRException e) {
@@ -714,9 +961,17 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   // --------------------------------------------------------------------------------------------------------------------------------------------------------
   
   public void initTS(String cachePath) throws Exception {
+    if (!new File(cachePath).exists()) {
+      Utilities.createDirectory(cachePath);
+    }
     txCache = new TerminologyCache(lock, cachePath);
   }
 
+  public void clearTSCache(String url) throws Exception {
+    txCache.removeCS(url);
+  }
+
+  
   @Override
   public List<ConceptMap> findMapsForSource(String url) throws FHIRException {
     synchronized (lock) {
@@ -776,9 +1031,17 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     this.allowLoadingDuplicates = allowLoadingDuplicates;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException {
+    return fetchResourceWithException(class_, uri, null);
+  }
+  
+  public <T extends Resource> T fetchResourceWithException(String cls, String uri) throws FHIRException {
+    return fetchResourceWithException(cls, uri, null);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri, CanonicalResource source) throws FHIRException {
     if (uri == null) {
       return null;
     }
@@ -796,27 +1059,31 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         uri = uri.substring(0, uri.indexOf("#"));
       if (class_ == Resource.class || class_ == null) {
         if (structures.has(uri))
-          return (T) structures.get(uri);
+          return (T) structures.get(uri, version);
         if (guides.has(uri))
-          return (T) guides.get(uri);
+          return (T) guides.get(uri, version);
         if (capstmts.has(uri))
-          return (T) capstmts.get(uri);
+          return (T) capstmts.get(uri, version);
+        if (measures.has(uri))
+          return (T) measures.get(uri, version);
+        if (libraries.has(uri))
+          return (T) libraries.get(uri, version);        
         if (valueSets.has(uri))
-          return (T) valueSets.get(uri);
+          return (T) valueSets.get(uri, version);
         if (codeSystems.has(uri))
-          return (T) codeSystems.get(uri);
+          return (T) codeSystems.get(uri, version);
         if (operations.has(uri))
-          return (T) operations.get(uri);
+          return (T) operations.get(uri, version);
         if (searchParameters.has(uri))
-          return (T) searchParameters.get(uri);
+          return (T) searchParameters.get(uri, version);
         if (plans.has(uri))
-          return (T) plans.get(uri);
+          return (T) plans.get(uri, version);
         if (maps.has(uri))
-          return (T) maps.get(uri);
+          return (T) maps.get(uri, version);
         if (transforms.has(uri))
-          return (T) transforms.get(uri);
+          return (T) transforms.get(uri, version);
         if (questionnaires.has(uri))
-          return (T) questionnaires.get(uri);
+          return (T) questionnaires.get(uri, version);
         for (Map<String, Resource> rt : allResourcesById.values()) {
           for (Resource r : rt.values()) {
             if (r instanceof CanonicalResource) {
@@ -828,44 +1095,150 @@ public abstract class BaseWorkerContext implements IWorkerContext {
         }
         return null;      
       } else if (class_ == ImplementationGuide.class) {
-        return (T) guides.get(uri);
+        return (T) guides.get(uri, version);
       } else if (class_ == CapabilityStatement.class) {
-        return (T) capstmts.get(uri);
+        return (T) capstmts.get(uri, version);
+      } else if (class_ == Measure.class) {
+        return (T) measures.get(uri, version);
+      } else if (class_ == Library.class) {
+        return (T) libraries.get(uri, version);
       } else if (class_ == StructureDefinition.class) {
-        return (T) structures.get(uri);
+        return (T) structures.get(uri, version);
       } else if (class_ == StructureMap.class) {
-        return (T) transforms.get(uri);
+        return (T) transforms.get(uri, version);
       } else if (class_ == ValueSet.class) {
-        if (valueSets.has(uri, version))
-          return (T) valueSets.get(uri, version);
-        else
-          return (T) valueSets.get(uri);
+        return (T) valueSets.get(uri, version);
       } else if (class_ == CodeSystem.class) {
-        if (codeSystems.has(uri, version))
           return (T) codeSystems.get(uri, version);
-        else
-          return (T) codeSystems.get(uri);
       } else if (class_ == ConceptMap.class) {
-        return (T) maps.get(uri);
+        return (T) maps.get(uri, version);
       } else if (class_ == PlanDefinition.class) {
-        return (T) plans.get(uri);
+        return (T) plans.get(uri, version);
       } else if (class_ == OperationDefinition.class) {
-        OperationDefinition od = operations.get(uri);
+        OperationDefinition od = operations.get(uri, version);
         return (T) od;
       } else if (class_ == Questionnaire.class) {
-        return (T) questionnaires.get(uri);
+        return (T) questionnaires.get(uri, version);
       } else if (class_ == SearchParameter.class) {
-        SearchParameter res = searchParameters.get(uri);
+        SearchParameter res = searchParameters.get(uri, version);
         return (T) res;
       }
       if (class_ == CodeSystem.class && codeSystems.has(uri))
-        return (T) codeSystems.get(uri);
+        return (T) codeSystems.get(uri, version);
       if (class_ == ValueSet.class && valueSets.has(uri))
-        return (T) valueSets.get(uri);
+        return (T) valueSets.get(uri, version);
       
       if (class_ == Questionnaire.class)
-        return (T) questionnaires.get(uri);
+        return (T) questionnaires.get(uri, version);
       if (class_ == null) {
+        if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet"))
+          return null;
+
+        // it might be a special URL.
+        if (Utilities.isAbsoluteUrl(uri) || uri.startsWith("ValueSet/")) {
+          Resource res = null; // findTxValueSet(uri);
+          if (res != null)
+            return (T) res;
+        }
+        return null;
+      }
+      if (supportedCodeSystems.contains(uri))
+        return null;
+      throw new FHIRException(formatMessage(I18nConstants.NOT_DONE_YET_CANT_FETCH_, uri));
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T extends Resource> T fetchResourceWithException(String cls, String uri, CanonicalResource source) throws FHIRException {
+    if (uri == null) {
+      return null;
+    }
+   
+    if ("StructureDefinition".equals(cls)) {
+      uri = ProfileUtilities.sdNs(uri, getOverrideVersionNs());
+    }
+    synchronized (lock) {
+
+      String version = null;
+      if (uri.contains("|")) {
+        version = uri.substring(uri.lastIndexOf("|")+1);
+        uri = uri.substring(0, uri.lastIndexOf("|"));
+      }
+      if (uri.contains("#"))
+        uri = uri.substring(0, uri.indexOf("#"));
+      if (cls == null || "Resource".equals(cls)) {
+        if (structures.has(uri))
+          return (T) structures.get(uri, version);
+        if (guides.has(uri))
+          return (T) guides.get(uri, version);
+        if (capstmts.has(uri))
+          return (T) capstmts.get(uri, version);
+        if (measures.has(uri))
+          return (T) measures.get(uri, version);
+        if (libraries.has(uri))
+          return (T) libraries.get(uri, version);        
+        if (valueSets.has(uri))
+          return (T) valueSets.get(uri, version);
+        if (codeSystems.has(uri))
+          return (T) codeSystems.get(uri, version);
+        if (operations.has(uri))
+          return (T) operations.get(uri, version);
+        if (searchParameters.has(uri))
+          return (T) searchParameters.get(uri, version);
+        if (plans.has(uri))
+          return (T) plans.get(uri, version);
+        if (maps.has(uri))
+          return (T) maps.get(uri, version);
+        if (transforms.has(uri))
+          return (T) transforms.get(uri, version);
+        if (questionnaires.has(uri))
+          return (T) questionnaires.get(uri, version);
+        for (Map<String, Resource> rt : allResourcesById.values()) {
+          for (Resource r : rt.values()) {
+            if (r instanceof CanonicalResource) {
+              CanonicalResource mr = (CanonicalResource) r;
+              if (uri.equals(mr.getUrl()))
+                return (T) mr;
+            }
+          }            
+        }
+      } else if ("ImplementationGuide".equals(cls)) {
+        return (T) guides.get(uri, version);
+      } else if ("CapabilityStatement".equals(cls)) {
+        return (T) capstmts.get(uri, version);
+      } else if ("Measure".equals(cls)) {
+        return (T) measures.get(uri, version);
+      } else if ("Library".equals(cls)) {
+        return (T) libraries.get(uri, version);
+      } else if ("StructureDefinition".equals(cls)) {
+        return (T) structures.get(uri, version);
+      } else if ("StructureMap".equals(cls)) {
+        return (T) transforms.get(uri, version);
+      } else if ("ValueSet".equals(cls)) {
+        return (T) valueSets.get(uri, version);
+      } else if ("CodeSystem".equals(cls)) {
+          return (T) codeSystems.get(uri, version);
+      } else if ("ConceptMap".equals(cls)) {
+        return (T) maps.get(uri, version);
+      } else if ("PlanDefinition".equals(cls)) {
+        return (T) plans.get(uri, version);
+      } else if ("OperationDefinition".equals(cls)) {
+        OperationDefinition od = operations.get(uri, version);
+        return (T) od;
+      } else if ("Questionnaire.class".equals(cls)) {
+        return (T) questionnaires.get(uri, version);
+      } else if ("SearchParameter.class".equals(cls)) {
+        SearchParameter res = searchParameters.get(uri, version);
+        return (T) res;
+      }
+      if ("CodeSystem".equals(cls) && codeSystems.has(uri))
+        return (T) codeSystems.get(uri, version);
+      if ("ValueSet".equals(cls) && valueSets.has(uri))
+        return (T) valueSets.get(uri, version);
+      
+      if ("Questionnaire".equals(cls))
+        return (T) questionnaires.get(uri, version);
+      if (cls == null) {
         if (uri.matches(Constants.URI_REGEX) && !uri.contains("ValueSet"))
           return null;
 
@@ -879,7 +1252,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       }    
       if (supportedCodeSystems.contains(uri))
         return null;
-      throw new FHIRException("not done yet: can't fetch "+uri);
+      throw new FHIRException(formatMessage(I18nConstants.NOT_DONE_YET_CANT_FETCH_, uri));
     }
   }
 
@@ -925,16 +1298,24 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       if (parts.length >= 2) {
         if (!Utilities.noString(type))
           if (!type.equals(parts[parts.length-2])) 
-            throw new Error("Resource type mismatch for "+type+" / "+uri);
+            throw new Error(formatMessage(I18nConstants.RESOURCE_TYPE_MISMATCH_FOR___, type, uri));
         return allResourcesById.get(parts[parts.length-2]).get(parts[parts.length-1]);
       } else
-        throw new Error("Unable to process request for resource for "+type+" / "+uri);
+        throw new Error(formatMessage(I18nConstants.UNABLE_TO_PROCESS_REQUEST_FOR_RESOURCE_FOR___, type, uri));
     }
   }
 
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, CanonicalResource source) {
+    try {
+      return fetchResourceWithException(class_, uri, source);
+    } catch (FHIRException e) {
+      throw new Error(e);
+    }    
+  }
+  
   public <T extends Resource> T fetchResource(Class<T> class_, String uri) {
     try {
-      return fetchResourceWithException(class_, uri);
+      return fetchResourceWithException(class_, uri, null);
     } catch (FHIRException e) {
       throw new Error(e);
     }
@@ -944,6 +1325,14 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   public <T extends Resource> boolean hasResource(Class<T> class_, String uri) {
     try {
       return fetchResourceWithException(class_, uri) != null;
+    } catch (Exception e) {
+      return false;
+    }
+  }
+
+  public <T extends Resource> boolean hasResource(String cls, String uri) {
+    try {
+      return fetchResourceWithException(cls, uri) != null;
     } catch (Exception e) {
       return false;
     }
@@ -1008,6 +1397,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       json.addProperty("structures-count", structures.size());
       json.addProperty("guides-count", guides.size());
       json.addProperty("statements-count", capstmts.size());
+      json.addProperty("measures-count", measures.size());
+      json.addProperty("libraries-count", libraries.size());
     }
   }
 
@@ -1027,29 +1418,31 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       if (map.containsKey(id))
         map.remove(id);
 
-      if (fhirType.equals("StructureDefinition"))
+      if (fhirType.equals("StructureDefinition")) {
         structures.drop(id);
-      else if (fhirType.equals("ImplementationGuide"))
+      } else if (fhirType.equals("ImplementationGuide")) {
         guides.drop(id);
-      else if (fhirType.equals("CapabilityStatement"))
+      } else if (fhirType.equals("CapabilityStatement")) {
         capstmts.drop(id);
-      else if (fhirType.equals("ValueSet"))
+      } else if (fhirType.equals("Measure")) {
+        measures.drop(id);
+      } else if (fhirType.equals("Library")) {
+        libraries.drop(id);
+      } else if (fhirType.equals("ValueSet")) {
         valueSets.drop(id);
-      else if (fhirType.equals("CodeSystem"))
+      } else if (fhirType.equals("CodeSystem")) {
         codeSystems.drop(id);
-      else if (fhirType.equals("OperationDefinition"))
+      } else if (fhirType.equals("OperationDefinition")) {
         operations.drop(id);
-      else if (fhirType.equals("Questionnaire"))
+      } else if (fhirType.equals("Questionnaire")) {
         questionnaires.drop(id);
-      else if (fhirType.equals("ConceptMap"))
+      } else if (fhirType.equals("ConceptMap")) {
         maps.drop(id);
-      else if (fhirType.equals("StructureMap"))
+      } else if (fhirType.equals("StructureMap")) {
         transforms.drop(id);
-      else if (fhirType.equals("NamingSystem"))
-        for (int i = systems.size()-1; i >= 0; i--) {
-          if (systems.get(i).getId().equals(id))
-            systems.remove(i);
-        }
+      } else if (fhirType.equals("NamingSystem")) {
+        systems.drop(id);
+      }
     }
   }
 
@@ -1072,6 +1465,8 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       structures.listAllM(result);
       guides.listAllM(result);
       capstmts.listAllM(result);
+      measures.listAllM(result);
+      libraries.listAllM(result);
       codeSystems.listAllM(result);
       valueSets.listAllM(result);
       maps.listAllM(result);
@@ -1144,7 +1539,7 @@ public abstract class BaseWorkerContext implements IWorkerContext {
       String uri = OIDUtils.getUriForOid(oid);
       if (uri != null)
         return uri;
-      for (NamingSystem ns : systems) {
+      for (NamingSystem ns : systems.getList()) {
         if (hasOid(ns, oid)) {
           uri = getUri(ns);
           if (uri != null)
@@ -1253,6 +1648,12 @@ public abstract class BaseWorkerContext implements IWorkerContext {
     
     if (capstmts.has(url))
       return capstmts.get(url).getUserString("path");
+    
+    if (measures.has(url))
+      return measures.get(url).getUserString("path");
+
+    if (libraries.has(url))
+      return libraries.get(url).getUserString("path");
 
     if (searchParameters.has(url))
       return searchParameters.get(url).getUserString("path");
@@ -1286,6 +1687,50 @@ public abstract class BaseWorkerContext implements IWorkerContext {
   @Override
   public Map<String, byte[]> getBinaries() {
     return binaries;
+  }
+  
+  public void finishLoading() {
+    for (StructureDefinition sd : listStructures()) {
+      try {
+        if (sd.getSnapshot().isEmpty()) { 
+          generateSnapshot(sd);
+//          new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path("[tmp]", "snapshot", tail(sd.getUrl())+".xml")), sd);
+        }
+      } catch (Exception e) {
+//        System.out.println("Unable to generate snapshot for "+tail(sd.getUrl()) +" from "+tail(sd.getBaseDefinition())+" because "+e.getMessage());
+      }
+
+    }  
+  }
+
+
+  protected String tail(String url) {
+    if (Utilities.noString(url)) {
+      return "noname";
+    }
+    if (url.contains("/")) {
+      return url.substring(url.lastIndexOf("/")+1);
+    }
+    return url;
+  }
+  
+  public int getClientRetryCount() {
+    return txClient == null ? 0 : txClient.getRetryCount();
+  }
+  
+  public IWorkerContext setClientRetryCount(int value) {
+    if (txClient != null) {
+      txClient.setRetryCount(value);
+    }
+    return this;
+  }
+
+  public String getTxCache() {
+    return txCache.getFolder();
+  }
+
+  public TerminologyClient getTxClient() {
+    return txClient;
   }
 
 

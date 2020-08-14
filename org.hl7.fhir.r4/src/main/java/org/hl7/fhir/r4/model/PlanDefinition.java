@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical artifacts such as clinical decision support rules, order sets and protocols.
  */
@@ -1672,6 +1652,11 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionGoalComponent copy() {
         PlanDefinitionGoalComponent dst = new PlanDefinitionGoalComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionGoalComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.description = description == null ? null : description.copy();
         dst.priority = priority == null ? null : priority.copy();
@@ -1691,7 +1676,6 @@ public class PlanDefinition extends MetadataResource {
           for (PlanDefinitionGoalTargetComponent i : target)
             dst.target.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1990,10 +1974,14 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionGoalTargetComponent copy() {
         PlanDefinitionGoalTargetComponent dst = new PlanDefinitionGoalTargetComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionGoalTargetComponent dst) {
+        super.copyValues(dst);
         dst.measure = measure == null ? null : measure.copy();
         dst.detail = detail == null ? null : detail.copy();
         dst.due = due == null ? null : due.copy();
-        return dst;
       }
 
       @Override
@@ -4125,6 +4113,11 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionActionComponent copy() {
         PlanDefinitionActionComponent dst = new PlanDefinitionActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionComponent dst) {
+        super.copyValues(dst);
         dst.prefix = prefix == null ? null : prefix.copy();
         dst.title = title == null ? null : title.copy();
         dst.description = description == null ? null : description.copy();
@@ -4200,7 +4193,6 @@ public class PlanDefinition extends MetadataResource {
           for (PlanDefinitionActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4445,9 +4437,13 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionActionConditionComponent copy() {
         PlanDefinitionActionConditionComponent dst = new PlanDefinitionActionConditionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionConditionComponent dst) {
+        super.copyValues(dst);
         dst.kind = kind == null ? null : kind.copy();
         dst.expression = expression == null ? null : expression.copy();
-        return dst;
       }
 
       @Override
@@ -4774,10 +4770,14 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionActionRelatedActionComponent copy() {
         PlanDefinitionActionRelatedActionComponent dst = new PlanDefinitionActionRelatedActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionRelatedActionComponent dst) {
+        super.copyValues(dst);
         dst.actionId = actionId == null ? null : actionId.copy();
         dst.relationship = relationship == null ? null : relationship.copy();
         dst.offset = offset == null ? null : offset.copy();
-        return dst;
       }
 
       @Override
@@ -5007,9 +5007,13 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionActionParticipantComponent copy() {
         PlanDefinitionActionParticipantComponent dst = new PlanDefinitionActionParticipantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionParticipantComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.role = role == null ? null : role.copy();
-        return dst;
       }
 
       @Override
@@ -5228,9 +5232,13 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinitionActionDynamicValueComponent copy() {
         PlanDefinitionActionDynamicValueComponent dst = new PlanDefinitionActionDynamicValueComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinitionActionDynamicValueComponent dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         dst.expression = expression == null ? null : expression.copy();
-        return dst;
       }
 
       @Override
@@ -7421,6 +7429,11 @@ public class PlanDefinition extends MetadataResource {
       public PlanDefinition copy() {
         PlanDefinition dst = new PlanDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanDefinition dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -7504,7 +7517,6 @@ public class PlanDefinition extends MetadataResource {
           for (PlanDefinitionActionComponent i : action)
             dst.action.add(i.copy());
         };
-        return dst;
       }
 
       protected PlanDefinition typedCopy() {
@@ -8070,4 +8082,3 @@ public class PlanDefinition extends MetadataResource {
 
 
 }
-

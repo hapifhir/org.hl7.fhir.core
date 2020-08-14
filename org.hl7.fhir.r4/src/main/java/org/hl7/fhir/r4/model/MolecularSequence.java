@@ -1,26 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-import java.math.BigDecimal;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,19 +31,21 @@ import java.math.BigDecimal;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
+import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Raw data describing a biological sequence.
  */
@@ -1255,6 +1237,11 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceReferenceSeqComponent copy() {
         MolecularSequenceReferenceSeqComponent dst = new MolecularSequenceReferenceSeqComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceReferenceSeqComponent dst) {
+        super.copyValues(dst);
         dst.chromosome = chromosome == null ? null : chromosome.copy();
         dst.genomeBuild = genomeBuild == null ? null : genomeBuild.copy();
         dst.orientation = orientation == null ? null : orientation.copy();
@@ -1264,7 +1251,6 @@ public class MolecularSequence extends DomainResource {
         dst.strand = strand == null ? null : strand.copy();
         dst.windowStart = windowStart == null ? null : windowStart.copy();
         dst.windowEnd = windowEnd == null ? null : windowEnd.copy();
-        return dst;
       }
 
       @Override
@@ -1784,13 +1770,17 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceVariantComponent copy() {
         MolecularSequenceVariantComponent dst = new MolecularSequenceVariantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceVariantComponent dst) {
+        super.copyValues(dst);
         dst.start = start == null ? null : start.copy();
         dst.end = end == null ? null : end.copy();
         dst.observedAllele = observedAllele == null ? null : observedAllele.copy();
         dst.referenceAllele = referenceAllele == null ? null : referenceAllele.copy();
         dst.cigar = cigar == null ? null : cigar.copy();
         dst.variantPointer = variantPointer == null ? null : variantPointer.copy();
-        return dst;
       }
 
       @Override
@@ -2983,6 +2973,11 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceQualityComponent copy() {
         MolecularSequenceQualityComponent dst = new MolecularSequenceQualityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceQualityComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.standardSequence = standardSequence == null ? null : standardSequence.copy();
         dst.start = start == null ? null : start.copy();
@@ -2998,7 +2993,6 @@ public class MolecularSequence extends DomainResource {
         dst.recall = recall == null ? null : recall.copy();
         dst.fScore = fScore == null ? null : fScore.copy();
         dst.roc = roc == null ? null : roc.copy();
-        return dst;
       }
 
       @Override
@@ -3680,6 +3674,11 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceQualityRocComponent copy() {
         MolecularSequenceQualityRocComponent dst = new MolecularSequenceQualityRocComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceQualityRocComponent dst) {
+        super.copyValues(dst);
         if (score != null) {
           dst.score = new ArrayList<IntegerType>();
           for (IntegerType i : score)
@@ -3715,7 +3714,6 @@ public class MolecularSequence extends DomainResource {
           for (DecimalType i : fMeasure)
             dst.fMeasure.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4246,13 +4244,17 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceRepositoryComponent copy() {
         MolecularSequenceRepositoryComponent dst = new MolecularSequenceRepositoryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceRepositoryComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.url = url == null ? null : url.copy();
         dst.name = name == null ? null : name.copy();
         dst.datasetId = datasetId == null ? null : datasetId.copy();
         dst.variantsetId = variantsetId == null ? null : variantsetId.copy();
         dst.readsetId = readsetId == null ? null : readsetId.copy();
-        return dst;
       }
 
       @Override
@@ -4627,12 +4629,16 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceStructureVariantComponent copy() {
         MolecularSequenceStructureVariantComponent dst = new MolecularSequenceStructureVariantComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceStructureVariantComponent dst) {
+        super.copyValues(dst);
         dst.variantType = variantType == null ? null : variantType.copy();
         dst.exact = exact == null ? null : exact.copy();
         dst.length = length == null ? null : length.copy();
         dst.outer = outer == null ? null : outer.copy();
         dst.inner = inner == null ? null : inner.copy();
-        return dst;
       }
 
       @Override
@@ -4869,9 +4875,13 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceStructureVariantOuterComponent copy() {
         MolecularSequenceStructureVariantOuterComponent dst = new MolecularSequenceStructureVariantOuterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceStructureVariantOuterComponent dst) {
+        super.copyValues(dst);
         dst.start = start == null ? null : start.copy();
         dst.end = end == null ? null : end.copy();
-        return dst;
       }
 
       @Override
@@ -5106,9 +5116,13 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequenceStructureVariantInnerComponent copy() {
         MolecularSequenceStructureVariantInnerComponent dst = new MolecularSequenceStructureVariantInnerComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequenceStructureVariantInnerComponent dst) {
+        super.copyValues(dst);
         dst.start = start == null ? null : start.copy();
         dst.end = end == null ? null : end.copy();
-        return dst;
       }
 
       @Override
@@ -6330,6 +6344,11 @@ public class MolecularSequence extends DomainResource {
       public MolecularSequence copy() {
         MolecularSequence dst = new MolecularSequence();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MolecularSequence dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -6370,7 +6389,6 @@ public class MolecularSequence extends DomainResource {
           for (MolecularSequenceStructureVariantComponent i : structureVariant)
             dst.structureVariant.add(i.copy());
         };
-        return dst;
       }
 
       protected MolecularSequence typedCopy() {
@@ -6684,4 +6702,3 @@ public class MolecularSequence extends DomainResource {
 
 
 }
-

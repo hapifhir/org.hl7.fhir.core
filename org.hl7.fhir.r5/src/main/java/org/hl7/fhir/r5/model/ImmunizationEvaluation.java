@@ -1,25 +1,7 @@
 package org.hl7.fhir.r5.model;
 
 
-/*
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the \"License\");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an \"AS IS\" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,19 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * Describes a comparison of an immunization event against published recommendations to determine if the administration is "valid" in relation to those  recommendations.
@@ -107,8 +85,8 @@ public class ImmunizationEvaluation extends DomainResource {
         }
         public String getSystem() {
           switch (this) {
-            case COMPLETED: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
-            case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
+            case COMPLETED: return "http://hl7.org/fhir/CodeSystem/medication-admin-status";
+            case ENTEREDINERROR: return "http://hl7.org/fhir/CodeSystem/medication-admin-status";
             default: return "?";
           }
         }
@@ -247,20 +225,20 @@ public class ImmunizationEvaluation extends DomainResource {
     protected StringType series;
 
     /**
-     * Nominal position in a series.
+     * Nominal position in a series as determined by the outcome of the evaluation process.
      */
-    @Child(name = "doseNumber", type = {PositiveIntType.class, StringType.class}, order=11, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Dose number within series", formalDefinition="Nominal position in a series." )
-    protected DataType doseNumber;
+    @Child(name = "doseNumber", type = {StringType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Dose number within series", formalDefinition="Nominal position in a series as determined by the outcome of the evaluation process." )
+    protected StringType doseNumber;
 
     /**
-     * The recommended number of doses to achieve immunity.
+     * The recommended number of doses to achieve immunity as determined by the outcome of the evaluation process.
      */
-    @Child(name = "seriesDoses", type = {PositiveIntType.class, StringType.class}, order=12, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Recommended number of doses for immunity", formalDefinition="The recommended number of doses to achieve immunity." )
-    protected DataType seriesDoses;
+    @Child(name = "seriesDoses", type = {StringType.class}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Recommended number of doses for immunity", formalDefinition="The recommended number of doses to achieve immunity as determined by the outcome of the evaluation process." )
+    protected StringType seriesDoses;
 
-    private static final long serialVersionUID = -1208122003L;
+    private static final long serialVersionUID = -434973409L;
 
   /**
    * Constructor
@@ -700,40 +678,19 @@ public class ImmunizationEvaluation extends DomainResource {
     }
 
     /**
-     * @return {@link #doseNumber} (Nominal position in a series.)
+     * @return {@link #doseNumber} (Nominal position in a series as determined by the outcome of the evaluation process.). This is the underlying object with id, value and extensions. The accessor "getDoseNumber" gives direct access to the value
      */
-    public DataType getDoseNumber() { 
+    public StringType getDoseNumberElement() { 
+      if (this.doseNumber == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ImmunizationEvaluation.doseNumber");
+        else if (Configuration.doAutoCreate())
+          this.doseNumber = new StringType(); // bb
       return this.doseNumber;
     }
 
-    /**
-     * @return {@link #doseNumber} (Nominal position in a series.)
-     */
-    public PositiveIntType getDoseNumberPositiveIntType() throws FHIRException { 
-      if (this.doseNumber == null)
-        this.doseNumber = new PositiveIntType();
-      if (!(this.doseNumber instanceof PositiveIntType))
-        throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.doseNumber.getClass().getName()+" was encountered");
-      return (PositiveIntType) this.doseNumber;
-    }
-
-    public boolean hasDoseNumberPositiveIntType() { 
-      return this != null && this.doseNumber instanceof PositiveIntType;
-    }
-
-    /**
-     * @return {@link #doseNumber} (Nominal position in a series.)
-     */
-    public StringType getDoseNumberStringType() throws FHIRException { 
-      if (this.doseNumber == null)
-        this.doseNumber = new StringType();
-      if (!(this.doseNumber instanceof StringType))
-        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.doseNumber.getClass().getName()+" was encountered");
-      return (StringType) this.doseNumber;
-    }
-
-    public boolean hasDoseNumberStringType() { 
-      return this != null && this.doseNumber instanceof StringType;
+    public boolean hasDoseNumberElement() { 
+      return this.doseNumber != null && !this.doseNumber.isEmpty();
     }
 
     public boolean hasDoseNumber() { 
@@ -741,50 +698,48 @@ public class ImmunizationEvaluation extends DomainResource {
     }
 
     /**
-     * @param value {@link #doseNumber} (Nominal position in a series.)
+     * @param value {@link #doseNumber} (Nominal position in a series as determined by the outcome of the evaluation process.). This is the underlying object with id, value and extensions. The accessor "getDoseNumber" gives direct access to the value
      */
-    public ImmunizationEvaluation setDoseNumber(DataType value) { 
-      if (value != null && !(value instanceof PositiveIntType || value instanceof StringType))
-        throw new Error("Not the right type for ImmunizationEvaluation.doseNumber[x]: "+value.fhirType());
+    public ImmunizationEvaluation setDoseNumberElement(StringType value) { 
       this.doseNumber = value;
       return this;
     }
 
     /**
-     * @return {@link #seriesDoses} (The recommended number of doses to achieve immunity.)
+     * @return Nominal position in a series as determined by the outcome of the evaluation process.
      */
-    public DataType getSeriesDoses() { 
+    public String getDoseNumber() { 
+      return this.doseNumber == null ? null : this.doseNumber.getValue();
+    }
+
+    /**
+     * @param value Nominal position in a series as determined by the outcome of the evaluation process.
+     */
+    public ImmunizationEvaluation setDoseNumber(String value) { 
+      if (Utilities.noString(value))
+        this.doseNumber = null;
+      else {
+        if (this.doseNumber == null)
+          this.doseNumber = new StringType();
+        this.doseNumber.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #seriesDoses} (The recommended number of doses to achieve immunity as determined by the outcome of the evaluation process.). This is the underlying object with id, value and extensions. The accessor "getSeriesDoses" gives direct access to the value
+     */
+    public StringType getSeriesDosesElement() { 
+      if (this.seriesDoses == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create ImmunizationEvaluation.seriesDoses");
+        else if (Configuration.doAutoCreate())
+          this.seriesDoses = new StringType(); // bb
       return this.seriesDoses;
     }
 
-    /**
-     * @return {@link #seriesDoses} (The recommended number of doses to achieve immunity.)
-     */
-    public PositiveIntType getSeriesDosesPositiveIntType() throws FHIRException { 
-      if (this.seriesDoses == null)
-        this.seriesDoses = new PositiveIntType();
-      if (!(this.seriesDoses instanceof PositiveIntType))
-        throw new FHIRException("Type mismatch: the type PositiveIntType was expected, but "+this.seriesDoses.getClass().getName()+" was encountered");
-      return (PositiveIntType) this.seriesDoses;
-    }
-
-    public boolean hasSeriesDosesPositiveIntType() { 
-      return this != null && this.seriesDoses instanceof PositiveIntType;
-    }
-
-    /**
-     * @return {@link #seriesDoses} (The recommended number of doses to achieve immunity.)
-     */
-    public StringType getSeriesDosesStringType() throws FHIRException { 
-      if (this.seriesDoses == null)
-        this.seriesDoses = new StringType();
-      if (!(this.seriesDoses instanceof StringType))
-        throw new FHIRException("Type mismatch: the type StringType was expected, but "+this.seriesDoses.getClass().getName()+" was encountered");
-      return (StringType) this.seriesDoses;
-    }
-
-    public boolean hasSeriesDosesStringType() { 
-      return this != null && this.seriesDoses instanceof StringType;
+    public boolean hasSeriesDosesElement() { 
+      return this.seriesDoses != null && !this.seriesDoses.isEmpty();
     }
 
     public boolean hasSeriesDoses() { 
@@ -792,12 +747,31 @@ public class ImmunizationEvaluation extends DomainResource {
     }
 
     /**
-     * @param value {@link #seriesDoses} (The recommended number of doses to achieve immunity.)
+     * @param value {@link #seriesDoses} (The recommended number of doses to achieve immunity as determined by the outcome of the evaluation process.). This is the underlying object with id, value and extensions. The accessor "getSeriesDoses" gives direct access to the value
      */
-    public ImmunizationEvaluation setSeriesDoses(DataType value) { 
-      if (value != null && !(value instanceof PositiveIntType || value instanceof StringType))
-        throw new Error("Not the right type for ImmunizationEvaluation.seriesDoses[x]: "+value.fhirType());
+    public ImmunizationEvaluation setSeriesDosesElement(StringType value) { 
       this.seriesDoses = value;
+      return this;
+    }
+
+    /**
+     * @return The recommended number of doses to achieve immunity as determined by the outcome of the evaluation process.
+     */
+    public String getSeriesDoses() { 
+      return this.seriesDoses == null ? null : this.seriesDoses.getValue();
+    }
+
+    /**
+     * @param value The recommended number of doses to achieve immunity as determined by the outcome of the evaluation process.
+     */
+    public ImmunizationEvaluation setSeriesDoses(String value) { 
+      if (Utilities.noString(value))
+        this.seriesDoses = null;
+      else {
+        if (this.seriesDoses == null)
+          this.seriesDoses = new StringType();
+        this.seriesDoses.setValue(value);
+      }
       return this;
     }
 
@@ -814,8 +788,8 @@ public class ImmunizationEvaluation extends DomainResource {
         children.add(new Property("doseStatusReason", "CodeableConcept", "Provides an explanation as to why the vaccine administration event is valid or not relative to the published recommendations.", 0, java.lang.Integer.MAX_VALUE, doseStatusReason));
         children.add(new Property("description", "string", "Additional information about the evaluation.", 0, 1, description));
         children.add(new Property("series", "string", "One possible path to achieve presumed immunity against a disease - within the context of an authority.", 0, 1, series));
-        children.add(new Property("doseNumber[x]", "positiveInt|string", "Nominal position in a series.", 0, 1, doseNumber));
-        children.add(new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses));
+        children.add(new Property("doseNumber", "string", "Nominal position in a series as determined by the outcome of the evaluation process.", 0, 1, doseNumber));
+        children.add(new Property("seriesDoses", "string", "The recommended number of doses to achieve immunity as determined by the outcome of the evaluation process.", 0, 1, seriesDoses));
       }
 
       @Override
@@ -832,14 +806,8 @@ public class ImmunizationEvaluation extends DomainResource {
         case 662783379: /*doseStatusReason*/  return new Property("doseStatusReason", "CodeableConcept", "Provides an explanation as to why the vaccine administration event is valid or not relative to the published recommendations.", 0, java.lang.Integer.MAX_VALUE, doseStatusReason);
         case -1724546052: /*description*/  return new Property("description", "string", "Additional information about the evaluation.", 0, 1, description);
         case -905838985: /*series*/  return new Property("series", "string", "One possible path to achieve presumed immunity against a disease - within the context of an authority.", 0, 1, series);
-        case -1632295686: /*doseNumber[x]*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position in a series.", 0, 1, doseNumber);
-        case -887709242: /*doseNumber*/  return new Property("doseNumber[x]", "positiveInt|string", "Nominal position in a series.", 0, 1, doseNumber);
-        case -1826134640: /*doseNumberPositiveInt*/  return new Property("doseNumber[x]", "positiveInt", "Nominal position in a series.", 0, 1, doseNumber);
-        case -333053577: /*doseNumberString*/  return new Property("doseNumber[x]", "string", "Nominal position in a series.", 0, 1, doseNumber);
-        case 1553560673: /*seriesDoses[x]*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
-        case -1936727105: /*seriesDoses*/  return new Property("seriesDoses[x]", "positiveInt|string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
-        case -220897801: /*seriesDosesPositiveInt*/  return new Property("seriesDoses[x]", "positiveInt", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
-        case -673569616: /*seriesDosesString*/  return new Property("seriesDoses[x]", "string", "The recommended number of doses to achieve immunity.", 0, 1, seriesDoses);
+        case -887709242: /*doseNumber*/  return new Property("doseNumber", "string", "Nominal position in a series as determined by the outcome of the evaluation process.", 0, 1, doseNumber);
+        case -1936727105: /*seriesDoses*/  return new Property("seriesDoses", "string", "The recommended number of doses to achieve immunity as determined by the outcome of the evaluation process.", 0, 1, seriesDoses);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -859,8 +827,8 @@ public class ImmunizationEvaluation extends DomainResource {
         case 662783379: /*doseStatusReason*/ return this.doseStatusReason == null ? new Base[0] : this.doseStatusReason.toArray(new Base[this.doseStatusReason.size()]); // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case -905838985: /*series*/ return this.series == null ? new Base[0] : new Base[] {this.series}; // StringType
-        case -887709242: /*doseNumber*/ return this.doseNumber == null ? new Base[0] : new Base[] {this.doseNumber}; // DataType
-        case -1936727105: /*seriesDoses*/ return this.seriesDoses == null ? new Base[0] : new Base[] {this.seriesDoses}; // DataType
+        case -887709242: /*doseNumber*/ return this.doseNumber == null ? new Base[0] : new Base[] {this.doseNumber}; // StringType
+        case -1936727105: /*seriesDoses*/ return this.seriesDoses == null ? new Base[0] : new Base[] {this.seriesDoses}; // StringType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -904,10 +872,10 @@ public class ImmunizationEvaluation extends DomainResource {
           this.series = TypeConvertor.castToString(value); // StringType
           return value;
         case -887709242: // doseNumber
-          this.doseNumber = TypeConvertor.castToType(value); // DataType
+          this.doseNumber = TypeConvertor.castToString(value); // StringType
           return value;
         case -1936727105: // seriesDoses
-          this.seriesDoses = TypeConvertor.castToType(value); // DataType
+          this.seriesDoses = TypeConvertor.castToString(value); // StringType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -939,10 +907,10 @@ public class ImmunizationEvaluation extends DomainResource {
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("series")) {
           this.series = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("doseNumber[x]")) {
-          this.doseNumber = TypeConvertor.castToType(value); // DataType
-        } else if (name.equals("seriesDoses[x]")) {
-          this.seriesDoses = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("doseNumber")) {
+          this.doseNumber = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("seriesDoses")) {
+          this.seriesDoses = TypeConvertor.castToString(value); // StringType
         } else
           return super.setProperty(name, value);
         return value;
@@ -962,10 +930,8 @@ public class ImmunizationEvaluation extends DomainResource {
         case 662783379:  return addDoseStatusReason(); 
         case -1724546052:  return getDescriptionElement();
         case -905838985:  return getSeriesElement();
-        case -1632295686:  return getDoseNumber();
-        case -887709242:  return getDoseNumber();
-        case 1553560673:  return getSeriesDoses();
-        case -1936727105:  return getSeriesDoses();
+        case -887709242:  return getDoseNumberElement();
+        case -1936727105:  return getSeriesDosesElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -985,8 +951,8 @@ public class ImmunizationEvaluation extends DomainResource {
         case 662783379: /*doseStatusReason*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"string"};
         case -905838985: /*series*/ return new String[] {"string"};
-        case -887709242: /*doseNumber*/ return new String[] {"positiveInt", "string"};
-        case -1936727105: /*seriesDoses*/ return new String[] {"positiveInt", "string"};
+        case -887709242: /*doseNumber*/ return new String[] {"string"};
+        case -1936727105: /*seriesDoses*/ return new String[] {"string"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1032,21 +998,11 @@ public class ImmunizationEvaluation extends DomainResource {
         else if (name.equals("series")) {
           throw new FHIRException("Cannot call addChild on a primitive type ImmunizationEvaluation.series");
         }
-        else if (name.equals("doseNumberPositiveInt")) {
-          this.doseNumber = new PositiveIntType();
-          return this.doseNumber;
+        else if (name.equals("doseNumber")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ImmunizationEvaluation.doseNumber");
         }
-        else if (name.equals("doseNumberString")) {
-          this.doseNumber = new StringType();
-          return this.doseNumber;
-        }
-        else if (name.equals("seriesDosesPositiveInt")) {
-          this.seriesDoses = new PositiveIntType();
-          return this.seriesDoses;
-        }
-        else if (name.equals("seriesDosesString")) {
-          this.seriesDoses = new StringType();
-          return this.seriesDoses;
+        else if (name.equals("seriesDoses")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ImmunizationEvaluation.seriesDoses");
         }
         else
           return super.addChild(name);
@@ -1115,7 +1071,8 @@ public class ImmunizationEvaluation extends DomainResource {
           return false;
         ImmunizationEvaluation o = (ImmunizationEvaluation) other_;
         return compareValues(status, o.status, true) && compareValues(date, o.date, true) && compareValues(description, o.description, true)
-           && compareValues(series, o.series, true);
+           && compareValues(series, o.series, true) && compareValues(doseNumber, o.doseNumber, true) && compareValues(seriesDoses, o.seriesDoses, true)
+          ;
       }
 
       public boolean isEmpty() {
@@ -1283,4 +1240,3 @@ public class ImmunizationEvaluation extends DomainResource {
 
 
 }
-

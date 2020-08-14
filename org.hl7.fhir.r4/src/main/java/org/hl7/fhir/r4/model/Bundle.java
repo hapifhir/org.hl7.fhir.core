@@ -1,26 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-import java.math.BigDecimal;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,21 +31,21 @@ import java.math.BigDecimal;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.instance.model.api.IBaseBundle;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
+import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A container for a collection of resources.
  */
@@ -750,9 +730,13 @@ public class Bundle extends Resource implements IBaseBundle {
       public BundleLinkComponent copy() {
         BundleLinkComponent dst = new BundleLinkComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BundleLinkComponent dst) {
+        super.copyValues(dst);
         dst.relation = relation == null ? null : relation.copy();
         dst.url = url == null ? null : url.copy();
-        return dst;
       }
 
       @Override
@@ -1230,6 +1214,11 @@ public class Bundle extends Resource implements IBaseBundle {
       public BundleEntryComponent copy() {
         BundleEntryComponent dst = new BundleEntryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BundleEntryComponent dst) {
+        super.copyValues(dst);
         if (link != null) {
           dst.link = new ArrayList<BundleLinkComponent>();
           for (BundleLinkComponent i : link)
@@ -1240,7 +1229,6 @@ public class Bundle extends Resource implements IBaseBundle {
         dst.search = search == null ? null : search.copy();
         dst.request = request == null ? null : request.copy();
         dst.response = response == null ? null : response.copy();
-        return dst;
       }
 
       @Override
@@ -1507,9 +1495,13 @@ public class Bundle extends Resource implements IBaseBundle {
       public BundleEntrySearchComponent copy() {
         BundleEntrySearchComponent dst = new BundleEntrySearchComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BundleEntrySearchComponent dst) {
+        super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
         dst.score = score == null ? null : score.copy();
-        return dst;
       }
 
       @Override
@@ -2032,13 +2024,17 @@ public class Bundle extends Resource implements IBaseBundle {
       public BundleEntryRequestComponent copy() {
         BundleEntryRequestComponent dst = new BundleEntryRequestComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BundleEntryRequestComponent dst) {
+        super.copyValues(dst);
         dst.method = method == null ? null : method.copy();
         dst.url = url == null ? null : url.copy();
         dst.ifNoneMatch = ifNoneMatch == null ? null : ifNoneMatch.copy();
         dst.ifModifiedSince = ifModifiedSince == null ? null : ifModifiedSince.copy();
         dst.ifMatch = ifMatch == null ? null : ifMatch.copy();
         dst.ifNoneExist = ifNoneExist == null ? null : ifNoneExist.copy();
-        return dst;
       }
 
       @Override
@@ -2467,12 +2463,16 @@ public class Bundle extends Resource implements IBaseBundle {
       public BundleEntryResponseComponent copy() {
         BundleEntryResponseComponent dst = new BundleEntryResponseComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BundleEntryResponseComponent dst) {
+        super.copyValues(dst);
         dst.status = status == null ? null : status.copy();
         dst.location = location == null ? null : location.copy();
         dst.etag = etag == null ? null : etag.copy();
         dst.lastModified = lastModified == null ? null : lastModified.copy();
         dst.outcome = outcome == null ? null : outcome.copy();
-        return dst;
       }
 
       @Override
@@ -3076,6 +3076,11 @@ public class Bundle extends Resource implements IBaseBundle {
       public Bundle copy() {
         Bundle dst = new Bundle();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Bundle dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.type = type == null ? null : type.copy();
         dst.timestamp = timestamp == null ? null : timestamp.copy();
@@ -3091,7 +3096,6 @@ public class Bundle extends Resource implements IBaseBundle {
             dst.entry.add(i.copy());
         };
         dst.signature = signature == null ? null : signature.copy();
-        return dst;
       }
 
       protected Bundle typedCopy() {
@@ -3245,4 +3249,3 @@ public class Bundle extends Resource implements IBaseBundle {
 
 
 }
-

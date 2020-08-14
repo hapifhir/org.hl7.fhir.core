@@ -1,11 +1,43 @@
 package org.hl7.fhir.r5.model;
 
+
+
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, \
+  are permitted provided that the following conditions are met:
+  
+   * Redistributions of source code must retain the above copyright notice, this \
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
+  POSSIBILITY OF SUCH DAMAGE.
+  */
+
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+
+
+
 import org.hl7.fhir.exceptions.FHIRException;
 
-// Generated on Thu, Oct 17, 2019 19:56+1100 for FHIR v4.1.0
-
 public enum ResourceType {
-    Account,
+Account,
     ActivityDefinition,
     AdministrableProductDefinition,
     AdverseEvent,
@@ -25,6 +57,7 @@ public enum ResourceType {
     CatalogEntry,
     ChargeItem,
     ChargeItemDefinition,
+    Citation,
     Claim,
     ClaimResponse,
     ClinicalImpression,
@@ -58,6 +91,7 @@ public enum ResourceType {
     EpisodeOfCare,
     EventDefinition,
     Evidence,
+    EvidenceFocus,
     EvidenceVariable,
     ExampleScenario,
     ExplanationOfBenefit,
@@ -96,6 +130,7 @@ public enum ResourceType {
     NamingSystem,
     NutritionIntake,
     NutritionOrder,
+    NutritionProduct,
     Observation,
     ObservationDefinition,
     OperationDefinition,
@@ -107,6 +142,7 @@ public enum ResourceType {
     Patient,
     PaymentNotice,
     PaymentReconciliation,
+    Permission,
     Person,
     PlanDefinition,
     Practitioner,
@@ -130,6 +166,8 @@ public enum ResourceType {
     StructureDefinition,
     StructureMap,
     Subscription,
+    SubscriptionStatus,
+    SubscriptionTopic,
     Substance,
     SubstanceDefinition,
     SubstanceNucleicAcid,
@@ -143,7 +181,6 @@ public enum ResourceType {
     TerminologyCapabilities,
     TestReport,
     TestScript,
-    Topic,
     ValueSet,
     VerificationResult,
     VisionPrescription;
@@ -191,6 +228,8 @@ public enum ResourceType {
       return "chargeitem";
     case ChargeItemDefinition:
       return "chargeitemdefinition";
+    case Citation:
+      return "citation";
     case Claim:
       return "claim";
     case ClaimResponse:
@@ -257,6 +296,8 @@ public enum ResourceType {
       return "eventdefinition";
     case Evidence:
       return "evidence";
+    case EvidenceFocus:
+      return "evidencefocus";
     case EvidenceVariable:
       return "evidencevariable";
     case ExampleScenario:
@@ -333,6 +374,8 @@ public enum ResourceType {
       return "nutritionintake";
     case NutritionOrder:
       return "nutritionorder";
+    case NutritionProduct:
+      return "nutritionproduct";
     case Observation:
       return "observation";
     case ObservationDefinition:
@@ -355,6 +398,8 @@ public enum ResourceType {
       return "paymentnotice";
     case PaymentReconciliation:
       return "paymentreconciliation";
+    case Permission:
+      return "permission";
     case Person:
       return "person";
     case PlanDefinition:
@@ -401,6 +446,10 @@ public enum ResourceType {
       return "structuremap";
     case Subscription:
       return "subscription";
+    case SubscriptionStatus:
+      return "subscriptionstatus";
+    case SubscriptionTopic:
+      return "subscriptiontopic";
     case Substance:
       return "substance";
     case SubstanceDefinition:
@@ -427,16 +476,15 @@ public enum ResourceType {
       return "testreport";
     case TestScript:
       return "testscript";
-    case Topic:
-      return "topic";
     case ValueSet:
       return "valueset";
     case VerificationResult:
       return "verificationresult";
     case VisionPrescription:
       return "visionprescription";
+
     }
-      return null;
+    return null;
   }
 
 
@@ -481,6 +529,8 @@ public enum ResourceType {
       return ChargeItem;
     if ("ChargeItemDefinition".equals(code))
       return ChargeItemDefinition;
+    if ("Citation".equals(code))
+      return Citation;
     if ("Claim".equals(code))
       return Claim;
     if ("ClaimResponse".equals(code))
@@ -547,6 +597,8 @@ public enum ResourceType {
       return EventDefinition;
     if ("Evidence".equals(code))
       return Evidence;
+    if ("EvidenceFocus".equals(code))
+      return EvidenceFocus;
     if ("EvidenceVariable".equals(code))
       return EvidenceVariable;
     if ("ExampleScenario".equals(code))
@@ -623,6 +675,8 @@ public enum ResourceType {
       return NutritionIntake;
     if ("NutritionOrder".equals(code))
       return NutritionOrder;
+    if ("NutritionProduct".equals(code))
+      return NutritionProduct;
     if ("Observation".equals(code))
       return Observation;
     if ("ObservationDefinition".equals(code))
@@ -645,6 +699,8 @@ public enum ResourceType {
       return PaymentNotice;
     if ("PaymentReconciliation".equals(code))
       return PaymentReconciliation;
+    if ("Permission".equals(code))
+      return Permission;
     if ("Person".equals(code))
       return Person;
     if ("PlanDefinition".equals(code))
@@ -691,6 +747,10 @@ public enum ResourceType {
       return StructureMap;
     if ("Subscription".equals(code))
       return Subscription;
+    if ("SubscriptionStatus".equals(code))
+      return SubscriptionStatus;
+    if ("SubscriptionTopic".equals(code))
+      return SubscriptionTopic;
     if ("Substance".equals(code))
       return Substance;
     if ("SubstanceDefinition".equals(code))
@@ -717,8 +777,6 @@ public enum ResourceType {
       return TestReport;
     if ("TestScript".equals(code))
       return TestScript;
-    if ("Topic".equals(code))
-      return Topic;
     if ("ValueSet".equals(code))
       return ValueSet;
     if ("VerificationResult".equals(code))

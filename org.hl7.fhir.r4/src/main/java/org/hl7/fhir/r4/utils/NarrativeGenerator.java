@@ -1,24 +1,34 @@
 package org.hl7.fhir.r4.utils;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
  */
+
 
 
 import org.apache.commons.codec.binary.Base64;
@@ -2882,38 +2892,47 @@ public class NarrativeGenerator implements INarrativeGenerator {
   @SuppressWarnings("rawtypes")
   private void generateVersionNotice(XhtmlNode x, ValueSetExpansionComponent expansion) {
     Map<String, String> versions = new HashMap<String, String>();
+    boolean firstVersion = true;
     for (ValueSetExpansionParameterComponent p : expansion.getParameter()) {
       if (p.getName().equals("version")) {
         String[] parts = ((PrimitiveType) p.getValue()).asStringValue().split("\\|");
         if (parts.length == 2)
           versions.put(parts[0], parts[1]);
-      }
-    }
-    if (!versions.isEmpty()) {
-      StringBuilder b = new StringBuilder();
-      b.append("Expansion based on ");
-      boolean first = true;
-      for (String s : versions.keySet()) {
-        if (first)
-          first = false;
-        else
-          b.append(", ");
-        if (!s.equals("http://snomed.info/sct"))
-          b.append(describeSystem(s)+" version "+versions.get(s));
-        else {
-          String[] parts = versions.get(s).split("\\/");
-          if (parts.length >= 5) {
-            String m = describeModule(parts[4]);
-            if (parts.length == 7)
-              b.append("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
+        if (!versions.isEmpty()) {
+          StringBuilder b = new StringBuilder();
+          if (firstVersion) {
+            // the first version
+            // set the <p> tag and style attribute
+            x.para().setAttribute("style", "border: black 1px dotted; background-color: #EEEEEE; padding: 8px");
+        	  firstVersion = false;
+          } else {
+            // the second (or greater) version
+            x.br(); // add line break before the version text
+          }
+          b.append("Expansion based on ");
+          boolean firstPart = true;
+          for (String s : versions.keySet()) {
+            if (firstPart)
+              firstPart = false;
             else
-              b.append("SNOMED CT "+m+" edition");
-          } else
-            b.append(describeSystem(s)+" version "+versions.get(s));
+              b.append(", ");
+            if (!s.equals("http://snomed.info/sct"))
+              b.append(describeSystem(s)+" version "+versions.get(s));
+            else {
+              parts = versions.get(s).split("\\/");
+              if (parts.length >= 5) {
+                String m = describeModule(parts[4]);
+                if (parts.length == 7)
+                  b.append("SNOMED CT "+m+" edition "+formatSCTDate(parts[6]));
+                else
+                  b.append("SNOMED CT "+m+" edition");
+              } else
+                b.append(describeSystem(s)+" version "+versions.get(s));
+            }
+          }
+          x.addText(b.toString()); // add the version text
         }
       }
-
-      x.para().setAttribute("style", "border: black 1px dotted; background-color: #EEEEEE; padding: 8px").addText(b.toString());
     }
   }
 

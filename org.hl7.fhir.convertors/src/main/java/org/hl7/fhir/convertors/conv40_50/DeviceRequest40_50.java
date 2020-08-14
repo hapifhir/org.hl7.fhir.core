@@ -1,24 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50;
 
-/*-
- * #%L
- * org.hl7.fhir.convertors
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
@@ -72,8 +54,11 @@ public class DeviceRequest40_50 extends VersionConvertor_40_50 {
             tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
             tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
-        if (src.hasCode())
-            tgt.setCode(convertType(src.getCode()));
+        if (src.hasCodeCodeableConcept())
+            tgt.getCode().setConcept(convertCodeableConcept(src.getCodeCodeableConcept()));
+        else if (src.hasCodeReference())
+          tgt.getCode().setReference(convertReference(src.getCodeReference()));
+       
         for (org.hl7.fhir.r4.model.DeviceRequest.DeviceRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertDeviceRequestParameterComponent(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));
@@ -116,8 +101,10 @@ public class DeviceRequest40_50 extends VersionConvertor_40_50 {
             tgt.setIntentElement(convertRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
             tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
-        if (src.hasCode())
-            tgt.setCode(convertType(src.getCode()));
+        if (src.getCode().hasConcept())
+            tgt.setCode(convertType(src.getCode().getConcept()));
+        if (src.getCode().hasReference())
+            tgt.setCode(convertType(src.getCode().getReference()));
         for (org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestParameterComponent t : src.getParameter()) tgt.addParameter(convertDeviceRequestParameterComponent(t));
         if (src.hasSubject())
             tgt.setSubject(convertReference(src.getSubject()));

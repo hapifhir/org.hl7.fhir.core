@@ -1,25 +1,9 @@
 package org.hl7.fhir.r5.model;
 
 
-/*
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the \"License\");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an \"AS IS\" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
+
+import java.math.BigDecimal;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,24 +33,25 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.math.*;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.r5.model.Enumerations.AdministrativeGender;
+import org.hl7.fhir.r5.model.Enumerations.AdministrativeGenderEnumFactory;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.annotation.Block;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * Set of definitional characteristics for a kind of observation or measurement produced or consumed by an orderable health care service.
@@ -1391,17 +1376,17 @@ public class ObservationDefinition extends DomainResource {
         protected List<Enumeration<ObservationDataType>> permittedDataType;
 
         /**
-         * The quantitative details specified.
+         * Characteristics for quantitative results of this observation.
          */
         @Child(name = "quantitativeDetails", type = {ObservationDefinitionQuantitativeDetailsComponent.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Quantitative details", formalDefinition="The quantitative details specified." )
+        @Description(shortDefinition="Characteristics of quantitative results", formalDefinition="Characteristics for quantitative results of this observation." )
         protected ObservationDefinitionQuantitativeDetailsComponent quantitativeDetails;
 
         /**
-         * The qualified interval specified.
+         * Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.
          */
         @Child(name = "qualifiedInterval", type = {ObservationDefinitionQualifiedIntervalComponent.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Qualified interval", formalDefinition="The qualified interval specified." )
+        @Description(shortDefinition="Qualified range for continuous and ordinal observation results", formalDefinition="Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition." )
         protected List<ObservationDefinitionQualifiedIntervalComponent> qualifiedInterval;
 
         private static final long serialVersionUID = 527664521L;
@@ -1507,7 +1492,7 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #quantitativeDetails} (The quantitative details specified.)
+         * @return {@link #quantitativeDetails} (Characteristics for quantitative results of this observation.)
          */
         public ObservationDefinitionQuantitativeDetailsComponent getQuantitativeDetails() { 
           if (this.quantitativeDetails == null)
@@ -1523,7 +1508,7 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #quantitativeDetails} (The quantitative details specified.)
+         * @param value {@link #quantitativeDetails} (Characteristics for quantitative results of this observation.)
          */
         public ObservationDefinitionComponentComponent setQuantitativeDetails(ObservationDefinitionQuantitativeDetailsComponent value) { 
           this.quantitativeDetails = value;
@@ -1531,7 +1516,7 @@ public class ObservationDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #qualifiedInterval} (The qualified interval specified.)
+         * @return {@link #qualifiedInterval} (Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.)
          */
         public List<ObservationDefinitionQualifiedIntervalComponent> getQualifiedInterval() { 
           if (this.qualifiedInterval == null)
@@ -1587,8 +1572,8 @@ public class ObservationDefinition extends DomainResource {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "Describes what will be observed.", 0, 1, code));
           children.add(new Property("permittedDataType", "code", "The data types allowed for the value element of the instance of this component observations.", 0, java.lang.Integer.MAX_VALUE, permittedDataType));
-          children.add(new Property("quantitativeDetails", "@ObservationDefinition.quantitativeDetails", "The quantitative details specified.", 0, 1, quantitativeDetails));
-          children.add(new Property("qualifiedInterval", "@ObservationDefinition.qualifiedInterval", "The qualified interval specified.", 0, java.lang.Integer.MAX_VALUE, qualifiedInterval));
+          children.add(new Property("quantitativeDetails", "@ObservationDefinition.quantitativeDetails", "Characteristics for quantitative results of this observation.", 0, 1, quantitativeDetails));
+          children.add(new Property("qualifiedInterval", "@ObservationDefinition.qualifiedInterval", "Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.", 0, java.lang.Integer.MAX_VALUE, qualifiedInterval));
         }
 
         @Override
@@ -1596,8 +1581,8 @@ public class ObservationDefinition extends DomainResource {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Describes what will be observed.", 0, 1, code);
           case -99492804: /*permittedDataType*/  return new Property("permittedDataType", "code", "The data types allowed for the value element of the instance of this component observations.", 0, java.lang.Integer.MAX_VALUE, permittedDataType);
-          case 842150763: /*quantitativeDetails*/  return new Property("quantitativeDetails", "@ObservationDefinition.quantitativeDetails", "The quantitative details specified.", 0, 1, quantitativeDetails);
-          case 1882971521: /*qualifiedInterval*/  return new Property("qualifiedInterval", "@ObservationDefinition.qualifiedInterval", "The qualified interval specified.", 0, java.lang.Integer.MAX_VALUE, qualifiedInterval);
+          case 842150763: /*quantitativeDetails*/  return new Property("quantitativeDetails", "@ObservationDefinition.quantitativeDetails", "Characteristics for quantitative results of this observation.", 0, 1, quantitativeDetails);
+          case 1882971521: /*qualifiedInterval*/  return new Property("qualifiedInterval", "@ObservationDefinition.qualifiedInterval", "Multiple  ranges of results qualified by different contexts for ordinal or continuous observations conforming to this ObservationDefinition.", 0, java.lang.Integer.MAX_VALUE, qualifiedInterval);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1884,7 +1869,7 @@ public class ObservationDefinition extends DomainResource {
      * The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.
      */
     @Child(name = "lastReviewDate", type = {DateType.class}, order=18, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Last review date for the ObservationDefinition", formalDefinition="The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date." )
+    @Description(shortDefinition="Date on which the asset content was last reviewed", formalDefinition="The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
@@ -1905,7 +1890,7 @@ public class ObservationDefinition extends DomainResource {
      * A code that classifies the general type of observation.
      */
     @Child(name = "category", type = {CodeableConcept.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Category of observation", formalDefinition="A code that classifies the general type of observation." )
+    @Description(shortDefinition="General type of observation", formalDefinition="A code that classifies the general type of observation." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/observation-category")
     protected List<CodeableConcept> category;
 
@@ -1929,7 +1914,7 @@ public class ObservationDefinition extends DomainResource {
      * Multiple results allowed for observations conforming to this ObservationDefinition.
      */
     @Child(name = "multipleResultsAllowed", type = {BooleanType.class}, order=24, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Multiple results allowed", formalDefinition="Multiple results allowed for observations conforming to this ObservationDefinition." )
+    @Description(shortDefinition="Multiple results allowed for conforming observations", formalDefinition="Multiple results allowed for observations conforming to this ObservationDefinition." )
     protected BooleanType multipleResultsAllowed;
 
     /**
@@ -1966,7 +1951,7 @@ public class ObservationDefinition extends DomainResource {
      * The preferred name to be used when reporting the results of observations conforming to this ObservationDefinition.
      */
     @Child(name = "preferredReportName", type = {StringType.class}, order=29, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Preferred report name", formalDefinition="The preferred name to be used when reporting the results of observations conforming to this ObservationDefinition." )
+    @Description(shortDefinition="The preferred name to be used when reporting the observation results", formalDefinition="The preferred name to be used when reporting the results of observations conforming to this ObservationDefinition." )
     protected StringType preferredReportName;
 
     /**
@@ -4480,6 +4465,25 @@ public class ObservationDefinition extends DomainResource {
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
 
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the observation definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ObservationDefinition.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="ObservationDefinition.url", description="The uri that identifies the observation definition", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the observation definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>ObservationDefinition.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
 
 }
-

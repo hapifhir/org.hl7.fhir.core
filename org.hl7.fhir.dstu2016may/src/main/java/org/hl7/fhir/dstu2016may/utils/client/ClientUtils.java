@@ -1,24 +1,6 @@
 package org.hl7.fhir.dstu2016may.utils.client;
 
-/*-
- * #%L
- * org.hl7.fhir.dstu2016may
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 
 
@@ -56,21 +38,25 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -99,6 +85,8 @@ import org.hl7.fhir.dstu2016may.model.OperationOutcome.OperationOutcomeIssueComp
 import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.dstu2016may.model.ResourceType;
 import org.hl7.fhir.dstu2016may.utils.ResourceUtilities;
+import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.Utilities;
 
 /**
  * Helper class handling lower level HTTP transport concerns.
@@ -107,56 +95,107 @@ import org.hl7.fhir.dstu2016may.utils.ResourceUtilities;
  */
 public class ClientUtils {
 	
-	public static String DEFAULT_CHARSET = "UTF-8";
+  public static final String DEFAULT_CHARSET = "UTF-8";
 	public static final String HEADER_LOCATION = "location";
+  private static boolean debugging = false;
 	
-	public static <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat, HttpHost proxy) {
+  private HttpHost proxy;
+  private int timeout = 5000;
+  private String username;
+  private String password;
+  private ToolingClientLogger logger;
+  private int retryCount;
+
+  public HttpHost getProxy() {
+    return proxy;
+  }
+
+  public void setProxy(HttpHost proxy) {
+    this.proxy = proxy;
+  }
+
+  public int getTimeout() {
+    return timeout;
+  }
+
+  public void setTimeout(int timeout) {
+    this.timeout = timeout;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat, int timeoutLoading) {
 		HttpOptions options = new HttpOptions(optionsUri);
-		return issueResourceRequest(resourceFormat, options, proxy);
+    return issueResourceRequest(resourceFormat, options, timeoutLoading);
 	}
 	
-	public static <T extends Resource> ResourceRequest<T> issueGetResourceRequest(URI resourceUri, String resourceFormat, HttpHost proxy) {
+  public <T extends Resource> ResourceRequest<T> issueGetResourceRequest(URI resourceUri, String resourceFormat, int timeoutLoading) {
 		HttpGet httpget = new HttpGet(resourceUri);
-		return issueResourceRequest(resourceFormat, httpget, proxy);
+    return issueResourceRequest(resourceFormat, httpget, timeoutLoading);
 	}
 	
-	public static <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, HttpHost proxy) {
+  public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, int timeoutLoading) {
 		HttpPut httpPut = new HttpPut(resourceUri);
-		return issueResourceRequest(resourceFormat, httpPut, payload, headers, proxy);
+    return issueResourceRequest(resourceFormat, httpPut, payload, headers, timeoutLoading);
 	}
 	
-	public static <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, HttpHost proxy) {
+  public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
 		HttpPut httpPut = new HttpPut(resourceUri);
-		return issueResourceRequest(resourceFormat, httpPut, payload, null, proxy);
+    return issueResourceRequest(resourceFormat, httpPut, payload, null, timeoutLoading);
 	}
 	
-	public static <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, HttpHost proxy) {
+  public <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload, String resourceFormat, List<Header> headers, int timeoutLoading) {
 		HttpPost httpPost = new HttpPost(resourceUri);
-		return issueResourceRequest(resourceFormat, httpPost, payload, headers, proxy);
+    return issueResourceRequest(resourceFormat, httpPost, payload, headers, timeoutLoading);
 	}
 	
 	
-	public static <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload, String resourceFormat, HttpHost proxy) {
-		return issuePostRequest(resourceUri, payload, resourceFormat, null, proxy);
+  public <T extends Resource> ResourceRequest<T> issuePostRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
+    return issuePostRequest(resourceUri, payload, resourceFormat, null, timeoutLoading);
 	}
 	
-	public static Bundle issueGetFeedRequest(URI resourceUri, String resourceFormat, HttpHost proxy) {
+  public Bundle issueGetFeedRequest(URI resourceUri, String resourceFormat) {
 		HttpGet httpget = new HttpGet(resourceUri);
 		configureFhirRequest(httpget, resourceFormat);
-		HttpResponse response = sendRequest(httpget, proxy);
+    HttpResponse response = sendRequest(httpget);
 		return unmarshalReference(response, resourceFormat);
 	}
 	
-	public static Bundle postBatchRequest(URI resourceUri, byte[] payload, String resourceFormat, HttpHost proxy) {
+  private void setAuth(HttpRequest httpget) {
+    if (password != null) {
+      try {
+        byte[] b = Base64.encodeBase64((username+":"+password).getBytes("ASCII"));
+        String b64 = new String(b, StandardCharsets.US_ASCII);
+        httpget.setHeader("Authorization", "Basic " + b64);
+      } catch (UnsupportedEncodingException e) {
+      }
+    }
+  }
+
+  public Bundle postBatchRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
 		HttpPost httpPost = new HttpPost(resourceUri);
 		configureFhirRequest(httpPost, resourceFormat);
-		HttpResponse response = sendPayload(httpPost, payload, proxy);
+    HttpResponse response = sendPayload(httpPost, payload, proxy, timeoutLoading);
         return unmarshalFeed(response, resourceFormat);
 	}
 	
-	public static boolean issueDeleteRequest(URI resourceUri, HttpHost proxy) {
+  public boolean issueDeleteRequest(URI resourceUri) {
 		HttpDelete deleteRequest = new HttpDelete(resourceUri);
-		HttpResponse response = sendRequest(deleteRequest, proxy);
+    HttpResponse response = sendRequest(deleteRequest);
 		int responseStatusCode = response.getStatusLine().getStatusCode();
 		boolean deletionSuccessful = false;
 		if(responseStatusCode == 204) {
@@ -169,8 +208,8 @@ public class ClientUtils {
 	 * Request/Response Helper methods
 	 ***********************************************************/
 	
-	protected static <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, HttpHost proxy) {
-		return issueResourceRequest(resourceFormat, request, null, proxy);
+  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, int timeoutLoading) {
+    return issueResourceRequest(resourceFormat, request, null, timeoutLoading);
 	}
 	
 	/**
@@ -178,8 +217,8 @@ public class ClientUtils {
 	 * @param options
 	 * @return
 	 */
-	protected static <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, byte[] payload, HttpHost proxy) {
-		return issueResourceRequest(resourceFormat, request, payload, null, proxy);
+  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, byte[] payload, int timeoutLoading) {
+    return issueResourceRequest(resourceFormat, request, payload, null, timeoutLoading);
 	}
 	
 	/**
@@ -187,18 +226,18 @@ public class ClientUtils {
 	 * @param options
 	 * @return
 	 */
-	protected static <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, byte[] payload, List<Header> headers, HttpHost proxy) {
+  protected <T extends Resource> ResourceRequest<T> issueResourceRequest(String resourceFormat, HttpUriRequest request, byte[] payload, List<Header> headers, int timeoutLoading) {
 		configureFhirRequest(request, resourceFormat, headers);
 		HttpResponse response = null;
 		if(request instanceof HttpEntityEnclosingRequest && payload != null) {
-			response = sendPayload((HttpEntityEnclosingRequestBase)request, payload, proxy);
+      response = sendPayload((HttpEntityEnclosingRequestBase)request, payload, proxy, timeoutLoading);
 		} else if (request instanceof HttpEntityEnclosingRequest && payload == null){
 			throw new EFhirClientException("PUT and POST requests require a non-null payload");
 		} else {
-			response = sendRequest(request, proxy);
+      response = sendRequest(request);
 		}
 		T resource = unmarshalReference(response, resourceFormat);
-		return new ResourceRequest<T>(resource, response.getStatusLine().getStatusCode(), ClientUtils.getLocationHeader(response));
+    return new ResourceRequest<T>(resource, response.getStatusLine().getStatusCode(), getLocationHeader(response));
 	}
 	
 	
@@ -208,7 +247,7 @@ public class ClientUtils {
 	 * 
 	 * @param request
 	 */
-	protected static void configureFhirRequest(HttpRequest request, String format) {
+  protected void configureFhirRequest(HttpRequest request, String format) {
 		configureFhirRequest(request, format, null);
 	}
 	
@@ -218,7 +257,7 @@ public class ClientUtils {
 	 * 
 	 * @param request
 	 */
-		protected static void configureFhirRequest(HttpRequest request, String format, List<Header> headers) {
+  protected void configureFhirRequest(HttpRequest request, String format, List<Header> headers) {
 		request.addHeader("User-Agent", "Java FHIR Client for FHIR");
 
 		if (format != null) {		
@@ -231,6 +270,7 @@ public class ClientUtils {
 				request.addHeader(header);
 			}
 		}
+    setAuth(request);
 	}
 	
 	/**
@@ -240,17 +280,35 @@ public class ClientUtils {
 	 * @param payload
 	 * @return
 	 */
-	protected static HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload, HttpHost proxy) {
+  @SuppressWarnings({ "resource", "deprecation" })
+  protected HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload, HttpHost proxy, int timeoutLoading) {
 		HttpResponse response = null;
+		boolean ok = false;
+    long t = System.currentTimeMillis();
+		int tryCount = 0;
+		while (!ok) {
 		try {
+		    tryCount++;
 			HttpClient httpclient = new DefaultHttpClient();
+        HttpParams params = httpclient.getParams();
+        HttpConnectionParams.setConnectionTimeout(params, timeout);
+        HttpConnectionParams.setSoTimeout(params, timeout * timeoutLoading);
+
 			if(proxy != null) {
 				httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 			}
 			request.setEntity(new ByteArrayEntity(payload));
+      log(request);
 			response = httpclient.execute(request);
+		    ok = true;
 		} catch(IOException ioe) {
-			throw new EFhirClientException("Error sending HTTP Post/Put Payload", ioe);
+        System.out.println(ioe.getMessage()+" ("+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+")");
+        if (tryCount <= retryCount || (tryCount < 3 && ioe instanceof org.apache.http.conn.ConnectTimeoutException)) {
+		      ok = false;
+		    } else {
+			throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);
+		}
+		  }
 		}
 		return response;
 	}
@@ -261,20 +319,23 @@ public class ClientUtils {
 	 * @param payload
 	 * @return
 	 */
-	protected static HttpResponse sendRequest(HttpUriRequest request, HttpHost proxy) {
+  protected HttpResponse sendRequest(HttpUriRequest request) {
 		HttpResponse response = null;
 		try {
 			HttpClient httpclient = new DefaultHttpClient();
-			
+      log(request);
 			HttpParams params = httpclient.getParams();
-			HttpConnectionParams.setConnectionTimeout(params, 5000);
-			HttpConnectionParams.setSoTimeout(params, 5000);
+      HttpConnectionParams.setConnectionTimeout(params, timeout);
+      HttpConnectionParams.setSoTimeout(params, timeout);
 			if(proxy != null) {
 				httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 			}
 			response = httpclient.execute(request);
 		} catch(IOException ioe) {
-			throw new EFhirClientException("Error sending Http Request", ioe);
+      if (ClientUtils.debugging ) {
+        ioe.printStackTrace();
+      }
+      throw new EFhirClientException("Error sending Http Request: "+ioe.getMessage(), ioe);
 		}
 		return response;
 	}
@@ -286,29 +347,24 @@ public class ClientUtils {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	protected static <T extends Resource> T unmarshalReference(HttpResponse response, String format) {
+  protected <T extends Resource> T unmarshalReference(HttpResponse response, String format) {
 		T resource = null;
 		OperationOutcome error = null;
-		InputStream instream = null;
-		HttpEntity entity = response.getEntity();
-		if (entity != null && entity.getContentLength() != 0) {
-			try {
-			    instream = entity.getContent();
-//			    System.out.println(writeInputStreamAsString(instream));
-			    resource = (T)getParser(format).parse(instream);
+    byte[] cnt = log(response);
+    if (cnt != null) {
+      try {
+        resource = (T)getParser(format).parse(cnt);
 	    		if (resource instanceof OperationOutcome && hasError((OperationOutcome)resource)) {
 	    			error = (OperationOutcome) resource;
 	    		}
 			} catch(IOException ioe) {
-				throw new EFhirClientException("Error unmarshalling entity from Http Response", ioe);
+        throw new EFhirClientException("Error reading Http Response: "+ioe.getMessage(), ioe);
 			} catch(Exception e) {
-				throw new EFhirClientException("Error parsing response message", e);
-			} finally {
-				try{instream.close();}catch(IOException ioe){/* TODO log error */}
+        throw new EFhirClientException("Error parsing response message: "+e.getMessage(), e);
 			}
 		}
 		if(error != null) {
-			throw new EFhirClientException("Error unmarshalling resource: "+ResourceUtilities.getErrorDescription(error), error);
+      throw new EFhirClientException("Error from server: "+ResourceUtilities.getErrorDescription(error), error);
 		}
 		return resource;
 	}
@@ -319,50 +375,43 @@ public class ClientUtils {
 	 * @param response
 	 * @return
 	 */
-	protected static Bundle unmarshalFeed(HttpResponse response, String format) {
+  protected Bundle unmarshalFeed(HttpResponse response, String format) {
     Bundle feed = null;
-		InputStream instream = null;
-		HttpEntity entity = response.getEntity();
+    byte[] cnt = log(response);
 		String contentType = response.getHeaders("Content-Type")[0].getValue();
 		OperationOutcome error = null;
 		try {
-			if (entity != null) {
-			    instream = entity.getContent();
+      if (cnt != null) {
 			    if(contentType.contains(ResourceFormat.RESOURCE_XML.getHeader()) || contentType.contains("text/xml+fhir")) {
-//			    	error = (OperationOutcome)getParser(ResourceFormat.RESOURCE_XML.getHeader()).parse(instream);
-//			    } else {
-			    	Resource rf = getParser(format).parse(instream);
+          Resource rf = getParser(format).parse(cnt);
 			    	if (rf instanceof Bundle)
 			    	  feed = (Bundle) rf;
 			    	else if (rf instanceof OperationOutcome && hasError((OperationOutcome) rf)) {
 			    		error = (OperationOutcome) rf;
 			    		} else {
-			    			throw new EFhirClientException("Error unmarshalling feed from Http Response: a resource was returned instead");
+            throw new EFhirClientException("Error reading server response: a resource was returned instead");
 			    		}
 			    }
-			    instream.close();
 			}
 		} catch(IOException ioe) {
-			throw new EFhirClientException("Error unmarshalling feed from Http Response", ioe);
+      throw new EFhirClientException("Error reading Http Response", ioe);
 		} catch(Exception e) {
 			throw new EFhirClientException("Error parsing response message", e);
-		} finally {
-			try{instream.close();}catch(IOException ioe){/* TODO log error */}
 		}
 		if(error != null) {
-			throw new EFhirClientException("Error unmarshalling feed: "+ResourceUtilities.getErrorDescription(error), error);
+      throw new EFhirClientException("Error from server: "+ResourceUtilities.getErrorDescription(error), error);
 		}
 		return feed;
 	}
 	
-	private static boolean hasError(OperationOutcome oo) {
+  private boolean hasError(OperationOutcome oo) {
 		for (OperationOutcomeIssueComponent t : oo.getIssue())
 			if (t.getSeverity() == IssueSeverity.ERROR || t.getSeverity() == IssueSeverity.FATAL)
 				return true;
 	  return false;
   }
 
-	protected static String getLocationHeader(HttpResponse response) {
+  protected String getLocationHeader(HttpResponse response) {
 		String location = null;
 		if(response.getHeaders("location").length > 0) {//TODO Distinguish between both cases if necessary
     		location = response.getHeaders("location")[0].getValue();
@@ -377,7 +426,7 @@ public class ClientUtils {
 	 * Client connection methods
 	 * ***************************************************************/
 	
-	public static HttpURLConnection buildConnection(URI baseServiceUri, String tail) {
+  public HttpURLConnection buildConnection(URI baseServiceUri, String tail) {
 		try {
 			HttpURLConnection client = (HttpURLConnection) baseServiceUri.resolve(tail).toURL().openConnection();
 			return client;
@@ -388,7 +437,7 @@ public class ClientUtils {
 		}
 	}
 	
-	public static HttpURLConnection buildConnection(URI baseServiceUri, ResourceType resourceType, String id) {
+  public HttpURLConnection buildConnection(URI baseServiceUri, ResourceType resourceType, String id) {
 		return buildConnection(baseServiceUri, ResourceAddress.buildRelativePathFromResourceType(resourceType, id));
 	}
 	
@@ -397,7 +446,7 @@ public class ClientUtils {
 	 * ****************************************************************/
 	 
 	
-	public  static <T extends Resource>  byte[] getResourceAsByteArray(T resource, boolean pretty, boolean isJson) {
+  public  <T extends Resource>  byte[] getResourceAsByteArray(T resource, boolean pretty, boolean isJson) {
 		ByteArrayOutputStream baos = null;
 		byte[] byteArray = null;
 		try {
@@ -424,7 +473,7 @@ public class ClientUtils {
 		return byteArray;
 	}
 	
-	public  static byte[] getFeedAsByteArray(Bundle feed, boolean pretty, boolean isJson) {
+  public  byte[] getFeedAsByteArray(Bundle feed, boolean pretty, boolean isJson) {
 		ByteArrayOutputStream baos = null;
 		byte[] byteArray = null;
 		try {
@@ -451,11 +500,11 @@ public class ClientUtils {
 		return byteArray;
 	}
 	
-	public static Calendar getLastModifiedResponseHeaderAsCalendarObject(URLConnection serverConnection) {
+  public Calendar getLastModifiedResponseHeaderAsCalendarObject(URLConnection serverConnection) {
 		String dateTime = null;
 		try {
 			dateTime = serverConnection.getHeaderField("Last-Modified");
-			SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", new Locale("en", "US"));
 			Date lastModifiedTimestamp = format.parse(dateTime);
 			Calendar calendar=Calendar.getInstance();
 			calendar.setTime(lastModifiedTimestamp);
@@ -465,7 +514,7 @@ public class ClientUtils {
 		}
 	}
 	
-	protected static IParser getParser(String format) {
+  protected IParser getParser(String format) {
 		if(StringUtils.isBlank(format)) {
 			format = ResourceFormat.RESOURCE_XML.getHeader();
 		}
@@ -478,25 +527,7 @@ public class ClientUtils {
 		}
 	}
 	
-	/**
-	 * Used for debugging
-	 * 
-	 * @param instream
-	 * @return
-	 */
-	protected static String writeInputStreamAsString(InputStream instream) {
-		String value = null;
-		try {
-			value = IOUtils.toString(instream, "UTF-8");
-			System.out.println(value);
-			
-		} catch(IOException ioe) {
-			//Do nothing
-		}
-		return value;
-	}
-	
-  public static Bundle issuePostFeedRequest(URI resourceUri, Map<String, String> parameters, String resourceName, Resource resource, String resourceFormat) throws IOException {
+  public Bundle issuePostFeedRequest(URI resourceUri, Map<String, String> parameters, String resourceName, Resource resource, String resourceFormat) throws IOException {
     HttpPost httppost = new HttpPost(resourceUri);
     String boundary = "----WebKitFormBoundarykbMUo6H8QaUnYtRy";
     httppost.addHeader("Content-Type", "multipart/form-data; boundary="+boundary);
@@ -506,7 +537,7 @@ public class ClientUtils {
     return unmarshalFeed(response, resourceFormat);
   }
   
-  private static byte[] encodeFormSubmission(Map<String, String> parameters, String resourceName, Resource resource, String boundary) throws IOException {
+  private byte[] encodeFormSubmission(Map<String, String> parameters, String resourceName, Resource resource, String boundary) throws IOException {
     ByteArrayOutputStream b = new ByteArrayOutputStream();
     OutputStreamWriter w = new OutputStreamWriter(b, "UTF-8");  
     for (String name : parameters.keySet()) {
@@ -538,17 +569,99 @@ public class ClientUtils {
    * @param payload
    * @return
    */
-  protected static HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload) {
+  protected HttpResponse sendPayload(HttpEntityEnclosingRequestBase request, byte[] payload) {
     HttpResponse response = null;
     try {
+      log(request);
       HttpClient httpclient = new DefaultHttpClient();
       request.setEntity(new ByteArrayEntity(payload));
       response = httpclient.execute(request);
+      log(response);
     } catch(IOException ioe) {
       throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);
     }
     return response;
   }
   
+  private void log(HttpUriRequest request) {
+    if (logger != null) {
+      List<String> headers = new ArrayList<>();
+      for (Header h : request.getAllHeaders()) {
+        headers.add(h.toString());
+      }
+      logger.logRequest(request.getMethod(), request.getURI().toString(), headers, null);
+    }    
+  }
+  private void log(HttpEntityEnclosingRequestBase request)  {
+    if (logger != null) {
+      List<String> headers = new ArrayList<>();
+      for (Header h : request.getAllHeaders()) {
+        headers.add(h.toString());
+      }
+      byte[] cnt = null;
+      InputStream s;
+      try {
+        s = request.getEntity().getContent();
+        cnt = IOUtils.toByteArray(s);
+        s.close();
+      } catch (Exception e) {
+      }
+      logger.logRequest(request.getMethod(), request.getURI().toString(), headers, cnt);
+    }    
+  }  
+  
+  private byte[] log(HttpResponse response) {
+    byte[] cnt = null;
+    try {
+      InputStream s = response.getEntity().getContent();
+      cnt = IOUtils.toByteArray(s);
+      s.close();
+    } catch (Exception e) {
+    }
+    if (logger != null) {
+      List<String> headers = new ArrayList<>();
+      for (Header h : response.getAllHeaders()) {
+        headers.add(h.toString());
+      }
+      logger.logResponse(response.getStatusLine().toString(), headers, cnt);
+    }
+    return cnt;
+  }
+
+  public ToolingClientLogger getLogger() {
+    return logger;
+  }
+
+  public void setLogger(ToolingClientLogger logger) {
+    this.logger = logger;
+  }
+
+  
+  /**
+   * Used for debugging
+   * 
+   * @param instream
+   * @return
+   */
+  protected String writeInputStreamAsString(InputStream instream) {
+    String value = null;
+    try {
+      value = IOUtils.toString(instream, "UTF-8");
+      System.out.println(value);
+
+    } catch(IOException ioe) {
+      //Do nothing
+    }
+    return value;
+  }
+
+  public int getRetryCount() {
+    return retryCount;
+  }
+
+  public void setRetryCount(int retryCount) {
+    this.retryCount = retryCount;
+  }
+
 
 }

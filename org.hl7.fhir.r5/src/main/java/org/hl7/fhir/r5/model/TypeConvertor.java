@@ -523,7 +523,7 @@ public class TypeConvertor {
     if (b instanceof Element) {
       return ((Element) b).getXhtml();
     } else if (b instanceof XhtmlType) {
-      return ((XhtmlType) b).getValue();
+      return ((XhtmlType) b).getXhtml();
     } else if (b instanceof StringType) {
       try {
         return new XhtmlParser().parseFragment(((StringType) b).asStringValue());
@@ -539,7 +539,7 @@ public class TypeConvertor {
       return ((Element) b).getValue();
     } else if (b instanceof XhtmlType) {
       try {
-        return new XhtmlComposer(true).compose(((XhtmlType) b).getValue());
+        return new XhtmlComposer(true).compose(((XhtmlType) b).getXhtml());
       } catch (IOException e) {
         return null;
       }

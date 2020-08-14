@@ -1,24 +1,34 @@
 package org.hl7.fhir.r5.utils;
 
-/*-
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
  */
+
 
 
 // remember group resolution
@@ -59,6 +69,7 @@ import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
@@ -73,7 +84,6 @@ import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.PrimitiveType;
-import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ResourceFactory;
 import org.hl7.fhir.r5.model.StringType;
@@ -96,20 +106,19 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapSourceListMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTargetListMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapTransform;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.renderers.TerminologyRenderer;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -204,18 +213,26 @@ public class StructureMapUtilities {
       return services.resolveReference(appContext, url);
     }
 
+    private boolean noErrorValidationMessages(List<ValidationMessage> valerrors) {
+      boolean ok = true;
+      for (ValidationMessage v : valerrors)
+        ok = ok && !v.getLevel().isError();
+      return ok;
+    }
+
     @Override
     public boolean conformsToProfile(Object appContext, Base item, String url) throws FHIRException {
       IResourceValidator val = worker.newValidator();
       List<ValidationMessage> valerrors = new ArrayList<ValidationMessage>();
       if (item instanceof Resource) {
         val.validate(appContext, valerrors, (Resource) item, url);
-        boolean ok = true;
-        for (ValidationMessage v : valerrors)
-          ok = ok && v.getLevel().isError();
-        return ok;
+        return noErrorValidationMessages(valerrors);
       }
-      throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is element");
+      if (item instanceof Element) {
+        val.validate(appContext, valerrors, (Element) item, url);
+        return noErrorValidationMessages(valerrors);
+      }
+      throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is not element or not resource");
     }
 
     @Override
@@ -357,8 +374,8 @@ public class StructureMapUtilities {
     case RELATEDTO: return "-";
     case EQUIVALENT: return "==";
     case NOTRELATEDTO: return "!=";
-    case BROADER: return "<=";
-    case NARROWER: return ">=";
+    case SOURCEISNARROWERTHANTARGET: return "<=";
+    case SOURCEISBROADERTHANTARGET: return ">=";
     default: return "??";
     }
   }
@@ -779,8 +796,7 @@ public class StructureMapUtilities {
       if (e.getCode().startsWith("\""))
         e.setCode(lexer.processConstant(e.getCode()));
 			TargetElementComponent tgt = e.addTarget();
-			if (rel != ConceptMapRelationship.EQUIVALENT)
-			  tgt.setRelationship(rel);
+			tgt.setRelationship(rel);
 			lexer.token(":");
 			tgt.setCode(lexer.take());
 			if (tgt.getCode().startsWith("\""))
@@ -825,9 +841,9 @@ public class StructureMapUtilities {
 		if (token.equals("!="))
 			return ConceptMapRelationship.NOTRELATEDTO;
 		if (token.equals("<="))
-			return ConceptMapRelationship.BROADER;
+			return ConceptMapRelationship.SOURCEISNARROWERTHANTARGET;
 		if (token.equals(">="))
-			return ConceptMapRelationship.NARROWER;
+			return ConceptMapRelationship.SOURCEISBROADERTHANTARGET;
 		throw lexer.error("Unknown relationship token '"+token+"'");
 	}
 
@@ -2120,7 +2136,7 @@ public class StructureMapUtilities {
 					message = "Concept map "+su+" found no translation for "+src.getCode();
 				else {
 					for (TargetElementComponent tgt : list.get(0).comp.getTarget()) {
-						if (tgt.getRelationship() == null || EnumSet.of( ConceptMapRelationship.RELATEDTO , ConceptMapRelationship.EQUIVALENT, ConceptMapRelationship.BROADER).contains(tgt.getRelationship())) {
+						if (tgt.getRelationship() == null || EnumSet.of( ConceptMapRelationship.RELATEDTO , ConceptMapRelationship.EQUIVALENT, ConceptMapRelationship.SOURCEISNARROWERTHANTARGET).contains(tgt.getRelationship())) {
 							if (done) {
 								message = "Concept map "+su+" found multiple matches for "+src.getCode();
 								done = false;
@@ -2612,7 +2628,7 @@ public class StructureMapUtilities {
     if (Utilities.noString(code))
       throw new FHIRException("Describe Transform, but the code is blank");
     Coding c = buildCoding(uri, code);
-    return NarrativeGenerator.describeSystem(c.getSystem())+"#"+c.getCode()+(c.hasDisplay() ? "("+c.getDisplay()+")" : "");
+    return TerminologyRenderer.describeSystem(c.getSystem())+"#"+c.getCode()+(c.hasDisplay() ? "("+c.getDisplay()+")" : "");
   }
 
 

@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,19 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.instance.model.api.IBaseOperationOutcome;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A collection of error, warning, or information messages that result from a system action.
  */
@@ -298,7 +281,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
          */
         NOSTORE, 
         /**
-         * y.
+         * An unexpected internal error has occurred.
          */
         EXCEPTION, 
         /**
@@ -491,7 +474,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case TRANSIENT: return "Transient processing issues. The system receiving the message may be able to resubmit the same content once an underlying issue is resolved.";
             case LOCKERROR: return "A resource/record locking failure (usually in an underlying database).";
             case NOSTORE: return "The persistent store is unavailable; e.g. the database is down for maintenance or similar action, and the interaction or operation cannot be processed.";
-            case EXCEPTION: return "y.";
+            case EXCEPTION: return "An unexpected internal error has occurred.";
             case TIMEOUT: return "An internal timeout has occurred.";
             case INCOMPLETE: return "Not all data sources typically accessed could be reached or responded in time, so the returned information might not be complete (applies to search interactions and some operations).";
             case THROTTLED: return "The system is not prepared to handle this request due to load management.";
@@ -1251,6 +1234,11 @@ For resource issues, this will be a simple XPath limited to element names, repet
       public OperationOutcomeIssueComponent copy() {
         OperationOutcomeIssueComponent dst = new OperationOutcomeIssueComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationOutcomeIssueComponent dst) {
+        super.copyValues(dst);
         dst.severity = severity == null ? null : severity.copy();
         dst.code = code == null ? null : code.copy();
         dst.details = details == null ? null : details.copy();
@@ -1265,7 +1253,6 @@ For resource issues, this will be a simple XPath limited to element names, repet
           for (StringType i : expression)
             dst.expression.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1450,12 +1437,16 @@ For resource issues, this will be a simple XPath limited to element names, repet
       public OperationOutcome copy() {
         OperationOutcome dst = new OperationOutcome();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(OperationOutcome dst) {
+        super.copyValues(dst);
         if (issue != null) {
           dst.issue = new ArrayList<OperationOutcomeIssueComponent>();
           for (OperationOutcomeIssueComponent i : issue)
             dst.issue.add(i.copy());
         };
-        return dst;
       }
 
       protected OperationOutcome typedCopy() {
@@ -1493,4 +1484,3 @@ For resource issues, this will be a simple XPath limited to element names, repet
 
 
 }
-

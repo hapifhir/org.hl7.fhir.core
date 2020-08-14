@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,19 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A pharmaceutical product described in terms of its composition and dose form.
  */
@@ -237,9 +220,13 @@ public class MedicinalProductPharmaceutical extends DomainResource {
       public MedicinalProductPharmaceuticalCharacteristicsComponent copy() {
         MedicinalProductPharmaceuticalCharacteristicsComponent dst = new MedicinalProductPharmaceuticalCharacteristicsComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicinalProductPharmaceuticalCharacteristicsComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.status = status == null ? null : status.copy();
-        return dst;
       }
 
       @Override
@@ -695,6 +682,11 @@ public class MedicinalProductPharmaceutical extends DomainResource {
       public MedicinalProductPharmaceuticalRouteOfAdministrationComponent copy() {
         MedicinalProductPharmaceuticalRouteOfAdministrationComponent dst = new MedicinalProductPharmaceuticalRouteOfAdministrationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicinalProductPharmaceuticalRouteOfAdministrationComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.firstDose = firstDose == null ? null : firstDose.copy();
         dst.maxSingleDose = maxSingleDose == null ? null : maxSingleDose.copy();
@@ -706,7 +698,6 @@ public class MedicinalProductPharmaceutical extends DomainResource {
           for (MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesComponent i : targetSpecies)
             dst.targetSpecies.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -941,13 +932,17 @@ public class MedicinalProductPharmaceutical extends DomainResource {
       public MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesComponent copy() {
         MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesComponent dst = new MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         if (withdrawalPeriod != null) {
           dst.withdrawalPeriod = new ArrayList<MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent>();
           for (MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent i : withdrawalPeriod)
             dst.withdrawalPeriod.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1221,10 +1216,14 @@ public class MedicinalProductPharmaceutical extends DomainResource {
       public MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent copy() {
         MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent dst = new MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicinalProductPharmaceuticalRouteOfAdministrationTargetSpeciesWithdrawalPeriodComponent dst) {
+        super.copyValues(dst);
         dst.tissue = tissue == null ? null : tissue.copy();
         dst.value = value == null ? null : value.copy();
         dst.supportingInformation = supportingInformation == null ? null : supportingInformation.copy();
-        return dst;
       }
 
       @Override
@@ -1851,6 +1850,11 @@ public class MedicinalProductPharmaceutical extends DomainResource {
       public MedicinalProductPharmaceutical copy() {
         MedicinalProductPharmaceutical dst = new MedicinalProductPharmaceutical();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicinalProductPharmaceutical dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1878,7 +1882,6 @@ public class MedicinalProductPharmaceutical extends DomainResource {
           for (MedicinalProductPharmaceuticalRouteOfAdministrationComponent i : routeOfAdministration)
             dst.routeOfAdministration.add(i.copy());
         };
-        return dst;
       }
 
       protected MedicinalProductPharmaceutical typedCopy() {
@@ -1980,4 +1983,3 @@ public class MedicinalProductPharmaceutical extends DomainResource {
 
 
 }
-

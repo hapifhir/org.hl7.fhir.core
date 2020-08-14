@@ -1,4 +1,4 @@
-﻿      @Override
+@Override
       public String toString() {
         return fhirType()+"["+getUrl()+"]";
       }
@@ -9,4 +9,4 @@
         if (hasName())
           return getName();
         return toString();
-      }      
+      }

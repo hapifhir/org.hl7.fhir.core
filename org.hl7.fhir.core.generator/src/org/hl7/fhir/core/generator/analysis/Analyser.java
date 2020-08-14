@@ -46,7 +46,7 @@ public class Analyser {
     sd.setUserData("java.type.info", type);
     
     type.setDefn(sd.getSnapshot().getElementFirstRep());
-    type.setChildren(filterChildren(ProfileUtilities.getChildList(sd, type.getDefn())));
+    type.setChildren(filterChildren(new ProfileUtilities(null, null, null).getChildList(sd, type.getDefn())));
     type.setInheritedChildren(getAbstractChildren(res.getAncestor()));
     
     for (ElementDefinition e : type.getChildren()) {
@@ -92,7 +92,7 @@ public class Analyser {
     List<ElementDefinition> res = new ArrayList<>();
     StructureDefinition sdb = definitions.getStructures().get(structure.getBaseDefinition());
     res.addAll(getAbstractChildren(sdb));
-    res.addAll(filterChildren(ProfileUtilities.getChildList(structure, structure.getSnapshot().getElementFirstRep())));
+    res.addAll(filterChildren(new ProfileUtilities(null, null, null).getChildList(structure, structure.getSnapshot().getElementFirstRep())));
     return res;
   }
 
@@ -168,7 +168,7 @@ public class Analyser {
           analysis.getTypeList().add(ctype);          
           ctype.setDefn(e);
           ctype.setAncestorName(e.typeSummary());
-          ctype.setChildren(filterChildren(ProfileUtilities.getChildList(analysis.getStructure(), ctype.getDefn())));
+          ctype.setChildren(filterChildren(new ProfileUtilities(null, null, null).getChildList(analysis.getStructure(), ctype.getDefn())));
           
           for (ElementDefinition c : ctype.getChildren()) {
             scanNestedTypes(analysis, ctype, cpath, c);
@@ -188,7 +188,9 @@ public class Analyser {
           if (inc.hasSystem() && !inc.hasFilter() && !inc.hasConcept() && !(inc.getSystem().startsWith("http://hl7.org/fhir") || inc.getSystem().startsWith("http://terminology.hl7.org")))
             ok = false;
         }
-        if (config.getIni().getBooleanProperty("no-enum", vs.getUrl())) {
+        if (vs == null) {
+          ok = false;
+        } else if (config.getIni().getBooleanProperty("no-enum", vs.getUrl())) {
           ok = false;
         }
       }

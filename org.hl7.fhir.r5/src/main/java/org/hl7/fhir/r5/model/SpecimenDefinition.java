@@ -1,25 +1,7 @@
 package org.hl7.fhir.r5.model;
 
 
-/*
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the \"License\");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an \"AS IS\" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.annotation.Block;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A kind of specimen with associated set of requirements.
@@ -201,14 +183,14 @@ public class SpecimenDefinition extends DomainResource {
          * Requirements for delivery and special handling of this kind of conditioned specimen.
          */
         @Child(name = "requirement", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Specimen requirements", formalDefinition="Requirements for delivery and special handling of this kind of conditioned specimen." )
+        @Description(shortDefinition="Requirements for specimen delivery and special handling", formalDefinition="Requirements for delivery and special handling of this kind of conditioned specimen." )
         protected StringType requirement;
 
         /**
          * The usual time that a specimen of this kind is retained after the ordered tests are completed, for the purpose of additional testing.
          */
         @Child(name = "retentionTime", type = {Duration.class}, order=6, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Specimen retention time", formalDefinition="The usual time that a specimen of this kind is retained after the ordered tests are completed, for the purpose of additional testing." )
+        @Description(shortDefinition="The usual time for retaining this kind of specimen", formalDefinition="The usual time that a specimen of this kind is retained after the ordered tests are completed, for the purpose of additional testing." )
         protected Duration retentionTime;
 
         /**
@@ -222,7 +204,7 @@ public class SpecimenDefinition extends DomainResource {
          * Criterion for rejection of the specimen in its container by the laboratory.
          */
         @Child(name = "rejectionCriterion", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Rejection criterion", formalDefinition="Criterion for rejection of the specimen in its container by the laboratory." )
+        @Description(shortDefinition="Criterion specified for specimen rejection", formalDefinition="Criterion for rejection of the specimen in its container by the laboratory." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/rejection-criteria")
         protected List<CodeableConcept> rejectionCriterion;
 
@@ -941,7 +923,7 @@ public class SpecimenDefinition extends DomainResource {
          * The type of material of the container.
          */
         @Child(name = "material", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Container material", formalDefinition="The type of material of the container." )
+        @Description(shortDefinition="The material type used for the container", formalDefinition="The type of material of the container." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/container-material")
         protected CodeableConcept material;
 
@@ -965,14 +947,14 @@ public class SpecimenDefinition extends DomainResource {
          * The textual description of the kind of container.
          */
         @Child(name = "description", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Container description", formalDefinition="The textual description of the kind of container." )
+        @Description(shortDefinition="The description of the kind of container", formalDefinition="The textual description of the kind of container." )
         protected StringType description;
 
         /**
          * The capacity (volume or other measure) of this kind of container.
          */
         @Child(name = "capacity", type = {Quantity.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Container capacity", formalDefinition="The capacity (volume or other measure) of this kind of container." )
+        @Description(shortDefinition="The capacity of this kind of container", formalDefinition="The capacity (volume or other measure) of this kind of container." )
         protected Quantity capacity;
 
         /**
@@ -993,7 +975,7 @@ public class SpecimenDefinition extends DomainResource {
          * Special processing that should be applied to the container for this kind of specimen.
          */
         @Child(name = "preparation", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Specimen container preparation", formalDefinition="Special processing that should be applied to the container for this kind of specimen." )
+        @Description(shortDefinition="Special processing applied to the container for this specimen type", formalDefinition="Special processing that should be applied to the container for this kind of specimen." )
         protected StringType preparation;
 
         private static final long serialVersionUID = -1498817064L;
@@ -1739,7 +1721,7 @@ public class SpecimenDefinition extends DomainResource {
          * It qualifies the interval of temperature, which characterizes an occurrence of handling. Conditions that are not related to temperature may be handled in the instruction element.
          */
         @Child(name = "temperatureQualifier", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Temperature qualifier", formalDefinition="It qualifies the interval of temperature, which characterizes an occurrence of handling. Conditions that are not related to temperature may be handled in the instruction element." )
+        @Description(shortDefinition="Qualifies the interval of temperature", formalDefinition="It qualifies the interval of temperature, which characterizes an occurrence of handling. Conditions that are not related to temperature may be handled in the instruction element." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/handling-condition")
         protected CodeableConcept temperatureQualifier;
 
@@ -1747,7 +1729,7 @@ public class SpecimenDefinition extends DomainResource {
          * The temperature interval for this set of handling instructions.
          */
         @Child(name = "temperatureRange", type = {Range.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Temperature range", formalDefinition="The temperature interval for this set of handling instructions." )
+        @Description(shortDefinition="Temperature range for these handling instructions", formalDefinition="The temperature interval for this set of handling instructions." )
         protected Range temperatureRange;
 
         /**
@@ -2186,7 +2168,7 @@ public class SpecimenDefinition extends DomainResource {
      * The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.
      */
     @Child(name = "lastReviewDate", type = {DateType.class}, order=18, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Last review date for the SpecimenDefinition", formalDefinition="The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date." )
+    @Description(shortDefinition="The date on which the asset content was last reviewed", formalDefinition="The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
@@ -4098,6 +4080,25 @@ public class SpecimenDefinition extends DomainResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
 
+ /**
+   * Search parameter: <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the specimen definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SpecimenDefinition.url</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="url", path="SpecimenDefinition.url", description="The uri that identifies the specimen definition", type="uri" )
+  public static final String SP_URL = "url";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>url</b>
+   * <p>
+   * Description: <b>The uri that identifies the specimen definition</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SpecimenDefinition.url</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
+
 
 }
-

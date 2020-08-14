@@ -1,24 +1,5 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 
 /*
@@ -50,7 +31,8 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
+
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
 
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -686,12 +668,10 @@ public class ResourceFactory extends Factory {
         case 116076: return new UriType();
         case 116079: return new UrlType();
         case 3601339: return new UuidType();
-        case 114035747: return new XhtmlType();
       default:
-        throw new FHIRException("Unknown Resource or Type Name '"+name+"': " + name.hashCode());
+        throw new FHIRException("Unknown Resource or Type Name '"+name+"'");
     }
   }
 
 
 }
-

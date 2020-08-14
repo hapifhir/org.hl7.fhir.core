@@ -136,9 +136,7 @@ public class ProfileUtilitiesTests {
 
   /**
    * This is simple: we just create an empty differential, generate the snapshot, and then insist it must match the base 
-   * 
-   * @param context2
-   * @
+   *
    * @throws EOperationOutcome 
    */
   private void testSimple() throws EOperationOutcome, Exception {

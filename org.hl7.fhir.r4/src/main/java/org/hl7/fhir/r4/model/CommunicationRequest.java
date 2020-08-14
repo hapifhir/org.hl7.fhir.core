@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,19 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.util.*;
+
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A request to convey information; e.g. the CDS system proposes that an alert be sent to a responsible provider, the CDS system proposes that the public health agency be notified about a reportable condition.
  */
@@ -90,7 +73,7 @@ public class CommunicationRequest extends DomainResource {
          */
         COMPLETED, 
         /**
-         * This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be "cancelled" rather than "entered-in-error".).
+         * This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be "revoked" rather than "entered-in-error".).
          */
         ENTEREDINERROR, 
         /**
@@ -154,7 +137,7 @@ public class CommunicationRequest extends DomainResource {
             case ONHOLD: return "The request (and any implicit authorization to act) has been temporarily withdrawn but is expected to resume in the future.";
             case REVOKED: return "The request (and any implicit authorization to act) has been terminated prior to the known full completion of the intended actions.  No further activity should occur.";
             case COMPLETED: return "The activity described by the request has been fully performed.  No further activity will occur.";
-            case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
+            case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"revoked\" rather than \"entered-in-error\".).";
             case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
             default: return "?";
           }
@@ -543,8 +526,12 @@ public class CommunicationRequest extends DomainResource {
       public CommunicationRequestPayloadComponent copy() {
         CommunicationRequestPayloadComponent dst = new CommunicationRequestPayloadComponent();
         copyValues(dst);
-        dst.content = content == null ? null : content.copy();
         return dst;
+      }
+
+      public void copyValues(CommunicationRequestPayloadComponent dst) {
+        super.copyValues(dst);
+        dst.content = content == null ? null : content.copy();
       }
 
       @Override
@@ -620,7 +607,7 @@ public class CommunicationRequest extends DomainResource {
      * The status of the proposal or order.
      */
     @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="draft | active | suspended | cancelled | completed | entered-in-error | unknown", formalDefinition="The status of the proposal or order." )
+    @Description(shortDefinition="draft | active | on-hold | revoked | completed | entered-in-error | unknown", formalDefinition="The status of the proposal or order." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-status")
     protected Enumeration<CommunicationRequestStatus> status;
 
@@ -643,7 +630,7 @@ public class CommunicationRequest extends DomainResource {
      * Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine.
      */
     @Child(name = "priority", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Message urgency", formalDefinition="Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine." )
+    @Description(shortDefinition="routine | urgent | asap | stat", formalDefinition="Characterizes how quickly the proposed act must be initiated. Includes concepts such as stat, urgent, routine." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-priority")
     protected Enumeration<CommunicationPriority> priority;
 
@@ -2262,6 +2249,11 @@ public class CommunicationRequest extends DomainResource {
       public CommunicationRequest copy() {
         CommunicationRequest dst = new CommunicationRequest();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CommunicationRequest dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2328,7 +2320,6 @@ public class CommunicationRequest extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected CommunicationRequest typedCopy() {
@@ -2562,17 +2553,17 @@ public class CommunicationRequest extends DomainResource {
  /**
    * Search parameter: <b>priority</b>
    * <p>
-   * Description: <b>Message urgency</b><br>
+   * Description: <b>routine | urgent | asap | stat</b><br>
    * Type: <b>token</b><br>
    * Path: <b>CommunicationRequest.priority</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="priority", path="CommunicationRequest.priority", description="Message urgency", type="token" )
+  @SearchParamDefinition(name="priority", path="CommunicationRequest.priority", description="routine | urgent | asap | stat", type="token" )
   public static final String SP_PRIORITY = "priority";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>priority</b>
    * <p>
-   * Description: <b>Message urgency</b><br>
+   * Description: <b>routine | urgent | asap | stat</b><br>
    * Type: <b>token</b><br>
    * Path: <b>CommunicationRequest.priority</b><br>
    * </p>
@@ -2726,17 +2717,17 @@ public class CommunicationRequest extends DomainResource {
  /**
    * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>draft | active | suspended | cancelled | completed | entered-in-error | unknown</b><br>
+   * Description: <b>draft | active | on-hold | revoked | completed | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>CommunicationRequest.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="CommunicationRequest.status", description="draft | active | suspended | cancelled | completed | entered-in-error | unknown", type="token" )
+  @SearchParamDefinition(name="status", path="CommunicationRequest.status", description="draft | active | on-hold | revoked | completed | entered-in-error | unknown", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>draft | active | suspended | cancelled | completed | entered-in-error | unknown</b><br>
+   * Description: <b>draft | active | on-hold | revoked | completed | entered-in-error | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>CommunicationRequest.status</b><br>
    * </p>
@@ -2745,4 +2736,3 @@ public class CommunicationRequest extends DomainResource {
 
 
 }
-

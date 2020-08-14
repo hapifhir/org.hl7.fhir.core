@@ -1,55 +1,38 @@
-/*
-Copyright (c) 2011+, HL7, Inc
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, 
-are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this 
-   list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice, 
-   this list of conditions and the following disclaimer in the documentation 
-   and/or other materials provided with the distribution.
- * Neither the name of HL7 nor the names of its contributors may be used to 
-   endorse or promote products derived from this software without specific 
-   prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-POSSIBILITY OF SUCH DAMAGE.
-
- */
 package org.hl7.fhir.utilities.xhtml;
 
-/*-
- * #%L
- * org.hl7.fhir.utilities
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
  */
+
 
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +50,8 @@ public class XhtmlNode implements IBaseXhtml {
   private static final long serialVersionUID = -4362547161441436492L;
 
 
-  public static class Location {
+  public static class Location implements Serializable {
+    private static final long serialVersionUID = -4079302502900219721L;
     private int line;
     private int column;
     public Location(int line, int column) {
@@ -156,7 +140,7 @@ public class XhtmlNode implements IBaseXhtml {
   {
 
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
-      throw new Error("Wrong node type. is "+nodeType.toString());
+      throw new Error("Wrong node type - node is "+nodeType.toString()+" ('"+getName()+"/"+getContent()+"')");
     XhtmlNode node = new XhtmlNode(NodeType.Element);
     node.setName(name);
     childNodes.add(node);
@@ -203,9 +187,6 @@ public class XhtmlNode implements IBaseXhtml {
     childNodes.add(node);
     return node;
   }
-
-
-
 
   public XhtmlNode addText(String content)
   {
@@ -288,6 +269,9 @@ public class XhtmlNode implements IBaseXhtml {
   }
 
   public XhtmlNode setAttribute(String name, String value) {
+    if (nodeType != NodeType.Element) {
+      throw new Error("Attempt to set an attribute on something that is not an element");
+    }
     getAttributes().put(name, value);
     return this;    
   }
@@ -519,10 +503,18 @@ public class XhtmlNode implements IBaseXhtml {
     return addTag("td");
   }
   
+  public XhtmlNode td(String clss) {
+    return addTag("td").attribute("class", clss);
+  }
+  
   public XhtmlNode colspan(String n) {
     return setAttribute("colspan", n);
   }
   
+  public XhtmlNode div() {
+    return addTag("div");
+  }
+
   public XhtmlNode para() {
     return addTag("p");
   }
@@ -554,15 +546,39 @@ public class XhtmlNode implements IBaseXhtml {
   public XhtmlNode i() {
     return addTag("i");
   }
+  
   public XhtmlNode tx(String cnt) {
     return addText(cnt);
   }
+
+  public XhtmlNode tx(int cnt) {
+    return addText(Integer.toString(cnt));
+  }
+
   public XhtmlNode ah(String href) {
     return addTag("a").attribute("href", href);
   }
 
-  public void an(String href) {
-    addTag("a").attribute("name", href).tx(" ");
+  public XhtmlNode ah(String href, String title) {
+    return addTag("a").attribute("href", href).attribute("title", title);
+  }
+
+  public XhtmlNode img(String src) {
+    return addTag("img").attribute("src", src);    
+  }
+
+  public XhtmlNode img(String src, String title) {
+    return addTag("img").attribute("src", src).attribute("title", title);    
+  }
+
+  public XhtmlNode an(String href) {
+    return an(href, " ");
+  }
+  
+  public XhtmlNode an(String href, String tx) {
+    XhtmlNode a = addTag("a").attribute("name", href);
+    a.tx(tx);
+    return a;
   }
 
   public XhtmlNode span(String style, String title) {
@@ -636,7 +652,11 @@ public class XhtmlNode implements IBaseXhtml {
 
 
   public XhtmlNode style(String style) {
-    setAttribute("style", style);
+    if (hasAttribute("style")) {
+      setAttribute("style", getAttribute("style")+"; "+style);
+    } else {
+      setAttribute("style", style);
+    }
     return this;
   }
 
@@ -658,4 +678,63 @@ public class XhtmlNode implements IBaseXhtml {
     return this;
   }
 
+
+  public XhtmlNode addChildren(List<XhtmlNode> children) {
+    getChildNodes().addAll(children);
+    return this;
+  }
+
+  public XhtmlNode addChildren(XhtmlNode x) {
+    if (x != null) {
+      getChildNodes().addAll(x.getChildNodes());
+    }
+    return this;
+  }
+
+
+  public XhtmlNode input(String name, String type, String placeholder, int size) {
+    XhtmlNode p = new XhtmlNode(NodeType.Element, "input");
+    p.attribute("name", name);
+    p.attribute("type", type);
+    p.attribute("placeholder", placeholder);
+    p.attribute("size", Integer.toString(size));
+    getChildNodes().add(p);
+    return p;
+  }
+
+  public XhtmlNode select(String name) {
+    XhtmlNode p = new XhtmlNode(NodeType.Element, "select");
+    p.attribute("name", name);
+    p.attribute("size", "1");
+    getChildNodes().add(p);
+    return p;
+  }
+  
+  public XhtmlNode option(String value, String text, boolean selected) {
+    XhtmlNode p = new XhtmlNode(NodeType.Element, "option");
+    p.attribute("value", value);
+    p.attribute("selected", Boolean.toString(selected));
+    p.tx(text);
+    getChildNodes().add(p);
+    return p;
+  }
+
+
+  public XhtmlNode remove(XhtmlNode x) {
+    getChildNodes().remove(x);
+    return this;
+    
+  }
+
+
+  public void clear() {
+    getChildNodes().clear();
+    
+  }
+
+
+  
+
+  
+  
 }

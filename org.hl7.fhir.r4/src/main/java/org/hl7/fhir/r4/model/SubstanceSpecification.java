@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,20 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * The detailed description of a substance, typically at a level beyond what is used for prescribing.
  */
@@ -538,6 +520,11 @@ public class SubstanceSpecification extends DomainResource {
       public SubstanceSpecificationMoietyComponent copy() {
         SubstanceSpecificationMoietyComponent dst = new SubstanceSpecificationMoietyComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSpecificationMoietyComponent dst) {
+        super.copyValues(dst);
         dst.role = role == null ? null : role.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.name = name == null ? null : name.copy();
@@ -545,7 +532,6 @@ public class SubstanceSpecification extends DomainResource {
         dst.opticalActivity = opticalActivity == null ? null : opticalActivity.copy();
         dst.molecularFormula = molecularFormula == null ? null : molecularFormula.copy();
         dst.amount = amount == null ? null : amount.copy();
-        return dst;
       }
 
       @Override
@@ -974,12 +960,16 @@ public class SubstanceSpecification extends DomainResource {
       public SubstanceSpecificationPropertyComponent copy() {
         SubstanceSpecificationPropertyComponent dst = new SubstanceSpecificationPropertyComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSpecificationPropertyComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.code = code == null ? null : code.copy();
         dst.parameters = parameters == null ? null : parameters.copy();
         dst.definingSubstance = definingSubstance == null ? null : definingSubstance.copy();
         dst.amount = amount == null ? null : amount.copy();
-        return dst;
       }
 
       @Override
@@ -1606,6 +1596,11 @@ public class SubstanceSpecification extends DomainResource {
       public SubstanceSpecificationStructureComponent copy() {
         SubstanceSpecificationStructureComponent dst = new SubstanceSpecificationStructureComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSpecificationStructureComponent dst) {
+        super.copyValues(dst);
         dst.stereochemistry = stereochemistry == null ? null : stereochemistry.copy();
         dst.opticalActivity = opticalActivity == null ? null : opticalActivity.copy();
         dst.molecularFormula = molecularFormula == null ? null : molecularFormula.copy();
@@ -1626,7 +1621,6 @@ public class SubstanceSpecification extends DomainResource {
           for (SubstanceSpecificationStructureRepresentationComponent i : representation)
             dst.representation.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1962,12 +1956,16 @@ public class SubstanceSpecification extends DomainResource {
       public SubstanceSpecificationStructureIsotopeComponent copy() {
         SubstanceSpecificationStructureIsotopeComponent dst = new SubstanceSpecificationStructureIsotopeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSpecificationStructureIsotopeComponent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.name = name == null ? null : name.copy();
         dst.substitution = substitution == null ? null : substitution.copy();
         dst.halfLife = halfLife == null ? null : halfLife.copy();
         dst.molecularWeight = molecularWeight == null ? null : molecularWeight.copy();
-        return dst;
       }
 
       @Override
@@ -2210,10 +2208,14 @@ public class SubstanceSpecification extends DomainResource {
       public SubstanceSpecificationStructureIsotopeMolecularWeightComponent copy() {
         SubstanceSpecificationStructureIsotopeMolecularWeightComponent dst = new SubstanceSpecificationStructureIsotopeMolecularWeightComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSpecificationStructureIsotopeMolecularWeightComponent dst) {
+        super.copyValues(dst);
         dst.method = method == null ? null : method.copy();
         dst.type = type == null ? null : type.copy();
         dst.amount = amount == null ? null : amount.copy();
-        return dst;
       }
 
       @Override
@@ -2478,10 +2480,14 @@ public class SubstanceSpecification extends DomainResource {
       public SubstanceSpecificationStructureRepresentationComponent copy() {
         SubstanceSpecificationStructureRepresentationComponent dst = new SubstanceSpecificationStructureRepresentationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSpecificationStructureRepresentationComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.representation = representation == null ? null : representation.copy();
         dst.attachment = attachment == null ? null : attachment.copy();
-        return dst;
       }
 
       @Override
@@ -2916,6 +2922,11 @@ public class SubstanceSpecification extends DomainResource {
       public SubstanceSpecificationCodeComponent copy() {
         SubstanceSpecificationCodeComponent dst = new SubstanceSpecificationCodeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSpecificationCodeComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.status = status == null ? null : status.copy();
         dst.statusDate = statusDate == null ? null : statusDate.copy();
@@ -2925,7 +2936,6 @@ public class SubstanceSpecification extends DomainResource {
           for (Reference i : source)
             dst.source.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3798,6 +3808,11 @@ public class SubstanceSpecification extends DomainResource {
       public SubstanceSpecificationNameComponent copy() {
         SubstanceSpecificationNameComponent dst = new SubstanceSpecificationNameComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSpecificationNameComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.type = type == null ? null : type.copy();
         dst.status = status == null ? null : status.copy();
@@ -3837,7 +3852,6 @@ public class SubstanceSpecification extends DomainResource {
           for (Reference i : source)
             dst.source.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4105,10 +4119,14 @@ public class SubstanceSpecification extends DomainResource {
       public SubstanceSpecificationNameOfficialComponent copy() {
         SubstanceSpecificationNameOfficialComponent dst = new SubstanceSpecificationNameOfficialComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSpecificationNameOfficialComponent dst) {
+        super.copyValues(dst);
         dst.authority = authority == null ? null : authority.copy();
         dst.status = status == null ? null : status.copy();
         dst.date = date == null ? null : date.copy();
-        return dst;
       }
 
       @Override
@@ -4715,6 +4733,11 @@ public class SubstanceSpecification extends DomainResource {
       public SubstanceSpecificationRelationshipComponent copy() {
         SubstanceSpecificationRelationshipComponent dst = new SubstanceSpecificationRelationshipComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSpecificationRelationshipComponent dst) {
+        super.copyValues(dst);
         dst.substance = substance == null ? null : substance.copy();
         dst.relationship = relationship == null ? null : relationship.copy();
         dst.isDefining = isDefining == null ? null : isDefining.copy();
@@ -4726,7 +4749,6 @@ public class SubstanceSpecification extends DomainResource {
           for (Reference i : source)
             dst.source.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -6088,6 +6110,11 @@ public class SubstanceSpecification extends DomainResource {
       public SubstanceSpecification copy() {
         SubstanceSpecification dst = new SubstanceSpecification();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceSpecification dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.type = type == null ? null : type.copy();
         dst.status = status == null ? null : status.copy();
@@ -6135,7 +6162,6 @@ public class SubstanceSpecification extends DomainResource {
         dst.polymer = polymer == null ? null : polymer.copy();
         dst.protein = protein == null ? null : protein.copy();
         dst.sourceMaterial = sourceMaterial == null ? null : sourceMaterial.copy();
-        return dst;
       }
 
       protected SubstanceSpecification typedCopy() {
@@ -6184,23 +6210,22 @@ public class SubstanceSpecification extends DomainResource {
  /**
    * Search parameter: <b>code</b>
    * <p>
-   * Description: <b>Codes associated with the substance</b><br>
+   * Description: <b>The specific code</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>SubstanceSpecification.code</b><br>
+   * Path: <b>SubstanceSpecification.code.code</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="code", path="SubstanceSpecification.code", description="Codes associated with the substance", type="token" )
+  @SearchParamDefinition(name="code", path="SubstanceSpecification.code.code", description="The specific code", type="token" )
   public static final String SP_CODE = "code";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>code</b>
    * <p>
-   * Description: <b>Codes associated with the substance</b><br>
+   * Description: <b>The specific code</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>SubstanceSpecification.code</b><br>
+   * Path: <b>SubstanceSpecification.code.code</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
 
 
 }
-

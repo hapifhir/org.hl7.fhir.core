@@ -1,26 +1,38 @@
 package org.hl7.fhir.r5.context;
 
-import java.util.EnumSet;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
-/*-
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
  */
+
 
 
 import java.util.List;
@@ -32,15 +44,18 @@ import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
+import org.hl7.fhir.r5.context.IWorkerContext.CodingValidationRequest;
+import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.ParserType;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
-import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -49,11 +64,14 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
-import org.hl7.fhir.r5.utils.INarrativeGenerator;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.utilities.TranslationServices;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.cache.BasePackageCacheManager;
+import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
+
+import com.google.gson.JsonSyntaxException;
 
 
 /**
@@ -76,6 +94,128 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
  * @author Grahame
  */
 public interface IWorkerContext {
+
+  public class CodingValidationRequest {
+    private Coding coding;
+    private ValidationResult result;
+    private CacheToken cacheToken;
+    
+    public CodingValidationRequest(Coding coding) {
+      super();
+      this.coding = coding;
+    }
+
+    public ValidationResult getResult() {
+      return result;
+    }
+
+    public void setResult(ValidationResult result) {
+      this.result = result;
+    }
+
+    public Coding getCoding() {
+      return coding;
+    }
+
+    public boolean hasResult() {
+      return result != null;
+    }
+
+    /**
+     * internal logic; external users of batch validation should ignore this property
+     * 
+     * @return
+     */
+    public CacheToken getCacheToken() {
+      return cacheToken;
+    }
+
+    /**
+     * internal logic; external users of batch validation should ignore this property
+     * 
+     * @param cacheToken
+     */
+    public void setCacheToken(CacheToken cacheToken) {
+      this.cacheToken = cacheToken;
+    }
+    
+    
+  }
+
+  public class PackageVersion {
+    private String id;
+    private String version;
+    
+    public PackageVersion(String source) {
+      if (source == null) {
+        throw new Error("Source cannot be null");
+      }
+      if (!source.contains("#")) {
+        throw new FHIRException("Source ");        
+      }
+      id = source.substring(0, source.indexOf("#"));
+      version = source.substring(source.indexOf("#")+1);
+    }
+    public PackageVersion(String id, String version) {
+      super();
+      this.id = id;
+      this.version = version;
+    }
+    public String getId() {
+      return id;
+    }
+    public String getVersion() {
+      return version;
+    }
+  }
+
+  public interface IContextResourceLoader {
+    /** 
+     * @return List of the resource types that shoud be loaded
+     */
+    String[] getTypes();
+    
+    /**
+     * Request to actually load the resources and do whatever is required
+     *  
+     * @param stream
+     * @param isJson
+     * @return A bundle because some single resources become multiple resources after loading
+     * @throws FHIRException
+     * @throws IOException
+     */
+    Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException;
+    
+    /**
+     * Load a single resources (lazy load)
+     * 
+     * @param stream
+     * @param isJson
+     * @return
+     * @throws FHIRException - throw this if you a single resource can't be returned - can't lazy load in this circumstance   
+     * @throws IOException
+     */
+    Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException;
+    
+    /** 
+     * get the path for references to this resource.
+     * @param resource
+     * @return null if not tracking paths
+     */
+    String getResourcePath(Resource resource);
+
+    /**
+     * called when a mew package is being loaded
+     * 
+     * this is called by loadPacakgeAndDependencies when a new package is loaded
+     * @param npm
+     * @return
+     * @throws IOException 
+     * @throws JsonSyntaxException 
+     */
+    IContextResourceLoader getNewLoader(NpmPackage npm) throws JsonSyntaxException, IOException;   
+  }
+
 
   /**
    * Get the versions of the definitions loaded in context
@@ -128,13 +268,6 @@ public interface IWorkerContext {
   public IParser newXmlParser();
 
   /**
-   * Get a generator that can generate narrative for the instance
-   * 
-   * @return a prepared generator
-   */
-  public INarrativeGenerator getNarrativeGenerator(String prefix, String basePath);
-
-  /**
    * Get a validator that can check whether a resource is valid 
    * 
    * @return a prepared generator
@@ -172,6 +305,17 @@ public interface IWorkerContext {
   public <T extends Resource> T fetchResource(Class<T> class_, String uri);
   public <T extends Resource> T fetchResourceWithException(Class<T> class_, String uri) throws FHIRException;
 
+  /** has the same functionality as fetchResource, but passes in information about the source of the 
+   * reference (this may affect resolution of version)
+   *  
+   * @param <T>
+   * @param class_
+   * @param uri
+   * @param canonicalForSource
+   * @return
+   */
+  public <T extends Resource> T fetchResource(Class<T> class_, String uri, CanonicalResource canonicalForSource);
+
   /**
    * Variation of fetchResource when you have a string type, and don't need the right class
    * 
@@ -204,11 +348,36 @@ public interface IWorkerContext {
    * cache a resource for later retrieval using fetchResource.
    * 
    * Note that various context implementations will have their own ways of loading
-   * rseources, and not all need implement cacheResource 
+   * rseources, and not all need implement cacheResource.
+   * 
+   * If the resource is loaded out of a package, call cacheResourceFromPackage instead
    * @param res
    * @throws FHIRException 
    */
   public void cacheResource(Resource res) throws FHIRException;
+  
+  /**
+   * cache a resource for later retrieval using fetchResource.
+   * 
+   * The package information is used to help manage the cache internally, and to 
+   * help with reference resolution. Packages should be define using cachePackage (but don't have to be)
+   *    
+   * Note that various context implementations will have their own ways of loading
+   * rseources, and not all need implement cacheResource
+   * 
+   * @param res
+   * @throws FHIRException 
+   */
+  public void cacheResourceFromPackage(Resource res, PackageVersion packageDetails) throws FHIRException;
+  
+  /**
+   * Inform the cache about package dependencies. This can be used to help resolve references
+   * 
+   * Note that the cache doesn't load dependencies
+   *  
+   * @param packageInfo
+   */
+  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies);
   
   // -- profile services ---------------------------------------------------------
   
@@ -326,13 +495,17 @@ public interface IWorkerContext {
    * @return
    * @throws FHIRException 
    */
-  public ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException;
+  ValueSetExpansionOutcome expandVS(ConceptSetComponent inc, boolean hierarchical) throws TerminologyServiceException;
 
-   Locale getLocale();
+  Locale getLocale();
 
-   void setLocale(Locale locale);
+  void setLocale(Locale locale);
 
-  public class ValidationResult {
+  String formatMessage(String theMessage, Object... theMessageArguments);
+
+  void setValidationMessageLanguage(Locale locale);
+
+  class ValidationResult {
     private ConceptDefinitionComponent definition;
     private IssueSeverity severity;
     private String message;
@@ -495,6 +668,8 @@ public interface IWorkerContext {
    * @return
    */
   public ValidationResult validateCode(ValidationOptions options, Coding code, ValueSet vs);
+
+  public void validateCodeBatch(ValidationOptions options, List<? extends CodingValidationRequest> codes, ValueSet vs);
   
   /**
    * returns the recommended tla for the type  (from the structure definitions)
@@ -550,5 +725,48 @@ public interface IWorkerContext {
   public String getLinkForUrl(String corePath, String s);
   public Map<String, byte[]> getBinaries();
 
+  /**
+   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
+   * 
+   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
+   * 
+   * @param pi - the package to load
+   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
+   * @return the number of resources loaded
+   */
+  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader) throws FileNotFoundException, IOException, FHIRException;
 
+  /**
+   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
+   * 
+   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
+   *
+   * Deprecated - use the simpler method where the types come from the loader.
+   * 
+   * @param pi - the package to load
+   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
+   * @param types - which types of resources to load
+   * @return the number of resources loaded
+   */
+  @Deprecated
+  int loadFromPackage(NpmPackage pi, IContextResourceLoader loader, String[] types) throws FileNotFoundException, IOException, FHIRException;
+
+  /**
+   * Load relevant resources of the appropriate types (as specified by the loader) from the nominated package
+   * 
+   * note that the package system uses lazy loading; the loader will be called later when the classes that use the context need the relevant resource
+   *
+   * This method also loads all the packages that the package depends on (recursively)
+   * 
+   * @param pi - the package to load
+   * @param loader - an implemenation of IContextResourceLoader that knows how to read the resources in the package (e.g. for the appropriate version).
+   * @param pcm - used to find and load additional dependencies
+   * @return the number of resources loaded
+   */
+   int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
+
+  public boolean hasPackage(String id, String ver);
+
+  public int getClientRetryCount();
+  public IWorkerContext setClientRetryCount(int value);
 }

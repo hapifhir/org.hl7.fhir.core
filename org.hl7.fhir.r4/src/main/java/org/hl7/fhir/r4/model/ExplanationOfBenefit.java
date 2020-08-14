@@ -1,26 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-import java.math.BigDecimal;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,22 +31,22 @@ import java.math.BigDecimal;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.NoteType;
-import org.hl7.fhir.r4.model.Enumerations.NoteTypeEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
+import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r4.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * This resource provides: the claim details; adjudication details from the processing of a Claim; and optionally account balance information, for informing the subscriber of the benefits provided.
  */
@@ -661,10 +641,14 @@ public class ExplanationOfBenefit extends DomainResource {
       public RelatedClaimComponent copy() {
         RelatedClaimComponent dst = new RelatedClaimComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RelatedClaimComponent dst) {
+        super.copyValues(dst);
         dst.claim = claim == null ? null : claim.copy();
         dst.relationship = relationship == null ? null : relationship.copy();
         dst.reference = reference == null ? null : reference.copy();
-        return dst;
       }
 
       @Override
@@ -882,9 +866,13 @@ public class ExplanationOfBenefit extends DomainResource {
       public PayeeComponent copy() {
         PayeeComponent dst = new PayeeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PayeeComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.party = party == null ? null : party.copy();
-        return dst;
       }
 
       @Override
@@ -1285,12 +1273,16 @@ public class ExplanationOfBenefit extends DomainResource {
       public CareTeamComponent copy() {
         CareTeamComponent dst = new CareTeamComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CareTeamComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.provider = provider == null ? null : provider.copy();
         dst.responsible = responsible == null ? null : responsible.copy();
         dst.role = role == null ? null : role.copy();
         dst.qualification = qualification == null ? null : qualification.copy();
-        return dst;
       }
 
       @Override
@@ -1830,13 +1822,17 @@ public class ExplanationOfBenefit extends DomainResource {
       public SupportingInformationComponent copy() {
         SupportingInformationComponent dst = new SupportingInformationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SupportingInformationComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.category = category == null ? null : category.copy();
         dst.code = code == null ? null : code.copy();
         dst.timing = timing == null ? null : timing.copy();
         dst.value = value == null ? null : value.copy();
         dst.reason = reason == null ? null : reason.copy();
-        return dst;
       }
 
       @Override
@@ -2265,6 +2261,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public DiagnosisComponent copy() {
         DiagnosisComponent dst = new DiagnosisComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DiagnosisComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.diagnosis = diagnosis == null ? null : diagnosis.copy();
         if (type != null) {
@@ -2274,7 +2275,6 @@ public class ExplanationOfBenefit extends DomainResource {
         };
         dst.onAdmission = onAdmission == null ? null : onAdmission.copy();
         dst.packageCode = packageCode == null ? null : packageCode.copy();
-        return dst;
       }
 
       @Override
@@ -2780,6 +2780,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public ProcedureComponent copy() {
         ProcedureComponent dst = new ProcedureComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ProcedureComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
@@ -2793,7 +2798,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (Reference i : udi)
             dst.udi.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3125,6 +3129,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public InsuranceComponent copy() {
         InsuranceComponent dst = new InsuranceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsuranceComponent dst) {
+        super.copyValues(dst);
         dst.focal = focal == null ? null : focal.copy();
         dst.coverage = coverage == null ? null : coverage.copy();
         if (preAuthRef != null) {
@@ -3132,7 +3141,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (StringType i : preAuthRef)
             dst.preAuthRef.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3434,10 +3442,14 @@ public class ExplanationOfBenefit extends DomainResource {
       public AccidentComponent copy() {
         AccidentComponent dst = new AccidentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AccidentComponent dst) {
+        super.copyValues(dst);
         dst.date = date == null ? null : date.copy();
         dst.type = type == null ? null : type.copy();
         dst.location = location == null ? null : location.copy();
-        return dst;
       }
 
       @Override
@@ -5177,6 +5189,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public ItemComponent copy() {
         ItemComponent dst = new ItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ItemComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         if (careTeamSequence != null) {
           dst.careTeamSequence = new ArrayList<PositiveIntType>();
@@ -5248,7 +5265,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (DetailComponent i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -5600,11 +5616,15 @@ public class ExplanationOfBenefit extends DomainResource {
       public AdjudicationComponent copy() {
         AdjudicationComponent dst = new AdjudicationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AdjudicationComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.reason = reason == null ? null : reason.copy();
         dst.amount = amount == null ? null : amount.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -6620,6 +6640,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public DetailComponent copy() {
         DetailComponent dst = new DetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DetailComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.revenue = revenue == null ? null : revenue.copy();
         dst.category = category == null ? null : category.copy();
@@ -6658,7 +6683,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (SubDetailComponent i : subDetail)
             dst.subDetail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -7607,6 +7631,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public SubDetailComponent copy() {
         SubDetailComponent dst = new SubDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubDetailComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.revenue = revenue == null ? null : revenue.copy();
         dst.category = category == null ? null : category.copy();
@@ -7640,7 +7669,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (AdjudicationComponent i : adjudication)
             dst.adjudication.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -9036,6 +9064,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public AddedItemComponent copy() {
         AddedItemComponent dst = new AddedItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AddedItemComponent dst) {
+        super.copyValues(dst);
         if (itemSequence != null) {
           dst.itemSequence = new ArrayList<PositiveIntType>();
           for (PositiveIntType i : itemSequence)
@@ -9094,7 +9127,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (AddedItemDetailComponent i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -9788,6 +9820,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public AddedItemDetailComponent copy() {
         AddedItemDetailComponent dst = new AddedItemDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AddedItemDetailComponent dst) {
+        super.copyValues(dst);
         dst.productOrService = productOrService == null ? null : productOrService.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
@@ -9813,7 +9850,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (AddedItemDetailSubDetailComponent i : subDetail)
             dst.subDetail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -10426,6 +10462,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public AddedItemDetailSubDetailComponent copy() {
         AddedItemDetailSubDetailComponent dst = new AddedItemDetailSubDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AddedItemDetailSubDetailComponent dst) {
+        super.copyValues(dst);
         dst.productOrService = productOrService == null ? null : productOrService.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
@@ -10446,7 +10487,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (AdjudicationComponent i : adjudication)
             dst.adjudication.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -10655,9 +10695,13 @@ public class ExplanationOfBenefit extends DomainResource {
       public TotalComponent copy() {
         TotalComponent dst = new TotalComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TotalComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.amount = amount == null ? null : amount.copy();
-        return dst;
       }
 
       @Override
@@ -11058,13 +11102,17 @@ public class ExplanationOfBenefit extends DomainResource {
       public PaymentComponent copy() {
         PaymentComponent dst = new PaymentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PaymentComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.adjustment = adjustment == null ? null : adjustment.copy();
         dst.adjustmentReason = adjustmentReason == null ? null : adjustmentReason.copy();
         dst.date = date == null ? null : date.copy();
         dst.amount = amount == null ? null : amount.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
-        return dst;
       }
 
       @Override
@@ -11424,11 +11472,15 @@ public class ExplanationOfBenefit extends DomainResource {
       public NoteComponent copy() {
         NoteComponent dst = new NoteComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NoteComponent dst) {
+        super.copyValues(dst);
         dst.number = number == null ? null : number.copy();
         dst.type = type == null ? null : type.copy();
         dst.text = text == null ? null : text.copy();
         dst.language = language == null ? null : language.copy();
-        return dst;
       }
 
       @Override
@@ -12004,6 +12056,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public BenefitBalanceComponent copy() {
         BenefitBalanceComponent dst = new BenefitBalanceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BenefitBalanceComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.excluded = excluded == null ? null : excluded.copy();
         dst.name = name == null ? null : name.copy();
@@ -12016,7 +12073,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (BenefitComponent i : financial)
             dst.financial.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -12359,10 +12415,14 @@ public class ExplanationOfBenefit extends DomainResource {
       public BenefitComponent copy() {
         BenefitComponent dst = new BenefitComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BenefitComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.allowed = allowed == null ? null : allowed.copy();
         dst.used = used == null ? null : used.copy();
-        return dst;
       }
 
       @Override
@@ -15222,6 +15282,11 @@ public class ExplanationOfBenefit extends DomainResource {
       public ExplanationOfBenefit copy() {
         ExplanationOfBenefit dst = new ExplanationOfBenefit();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ExplanationOfBenefit dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -15325,7 +15390,6 @@ public class ExplanationOfBenefit extends DomainResource {
           for (BenefitBalanceComponent i : benefitBalance)
             dst.benefitBalance.add(i.copy());
         };
-        return dst;
       }
 
       protected ExplanationOfBenefit typedCopy() {
@@ -15805,4 +15869,3 @@ public class ExplanationOfBenefit extends DomainResource {
 
 
 }
-

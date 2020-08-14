@@ -1,24 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50;
 
-/*-
- * #%L
- * org.hl7.fhir.convertors
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
@@ -69,15 +51,15 @@ public class DeviceUseStatement40_50 extends VersionConvertor_40_50 {
         if (src.hasTiming())
             tgt.setTiming(convertType(src.getTiming()));
         if (src.hasRecordedOn())
-            tgt.setRecordedOnElement(convertDateTime(src.getRecordedOnElement()));
+            tgt.setDateAssertedElement(convertDateTime(src.getRecordedOnElement()));
         if (src.hasSource())
-            tgt.setSource(convertReference(src.getSource()));
+            tgt.setInformationSource(convertReference(src.getSource()));
         if (src.hasDevice())
-            tgt.setDevice(convertReference(src.getDevice()));
+            tgt.getDevice().setReference(convertReference(src.getDevice()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
         if (src.hasBodySite())
-            tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
+            tgt.getBodySite().setConcept(convertCodeableConcept(src.getBodySite()));
         for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }
@@ -96,18 +78,18 @@ public class DeviceUseStatement40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom()) tgt.addDerivedFrom(convertReference(t));
         if (src.hasTiming())
             tgt.setTiming(convertType(src.getTiming()));
-        if (src.hasRecordedOn())
-            tgt.setRecordedOnElement(convertDateTime(src.getRecordedOnElement()));
-        if (src.hasSource())
-            tgt.setSource(convertReference(src.getSource()));
-        if (src.hasDevice())
-            tgt.setDevice(convertReference(src.getDevice()));
+        if (src.hasDateAsserted())
+            tgt.setRecordedOnElement(convertDateTime(src.getDateAssertedElement()));
+        if (src.hasInformationSource())
+            tgt.setSource(convertReference(src.getInformationSource()));
+        if (src.getDevice().hasReference())
+            tgt.setDevice(convertReference(src.getDevice().getReference()));
         for (CodeableReference t : src.getReason()) if (t.hasConcept())
             tgt.addReasonCode(convertCodeableConcept(t.getConcept()));
         for (CodeableReference t : src.getReason()) if (t.hasReference())
             tgt.addReasonReference(convertReference(t.getReference()));
-        if (src.hasBodySite())
-            tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
+        if (src.getBodySite().hasConcept())
+            tgt.setBodySite(convertCodeableConcept(src.getBodySite().getConcept()));
         for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         return tgt;
     }

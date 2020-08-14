@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,24 +31,24 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.r4.model.Enumerations.BindingStrength;
-import org.hl7.fhir.r4.model.Enumerations.BindingStrengthEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r4.model.Enumerations.*;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
+
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 // added from java-adornments.txt:
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-import ca.uhn.fhir.model.api.annotation.Description;
 
 
 // end addition
@@ -1126,6 +1108,11 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public ElementDefinitionSlicingComponent copy() {
         ElementDefinitionSlicingComponent dst = new ElementDefinitionSlicingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ElementDefinitionSlicingComponent dst) {
+        super.copyValues(dst);
         if (discriminator != null) {
           dst.discriminator = new ArrayList<ElementDefinitionSlicingDiscriminatorComponent>();
           for (ElementDefinitionSlicingDiscriminatorComponent i : discriminator)
@@ -1134,7 +1121,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         dst.description = description == null ? null : description.copy();
         dst.ordered = ordered == null ? null : ordered.copy();
         dst.rules = rules == null ? null : rules.copy();
-        return dst;
       }
 
       @Override
@@ -1384,9 +1370,13 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public ElementDefinitionSlicingDiscriminatorComponent copy() {
         ElementDefinitionSlicingDiscriminatorComponent dst = new ElementDefinitionSlicingDiscriminatorComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ElementDefinitionSlicingDiscriminatorComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.path = path == null ? null : path.copy();
-        return dst;
       }
 
       @Override
@@ -1696,10 +1686,14 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public ElementDefinitionBaseComponent copy() {
         ElementDefinitionBaseComponent dst = new ElementDefinitionBaseComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ElementDefinitionBaseComponent dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         dst.min = min == null ? null : min.copy();
         dst.max = max == null ? null : max.copy();
-        return dst;
       }
 
       @Override
@@ -2198,6 +2192,11 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public TypeRefComponent copy() {
         TypeRefComponent dst = new TypeRefComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TypeRefComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         if (profile != null) {
           dst.profile = new ArrayList<CanonicalType>();
@@ -2215,7 +2214,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
             dst.aggregation.add(i.copy());
         };
         dst.versioning = versioning == null ? null : versioning.copy();
-        return dst;
       }
 
       @Override
@@ -2712,6 +2710,10 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
           this.value = new Dosage();
           return this.value;
         }
+        else if (name.equals("valueMeta")) {
+          this.value = new Meta();
+          return this.value;
+        }
         else
           return super.addChild(name);
       }
@@ -2719,9 +2721,13 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public ElementDefinitionExampleComponent copy() {
         ElementDefinitionExampleComponent dst = new ElementDefinitionExampleComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ElementDefinitionExampleComponent dst) {
+        super.copyValues(dst);
         dst.label = label == null ? null : label.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -3310,6 +3316,11 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public ElementDefinitionConstraintComponent copy() {
         ElementDefinitionConstraintComponent dst = new ElementDefinitionConstraintComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ElementDefinitionConstraintComponent dst) {
+        super.copyValues(dst);
         dst.key = key == null ? null : key.copy();
         dst.requirements = requirements == null ? null : requirements.copy();
         dst.severity = severity == null ? null : severity.copy();
@@ -3317,7 +3328,6 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
         dst.expression = expression == null ? null : expression.copy();
         dst.xpath = xpath == null ? null : xpath.copy();
         dst.source = source == null ? null : source.copy();
-        return dst;
       }
 
       @Override
@@ -3641,10 +3651,14 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public ElementDefinitionBindingComponent copy() {
         ElementDefinitionBindingComponent dst = new ElementDefinitionBindingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ElementDefinitionBindingComponent dst) {
+        super.copyValues(dst);
         dst.strength = strength == null ? null : strength.copy();
         dst.description = description == null ? null : description.copy();
         dst.valueSet = valueSet == null ? null : valueSet.copy();
-        return dst;
       }
 
       @Override
@@ -4030,11 +4044,15 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
       public ElementDefinitionMappingComponent copy() {
         ElementDefinitionMappingComponent dst = new ElementDefinitionMappingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ElementDefinitionMappingComponent dst) {
+        super.copyValues(dst);
         dst.identity = identity == null ? null : identity.copy();
         dst.language = language == null ? null : language.copy();
         dst.map = map == null ? null : map.copy();
         dst.comment = comment == null ? null : comment.copy();
-        return dst;
       }
 
       @Override
@@ -6881,6 +6899,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           this.defaultValue = new Dosage();
           return this.defaultValue;
         }
+        else if (name.equals("defaultValueMeta")) {
+          this.defaultValue = new Meta();
+          return this.defaultValue;
+        }
         else if (name.equals("meaningWhenMissing")) {
           throw new FHIRException("Cannot call addChild on a primitive type ElementDefinition.meaningWhenMissing");
         }
@@ -7083,6 +7105,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           this.fixed = new Dosage();
           return this.fixed;
         }
+        else if (name.equals("fixedMeta")) {
+          this.fixed = new Meta();
+          return this.fixed;
+        }
         else if (name.equals("patternBase64Binary")) {
           this.pattern = new Base64BinaryType();
           return this.pattern;
@@ -7279,6 +7305,10 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           this.pattern = new Dosage();
           return this.pattern;
         }
+        else if (name.equals("patternMeta")) {
+          this.pattern = new Meta();
+          return this.pattern;
+        }
         else if (name.equals("example")) {
           return addExample();
         }
@@ -7394,6 +7424,11 @@ When pattern[x] is used to constrain a complex object, it means that each proper
       public ElementDefinition copy() {
         ElementDefinition dst = new ElementDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ElementDefinition dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         if (representation != null) {
           dst.representation = new ArrayList<Enumeration<PropertyRepresentation>>();
@@ -7460,7 +7495,6 @@ When pattern[x] is used to constrain a complex object, it means that each proper
           for (ElementDefinitionMappingComponent i : mapping)
             dst.mapping.add(i.copy());
         };
-        return dst;
       }
 
       protected ElementDefinition typedCopy() {
@@ -7572,14 +7606,13 @@ When pattern[x] is used to constrain a complex object, it means that each proper
       setIsModifier(modifier);
       setIsSummary(inSummary);
     }
-  }
+  }  
+
 
   public String present() {
     return hasId() ? getId() : getPath();
   }  
-
-
+  
 // end addition
 
 }
-

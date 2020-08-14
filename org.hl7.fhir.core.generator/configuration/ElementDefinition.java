@@ -1,5 +1,4 @@
-﻿  
-  public String toString() {
+public String toString() {
     if (hasId())
       return getId();
     if (hasSliceName())
@@ -32,7 +31,15 @@
     return b.toString();
   }
   
-
+  public String typeSummaryVB() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|");
+    for (TypeRefComponent tr : getType()) {
+      if (tr.hasCode())
+        b.append(tr.getWorkingCode());
+    }
+    return b.toString().replace(" ", "");
+  }
+  
   public TypeRefComponent getType(String code) {
     for (TypeRefComponent tr : getType()) 
       if (tr.getCode().equals(code))
@@ -101,7 +108,4 @@
 
   public boolean isInlineType() {
     return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
-  }  
-
-
-
+  }

@@ -1,5 +1,4 @@
-﻿ 
-  public Parameters addParameter(String name, boolean b) {
+public Parameters addParameter(String name, boolean b) {
     addParameter().setName(name).setValue(new BooleanType(b));
     return this;
   }
@@ -90,4 +89,3 @@
     }
     return false;
   }
- 

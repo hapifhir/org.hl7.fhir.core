@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,19 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * The characteristics, operational status and capabilities of a medical-related component of a medical device.
  */
@@ -500,10 +483,14 @@ public class DeviceDefinition extends DomainResource {
       public DeviceDefinitionUdiDeviceIdentifierComponent copy() {
         DeviceDefinitionUdiDeviceIdentifierComponent dst = new DeviceDefinitionUdiDeviceIdentifierComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionUdiDeviceIdentifierComponent dst) {
+        super.copyValues(dst);
         dst.deviceIdentifier = deviceIdentifier == null ? null : deviceIdentifier.copy();
         dst.issuer = issuer == null ? null : issuer.copy();
         dst.jurisdiction = jurisdiction == null ? null : jurisdiction.copy();
-        return dst;
       }
 
       @Override
@@ -758,9 +745,13 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinitionDeviceNameComponent copy() {
         DeviceDefinitionDeviceNameComponent dst = new DeviceDefinitionDeviceNameComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionDeviceNameComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.type = type == null ? null : type.copy();
-        return dst;
       }
 
       @Override
@@ -1007,9 +998,13 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinitionSpecializationComponent copy() {
         DeviceDefinitionSpecializationComponent dst = new DeviceDefinitionSpecializationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionSpecializationComponent dst) {
+        super.copyValues(dst);
         dst.systemType = systemType == null ? null : systemType.copy();
         dst.version = version == null ? null : version.copy();
-        return dst;
       }
 
       @Override
@@ -1240,13 +1235,17 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinitionCapabilityComponent copy() {
         DeviceDefinitionCapabilityComponent dst = new DeviceDefinitionCapabilityComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionCapabilityComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (description != null) {
           dst.description = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : description)
             dst.description.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1550,6 +1549,11 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinitionPropertyComponent copy() {
         DeviceDefinitionPropertyComponent dst = new DeviceDefinitionPropertyComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionPropertyComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (valueQuantity != null) {
           dst.valueQuantity = new ArrayList<Quantity>();
@@ -1561,7 +1565,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           for (CodeableConcept i : valueCode)
             dst.valueCode.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1851,10 +1854,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinitionMaterialComponent copy() {
         DeviceDefinitionMaterialComponent dst = new DeviceDefinitionMaterialComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinitionMaterialComponent dst) {
+        super.copyValues(dst);
         dst.substance = substance == null ? null : substance.copy();
         dst.alternate = alternate == null ? null : alternate.copy();
         dst.allergenicIndicator = allergenicIndicator == null ? null : allergenicIndicator.copy();
-        return dst;
       }
 
       @Override
@@ -3486,6 +3493,11 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public DeviceDefinition copy() {
         DeviceDefinition dst = new DeviceDefinition();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DeviceDefinition dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -3560,7 +3572,6 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           for (DeviceDefinitionMaterialComponent i : material)
             dst.material.add(i.copy());
         };
-        return dst;
       }
 
       protected DeviceDefinition typedCopy() {
@@ -3676,4 +3687,3 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
 
 }
-

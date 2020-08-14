@@ -1,25 +1,7 @@
 package org.hl7.fhir.r5.model;
 
 
-/*
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the \"License\");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an \"AS IS\" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,428 +31,29 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.annotation.Block;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * This represents statistics, certainty, both the intended and actual population, and evidence variables.
  */
 @ResourceDef(name="Evidence", profile="http://hl7.org/fhir/StructureDefinition/Evidence")
 public class Evidence extends MetadataResource {
-
-    @Block()
-    public static class EvidenceReferentGroupComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Textual description of referent group.
-         */
-        @Child(name = "description", type = {MarkdownType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Textual description of referent group", formalDefinition="Textual description of referent group." )
-        protected MarkdownType description;
-
-        /**
-         * Footnotes and/or explanatory notes.
-         */
-        @Child(name = "note", type = {Annotation.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Footnotes and/or explanatory notes", formalDefinition="Footnotes and/or explanatory notes." )
-        protected List<Annotation> note;
-
-        /**
-         * Various information categories of group.
-         */
-        @Child(name = "evidenceSource", type = {Group.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Various information categories of group", formalDefinition="Various information categories of group." )
-        protected Reference evidenceSource;
-
-        /**
-         * Non-actual group that is a set of characteristics.
-         */
-        @Child(name = "intendedGroup", type = {Group.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Non-actual group that is a set of characteristics", formalDefinition="Non-actual group that is a set of characteristics." )
-        protected Reference intendedGroup;
-
-        /**
-         * Indication of quality of match between intended group to actual group.
-         */
-        @Child(name = "directnessMatch", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="low | moderate | high | exact", formalDefinition="Indication of quality of match between intended group to actual group." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/directness")
-        protected CodeableConcept directnessMatch;
-
-        private static final long serialVersionUID = -444548956L;
-
-    /**
-     * Constructor
-     */
-      public EvidenceReferentGroupComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #description} (Textual description of referent group.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public MarkdownType getDescriptionElement() { 
-          if (this.description == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceReferentGroupComponent.description");
-            else if (Configuration.doAutoCreate())
-              this.description = new MarkdownType(); // bb
-          return this.description;
-        }
-
-        public boolean hasDescriptionElement() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        public boolean hasDescription() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        /**
-         * @param value {@link #description} (Textual description of referent group.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public EvidenceReferentGroupComponent setDescriptionElement(MarkdownType value) { 
-          this.description = value;
-          return this;
-        }
-
-        /**
-         * @return Textual description of referent group.
-         */
-        public String getDescription() { 
-          return this.description == null ? null : this.description.getValue();
-        }
-
-        /**
-         * @param value Textual description of referent group.
-         */
-        public EvidenceReferentGroupComponent setDescription(String value) { 
-          if (value == null)
-            this.description = null;
-          else {
-            if (this.description == null)
-              this.description = new MarkdownType();
-            this.description.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #note} (Footnotes and/or explanatory notes.)
-         */
-        public List<Annotation> getNote() { 
-          if (this.note == null)
-            this.note = new ArrayList<Annotation>();
-          return this.note;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public EvidenceReferentGroupComponent setNote(List<Annotation> theNote) { 
-          this.note = theNote;
-          return this;
-        }
-
-        public boolean hasNote() { 
-          if (this.note == null)
-            return false;
-          for (Annotation item : this.note)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public Annotation addNote() { //3
-          Annotation t = new Annotation();
-          if (this.note == null)
-            this.note = new ArrayList<Annotation>();
-          this.note.add(t);
-          return t;
-        }
-
-        public EvidenceReferentGroupComponent addNote(Annotation t) { //3
-          if (t == null)
-            return this;
-          if (this.note == null)
-            this.note = new ArrayList<Annotation>();
-          this.note.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
-         */
-        public Annotation getNoteFirstRep() { 
-          if (getNote().isEmpty()) {
-            addNote();
-          }
-          return getNote().get(0);
-        }
-
-        /**
-         * @return {@link #evidenceSource} (Various information categories of group.)
-         */
-        public Reference getEvidenceSource() { 
-          if (this.evidenceSource == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceReferentGroupComponent.evidenceSource");
-            else if (Configuration.doAutoCreate())
-              this.evidenceSource = new Reference(); // cc
-          return this.evidenceSource;
-        }
-
-        public boolean hasEvidenceSource() { 
-          return this.evidenceSource != null && !this.evidenceSource.isEmpty();
-        }
-
-        /**
-         * @param value {@link #evidenceSource} (Various information categories of group.)
-         */
-        public EvidenceReferentGroupComponent setEvidenceSource(Reference value) { 
-          this.evidenceSource = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #intendedGroup} (Non-actual group that is a set of characteristics.)
-         */
-        public Reference getIntendedGroup() { 
-          if (this.intendedGroup == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceReferentGroupComponent.intendedGroup");
-            else if (Configuration.doAutoCreate())
-              this.intendedGroup = new Reference(); // cc
-          return this.intendedGroup;
-        }
-
-        public boolean hasIntendedGroup() { 
-          return this.intendedGroup != null && !this.intendedGroup.isEmpty();
-        }
-
-        /**
-         * @param value {@link #intendedGroup} (Non-actual group that is a set of characteristics.)
-         */
-        public EvidenceReferentGroupComponent setIntendedGroup(Reference value) { 
-          this.intendedGroup = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #directnessMatch} (Indication of quality of match between intended group to actual group.)
-         */
-        public CodeableConcept getDirectnessMatch() { 
-          if (this.directnessMatch == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceReferentGroupComponent.directnessMatch");
-            else if (Configuration.doAutoCreate())
-              this.directnessMatch = new CodeableConcept(); // cc
-          return this.directnessMatch;
-        }
-
-        public boolean hasDirectnessMatch() { 
-          return this.directnessMatch != null && !this.directnessMatch.isEmpty();
-        }
-
-        /**
-         * @param value {@link #directnessMatch} (Indication of quality of match between intended group to actual group.)
-         */
-        public EvidenceReferentGroupComponent setDirectnessMatch(CodeableConcept value) { 
-          this.directnessMatch = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("description", "markdown", "Textual description of referent group.", 0, 1, description));
-          children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
-          children.add(new Property("evidenceSource", "Reference(Group)", "Various information categories of group.", 0, 1, evidenceSource));
-          children.add(new Property("intendedGroup", "Reference(Group)", "Non-actual group that is a set of characteristics.", 0, 1, intendedGroup));
-          children.add(new Property("directnessMatch", "CodeableConcept", "Indication of quality of match between intended group to actual group.", 0, 1, directnessMatch));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1724546052: /*description*/  return new Property("description", "markdown", "Textual description of referent group.", 0, 1, description);
-          case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
-          case 324572498: /*evidenceSource*/  return new Property("evidenceSource", "Reference(Group)", "Various information categories of group.", 0, 1, evidenceSource);
-          case -777873132: /*intendedGroup*/  return new Property("intendedGroup", "Reference(Group)", "Non-actual group that is a set of characteristics.", 0, 1, intendedGroup);
-          case -2144864283: /*directnessMatch*/  return new Property("directnessMatch", "CodeableConcept", "Indication of quality of match between intended group to actual group.", 0, 1, directnessMatch);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
-        case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-        case 324572498: /*evidenceSource*/ return this.evidenceSource == null ? new Base[0] : new Base[] {this.evidenceSource}; // Reference
-        case -777873132: /*intendedGroup*/ return this.intendedGroup == null ? new Base[0] : new Base[] {this.intendedGroup}; // Reference
-        case -2144864283: /*directnessMatch*/ return this.directnessMatch == null ? new Base[0] : new Base[] {this.directnessMatch}; // CodeableConcept
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1724546052: // description
-          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
-          return value;
-        case 3387378: // note
-          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
-          return value;
-        case 324572498: // evidenceSource
-          this.evidenceSource = TypeConvertor.castToReference(value); // Reference
-          return value;
-        case -777873132: // intendedGroup
-          this.intendedGroup = TypeConvertor.castToReference(value); // Reference
-          return value;
-        case -2144864283: // directnessMatch
-          this.directnessMatch = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("description")) {
-          this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
-        } else if (name.equals("note")) {
-          this.getNote().add(TypeConvertor.castToAnnotation(value));
-        } else if (name.equals("evidenceSource")) {
-          this.evidenceSource = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("intendedGroup")) {
-          this.intendedGroup = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("directnessMatch")) {
-          this.directnessMatch = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052:  return getDescriptionElement();
-        case 3387378:  return addNote(); 
-        case 324572498:  return getEvidenceSource();
-        case -777873132:  return getIntendedGroup();
-        case -2144864283:  return getDirectnessMatch();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return new String[] {"markdown"};
-        case 3387378: /*note*/ return new String[] {"Annotation"};
-        case 324572498: /*evidenceSource*/ return new String[] {"Reference"};
-        case -777873132: /*intendedGroup*/ return new String[] {"Reference"};
-        case -2144864283: /*directnessMatch*/ return new String[] {"CodeableConcept"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Evidence.referentGroup.description");
-        }
-        else if (name.equals("note")) {
-          return addNote();
-        }
-        else if (name.equals("evidenceSource")) {
-          this.evidenceSource = new Reference();
-          return this.evidenceSource;
-        }
-        else if (name.equals("intendedGroup")) {
-          this.intendedGroup = new Reference();
-          return this.intendedGroup;
-        }
-        else if (name.equals("directnessMatch")) {
-          this.directnessMatch = new CodeableConcept();
-          return this.directnessMatch;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public EvidenceReferentGroupComponent copy() {
-        EvidenceReferentGroupComponent dst = new EvidenceReferentGroupComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(EvidenceReferentGroupComponent dst) {
-        super.copyValues(dst);
-        dst.description = description == null ? null : description.copy();
-        if (note != null) {
-          dst.note = new ArrayList<Annotation>();
-          for (Annotation i : note)
-            dst.note.add(i.copy());
-        };
-        dst.evidenceSource = evidenceSource == null ? null : evidenceSource.copy();
-        dst.intendedGroup = intendedGroup == null ? null : intendedGroup.copy();
-        dst.directnessMatch = directnessMatch == null ? null : directnessMatch.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof EvidenceReferentGroupComponent))
-          return false;
-        EvidenceReferentGroupComponent o = (EvidenceReferentGroupComponent) other_;
-        return compareDeep(description, o.description, true) && compareDeep(note, o.note, true) && compareDeep(evidenceSource, o.evidenceSource, true)
-           && compareDeep(intendedGroup, o.intendedGroup, true) && compareDeep(directnessMatch, o.directnessMatch, true)
-          ;
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof EvidenceReferentGroupComponent))
-          return false;
-        EvidenceReferentGroupComponent o = (EvidenceReferentGroupComponent) other_;
-        return compareValues(description, o.description, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, note, evidenceSource
-          , intendedGroup, directnessMatch);
-      }
-
-  public String fhirType() {
-    return "Evidence.referentGroup";
-
-  }
-
-  }
 
     @Block()
     public static class EvidenceVariableDefinitionComponent extends BackboneElement implements IBaseBackboneElement {
@@ -489,26 +72,26 @@ public class Evidence extends MetadataResource {
         protected List<Annotation> note;
 
         /**
-         * exposure | referenceExposure | measuredVariable | confounder.
+         * population | subpopulation | exposure | referenceExposure | measuredVariable | confounder.
          */
-        @Child(name = "variableRole", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="exposure | referenceExposure | measuredVariable | confounder", formalDefinition="exposure | referenceExposure | measuredVariable | confounder." )
+        @Child(name = "variableRole", type = {CodeableConcept.class}, order=3, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="population | subpopulation | exposure | referenceExposure | measuredVariable | confounder", formalDefinition="population | subpopulation | exposure | referenceExposure | measuredVariable | confounder." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/variable-role")
         protected CodeableConcept variableRole;
 
         /**
          * Definition of the actual variable related to the statistic(s).
          */
-        @Child(name = "actualDefinition", type = {EvidenceVariable.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "observed", type = {Group.class, EvidenceVariable.class}, order=4, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Definition of the actual variable related to the statistic(s)", formalDefinition="Definition of the actual variable related to the statistic(s)." )
-        protected Reference actualDefinition;
+        protected Reference observed;
 
         /**
          * Definition of the intended variable related to the Evidence.
          */
-        @Child(name = "intendedDefinition", type = {EvidenceVariable.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "intended", type = {Group.class, EvidenceVariable.class}, order=5, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Definition of the intended variable related to the Evidence", formalDefinition="Definition of the intended variable related to the Evidence." )
-        protected Reference intendedDefinition;
+        protected Reference intended;
 
         /**
          * Indication of quality of match between intended variable to actual variable.
@@ -518,13 +101,21 @@ public class Evidence extends MetadataResource {
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/directness")
         protected CodeableConcept directnessMatch;
 
-        private static final long serialVersionUID = -1887907534L;
+        private static final long serialVersionUID = -702346164L;
 
     /**
      * Constructor
      */
       public EvidenceVariableDefinitionComponent() {
         super();
+      }
+
+    /**
+     * Constructor
+     */
+      public EvidenceVariableDefinitionComponent(CodeableConcept variableRole) {
+        super();
+        this.setVariableRole(variableRole);
       }
 
         /**
@@ -630,7 +221,7 @@ public class Evidence extends MetadataResource {
         }
 
         /**
-         * @return {@link #variableRole} (exposure | referenceExposure | measuredVariable | confounder.)
+         * @return {@link #variableRole} (population | subpopulation | exposure | referenceExposure | measuredVariable | confounder.)
          */
         public CodeableConcept getVariableRole() { 
           if (this.variableRole == null)
@@ -646,7 +237,7 @@ public class Evidence extends MetadataResource {
         }
 
         /**
-         * @param value {@link #variableRole} (exposure | referenceExposure | measuredVariable | confounder.)
+         * @param value {@link #variableRole} (population | subpopulation | exposure | referenceExposure | measuredVariable | confounder.)
          */
         public EvidenceVariableDefinitionComponent setVariableRole(CodeableConcept value) { 
           this.variableRole = value;
@@ -654,50 +245,50 @@ public class Evidence extends MetadataResource {
         }
 
         /**
-         * @return {@link #actualDefinition} (Definition of the actual variable related to the statistic(s).)
+         * @return {@link #observed} (Definition of the actual variable related to the statistic(s).)
          */
-        public Reference getActualDefinition() { 
-          if (this.actualDefinition == null)
+        public Reference getObserved() { 
+          if (this.observed == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceVariableDefinitionComponent.actualDefinition");
+              throw new Error("Attempt to auto-create EvidenceVariableDefinitionComponent.observed");
             else if (Configuration.doAutoCreate())
-              this.actualDefinition = new Reference(); // cc
-          return this.actualDefinition;
+              this.observed = new Reference(); // cc
+          return this.observed;
         }
 
-        public boolean hasActualDefinition() { 
-          return this.actualDefinition != null && !this.actualDefinition.isEmpty();
+        public boolean hasObserved() { 
+          return this.observed != null && !this.observed.isEmpty();
         }
 
         /**
-         * @param value {@link #actualDefinition} (Definition of the actual variable related to the statistic(s).)
+         * @param value {@link #observed} (Definition of the actual variable related to the statistic(s).)
          */
-        public EvidenceVariableDefinitionComponent setActualDefinition(Reference value) { 
-          this.actualDefinition = value;
+        public EvidenceVariableDefinitionComponent setObserved(Reference value) { 
+          this.observed = value;
           return this;
         }
 
         /**
-         * @return {@link #intendedDefinition} (Definition of the intended variable related to the Evidence.)
+         * @return {@link #intended} (Definition of the intended variable related to the Evidence.)
          */
-        public Reference getIntendedDefinition() { 
-          if (this.intendedDefinition == null)
+        public Reference getIntended() { 
+          if (this.intended == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceVariableDefinitionComponent.intendedDefinition");
+              throw new Error("Attempt to auto-create EvidenceVariableDefinitionComponent.intended");
             else if (Configuration.doAutoCreate())
-              this.intendedDefinition = new Reference(); // cc
-          return this.intendedDefinition;
+              this.intended = new Reference(); // cc
+          return this.intended;
         }
 
-        public boolean hasIntendedDefinition() { 
-          return this.intendedDefinition != null && !this.intendedDefinition.isEmpty();
+        public boolean hasIntended() { 
+          return this.intended != null && !this.intended.isEmpty();
         }
 
         /**
-         * @param value {@link #intendedDefinition} (Definition of the intended variable related to the Evidence.)
+         * @param value {@link #intended} (Definition of the intended variable related to the Evidence.)
          */
-        public EvidenceVariableDefinitionComponent setIntendedDefinition(Reference value) { 
-          this.intendedDefinition = value;
+        public EvidenceVariableDefinitionComponent setIntended(Reference value) { 
+          this.intended = value;
           return this;
         }
 
@@ -729,9 +320,9 @@ public class Evidence extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("description", "markdown", "Description of the variable.", 0, 1, description));
           children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
-          children.add(new Property("variableRole", "CodeableConcept", "exposure | referenceExposure | measuredVariable | confounder.", 0, 1, variableRole));
-          children.add(new Property("actualDefinition", "Reference(EvidenceVariable)", "Definition of the actual variable related to the statistic(s).", 0, 1, actualDefinition));
-          children.add(new Property("intendedDefinition", "Reference(EvidenceVariable)", "Definition of the intended variable related to the Evidence.", 0, 1, intendedDefinition));
+          children.add(new Property("variableRole", "CodeableConcept", "population | subpopulation | exposure | referenceExposure | measuredVariable | confounder.", 0, 1, variableRole));
+          children.add(new Property("observed", "Reference(Group|EvidenceVariable)", "Definition of the actual variable related to the statistic(s).", 0, 1, observed));
+          children.add(new Property("intended", "Reference(Group|EvidenceVariable)", "Definition of the intended variable related to the Evidence.", 0, 1, intended));
           children.add(new Property("directnessMatch", "CodeableConcept", "Indication of quality of match between intended variable to actual variable.", 0, 1, directnessMatch));
         }
 
@@ -740,9 +331,9 @@ public class Evidence extends MetadataResource {
           switch (_hash) {
           case -1724546052: /*description*/  return new Property("description", "markdown", "Description of the variable.", 0, 1, description);
           case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
-          case -372889326: /*variableRole*/  return new Property("variableRole", "CodeableConcept", "exposure | referenceExposure | measuredVariable | confounder.", 0, 1, variableRole);
-          case -2019122815: /*actualDefinition*/  return new Property("actualDefinition", "Reference(EvidenceVariable)", "Definition of the actual variable related to the statistic(s).", 0, 1, actualDefinition);
-          case -1749096482: /*intendedDefinition*/  return new Property("intendedDefinition", "Reference(EvidenceVariable)", "Definition of the intended variable related to the Evidence.", 0, 1, intendedDefinition);
+          case -372889326: /*variableRole*/  return new Property("variableRole", "CodeableConcept", "population | subpopulation | exposure | referenceExposure | measuredVariable | confounder.", 0, 1, variableRole);
+          case 348607176: /*observed*/  return new Property("observed", "Reference(Group|EvidenceVariable)", "Definition of the actual variable related to the statistic(s).", 0, 1, observed);
+          case 570282027: /*intended*/  return new Property("intended", "Reference(Group|EvidenceVariable)", "Definition of the intended variable related to the Evidence.", 0, 1, intended);
           case -2144864283: /*directnessMatch*/  return new Property("directnessMatch", "CodeableConcept", "Indication of quality of match between intended variable to actual variable.", 0, 1, directnessMatch);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -755,8 +346,8 @@ public class Evidence extends MetadataResource {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -372889326: /*variableRole*/ return this.variableRole == null ? new Base[0] : new Base[] {this.variableRole}; // CodeableConcept
-        case -2019122815: /*actualDefinition*/ return this.actualDefinition == null ? new Base[0] : new Base[] {this.actualDefinition}; // Reference
-        case -1749096482: /*intendedDefinition*/ return this.intendedDefinition == null ? new Base[0] : new Base[] {this.intendedDefinition}; // Reference
+        case 348607176: /*observed*/ return this.observed == null ? new Base[0] : new Base[] {this.observed}; // Reference
+        case 570282027: /*intended*/ return this.intended == null ? new Base[0] : new Base[] {this.intended}; // Reference
         case -2144864283: /*directnessMatch*/ return this.directnessMatch == null ? new Base[0] : new Base[] {this.directnessMatch}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -775,11 +366,11 @@ public class Evidence extends MetadataResource {
         case -372889326: // variableRole
           this.variableRole = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case -2019122815: // actualDefinition
-          this.actualDefinition = TypeConvertor.castToReference(value); // Reference
+        case 348607176: // observed
+          this.observed = TypeConvertor.castToReference(value); // Reference
           return value;
-        case -1749096482: // intendedDefinition
-          this.intendedDefinition = TypeConvertor.castToReference(value); // Reference
+        case 570282027: // intended
+          this.intended = TypeConvertor.castToReference(value); // Reference
           return value;
         case -2144864283: // directnessMatch
           this.directnessMatch = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -797,10 +388,10 @@ public class Evidence extends MetadataResource {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("variableRole")) {
           this.variableRole = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("actualDefinition")) {
-          this.actualDefinition = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("intendedDefinition")) {
-          this.intendedDefinition = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("observed")) {
+          this.observed = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("intended")) {
+          this.intended = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("directnessMatch")) {
           this.directnessMatch = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
@@ -814,8 +405,8 @@ public class Evidence extends MetadataResource {
         case -1724546052:  return getDescriptionElement();
         case 3387378:  return addNote(); 
         case -372889326:  return getVariableRole();
-        case -2019122815:  return getActualDefinition();
-        case -1749096482:  return getIntendedDefinition();
+        case 348607176:  return getObserved();
+        case 570282027:  return getIntended();
         case -2144864283:  return getDirectnessMatch();
         default: return super.makeProperty(hash, name);
         }
@@ -828,8 +419,8 @@ public class Evidence extends MetadataResource {
         case -1724546052: /*description*/ return new String[] {"markdown"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -372889326: /*variableRole*/ return new String[] {"CodeableConcept"};
-        case -2019122815: /*actualDefinition*/ return new String[] {"Reference"};
-        case -1749096482: /*intendedDefinition*/ return new String[] {"Reference"};
+        case 348607176: /*observed*/ return new String[] {"Reference"};
+        case 570282027: /*intended*/ return new String[] {"Reference"};
         case -2144864283: /*directnessMatch*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -848,13 +439,13 @@ public class Evidence extends MetadataResource {
           this.variableRole = new CodeableConcept();
           return this.variableRole;
         }
-        else if (name.equals("actualDefinition")) {
-          this.actualDefinition = new Reference();
-          return this.actualDefinition;
+        else if (name.equals("observed")) {
+          this.observed = new Reference();
+          return this.observed;
         }
-        else if (name.equals("intendedDefinition")) {
-          this.intendedDefinition = new Reference();
-          return this.intendedDefinition;
+        else if (name.equals("intended")) {
+          this.intended = new Reference();
+          return this.intended;
         }
         else if (name.equals("directnessMatch")) {
           this.directnessMatch = new CodeableConcept();
@@ -879,8 +470,8 @@ public class Evidence extends MetadataResource {
             dst.note.add(i.copy());
         };
         dst.variableRole = variableRole == null ? null : variableRole.copy();
-        dst.actualDefinition = actualDefinition == null ? null : actualDefinition.copy();
-        dst.intendedDefinition = intendedDefinition == null ? null : intendedDefinition.copy();
+        dst.observed = observed == null ? null : observed.copy();
+        dst.intended = intended == null ? null : intended.copy();
         dst.directnessMatch = directnessMatch == null ? null : directnessMatch.copy();
       }
 
@@ -892,8 +483,8 @@ public class Evidence extends MetadataResource {
           return false;
         EvidenceVariableDefinitionComponent o = (EvidenceVariableDefinitionComponent) other_;
         return compareDeep(description, o.description, true) && compareDeep(note, o.note, true) && compareDeep(variableRole, o.variableRole, true)
-           && compareDeep(actualDefinition, o.actualDefinition, true) && compareDeep(intendedDefinition, o.intendedDefinition, true)
-           && compareDeep(directnessMatch, o.directnessMatch, true);
+           && compareDeep(observed, o.observed, true) && compareDeep(intended, o.intended, true) && compareDeep(directnessMatch, o.directnessMatch, true)
+          ;
       }
 
       @Override
@@ -908,7 +499,7 @@ public class Evidence extends MetadataResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, note, variableRole
-          , actualDefinition, intendedDefinition, directnessMatch);
+          , observed, intended, directnessMatch);
       }
 
   public String fhirType() {
@@ -1312,17 +903,17 @@ public class Evidence extends MetadataResource {
         protected StringType description;
 
         /**
-         * Textual note of certainty subcomponent.
+         * Footnotes and/or explanatory notes.
          */
         @Child(name = "note", type = {Annotation.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Textual note of certainty subcomponent", formalDefinition="Textual note of certainty subcomponent." )
+        @Description(shortDefinition="Footnotes and/or explanatory notes", formalDefinition="Footnotes and/or explanatory notes." )
         protected Annotation note;
 
         /**
-         * Footnotes and/or explanatory notes.
+         * Type of certainty being rated.
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Footnotes and/or explanatory notes", formalDefinition="Footnotes and/or explanatory notes." )
+        @Description(shortDefinition="Type of certainty being rated", formalDefinition="Type of certainty being rated." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/certainty-subcomponent-type")
         protected List<CodeableConcept> type;
 
@@ -1393,7 +984,7 @@ public class Evidence extends MetadataResource {
         }
 
         /**
-         * @return {@link #note} (Textual note of certainty subcomponent.)
+         * @return {@link #note} (Footnotes and/or explanatory notes.)
          */
         public Annotation getNote() { 
           if (this.note == null)
@@ -1409,7 +1000,7 @@ public class Evidence extends MetadataResource {
         }
 
         /**
-         * @param value {@link #note} (Textual note of certainty subcomponent.)
+         * @param value {@link #note} (Footnotes and/or explanatory notes.)
          */
         public EvidenceCertaintyCertaintySubcomponentComponent setNote(Annotation value) { 
           this.note = value;
@@ -1417,7 +1008,7 @@ public class Evidence extends MetadataResource {
         }
 
         /**
-         * @return {@link #type} (Footnotes and/or explanatory notes.)
+         * @return {@link #type} (Type of certainty being rated.)
          */
         public List<CodeableConcept> getType() { 
           if (this.type == null)
@@ -1525,8 +1116,8 @@ public class Evidence extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("description", "string", "Textual description of certainty subcomponent.", 0, 1, description));
-          children.add(new Property("note", "Annotation", "Textual note of certainty subcomponent.", 0, 1, note));
-          children.add(new Property("type", "CodeableConcept", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, type));
+          children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, 1, note));
+          children.add(new Property("type", "CodeableConcept", "Type of certainty being rated.", 0, java.lang.Integer.MAX_VALUE, type));
           children.add(new Property("rating", "CodeableConcept", "Rating of certainty subcomponent.", 0, java.lang.Integer.MAX_VALUE, rating));
         }
 
@@ -1534,8 +1125,8 @@ public class Evidence extends MetadataResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case -1724546052: /*description*/  return new Property("description", "string", "Textual description of certainty subcomponent.", 0, 1, description);
-          case 3387378: /*note*/  return new Property("note", "Annotation", "Textual note of certainty subcomponent.", 0, 1, note);
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, type);
+          case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, 1, note);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Type of certainty being rated.", 0, java.lang.Integer.MAX_VALUE, type);
           case -938102371: /*rating*/  return new Property("rating", "CodeableConcept", "Rating of certainty subcomponent.", 0, java.lang.Integer.MAX_VALUE, rating);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1787,23 +1378,16 @@ public class Evidence extends MetadataResource {
     protected List<Annotation> note;
 
     /**
-     * Group being referenced.
-     */
-    @Child(name = "referentGroup", type = {}, order=14, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Group being referenced", formalDefinition="Group being referenced." )
-    protected EvidenceReferentGroupComponent referentGroup;
-
-    /**
      * Evidence variable.
      */
-    @Child(name = "variableDefinition", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "variableDefinition", type = {}, order=14, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Evidence variable", formalDefinition="Evidence variable." )
     protected List<EvidenceVariableDefinitionComponent> variableDefinition;
 
     /**
      * The particular type of synthesis if this is a synthesis summary.
      */
-    @Child(name = "synthesisType", type = {CodeableConcept.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "synthesisType", type = {CodeableConcept.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The particular type of synthesis if this is a synthesis summary", formalDefinition="The particular type of synthesis if this is a synthesis summary." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/synthesis-type")
     protected CodeableConcept synthesisType;
@@ -1811,7 +1395,7 @@ public class Evidence extends MetadataResource {
     /**
      * The type of study that produced this summary.
      */
-    @Child(name = "studyType", type = {CodeableConcept.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "studyType", type = {CodeableConcept.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The type of study that produced this summary", formalDefinition="The type of study that produced this summary." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/study-type")
     protected CodeableConcept studyType;
@@ -1819,25 +1403,25 @@ public class Evidence extends MetadataResource {
     /**
      * The statistic value(s).
      */
-    @Child(name = "statistic", type = {Statistic.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "statistic", type = {Statistic.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Values and parameters for a single statistic", formalDefinition="The statistic value(s)." )
     protected List<Statistic> statistic;
 
     /**
      * Ordered distribution.
      */
-    @Child(name = "distribution", type = {OrderedDistribution.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "distribution", type = {OrderedDistribution.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="An ordered group of statistics", formalDefinition="Ordered distribution." )
     protected List<OrderedDistribution> distribution;
 
     /**
      * Level of certainty.
      */
-    @Child(name = "certainty", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "certainty", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Level of certainty", formalDefinition="Level of certainty." )
     protected List<EvidenceCertaintyComponent> certainty;
 
-    private static final long serialVersionUID = 1349199117L;
+    private static final long serialVersionUID = -1916823019L;
 
   /**
    * Constructor
@@ -1849,10 +1433,10 @@ public class Evidence extends MetadataResource {
   /**
    * Constructor
    */
-    public Evidence(PublicationStatus status, EvidenceReferentGroupComponent referentGroup) {
+    public Evidence(PublicationStatus status, EvidenceVariableDefinitionComponent variableDefinition) {
       super();
       this.setStatus(status);
-      this.setReferentGroup(referentGroup);
+      this.addVariableDefinition(variableDefinition);
     }
 
     /**
@@ -2558,30 +2142,6 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #referentGroup} (Group being referenced.)
-     */
-    public EvidenceReferentGroupComponent getReferentGroup() { 
-      if (this.referentGroup == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Evidence.referentGroup");
-        else if (Configuration.doAutoCreate())
-          this.referentGroup = new EvidenceReferentGroupComponent(); // cc
-      return this.referentGroup;
-    }
-
-    public boolean hasReferentGroup() { 
-      return this.referentGroup != null && !this.referentGroup.isEmpty();
-    }
-
-    /**
-     * @param value {@link #referentGroup} (Group being referenced.)
-     */
-    public Evidence setReferentGroup(EvidenceReferentGroupComponent value) { 
-      this.referentGroup = value;
-      return this;
-    }
-
-    /**
      * @return {@link #variableDefinition} (Evidence variable.)
      */
     public List<EvidenceVariableDefinitionComponent> getVariableDefinition() { 
@@ -3130,7 +2690,6 @@ public class Evidence extends MetadataResource {
         children.add(new Property("description", "markdown", "A free text natural language description of the evidence from a consumer's perspective.", 0, 1, description));
         children.add(new Property("assertion", "markdown", "Declarative description of the Evidence.", 0, 1, assertion));
         children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
-        children.add(new Property("referentGroup", "", "Group being referenced.", 0, 1, referentGroup));
         children.add(new Property("variableDefinition", "", "Evidence variable.", 0, java.lang.Integer.MAX_VALUE, variableDefinition));
         children.add(new Property("synthesisType", "CodeableConcept", "The particular type of synthesis if this is a synthesis summary.", 0, 1, synthesisType));
         children.add(new Property("studyType", "CodeableConcept", "The type of study that produced this summary.", 0, 1, studyType));
@@ -3156,7 +2715,6 @@ public class Evidence extends MetadataResource {
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the evidence from a consumer's perspective.", 0, 1, description);
         case 1314395906: /*assertion*/  return new Property("assertion", "markdown", "Declarative description of the Evidence.", 0, 1, assertion);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
-        case 2060829908: /*referentGroup*/  return new Property("referentGroup", "", "Group being referenced.", 0, 1, referentGroup);
         case -1807222545: /*variableDefinition*/  return new Property("variableDefinition", "", "Evidence variable.", 0, java.lang.Integer.MAX_VALUE, variableDefinition);
         case 672726254: /*synthesisType*/  return new Property("synthesisType", "CodeableConcept", "The particular type of synthesis if this is a synthesis summary.", 0, 1, synthesisType);
         case -1955265373: /*studyType*/  return new Property("studyType", "CodeableConcept", "The type of study that produced this summary.", 0, 1, studyType);
@@ -3185,7 +2743,6 @@ public class Evidence extends MetadataResource {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case 1314395906: /*assertion*/ return this.assertion == null ? new Base[0] : new Base[] {this.assertion}; // MarkdownType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-        case 2060829908: /*referentGroup*/ return this.referentGroup == null ? new Base[0] : new Base[] {this.referentGroup}; // EvidenceReferentGroupComponent
         case -1807222545: /*variableDefinition*/ return this.variableDefinition == null ? new Base[0] : this.variableDefinition.toArray(new Base[this.variableDefinition.size()]); // EvidenceVariableDefinitionComponent
         case 672726254: /*synthesisType*/ return this.synthesisType == null ? new Base[0] : new Base[] {this.synthesisType}; // CodeableConcept
         case -1955265373: /*studyType*/ return this.studyType == null ? new Base[0] : new Base[] {this.studyType}; // CodeableConcept
@@ -3243,9 +2800,6 @@ public class Evidence extends MetadataResource {
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
-        case 2060829908: // referentGroup
-          this.referentGroup = (EvidenceReferentGroupComponent) value; // EvidenceReferentGroupComponent
-          return value;
         case -1807222545: // variableDefinition
           this.getVariableDefinition().add((EvidenceVariableDefinitionComponent) value); // EvidenceVariableDefinitionComponent
           return value;
@@ -3300,8 +2854,6 @@ public class Evidence extends MetadataResource {
           this.assertion = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
-        } else if (name.equals("referentGroup")) {
-          this.referentGroup = (EvidenceReferentGroupComponent) value; // EvidenceReferentGroupComponent
         } else if (name.equals("variableDefinition")) {
           this.getVariableDefinition().add((EvidenceVariableDefinitionComponent) value);
         } else if (name.equals("synthesisType")) {
@@ -3336,7 +2888,6 @@ public class Evidence extends MetadataResource {
         case -1724546052:  return getDescriptionElement();
         case 1314395906:  return getAssertionElement();
         case 3387378:  return addNote(); 
-        case 2060829908:  return getReferentGroup();
         case -1807222545:  return addVariableDefinition(); 
         case 672726254:  return getSynthesisType();
         case -1955265373:  return getStudyType();
@@ -3365,7 +2916,6 @@ public class Evidence extends MetadataResource {
         case -1724546052: /*description*/ return new String[] {"markdown"};
         case 1314395906: /*assertion*/ return new String[] {"markdown"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
-        case 2060829908: /*referentGroup*/ return new String[] {};
         case -1807222545: /*variableDefinition*/ return new String[] {};
         case 672726254: /*synthesisType*/ return new String[] {"CodeableConcept"};
         case -1955265373: /*studyType*/ return new String[] {"CodeableConcept"};
@@ -3420,10 +2970,6 @@ public class Evidence extends MetadataResource {
         }
         else if (name.equals("note")) {
           return addNote();
-        }
-        else if (name.equals("referentGroup")) {
-          this.referentGroup = new EvidenceReferentGroupComponent();
-          return this.referentGroup;
         }
         else if (name.equals("variableDefinition")) {
           return addVariableDefinition();
@@ -3496,7 +3042,6 @@ public class Evidence extends MetadataResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        dst.referentGroup = referentGroup == null ? null : referentGroup.copy();
         if (variableDefinition != null) {
           dst.variableDefinition = new ArrayList<EvidenceVariableDefinitionComponent>();
           for (EvidenceVariableDefinitionComponent i : variableDefinition)
@@ -3537,9 +3082,9 @@ public class Evidence extends MetadataResource {
            && compareDeep(useContext, o.useContext, true) && compareDeep(approvalDate, o.approvalDate, true)
            && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(contributor, o.contributor, true)
            && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(description, o.description, true)
-           && compareDeep(assertion, o.assertion, true) && compareDeep(note, o.note, true) && compareDeep(referentGroup, o.referentGroup, true)
-           && compareDeep(variableDefinition, o.variableDefinition, true) && compareDeep(synthesisType, o.synthesisType, true)
-           && compareDeep(studyType, o.studyType, true) && compareDeep(statistic, o.statistic, true) && compareDeep(distribution, o.distribution, true)
+           && compareDeep(assertion, o.assertion, true) && compareDeep(note, o.note, true) && compareDeep(variableDefinition, o.variableDefinition, true)
+           && compareDeep(synthesisType, o.synthesisType, true) && compareDeep(studyType, o.studyType, true)
+           && compareDeep(statistic, o.statistic, true) && compareDeep(distribution, o.distribution, true)
            && compareDeep(certainty, o.certainty, true);
       }
 
@@ -3559,8 +3104,8 @@ public class Evidence extends MetadataResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
           , title, status, date, useContext, approvalDate, lastReviewDate, contributor, relatedArtifact
-          , description, assertion, note, referentGroup, variableDefinition, synthesisType
-          , studyType, statistic, distribution, certainty);
+          , description, assertion, note, variableDefinition, synthesisType, studyType, statistic
+          , distribution, certainty);
       }
 
   @Override
@@ -3810,4 +3355,3 @@ public class Evidence extends MetadataResource {
 
 
 }
-

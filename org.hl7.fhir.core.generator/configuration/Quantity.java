@@ -1,5 +1,4 @@
-﻿
-      @Override
+@Override
       public String getVersion() {
         return null;
       }
@@ -36,5 +35,3 @@
       res.setCode(code);
       return res;
     }
-
-

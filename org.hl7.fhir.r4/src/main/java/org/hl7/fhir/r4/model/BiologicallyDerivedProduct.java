@@ -1,26 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-import java.math.BigDecimal;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,18 +31,21 @@ import java.math.BigDecimal;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
+import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A material substance originating from a biological entity intended to be transplanted or infused
 into another (possibly the same) biological entity.
@@ -691,10 +674,14 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public BiologicallyDerivedProductCollectionComponent copy() {
         BiologicallyDerivedProductCollectionComponent dst = new BiologicallyDerivedProductCollectionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BiologicallyDerivedProductCollectionComponent dst) {
+        super.copyValues(dst);
         dst.collector = collector == null ? null : collector.copy();
         dst.source = source == null ? null : source.copy();
         dst.collected = collected == null ? null : collected.copy();
-        return dst;
       }
 
       @Override
@@ -1066,11 +1053,15 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public BiologicallyDerivedProductProcessingComponent copy() {
         BiologicallyDerivedProductProcessingComponent dst = new BiologicallyDerivedProductProcessingComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BiologicallyDerivedProductProcessingComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.procedure = procedure == null ? null : procedure.copy();
         dst.additive = additive == null ? null : additive.copy();
         dst.time = time == null ? null : time.copy();
-        return dst;
       }
 
       @Override
@@ -1326,9 +1317,13 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public BiologicallyDerivedProductManipulationComponent copy() {
         BiologicallyDerivedProductManipulationComponent dst = new BiologicallyDerivedProductManipulationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BiologicallyDerivedProductManipulationComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.time = time == null ? null : time.copy();
-        return dst;
       }
 
       @Override
@@ -1706,11 +1701,15 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public BiologicallyDerivedProductStorageComponent copy() {
         BiologicallyDerivedProductStorageComponent dst = new BiologicallyDerivedProductStorageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BiologicallyDerivedProductStorageComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.temperature = temperature == null ? null : temperature.copy();
         dst.scale = scale == null ? null : scale.copy();
         dst.duration = duration == null ? null : duration.copy();
-        return dst;
       }
 
       @Override
@@ -2584,6 +2583,11 @@ public class BiologicallyDerivedProduct extends DomainResource {
       public BiologicallyDerivedProduct copy() {
         BiologicallyDerivedProduct dst = new BiologicallyDerivedProduct();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(BiologicallyDerivedProduct dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2615,7 +2619,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
           for (BiologicallyDerivedProductStorageComponent i : storage)
             dst.storage.add(i.copy());
         };
-        return dst;
       }
 
       protected BiologicallyDerivedProduct typedCopy() {
@@ -2660,4 +2663,3 @@ public class BiologicallyDerivedProduct extends DomainResource {
 
 
 }
-

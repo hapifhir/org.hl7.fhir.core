@@ -1,25 +1,7 @@
 package org.hl7.fhir.r5.model;
 
 
-/*
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the \"License\");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an \"AS IS\" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,21 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.annotation.Block;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * The detailed description of a substance, typically at a level beyond what is used for prescribing.
@@ -1243,11 +1223,11 @@ public class SubstanceDefinition extends DomainResource {
         protected SubstanceDefinitionStructureIsotopeMolecularWeightComponent molecularWeight;
 
         /**
-         * Describes the source of information.
+         * The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay.
          */
-        @Child(name = "sourceCoding", type = {Coding.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Describes the source of information", formalDefinition="Describes the source of information." )
-        protected List<Coding> sourceCoding;
+        @Child(name = "technique", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay", formalDefinition="The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay." )
+        protected List<CodeableConcept> technique;
 
         /**
          * Supporting literature about the source of information.
@@ -1263,7 +1243,7 @@ public class SubstanceDefinition extends DomainResource {
         @Description(shortDefinition="Molecular structural representation", formalDefinition="Molecular structural representation." )
         protected List<SubstanceDefinitionStructureRepresentationComponent> representation;
 
-        private static final long serialVersionUID = 1607179069L;
+        private static final long serialVersionUID = -1648605311L;
 
     /**
      * Constructor
@@ -1496,56 +1476,56 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #sourceCoding} (Describes the source of information.)
+         * @return {@link #technique} (The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay.)
          */
-        public List<Coding> getSourceCoding() { 
-          if (this.sourceCoding == null)
-            this.sourceCoding = new ArrayList<Coding>();
-          return this.sourceCoding;
+        public List<CodeableConcept> getTechnique() { 
+          if (this.technique == null)
+            this.technique = new ArrayList<CodeableConcept>();
+          return this.technique;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public SubstanceDefinitionStructureComponent setSourceCoding(List<Coding> theSourceCoding) { 
-          this.sourceCoding = theSourceCoding;
+        public SubstanceDefinitionStructureComponent setTechnique(List<CodeableConcept> theTechnique) { 
+          this.technique = theTechnique;
           return this;
         }
 
-        public boolean hasSourceCoding() { 
-          if (this.sourceCoding == null)
+        public boolean hasTechnique() { 
+          if (this.technique == null)
             return false;
-          for (Coding item : this.sourceCoding)
+          for (CodeableConcept item : this.technique)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public Coding addSourceCoding() { //3
-          Coding t = new Coding();
-          if (this.sourceCoding == null)
-            this.sourceCoding = new ArrayList<Coding>();
-          this.sourceCoding.add(t);
+        public CodeableConcept addTechnique() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.technique == null)
+            this.technique = new ArrayList<CodeableConcept>();
+          this.technique.add(t);
           return t;
         }
 
-        public SubstanceDefinitionStructureComponent addSourceCoding(Coding t) { //3
+        public SubstanceDefinitionStructureComponent addTechnique(CodeableConcept t) { //3
           if (t == null)
             return this;
-          if (this.sourceCoding == null)
-            this.sourceCoding = new ArrayList<Coding>();
-          this.sourceCoding.add(t);
+          if (this.technique == null)
+            this.technique = new ArrayList<CodeableConcept>();
+          this.technique.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #sourceCoding}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #technique}, creating it if it does not already exist {3}
          */
-        public Coding getSourceCodingFirstRep() { 
-          if (getSourceCoding().isEmpty()) {
-            addSourceCoding();
+        public CodeableConcept getTechniqueFirstRep() { 
+          if (getTechnique().isEmpty()) {
+            addTechnique();
           }
-          return getSourceCoding().get(0);
+          return getTechnique().get(0);
         }
 
         /**
@@ -1662,7 +1642,7 @@ public class SubstanceDefinition extends DomainResource {
           children.add(new Property("molecularFormulaByMoiety", "string", "Specified per moiety according to the Hill system, i.e. first C, then H, then alphabetical, each moiety separated by a dot.", 0, 1, molecularFormulaByMoiety));
           children.add(new Property("isotope", "", "Applicable for single substances that contain a radionuclide or a non-natural isotopic ratio.", 0, java.lang.Integer.MAX_VALUE, isotope));
           children.add(new Property("molecularWeight", "@SubstanceDefinition.structure.isotope.molecularWeight", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, 1, molecularWeight));
-          children.add(new Property("sourceCoding", "Coding", "Describes the source of information.", 0, java.lang.Integer.MAX_VALUE, sourceCoding));
+          children.add(new Property("technique", "CodeableConcept", "The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay.", 0, java.lang.Integer.MAX_VALUE, technique));
           children.add(new Property("sourceDocument", "Reference(DocumentReference)", "Supporting literature about the source of information.", 0, java.lang.Integer.MAX_VALUE, sourceDocument));
           children.add(new Property("representation", "", "Molecular structural representation.", 0, java.lang.Integer.MAX_VALUE, representation));
         }
@@ -1676,7 +1656,7 @@ public class SubstanceDefinition extends DomainResource {
           case 1315452848: /*molecularFormulaByMoiety*/  return new Property("molecularFormulaByMoiety", "string", "Specified per moiety according to the Hill system, i.e. first C, then H, then alphabetical, each moiety separated by a dot.", 0, 1, molecularFormulaByMoiety);
           case 2097035189: /*isotope*/  return new Property("isotope", "", "Applicable for single substances that contain a radionuclide or a non-natural isotopic ratio.", 0, java.lang.Integer.MAX_VALUE, isotope);
           case 635625672: /*molecularWeight*/  return new Property("molecularWeight", "@SubstanceDefinition.structure.isotope.molecularWeight", "The molecular weight or weight range (for proteins, polymers or nucleic acids).", 0, 1, molecularWeight);
-          case 864720741: /*sourceCoding*/  return new Property("sourceCoding", "Coding", "Describes the source of information.", 0, java.lang.Integer.MAX_VALUE, sourceCoding);
+          case 1469675088: /*technique*/  return new Property("technique", "CodeableConcept", "The method used to elucidate the structure or characterization of the drug substance. Examples: X-ray, HPLC, NMR, Peptide mapping, Ligand binding assay.", 0, java.lang.Integer.MAX_VALUE, technique);
           case -501788074: /*sourceDocument*/  return new Property("sourceDocument", "Reference(DocumentReference)", "Supporting literature about the source of information.", 0, java.lang.Integer.MAX_VALUE, sourceDocument);
           case -671065907: /*representation*/  return new Property("representation", "", "Molecular structural representation.", 0, java.lang.Integer.MAX_VALUE, representation);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1693,7 +1673,7 @@ public class SubstanceDefinition extends DomainResource {
         case 1315452848: /*molecularFormulaByMoiety*/ return this.molecularFormulaByMoiety == null ? new Base[0] : new Base[] {this.molecularFormulaByMoiety}; // StringType
         case 2097035189: /*isotope*/ return this.isotope == null ? new Base[0] : this.isotope.toArray(new Base[this.isotope.size()]); // SubstanceDefinitionStructureIsotopeComponent
         case 635625672: /*molecularWeight*/ return this.molecularWeight == null ? new Base[0] : new Base[] {this.molecularWeight}; // SubstanceDefinitionStructureIsotopeMolecularWeightComponent
-        case 864720741: /*sourceCoding*/ return this.sourceCoding == null ? new Base[0] : this.sourceCoding.toArray(new Base[this.sourceCoding.size()]); // Coding
+        case 1469675088: /*technique*/ return this.technique == null ? new Base[0] : this.technique.toArray(new Base[this.technique.size()]); // CodeableConcept
         case -501788074: /*sourceDocument*/ return this.sourceDocument == null ? new Base[0] : this.sourceDocument.toArray(new Base[this.sourceDocument.size()]); // Reference
         case -671065907: /*representation*/ return this.representation == null ? new Base[0] : this.representation.toArray(new Base[this.representation.size()]); // SubstanceDefinitionStructureRepresentationComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -1722,8 +1702,8 @@ public class SubstanceDefinition extends DomainResource {
         case 635625672: // molecularWeight
           this.molecularWeight = (SubstanceDefinitionStructureIsotopeMolecularWeightComponent) value; // SubstanceDefinitionStructureIsotopeMolecularWeightComponent
           return value;
-        case 864720741: // sourceCoding
-          this.getSourceCoding().add(TypeConvertor.castToCoding(value)); // Coding
+        case 1469675088: // technique
+          this.getTechnique().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -501788074: // sourceDocument
           this.getSourceDocument().add(TypeConvertor.castToReference(value)); // Reference
@@ -1750,8 +1730,8 @@ public class SubstanceDefinition extends DomainResource {
           this.getIsotope().add((SubstanceDefinitionStructureIsotopeComponent) value);
         } else if (name.equals("molecularWeight")) {
           this.molecularWeight = (SubstanceDefinitionStructureIsotopeMolecularWeightComponent) value; // SubstanceDefinitionStructureIsotopeMolecularWeightComponent
-        } else if (name.equals("sourceCoding")) {
-          this.getSourceCoding().add(TypeConvertor.castToCoding(value));
+        } else if (name.equals("technique")) {
+          this.getTechnique().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("sourceDocument")) {
           this.getSourceDocument().add(TypeConvertor.castToReference(value));
         } else if (name.equals("representation")) {
@@ -1770,7 +1750,7 @@ public class SubstanceDefinition extends DomainResource {
         case 1315452848:  return getMolecularFormulaByMoietyElement();
         case 2097035189:  return addIsotope(); 
         case 635625672:  return getMolecularWeight();
-        case 864720741:  return addSourceCoding(); 
+        case 1469675088:  return addTechnique(); 
         case -501788074:  return addSourceDocument(); 
         case -671065907:  return addRepresentation(); 
         default: return super.makeProperty(hash, name);
@@ -1787,7 +1767,7 @@ public class SubstanceDefinition extends DomainResource {
         case 1315452848: /*molecularFormulaByMoiety*/ return new String[] {"string"};
         case 2097035189: /*isotope*/ return new String[] {};
         case 635625672: /*molecularWeight*/ return new String[] {"@SubstanceDefinition.structure.isotope.molecularWeight"};
-        case 864720741: /*sourceCoding*/ return new String[] {"Coding"};
+        case 1469675088: /*technique*/ return new String[] {"CodeableConcept"};
         case -501788074: /*sourceDocument*/ return new String[] {"Reference"};
         case -671065907: /*representation*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -1818,8 +1798,8 @@ public class SubstanceDefinition extends DomainResource {
           this.molecularWeight = new SubstanceDefinitionStructureIsotopeMolecularWeightComponent();
           return this.molecularWeight;
         }
-        else if (name.equals("sourceCoding")) {
-          return addSourceCoding();
+        else if (name.equals("technique")) {
+          return addTechnique();
         }
         else if (name.equals("sourceDocument")) {
           return addSourceDocument();
@@ -1849,10 +1829,10 @@ public class SubstanceDefinition extends DomainResource {
             dst.isotope.add(i.copy());
         };
         dst.molecularWeight = molecularWeight == null ? null : molecularWeight.copy();
-        if (sourceCoding != null) {
-          dst.sourceCoding = new ArrayList<Coding>();
-          for (Coding i : sourceCoding)
-            dst.sourceCoding.add(i.copy());
+        if (technique != null) {
+          dst.technique = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : technique)
+            dst.technique.add(i.copy());
         };
         if (sourceDocument != null) {
           dst.sourceDocument = new ArrayList<Reference>();
@@ -1876,7 +1856,7 @@ public class SubstanceDefinition extends DomainResource {
         return compareDeep(stereochemistry, o.stereochemistry, true) && compareDeep(opticalActivity, o.opticalActivity, true)
            && compareDeep(molecularFormula, o.molecularFormula, true) && compareDeep(molecularFormulaByMoiety, o.molecularFormulaByMoiety, true)
            && compareDeep(isotope, o.isotope, true) && compareDeep(molecularWeight, o.molecularWeight, true)
-           && compareDeep(sourceCoding, o.sourceCoding, true) && compareDeep(sourceDocument, o.sourceDocument, true)
+           && compareDeep(technique, o.technique, true) && compareDeep(sourceDocument, o.sourceDocument, true)
            && compareDeep(representation, o.representation, true);
       }
 
@@ -1893,7 +1873,7 @@ public class SubstanceDefinition extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(stereochemistry, opticalActivity
-          , molecularFormula, molecularFormulaByMoiety, isotope, molecularWeight, sourceCoding
+          , molecularFormula, molecularFormulaByMoiety, isotope, molecularWeight, technique
           , sourceDocument, representation);
       }
 
@@ -2504,20 +2484,27 @@ public class SubstanceDefinition extends DomainResource {
         protected CodeableConcept type;
 
         /**
-         * The structural representation as text string in a format e.g. InChI, SMILES, MOLFILE, CDX.
+         * The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.
          */
         @Child(name = "representation", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The structural representation as text string in a format e.g. InChI, SMILES, MOLFILE, CDX", formalDefinition="The structural representation as text string in a format e.g. InChI, SMILES, MOLFILE, CDX." )
+        @Description(shortDefinition="The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF", formalDefinition="The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF." )
         protected StringType representation;
+
+        /**
+         * The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.
+         */
+        @Child(name = "format", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF", formalDefinition="The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF." )
+        protected CodeableConcept format;
 
         /**
          * An attached file with the structural representation.
          */
-        @Child(name = "attachment", type = {Attachment.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "attachment", type = {Attachment.class}, order=4, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="An attached file with the structural representation", formalDefinition="An attached file with the structural representation." )
         protected Attachment attachment;
 
-        private static final long serialVersionUID = 167954495L;
+        private static final long serialVersionUID = -1385695515L;
 
     /**
      * Constructor
@@ -2551,7 +2538,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #representation} (The structural representation as text string in a format e.g. InChI, SMILES, MOLFILE, CDX.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
+         * @return {@link #representation} (The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
          */
         public StringType getRepresentationElement() { 
           if (this.representation == null)
@@ -2571,7 +2558,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #representation} (The structural representation as text string in a format e.g. InChI, SMILES, MOLFILE, CDX.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
+         * @param value {@link #representation} (The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
          */
         public SubstanceDefinitionStructureRepresentationComponent setRepresentationElement(StringType value) { 
           this.representation = value;
@@ -2579,14 +2566,14 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return The structural representation as text string in a format e.g. InChI, SMILES, MOLFILE, CDX.
+         * @return The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.
          */
         public String getRepresentation() { 
           return this.representation == null ? null : this.representation.getValue();
         }
 
         /**
-         * @param value The structural representation as text string in a format e.g. InChI, SMILES, MOLFILE, CDX.
+         * @param value The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.
          */
         public SubstanceDefinitionStructureRepresentationComponent setRepresentation(String value) { 
           if (Utilities.noString(value))
@@ -2596,6 +2583,30 @@ public class SubstanceDefinition extends DomainResource {
               this.representation = new StringType();
             this.representation.setValue(value);
           }
+          return this;
+        }
+
+        /**
+         * @return {@link #format} (The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.)
+         */
+        public CodeableConcept getFormat() { 
+          if (this.format == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstanceDefinitionStructureRepresentationComponent.format");
+            else if (Configuration.doAutoCreate())
+              this.format = new CodeableConcept(); // cc
+          return this.format;
+        }
+
+        public boolean hasFormat() { 
+          return this.format != null && !this.format.isEmpty();
+        }
+
+        /**
+         * @param value {@link #format} (The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.)
+         */
+        public SubstanceDefinitionStructureRepresentationComponent setFormat(CodeableConcept value) { 
+          this.format = value;
           return this;
         }
 
@@ -2626,7 +2637,8 @@ public class SubstanceDefinition extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The type of structure (e.g. Full, Partial, Representative).", 0, 1, type));
-          children.add(new Property("representation", "string", "The structural representation as text string in a format e.g. InChI, SMILES, MOLFILE, CDX.", 0, 1, representation));
+          children.add(new Property("representation", "string", "The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.", 0, 1, representation));
+          children.add(new Property("format", "CodeableConcept", "The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.", 0, 1, format));
           children.add(new Property("attachment", "Attachment", "An attached file with the structural representation.", 0, 1, attachment));
         }
 
@@ -2634,7 +2646,8 @@ public class SubstanceDefinition extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of structure (e.g. Full, Partial, Representative).", 0, 1, type);
-          case -671065907: /*representation*/  return new Property("representation", "string", "The structural representation as text string in a format e.g. InChI, SMILES, MOLFILE, CDX.", 0, 1, representation);
+          case -671065907: /*representation*/  return new Property("representation", "string", "The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.", 0, 1, representation);
+          case -1268779017: /*format*/  return new Property("format", "CodeableConcept", "The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.", 0, 1, format);
           case -1963501277: /*attachment*/  return new Property("attachment", "Attachment", "An attached file with the structural representation.", 0, 1, attachment);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -2646,6 +2659,7 @@ public class SubstanceDefinition extends DomainResource {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case -671065907: /*representation*/ return this.representation == null ? new Base[0] : new Base[] {this.representation}; // StringType
+        case -1268779017: /*format*/ return this.format == null ? new Base[0] : new Base[] {this.format}; // CodeableConcept
         case -1963501277: /*attachment*/ return this.attachment == null ? new Base[0] : new Base[] {this.attachment}; // Attachment
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -2661,6 +2675,9 @@ public class SubstanceDefinition extends DomainResource {
         case -671065907: // representation
           this.representation = TypeConvertor.castToString(value); // StringType
           return value;
+        case -1268779017: // format
+          this.format = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case -1963501277: // attachment
           this.attachment = TypeConvertor.castToAttachment(value); // Attachment
           return value;
@@ -2675,6 +2692,8 @@ public class SubstanceDefinition extends DomainResource {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("representation")) {
           this.representation = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("format")) {
+          this.format = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("attachment")) {
           this.attachment = TypeConvertor.castToAttachment(value); // Attachment
         } else
@@ -2687,6 +2706,7 @@ public class SubstanceDefinition extends DomainResource {
         switch (hash) {
         case 3575610:  return getType();
         case -671065907:  return getRepresentationElement();
+        case -1268779017:  return getFormat();
         case -1963501277:  return getAttachment();
         default: return super.makeProperty(hash, name);
         }
@@ -2698,6 +2718,7 @@ public class SubstanceDefinition extends DomainResource {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -671065907: /*representation*/ return new String[] {"string"};
+        case -1268779017: /*format*/ return new String[] {"CodeableConcept"};
         case -1963501277: /*attachment*/ return new String[] {"Attachment"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -2712,6 +2733,10 @@ public class SubstanceDefinition extends DomainResource {
         }
         else if (name.equals("representation")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubstanceDefinition.structure.representation.representation");
+        }
+        else if (name.equals("format")) {
+          this.format = new CodeableConcept();
+          return this.format;
         }
         else if (name.equals("attachment")) {
           this.attachment = new Attachment();
@@ -2731,6 +2756,7 @@ public class SubstanceDefinition extends DomainResource {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.representation = representation == null ? null : representation.copy();
+        dst.format = format == null ? null : format.copy();
         dst.attachment = attachment == null ? null : attachment.copy();
       }
 
@@ -2741,8 +2767,8 @@ public class SubstanceDefinition extends DomainResource {
         if (!(other_ instanceof SubstanceDefinitionStructureRepresentationComponent))
           return false;
         SubstanceDefinitionStructureRepresentationComponent o = (SubstanceDefinitionStructureRepresentationComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(representation, o.representation, true) && compareDeep(attachment, o.attachment, true)
-          ;
+        return compareDeep(type, o.type, true) && compareDeep(representation, o.representation, true) && compareDeep(format, o.format, true)
+           && compareDeep(attachment, o.attachment, true);
       }
 
       @Override
@@ -2756,8 +2782,8 @@ public class SubstanceDefinition extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, representation, attachment
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, representation, format
+          , attachment);
       }
 
   public String fhirType() {
@@ -6462,6 +6488,26 @@ public class SubstanceDefinition extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>category</b>
+   * <p>
+   * Description: <b>High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.category</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="category", path="SubstanceDefinition.category", description="High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological", type="token" )
+  public static final String SP_CATEGORY = "category";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>category</b>
+   * <p>
+   * Description: <b>High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.category</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CATEGORY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CATEGORY);
+
+ /**
    * Search parameter: <b>code</b>
    * <p>
    * Description: <b>The specific code</b><br>
@@ -6480,6 +6526,26 @@ public class SubstanceDefinition extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>domain</b>
+   * <p>
+   * Description: <b>If the substance applies to only human or veterinary use</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.domain</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="domain", path="SubstanceDefinition.domain", description="If the substance applies to only human or veterinary use", type="token" )
+  public static final String SP_DOMAIN = "domain";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>domain</b>
+   * <p>
+   * Description: <b>If the substance applies to only human or veterinary use</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SubstanceDefinition.domain</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DOMAIN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DOMAIN);
 
  /**
    * Search parameter: <b>identifier</b>
@@ -6501,6 +6567,25 @@ public class SubstanceDefinition extends DomainResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>The actual name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>SubstanceDefinition.name.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="SubstanceDefinition.name.name", description="The actual name", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>The actual name</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>SubstanceDefinition.name.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+
 
 }
-

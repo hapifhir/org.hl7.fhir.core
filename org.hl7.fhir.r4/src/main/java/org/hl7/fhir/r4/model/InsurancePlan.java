@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,21 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r4.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Details of a Health Insurance product/plan provided by an organization.
  */
@@ -350,6 +332,11 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlanContactComponent copy() {
         InsurancePlanContactComponent dst = new InsurancePlanContactComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlanContactComponent dst) {
+        super.copyValues(dst);
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.name = name == null ? null : name.copy();
         if (telecom != null) {
@@ -358,7 +345,6 @@ public class InsurancePlan extends DomainResource {
             dst.telecom.add(i.copy());
         };
         dst.address = address == null ? null : address.copy();
-        return dst;
       }
 
       @Override
@@ -691,6 +677,11 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlanCoverageComponent copy() {
         InsurancePlanCoverageComponent dst = new InsurancePlanCoverageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlanCoverageComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (network != null) {
           dst.network = new ArrayList<Reference>();
@@ -702,7 +693,6 @@ public class InsurancePlan extends DomainResource {
           for (CoverageBenefitComponent i : benefit)
             dst.benefit.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1003,6 +993,11 @@ public class InsurancePlan extends DomainResource {
       public CoverageBenefitComponent copy() {
         CoverageBenefitComponent dst = new CoverageBenefitComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CoverageBenefitComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.requirement = requirement == null ? null : requirement.copy();
         if (limit != null) {
@@ -1010,7 +1005,6 @@ public class InsurancePlan extends DomainResource {
           for (CoverageBenefitLimitComponent i : limit)
             dst.limit.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1207,9 +1201,13 @@ public class InsurancePlan extends DomainResource {
       public CoverageBenefitLimitComponent copy() {
         CoverageBenefitLimitComponent dst = new CoverageBenefitLimitComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CoverageBenefitLimitComponent dst) {
+        super.copyValues(dst);
         dst.value = value == null ? null : value.copy();
         dst.code = code == null ? null : code.copy();
-        return dst;
       }
 
       @Override
@@ -1778,6 +1776,11 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlanPlanComponent copy() {
         InsurancePlanPlanComponent dst = new InsurancePlanPlanComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlanPlanComponent dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -1804,7 +1807,6 @@ public class InsurancePlan extends DomainResource {
           for (InsurancePlanPlanSpecificCostComponent i : specificCost)
             dst.specificCost.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2136,11 +2138,15 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlanPlanGeneralCostComponent copy() {
         InsurancePlanPlanGeneralCostComponent dst = new InsurancePlanPlanGeneralCostComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlanPlanGeneralCostComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.groupSize = groupSize == null ? null : groupSize.copy();
         dst.cost = cost == null ? null : cost.copy();
         dst.comment = comment == null ? null : comment.copy();
-        return dst;
       }
 
       @Override
@@ -2373,13 +2379,17 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlanPlanSpecificCostComponent copy() {
         InsurancePlanPlanSpecificCostComponent dst = new InsurancePlanPlanSpecificCostComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlanPlanSpecificCostComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         if (benefit != null) {
           dst.benefit = new ArrayList<PlanBenefitComponent>();
           for (PlanBenefitComponent i : benefit)
             dst.benefit.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2610,13 +2620,17 @@ public class InsurancePlan extends DomainResource {
       public PlanBenefitComponent copy() {
         PlanBenefitComponent dst = new PlanBenefitComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanBenefitComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (cost != null) {
           dst.cost = new ArrayList<PlanBenefitCostComponent>();
           for (PlanBenefitCostComponent i : cost)
             dst.cost.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2938,6 +2952,11 @@ public class InsurancePlan extends DomainResource {
       public PlanBenefitCostComponent copy() {
         PlanBenefitCostComponent dst = new PlanBenefitCostComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PlanBenefitCostComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.applicability = applicability == null ? null : applicability.copy();
         if (qualifiers != null) {
@@ -2946,7 +2965,6 @@ public class InsurancePlan extends DomainResource {
             dst.qualifiers.add(i.copy());
         };
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -4129,6 +4147,11 @@ public class InsurancePlan extends DomainResource {
       public InsurancePlan copy() {
         InsurancePlan dst = new InsurancePlan();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsurancePlan dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -4179,7 +4202,6 @@ public class InsurancePlan extends DomainResource {
           for (InsurancePlanPlanComponent i : plan)
             dst.plan.add(i.copy());
         };
-        return dst;
       }
 
       protected InsurancePlan typedCopy() {
@@ -4523,4 +4545,3 @@ public class InsurancePlan extends DomainResource {
 
 
 }
-

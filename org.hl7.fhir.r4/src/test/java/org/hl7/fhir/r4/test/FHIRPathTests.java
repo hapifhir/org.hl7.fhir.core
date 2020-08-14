@@ -1,5 +1,29 @@
 package org.hl7.fhir.r4.test;
 
+import org.apache.commons.lang3.NotImplementedException;
+import org.fhir.ucum.UcumException;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.PathEngineException;
+import org.hl7.fhir.r4.formats.XmlParser;
+import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.test.utils.TestingUtilities;
+import org.hl7.fhir.r4.utils.FHIRPathEngine;
+import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,41 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.commons.lang3.NotImplementedException;
-import org.fhir.ucum.UcumEssenceService;
-import org.fhir.ucum.UcumException;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.PathEngineException;
-import org.hl7.fhir.r4.context.SimpleWorkerContext;
-import org.hl7.fhir.r4.formats.XmlParser;
-import org.hl7.fhir.r4.model.Base;
-import org.hl7.fhir.r4.model.BooleanType;
-import org.hl7.fhir.r4.model.ExpressionNode;
-import org.hl7.fhir.r4.model.PrimitiveType;
-import org.hl7.fhir.r4.model.Quantity;
-import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.TypeDetails;
-import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r4.test.utils.TestingUtilities;
-import org.hl7.fhir.r4.utils.FHIRPathEngine;
-import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
-
-import junit.framework.Assert;
-
-@RunWith(Parameterized.class)
+@Disabled
 public class FHIRPathTests {
 
   public class FHIRPathTestEvaluationServices implements IEvaluationContext {
@@ -63,7 +55,7 @@ public class FHIRPathTests {
 
     @Override
     public FunctionDetails resolveFunction(String functionName) {
-      throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveFunction), when item is element (for "+functionName+")");
+      throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.resolveFunction), when item is element (for " + functionName + ")");
     }
 
     @Override
@@ -87,8 +79,8 @@ public class FHIRPathTests {
         return true;
       if (url.equals("http://hl7.org/fhir/StructureDefinition/Person"))
         return false;
-      throw new FHIRException("unknown profile "+url);
-      
+      throw new FHIRException("unknown profile " + url);
+
     }
 
     @Override
@@ -99,24 +91,26 @@ public class FHIRPathTests {
 
   private static FHIRPathEngine fp;
 
-  @Parameters(name = "{index}: file {0}")
-  public static Iterable<Object[]> data() throws ParserConfigurationException, SAXException, IOException {
+  @BeforeAll
+  public static void setup() {
+    fp = new FHIRPathEngine(TestingUtilities.context());
+  }
+
+  public static Stream<Arguments> data() throws ParserConfigurationException, SAXException, IOException {
     Document dom = XMLUtil.parseFileToDom(TestingUtilities.resourceNameToFile("fhirpath", "tests-fhir-r4.xml"));
 
     List<Element> list = new ArrayList<Element>();
     List<Element> groups = new ArrayList<Element>();
     XMLUtil.getNamedChildren(dom.getDocumentElement(), "group", groups);
     for (Element g : groups) {
-      XMLUtil.getNamedChildren(g, "test", list);      
+      XMLUtil.getNamedChildren(g, "test", list);
     }
 
-    List<Object[]> objects = new ArrayList<Object[]>(list.size());
-
+    List<Arguments> objects = new ArrayList();
     for (Element e : list) {
-      objects.add(new Object[] { getName(e), e });
+      objects.add(Arguments.of(getName(e), e));
     }
-
-    return objects;
+    return objects.stream();
   }
 
   private static Object getName(Element e) {
@@ -130,27 +124,21 @@ public class FHIRPathTests {
       else if (c instanceof Element)
         ndx++;
     }
-    if (Utilities.noString(s)) 
-      s = "?? - G "+p.getAttribute("name")+"["+Integer.toString(ndx+1)+"]";
+    if (Utilities.noString(s))
+      s = "?? - G " + p.getAttribute("name") + "[" + Integer.toString(ndx + 1) + "]";
     else
-      s = s + " - G "+p.getAttribute("name")+"["+Integer.toString(ndx+1)+"]";
+      s = s + " - G " + p.getAttribute("name") + "[" + Integer.toString(ndx + 1) + "]";
     return s;
   }
 
-  private final Element test;
-  private final String name;
+
   private Map<String, Resource> resources = new HashMap<String, Resource>();
 
-  public FHIRPathTests(String name, Element e) {
-    this.name = name;
-    this.test = e;
-  }
 
   @SuppressWarnings("deprecation")
-  @Test
-  public void test() throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
-    if (fp == null)
-      fp = new FHIRPathEngine(TestingUtilities.context());
+  @ParameterizedTest(name = "{index}: file {0}")
+  @MethodSource("data")
+  public void test(String name, Element test) throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
     fp.setHostServices(new FHIRPathTestEvaluationServices());
     String input = test.getAttribute("inputfile");
     String expression = XMLUtil.getNamedChild(test, "expression").getTextContent();
@@ -172,9 +160,9 @@ public class FHIRPathTests {
         fp.check(res, res.getResourceType().toString(), res.getResourceType().toString(), node);
       }
       outcome = fp.evaluate(res, node);
-      Assert.assertTrue(String.format("Expected exception parsing %s", expression), !fail);
+      Assertions.assertFalse(fail, String.format("Expected exception parsing %s", expression));
     } catch (Exception e) {
-      Assert.assertTrue(String.format("Unexpected exception parsing %s: "+e.getMessage(), expression), fail);
+      Assertions.assertTrue(fail, String.format("Unexpected exception parsing %s: " + e.getMessage(), expression));
     }
 
     if ("true".equals(test.getAttribute("predicate"))) {
@@ -187,7 +175,7 @@ public class FHIRPathTests {
 
     List<Element> expected = new ArrayList<Element>();
     XMLUtil.getNamedChildren(test, "output", expected);
-    Assert.assertTrue(String.format("Expected %d objects but found %d for expression %s", expected.size(), outcome.size(), expression), outcome.size() == expected.size());
+    Assertions.assertEquals(outcome.size(), expected.size(), String.format("Expected %d objects but found %d for expression %s", expected.size(), outcome.size(), expression));
     if ("false".equals(test.getAttribute("ordered"))) {
       for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
         String tn = outcome.get(i).fhirType();
@@ -199,25 +187,25 @@ public class FHIRPathTests {
         boolean found = false;
         for (Element e : expected) {
           if ((Utilities.noString(e.getAttribute("type")) || e.getAttribute("type").equals(tn)) &&
-              (Utilities.noString(e.getTextContent()) || e.getTextContent().equals(s)))
+            (Utilities.noString(e.getTextContent()) || e.getTextContent().equals(s)))
             found = true;
         }
-        Assert.assertTrue(String.format("Outcome %d: Value %s of type %s not expected for %s", i, s, tn, expression), found);
+        Assertions.assertTrue(found, String.format("Outcome %d: Value %s of type %s not expected for %s", i, s, tn, expression));
       }
     } else {
       for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
         String tn = expected.get(i).getAttribute("type");
         if (!Utilities.noString(tn)) {
-          Assert.assertTrue(String.format("Outcome %d: Type should be %s but was %s", i, tn, outcome.get(i).fhirType()), tn.equals(outcome.get(i).fhirType()));
+          Assertions.assertEquals(tn, outcome.get(i).fhirType(), String.format("Outcome %d: Type should be %s but was %s", i, tn, outcome.get(i).fhirType()));
         }
         String v = expected.get(i).getTextContent();
         if (!Utilities.noString(v)) {
           if (outcome.get(i) instanceof Quantity) {
             Quantity q = fp.parseQuantityString(v);
-            Assert.assertTrue(String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()), outcome.get(i).equalsDeep(q));
+            Assertions.assertTrue(outcome.get(i).equalsDeep(q), String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()));
           } else {
-            Assert.assertTrue(String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()), outcome.get(i) instanceof PrimitiveType);
-            Assert.assertTrue(String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression), v.equals(((PrimitiveType)outcome.get(i)).asStringValue()));
+            Assertions.assertTrue(outcome.get(i) instanceof PrimitiveType, String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()));
+            Assertions.assertEquals(v, ((PrimitiveType) outcome.get(i)).asStringValue(), String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));
           }
         }
       }

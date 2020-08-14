@@ -1,26 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-import java.math.BigDecimal;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,23 +31,22 @@ import java.math.BigDecimal;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
+import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.ResourceDef;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * The EffectEvidenceSynthesis resource describes the difference in an outcome between exposures states in a population where the effect estimate is derived from a combination of research studies.
  */
@@ -437,10 +416,14 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       public EffectEvidenceSynthesisSampleSizeComponent copy() {
         EffectEvidenceSynthesisSampleSizeComponent dst = new EffectEvidenceSynthesisSampleSizeComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EffectEvidenceSynthesisSampleSizeComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.numberOfStudies = numberOfStudies == null ? null : numberOfStudies.copy();
         dst.numberOfParticipants = numberOfParticipants == null ? null : numberOfParticipants.copy();
-        return dst;
       }
 
       @Override
@@ -813,11 +796,15 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       public EffectEvidenceSynthesisResultsByExposureComponent copy() {
         EffectEvidenceSynthesisResultsByExposureComponent dst = new EffectEvidenceSynthesisResultsByExposureComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EffectEvidenceSynthesisResultsByExposureComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.exposureState = exposureState == null ? null : exposureState.copy();
         dst.variantState = variantState == null ? null : variantState.copy();
         dst.riskEvidenceSynthesis = riskEvidenceSynthesis == null ? null : riskEvidenceSynthesis.copy();
-        return dst;
       }
 
       @Override
@@ -1293,6 +1280,11 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       public EffectEvidenceSynthesisEffectEstimateComponent copy() {
         EffectEvidenceSynthesisEffectEstimateComponent dst = new EffectEvidenceSynthesisEffectEstimateComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EffectEvidenceSynthesisEffectEstimateComponent dst) {
+        super.copyValues(dst);
         dst.description = description == null ? null : description.copy();
         dst.type = type == null ? null : type.copy();
         dst.variantState = variantState == null ? null : variantState.copy();
@@ -1303,7 +1295,6 @@ public class EffectEvidenceSynthesis extends MetadataResource {
           for (EffectEvidenceSynthesisEffectEstimatePrecisionEstimateComponent i : precisionEstimate)
             dst.precisionEstimate.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1718,11 +1709,15 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       public EffectEvidenceSynthesisEffectEstimatePrecisionEstimateComponent copy() {
         EffectEvidenceSynthesisEffectEstimatePrecisionEstimateComponent dst = new EffectEvidenceSynthesisEffectEstimatePrecisionEstimateComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EffectEvidenceSynthesisEffectEstimatePrecisionEstimateComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.level = level == null ? null : level.copy();
         dst.from = from == null ? null : from.copy();
         dst.to = to == null ? null : to.copy();
-        return dst;
       }
 
       @Override
@@ -2050,6 +2045,11 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       public EffectEvidenceSynthesisCertaintyComponent copy() {
         EffectEvidenceSynthesisCertaintyComponent dst = new EffectEvidenceSynthesisCertaintyComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EffectEvidenceSynthesisCertaintyComponent dst) {
+        super.copyValues(dst);
         if (rating != null) {
           dst.rating = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : rating)
@@ -2065,7 +2065,6 @@ public class EffectEvidenceSynthesis extends MetadataResource {
           for (EffectEvidenceSynthesisCertaintyCertaintySubcomponentComponent i : certaintySubcomponent)
             dst.certaintySubcomponent.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2365,6 +2364,11 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       public EffectEvidenceSynthesisCertaintyCertaintySubcomponentComponent copy() {
         EffectEvidenceSynthesisCertaintyCertaintySubcomponentComponent dst = new EffectEvidenceSynthesisCertaintyCertaintySubcomponentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EffectEvidenceSynthesisCertaintyCertaintySubcomponentComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (rating != null) {
           dst.rating = new ArrayList<CodeableConcept>();
@@ -2376,7 +2380,6 @@ public class EffectEvidenceSynthesis extends MetadataResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4662,6 +4665,11 @@ public class EffectEvidenceSynthesis extends MetadataResource {
       public EffectEvidenceSynthesis copy() {
         EffectEvidenceSynthesis dst = new EffectEvidenceSynthesis();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EffectEvidenceSynthesis dst) {
+        super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -4751,7 +4759,6 @@ public class EffectEvidenceSynthesis extends MetadataResource {
           for (EffectEvidenceSynthesisCertaintyComponent i : certainty)
             dst.certainty.add(i.copy());
         };
-        return dst;
       }
 
       protected EffectEvidenceSynthesis typedCopy() {
@@ -5122,4 +5129,3 @@ public class EffectEvidenceSynthesis extends MetadataResource {
 
 
 }
-

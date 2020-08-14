@@ -1,24 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50;
 
-/*-
- * #%L
- * org.hl7.fhir.convertors
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.MarketingStatus;
@@ -64,7 +46,7 @@ public class MedicinalProductDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasType())
           tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasDomain())
-          tgt.setDomain(convertCoding(src.getDomain()));
+          tgt.getDomain().addCoding(convertCoding(src.getDomain()));
         // version (new)
         // status (new)
         // description (new)
@@ -108,7 +90,7 @@ public class MedicinalProductDefinition40_50 extends VersionConvertor_40_50 {
             copyElement(srcPart, tgtPart);
             tgtName.addNamePart(tgtPart);
             tgtPart.setPartElement(convertString(srcPart.getPartElement()));
-            tgtPart.setType(convertCoding(srcPart.getType()));
+            tgtPart.getType().addCoding(convertCoding(srcPart.getType()));
           }
           for (org.hl7.fhir.r4.model.MedicinalProduct.MedicinalProductNameCountryLanguageComponent srcLang : srcName.getCountryLanguage()) {
             org.hl7.fhir.r5.model.MedicinalProductDefinition.MedicinalProductDefinitionNameCountryLanguageComponent tgtLang = new org.hl7.fhir.r5.model.MedicinalProductDefinition.MedicinalProductDefinitionNameCountryLanguageComponent();
@@ -129,7 +111,7 @@ public class MedicinalProductDefinition40_50 extends VersionConvertor_40_50 {
           copyElement(srcMBO, tgtMBO);
           tgt.addManufacturingBusinessOperation(tgtMBO);
           if (srcMBO.hasOperationType()) {
-            tgtMBO.setType(convertCodeableConcept(srcMBO.getOperationType()));
+            tgtMBO.getType().setConcept(convertCodeableConcept(srcMBO.getOperationType()));
             // operationType -> type[x]
           }
           if (srcMBO.hasAuthorisationReferenceNumber())
@@ -163,8 +145,8 @@ public class MedicinalProductDefinition40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
         if (src.hasType())
           tgt.setType(convertCodeableConcept(src.getType()));
-        if (src.hasDomain())
-          tgt.setDomain(convertCoding(src.getDomain()));
+        if (src.getDomain().hasCoding())
+          tgt.setDomain(convertCoding(src.getDomain().getCodingFirstRep()));
         if (src.hasVersion())
           throw new FHIRException("Converting MedicinalProductDefinition.version is not supported");
         if (src.hasStatus())
@@ -220,7 +202,9 @@ public class MedicinalProductDefinition40_50 extends VersionConvertor_40_50 {
             copyElement(srcPart, tgtPart);
             tgtName.addNamePart(tgtPart);
             tgtPart.setPartElement(convertString(srcPart.getPartElement()));
-            tgtPart.setType(convertCoding(srcPart.getType()));
+            if (srcPart.getType().hasCoding()) {
+              tgtPart.setType(convertCoding(srcPart.getType().getCodingFirstRep()));
+            }
           }
           for (org.hl7.fhir.r5.model.MedicinalProductDefinition.MedicinalProductDefinitionNameCountryLanguageComponent srcLang : srcName.getCountryLanguage()) {
             org.hl7.fhir.r4.model.MedicinalProduct.MedicinalProductNameCountryLanguageComponent tgtLang = new org.hl7.fhir.r4.model.MedicinalProduct.MedicinalProductNameCountryLanguageComponent();
@@ -248,8 +232,8 @@ public class MedicinalProductDefinition40_50 extends VersionConvertor_40_50 {
           tgt.addManufacturingBusinessOperation(tgtMBO);
           if (srcMBO.hasType()) {
             //  type[x] -> operationType
-              if (srcMBO.getType() instanceof org.hl7.fhir.r5.model.CodeableConcept)
-                tgtMBO.setOperationType(convertCodeableConcept((org.hl7.fhir.r5.model.CodeableConcept)srcMBO.getType()));
+              if (srcMBO.getType().hasConcept())
+                tgtMBO.setOperationType(convertCodeableConcept(srcMBO.getType().getConcept()));
               else
                 throw new FHIRException("Converting MedicinalProductDefinition.manufacturingBusinessOperation.typeReference is not supported");
           }

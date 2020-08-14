@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,19 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.r4.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Describes a required data item for evaluation in terms of the type of data, and optional code or date-based filters of the data.
  */
@@ -511,6 +494,11 @@ public class DataRequirement extends Type implements ICompositeType {
       public DataRequirementCodeFilterComponent copy() {
         DataRequirementCodeFilterComponent dst = new DataRequirementCodeFilterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DataRequirementCodeFilterComponent dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         dst.searchParam = searchParam == null ? null : searchParam.copy();
         dst.valueSet = valueSet == null ? null : valueSet.copy();
@@ -519,7 +507,6 @@ public class DataRequirement extends Type implements ICompositeType {
           for (Coding i : code)
             dst.code.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -864,10 +851,14 @@ public class DataRequirement extends Type implements ICompositeType {
       public DataRequirementDateFilterComponent copy() {
         DataRequirementDateFilterComponent dst = new DataRequirementDateFilterComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DataRequirementDateFilterComponent dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         dst.searchParam = searchParam == null ? null : searchParam.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -1116,9 +1107,13 @@ public class DataRequirement extends Type implements ICompositeType {
       public DataRequirementSortComponent copy() {
         DataRequirementSortComponent dst = new DataRequirementSortComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DataRequirementSortComponent dst) {
+        super.copyValues(dst);
         dst.path = path == null ? null : path.copy();
         dst.direction = direction == null ? null : direction.copy();
-        return dst;
       }
 
       @Override
@@ -1837,6 +1832,11 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
       public DataRequirement copy() {
         DataRequirement dst = new DataRequirement();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DataRequirement dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         if (profile != null) {
           dst.profile = new ArrayList<CanonicalType>();
@@ -1865,7 +1865,6 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
           for (DataRequirementSortComponent i : sort)
             dst.sort.add(i.copy());
         };
-        return dst;
       }
 
       protected DataRequirement typedCopy() {
@@ -1903,4 +1902,3 @@ The value of mustSupport SHALL be a FHIRPath resolveable on the type of the Data
 
 
 }
-

@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,19 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r4.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * The header for a message exchange that is either requesting or responding to an action.  The reference(s) that are the subject of the action as well as other information related to the action are typically transmitted in a bundle in which the MessageHeader resource instance is the first resource in the bundle.
  */
@@ -524,11 +508,15 @@ public class MessageHeader extends DomainResource {
       public MessageDestinationComponent copy() {
         MessageDestinationComponent dst = new MessageDestinationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageDestinationComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.target = target == null ? null : target.copy();
         dst.endpoint = endpoint == null ? null : endpoint.copy();
         dst.receiver = receiver == null ? null : receiver.copy();
-        return dst;
       }
 
       @Override
@@ -960,12 +948,16 @@ public class MessageHeader extends DomainResource {
       public MessageSourceComponent copy() {
         MessageSourceComponent dst = new MessageSourceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageSourceComponent dst) {
+        super.copyValues(dst);
         dst.name = name == null ? null : name.copy();
         dst.software = software == null ? null : software.copy();
         dst.version = version == null ? null : version.copy();
         dst.contact = contact == null ? null : contact.copy();
         dst.endpoint = endpoint == null ? null : endpoint.copy();
-        return dst;
       }
 
       @Override
@@ -1285,10 +1277,14 @@ public class MessageHeader extends DomainResource {
       public MessageHeaderResponseComponent copy() {
         MessageHeaderResponseComponent dst = new MessageHeaderResponseComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageHeaderResponseComponent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.code = code == null ? null : code.copy();
         dst.details = details == null ? null : details.copy();
-        return dst;
       }
 
       @Override
@@ -2114,6 +2110,11 @@ public class MessageHeader extends DomainResource {
       public MessageHeader copy() {
         MessageHeader dst = new MessageHeader();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MessageHeader dst) {
+        super.copyValues(dst);
         dst.event = event == null ? null : event.copy();
         if (destination != null) {
           dst.destination = new ArrayList<MessageDestinationComponent>();
@@ -2133,7 +2134,6 @@ public class MessageHeader extends DomainResource {
             dst.focus.add(i.copy());
         };
         dst.definition = definition == null ? null : definition.copy();
-        return dst;
       }
 
       protected MessageHeader typedCopy() {
@@ -2498,4 +2498,3 @@ public class MessageHeader extends DomainResource {
 
 
 }
-

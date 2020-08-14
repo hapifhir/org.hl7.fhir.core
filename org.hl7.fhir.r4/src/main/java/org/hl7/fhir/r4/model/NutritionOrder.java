@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,20 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A request to supply a diet, formula feeding (enteral) or oral nutritional supplement to a patient/resident.
  */
@@ -91,7 +73,7 @@ public class NutritionOrder extends DomainResource {
          */
         COMPLETED, 
         /**
-         * This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be "cancelled" rather than "entered-in-error".).
+         * This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be "revoked" rather than "entered-in-error".).
          */
         ENTEREDINERROR, 
         /**
@@ -155,7 +137,7 @@ public class NutritionOrder extends DomainResource {
             case ONHOLD: return "The request (and any implicit authorization to act) has been temporarily withdrawn but is expected to resume in the future.";
             case REVOKED: return "The request (and any implicit authorization to act) has been terminated prior to the known full completion of the intended actions.  No further activity should occur.";
             case COMPLETED: return "The activity described by the request has been fully performed.  No further activity will occur.";
-            case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
+            case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"revoked\" rather than \"entered-in-error\".).";
             case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
             default: return "?";
           }
@@ -952,6 +934,11 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderOralDietComponent copy() {
         NutritionOrderOralDietComponent dst = new NutritionOrderOralDietComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderOralDietComponent dst) {
+        super.copyValues(dst);
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : type)
@@ -978,7 +965,6 @@ public class NutritionOrder extends DomainResource {
             dst.fluidConsistencyType.add(i.copy());
         };
         dst.instruction = instruction == null ? null : instruction.copy();
-        return dst;
       }
 
       @Override
@@ -1177,9 +1163,13 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderOralDietNutrientComponent copy() {
         NutritionOrderOralDietNutrientComponent dst = new NutritionOrderOralDietNutrientComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderOralDietNutrientComponent dst) {
+        super.copyValues(dst);
         dst.modifier = modifier == null ? null : modifier.copy();
         dst.amount = amount == null ? null : amount.copy();
-        return dst;
       }
 
       @Override
@@ -1376,9 +1366,13 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderOralDietTextureComponent copy() {
         NutritionOrderOralDietTextureComponent dst = new NutritionOrderOralDietTextureComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderOralDietTextureComponent dst) {
+        super.copyValues(dst);
         dst.modifier = modifier == null ? null : modifier.copy();
         dst.foodType = foodType == null ? null : foodType.copy();
-        return dst;
       }
 
       @Override
@@ -1785,6 +1779,11 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderSupplementComponent copy() {
         NutritionOrderSupplementComponent dst = new NutritionOrderSupplementComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderSupplementComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.productName = productName == null ? null : productName.copy();
         if (schedule != null) {
@@ -1794,7 +1793,6 @@ public class NutritionOrder extends DomainResource {
         };
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.instruction = instruction == null ? null : instruction.copy();
-        return dst;
       }
 
       @Override
@@ -2410,6 +2408,11 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderEnteralFormulaComponent copy() {
         NutritionOrderEnteralFormulaComponent dst = new NutritionOrderEnteralFormulaComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderEnteralFormulaComponent dst) {
+        super.copyValues(dst);
         dst.baseFormulaType = baseFormulaType == null ? null : baseFormulaType.copy();
         dst.baseFormulaProductName = baseFormulaProductName == null ? null : baseFormulaProductName.copy();
         dst.additiveType = additiveType == null ? null : additiveType.copy();
@@ -2423,7 +2426,6 @@ public class NutritionOrder extends DomainResource {
         };
         dst.maxVolumeToDeliver = maxVolumeToDeliver == null ? null : maxVolumeToDeliver.copy();
         dst.administrationInstruction = administrationInstruction == null ? null : administrationInstruction.copy();
-        return dst;
       }
 
       @Override
@@ -2705,10 +2707,14 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrderEnteralFormulaAdministrationComponent copy() {
         NutritionOrderEnteralFormulaAdministrationComponent dst = new NutritionOrderEnteralFormulaAdministrationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrderEnteralFormulaAdministrationComponent dst) {
+        super.copyValues(dst);
         dst.schedule = schedule == null ? null : schedule.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.rate = rate == null ? null : rate.copy();
-        return dst;
       }
 
       @Override
@@ -2776,7 +2782,7 @@ public class NutritionOrder extends DomainResource {
      * The workflow status of the nutrition order/request.
      */
     @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="proposed | draft | planned | requested | active | on-hold | completed | cancelled | entered-in-error", formalDefinition="The workflow status of the nutrition order/request." )
+    @Description(shortDefinition="draft | active | on-hold | revoked | completed | entered-in-error | unknown", formalDefinition="The workflow status of the nutrition order/request." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-status")
     protected Enumeration<NutritionOrderStatus> status;
 
@@ -2784,7 +2790,7 @@ public class NutritionOrder extends DomainResource {
      * Indicates the level of authority/intentionality associated with the NutrionOrder and where the request fits into the workflow chain.
      */
     @Child(name = "intent", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="proposal | plan | order", formalDefinition="Indicates the level of authority/intentionality associated with the NutrionOrder and where the request fits into the workflow chain." )
+    @Description(shortDefinition="proposal | plan | directive | order | original-order | reflex-order | filler-order | instance-order | option", formalDefinition="Indicates the level of authority/intentionality associated with the NutrionOrder and where the request fits into the workflow chain." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/request-intent")
     protected Enumeration<NutritiionOrderIntent> intent;
 
@@ -4035,6 +4041,11 @@ public class NutritionOrder extends DomainResource {
       public NutritionOrder copy() {
         NutritionOrder dst = new NutritionOrder();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NutritionOrder dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -4088,7 +4099,6 @@ public class NutritionOrder extends DomainResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        return dst;
       }
 
       protected NutritionOrder typedCopy() {
@@ -4402,4 +4412,3 @@ public class NutritionOrder extends DomainResource {
 
 
 }
-

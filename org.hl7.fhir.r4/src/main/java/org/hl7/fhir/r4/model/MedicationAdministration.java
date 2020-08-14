@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,24 +31,197 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Describes the event of a patient consuming or otherwise being administered a medication.  This may be as simple as swallowing a tablet or it may be a long running infusion.  Related resources tie this event to the authorizing prescription, and the specific encounter between patient and health care practitioner.
  */
 @ResourceDef(name="MedicationAdministration", profile="http://hl7.org/fhir/StructureDefinition/MedicationAdministration")
 public class MedicationAdministration extends DomainResource {
+
+    public enum MedicationAdministrationStatus {
+        /**
+         * The administration has started but has not yet completed.
+         */
+        INPROGRESS, 
+        /**
+         * The administration was terminated prior to any impact on the subject (though preparatory actions may have been taken)
+         */
+        NOTDONE, 
+        /**
+         * Actions implied by the administration have been temporarily halted, but are expected to continue later. May also be called 'suspended'.
+         */
+        ONHOLD, 
+        /**
+         * All actions that are implied by the administration have occurred.
+         */
+        COMPLETED, 
+        /**
+         * The administration was entered in error and therefore nullified.
+         */
+        ENTEREDINERROR, 
+        /**
+         * Actions implied by the administration have been permanently halted, before all of them occurred.
+         */
+        STOPPED, 
+        /**
+         * The authoring system does not know which of the status values currently applies for this request. Note: This concept is not to be used for 'other' - one of the listed statuses is presumed to apply, it's just not known which one.
+         */
+        UNKNOWN, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static MedicationAdministrationStatus fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("in-progress".equals(codeString))
+          return INPROGRESS;
+        if ("not-done".equals(codeString))
+          return NOTDONE;
+        if ("on-hold".equals(codeString))
+          return ONHOLD;
+        if ("completed".equals(codeString))
+          return COMPLETED;
+        if ("entered-in-error".equals(codeString))
+          return ENTEREDINERROR;
+        if ("stopped".equals(codeString))
+          return STOPPED;
+        if ("unknown".equals(codeString))
+          return UNKNOWN;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown MedicationAdministrationStatus code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case INPROGRESS: return "in-progress";
+            case NOTDONE: return "not-done";
+            case ONHOLD: return "on-hold";
+            case COMPLETED: return "completed";
+            case ENTEREDINERROR: return "entered-in-error";
+            case STOPPED: return "stopped";
+            case UNKNOWN: return "unknown";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case INPROGRESS: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
+            case NOTDONE: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
+            case ONHOLD: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
+            case COMPLETED: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
+            case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
+            case STOPPED: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
+            case UNKNOWN: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case INPROGRESS: return "The administration has started but has not yet completed.";
+            case NOTDONE: return "The administration was terminated prior to any impact on the subject (though preparatory actions may have been taken)";
+            case ONHOLD: return "Actions implied by the administration have been temporarily halted, but are expected to continue later. May also be called 'suspended'.";
+            case COMPLETED: return "All actions that are implied by the administration have occurred.";
+            case ENTEREDINERROR: return "The administration was entered in error and therefore nullified.";
+            case STOPPED: return "Actions implied by the administration have been permanently halted, before all of them occurred.";
+            case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this request. Note: This concept is not to be used for 'other' - one of the listed statuses is presumed to apply, it's just not known which one.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case INPROGRESS: return "In Progress";
+            case NOTDONE: return "Not Done";
+            case ONHOLD: return "On Hold";
+            case COMPLETED: return "Completed";
+            case ENTEREDINERROR: return "Entered in Error";
+            case STOPPED: return "Stopped";
+            case UNKNOWN: return "Unknown";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class MedicationAdministrationStatusEnumFactory implements EnumFactory<MedicationAdministrationStatus> {
+    public MedicationAdministrationStatus fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("in-progress".equals(codeString))
+          return MedicationAdministrationStatus.INPROGRESS;
+        if ("not-done".equals(codeString))
+          return MedicationAdministrationStatus.NOTDONE;
+        if ("on-hold".equals(codeString))
+          return MedicationAdministrationStatus.ONHOLD;
+        if ("completed".equals(codeString))
+          return MedicationAdministrationStatus.COMPLETED;
+        if ("entered-in-error".equals(codeString))
+          return MedicationAdministrationStatus.ENTEREDINERROR;
+        if ("stopped".equals(codeString))
+          return MedicationAdministrationStatus.STOPPED;
+        if ("unknown".equals(codeString))
+          return MedicationAdministrationStatus.UNKNOWN;
+        throw new IllegalArgumentException("Unknown MedicationAdministrationStatus code '"+codeString+"'");
+        }
+        public Enumeration<MedicationAdministrationStatus> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<MedicationAdministrationStatus>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("in-progress".equals(codeString))
+          return new Enumeration<MedicationAdministrationStatus>(this, MedicationAdministrationStatus.INPROGRESS);
+        if ("not-done".equals(codeString))
+          return new Enumeration<MedicationAdministrationStatus>(this, MedicationAdministrationStatus.NOTDONE);
+        if ("on-hold".equals(codeString))
+          return new Enumeration<MedicationAdministrationStatus>(this, MedicationAdministrationStatus.ONHOLD);
+        if ("completed".equals(codeString))
+          return new Enumeration<MedicationAdministrationStatus>(this, MedicationAdministrationStatus.COMPLETED);
+        if ("entered-in-error".equals(codeString))
+          return new Enumeration<MedicationAdministrationStatus>(this, MedicationAdministrationStatus.ENTEREDINERROR);
+        if ("stopped".equals(codeString))
+          return new Enumeration<MedicationAdministrationStatus>(this, MedicationAdministrationStatus.STOPPED);
+        if ("unknown".equals(codeString))
+          return new Enumeration<MedicationAdministrationStatus>(this, MedicationAdministrationStatus.UNKNOWN);
+        throw new FHIRException("Unknown MedicationAdministrationStatus code '"+codeString+"'");
+        }
+    public String toCode(MedicationAdministrationStatus code) {
+      if (code == MedicationAdministrationStatus.INPROGRESS)
+        return "in-progress";
+      if (code == MedicationAdministrationStatus.NOTDONE)
+        return "not-done";
+      if (code == MedicationAdministrationStatus.ONHOLD)
+        return "on-hold";
+      if (code == MedicationAdministrationStatus.COMPLETED)
+        return "completed";
+      if (code == MedicationAdministrationStatus.ENTEREDINERROR)
+        return "entered-in-error";
+      if (code == MedicationAdministrationStatus.STOPPED)
+        return "stopped";
+      if (code == MedicationAdministrationStatus.UNKNOWN)
+        return "unknown";
+      return "?";
+      }
+    public String toSystem(MedicationAdministrationStatus code) {
+      return code.getSystem();
+      }
+    }
 
     @Block()
     public static class MedicationAdministrationPerformerComponent extends BackboneElement implements IBaseBackboneElement {
@@ -258,9 +413,13 @@ public class MedicationAdministration extends DomainResource {
       public MedicationAdministrationPerformerComponent copy() {
         MedicationAdministrationPerformerComponent dst = new MedicationAdministrationPerformerComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationAdministrationPerformerComponent dst) {
+        super.copyValues(dst);
         dst.function = function == null ? null : function.copy();
         dst.actor = actor == null ? null : actor.copy();
-        return dst;
       }
 
       @Override
@@ -297,9 +456,7 @@ public class MedicationAdministration extends DomainResource {
     @Block()
     public static class MedicationAdministrationDosageComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.
-
-The dosage instructions should reflect the dosage of the medication that was administered.
+         * Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.The dosage instructions should reflect the dosage of the medication that was administered.
          */
         @Child(name = "text", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Free text dosage instructions e.g. SIG", formalDefinition="Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.\r\rThe dosage instructions should reflect the dosage of the medication that was administered." )
@@ -353,9 +510,7 @@ The dosage instructions should reflect the dosage of the medication that was adm
       }
 
         /**
-         * @return {@link #text} (Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.
-
-The dosage instructions should reflect the dosage of the medication that was administered.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         * @return {@link #text} (Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.The dosage instructions should reflect the dosage of the medication that was administered.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
          */
         public StringType getTextElement() { 
           if (this.text == null)
@@ -375,9 +530,7 @@ The dosage instructions should reflect the dosage of the medication that was adm
         }
 
         /**
-         * @param value {@link #text} (Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.
-
-The dosage instructions should reflect the dosage of the medication that was administered.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         * @param value {@link #text} (Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.The dosage instructions should reflect the dosage of the medication that was administered.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
          */
         public MedicationAdministrationDosageComponent setTextElement(StringType value) { 
           this.text = value;
@@ -385,18 +538,14 @@ The dosage instructions should reflect the dosage of the medication that was adm
         }
 
         /**
-         * @return Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.
-
-The dosage instructions should reflect the dosage of the medication that was administered.
+         * @return Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.The dosage instructions should reflect the dosage of the medication that was administered.
          */
         public String getText() { 
           return this.text == null ? null : this.text.getValue();
         }
 
         /**
-         * @param value Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.
-
-The dosage instructions should reflect the dosage of the medication that was administered.
+         * @param value Free text dosage can be used for cases where the dosage administered is too complex to code. When coded dosage is present, the free text dosage may still be present for display to humans.The dosage instructions should reflect the dosage of the medication that was administered.
          */
         public MedicationAdministrationDosageComponent setText(String value) { 
           if (Utilities.noString(value))
@@ -707,13 +856,17 @@ The dosage instructions should reflect the dosage of the medication that was adm
       public MedicationAdministrationDosageComponent copy() {
         MedicationAdministrationDosageComponent dst = new MedicationAdministrationDosageComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationAdministrationDosageComponent dst) {
+        super.copyValues(dst);
         dst.text = text == null ? null : text.copy();
         dst.site = site == null ? null : site.copy();
         dst.route = route == null ? null : route.copy();
         dst.method = method == null ? null : method.copy();
         dst.dose = dose == null ? null : dose.copy();
         dst.rate = rate == null ? null : rate.copy();
-        return dst;
       }
 
       @Override
@@ -782,7 +935,7 @@ The dosage instructions should reflect the dosage of the medication that was adm
     @Child(name = "status", type = {CodeType.class}, order=3, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="in-progress | not-done | on-hold | completed | entered-in-error | stopped | unknown", formalDefinition="Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions, it is possible for an administration to be started but not completed or it may be paused while some other process is under way." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-admin-status")
-    protected CodeType status;
+    protected Enumeration<MedicationAdministrationStatus> status;
 
     /**
      * A code indicating why the administration was not performed.
@@ -928,7 +1081,7 @@ The dosage instructions should reflect the dosage of the medication that was adm
     protected List<Provenance> eventHistoryTarget;
 
 
-    private static final long serialVersionUID = -1448772670L;
+    private static final long serialVersionUID = 463158971L;
 
   /**
    * Constructor
@@ -940,7 +1093,7 @@ The dosage instructions should reflect the dosage of the medication that was adm
   /**
    * Constructor
    */
-    public MedicationAdministration(CodeType status, Type medication, Reference subject, Type effective) {
+    public MedicationAdministration(Enumeration<MedicationAdministrationStatus> status, Type medication, Reference subject, Type effective) {
       super();
       this.status = status;
       this.medication = medication;
@@ -1128,12 +1281,12 @@ The dosage instructions should reflect the dosage of the medication that was adm
     /**
      * @return {@link #status} (Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions, it is possible for an administration to be started but not completed or it may be paused while some other process is under way.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public CodeType getStatusElement() { 
+    public Enumeration<MedicationAdministrationStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create MedicationAdministration.status");
         else if (Configuration.doAutoCreate())
-          this.status = new CodeType(); // bb
+          this.status = new Enumeration<MedicationAdministrationStatus>(new MedicationAdministrationStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -1148,7 +1301,7 @@ The dosage instructions should reflect the dosage of the medication that was adm
     /**
      * @param value {@link #status} (Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions, it is possible for an administration to be started but not completed or it may be paused while some other process is under way.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public MedicationAdministration setStatusElement(CodeType value) { 
+    public MedicationAdministration setStatusElement(Enumeration<MedicationAdministrationStatus> value) { 
       this.status = value;
       return this;
     }
@@ -1156,16 +1309,16 @@ The dosage instructions should reflect the dosage of the medication that was adm
     /**
      * @return Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions, it is possible for an administration to be started but not completed or it may be paused while some other process is under way.
      */
-    public String getStatus() { 
+    public MedicationAdministrationStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
      * @param value Will generally be set to show that the administration has been completed.  For some long running administrations such as infusions, it is possible for an administration to be started but not completed or it may be paused while some other process is under way.
      */
-    public MedicationAdministration setStatus(String value) { 
+    public MedicationAdministration setStatus(MedicationAdministrationStatus value) { 
         if (this.status == null)
-          this.status = new CodeType();
+          this.status = new Enumeration<MedicationAdministrationStatus>(new MedicationAdministrationStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -1992,7 +2145,7 @@ The dosage instructions should reflect the dosage of the medication that was adm
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -246883639: /*instantiates*/ return this.instantiates == null ? new Base[0] : this.instantiates.toArray(new Base[this.instantiates.size()]); // UriType
         case -995410646: /*partOf*/ return this.partOf == null ? new Base[0] : this.partOf.toArray(new Base[this.partOf.size()]); // Reference
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // CodeType
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<MedicationAdministrationStatus>
         case 2051346646: /*statusReason*/ return this.statusReason == null ? new Base[0] : this.statusReason.toArray(new Base[this.statusReason.size()]); // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case 1998965455: /*medication*/ return this.medication == null ? new Base[0] : new Base[] {this.medication}; // Type
@@ -2026,7 +2179,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
           this.getPartOf().add(castToReference(value)); // Reference
           return value;
         case -892481550: // status
-          this.status = castToCode(value); // CodeType
+          value = new MedicationAdministrationStatusEnumFactory().fromType(castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<MedicationAdministrationStatus>
           return value;
         case 2051346646: // statusReason
           this.getStatusReason().add(castToCodeableConcept(value)); // CodeableConcept
@@ -2087,7 +2241,8 @@ The dosage instructions should reflect the dosage of the medication that was adm
         } else if (name.equals("partOf")) {
           this.getPartOf().add(castToReference(value));
         } else if (name.equals("status")) {
-          this.status = castToCode(value); // CodeType
+          value = new MedicationAdministrationStatusEnumFactory().fromType(castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<MedicationAdministrationStatus>
         } else if (name.equals("statusReason")) {
           this.getStatusReason().add(castToCodeableConcept(value));
         } else if (name.equals("category")) {
@@ -2265,6 +2420,11 @@ The dosage instructions should reflect the dosage of the medication that was adm
       public MedicationAdministration copy() {
         MedicationAdministration dst = new MedicationAdministration();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MedicationAdministration dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2328,7 +2488,6 @@ The dosage instructions should reflect the dosage of the medication that was adm
           for (Reference i : eventHistory)
             dst.eventHistory.add(i.copy());
         };
-        return dst;
       }
 
       protected MedicationAdministration typedCopy() {
@@ -2678,4 +2837,3 @@ The dosage instructions should reflect the dosage of the medication that was adm
 
 
 }
-

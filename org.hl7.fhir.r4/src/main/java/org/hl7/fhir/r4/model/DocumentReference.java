@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,22 +31,21 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatus;
-import org.hl7.fhir.r4.model.Enumerations.DocumentReferenceStatusEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r4.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A reference to a document of any kind for any purpose. Provides metadata about the document so that the document can be discovered and managed. The scope of a document is any seralized object with a mime-type, so includes formal patient centric documents (CDA), cliical notes, scanned paper, and non-patient specific documents like policy text.
  */
@@ -537,9 +518,13 @@ public class DocumentReference extends DomainResource {
       public DocumentReferenceRelatesToComponent copy() {
         DocumentReferenceRelatesToComponent dst = new DocumentReferenceRelatesToComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DocumentReferenceRelatesToComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.target = target == null ? null : target.copy();
-        return dst;
       }
 
       @Override
@@ -743,9 +728,13 @@ public class DocumentReference extends DomainResource {
       public DocumentReferenceContentComponent copy() {
         DocumentReferenceContentComponent dst = new DocumentReferenceContentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DocumentReferenceContentComponent dst) {
+        super.copyValues(dst);
         dst.attachment = attachment == null ? null : attachment.copy();
         dst.format = format == null ? null : format.copy();
-        return dst;
       }
 
       @Override
@@ -1307,6 +1296,11 @@ public class DocumentReference extends DomainResource {
       public DocumentReferenceContextComponent copy() {
         DocumentReferenceContextComponent dst = new DocumentReferenceContextComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DocumentReferenceContextComponent dst) {
+        super.copyValues(dst);
         if (encounter != null) {
           dst.encounter = new ArrayList<Reference>();
           for (Reference i : encounter)
@@ -1326,7 +1320,6 @@ public class DocumentReference extends DomainResource {
           for (Reference i : related)
             dst.related.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1390,7 +1383,7 @@ public class DocumentReference extends DomainResource {
      * The status of the underlying document.
      */
     @Child(name = "docStatus", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="preliminary | final | appended | amended | entered-in-error", formalDefinition="The status of the underlying document." )
+    @Description(shortDefinition="preliminary | final | amended | entered-in-error", formalDefinition="The status of the underlying document." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/composition-status")
     protected Enumeration<ReferredDocumentStatus> docStatus;
 
@@ -2515,6 +2508,11 @@ public class DocumentReference extends DomainResource {
       public DocumentReference copy() {
         DocumentReference dst = new DocumentReference();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(DocumentReference dst) {
+        super.copyValues(dst);
         dst.masterIdentifier = masterIdentifier == null ? null : masterIdentifier.copy();
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
@@ -2555,7 +2553,6 @@ public class DocumentReference extends DomainResource {
             dst.content.add(i.copy());
         };
         dst.context = context == null ? null : context.copy();
-        return dst;
       }
 
       protected DocumentReference typedCopy() {
@@ -3149,4 +3146,3 @@ public class DocumentReference extends DomainResource {
 
 
 }
-

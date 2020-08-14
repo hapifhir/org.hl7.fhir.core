@@ -28,6 +28,12 @@ public class JsonParser extends JsonParserBase {
     setAllowUnknownContent(allowUnknownContent);
   }
 
+  public JsonParser(boolean allowUnknownContent, boolean allowComments) {
+    super();
+    setAllowUnknownContent(allowUnknownContent);
+    setAllowComments(allowComments);
+  }
+
   protected void parseBaseProperties(JsonObject json, Base res) throws IOException, FHIRFormatError {
     // nothing
   }
@@ -841,4 +847,3 @@ public class JsonParser extends JsonParserBase {
   }
 
 }
-

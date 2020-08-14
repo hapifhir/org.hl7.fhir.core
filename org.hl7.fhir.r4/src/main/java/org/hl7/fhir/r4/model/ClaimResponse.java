@@ -1,26 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-import java.math.BigDecimal;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,22 +31,22 @@ import java.math.BigDecimal;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r4.model.Enumerations.NoteType;
-import org.hl7.fhir.r4.model.Enumerations.NoteTypeEnumFactory;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
+import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r4.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * This resource provides the adjudication details from the processing of a Claim resource.
  */
@@ -800,6 +780,11 @@ public class ClaimResponse extends DomainResource {
       public ItemComponent copy() {
         ItemComponent dst = new ItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ItemComponent dst) {
+        super.copyValues(dst);
         dst.itemSequence = itemSequence == null ? null : itemSequence.copy();
         if (noteNumber != null) {
           dst.noteNumber = new ArrayList<PositiveIntType>();
@@ -816,7 +801,6 @@ public class ClaimResponse extends DomainResource {
           for (ItemDetailComponent i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1156,11 +1140,15 @@ public class ClaimResponse extends DomainResource {
       public AdjudicationComponent copy() {
         AdjudicationComponent dst = new AdjudicationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AdjudicationComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.reason = reason == null ? null : reason.copy();
         dst.amount = amount == null ? null : amount.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -1567,6 +1555,11 @@ public class ClaimResponse extends DomainResource {
       public ItemDetailComponent copy() {
         ItemDetailComponent dst = new ItemDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ItemDetailComponent dst) {
+        super.copyValues(dst);
         dst.detailSequence = detailSequence == null ? null : detailSequence.copy();
         if (noteNumber != null) {
           dst.noteNumber = new ArrayList<PositiveIntType>();
@@ -1583,7 +1576,6 @@ public class ClaimResponse extends DomainResource {
           for (SubDetailComponent i : subDetail)
             dst.subDetail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1919,6 +1911,11 @@ public class ClaimResponse extends DomainResource {
       public SubDetailComponent copy() {
         SubDetailComponent dst = new SubDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubDetailComponent dst) {
+        super.copyValues(dst);
         dst.subDetailSequence = subDetailSequence == null ? null : subDetailSequence.copy();
         if (noteNumber != null) {
           dst.noteNumber = new ArrayList<PositiveIntType>();
@@ -1930,7 +1927,6 @@ public class ClaimResponse extends DomainResource {
           for (AdjudicationComponent i : adjudication)
             dst.adjudication.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3321,6 +3317,11 @@ public class ClaimResponse extends DomainResource {
       public AddedItemComponent copy() {
         AddedItemComponent dst = new AddedItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AddedItemComponent dst) {
+        super.copyValues(dst);
         if (itemSequence != null) {
           dst.itemSequence = new ArrayList<PositiveIntType>();
           for (PositiveIntType i : itemSequence)
@@ -3379,7 +3380,6 @@ public class ClaimResponse extends DomainResource {
           for (AddedItemDetailComponent i : detail)
             dst.detail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4073,6 +4073,11 @@ public class ClaimResponse extends DomainResource {
       public AddedItemDetailComponent copy() {
         AddedItemDetailComponent dst = new AddedItemDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AddedItemDetailComponent dst) {
+        super.copyValues(dst);
         dst.productOrService = productOrService == null ? null : productOrService.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
@@ -4098,7 +4103,6 @@ public class ClaimResponse extends DomainResource {
           for (AddedItemSubDetailComponent i : subDetail)
             dst.subDetail.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4711,6 +4715,11 @@ public class ClaimResponse extends DomainResource {
       public AddedItemSubDetailComponent copy() {
         AddedItemSubDetailComponent dst = new AddedItemSubDetailComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AddedItemSubDetailComponent dst) {
+        super.copyValues(dst);
         dst.productOrService = productOrService == null ? null : productOrService.copy();
         if (modifier != null) {
           dst.modifier = new ArrayList<CodeableConcept>();
@@ -4731,7 +4740,6 @@ public class ClaimResponse extends DomainResource {
           for (AdjudicationComponent i : adjudication)
             dst.adjudication.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -4940,9 +4948,13 @@ public class ClaimResponse extends DomainResource {
       public TotalComponent copy() {
         TotalComponent dst = new TotalComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TotalComponent dst) {
+        super.copyValues(dst);
         dst.category = category == null ? null : category.copy();
         dst.amount = amount == null ? null : amount.copy();
-        return dst;
       }
 
       @Override
@@ -5352,13 +5364,17 @@ public class ClaimResponse extends DomainResource {
       public PaymentComponent copy() {
         PaymentComponent dst = new PaymentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(PaymentComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.adjustment = adjustment == null ? null : adjustment.copy();
         dst.adjustmentReason = adjustmentReason == null ? null : adjustmentReason.copy();
         dst.date = date == null ? null : date.copy();
         dst.amount = amount == null ? null : amount.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
-        return dst;
       }
 
       @Override
@@ -5722,11 +5738,15 @@ public class ClaimResponse extends DomainResource {
       public NoteComponent copy() {
         NoteComponent dst = new NoteComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(NoteComponent dst) {
+        super.copyValues(dst);
         dst.number = number == null ? null : number.copy();
         dst.type = type == null ? null : type.copy();
         dst.text = text == null ? null : text.copy();
         dst.language = language == null ? null : language.copy();
-        return dst;
       }
 
       @Override
@@ -6183,12 +6203,16 @@ public class ClaimResponse extends DomainResource {
       public InsuranceComponent copy() {
         InsuranceComponent dst = new InsuranceComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(InsuranceComponent dst) {
+        super.copyValues(dst);
         dst.sequence = sequence == null ? null : sequence.copy();
         dst.focal = focal == null ? null : focal.copy();
         dst.coverage = coverage == null ? null : coverage.copy();
         dst.businessArrangement = businessArrangement == null ? null : businessArrangement.copy();
         dst.claimResponse = claimResponse == null ? null : claimResponse.copy();
-        return dst;
       }
 
       @Override
@@ -6546,11 +6570,15 @@ public class ClaimResponse extends DomainResource {
       public ErrorComponent copy() {
         ErrorComponent dst = new ErrorComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ErrorComponent dst) {
+        super.copyValues(dst);
         dst.itemSequence = itemSequence == null ? null : itemSequence.copy();
         dst.detailSequence = detailSequence == null ? null : detailSequence.copy();
         dst.subDetailSequence = subDetailSequence == null ? null : subDetailSequence.copy();
         dst.code = code == null ? null : code.copy();
-        return dst;
       }
 
       @Override
@@ -8407,6 +8435,11 @@ public class ClaimResponse extends DomainResource {
       public ClaimResponse copy() {
         ClaimResponse dst = new ClaimResponse();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ClaimResponse dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -8470,7 +8503,6 @@ public class ClaimResponse extends DomainResource {
           for (ErrorComponent i : error)
             dst.error.add(i.copy());
         };
-        return dst;
       }
 
       protected ClaimResponse typedCopy() {
@@ -8767,4 +8799,3 @@ public class ClaimResponse extends DomainResource {
 
 
 }
-

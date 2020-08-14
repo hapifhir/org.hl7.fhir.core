@@ -1,28 +1,37 @@
 package org.hl7.fhir.r5.terminologies;
 
-/*-
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, 
+  are permitted provided that the following conditions are met:
+    
+   * Redistributions of source code must retain the above copyright notice, this 
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  POSSIBILITY OF SUCH DAMAGE.
+  
  */
 
 
+
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +46,7 @@ import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ConceptReferenceComponent;
@@ -46,9 +56,10 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetFilterComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 
 public class ValueSetCheckerSimple implements ValueSetChecker {
 
@@ -70,7 +81,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
       for (Coding c : code.getCoding()) {
         if (!c.hasSystem())
-          warnings.add("Coding has no system - cannot validate");
+          warnings.add(context.formatMessage(I18nConstants.CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE));
         CodeSystem cs = context.fetchCodeSystem(c.getSystem());
         ValidationResult res = null;
         if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
@@ -90,7 +101,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
         ok = ok || codeInValueSet(c.getSystem(), c.getCode());
       }
       if (!ok)
-        errors.add(0, "None of the provided codes are in the value set "+valueset.getUrl());
+        errors.add(0, context.formatMessage(I18nConstants.NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_, valueset.getUrl()));
     }
     if (errors.size() > 0)
       return new ValidationResult(IssueSeverity.ERROR, errors.toString());
@@ -111,23 +122,34 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       if (system == null && !code.hasDisplay()) { // dealing with just a plain code (enum)
         system = systemForCodeInValueSet(code.getCode());
       }
-      if (!code.hasSystem())
+      if (!code.hasSystem()) {
+        if (options.isGuessSystem() && system == null && Utilities.isAbsoluteUrl(code.getCode())) {
+          system = "urn:ietf:rfc:3986"; // this arises when using URIs bound to value sets
+        }
         code.setSystem(system);
+      }
       inExpansion = checkExpansion(code);
       CodeSystem cs = context.fetchCodeSystem(system);
       if (cs == null) {
-        warningMessage = "Unable to resolve system "+system+" - system is not specified or implicit";
+        cs = findSpecialCodeSystem(system);
+      }
+      if (cs == null) {
+        warningMessage = "Unable to resolve system "+system;
         if (!inExpansion)
           throw new FHIRException(warningMessage);
       }
       if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
-        warningMessage = "Unable to resolve system "+system+" - system is not complete";
-        if (!inExpansion)
+        warningMessage = "Resolved system "+system+", but the definition is not complete";
+        if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) // we're going to give it a go if it's a fragment
           throw new FHIRException(warningMessage);
       }
 
-      if (cs!=null)
+      if (cs!=null && (cs.getContent() == CodeSystemContentMode.COMPLETE || cs.getContent() == CodeSystemContentMode.FRAGMENT)) {
         res = validateCode(code, cs);
+      } else {
+        // it's in the expansion, but we could find it in a code system
+        res = findCodeInExpansion(code);
+      }
     } else {
       inExpansion = checkExpansion(code);
     }
@@ -138,7 +160,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
         if (!inExpansion)
           res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
         else if (warningMessage!=null)
-          res = new ValidationResult(IssueSeverity.WARNING, "Code found in expansion, however: " + warningMessage);
+          res = new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.CODE_FOUND_IN_EXPANSION_HOWEVER_, warningMessage));
         else
           res.setMessage("Code found in expansion, however: " + res.getMessage());
       }
@@ -146,13 +168,49 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     return res;
   }
 
-  boolean checkExpansion(Coding code) {
+  private CodeSystem findSpecialCodeSystem(String system) {
+    if ("urn:ietf:rfc:3986".equals(system)) {
+      CodeSystem cs = new CodeSystem();
+      cs.setUrl(system);
+      cs.setUserData("tx.cs.special", new URICodeSystem());
+      cs.setContent(CodeSystemContentMode.COMPLETE);
+      return cs; 
+    }
+    return null;
+  }
+
+  private ValidationResult findCodeInExpansion(Coding code) {
+    if (valueset==null || !valueset.hasExpansion())
+      return null;
+    return findCodeInExpansion(code, valueset.getExpansion().getContains());
+  }
+  
+  private ValidationResult findCodeInExpansion(Coding code, List<ValueSetExpansionContainsComponent> contains) {
+    for (ValueSetExpansionContainsComponent containsComponent: contains) {
+      if (containsComponent.getSystem().equals(code.getSystem()) && containsComponent.getCode().equals(code.getCode())) {
+        ConceptDefinitionComponent ccd = new ConceptDefinitionComponent();
+        ccd.setCode(containsComponent.getCode());
+        ccd.setDisplay(containsComponent.getDisplay());
+        ValidationResult res = new ValidationResult(ccd);
+        return res;
+      }
+      if (containsComponent.hasContains()) {
+        ValidationResult res = findCodeInExpansion(code, containsComponent.getContains());
+        if (res != null) {
+          return res;
+        }
+      }
+    }
+    return null;
+  }
+  
+  private boolean checkExpansion(Coding code) {
     if (valueset==null || !valueset.hasExpansion())
       return false;
     return checkExpansion(code, valueset.getExpansion().getContains());
   }
 
-  boolean checkExpansion(Coding code, List<ValueSetExpansionContainsComponent> contains) {
+  private boolean checkExpansion(Coding code, List<ValueSetExpansionContainsComponent> contains) {
     for (ValueSetExpansionContainsComponent containsComponent: contains) {
       if (containsComponent.getSystem().equals(code.getSystem()) && containsComponent.getCode().equals(code.getCode()))
         return true;
@@ -163,9 +221,14 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
   }
 
   private ValidationResult validateCode(Coding code, CodeSystem cs) {
-    ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), code.getCode());
-    if (cc == null)
-      return new ValidationResult(IssueSeverity.ERROR, "Unknown Code "+gen(code)+" in "+cs.getUrl());
+    ConceptDefinitionComponent cc = cs.hasUserData("tx.cs.special") ? ((SpecialCodeSystem) cs.getUserData("tx.cs.special")).findConcept(code) : findCodeInConcept(cs.getConcept(), code.getCode());
+    if (cc == null) {
+      if (cs.getContent() == CodeSystemContentMode.FRAGMENT) {
+        return new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_FRAGMENT, gen(code), cs.getUrl()));        
+      } else {
+        return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.UNKNOWN_CODE__IN_, gen(code), cs.getUrl()));
+      }
+    }
     if (code.getDisplay() == null)
       return new ValidationResult(cc);
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
@@ -193,7 +256,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
           return new ValidationResult(cc);
       }
     }
-    return new ValidationResult(IssueSeverity.WARNING, "Display Name for "+code.getSystem()+"#"+code.getCode()+" should be one of '"+b.toString()+"' instead of '"+code.getDisplay()+"'", cc);
+    return new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF_, code.getSystem(), code.getCode(), b.toString(), code.getDisplay()), cc);
   }
 
   private ConceptReferenceComponent findValueSetRef(String system, String code) {
@@ -233,25 +296,23 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
 
   private String getValueSetSystem() throws FHIRException {
     if (valueset == null)
-      throw new FHIRException("Unable to resolve system - no value set");
-    if (valueset.getCompose().hasExclude())
-      throw new FHIRException("Unable to resolve system - value set has excludes");
+      throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__NO_VALUE_SET));
     if (valueset.getCompose().getInclude().size() == 0) {
       if (!valueset.hasExpansion() || valueset.getExpansion().getContains().size() == 0)
-        throw new FHIRException("Unable to resolve system - value set has no includes or expansion");
+        throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_NO_INCLUDES_OR_EXPANSION));
       else {
         String cs = valueset.getExpansion().getContains().get(0).getSystem();
         if (cs != null && checkSystem(valueset.getExpansion().getContains(), cs))
           return cs;
         else
-          throw new FHIRException("Unable to resolve system - value set expansion has multiple systems");
+          throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_EXPANSION_HAS_MULTIPLE_SYSTEMS));
       }
     }
     for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
       if (inc.hasValueSet())
-        throw new FHIRException("Unable to resolve system - value set has imports");
+        throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_IMPORTS));
       if (!inc.hasSystem())
-        throw new FHIRException("Unable to resolve system - value set has include with no system");
+        throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM));
     }
     if (valueset.getCompose().getInclude().size() == 1)
       return valueset.getCompose().getInclude().get(0).getSystem();
@@ -341,27 +402,31 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
 
   private boolean inComponent(ConceptSetComponent vsi, String system, String code, boolean only) throws FHIRException {
     for (UriType uri : vsi.getValueSet()) {
-      if (inImport(uri.getValue(), system, code))
+      if (inImport(uri.getValue(), system, code)) {
         return true;
+      }
     }
 
-    if (!vsi.hasSystem())
+    if (!vsi.hasSystem()) {
       return false;
-    
+    }
     if (only && system == null) {
       // whether we know the system or not, we'll accept the stated codes at face value
-      for (ConceptReferenceComponent cc : vsi.getConcept())
-        if (cc.getCode().equals(code)) 
+      for (ConceptReferenceComponent cc : vsi.getConcept()) {
+        if (cc.getCode().equals(code)) {
           return true;
+        }
+      }
     }
     
     if (!system.equals(vsi.getSystem()))
       return false;
     // ok, we need the code system
     CodeSystem cs = context.fetchCodeSystem(system);
-    if (cs == null || cs.getContent() != CodeSystemContentMode.COMPLETE) {
-      // make up a transient value set with 
+    if (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT)) {
+      // make up a transient value set with
       ValueSet vs = new ValueSet();
+      vs.setStatus(PublicationStatus.ACTIVE);
       vs.setUrl(Utilities.makeUuidUrn());
       vs.getCompose().addInclude(vsi);
       ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
@@ -381,12 +446,15 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       List<ConceptDefinitionComponent> list = cs.getConcept();
       boolean ok = validateCodeInConceptList(code, cs, list);
       if (ok && vsi.hasConcept()) {
-        for (ConceptReferenceComponent cc : vsi.getConcept())
-          if (cc.getCode().equals(code)) 
+        for (ConceptReferenceComponent cc : vsi.getConcept()) {
+          if (cc.getCode().equals(code)) { 
             return true;
+          }
+        }
         return false;
-      } else
+      } else {
         return ok;
+      }
     }
   }
 
@@ -395,7 +463,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       return codeInConceptFilter(cs, f, code);
     else {
       System.out.println("todo: handle filters with property = "+f.getProperty()); 
-      throw new FHIRException("Unable to handle system "+cs.getUrl()+" filter with property = "+f.getProperty());
+      throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__FILTER_WITH_PROPERTY__, cs.getUrl(), f.getProperty()));
     }
   }
 
@@ -405,7 +473,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     case ISNOTA: return !codeInConceptIsAFilter(cs, f, code);
     default:
       System.out.println("todo: handle concept filters with op = "+f.getOp()); 
-      throw new FHIRException("Unable to handle system "+cs.getUrl()+" concept filter with op = "+f.getOp());
+        throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__CONCEPT_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
   }
 

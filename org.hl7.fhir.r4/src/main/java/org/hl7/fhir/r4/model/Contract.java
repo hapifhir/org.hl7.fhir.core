@@ -1,26 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-import java.math.BigDecimal;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,20 +31,21 @@ import java.math.BigDecimal;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
+import java.math.*;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Legally enforceable, formally recorded unilateral or bilateral directive i.e., a policy or agreement.
  */
@@ -709,10 +690,10 @@ public class Contract extends DomainResource {
         protected DateTimeType publicationDate;
 
         /**
-         * draft | active | retired | unknown.
+         * amended | appended | cancelled | disputed | entered-in-error | executable | executed | negotiable | offered | policy | rejected | renewed | revoked | resolved | terminated.
          */
         @Child(name = "publicationStatus", type = {CodeType.class}, order=5, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="draft | active | retired | unknown." )
+        @Description(shortDefinition="amended | appended | cancelled | disputed | entered-in-error | executable | executed | negotiable | offered | policy | rejected | renewed | revoked | resolved | terminated", formalDefinition="amended | appended | cancelled | disputed | entered-in-error | executable | executed | negotiable | offered | policy | rejected | renewed | revoked | resolved | terminated." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contract-publicationstatus")
         protected Enumeration<ContractPublicationStatus> publicationStatus;
 
@@ -878,7 +859,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return {@link #publicationStatus} (draft | active | retired | unknown.). This is the underlying object with id, value and extensions. The accessor "getPublicationStatus" gives direct access to the value
+         * @return {@link #publicationStatus} (amended | appended | cancelled | disputed | entered-in-error | executable | executed | negotiable | offered | policy | rejected | renewed | revoked | resolved | terminated.). This is the underlying object with id, value and extensions. The accessor "getPublicationStatus" gives direct access to the value
          */
         public Enumeration<ContractPublicationStatus> getPublicationStatusElement() { 
           if (this.publicationStatus == null)
@@ -898,7 +879,7 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @param value {@link #publicationStatus} (draft | active | retired | unknown.). This is the underlying object with id, value and extensions. The accessor "getPublicationStatus" gives direct access to the value
+         * @param value {@link #publicationStatus} (amended | appended | cancelled | disputed | entered-in-error | executable | executed | negotiable | offered | policy | rejected | renewed | revoked | resolved | terminated.). This is the underlying object with id, value and extensions. The accessor "getPublicationStatus" gives direct access to the value
          */
         public ContentDefinitionComponent setPublicationStatusElement(Enumeration<ContractPublicationStatus> value) { 
           this.publicationStatus = value;
@@ -906,14 +887,14 @@ public class Contract extends DomainResource {
         }
 
         /**
-         * @return draft | active | retired | unknown.
+         * @return amended | appended | cancelled | disputed | entered-in-error | executable | executed | negotiable | offered | policy | rejected | renewed | revoked | resolved | terminated.
          */
         public ContractPublicationStatus getPublicationStatus() { 
           return this.publicationStatus == null ? null : this.publicationStatus.getValue();
         }
 
         /**
-         * @param value draft | active | retired | unknown.
+         * @param value amended | appended | cancelled | disputed | entered-in-error | executable | executed | negotiable | offered | policy | rejected | renewed | revoked | resolved | terminated.
          */
         public ContentDefinitionComponent setPublicationStatus(ContractPublicationStatus value) { 
             if (this.publicationStatus == null)
@@ -977,7 +958,7 @@ public class Contract extends DomainResource {
           children.add(new Property("subType", "CodeableConcept", "Detailed Precusory content type.", 0, 1, subType));
           children.add(new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "The  individual or organization that published the Contract precursor content.", 0, 1, publisher));
           children.add(new Property("publicationDate", "dateTime", "The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.", 0, 1, publicationDate));
-          children.add(new Property("publicationStatus", "code", "draft | active | retired | unknown.", 0, 1, publicationStatus));
+          children.add(new Property("publicationStatus", "code", "amended | appended | cancelled | disputed | entered-in-error | executable | executed | negotiable | offered | policy | rejected | renewed | revoked | resolved | terminated.", 0, 1, publicationStatus));
           children.add(new Property("copyright", "markdown", "A copyright statement relating to Contract precursor content. Copyright statements are generally legal restrictions on the use and publishing of the Contract precursor content.", 0, 1, copyright));
         }
 
@@ -988,7 +969,7 @@ public class Contract extends DomainResource {
           case -1868521062: /*subType*/  return new Property("subType", "CodeableConcept", "Detailed Precusory content type.", 0, 1, subType);
           case 1447404028: /*publisher*/  return new Property("publisher", "Reference(Practitioner|PractitionerRole|Organization)", "The  individual or organization that published the Contract precursor content.", 0, 1, publisher);
           case 1470566394: /*publicationDate*/  return new Property("publicationDate", "dateTime", "The date (and optionally time) when the contract was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the contract changes.", 0, 1, publicationDate);
-          case 616500542: /*publicationStatus*/  return new Property("publicationStatus", "code", "draft | active | retired | unknown.", 0, 1, publicationStatus);
+          case 616500542: /*publicationStatus*/  return new Property("publicationStatus", "code", "amended | appended | cancelled | disputed | entered-in-error | executable | executed | negotiable | offered | policy | rejected | renewed | revoked | resolved | terminated.", 0, 1, publicationStatus);
           case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to Contract precursor content. Copyright statements are generally legal restrictions on the use and publishing of the Contract precursor content.", 0, 1, copyright);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1114,13 +1095,17 @@ public class Contract extends DomainResource {
       public ContentDefinitionComponent copy() {
         ContentDefinitionComponent dst = new ContentDefinitionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ContentDefinitionComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.subType = subType == null ? null : subType.copy();
         dst.publisher = publisher == null ? null : publisher.copy();
         dst.publicationDate = publicationDate == null ? null : publicationDate.copy();
         dst.publicationStatus = publicationStatus == null ? null : publicationStatus.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
-        return dst;
       }
 
       @Override
@@ -1974,6 +1959,11 @@ public class Contract extends DomainResource {
       public TermComponent copy() {
         TermComponent dst = new TermComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TermComponent dst) {
+        super.copyValues(dst);
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.issued = issued == null ? null : issued.copy();
         dst.applies = applies == null ? null : applies.copy();
@@ -2002,7 +1992,6 @@ public class Contract extends DomainResource {
           for (TermComponent i : group)
             dst.group.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -2395,6 +2384,11 @@ public class Contract extends DomainResource {
       public SecurityLabelComponent copy() {
         SecurityLabelComponent dst = new SecurityLabelComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SecurityLabelComponent dst) {
+        super.copyValues(dst);
         if (number != null) {
           dst.number = new ArrayList<UnsignedIntType>();
           for (UnsignedIntType i : number)
@@ -2411,7 +2405,6 @@ public class Contract extends DomainResource {
           for (Coding i : control)
             dst.control.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3199,6 +3192,11 @@ public class Contract extends DomainResource {
       public ContractOfferComponent copy() {
         ContractOfferComponent dst = new ContractOfferComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ContractOfferComponent dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -3233,7 +3231,6 @@ public class Contract extends DomainResource {
           for (UnsignedIntType i : securityLabelNumber)
             dst.securityLabelNumber.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -3485,13 +3482,17 @@ public class Contract extends DomainResource {
       public ContractPartyComponent copy() {
         ContractPartyComponent dst = new ContractPartyComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ContractPartyComponent dst) {
+        super.copyValues(dst);
         if (reference != null) {
           dst.reference = new ArrayList<Reference>();
           for (Reference i : reference)
             dst.reference.add(i.copy());
         };
         dst.role = role == null ? null : role.copy();
-        return dst;
       }
 
       @Override
@@ -3884,8 +3885,12 @@ public class Contract extends DomainResource {
       public AnswerComponent copy() {
         AnswerComponent dst = new AnswerComponent();
         copyValues(dst);
-        dst.value = value == null ? null : value.copy();
         return dst;
+      }
+
+      public void copyValues(AnswerComponent dst) {
+        super.copyValues(dst);
+        dst.value = value == null ? null : value.copy();
       }
 
       @Override
@@ -5057,6 +5062,11 @@ public class Contract extends DomainResource {
       public ContractAssetComponent copy() {
         ContractAssetComponent dst = new ContractAssetComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ContractAssetComponent dst) {
+        super.copyValues(dst);
         dst.scope = scope == null ? null : scope.copy();
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
@@ -5116,7 +5126,6 @@ public class Contract extends DomainResource {
           for (ValuedItemComponent i : valuedItem)
             dst.valuedItem.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -5437,6 +5446,11 @@ public class Contract extends DomainResource {
       public AssetContextComponent copy() {
         AssetContextComponent dst = new AssetContextComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(AssetContextComponent dst) {
+        super.copyValues(dst);
         dst.reference = reference == null ? null : reference.copy();
         if (code != null) {
           dst.code = new ArrayList<CodeableConcept>();
@@ -5444,7 +5458,6 @@ public class Contract extends DomainResource {
             dst.code.add(i.copy());
         };
         dst.text = text == null ? null : text.copy();
-        return dst;
       }
 
       @Override
@@ -6483,6 +6496,11 @@ public class Contract extends DomainResource {
       public ValuedItemComponent copy() {
         ValuedItemComponent dst = new ValuedItemComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ValuedItemComponent dst) {
+        super.copyValues(dst);
         dst.entity = entity == null ? null : entity.copy();
         dst.identifier = identifier == null ? null : identifier.copy();
         dst.effectiveTime = effectiveTime == null ? null : effectiveTime.copy();
@@ -6505,7 +6523,6 @@ public class Contract extends DomainResource {
           for (UnsignedIntType i : securityLabelNumber)
             dst.securityLabelNumber.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -8146,6 +8163,11 @@ public class Contract extends DomainResource {
       public ActionComponent copy() {
         ActionComponent dst = new ActionComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ActionComponent dst) {
+        super.copyValues(dst);
         dst.doNotPerform = doNotPerform == null ? null : doNotPerform.copy();
         dst.type = type == null ? null : type.copy();
         if (subject != null) {
@@ -8219,7 +8241,6 @@ public class Contract extends DomainResource {
           for (UnsignedIntType i : securityLabelNumber)
             dst.securityLabelNumber.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -8472,13 +8493,17 @@ public class Contract extends DomainResource {
       public ActionSubjectComponent copy() {
         ActionSubjectComponent dst = new ActionSubjectComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(ActionSubjectComponent dst) {
+        super.copyValues(dst);
         if (reference != null) {
           dst.reference = new ArrayList<Reference>();
           for (Reference i : reference)
             dst.reference.add(i.copy());
         };
         dst.role = role == null ? null : role.copy();
-        return dst;
       }
 
       @Override
@@ -8776,6 +8801,11 @@ public class Contract extends DomainResource {
       public SignatoryComponent copy() {
         SignatoryComponent dst = new SignatoryComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SignatoryComponent dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.party = party == null ? null : party.copy();
         if (signature != null) {
@@ -8783,7 +8813,6 @@ public class Contract extends DomainResource {
           for (Signature i : signature)
             dst.signature.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -8977,8 +9006,12 @@ public class Contract extends DomainResource {
       public FriendlyLanguageComponent copy() {
         FriendlyLanguageComponent dst = new FriendlyLanguageComponent();
         copyValues(dst);
-        dst.content = content == null ? null : content.copy();
         return dst;
+      }
+
+      public void copyValues(FriendlyLanguageComponent dst) {
+        super.copyValues(dst);
+        dst.content = content == null ? null : content.copy();
       }
 
       @Override
@@ -9171,8 +9204,12 @@ public class Contract extends DomainResource {
       public LegalLanguageComponent copy() {
         LegalLanguageComponent dst = new LegalLanguageComponent();
         copyValues(dst);
-        dst.content = content == null ? null : content.copy();
         return dst;
+      }
+
+      public void copyValues(LegalLanguageComponent dst) {
+        super.copyValues(dst);
+        dst.content = content == null ? null : content.copy();
       }
 
       @Override
@@ -9365,8 +9402,12 @@ public class Contract extends DomainResource {
       public ComputableLanguageComponent copy() {
         ComputableLanguageComponent dst = new ComputableLanguageComponent();
         copyValues(dst);
-        dst.content = content == null ? null : content.copy();
         return dst;
+      }
+
+      public void copyValues(ComputableLanguageComponent dst) {
+        super.copyValues(dst);
+        dst.content = content == null ? null : content.copy();
       }
 
       @Override
@@ -9425,7 +9466,7 @@ public class Contract extends DomainResource {
      * The status of the resource instance.
      */
     @Child(name = "status", type = {CodeType.class}, order=3, min=0, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="draft | active | suspended | cancelled | completed | entered-in-error | unknown", formalDefinition="The status of the resource instance." )
+    @Description(shortDefinition="amended | appended | cancelled | disputed | entered-in-error | executable | executed | negotiable | offered | policy | rejected | renewed | revoked | resolved | terminated", formalDefinition="The status of the resource instance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contract-status")
     protected Enumeration<ContractStatus> status;
 
@@ -11813,6 +11854,11 @@ public class Contract extends DomainResource {
       public Contract copy() {
         Contract dst = new Contract();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Contract dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -11902,7 +11948,6 @@ public class Contract extends DomainResource {
             dst.rule.add(i.copy());
         };
         dst.legallyBinding = legallyBinding == null ? null : legallyBinding.copy();
-        return dst;
       }
 
       protected Contract typedCopy() {
@@ -12188,4 +12233,3 @@ public class Contract extends DomainResource {
 
 
 }
-

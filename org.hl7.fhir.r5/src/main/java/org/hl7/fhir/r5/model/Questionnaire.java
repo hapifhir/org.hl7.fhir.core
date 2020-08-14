@@ -1,25 +1,7 @@
 package org.hl7.fhir.r5.model;
 
 
-/*
- * #%L
- * org.hl7.fhir.r5
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the \"License\");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an \"AS IS\" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,23 +31,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Tue, Dec 31, 2019 12:12+1100 for FHIR vcurrent
+// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.r5.model.Enumerations.*;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.annotation.Block;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.
@@ -347,6 +329,10 @@ public class Questionnaire extends MetadataResource {
          */
         DISPLAY, 
         /**
+         * An item that defines a specific answer to be captured, and which may have child items. (the answer provided in the QuestionnaireResponse should be of the defined datatype).
+         */
+        QUESTION, 
+        /**
          * Question with a yes/no answer (valueBoolean).
          */
         BOOLEAN, 
@@ -413,6 +399,8 @@ public class Questionnaire extends MetadataResource {
           return GROUP;
         if ("display".equals(codeString))
           return DISPLAY;
+        if ("question".equals(codeString))
+          return QUESTION;
         if ("boolean".equals(codeString))
           return BOOLEAN;
         if ("decimal".equals(codeString))
@@ -450,6 +438,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case GROUP: return "group";
             case DISPLAY: return "display";
+            case QUESTION: return "question";
             case BOOLEAN: return "boolean";
             case DECIMAL: return "decimal";
             case INTEGER: return "integer";
@@ -471,6 +460,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case GROUP: return "http://hl7.org/fhir/item-type";
             case DISPLAY: return "http://hl7.org/fhir/item-type";
+            case QUESTION: return "http://hl7.org/fhir/item-type";
             case BOOLEAN: return "http://hl7.org/fhir/item-type";
             case DECIMAL: return "http://hl7.org/fhir/item-type";
             case INTEGER: return "http://hl7.org/fhir/item-type";
@@ -492,6 +482,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case GROUP: return "An item with no direct answer but should have at least one child item.";
             case DISPLAY: return "Text for display that will not capture an answer or have child items.";
+            case QUESTION: return "An item that defines a specific answer to be captured, and which may have child items. (the answer provided in the QuestionnaireResponse should be of the defined datatype).";
             case BOOLEAN: return "Question with a yes/no answer (valueBoolean).";
             case DECIMAL: return "Question with is a real number answer (valueDecimal).";
             case INTEGER: return "Question with an integer answer (valueInteger).";
@@ -513,6 +504,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case GROUP: return "Group";
             case DISPLAY: return "Display";
+            case QUESTION: return "Question";
             case BOOLEAN: return "Boolean";
             case DECIMAL: return "Decimal";
             case INTEGER: return "Integer";
@@ -541,6 +533,8 @@ public class Questionnaire extends MetadataResource {
           return QuestionnaireItemType.GROUP;
         if ("display".equals(codeString))
           return QuestionnaireItemType.DISPLAY;
+        if ("question".equals(codeString))
+          return QuestionnaireItemType.QUESTION;
         if ("boolean".equals(codeString))
           return QuestionnaireItemType.BOOLEAN;
         if ("decimal".equals(codeString))
@@ -583,6 +577,8 @@ public class Questionnaire extends MetadataResource {
           return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.GROUP);
         if ("display".equals(codeString))
           return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.DISPLAY);
+        if ("question".equals(codeString))
+          return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.QUESTION);
         if ("boolean".equals(codeString))
           return new Enumeration<QuestionnaireItemType>(this, QuestionnaireItemType.BOOLEAN);
         if ("decimal".equals(codeString))
@@ -618,6 +614,8 @@ public class Questionnaire extends MetadataResource {
         return "group";
       if (code == QuestionnaireItemType.DISPLAY)
         return "display";
+      if (code == QuestionnaireItemType.QUESTION)
+        return "question";
       if (code == QuestionnaireItemType.BOOLEAN)
         return "boolean";
       if (code == QuestionnaireItemType.DECIMAL)
@@ -5389,4 +5387,3 @@ public class Questionnaire extends MetadataResource {
 // end addition
 
 }
-

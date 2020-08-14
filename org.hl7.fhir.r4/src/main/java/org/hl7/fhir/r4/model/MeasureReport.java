@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,19 +31,20 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
 
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import java.util.*;
+
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * The MeasureReport resource contains the results of the calculation of a measure; and optionally a reference to the resources involved in that calculation.
  */
@@ -607,6 +590,11 @@ public class MeasureReport extends DomainResource {
       public MeasureReportGroupComponent copy() {
         MeasureReportGroupComponent dst = new MeasureReportGroupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureReportGroupComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         if (population != null) {
           dst.population = new ArrayList<MeasureReportGroupPopulationComponent>();
@@ -619,7 +607,6 @@ public class MeasureReport extends DomainResource {
           for (MeasureReportGroupStratifierComponent i : stratifier)
             dst.stratifier.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -907,10 +894,14 @@ public class MeasureReport extends DomainResource {
       public MeasureReportGroupPopulationComponent copy() {
         MeasureReportGroupPopulationComponent dst = new MeasureReportGroupPopulationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureReportGroupPopulationComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.count = count == null ? null : count.copy();
         dst.subjectResults = subjectResults == null ? null : subjectResults.copy();
-        return dst;
       }
 
       @Override
@@ -1163,6 +1154,11 @@ public class MeasureReport extends DomainResource {
       public MeasureReportGroupStratifierComponent copy() {
         MeasureReportGroupStratifierComponent dst = new MeasureReportGroupStratifierComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureReportGroupStratifierComponent dst) {
+        super.copyValues(dst);
         if (code != null) {
           dst.code = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : code)
@@ -1173,7 +1169,6 @@ public class MeasureReport extends DomainResource {
           for (StratifierGroupComponent i : stratum)
             dst.stratum.add(i.copy());
         };
-        return dst;
       }
 
       @Override
@@ -1514,6 +1509,11 @@ public class MeasureReport extends DomainResource {
       public StratifierGroupComponent copy() {
         StratifierGroupComponent dst = new StratifierGroupComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StratifierGroupComponent dst) {
+        super.copyValues(dst);
         dst.value = value == null ? null : value.copy();
         if (component != null) {
           dst.component = new ArrayList<StratifierGroupComponentComponent>();
@@ -1526,7 +1526,6 @@ public class MeasureReport extends DomainResource {
             dst.population.add(i.copy());
         };
         dst.measureScore = measureScore == null ? null : measureScore.copy();
-        return dst;
       }
 
       @Override
@@ -1732,9 +1731,13 @@ public class MeasureReport extends DomainResource {
       public StratifierGroupComponentComponent copy() {
         StratifierGroupComponentComponent dst = new StratifierGroupComponentComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StratifierGroupComponentComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.value = value == null ? null : value.copy();
-        return dst;
       }
 
       @Override
@@ -2020,10 +2023,14 @@ public class MeasureReport extends DomainResource {
       public StratifierGroupPopulationComponent copy() {
         StratifierGroupPopulationComponent dst = new StratifierGroupPopulationComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(StratifierGroupPopulationComponent dst) {
+        super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.count = count == null ? null : count.copy();
         dst.subjectResults = subjectResults == null ? null : subjectResults.copy();
-        return dst;
       }
 
       @Override
@@ -2869,6 +2876,11 @@ public class MeasureReport extends DomainResource {
       public MeasureReport copy() {
         MeasureReport dst = new MeasureReport();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(MeasureReport dst) {
+        super.copyValues(dst);
         if (identifier != null) {
           dst.identifier = new ArrayList<Identifier>();
           for (Identifier i : identifier)
@@ -2892,7 +2904,6 @@ public class MeasureReport extends DomainResource {
           for (Reference i : evaluatedResource)
             dst.evaluatedResource.add(i.copy());
         };
-        return dst;
       }
 
       protected MeasureReport typedCopy() {
@@ -3147,4 +3158,3 @@ public class MeasureReport extends DomainResource {
 
 
 }
-

@@ -1,24 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
+
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -49,16 +31,19 @@ package org.hl7.fhir.r4.model;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
+
+import java.util.*;
+
 import org.hl7.fhir.utilities.Utilities;
-
 import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Related artifacts such as additional documentation, justification, or bibliographic references.
  */
@@ -793,6 +778,11 @@ public class RelatedArtifact extends Type implements ICompositeType {
       public RelatedArtifact copy() {
         RelatedArtifact dst = new RelatedArtifact();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RelatedArtifact dst) {
+        super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
         dst.label = label == null ? null : label.copy();
         dst.display = display == null ? null : display.copy();
@@ -800,7 +790,6 @@ public class RelatedArtifact extends Type implements ICompositeType {
         dst.url = url == null ? null : url.copy();
         dst.document = document == null ? null : document.copy();
         dst.resource = resource == null ? null : resource.copy();
-        return dst;
       }
 
       protected RelatedArtifact typedCopy() {
@@ -837,4 +826,3 @@ public class RelatedArtifact extends Type implements ICompositeType {
 
 
 }
-

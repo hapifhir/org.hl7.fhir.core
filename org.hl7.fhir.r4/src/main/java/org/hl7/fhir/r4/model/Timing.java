@@ -1,26 +1,6 @@
 package org.hl7.fhir.r4.model;
 
-import java.math.BigDecimal;
 
-/*-
- * #%L
- * org.hl7.fhir.r4
- * %%
- * Copyright (C) 2014 - 2019 Health Level 7
- * %%
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * #L%
- */
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -51,19 +31,20 @@ import java.math.BigDecimal;
   
 */
 
-// Generated on Thu, Dec 13, 2018 14:07+1100 for FHIR v4.0.0
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
-import org.hl7.fhir.instance.model.api.ICompositeType;
+// Generated on Tue, May 12, 2020 07:26+1000 for FHIR v4.0.1
 
-import ca.uhn.fhir.model.api.annotation.Block;
+import java.util.*;
+
+import java.math.*;
+import org.hl7.fhir.utilities.Utilities;
 import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Block;
+import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.exceptions.FHIRException;
 /**
  * Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.
  */
@@ -2127,6 +2108,11 @@ public class Timing extends BackboneType implements ICompositeType {
       public TimingRepeatComponent copy() {
         TimingRepeatComponent dst = new TimingRepeatComponent();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(TimingRepeatComponent dst) {
+        super.copyValues(dst);
         dst.bounds = bounds == null ? null : bounds.copy();
         dst.count = count == null ? null : count.copy();
         dst.countMax = countMax == null ? null : countMax.copy();
@@ -2154,7 +2140,6 @@ public class Timing extends BackboneType implements ICompositeType {
             dst.when.add(i.copy());
         };
         dst.offset = offset == null ? null : offset.copy();
-        return dst;
       }
 
       @Override
@@ -2446,6 +2431,11 @@ public class Timing extends BackboneType implements ICompositeType {
       public Timing copy() {
         Timing dst = new Timing();
         copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(Timing dst) {
+        super.copyValues(dst);
         if (event != null) {
           dst.event = new ArrayList<DateTimeType>();
           for (DateTimeType i : event)
@@ -2453,7 +2443,6 @@ public class Timing extends BackboneType implements ICompositeType {
         };
         dst.repeat = repeat == null ? null : repeat.copy();
         dst.code = code == null ? null : code.copy();
-        return dst;
       }
 
       protected Timing typedCopy() {
@@ -2487,4 +2476,3 @@ public class Timing extends BackboneType implements ICompositeType {
 
 
 }
-

@@ -21,8 +21,10 @@ public class MedicationRequest30_50 {
             tgt.setIntentElement(convertMedicationRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
             tgt.setPriorityElement(convertMedicationRequestPriority(src.getPriorityElement()));
-        if (src.hasMedication())
-            tgt.setMedication(VersionConvertor_30_50.convertType(src.getMedication()));
+        if (src.getMedication().hasConcept())
+          tgt.setMedication(VersionConvertor_30_50.convertType(src.getMedication().getConcept()));
+        if (src.getMedication().hasReference())
+          tgt.setMedication(VersionConvertor_30_50.convertType(src.getMedication().getReference()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
         if (src.hasEncounter())
@@ -68,8 +70,10 @@ public class MedicationRequest30_50 {
             tgt.setIntentElement(convertMedicationRequestIntent(src.getIntentElement()));
         if (src.hasPriority())
             tgt.setPriorityElement(convertMedicationRequestPriority(src.getPriorityElement()));
-        if (src.hasMedication())
-            tgt.setMedication(VersionConvertor_30_50.convertType(src.getMedication()));
+        if (src.hasMedicationCodeableConcept())
+            tgt.getMedication().setConcept(VersionConvertor_30_50.convertCodeableConcept(src.getMedicationCodeableConcept()));
+        if (src.hasMedicationReference())
+          tgt.getMedication().setReference(VersionConvertor_30_50.convertReference(src.getMedicationReference()));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_30_50.convertReference(src.getSubject()));
         if (src.hasContext())
