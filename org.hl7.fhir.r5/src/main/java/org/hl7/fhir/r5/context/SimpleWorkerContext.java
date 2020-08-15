@@ -63,6 +63,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Resource;
@@ -293,7 +294,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         txLog = new HTMLClientLogger(log);
       }
       txClient.setLogger(txLog);
-      return txClient.getCapabilitiesStatementQuick().getSoftware().getVersion();
+      CapabilityStatement cps = txClient.getCapabilitiesStatementQuick();
+      setTxCaps(txClient.getTerminologyCapabilities());
+      return cps.getSoftware().getVersion();
     } catch (Exception e) {
       throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__, e.getMessage()), e);
     }

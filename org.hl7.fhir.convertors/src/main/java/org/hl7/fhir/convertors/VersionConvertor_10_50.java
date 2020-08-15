@@ -3439,6 +3439,8 @@ public class VersionConvertor_10_50 {
         for (ParametersParameterComponent p : src.getParameter()) {
             if (p.getName().equals("system"))
                 res.addCodeSystem().setUri(p.getValue().primitiveValue());
+            if (p.getName().equals("expansion.parameter"))
+              res.getExpansion().addParameter().setName(p.getValue().primitiveValue());
         }
         return res;
     }
