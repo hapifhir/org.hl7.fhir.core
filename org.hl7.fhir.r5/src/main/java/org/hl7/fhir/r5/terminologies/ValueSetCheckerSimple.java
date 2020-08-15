@@ -369,12 +369,33 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     }
     return true;
   }
+
+  private ConceptDefinitionComponent findCodeInConcept(ConceptDefinitionComponent concept, String code) {
+    if (code.equals(concept.getCode())) {
+      return concept;
+    }
+    ConceptDefinitionComponent cc = findCodeInConcept(concept.getConcept(), code);
+    if (cc != null) {
+      return cc;
+    }
+    if (concept.hasUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK)) {
+      List<ConceptDefinitionComponent> children = (List<ConceptDefinitionComponent>) concept.getUserData(CodeSystemUtilities.USER_DATA_CROSS_LINK);
+      for (ConceptDefinitionComponent c : children) {
+        cc = findCodeInConcept(c, code);
+        if (cc != null) {
+          return cc;
+        }
+      }
+    }
+    return null;
+  }
+  
   private ConceptDefinitionComponent findCodeInConcept(List<ConceptDefinitionComponent> concept, String code) {
     for (ConceptDefinitionComponent cc : concept) {
       if (code.equals(cc.getCode())) {
         return cc;
       }
-      ConceptDefinitionComponent c = findCodeInConcept(cc.getConcept(), code);
+      ConceptDefinitionComponent c = findCodeInConcept(cc, code);
       if (c != null) {
         return c;
       }
@@ -449,7 +470,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
         Boolean nok = inComponent(vsi, system, code, valueset.getCompose().getInclude().size() == 1);
         if (nok == null && result == false) {
           result = null;
-        } else if (!nok) {
+        } else if (nok) {
           result = false;
         }
       }
@@ -547,7 +568,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     if (cc == null) {
       return false;
     }
-    cc = findCodeInConcept(cc.getConcept(), code);
+    cc = findCodeInConcept(cc, code);
     return cc != null;
   }
 

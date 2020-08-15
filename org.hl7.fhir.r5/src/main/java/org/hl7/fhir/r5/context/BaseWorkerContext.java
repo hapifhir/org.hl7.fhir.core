@@ -90,6 +90,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesCodeSystemComponent;
+import org.hl7.fhir.r5.model.TerminologyCapabilities.TerminologyCapabilitiesExpansionParameterComponent;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
@@ -156,6 +157,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private Object lock = new Object(); // used as a lock for the data that follows
   protected String version;
   private String cacheId;
+  private boolean isTxCaching;
   private Set<String> cached = new HashSet<>();
   
   private Map<String, Map<String, Resource>> allResourcesById = new HashMap<String, Map<String, Resource>>();
@@ -504,7 +506,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         if (txcaps == null) {
           try {
             log("Terminology server: Check for supported code systems for "+system);
-            txcaps = txClient.getTerminologyCapabilities();
+            setTxCaps(txClient.getTerminologyCapabilities());
           } catch (Exception e) {
             if (canRunWithoutTerminology) {
               noTerminologyServer = true;
@@ -518,11 +520,6 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
             } else {
               e.printStackTrace();
               throw new TerminologyServiceException(e);
-            }
-          }
-          if (txcaps != null) {
-            for (TerminologyCapabilitiesCodeSystemComponent tccs : txcaps.getCodeSystem()) {
-              supportedCodeSystems.add(tccs.getUri());
             }
           }
           if (supportedCodeSystems.contains(system)) {
@@ -588,7 +585,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Parameters p = expParameters.copy(); 
     p.setParameter("includeDefinition", false);
     p.setParameter("excludeNested", !hierarchical);
-    if (cacheId != null) {
+    if (isTxCaching && cacheId != null) {
       p.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
     }
     addDependentResources(p, vs);
@@ -663,7 +660,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     // if that failed, we try to expand on the server
-    if (cacheId != null) {
+    if (isTxCaching && cacheId != null) {
       p.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
     }
     addDependentResources(p, vs);
@@ -927,11 +924,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private ValidationResult validateOnServer(ValueSet vs, Parameters pin) throws FHIRException {
-    if (cacheId != null) {
+    if (isTxCaching && cacheId != null) {
       pin.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
     }
     if (vs != null) {
-      if (cacheId != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
+      if (isTxCaching && cacheId != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+"|"+vs.getVersion()));        
       } else {
         pin.addParameter().setName("valueSet").setResource(vs);
@@ -976,7 +973,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (CanonicalType c : inc.getValueSet()) {
       ValueSet vs = fetchResource(ValueSet.class, c.getValue());
       if (vs != null) {
-        if (cacheId == null || !cached.contains(vs.getVUrl())) {
+        if (isTxCaching && cacheId == null || !cached.contains(vs.getVUrl())) {
           pin.addParameter().setName("tx-resource").setResource(vs);
           cached.add(vs.getVUrl());
         }
@@ -985,7 +982,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem());
     if (cs != null) {
-      if (cacheId == null || !cached.contains(cs.getVUrl())) {
+      if (isTxCaching && cacheId == null || !cached.contains(cs.getVUrl())) {
         pin.addParameter().setName("tx-resource").setResource(cs);
         cached.add(cs.getVUrl());
       }
@@ -1859,4 +1856,23 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.cacheId = cacheId;
   }
 
+  public TerminologyCapabilities getTxCaps() {
+    return txcaps;
+  }
+
+  public void setTxCaps(TerminologyCapabilities txCaps) {
+    this.txcaps = txCaps;
+    if (txCaps != null) {
+      for (TerminologyCapabilitiesExpansionParameterComponent t : txcaps.getExpansion().getParameter()) {
+        if ("cache-id".equals(t.getName())) {
+          isTxCaching = true;
+        }
+      }
+      for (TerminologyCapabilitiesCodeSystemComponent tccs : txcaps.getCodeSystem()) {
+        supportedCodeSystems.add(tccs.getUri());
+      }
+    }
+  }
+
+  
 }
