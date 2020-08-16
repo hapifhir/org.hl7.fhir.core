@@ -3985,9 +3985,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
       NodeStack localStack = stack.push(ei.getElement(), ei.count, ei.definition, type == null ? typeDefn : resolveType(type, ei.definition.getType()));
-      if (debug) {
-        System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getUrl());
-      }
+//      if (debug) {
+//        System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getUrl());
+//      }
       String localStackLiterapPath = localStack.getLiteralPath();
       String eiPath = ei.getPath();
       assert (eiPath.equals(localStackLiterapPath)) : "ei.path: " + ei.getPath() + "  -  localStack.getLiteralPath: " + localStackLiterapPath;
@@ -4499,9 +4499,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   public void checkInvariant(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, StructureDefinition profile, Element resource, Element element, ElementDefinitionConstraintComponent inv) throws FHIRException {
-    if (debug) {
-      System.out.println("inv "+inv.getKey()+" on "+path+" in "+resource.fhirType()+" {{ "+inv.getExpression()+" }}");
-    }
+//    if (debug) {
+//      System.out.println("inv "+inv.getKey()+" on "+path+" in "+resource.fhirType()+" {{ "+inv.getExpression()+" }}");
+//    }
     ExpressionNode n = (ExpressionNode) inv.getUserData("validator.expression.cache");
     if (n == null) {
       long t = System.nanoTime();
