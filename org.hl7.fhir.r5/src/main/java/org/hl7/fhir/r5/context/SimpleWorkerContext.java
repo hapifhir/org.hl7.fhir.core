@@ -101,7 +101,7 @@ import ca.uhn.fhir.parser.DataFormatException;
 
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 
-  public class PackageResourceLoader extends CanonicalResourceProxy {
+  public static class PackageResourceLoader extends CanonicalResourceProxy {
 
     private String filename;
     private IContextResourceLoader loader;
@@ -429,7 +429,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     loadedPackages.add(pi.id()+"#"+pi.version());
 
     
-    if (types.length == 0 &&  loader != null) {
+    if ((types == null || types.length == 0) &&  loader != null) {
       types = loader.getTypes();
     }
     if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad()) {
