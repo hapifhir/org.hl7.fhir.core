@@ -365,6 +365,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private ProfileUtilities profileUtilities;
   private boolean crumbTrails;
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
+  private boolean validateValueSetCodesOnTxServer;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices) {
     super(theContext);
@@ -4822,6 +4823,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   @Override
   public List<BundleValidationRule> getBundleValidationRules() {
     return bundleValidationRules ;
+  }
+
+  @Override
+  public boolean isValidateValueSetCodesOnTxServer() {
+    return validateValueSetCodesOnTxServer;
+  }
+
+  @Override
+  public void setValidateValueSetCodesOnTxServer(boolean value) {
+    this.validateValueSetCodesOnTxServer = value;    
   }
 
 }

@@ -114,7 +114,7 @@ public class ValueSetValidator extends BaseValidator {
         }
         cc++;
       }    
-      if (batch.size() > 0) {
+      if (parent.isValidateValueSetCodesOnTxServer() && batch.size() > 0) {
         long t = System.currentTimeMillis();
         if (parent.isDebug()) {
           System.out.println("  : Validate "+batch.size()+" codes from "+system+" for "+vsid);
