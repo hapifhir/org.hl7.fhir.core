@@ -147,13 +147,22 @@ public class VersionUtilities {
   }
 
   public static boolean versionsCompatible(String v1, String v2) {
-    String mm1 = getMajMin(v1);
-    String mm2 = getMajMin(v2);
-    if (mm1 == null || mm2 == null) {
-      return false;
-    } else {
-      return mm1.equals(mm2);
+    String[] v1l = v1.split("\\|"); 
+    String[] v2l = v2.split("\\|");
+    for (String vs1 : v1l) {
+      for (String vs2 : v2l) {
+        String mm1 = getMajMin(vs1);
+        String mm2 = getMajMin(vs2);
+        if (mm1 == null || mm2 == null) {
+          return false;
+        } else {
+          if (mm1.equals(mm2)) {
+            return true;
+          }
+        }
+      }
     }
+    return false;
   }
 
   public static boolean isCorePackage(String s) {
