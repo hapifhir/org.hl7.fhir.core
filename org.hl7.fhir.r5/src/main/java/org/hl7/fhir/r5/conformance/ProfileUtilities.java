@@ -3615,14 +3615,18 @@ public class ProfileUtilities extends TranslatingUtilities {
     Cell gc = gen.new Cell();
     row.getCells().add(gc);
     res.add(gc);
-    if (element != null && element.getIsModifier())
+    if (element != null && element.getIsModifier()) {
       checkForNoChange(element.getIsModifierElement(), gc.addStyledText(translate("sd.table", "This element is a modifier element"), "?!", null, null, null, false));
-    if (element != null && element.getMustSupport())
+    }
+    if (element != null && element.getMustSupport()) {
       checkForNoChange(element.getMustSupportElement(), gc.addStyledText(translate("sd.table", "This element must be supported"), "S", "white", "red", null, false));
-    if (element != null && element.getIsSummary())
+    }
+    if (element != null && element.getIsSummary()) {
       checkForNoChange(element.getIsSummaryElement(), gc.addStyledText(translate("sd.table", "This element is included in summaries"), "\u03A3", null, null, null, false));
-    if (element != null && (!element.getConstraint().isEmpty() || !element.getCondition().isEmpty()))
+    }
+    if (element != null && (!element.getConstraint().isEmpty() || !element.getCondition().isEmpty())) {
       gc.addStyledText(translate("sd.table", "This element has or is affected by some invariants ("+listConstraintsAndConditions(element)+")"), "I", null, null, null, false);
+    }
 
     ExtensionContext extDefn = null;
     if (ext) {
