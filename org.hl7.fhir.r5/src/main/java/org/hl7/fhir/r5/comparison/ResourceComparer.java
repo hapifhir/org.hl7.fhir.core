@@ -60,6 +60,21 @@ public class ResourceComparer {
       id = abbreviation()+"-"+leftId + "-" + rightId;
     }
 
+    protected String refCell(CanonicalResource cr) {
+      if (cr == null) {
+        return "<td></td>";
+      }
+      String t = cr.present();
+      if (Utilities.noString(t)) {
+        t = cr.getId();
+      }
+      if (cr.hasUserData("path")) {
+        String p = cr.getUserString("path");
+        return "<td><a href=\""+(Utilities.isAbsoluteUrl(p) ? "" : "../")+p+"\">"+Utilities.escapeXml(t)+"</td>";
+      } else 
+        return "<td>"+Utilities.escapeXml(t)+"</td>";
+    }
+    
     protected abstract String abbreviation(); 
 
     public String getLeftId() {
@@ -175,15 +190,10 @@ public class ResourceComparer {
 
     @Override
     protected String toTable() {
-      String s = null;
+      String s = "";
       String color = null;
-      if (left != null && right != null && !left.getUrl().equals(right.getUrl())) {
-        s = "<td>"+left.getUrl()+"</td><td>"+right.getUrl()+"</td>";
-      } else if (left != null) {
-        s = "<td colspan=2>"+left.getUrl()+"</td>";        
-      } else {
-        s = "<td colspan=2>"+right.getUrl()+"</td>";        
-      }
+      s = s + refCell(left);
+      s = s + refCell(right);
       if (left == null) {
         s = s + "<td>Added</td>";
         color = COLOR_NO_ROW_LEFT;
@@ -197,6 +207,8 @@ public class ResourceComparer {
       s = s + "<td>"+(e != null ? Utilities.escapeXml(e.getMessage()) : "")+"</td>";
       return "<tr style=\"background-color: "+color+"\">"+s+"</tr>\r\n";
     }
+
+   
 
     public Throwable getE() {
       return e;

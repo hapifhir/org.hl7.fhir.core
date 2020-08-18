@@ -56,10 +56,17 @@ public class ComparisonRenderer implements IEvaluationContext {
     return templates;
   }
   
-  public void render() throws IOException {
+  public void render(String leftName, String rightName) throws IOException {
     dumpBinaries();
     StringBuilder b = new StringBuilder();
     b.append("<table class=\"grid\">\r\n");
+    b.append(" <tr>\r\n");
+    b.append("  <td width=\"260\"><b>"+Utilities.escapeXml(leftName)+"</b></td>\r\n");
+    b.append("  <td width=\"260\"><b>"+Utilities.escapeXml(rightName)+"</b></td>\r\n");
+    b.append("  <td width=\"100\"><b>Difference</b></td>\r\n");
+    b.append("  <td width=\"260\"><b>Notes</b></td>\r\n");
+    b.append(" </tr>\r\n");
+    
     List<String> list = sorted(session.getCompares().keySet());
     processList(list, b, "CodeSystem");
     processList(list, b, "ValueSet");
@@ -82,7 +89,7 @@ public class ComparisonRenderer implements IEvaluationContext {
       if (comp.fhirType().equals(name)) {
         if (first) {
           first = false;
-          b.append("<tr><td colspan=4><b>"+name+"</b></td></tr>\r\n");
+          b.append("<tr><td colspan=\"4\"><b>"+Utilities.pluralize(name, 2)+"</b></td></tr>\r\n");
         }
         try {
           renderComparison(id, comp);
