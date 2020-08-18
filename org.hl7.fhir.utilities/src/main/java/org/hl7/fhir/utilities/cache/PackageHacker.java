@@ -25,7 +25,7 @@ import com.google.gson.JsonObject;
 public class PackageHacker {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("M:\\web\\terminology.hl7.org\\hl7.terminology.r3.tgz");
+    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\us\\davinci-pdex-plan-net\\2020Feb\\package.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -57,16 +57,17 @@ public class PackageHacker {
 
   private void change(JsonObject npm, Map<String, byte[]> content) throws FileNotFoundException, IOException {
 //    fixVersions(npm);
-//    npm.remove("name");
-//    npm.addProperty("name", "hl7.terminology.r5");
-    npm.remove("version");
-    npm.addProperty("version", "1.0.0");
+//    npm.remove("url");
+//    npm.addProperty("url", url);
+//    npm.remove("version");
+//    npm.addProperty("version", "1.0.0");
 //    npm.remove("canonical");
 //    npm.addProperty("canonical", "http://hl7.org/fhir/us/davinci-drug-formulary");
 ////    npm.remove("description");
 ////    npm.addProperty("description", "Group Wrapper that includes all the R4 packages");
 //    npm.remove("url");
 //    npm.addProperty("url", "https://terminology.hl7.org/1.0.0/");
+//    npm.remove("dependencies");
 //    JsonObject dep = new JsonObject();
 //    npm.add("dependencies", dep);
 //    dep.addProperty("hl7.fhir.r4.core", "4.0.1");

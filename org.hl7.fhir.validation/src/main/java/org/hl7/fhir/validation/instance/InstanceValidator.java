@@ -4527,10 +4527,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       msg = ex.getMessage();
     }
     if (!ok) {
-      if (!Utilities.noString(msg))
+      if (!Utilities.noString(msg)) {
         msg = " (" + msg + ")";
-      if (debug) {
-        System.out.println("  failed! "+msg);
       }
       if (inv.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice") &&
         ToolingExtensions.readBooleanExtension(inv, "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice")) {

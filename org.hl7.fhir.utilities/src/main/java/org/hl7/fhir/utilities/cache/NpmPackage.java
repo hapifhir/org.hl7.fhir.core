@@ -1080,11 +1080,14 @@ public class NpmPackage {
     return false;
   }
 
-  public boolean canLazyLoad() {
+  public boolean canLazyLoad() throws IOException {
     for (NpmPackageFolder folder : folders.values()) {
       if (folder.folder == null) {        
         return false;
       }
+    }
+    if (!hasFile("other", "spec.internals")) {
+      return false;
     }
     return true;
   }
