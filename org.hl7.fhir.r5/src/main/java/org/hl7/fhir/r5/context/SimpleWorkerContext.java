@@ -437,7 +437,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (types.length == 0) {
         types = new String[] { "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" };
       }
-      for (String s : pi.listResources(loader.getTypes())) {
+      for (String s : pi.listResources(types)) {
         try {
           loadDefinitionItem(s, pi.load("package", s), loader, null, new PackageVersion(pi.id(), pi.version()));
           t++;
