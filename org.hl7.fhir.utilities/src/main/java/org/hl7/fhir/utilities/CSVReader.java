@@ -60,6 +60,7 @@ public class CSVReader extends InputStreamReader {
 
   private String[] cols;
   private String[] cells;
+  private char delimiter = ',';
   
 	public void readHeaders() throws IOException, FHIRException {
     cols = parseLine();  
@@ -90,7 +91,7 @@ public class CSVReader extends InputStreamReader {
     }
     if (index == -1)
       throw new FHIRException("no cell "+name);
-    String s = cells.length >= index ? cells[index] : null;
+    String s = cells.length > index ? cells[index] : null;
     if (Utilities.noString(s))
       return null;
     if (s.startsWith("\"") && s.endsWith("\"")) {
@@ -150,7 +151,7 @@ public class CSVReader extends InputStreamReader {
 			    inQuote = !inQuote;
 				}
 			}
-			else if (!inQuote && c == ',') {
+			else if (!inQuote && c == delimiter ) {
 				res.add(b.toString().trim());
 				b = new StringBuilder();
 			}
@@ -208,6 +209,14 @@ public class CSVReader extends InputStreamReader {
     if (Utilities.noString(cells[i-1]))
       return null;
     return cells[i-1];
+  }
+
+  public char getDelimiter() {
+    return delimiter;
+  }
+
+  public void setDelimiter(char delimiter) {
+    this.delimiter = delimiter;
   }
 
 
