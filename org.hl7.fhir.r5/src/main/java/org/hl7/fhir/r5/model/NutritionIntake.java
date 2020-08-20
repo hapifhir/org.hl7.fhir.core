@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,22 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.EventStatus;
-import org.hl7.fhir.r5.model.Enumerations.EventStatusEnumFactory;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A record of food or fluid that is being consumed by a patient.   A NutritionIntake may indicate that the patient may be consuming the food or fluid now or has consumed the food or fluid in the past.  The source of this information can be the patient, significant other (such as a family member or spouse), or a clinician.  A common scenario where this information is captured is during the history taking process during a patient visit or stay or through an app that tracks food or fluids consumed.   The consumption information may come from sources such as the patient's memory, from a nutrition label,  or from a clinician documenting observed intake.
@@ -2749,3 +2748,4 @@ public class NutritionIntake extends DomainResource {
 
 
 }
+

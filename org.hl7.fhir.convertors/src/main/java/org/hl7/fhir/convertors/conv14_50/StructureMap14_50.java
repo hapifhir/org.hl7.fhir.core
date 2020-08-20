@@ -153,7 +153,6 @@ public class StructureMap14_50 {
             tgt.setNameElement(VersionConvertor_14_50.convertId(src.getNameElement()));
         if (src.hasExtends())
             tgt.setExtendsElement(VersionConvertor_14_50.convertId(src.getExtendsElement()));
-        tgt.setTypeMode(org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode.NONE);
         if (src.hasDocumentation())
             tgt.setDocumentationElement(VersionConvertor_14_50.convertString(src.getDocumentationElement()));
         for (org.hl7.fhir.dstu2016may.model.StructureMap.StructureMapGroupInputComponent t : src.getInput()) tgt.addInput(convertStructureMapGroupInputComponent(t));
@@ -170,7 +169,7 @@ public class StructureMap14_50 {
             tgt.setNameElement(VersionConvertor_14_50.convertId(src.getNameElement()));
         if (src.hasExtends())
             tgt.setExtendsElement(VersionConvertor_14_50.convertId(src.getExtendsElement()));
-        if (!src.getTypeMode().equals(org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode.NONE))
+        if (src.hasTypeMode())
             throw new FHIRException("Unable to downgrade structure map with group.typeMode other than 'None': " + src.getTypeMode().getDisplay());
         if (src.hasDocumentation())
             tgt.setDocumentationElement(VersionConvertor_14_50.convertString(src.getDocumentationElement()));

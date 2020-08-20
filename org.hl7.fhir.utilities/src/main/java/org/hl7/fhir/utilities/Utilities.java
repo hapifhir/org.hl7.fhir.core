@@ -48,8 +48,10 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -1327,5 +1329,36 @@ public class Utilities {
       return length / (ONE_MB) + KB;
     }
     return length + BT;
+  }
+
+  public static List<byte[]> splitBytes(byte[] array, byte[] delimiter) {
+    List<byte[]> byteArrays = new LinkedList<byte[]>();
+    if (delimiter.length == 0)
+    {
+      return byteArrays;
+    }
+    int begin = 0;
+
+    outer: for (int i = 0; i < array.length - delimiter.length + 1; i++)
+    {
+      for (int j = 0; j < delimiter.length; j++)
+      {
+        if (array[i + j] != delimiter[j])
+        {
+          continue outer;
+        }
+      }
+
+      // If delimiter is at the beginning then there will not be any data.
+      if (begin < i)
+        byteArrays.add(Arrays.copyOfRange(array, begin, i));
+      begin = i + delimiter.length;
+    }
+
+    // delimiter at the very end with no data following?
+    if (begin != array.length)
+      byteArrays.add(Arrays.copyOfRange(array, begin, array.length));
+
+    return byteArrays;
   }
 }

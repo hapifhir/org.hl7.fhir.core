@@ -16,7 +16,6 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
-import org.hl7.fhir.dstu2.model.ClaimResponse.ErrorsComponent;
 import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
@@ -35,12 +34,10 @@ import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackageIndexBuilder;
-import org.hl7.fhir.utilities.cache.NpmPackage.NpmPackageFolder;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import com.google.common.base.Charsets;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 

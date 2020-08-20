@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.model;
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -30,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 
 
@@ -91,7 +89,7 @@ Account,
     EpisodeOfCare,
     EventDefinition,
     Evidence,
-    EvidenceFocus,
+    EvidenceReport,
     EvidenceVariable,
     ExampleScenario,
     ExplanationOfBenefit,
@@ -296,8 +294,8 @@ Account,
       return "eventdefinition";
     case Evidence:
       return "evidence";
-    case EvidenceFocus:
-      return "evidencefocus";
+    case EvidenceReport:
+      return "evidencereport";
     case EvidenceVariable:
       return "evidencevariable";
     case ExampleScenario:
@@ -597,8 +595,8 @@ Account,
       return EventDefinition;
     if ("Evidence".equals(code))
       return Evidence;
-    if ("EvidenceFocus".equals(code))
-      return EvidenceFocus;
+    if ("EvidenceReport".equals(code))
+      return EvidenceReport;
     if ("EvidenceVariable".equals(code))
       return EvidenceVariable;
     if ("ExampleScenario".equals(code))

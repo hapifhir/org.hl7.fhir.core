@@ -248,7 +248,6 @@ public class MappingSheetParser {
     if (metadata.containsKey("copyright"))
       map.setCopyright(metadata.get("copyright"));
     StructureMapGroupComponent grp = map.addGroup();
-    grp.setTypeMode(StructureMapGroupTypeMode.NONE);
     for (MappingRow row : rows) {
       StructureMapGroupRuleComponent rule = grp.addRule();
       rule.setName(row.getSequence());

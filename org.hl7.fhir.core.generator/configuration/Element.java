@@ -1,4 +1,4 @@
-@Override
+ @Override
   public String getIdBase() {
     return getId();
   }
@@ -17,7 +17,15 @@
     getExtension().add(ex);    
   }
 
-
+ 
+  /**
+   * Returns an extension if one (and only one) matches the given URL.
+   * 
+   * Note: BackbdoneElements override this to look in matching Modifier Extensions too
+   * 
+   * @param theUrl The URL. Must not be blank or null.
+   * @return the matching extension, or null
+   */
    public Extension getExtensionByUrl(String theUrl) {
      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
      ArrayList<Extension> retVal = new ArrayList<Extension>();
@@ -34,6 +42,13 @@
      }
    }
   
+   /**
+    * Remove any extensions that match (by given URL).
+    * 
+    * Note: BackbdoneElements override this to remove from Modifier Extensions too
+    * 
+    * @param theUrl The URL. Must not be blank or null.
+    */
    public void removeExtension(String theUrl) {
      for (int i = getExtension().size()-1; i >= 0; i--) {
        if (theUrl.equals(getExtension().get(i).getUrl()))
@@ -65,9 +80,10 @@
     * Returns an unmodifiable list containing all extensions on this element which 
     * match the given URL.
     * 
+    * Note: BackbdoneElements override this to add matching Modifier Extensions too
+    * 
     * @param theUrl The URL. Must not be blank or null.
-    * @return an unmodifiable list containing all extensions on this element which 
-    * match the given URL
+    * @return an unmodifiable list containing all extensions on this element which match the given URL
     */
    public List<Extension> getExtensionsByUrl(String theUrl) {
      org.apache.commons.lang3.Validate.notBlank(theUrl, "theUrl must not be blank or null");
@@ -80,11 +96,24 @@
      return java.util.Collections.unmodifiableList(retVal);
    }
    
+   /**
+    * Returns an true if this element has an extension that matchs the given URL.
+    * 
+    * Note: BackbdoneElements override this to check Modifier Extensions too
+    * 
+    * @param theUrl The URL. Must not be blank or null.
+    */
    public boolean hasExtension(String theUrl) {
      return !getExtensionsByUrl(theUrl).isEmpty(); 
    }
 
-
+   /**
+    * Returns the value as a string if this element has only one extension that matches the given URL, and that can be converted to a string.
+    * 
+    * Note: BackbdoneElements override this to check Modifier Extensions too
+    * 
+    * @param theUrl The URL. Must not be blank or null.
+    */
   public String getExtensionString(String theUrl) throws FHIRException {
     List<Extension> ext = getExtensionsByUrl(theUrl); 
     if (ext.isEmpty()) 

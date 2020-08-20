@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,20 +29,29 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+
+import java.util.Collections;
+import  org.hl7.fhir.instance.model.api.IDomainResource;
+import  org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import  org.hl7.fhir.instance.model.api.IBaseHasModifierExtensions;
-import  org.hl7.fhir.instance.model.api.IDomainResource;
-
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
-import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import  org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 /**
  * A resource that includes narrative, extensions, and contained resources.
  */
@@ -58,10 +65,10 @@ public abstract class DomainResource extends Resource implements IBaseHasExtensi
     protected Narrative text;
 
     /**
-     * These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, and nor can they have their own independent transaction scope.
+     * These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, nor can they have their own independent transaction scope.
      */
     @Child(name = "contained", type = {Resource.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Contained, inline Resources", formalDefinition="These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, and nor can they have their own independent transaction scope." )
+    @Description(shortDefinition="Contained, inline Resources", formalDefinition="These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, nor can they have their own independent transaction scope." )
     protected List<Resource> contained;
 
     /**
@@ -114,7 +121,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
     }
 
     /**
-     * @return {@link #contained} (These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, and nor can they have their own independent transaction scope.)
+     * @return {@link #contained} (These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, nor can they have their own independent transaction scope.)
      */
     public List<Resource> getContained() { 
       if (this.contained == null)
@@ -239,7 +246,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("text", "Narrative", "A human-readable narrative that contains a summary of the resource and can be used to represent the content of the resource to a human. The narrative need not encode all the structured data, but is required to contain sufficient detail to make it \"clinically safe\" for a human to just read the narrative. Resource definitions may define what content should be represented in the narrative to ensure clinical safety.", 0, 1, text));
-        children.add(new Property("contained", "Resource", "These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, and nor can they have their own independent transaction scope.", 0, java.lang.Integer.MAX_VALUE, contained));
+        children.add(new Property("contained", "Resource", "These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, nor can they have their own independent transaction scope.", 0, java.lang.Integer.MAX_VALUE, contained));
         children.add(new Property("extension", "Extension", "May be used to represent additional information that is not part of the basic definition of the resource. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", 0, java.lang.Integer.MAX_VALUE, extension));
         children.add(new Property("modifierExtension", "Extension", "May be used to represent additional information that is not part of the basic definition of the resource and that modifies the understanding of the element that contains it and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).", 0, java.lang.Integer.MAX_VALUE, modifierExtension));
       }
@@ -248,7 +255,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case 3556653: /*text*/  return new Property("text", "Narrative", "A human-readable narrative that contains a summary of the resource and can be used to represent the content of the resource to a human. The narrative need not encode all the structured data, but is required to contain sufficient detail to make it \"clinically safe\" for a human to just read the narrative. Resource definitions may define what content should be represented in the narrative to ensure clinical safety.", 0, 1, text);
-        case -410956685: /*contained*/  return new Property("contained", "Resource", "These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, and nor can they have their own independent transaction scope.", 0, java.lang.Integer.MAX_VALUE, contained);
+        case -410956685: /*contained*/  return new Property("contained", "Resource", "These resources do not have an independent existence apart from the resource that contains them - they cannot be identified independently, nor can they have their own independent transaction scope.", 0, java.lang.Integer.MAX_VALUE, contained);
         case -612557761: /*extension*/  return new Property("extension", "Extension", "May be used to represent additional information that is not part of the basic definition of the resource. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.", 0, java.lang.Integer.MAX_VALUE, extension);
         case -298878168: /*modifierExtension*/  return new Property("modifierExtension", "Extension", "May be used to represent additional information that is not part of the basic definition of the resource and that modifies the understanding of the element that contains it and/or the understanding of the containing element's descendants. Usually modifier elements provide negation or qualification. To make the use of extensions safe and manageable, there is a strict set of governance applied to the definition and use of extensions. Though any implementer is allowed to define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension. Applications processing a resource are required to check for modifier extensions.\n\nModifier extensions SHALL NOT change the meaning of any elements on Resource or DomainResource (including cannot change the meaning of modifierExtension itself).", 0, java.lang.Integer.MAX_VALUE, modifierExtension);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -420,8 +427,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
   public static final ca.uhn.fhir.rest.gclient.StringClientParam TEXT = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TEXT);
 
 // Manual code (from Configuration.txt)t:
-
-  public void checkNoModifiers(String noun, String verb) throws FHIRException {
+public void checkNoModifiers(String noun, String verb) throws FHIRException {
         if (hasModifierExtension()) {
           throw new FHIRException("Found unknown Modifier Exceptions on "+noun+" doing "+verb);
         }
@@ -503,8 +509,7 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
       }
       return Collections.unmodifiableList(retVal);
     }
-
-
 // end addition
 
 }
+

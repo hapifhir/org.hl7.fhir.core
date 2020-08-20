@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,25 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
-import org.hl7.fhir.r5.model.Enumerations.FHIRVersionEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A set of rules of how a particular interoperability or standards problem is solved - typically through the use of FHIR resources. This resource is used to gather all the parts of an implementation guide into a logical whole and to publish a computable definition of all the parts.
@@ -7631,8 +7627,6 @@ public class ImplementationGuide extends CanonicalResource {
 
 // added from java-adornments.txt:
 
-
-
 // end addition
   }
 
@@ -9456,7 +9450,6 @@ public class ImplementationGuide extends CanonicalResource {
   }
 
 // added from java-adornments.txt:
- 
 
 // end addition
   }
@@ -9911,10 +9904,10 @@ public class ImplementationGuide extends CanonicalResource {
     protected Enumeration<SPDXLicense> license;
 
     /**
-     * The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.4.0. for this version.
+     * The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.5.0. for this version.
      */
     @Child(name = "fhirVersion", type = {CodeType.class}, order=15, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="FHIR Version(s) this Implementation Guide targets", formalDefinition="The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.4.0. for this version." )
+    @Description(shortDefinition="FHIR Version(s) this Implementation Guide targets", formalDefinition="The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.5.0. for this version." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/FHIR-version")
     protected List<Enumeration<FHIRVersion>> fhirVersion;
 
@@ -10695,7 +10688,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.4.0. for this version.)
+     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.5.0. for this version.)
      */
     public List<Enumeration<FHIRVersion>> getFhirVersion() { 
       if (this.fhirVersion == null)
@@ -10721,7 +10714,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.4.0. for this version.)
+     * @return {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.5.0. for this version.)
      */
     public Enumeration<FHIRVersion> addFhirVersionElement() {//2 
       Enumeration<FHIRVersion> t = new Enumeration<FHIRVersion>(new FHIRVersionEnumFactory());
@@ -10732,7 +10725,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.4.0. for this version.)
+     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.5.0. for this version.)
      */
     public ImplementationGuide addFhirVersion(FHIRVersion value) { //1
       Enumeration<FHIRVersion> t = new Enumeration<FHIRVersion>(new FHIRVersionEnumFactory());
@@ -10744,7 +10737,7 @@ public class ImplementationGuide extends CanonicalResource {
     }
 
     /**
-     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.4.0. for this version.)
+     * @param value {@link #fhirVersion} (The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.5.0. for this version.)
      */
     public boolean hasFhirVersion(FHIRVersion value) { 
       if (this.fhirVersion == null)
@@ -10997,7 +10990,7 @@ public class ImplementationGuide extends CanonicalResource {
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the implementation guide and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the implementation guide.", 0, 1, copyright));
         children.add(new Property("packageId", "id", "The NPM package name for this Implementation Guide, used in the NPM package distribution, which is the primary mechanism by which FHIR based tooling manages IG dependencies. This value must be globally unique, and should be assigned with care.", 0, 1, packageId));
         children.add(new Property("license", "code", "The license that applies to this Implementation Guide, using an SPDX license code, or 'not-open-source'.", 0, 1, license));
-        children.add(new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.4.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion));
+        children.add(new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.5.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion));
         children.add(new Property("dependsOn", "", "Another implementation guide that this implementation depends on. Typically, an implementation guide uses value sets, profiles etc.defined in other implementation guides.", 0, java.lang.Integer.MAX_VALUE, dependsOn));
         children.add(new Property("global", "", "A set of profiles that all resources covered by this implementation guide must conform to.", 0, java.lang.Integer.MAX_VALUE, global));
         children.add(new Property("definition", "", "The information needed by an IG publisher tool to publish the whole implementation guide.", 0, 1, definition));
@@ -11022,7 +11015,7 @@ public class ImplementationGuide extends CanonicalResource {
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the implementation guide and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the implementation guide.", 0, 1, copyright);
         case 1802060801: /*packageId*/  return new Property("packageId", "id", "The NPM package name for this Implementation Guide, used in the NPM package distribution, which is the primary mechanism by which FHIR based tooling manages IG dependencies. This value must be globally unique, and should be assigned with care.", 0, 1, packageId);
         case 166757441: /*license*/  return new Property("license", "code", "The license that applies to this Implementation Guide, using an SPDX license code, or 'not-open-source'.", 0, 1, license);
-        case 461006061: /*fhirVersion*/  return new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.4.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion);
+        case 461006061: /*fhirVersion*/  return new Property("fhirVersion", "code", "The version(s) of the FHIR specification that this ImplementationGuide targets - e.g. describes how to use. The value of this element is the formal version of the specification, without the revision number, e.g. [publication].[major].[minor], which is 4.5.0. for this version.", 0, java.lang.Integer.MAX_VALUE, fhirVersion);
         case -1109214266: /*dependsOn*/  return new Property("dependsOn", "", "Another implementation guide that this implementation depends on. Typically, an implementation guide uses value sets, profiles etc.defined in other implementation guides.", 0, java.lang.Integer.MAX_VALUE, dependsOn);
         case -1243020381: /*global*/  return new Property("global", "", "A set of profiles that all resources covered by this implementation guide must conform to.", 0, java.lang.Integer.MAX_VALUE, global);
         case -1014418093: /*definition*/  return new Property("definition", "", "The information needed by an IG publisher tool to publish the whole implementation guide.", 0, 1, definition);
@@ -11491,7 +11484,7 @@ public class ImplementationGuide extends CanonicalResource {
    * Path: <b>ImplementationGuide.definition.resource.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="resource", path="ImplementationGuide.definition.resource.reference", description="Location of the resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceFocus.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="resource", path="ImplementationGuide.definition.resource.reference", description="Location of the resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_RESOURCE = "resource";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>resource</b>
@@ -12229,3 +12222,4 @@ public class ImplementationGuide extends CanonicalResource {
 
 
 }
+

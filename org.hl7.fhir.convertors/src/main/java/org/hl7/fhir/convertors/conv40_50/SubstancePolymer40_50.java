@@ -100,8 +100,9 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             tgt.setCategory(convertCodeableConcept(src.getType()));
         if (src.hasIsDefining())
             tgt.setIsDefiningElement(convertBoolean(src.getIsDefiningElement()));
-        if (src.hasAmount())
-            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
+// todo
+//        if (src.hasAmount())
+//            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
         return tgt;
     }
 
@@ -116,8 +117,9 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertCodeableConcept(src.getCategory()));
         if (src.hasIsDefining())
             tgt.setIsDefiningElement(convertBoolean(src.getIsDefiningElement()));
-        if (src.hasAmount())
-            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
+     // todo
+//        if (src.hasAmount())
+//            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
         return tgt;
     }
 
@@ -126,8 +128,9 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatComponent tgt = new org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatComponent();
         copyElement(src, tgt);
-        if (src.hasNumberOfUnits())
-            tgt.setNumberOfUnitsElement(convertInteger(src.getNumberOfUnitsElement()));
+     // todo
+//        if (src.hasNumberOfUnits())
+//            tgt.setNumberOfUnitsElement(convertInteger(src.getNumberOfUnitsElement()));
         if (src.hasAverageMolecularFormula())
             tgt.setAverageMolecularFormulaElement(convertString(src.getAverageMolecularFormulaElement()));
         if (src.hasRepeatUnitAmountType())
@@ -141,8 +144,9 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatComponent tgt = new org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatComponent();
         copyElement(src, tgt);
-        if (src.hasNumberOfUnits())
-            tgt.setNumberOfUnitsElement(convertInteger(src.getNumberOfUnitsElement()));
+     // todo
+//        if (src.hasNumberOfUnits())
+//            tgt.setNumberOfUnitsElement(convertInteger(src.getNumberOfUnitsElement()));
         if (src.hasAverageMolecularFormula())
             tgt.setAverageMolecularFormulaElement(convertString(src.getAverageMolecularFormulaElement()));
         if (src.hasRepeatUnitAmountType())
@@ -160,8 +164,9 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             tgt.setOrientation(convertCodeableConcept(src.getOrientationOfPolymerisation()));
         if (src.hasRepeatUnit())
             tgt.setUnitElement(convertString(src.getRepeatUnitElement()));
-        if (src.hasAmount())
-            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
+     // todo
+//        if (src.hasAmount())
+//            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
         for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent t : src.getDegreeOfPolymerisation()) tgt.addDegreeOfPolymerisation(convertSubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent(t));
         for (org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent t : src.getStructuralRepresentation()) tgt.addStructuralRepresentation(convertSubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent(t));
         return tgt;
@@ -176,8 +181,9 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             tgt.setOrientationOfPolymerisation(convertCodeableConcept(src.getOrientation()));
         if (src.hasUnit())
             tgt.setRepeatUnitElement(convertString(src.getUnitElement()));
-        if (src.hasAmount())
-            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
+     // todo
+//        if (src.hasAmount())
+//            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
         for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent t : src.getDegreeOfPolymerisation()) tgt.addDegreeOfPolymerisation(convertSubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent(t));
         for (org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent t : src.getStructuralRepresentation()) tgt.addStructuralRepresentation(convertSubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent(t));
         return tgt;
@@ -188,10 +194,11 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent tgt = new org.hl7.fhir.r5.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent();
         copyElement(src, tgt);
-        if (src.hasDegree())
-            tgt.setDegree(convertCodeableConcept(src.getDegree()));
-        if (src.hasAmount())
-            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
+     // todo
+//        if (src.hasDegree())
+//            tgt.setDegree(convertCodeableConcept(src.getDegree()));
+//        if (src.hasAmount())
+//            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
         return tgt;
     }
 
@@ -200,10 +207,11 @@ public class SubstancePolymer40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent tgt = new org.hl7.fhir.r4.model.SubstancePolymer.SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent();
         copyElement(src, tgt);
-        if (src.hasDegree())
-            tgt.setDegree(convertCodeableConcept(src.getDegree()));
-        if (src.hasAmount())
-            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
+     // todo
+//        if (src.hasDegree())
+//            tgt.setDegree(convertCodeableConcept(src.getDegree()));
+//        if (src.hasAmount())
+//            tgt.setAmount(convertSubstanceAmount(src.getAmount()));
         return tgt;
     }
 

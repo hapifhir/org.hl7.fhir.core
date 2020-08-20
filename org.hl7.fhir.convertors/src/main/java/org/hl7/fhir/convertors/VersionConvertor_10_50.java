@@ -347,12 +347,24 @@ public class VersionConvertor_10_50 {
         return tgt;
     }
 
+    public static org.hl7.fhir.r5.model.MarkdownType convertStringToMarkdown(org.hl7.fhir.dstu2.model.StringType src) throws FHIRException {
+      org.hl7.fhir.r5.model.MarkdownType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.MarkdownType(src.getValue()) : new org.hl7.fhir.r5.model.MarkdownType();
+      copyElement(src, tgt);
+      return tgt;
+  }
+
     public static org.hl7.fhir.dstu2.model.StringType convertString(org.hl7.fhir.r5.model.StringType src) throws FHIRException {
         org.hl7.fhir.dstu2.model.StringType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.StringType(src.getValue()) : new org.hl7.fhir.dstu2.model.StringType();
         copyElement(src, tgt);
         return tgt;
     }
 
+    public static org.hl7.fhir.dstu2.model.StringType convertMarkdownToString(org.hl7.fhir.r5.model.MarkdownType src) throws FHIRException {
+        org.hl7.fhir.dstu2.model.StringType tgt = src.hasValue() ? new org.hl7.fhir.dstu2.model.StringType(src.getValue()) : new org.hl7.fhir.dstu2.model.StringType();
+        copyElement(src, tgt);
+        return tgt;
+    }
+    
     public static org.hl7.fhir.r5.model.TimeType convertTime(org.hl7.fhir.dstu2.model.TimeType src) throws FHIRException {
         org.hl7.fhir.r5.model.TimeType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.TimeType(src.getValue()) : new org.hl7.fhir.r5.model.TimeType();
         copyElement(src, tgt);

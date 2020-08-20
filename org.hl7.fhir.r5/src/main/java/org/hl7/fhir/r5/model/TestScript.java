@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,23 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A structured set of tests against a FHIR server or client implementation to determine compliance against the FHIR specification.
@@ -821,10 +819,6 @@ public class TestScript extends CanonicalResource {
          */
         STATISTIC, 
         /**
-         * Chemical substances are a single substance type whose primary defining element is the molecular structure. Chemical substances shall be defined on the basis of their complete covalent molecular structure; the presence of a salt (counter-ion) and/or solvates (water, alcohols) is also captured. Purity, grade, physical form or particle size are not taken into account in the definition of a chemical substance or in the assignment of a Substance ID.
-         */
-        SUBSTANCEAMOUNT, 
-        /**
          * Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.
          */
         TIMING, 
@@ -1141,9 +1135,9 @@ public class TestScript extends CanonicalResource {
          */
         EVIDENCE, 
         /**
-         * EvidenceFocus.
+         * The EvidenceReport.
          */
-        EVIDENCEFOCUS, 
+        EVIDENCEREPORT, 
         /**
          * The EvidenceVariable resource describes an element that knowledge (Evidence) is about.
          */
@@ -1245,7 +1239,7 @@ public class TestScript extends CanonicalResource {
          */
         MEASUREREPORT, 
         /**
-         * This resource is primarily used for the identification and definition of a medication for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.
+         * This resource is primarily used for the identification and definition of a medication, including ingredients, for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.
          */
         MEDICATION, 
         /**
@@ -1325,7 +1319,7 @@ public class TestScript extends CanonicalResource {
          */
         ORGANIZATIONAFFILIATION, 
         /**
-         * A medicinal product in a container or package.
+         * A medically related item or items, in a container or package.
          */
         PACKAGEDPRODUCTDEFINITION, 
         /**
@@ -1465,7 +1459,7 @@ public class TestScript extends CanonicalResource {
          */
         SUBSTANCENUCLEICACID, 
         /**
-         * Todo.
+         * Properties of a substance specific to it being a polymer.
          */
         SUBSTANCEPOLYMER, 
         /**
@@ -1615,8 +1609,6 @@ public class TestScript extends CanonicalResource {
           return SIMPLEQUANTITY;
         if ("Statistic".equals(codeString))
           return STATISTIC;
-        if ("SubstanceAmount".equals(codeString))
-          return SUBSTANCEAMOUNT;
         if ("Timing".equals(codeString))
           return TIMING;
         if ("TriggerDefinition".equals(codeString))
@@ -1775,8 +1767,8 @@ public class TestScript extends CanonicalResource {
           return EVENTDEFINITION;
         if ("Evidence".equals(codeString))
           return EVIDENCE;
-        if ("EvidenceFocus".equals(codeString))
-          return EVIDENCEFOCUS;
+        if ("EvidenceReport".equals(codeString))
+          return EVIDENCEREPORT;
         if ("EvidenceVariable".equals(codeString))
           return EVIDENCEVARIABLE;
         if ("ExampleScenario".equals(codeString))
@@ -2016,7 +2008,6 @@ public class TestScript extends CanonicalResource {
             case SIGNATURE: return "Signature";
             case SIMPLEQUANTITY: return "SimpleQuantity";
             case STATISTIC: return "Statistic";
-            case SUBSTANCEAMOUNT: return "SubstanceAmount";
             case TIMING: return "Timing";
             case TRIGGERDEFINITION: return "TriggerDefinition";
             case USAGECONTEXT: return "UsageContext";
@@ -2096,7 +2087,7 @@ public class TestScript extends CanonicalResource {
             case EPISODEOFCARE: return "EpisodeOfCare";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
-            case EVIDENCEFOCUS: return "EvidenceFocus";
+            case EVIDENCEREPORT: return "EvidenceReport";
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
@@ -2241,7 +2232,6 @@ public class TestScript extends CanonicalResource {
             case SIGNATURE: return "http://hl7.org/fhir/data-types";
             case SIMPLEQUANTITY: return "http://hl7.org/fhir/data-types";
             case STATISTIC: return "http://hl7.org/fhir/data-types";
-            case SUBSTANCEAMOUNT: return "http://hl7.org/fhir/data-types";
             case TIMING: return "http://hl7.org/fhir/data-types";
             case TRIGGERDEFINITION: return "http://hl7.org/fhir/data-types";
             case USAGECONTEXT: return "http://hl7.org/fhir/data-types";
@@ -2321,7 +2311,7 @@ public class TestScript extends CanonicalResource {
             case EPISODEOFCARE: return "http://hl7.org/fhir/resource-types";
             case EVENTDEFINITION: return "http://hl7.org/fhir/resource-types";
             case EVIDENCE: return "http://hl7.org/fhir/resource-types";
-            case EVIDENCEFOCUS: return "http://hl7.org/fhir/resource-types";
+            case EVIDENCEREPORT: return "http://hl7.org/fhir/resource-types";
             case EVIDENCEVARIABLE: return "http://hl7.org/fhir/resource-types";
             case EXAMPLESCENARIO: return "http://hl7.org/fhir/resource-types";
             case EXPLANATIONOFBENEFIT: return "http://hl7.org/fhir/resource-types";
@@ -2466,7 +2456,6 @@ public class TestScript extends CanonicalResource {
             case SIGNATURE: return "A signature along with supporting context. The signature may be a digital signature that is cryptographic in nature, or some other signature acceptable to the domain. This other signature may be as simple as a graphical image representing a hand-written signature, or a signature ceremony Different signature approaches have different utilities.";
             case SIMPLEQUANTITY: return "";
             case STATISTIC: return "A fact or piece of data from a  study of a large quantity of numerical data.  A mathematical or quantified characteristic of a group of observations.";
-            case SUBSTANCEAMOUNT: return "Chemical substances are a single substance type whose primary defining element is the molecular structure. Chemical substances shall be defined on the basis of their complete covalent molecular structure; the presence of a salt (counter-ion) and/or solvates (water, alcohols) is also captured. Purity, grade, physical form or particle size are not taken into account in the definition of a chemical substance or in the assignment of a Substance ID.";
             case TIMING: return "Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.";
             case TRIGGERDEFINITION: return "A description of a triggering event. Triggering events can be named events, data events, or periodic, as determined by the type element.";
             case USAGECONTEXT: return "Specifies clinical/business/etc. metadata that can be used to retrieve, index and/or categorize an artifact. This metadata can either be specific to the applicable population (e.g., age category, DRG) or the specific context of care (e.g., venue, care setting, provider of care).";
@@ -2546,7 +2535,7 @@ public class TestScript extends CanonicalResource {
             case EPISODEOFCARE: return "An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time.";
             case EVENTDEFINITION: return "The EventDefinition resource provides a reusable description of when a particular event can occur.";
             case EVIDENCE: return "This represents statistics, certainty, both the intended and actual population, and evidence variables.";
-            case EVIDENCEFOCUS: return "EvidenceFocus.";
+            case EVIDENCEREPORT: return "The EvidenceReport.";
             case EVIDENCEVARIABLE: return "The EvidenceVariable resource describes an element that knowledge (Evidence) is about.";
             case EXAMPLESCENARIO: return "Example of workflow instance.";
             case EXPLANATIONOFBENEFIT: return "This resource provides: the claim details; adjudication details from the processing of a Claim; and optionally account balance information, for informing the subscriber of the benefits provided.";
@@ -2572,7 +2561,7 @@ public class TestScript extends CanonicalResource {
             case MANUFACTUREDITEMDEFINITION: return "The definition and characteristics of a medicinal manufactured item, such as a tablet or capsule, as contained in a packaged medicinal product.";
             case MEASURE: return "The Measure resource provides the definition of a quality measure.";
             case MEASUREREPORT: return "The MeasureReport resource contains the results of the calculation of a measure; and optionally a reference to the resources involved in that calculation.";
-            case MEDICATION: return "This resource is primarily used for the identification and definition of a medication for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.";
+            case MEDICATION: return "This resource is primarily used for the identification and definition of a medication, including ingredients, for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.";
             case MEDICATIONADMINISTRATION: return "Describes the event of a patient consuming or otherwise being administered a medication.  This may be as simple as swallowing a tablet or it may be a long running infusion.  Related resources tie this event to the authorizing prescription, and the specific encounter between patient and health care practitioner.";
             case MEDICATIONDISPENSE: return "Indicates that a medication product is to be or has been dispensed for a named person/patient.  This includes a description of the medication product (supply) provided and the instructions for administering the medication.  The medication dispense is the result of a pharmacy system responding to a medication order.";
             case MEDICATIONKNOWLEDGE: return "Information about a medication that is used to support knowledge.";
@@ -2592,7 +2581,7 @@ public class TestScript extends CanonicalResource {
             case OPERATIONOUTCOME: return "A collection of error, warning, or information messages that result from a system action.";
             case ORGANIZATION: return "A formally or informally recognized grouping of people or organizations formed for the purpose of achieving some form of collective action.  Includes companies, institutions, corporations, departments, community groups, healthcare practice groups, payer/insurer, etc.";
             case ORGANIZATIONAFFILIATION: return "Defines an affiliation/assotiation/relationship between 2 distinct oganizations, that is not a part-of relationship/sub-division relationship.";
-            case PACKAGEDPRODUCTDEFINITION: return "A medicinal product in a container or package.";
+            case PACKAGEDPRODUCTDEFINITION: return "A medically related item or items, in a container or package.";
             case PARAMETERS: return "This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.";
             case PATIENT: return "Demographics and other administrative information about an individual or animal receiving care or other health-related services.";
             case PAYMENTNOTICE: return "This resource provides the status of the payment for goods and services rendered, and the request and response resource references.";
@@ -2627,7 +2616,7 @@ public class TestScript extends CanonicalResource {
             case SUBSTANCE: return "A homogeneous material with a definite composition.";
             case SUBSTANCEDEFINITION: return "The detailed description of a substance, typically at a level beyond what is used for prescribing.";
             case SUBSTANCENUCLEICACID: return "Nucleic acids are defined by three distinct elements: the base, sugar and linkage. Individual substance/moiety IDs will be created for each of these elements. The nucleotide sequence will be always entered in the 5’-3’ direction.";
-            case SUBSTANCEPOLYMER: return "Todo.";
+            case SUBSTANCEPOLYMER: return "Properties of a substance specific to it being a polymer.";
             case SUBSTANCEPROTEIN: return "A SubstanceProtein is defined as a single unit of a linear amino acid sequence, or a combination of subunits that are either covalently linked or have a defined invariant stoichiometric relationship. This includes all synthetic, recombinant and purified SubstanceProteins of defined sequence, whether the use is therapeutic or prophylactic. This set of elements will be used to describe albumins, coagulation factors, cytokines, growth factors, peptide/SubstanceProtein hormones, enzymes, toxins, toxoids, recombinant vaccines, and immunomodulators.";
             case SUBSTANCEREFERENCEINFORMATION: return "Todo.";
             case SUBSTANCESOURCEMATERIAL: return "Source material shall capture information on the taxonomic and anatomical origins as well as the fraction of a material that can result in or can be modified to form a substance. This set of data elements shall be used to define polymer substances isolated from biological matrices. Taxonomic and anatomical origins shall be described using a controlled vocabulary as required. This information is captured for naturally derived polymers ( . starch) and structurally diverse substances. For Organisms belonging to the Kingdom Plantae the Substance level defines the fresh material of a single species or infraspecies, the Herbal Drug and the Herbal preparation. For Herbal preparations, the fraction information will be captured at the Substance information level and additional information for herbal extracts will be captured at the Specified Substance Group 1 information level. See for further explanation the Substance Class: Structurally Diverse and the herbal annex.";
@@ -2691,7 +2680,6 @@ public class TestScript extends CanonicalResource {
             case SIGNATURE: return "Signature";
             case SIMPLEQUANTITY: return "SimpleQuantity";
             case STATISTIC: return "Statistic";
-            case SUBSTANCEAMOUNT: return "SubstanceAmount";
             case TIMING: return "Timing";
             case TRIGGERDEFINITION: return "TriggerDefinition";
             case USAGECONTEXT: return "UsageContext";
@@ -2771,7 +2759,7 @@ public class TestScript extends CanonicalResource {
             case EPISODEOFCARE: return "EpisodeOfCare";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
-            case EVIDENCEFOCUS: return "EvidenceFocus";
+            case EVIDENCEREPORT: return "EvidenceReport";
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
@@ -2967,8 +2955,6 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.SIMPLEQUANTITY;
         if ("Statistic".equals(codeString))
           return FHIRDefinedType.STATISTIC;
-        if ("SubstanceAmount".equals(codeString))
-          return FHIRDefinedType.SUBSTANCEAMOUNT;
         if ("Timing".equals(codeString))
           return FHIRDefinedType.TIMING;
         if ("TriggerDefinition".equals(codeString))
@@ -3127,8 +3113,8 @@ public class TestScript extends CanonicalResource {
           return FHIRDefinedType.EVENTDEFINITION;
         if ("Evidence".equals(codeString))
           return FHIRDefinedType.EVIDENCE;
-        if ("EvidenceFocus".equals(codeString))
-          return FHIRDefinedType.EVIDENCEFOCUS;
+        if ("EvidenceReport".equals(codeString))
+          return FHIRDefinedType.EVIDENCEREPORT;
         if ("EvidenceVariable".equals(codeString))
           return FHIRDefinedType.EVIDENCEVARIABLE;
         if ("ExampleScenario".equals(codeString))
@@ -3417,8 +3403,6 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.SIMPLEQUANTITY);
         if ("Statistic".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.STATISTIC);
-        if ("SubstanceAmount".equals(codeString))
-          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.SUBSTANCEAMOUNT);
         if ("Timing".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.TIMING);
         if ("TriggerDefinition".equals(codeString))
@@ -3577,8 +3561,8 @@ public class TestScript extends CanonicalResource {
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EVENTDEFINITION);
         if ("Evidence".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EVIDENCE);
-        if ("EvidenceFocus".equals(codeString))
-          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EVIDENCEFOCUS);
+        if ("EvidenceReport".equals(codeString))
+          return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EVIDENCEREPORT);
         if ("EvidenceVariable".equals(codeString))
           return new Enumeration<FHIRDefinedType>(this, FHIRDefinedType.EVIDENCEVARIABLE);
         if ("ExampleScenario".equals(codeString))
@@ -3860,8 +3844,6 @@ public class TestScript extends CanonicalResource {
         return "SimpleQuantity";
       if (code == FHIRDefinedType.STATISTIC)
         return "Statistic";
-      if (code == FHIRDefinedType.SUBSTANCEAMOUNT)
-        return "SubstanceAmount";
       if (code == FHIRDefinedType.TIMING)
         return "Timing";
       if (code == FHIRDefinedType.TRIGGERDEFINITION)
@@ -4020,8 +4002,8 @@ public class TestScript extends CanonicalResource {
         return "EventDefinition";
       if (code == FHIRDefinedType.EVIDENCE)
         return "Evidence";
-      if (code == FHIRDefinedType.EVIDENCEFOCUS)
-        return "EvidenceFocus";
+      if (code == FHIRDefinedType.EVIDENCEREPORT)
+        return "EvidenceReport";
       if (code == FHIRDefinedType.EVIDENCEVARIABLE)
         return "EvidenceVariable";
       if (code == FHIRDefinedType.EXAMPLESCENARIO)
@@ -13656,3 +13638,4 @@ public class TestScript extends CanonicalResource {
 
 
 }
+

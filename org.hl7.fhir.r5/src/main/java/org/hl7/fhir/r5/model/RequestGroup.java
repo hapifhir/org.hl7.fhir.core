@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,41 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehavior;
-import org.hl7.fhir.r5.model.Enumerations.ActionCardinalityBehaviorEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.ActionConditionKind;
-import org.hl7.fhir.r5.model.Enumerations.ActionConditionKindEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehavior;
-import org.hl7.fhir.r5.model.Enumerations.ActionGroupingBehaviorEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehavior;
-import org.hl7.fhir.r5.model.Enumerations.ActionPrecheckBehaviorEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.ActionRelationshipType;
-import org.hl7.fhir.r5.model.Enumerations.ActionRelationshipTypeEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehavior;
-import org.hl7.fhir.r5.model.Enumerations.ActionRequiredBehaviorEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehavior;
-import org.hl7.fhir.r5.model.Enumerations.ActionSelectionBehaviorEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.RequestIntent;
-import org.hl7.fhir.r5.model.Enumerations.RequestIntentEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.RequestPriority;
-import org.hl7.fhir.r5.model.Enumerations.RequestPriorityEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.RequestStatus;
-import org.hl7.fhir.r5.model.Enumerations.RequestStatusEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A group of related requests that can be used to capture intended activities that have inter-dependencies such as "give this medication after that one".
@@ -3807,3 +3787,4 @@ public class RequestGroup extends DomainResource {
 
 
 }
+

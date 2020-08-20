@@ -1,4 +1,4 @@
-@Override
+  @Override
       public String toString() {
         return fhirType()+"["+getUrl()+"]";
       }
@@ -10,3 +10,7 @@
           return getName();
         return toString();
       }
+      
+ public String getVUrl() {
+        return getUrl() + (hasVersion() ? "|"+getVersion() : "");
+      }      

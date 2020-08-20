@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,19 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * Todo.
@@ -607,365 +609,6 @@ public class SubstanceReferenceInformation extends DomainResource {
 
   public String fhirType() {
     return "SubstanceReferenceInformation.geneElement";
-
-  }
-
-  }
-
-    @Block()
-    public static class SubstanceReferenceInformationClassificationComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Todo.
-         */
-        @Child(name = "domain", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected CodeableConcept domain;
-
-        /**
-         * Todo.
-         */
-        @Child(name = "classification", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected CodeableConcept classification;
-
-        /**
-         * Todo.
-         */
-        @Child(name = "subtype", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected List<CodeableConcept> subtype;
-
-        /**
-         * Todo.
-         */
-        @Child(name = "source", type = {DocumentReference.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected List<Reference> source;
-
-        private static final long serialVersionUID = 185411369L;
-
-    /**
-     * Constructor
-     */
-      public SubstanceReferenceInformationClassificationComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #domain} (Todo.)
-         */
-        public CodeableConcept getDomain() { 
-          if (this.domain == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceReferenceInformationClassificationComponent.domain");
-            else if (Configuration.doAutoCreate())
-              this.domain = new CodeableConcept(); // cc
-          return this.domain;
-        }
-
-        public boolean hasDomain() { 
-          return this.domain != null && !this.domain.isEmpty();
-        }
-
-        /**
-         * @param value {@link #domain} (Todo.)
-         */
-        public SubstanceReferenceInformationClassificationComponent setDomain(CodeableConcept value) { 
-          this.domain = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #classification} (Todo.)
-         */
-        public CodeableConcept getClassification() { 
-          if (this.classification == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceReferenceInformationClassificationComponent.classification");
-            else if (Configuration.doAutoCreate())
-              this.classification = new CodeableConcept(); // cc
-          return this.classification;
-        }
-
-        public boolean hasClassification() { 
-          return this.classification != null && !this.classification.isEmpty();
-        }
-
-        /**
-         * @param value {@link #classification} (Todo.)
-         */
-        public SubstanceReferenceInformationClassificationComponent setClassification(CodeableConcept value) { 
-          this.classification = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #subtype} (Todo.)
-         */
-        public List<CodeableConcept> getSubtype() { 
-          if (this.subtype == null)
-            this.subtype = new ArrayList<CodeableConcept>();
-          return this.subtype;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public SubstanceReferenceInformationClassificationComponent setSubtype(List<CodeableConcept> theSubtype) { 
-          this.subtype = theSubtype;
-          return this;
-        }
-
-        public boolean hasSubtype() { 
-          if (this.subtype == null)
-            return false;
-          for (CodeableConcept item : this.subtype)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addSubtype() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.subtype == null)
-            this.subtype = new ArrayList<CodeableConcept>();
-          this.subtype.add(t);
-          return t;
-        }
-
-        public SubstanceReferenceInformationClassificationComponent addSubtype(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.subtype == null)
-            this.subtype = new ArrayList<CodeableConcept>();
-          this.subtype.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #subtype}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getSubtypeFirstRep() { 
-          if (getSubtype().isEmpty()) {
-            addSubtype();
-          }
-          return getSubtype().get(0);
-        }
-
-        /**
-         * @return {@link #source} (Todo.)
-         */
-        public List<Reference> getSource() { 
-          if (this.source == null)
-            this.source = new ArrayList<Reference>();
-          return this.source;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public SubstanceReferenceInformationClassificationComponent setSource(List<Reference> theSource) { 
-          this.source = theSource;
-          return this;
-        }
-
-        public boolean hasSource() { 
-          if (this.source == null)
-            return false;
-          for (Reference item : this.source)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public Reference addSource() { //3
-          Reference t = new Reference();
-          if (this.source == null)
-            this.source = new ArrayList<Reference>();
-          this.source.add(t);
-          return t;
-        }
-
-        public SubstanceReferenceInformationClassificationComponent addSource(Reference t) { //3
-          if (t == null)
-            return this;
-          if (this.source == null)
-            this.source = new ArrayList<Reference>();
-          this.source.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #source}, creating it if it does not already exist {3}
-         */
-        public Reference getSourceFirstRep() { 
-          if (getSource().isEmpty()) {
-            addSource();
-          }
-          return getSource().get(0);
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("domain", "CodeableConcept", "Todo.", 0, 1, domain));
-          children.add(new Property("classification", "CodeableConcept", "Todo.", 0, 1, classification));
-          children.add(new Property("subtype", "CodeableConcept", "Todo.", 0, java.lang.Integer.MAX_VALUE, subtype));
-          children.add(new Property("source", "Reference(DocumentReference)", "Todo.", 0, java.lang.Integer.MAX_VALUE, source));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1326197564: /*domain*/  return new Property("domain", "CodeableConcept", "Todo.", 0, 1, domain);
-          case 382350310: /*classification*/  return new Property("classification", "CodeableConcept", "Todo.", 0, 1, classification);
-          case -1867567750: /*subtype*/  return new Property("subtype", "CodeableConcept", "Todo.", 0, java.lang.Integer.MAX_VALUE, subtype);
-          case -896505829: /*source*/  return new Property("source", "Reference(DocumentReference)", "Todo.", 0, java.lang.Integer.MAX_VALUE, source);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1326197564: /*domain*/ return this.domain == null ? new Base[0] : new Base[] {this.domain}; // CodeableConcept
-        case 382350310: /*classification*/ return this.classification == null ? new Base[0] : new Base[] {this.classification}; // CodeableConcept
-        case -1867567750: /*subtype*/ return this.subtype == null ? new Base[0] : this.subtype.toArray(new Base[this.subtype.size()]); // CodeableConcept
-        case -896505829: /*source*/ return this.source == null ? new Base[0] : this.source.toArray(new Base[this.source.size()]); // Reference
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1326197564: // domain
-          this.domain = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 382350310: // classification
-          this.classification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case -1867567750: // subtype
-          this.getSubtype().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -896505829: // source
-          this.getSource().add(TypeConvertor.castToReference(value)); // Reference
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("domain")) {
-          this.domain = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("classification")) {
-          this.classification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("subtype")) {
-          this.getSubtype().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("source")) {
-          this.getSource().add(TypeConvertor.castToReference(value));
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1326197564:  return getDomain();
-        case 382350310:  return getClassification();
-        case -1867567750:  return addSubtype(); 
-        case -896505829:  return addSource(); 
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1326197564: /*domain*/ return new String[] {"CodeableConcept"};
-        case 382350310: /*classification*/ return new String[] {"CodeableConcept"};
-        case -1867567750: /*subtype*/ return new String[] {"CodeableConcept"};
-        case -896505829: /*source*/ return new String[] {"Reference"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("domain")) {
-          this.domain = new CodeableConcept();
-          return this.domain;
-        }
-        else if (name.equals("classification")) {
-          this.classification = new CodeableConcept();
-          return this.classification;
-        }
-        else if (name.equals("subtype")) {
-          return addSubtype();
-        }
-        else if (name.equals("source")) {
-          return addSource();
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public SubstanceReferenceInformationClassificationComponent copy() {
-        SubstanceReferenceInformationClassificationComponent dst = new SubstanceReferenceInformationClassificationComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(SubstanceReferenceInformationClassificationComponent dst) {
-        super.copyValues(dst);
-        dst.domain = domain == null ? null : domain.copy();
-        dst.classification = classification == null ? null : classification.copy();
-        if (subtype != null) {
-          dst.subtype = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : subtype)
-            dst.subtype.add(i.copy());
-        };
-        if (source != null) {
-          dst.source = new ArrayList<Reference>();
-          for (Reference i : source)
-            dst.source.add(i.copy());
-        };
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof SubstanceReferenceInformationClassificationComponent))
-          return false;
-        SubstanceReferenceInformationClassificationComponent o = (SubstanceReferenceInformationClassificationComponent) other_;
-        return compareDeep(domain, o.domain, true) && compareDeep(classification, o.classification, true)
-           && compareDeep(subtype, o.subtype, true) && compareDeep(source, o.source, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof SubstanceReferenceInformationClassificationComponent))
-          return false;
-        SubstanceReferenceInformationClassificationComponent o = (SubstanceReferenceInformationClassificationComponent) other_;
-        return true;
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(domain, classification, subtype
-          , source);
-      }
-
-  public String fhirType() {
-    return "SubstanceReferenceInformation.classification";
 
   }
 
@@ -1562,18 +1205,11 @@ public class SubstanceReferenceInformation extends DomainResource {
     /**
      * Todo.
      */
-    @Child(name = "classification", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Todo", formalDefinition="Todo." )
-    protected List<SubstanceReferenceInformationClassificationComponent> classification;
-
-    /**
-     * Todo.
-     */
-    @Child(name = "target", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "target", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Todo", formalDefinition="Todo." )
     protected List<SubstanceReferenceInformationTargetComponent> target;
 
-    private static final long serialVersionUID = 890303332L;
+    private static final long serialVersionUID = -496299386L;
 
   /**
    * Constructor
@@ -1738,59 +1374,6 @@ public class SubstanceReferenceInformation extends DomainResource {
     }
 
     /**
-     * @return {@link #classification} (Todo.)
-     */
-    public List<SubstanceReferenceInformationClassificationComponent> getClassification() { 
-      if (this.classification == null)
-        this.classification = new ArrayList<SubstanceReferenceInformationClassificationComponent>();
-      return this.classification;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public SubstanceReferenceInformation setClassification(List<SubstanceReferenceInformationClassificationComponent> theClassification) { 
-      this.classification = theClassification;
-      return this;
-    }
-
-    public boolean hasClassification() { 
-      if (this.classification == null)
-        return false;
-      for (SubstanceReferenceInformationClassificationComponent item : this.classification)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public SubstanceReferenceInformationClassificationComponent addClassification() { //3
-      SubstanceReferenceInformationClassificationComponent t = new SubstanceReferenceInformationClassificationComponent();
-      if (this.classification == null)
-        this.classification = new ArrayList<SubstanceReferenceInformationClassificationComponent>();
-      this.classification.add(t);
-      return t;
-    }
-
-    public SubstanceReferenceInformation addClassification(SubstanceReferenceInformationClassificationComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.classification == null)
-        this.classification = new ArrayList<SubstanceReferenceInformationClassificationComponent>();
-      this.classification.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #classification}, creating it if it does not already exist {3}
-     */
-    public SubstanceReferenceInformationClassificationComponent getClassificationFirstRep() { 
-      if (getClassification().isEmpty()) {
-        addClassification();
-      }
-      return getClassification().get(0);
-    }
-
-    /**
      * @return {@link #target} (Todo.)
      */
     public List<SubstanceReferenceInformationTargetComponent> getTarget() { 
@@ -1848,7 +1431,6 @@ public class SubstanceReferenceInformation extends DomainResource {
         children.add(new Property("comment", "string", "Todo.", 0, 1, comment));
         children.add(new Property("gene", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, gene));
         children.add(new Property("geneElement", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, geneElement));
-        children.add(new Property("classification", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, classification));
         children.add(new Property("target", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, target));
       }
 
@@ -1858,7 +1440,6 @@ public class SubstanceReferenceInformation extends DomainResource {
         case 950398559: /*comment*/  return new Property("comment", "string", "Todo.", 0, 1, comment);
         case 3169045: /*gene*/  return new Property("gene", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, gene);
         case -94918105: /*geneElement*/  return new Property("geneElement", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, geneElement);
-        case 382350310: /*classification*/  return new Property("classification", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, classification);
         case -880905839: /*target*/  return new Property("target", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, target);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1871,7 +1452,6 @@ public class SubstanceReferenceInformation extends DomainResource {
         case 950398559: /*comment*/ return this.comment == null ? new Base[0] : new Base[] {this.comment}; // StringType
         case 3169045: /*gene*/ return this.gene == null ? new Base[0] : this.gene.toArray(new Base[this.gene.size()]); // SubstanceReferenceInformationGeneComponent
         case -94918105: /*geneElement*/ return this.geneElement == null ? new Base[0] : this.geneElement.toArray(new Base[this.geneElement.size()]); // SubstanceReferenceInformationGeneElementComponent
-        case 382350310: /*classification*/ return this.classification == null ? new Base[0] : this.classification.toArray(new Base[this.classification.size()]); // SubstanceReferenceInformationClassificationComponent
         case -880905839: /*target*/ return this.target == null ? new Base[0] : this.target.toArray(new Base[this.target.size()]); // SubstanceReferenceInformationTargetComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1890,9 +1470,6 @@ public class SubstanceReferenceInformation extends DomainResource {
         case -94918105: // geneElement
           this.getGeneElement().add((SubstanceReferenceInformationGeneElementComponent) value); // SubstanceReferenceInformationGeneElementComponent
           return value;
-        case 382350310: // classification
-          this.getClassification().add((SubstanceReferenceInformationClassificationComponent) value); // SubstanceReferenceInformationClassificationComponent
-          return value;
         case -880905839: // target
           this.getTarget().add((SubstanceReferenceInformationTargetComponent) value); // SubstanceReferenceInformationTargetComponent
           return value;
@@ -1909,8 +1486,6 @@ public class SubstanceReferenceInformation extends DomainResource {
           this.getGene().add((SubstanceReferenceInformationGeneComponent) value);
         } else if (name.equals("geneElement")) {
           this.getGeneElement().add((SubstanceReferenceInformationGeneElementComponent) value);
-        } else if (name.equals("classification")) {
-          this.getClassification().add((SubstanceReferenceInformationClassificationComponent) value);
         } else if (name.equals("target")) {
           this.getTarget().add((SubstanceReferenceInformationTargetComponent) value);
         } else
@@ -1924,7 +1499,6 @@ public class SubstanceReferenceInformation extends DomainResource {
         case 950398559:  return getCommentElement();
         case 3169045:  return addGene(); 
         case -94918105:  return addGeneElement(); 
-        case 382350310:  return addClassification(); 
         case -880905839:  return addTarget(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1937,7 +1511,6 @@ public class SubstanceReferenceInformation extends DomainResource {
         case 950398559: /*comment*/ return new String[] {"string"};
         case 3169045: /*gene*/ return new String[] {};
         case -94918105: /*geneElement*/ return new String[] {};
-        case 382350310: /*classification*/ return new String[] {};
         case -880905839: /*target*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1954,9 +1527,6 @@ public class SubstanceReferenceInformation extends DomainResource {
         }
         else if (name.equals("geneElement")) {
           return addGeneElement();
-        }
-        else if (name.equals("classification")) {
-          return addClassification();
         }
         else if (name.equals("target")) {
           return addTarget();
@@ -1989,11 +1559,6 @@ public class SubstanceReferenceInformation extends DomainResource {
           for (SubstanceReferenceInformationGeneElementComponent i : geneElement)
             dst.geneElement.add(i.copy());
         };
-        if (classification != null) {
-          dst.classification = new ArrayList<SubstanceReferenceInformationClassificationComponent>();
-          for (SubstanceReferenceInformationClassificationComponent i : classification)
-            dst.classification.add(i.copy());
-        };
         if (target != null) {
           dst.target = new ArrayList<SubstanceReferenceInformationTargetComponent>();
           for (SubstanceReferenceInformationTargetComponent i : target)
@@ -2013,7 +1578,7 @@ public class SubstanceReferenceInformation extends DomainResource {
           return false;
         SubstanceReferenceInformation o = (SubstanceReferenceInformation) other_;
         return compareDeep(comment, o.comment, true) && compareDeep(gene, o.gene, true) && compareDeep(geneElement, o.geneElement, true)
-           && compareDeep(classification, o.classification, true) && compareDeep(target, o.target, true);
+           && compareDeep(target, o.target, true);
       }
 
       @Override
@@ -2028,7 +1593,7 @@ public class SubstanceReferenceInformation extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(comment, gene, geneElement
-          , classification, target);
+          , target);
       }
 
   @Override
@@ -2038,3 +1603,4 @@ public class SubstanceReferenceInformation extends DomainResource {
 
 
 }
+

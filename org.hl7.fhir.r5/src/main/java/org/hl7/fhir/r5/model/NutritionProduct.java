@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,21 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A food or fluid product that is consumed by patients.
@@ -168,6 +168,7 @@ public class NutritionProduct extends DomainResource {
          */
         @Child(name = "item", type = {CodeableReference.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The (relevant) nutrients in the product", formalDefinition="The (relevant) nutrients in the product." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/nutrition-product-nutrient")
         protected CodeableReference item;
 
         /**
@@ -642,6 +643,7 @@ public class NutritionProduct extends DomainResource {
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Code specifying the type of characteristic", formalDefinition="A code specifying which characteristic of the product is being described (for example, colour, shape)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measurement-property")
         protected CodeableConcept type;
 
         /**
@@ -1419,6 +1421,7 @@ public class NutritionProduct extends DomainResource {
      */
     @Child(name = "category", type = {CodeableConcept.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A category or class of the nutrition product (halal, kosher, gluten free, vegan, etc)", formalDefinition="Nutrition products can have different classifications - according to its nutritional properties, preparation methods, etc." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/nutrition-product-category")
     protected List<CodeableConcept> category;
 
     /**
@@ -1426,6 +1429,7 @@ public class NutritionProduct extends DomainResource {
      */
     @Child(name = "code", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="A code designating a specific type of nutritional product", formalDefinition="The code assigned to the product, for example a manufacturer number or other terminology." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/edible-substance-type")
     protected CodeableConcept code;
 
     /**
@@ -1450,10 +1454,11 @@ public class NutritionProduct extends DomainResource {
     protected List<NutritionProductIngredientComponent> ingredient;
 
     /**
-     * Allergens that are known to be a part of this nutrition product.
+     * Allergens that are known or suspected to be a part of this nutrition product.
      */
     @Child(name = "knownAllergen", type = {CodeableReference.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Allergens that are known to be a part of this nutrition product", formalDefinition="Allergens that are known to be a part of this nutrition product." )
+    @Description(shortDefinition="Known or suspected allergens that are a part of this product", formalDefinition="Allergens that are known or suspected to be a part of this nutrition product." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/allergen-class")
     protected List<CodeableReference> knownAllergen;
 
     /**
@@ -1776,7 +1781,7 @@ public class NutritionProduct extends DomainResource {
     }
 
     /**
-     * @return {@link #knownAllergen} (Allergens that are known to be a part of this nutrition product.)
+     * @return {@link #knownAllergen} (Allergens that are known or suspected to be a part of this nutrition product.)
      */
     public List<CodeableReference> getKnownAllergen() { 
       if (this.knownAllergen == null)
@@ -1966,7 +1971,7 @@ public class NutritionProduct extends DomainResource {
         children.add(new Property("manufacturer", "Reference(Organization)", "The organisation (manufacturer, representative or legal authorisation holder) that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
         children.add(new Property("nutrient", "", "The product's nutritional information expressed by the nutrients.", 0, java.lang.Integer.MAX_VALUE, nutrient));
         children.add(new Property("ingredient", "", "Ingredients contained in this product.", 0, java.lang.Integer.MAX_VALUE, ingredient));
-        children.add(new Property("knownAllergen", "CodeableReference(Substance)", "Allergens that are known to be a part of this nutrition product.", 0, java.lang.Integer.MAX_VALUE, knownAllergen));
+        children.add(new Property("knownAllergen", "CodeableReference(Substance)", "Allergens that are known or suspected to be a part of this nutrition product.", 0, java.lang.Integer.MAX_VALUE, knownAllergen));
         children.add(new Property("productCharacteristic", "", "Specifies descriptive properties of the nutrition product.", 0, java.lang.Integer.MAX_VALUE, productCharacteristic));
         children.add(new Property("instance", "", "Conveys instance-level information about this product item. One or several physical, countable instances or occurrences of the product.", 0, 1, instance));
         children.add(new Property("note", "Annotation", "Comments made about the product.", 0, java.lang.Integer.MAX_VALUE, note));
@@ -1981,7 +1986,7 @@ public class NutritionProduct extends DomainResource {
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "The organisation (manufacturer, representative or legal authorisation holder) that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
         case -1671151641: /*nutrient*/  return new Property("nutrient", "", "The product's nutritional information expressed by the nutrients.", 0, java.lang.Integer.MAX_VALUE, nutrient);
         case -206409263: /*ingredient*/  return new Property("ingredient", "", "Ingredients contained in this product.", 0, java.lang.Integer.MAX_VALUE, ingredient);
-        case 1093336805: /*knownAllergen*/  return new Property("knownAllergen", "CodeableReference(Substance)", "Allergens that are known to be a part of this nutrition product.", 0, java.lang.Integer.MAX_VALUE, knownAllergen);
+        case 1093336805: /*knownAllergen*/  return new Property("knownAllergen", "CodeableReference(Substance)", "Allergens that are known or suspected to be a part of this nutrition product.", 0, java.lang.Integer.MAX_VALUE, knownAllergen);
         case 1231899754: /*productCharacteristic*/  return new Property("productCharacteristic", "", "Specifies descriptive properties of the nutrition product.", 0, java.lang.Integer.MAX_VALUE, productCharacteristic);
         case 555127957: /*instance*/  return new Property("instance", "", "Conveys instance-level information about this product item. One or several physical, countable instances or occurrences of the product.", 0, 1, instance);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Comments made about the product.", 0, java.lang.Integer.MAX_VALUE, note);
@@ -2281,3 +2286,4 @@ public class NutritionProduct extends DomainResource {
 
 
 }
+

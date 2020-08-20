@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,21 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A record of an event relevant for purposes such as operations, privacy, security, maintenance, and performance analysis.
@@ -373,21 +373,21 @@ public class AuditEvent extends DomainResource {
         public static AuditEventSeverity fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("Emergency".equals(codeString))
+        if ("emergency".equals(codeString))
           return EMERGENCY;
-        if ("Alert".equals(codeString))
+        if ("alert".equals(codeString))
           return ALERT;
-        if ("Critical".equals(codeString))
+        if ("critical".equals(codeString))
           return CRITICAL;
-        if ("Error".equals(codeString))
+        if ("error".equals(codeString))
           return ERROR;
-        if ("Warning".equals(codeString))
+        if ("warning".equals(codeString))
           return WARNING;
-        if ("Notice".equals(codeString))
+        if ("notice".equals(codeString))
           return NOTICE;
-        if ("Informational".equals(codeString))
+        if ("informational".equals(codeString))
           return INFORMATIONAL;
-        if ("Debug".equals(codeString))
+        if ("debug".equals(codeString))
           return DEBUG;
         if (Configuration.isAcceptInvalidEnums())
           return null;
@@ -396,14 +396,14 @@ public class AuditEvent extends DomainResource {
         }
         public String toCode() {
           switch (this) {
-            case EMERGENCY: return "Emergency";
-            case ALERT: return "Alert";
-            case CRITICAL: return "Critical";
-            case ERROR: return "Error";
-            case WARNING: return "Warning";
-            case NOTICE: return "Notice";
-            case INFORMATIONAL: return "Informational";
-            case DEBUG: return "Debug";
+            case EMERGENCY: return "emergency";
+            case ALERT: return "alert";
+            case CRITICAL: return "critical";
+            case ERROR: return "error";
+            case WARNING: return "warning";
+            case NOTICE: return "notice";
+            case INFORMATIONAL: return "informational";
+            case DEBUG: return "debug";
             default: return "?";
           }
         }
@@ -453,21 +453,21 @@ public class AuditEvent extends DomainResource {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("Emergency".equals(codeString))
+        if ("emergency".equals(codeString))
           return AuditEventSeverity.EMERGENCY;
-        if ("Alert".equals(codeString))
+        if ("alert".equals(codeString))
           return AuditEventSeverity.ALERT;
-        if ("Critical".equals(codeString))
+        if ("critical".equals(codeString))
           return AuditEventSeverity.CRITICAL;
-        if ("Error".equals(codeString))
+        if ("error".equals(codeString))
           return AuditEventSeverity.ERROR;
-        if ("Warning".equals(codeString))
+        if ("warning".equals(codeString))
           return AuditEventSeverity.WARNING;
-        if ("Notice".equals(codeString))
+        if ("notice".equals(codeString))
           return AuditEventSeverity.NOTICE;
-        if ("Informational".equals(codeString))
+        if ("informational".equals(codeString))
           return AuditEventSeverity.INFORMATIONAL;
-        if ("Debug".equals(codeString))
+        if ("debug".equals(codeString))
           return AuditEventSeverity.DEBUG;
         throw new IllegalArgumentException("Unknown AuditEventSeverity code '"+codeString+"'");
         }
@@ -479,41 +479,41 @@ public class AuditEvent extends DomainResource {
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("Emergency".equals(codeString))
+        if ("emergency".equals(codeString))
           return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.EMERGENCY);
-        if ("Alert".equals(codeString))
+        if ("alert".equals(codeString))
           return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.ALERT);
-        if ("Critical".equals(codeString))
+        if ("critical".equals(codeString))
           return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.CRITICAL);
-        if ("Error".equals(codeString))
+        if ("error".equals(codeString))
           return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.ERROR);
-        if ("Warning".equals(codeString))
+        if ("warning".equals(codeString))
           return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.WARNING);
-        if ("Notice".equals(codeString))
+        if ("notice".equals(codeString))
           return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.NOTICE);
-        if ("Informational".equals(codeString))
+        if ("informational".equals(codeString))
           return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.INFORMATIONAL);
-        if ("Debug".equals(codeString))
+        if ("debug".equals(codeString))
           return new Enumeration<AuditEventSeverity>(this, AuditEventSeverity.DEBUG);
         throw new FHIRException("Unknown AuditEventSeverity code '"+codeString+"'");
         }
     public String toCode(AuditEventSeverity code) {
       if (code == AuditEventSeverity.EMERGENCY)
-        return "Emergency";
+        return "emergency";
       if (code == AuditEventSeverity.ALERT)
-        return "Alert";
+        return "alert";
       if (code == AuditEventSeverity.CRITICAL)
-        return "Critical";
+        return "critical";
       if (code == AuditEventSeverity.ERROR)
-        return "Error";
+        return "error";
       if (code == AuditEventSeverity.WARNING)
-        return "Warning";
+        return "warning";
       if (code == AuditEventSeverity.NOTICE)
-        return "Notice";
+        return "notice";
       if (code == AuditEventSeverity.INFORMATIONAL)
-        return "Informational";
+        return "informational";
       if (code == AuditEventSeverity.DEBUG)
-        return "Debug";
+        return "debug";
       return "?";
       }
     public String toSystem(AuditEventSeverity code) {
@@ -586,7 +586,7 @@ public class AuditEvent extends DomainResource {
          */
         @Child(name = "media", type = {Coding.class}, order=9, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Type of media", formalDefinition="Type of media involved. Used when the event is about exporting/importing onto media." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/dicm-405-mediatype")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/audit-media-type")
         protected Coding media;
 
         /**
@@ -2780,7 +2780,7 @@ public class AuditEvent extends DomainResource {
      * Indicates and enables segmentation of various severity including debugging from critical.
      */
     @Child(name = "severity", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Emergency | Alert | Critical | Error | Warning | Notice | Informational | Debug", formalDefinition="Indicates and enables segmentation of various severity including debugging from critical." )
+    @Description(shortDefinition="emergency | alert | critical | error | warning | notice | informational | debug", formalDefinition="Indicates and enables segmentation of various severity including debugging from critical." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/audit-event-severity")
     protected Enumeration<AuditEventSeverity> severity;
 
@@ -3809,7 +3809,7 @@ public class AuditEvent extends DomainResource {
    * Path: <b>AuditEvent.entity.what</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="entity", path="AuditEvent.entity.what", description="Specific instance of resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceFocus.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="entity", path="AuditEvent.entity.what", description="Specific instance of resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_ENTITY = "entity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>entity</b>
@@ -4001,3 +4001,4 @@ public class AuditEvent extends DomainResource {
 
 
 }
+
