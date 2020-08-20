@@ -76,12 +76,12 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
 	 * @throws IllegalArgumentException If the value is too large to fit in a signed integer
 	 */
 	public IntegerType(Long theValue) {
+	    if (theValue < java.lang.Integer.MIN_VALUE || theValue > java.lang.Integer.MAX_VALUE) {
+	        throw new IllegalArgumentException
+	            (theValue + " cannot be cast to int without changing its value.");
+	    }
 	    if(theValue!=null) {
-        if (theValue < java.lang.Integer.MIN_VALUE || theValue > java.lang.Integer.MAX_VALUE) {
-          throw new IllegalArgumentException
-            (theValue + " cannot be cast to int without changing its value.");
-        }
-	    	setValue(theValue.intValue());
+	    	setValue((int)theValue.longValue());
 	    }
 	}
 

@@ -55,8 +55,8 @@ public class VersionUtilities {
     }
   }
 
-  public static final String CURRENT_VERSION = "4.4";
-  public static final String CURRENT_FULL_VERSION = "4.4.0";
+  public static final String CURRENT_VERSION = "4.5";
+  public static final String CURRENT_FULL_VERSION = "4.5.0";
 
   public static String packageForVersion(String v) {
     if (isR2Ver(v)) {
@@ -147,6 +147,9 @@ public class VersionUtilities {
   }
 
   public static boolean versionsCompatible(String v1, String v2) {
+    if (v1 == null || v2 == null) {
+      return false;
+    }
     String[] v1l = v1.split("\\|"); 
     String[] v2l = v2.split("\\|");
     for (String vs1 : v1l) {

@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,25 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind;
-import org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKindEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A TerminologyCapabilities resource documents a set of capabilities (behaviors) of a FHIR Terminology Server that may be used as a statement of actual server functionality or a statement of required or desired server implementation.
@@ -658,10 +654,10 @@ public class TerminologyCapabilities extends CanonicalResource {
     @Block()
     public static class TerminologyCapabilitiesCodeSystemComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * URI for the Code System.
+         * Canonical identifier for the code system, represented as a URI.
          */
         @Child(name = "uri", type = {CanonicalType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="URI for the Code System", formalDefinition="URI for the Code System." )
+        @Description(shortDefinition="Canonical identifier for the code system, represented as a URI", formalDefinition="Canonical identifier for the code system, represented as a URI." )
         protected CanonicalType uri;
 
         /**
@@ -688,7 +684,7 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
         /**
-         * @return {@link #uri} (URI for the Code System.). This is the underlying object with id, value and extensions. The accessor "getUri" gives direct access to the value
+         * @return {@link #uri} (Canonical identifier for the code system, represented as a URI.). This is the underlying object with id, value and extensions. The accessor "getUri" gives direct access to the value
          */
         public CanonicalType getUriElement() { 
           if (this.uri == null)
@@ -708,7 +704,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #uri} (URI for the Code System.). This is the underlying object with id, value and extensions. The accessor "getUri" gives direct access to the value
+         * @param value {@link #uri} (Canonical identifier for the code system, represented as a URI.). This is the underlying object with id, value and extensions. The accessor "getUri" gives direct access to the value
          */
         public TerminologyCapabilitiesCodeSystemComponent setUriElement(CanonicalType value) { 
           this.uri = value;
@@ -716,14 +712,14 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         /**
-         * @return URI for the Code System.
+         * @return Canonical identifier for the code system, represented as a URI.
          */
         public String getUri() { 
           return this.uri == null ? null : this.uri.getValue();
         }
 
         /**
-         * @param value URI for the Code System.
+         * @param value Canonical identifier for the code system, represented as a URI.
          */
         public TerminologyCapabilitiesCodeSystemComponent setUri(String value) { 
           if (Utilities.noString(value))
@@ -836,7 +832,7 @@ public class TerminologyCapabilities extends CanonicalResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("uri", "canonical(CodeSystem)", "URI for the Code System.", 0, 1, uri));
+          children.add(new Property("uri", "canonical(CodeSystem)", "Canonical identifier for the code system, represented as a URI.", 0, 1, uri));
           children.add(new Property("version", "", "For the code system, a list of versions that are supported by the server.", 0, java.lang.Integer.MAX_VALUE, version));
           children.add(new Property("subsumption", "boolean", "True if subsumption is supported for this version of the code system.", 0, 1, subsumption));
         }
@@ -844,7 +840,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 116076: /*uri*/  return new Property("uri", "canonical(CodeSystem)", "URI for the Code System.", 0, 1, uri);
+          case 116076: /*uri*/  return new Property("uri", "canonical(CodeSystem)", "Canonical identifier for the code system, represented as a URI.", 0, 1, uri);
           case 351608024: /*version*/  return new Property("version", "", "For the code system, a list of versions that are supported by the server.", 0, java.lang.Integer.MAX_VALUE, version);
           case -499084711: /*subsumption*/  return new Property("subsumption", "boolean", "True if subsumption is supported for this version of the code system.", 0, 1, subsumption);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1832,10 +1828,10 @@ public class TerminologyCapabilities extends CanonicalResource {
         protected BooleanType paging;
 
         /**
-         * Allow request for incomplete expansions?
+         * True if requests for incomplete expansions are allowed.
          */
         @Child(name = "incomplete", type = {BooleanType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Allow request for incomplete expansions?", formalDefinition="Allow request for incomplete expansions?" )
+        @Description(shortDefinition="Allow request for incomplete expansions?", formalDefinition="True if requests for incomplete expansions are allowed." )
         protected BooleanType incomplete;
 
         /**
@@ -1952,7 +1948,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         /**
-         * @return {@link #incomplete} (Allow request for incomplete expansions?). This is the underlying object with id, value and extensions. The accessor "getIncomplete" gives direct access to the value
+         * @return {@link #incomplete} (True if requests for incomplete expansions are allowed.). This is the underlying object with id, value and extensions. The accessor "getIncomplete" gives direct access to the value
          */
         public BooleanType getIncompleteElement() { 
           if (this.incomplete == null)
@@ -1972,7 +1968,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #incomplete} (Allow request for incomplete expansions?). This is the underlying object with id, value and extensions. The accessor "getIncomplete" gives direct access to the value
+         * @param value {@link #incomplete} (True if requests for incomplete expansions are allowed.). This is the underlying object with id, value and extensions. The accessor "getIncomplete" gives direct access to the value
          */
         public TerminologyCapabilitiesExpansionComponent setIncompleteElement(BooleanType value) { 
           this.incomplete = value;
@@ -1980,14 +1976,14 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         /**
-         * @return Allow request for incomplete expansions?
+         * @return True if requests for incomplete expansions are allowed.
          */
         public boolean getIncomplete() { 
           return this.incomplete == null || this.incomplete.isEmpty() ? false : this.incomplete.getValue();
         }
 
         /**
-         * @param value Allow request for incomplete expansions?
+         * @param value True if requests for incomplete expansions are allowed.
          */
         public TerminologyCapabilitiesExpansionComponent setIncomplete(boolean value) { 
             if (this.incomplete == null)
@@ -2102,7 +2098,7 @@ public class TerminologyCapabilities extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("hierarchical", "boolean", "Whether the server can return nested value sets.", 0, 1, hierarchical));
           children.add(new Property("paging", "boolean", "Whether the server supports paging on expansion.", 0, 1, paging));
-          children.add(new Property("incomplete", "boolean", "Allow request for incomplete expansions?", 0, 1, incomplete));
+          children.add(new Property("incomplete", "boolean", "True if requests for incomplete expansions are allowed.", 0, 1, incomplete));
           children.add(new Property("parameter", "", "Supported expansion parameter.", 0, java.lang.Integer.MAX_VALUE, parameter));
           children.add(new Property("textFilter", "markdown", "Documentation about text searching works.", 0, 1, textFilter));
         }
@@ -2112,7 +2108,7 @@ public class TerminologyCapabilities extends CanonicalResource {
           switch (_hash) {
           case 857636745: /*hierarchical*/  return new Property("hierarchical", "boolean", "Whether the server can return nested value sets.", 0, 1, hierarchical);
           case -995747956: /*paging*/  return new Property("paging", "boolean", "Whether the server supports paging on expansion.", 0, 1, paging);
-          case -1010022050: /*incomplete*/  return new Property("incomplete", "boolean", "Allow request for incomplete expansions?", 0, 1, incomplete);
+          case -1010022050: /*incomplete*/  return new Property("incomplete", "boolean", "True if requests for incomplete expansions are allowed.", 0, 1, incomplete);
           case 1954460585: /*parameter*/  return new Property("parameter", "", "Supported expansion parameter.", 0, java.lang.Integer.MAX_VALUE, parameter);
           case 1469359877: /*textFilter*/  return new Property("textFilter", "markdown", "Documentation about text searching works.", 0, 1, textFilter);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -2276,10 +2272,10 @@ public class TerminologyCapabilities extends CanonicalResource {
     @Block()
     public static class TerminologyCapabilitiesExpansionParameterComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Expansion Parameter name.
+         * Name of the supported expansion parameter.
          */
         @Child(name = "name", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Expansion Parameter name", formalDefinition="Expansion Parameter name." )
+        @Description(shortDefinition="Name of the supported expansion parameter", formalDefinition="Name of the supported expansion parameter." )
         protected CodeType name;
 
         /**
@@ -2307,7 +2303,7 @@ public class TerminologyCapabilities extends CanonicalResource {
       }
 
         /**
-         * @return {@link #name} (Expansion Parameter name.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         * @return {@link #name} (Name of the supported expansion parameter.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
          */
         public CodeType getNameElement() { 
           if (this.name == null)
@@ -2327,7 +2323,7 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         /**
-         * @param value {@link #name} (Expansion Parameter name.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         * @param value {@link #name} (Name of the supported expansion parameter.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
          */
         public TerminologyCapabilitiesExpansionParameterComponent setNameElement(CodeType value) { 
           this.name = value;
@@ -2335,14 +2331,14 @@ public class TerminologyCapabilities extends CanonicalResource {
         }
 
         /**
-         * @return Expansion Parameter name.
+         * @return Name of the supported expansion parameter.
          */
         public String getName() { 
           return this.name == null ? null : this.name.getValue();
         }
 
         /**
-         * @param value Expansion Parameter name.
+         * @param value Name of the supported expansion parameter.
          */
         public TerminologyCapabilitiesExpansionParameterComponent setName(String value) { 
             if (this.name == null)
@@ -2402,14 +2398,14 @@ public class TerminologyCapabilities extends CanonicalResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("name", "code", "Expansion Parameter name.", 0, 1, name));
+          children.add(new Property("name", "code", "Name of the supported expansion parameter.", 0, 1, name));
           children.add(new Property("documentation", "string", "Description of support for parameter.", 0, 1, documentation));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3373707: /*name*/  return new Property("name", "code", "Expansion Parameter name.", 0, 1, name);
+          case 3373707: /*name*/  return new Property("name", "code", "Name of the supported expansion parameter.", 0, 1, name);
           case 1587405498: /*documentation*/  return new Property("documentation", "string", "Description of support for parameter.", 0, 1, documentation);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -5600,3 +5596,4 @@ public class TerminologyCapabilities extends CanonicalResource {
 
 
 }
+

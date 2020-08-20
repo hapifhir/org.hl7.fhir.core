@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,25 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.SubscriptionSearchModifier;
-import org.hl7.fhir.r5.model.Enumerations.SubscriptionSearchModifierEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * Describes a stream of resource state changes identified by trigger criteria and annotated with labels useful to filter projections from this topic.
@@ -1319,7 +1315,7 @@ public class SubscriptionTopic extends DomainResource {
     /**
      * An absolute URL that is used to identify this SubscriptionTopic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).
      */
-    @Child(name = "url", type = {UriType.class}, order=0, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "url", type = {UriType.class}, order=0, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Logical canonical URL to reference this SubscriptionTopic (globally unique)", formalDefinition="An absolute URL that is used to identify this SubscriptionTopic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions)." )
     protected UriType url;
 
@@ -1347,21 +1343,14 @@ public class SubscriptionTopic extends DomainResource {
     /**
      * The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.
      */
-    @Child(name = "derivedFromCanonical", type = {CanonicalType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "derivedFrom", type = {CanonicalType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Based on FHIR protocol or definition", formalDefinition="The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic." )
-    protected List<CanonicalType> derivedFromCanonical;
-
-    /**
-     * The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.
-     */
-    @Child(name = "derivedFromUri", type = {UriType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Based on external protocol or definition", formalDefinition="The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition." )
-    protected List<UriType> derivedFromUri;
+    protected List<CanonicalType> derivedFrom;
 
     /**
      * The current state of the SubscriptionTopic.
      */
-    @Child(name = "status", type = {CodeType.class}, order=6, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The current state of the SubscriptionTopic." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -1369,49 +1358,49 @@ public class SubscriptionTopic extends DomainResource {
     /**
      * A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.
      */
-    @Child(name = "experimental", type = {BooleanType.class}, order=7, min=0, max=1, modifier=true, summary=true)
+    @Child(name = "experimental", type = {BooleanType.class}, order=6, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="If for testing purposes, not real usage", formalDefinition="A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage." )
     protected BooleanType experimental;
 
     /**
      * For draft definitions, indicates the date of initial creation.  For active definitions, represents the date of activation.  For withdrawn definitions, indicates the date of withdrawal.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=8, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date status first applied", formalDefinition="For draft definitions, indicates the date of initial creation.  For active definitions, represents the date of activation.  For withdrawn definitions, indicates the date of withdrawal." )
     protected DateTimeType date;
 
     /**
      * Helps establish the "authority/credibility" of the SubscriptionTopic.  May also allow for contact.
      */
-    @Child(name = "publisher", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "publisher", type = {Practitioner.class, PractitionerRole.class, Organization.class}, order=8, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The name of the individual or organization that published the SubscriptionTopic", formalDefinition="Helps establish the \"authority/credibility\" of the SubscriptionTopic.  May also allow for contact." )
     protected Reference publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the Topic from the consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Natural language description of the ToSubscriptionTopicpic", formalDefinition="A free text natural language description of the Topic from the consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These terms may be used to assist with indexing and searching of code system definitions.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Content intends to support these contexts", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These terms may be used to assist with indexing and searching of code system definitions." )
     protected List<UsageContext> useContext;
 
     /**
      * A jurisdiction in which the Topic is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for Topic (if applicable)", formalDefinition="A jurisdiction in which the Topic is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
@@ -1419,53 +1408,53 @@ public class SubscriptionTopic extends DomainResource {
     /**
      * Explains why this Topic is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this SubscriptionTopic is defined", formalDefinition="Explains why this Topic is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the SubscriptionTopic and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the SubscriptionTopic." )
     protected MarkdownType copyright;
 
     /**
      * The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=15, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When SubscriptionTopic is/was approved by publisher", formalDefinition="The date on which the asset content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Last review date for the SubscriptionTopic", formalDefinition="The date on which the asset content was last reviewed. Review happens periodically after that, but doesn't change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The period during which the SubscriptionTopic content was or is planned to be effective.
      */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=18, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effectivePeriod", type = {Period.class}, order=17, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The effective date range for the SubscriptionTopic", formalDefinition="The period during which the SubscriptionTopic content was or is planned to be effective." )
     protected Period effectivePeriod;
 
     /**
      * The criteria for including updates to a nominated resource in the subscription topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression.
      */
-    @Child(name = "resourceTrigger", type = {}, order=19, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "resourceTrigger", type = {}, order=18, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Criteria for including a resource update in the subscription topic", formalDefinition="The criteria for including updates to a nominated resource in the subscription topic.  Thie criteria may be just a human readable description and/or a full FHIR search string or FHIRPath expression." )
     protected SubscriptionTopicResourceTriggerComponent resourceTrigger;
 
     /**
      * List of properties by which Subscriptions on the subscription topic can be filtered.
      */
-    @Child(name = "canFilterBy", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "canFilterBy", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Properties by which a Subscription can further filter a SubscriptionTopic", formalDefinition="List of properties by which Subscriptions on the subscription topic can be filtered." )
     protected List<SubscriptionTopicCanFilterByComponent> canFilterBy;
 
-    private static final long serialVersionUID = 2064987797L;
+    private static final long serialVersionUID = 1023095226L;
 
   /**
    * Constructor
@@ -1477,8 +1466,9 @@ public class SubscriptionTopic extends DomainResource {
   /**
    * Constructor
    */
-    public SubscriptionTopic(PublicationStatus status) {
+    public SubscriptionTopic(String url, PublicationStatus status) {
       super();
+      this.setUrl(url);
       this.setStatus(status);
     }
 
@@ -1521,13 +1511,9 @@ public class SubscriptionTopic extends DomainResource {
      * @param value An absolute URL that is used to identify this SubscriptionTopic when it is referenced in a specification, model, design or an instance. This SHALL be a URL, SHOULD be globally unique, and SHOULD be an address at which this Topic is (or will be) published. The URL SHOULD include the major version of the Topic. For more information see [Technical and Business Versions](resource.html#versions).
      */
     public SubscriptionTopic setUrl(String value) { 
-      if (Utilities.noString(value))
-        this.url = null;
-      else {
         if (this.url == null)
           this.url = new UriType();
         this.url.setValue(value);
-      }
       return this;
     }
 
@@ -1683,123 +1669,62 @@ public class SubscriptionTopic extends DomainResource {
     }
 
     /**
-     * @return {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
+     * @return {@link #derivedFrom} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
      */
-    public List<CanonicalType> getDerivedFromCanonical() { 
-      if (this.derivedFromCanonical == null)
-        this.derivedFromCanonical = new ArrayList<CanonicalType>();
-      return this.derivedFromCanonical;
+    public List<CanonicalType> getDerivedFrom() { 
+      if (this.derivedFrom == null)
+        this.derivedFrom = new ArrayList<CanonicalType>();
+      return this.derivedFrom;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public SubscriptionTopic setDerivedFromCanonical(List<CanonicalType> theDerivedFromCanonical) { 
-      this.derivedFromCanonical = theDerivedFromCanonical;
+    public SubscriptionTopic setDerivedFrom(List<CanonicalType> theDerivedFrom) { 
+      this.derivedFrom = theDerivedFrom;
       return this;
     }
 
-    public boolean hasDerivedFromCanonical() { 
-      if (this.derivedFromCanonical == null)
+    public boolean hasDerivedFrom() { 
+      if (this.derivedFrom == null)
         return false;
-      for (CanonicalType item : this.derivedFromCanonical)
+      for (CanonicalType item : this.derivedFrom)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
     /**
-     * @return {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
+     * @return {@link #derivedFrom} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
      */
-    public CanonicalType addDerivedFromCanonicalElement() {//2 
+    public CanonicalType addDerivedFromElement() {//2 
       CanonicalType t = new CanonicalType();
-      if (this.derivedFromCanonical == null)
-        this.derivedFromCanonical = new ArrayList<CanonicalType>();
-      this.derivedFromCanonical.add(t);
+      if (this.derivedFrom == null)
+        this.derivedFrom = new ArrayList<CanonicalType>();
+      this.derivedFrom.add(t);
       return t;
     }
 
     /**
-     * @param value {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
+     * @param value {@link #derivedFrom} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
      */
-    public SubscriptionTopic addDerivedFromCanonical(String value) { //1
+    public SubscriptionTopic addDerivedFrom(String value) { //1
       CanonicalType t = new CanonicalType();
       t.setValue(value);
-      if (this.derivedFromCanonical == null)
-        this.derivedFromCanonical = new ArrayList<CanonicalType>();
-      this.derivedFromCanonical.add(t);
+      if (this.derivedFrom == null)
+        this.derivedFrom = new ArrayList<CanonicalType>();
+      this.derivedFrom.add(t);
       return this;
     }
 
     /**
-     * @param value {@link #derivedFromCanonical} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
+     * @param value {@link #derivedFrom} (The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.)
      */
-    public boolean hasDerivedFromCanonical(String value) { 
-      if (this.derivedFromCanonical == null)
+    public boolean hasDerivedFrom(String value) { 
+      if (this.derivedFrom == null)
         return false;
-      for (CanonicalType v : this.derivedFromCanonical)
+      for (CanonicalType v : this.derivedFrom)
         if (v.getValue().equals(value)) // canonical
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #derivedFromUri} (The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.)
-     */
-    public List<UriType> getDerivedFromUri() { 
-      if (this.derivedFromUri == null)
-        this.derivedFromUri = new ArrayList<UriType>();
-      return this.derivedFromUri;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public SubscriptionTopic setDerivedFromUri(List<UriType> theDerivedFromUri) { 
-      this.derivedFromUri = theDerivedFromUri;
-      return this;
-    }
-
-    public boolean hasDerivedFromUri() { 
-      if (this.derivedFromUri == null)
-        return false;
-      for (UriType item : this.derivedFromUri)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    /**
-     * @return {@link #derivedFromUri} (The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.)
-     */
-    public UriType addDerivedFromUriElement() {//2 
-      UriType t = new UriType();
-      if (this.derivedFromUri == null)
-        this.derivedFromUri = new ArrayList<UriType>();
-      this.derivedFromUri.add(t);
-      return t;
-    }
-
-    /**
-     * @param value {@link #derivedFromUri} (The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.)
-     */
-    public SubscriptionTopic addDerivedFromUri(String value) { //1
-      UriType t = new UriType();
-      t.setValue(value);
-      if (this.derivedFromUri == null)
-        this.derivedFromUri = new ArrayList<UriType>();
-      this.derivedFromUri.add(t);
-      return this;
-    }
-
-    /**
-     * @param value {@link #derivedFromUri} (The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.)
-     */
-    public boolean hasDerivedFromUri(String value) { 
-      if (this.derivedFromUri == null)
-        return false;
-      for (UriType v : this.derivedFromUri)
-        if (v.getValue().equals(value)) // uri
           return true;
       return false;
     }
@@ -2478,8 +2403,7 @@ public class SubscriptionTopic extends DomainResource {
         children.add(new Property("identifier", "Identifier", "Business identifiers assigned to this SubscriptionTopic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the SubscriptionTopic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.", 0, 1, version));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the SubscriptionTopic, for example, \"admission\".", 0, 1, title));
-        children.add(new Property("derivedFromCanonical", "canonical(SubscriptionTopic)", "The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical));
-        children.add(new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri));
+        children.add(new Property("derivedFrom", "canonical(SubscriptionTopic)", "The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.", 0, java.lang.Integer.MAX_VALUE, derivedFrom));
         children.add(new Property("status", "code", "The current state of the SubscriptionTopic.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("date", "dateTime", "For draft definitions, indicates the date of initial creation.  For active definitions, represents the date of activation.  For withdrawn definitions, indicates the date of withdrawal.", 0, 1, date));
@@ -2504,8 +2428,7 @@ public class SubscriptionTopic extends DomainResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifiers assigned to this SubscriptionTopic by the performer and/or other systems.  These identifiers remain constant as the resource is updated and propagates from server to server.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the SubscriptionTopic when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the Topic author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions are orderable.", 0, 1, version);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the SubscriptionTopic, for example, \"admission\".", 0, 1, title);
-        case -978133683: /*derivedFromCanonical*/  return new Property("derivedFromCanonical", "canonical(SubscriptionTopic)", "The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.", 0, java.lang.Integer.MAX_VALUE, derivedFromCanonical);
-        case -1076333435: /*derivedFromUri*/  return new Property("derivedFromUri", "uri", "The URL pointing to an externally-defined SubscriptionTopic or other definition that is adhered to in whole or in part by this definition.", 0, java.lang.Integer.MAX_VALUE, derivedFromUri);
+        case 1077922663: /*derivedFrom*/  return new Property("derivedFrom", "canonical(SubscriptionTopic)", "The canonical URL pointing to another FHIR-defined SubscriptionTopic that is adhered to in whole or in part by this SubscriptionTopic.", 0, java.lang.Integer.MAX_VALUE, derivedFrom);
         case -892481550: /*status*/  return new Property("status", "code", "The current state of the SubscriptionTopic.", 0, 1, status);
         case -404562712: /*experimental*/  return new Property("experimental", "boolean", "A flag to indicate that this TopSubscriptionTopicic is authored for testing purposes (or education/evaluation/marketing), and is not intended to be used for genuine usage.", 0, 1, experimental);
         case 3076014: /*date*/  return new Property("date", "dateTime", "For draft definitions, indicates the date of initial creation.  For active definitions, represents the date of activation.  For withdrawn definitions, indicates the date of withdrawal.", 0, 1, date);
@@ -2533,8 +2456,7 @@ public class SubscriptionTopic extends DomainResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
-        case -978133683: /*derivedFromCanonical*/ return this.derivedFromCanonical == null ? new Base[0] : this.derivedFromCanonical.toArray(new Base[this.derivedFromCanonical.size()]); // CanonicalType
-        case -1076333435: /*derivedFromUri*/ return this.derivedFromUri == null ? new Base[0] : this.derivedFromUri.toArray(new Base[this.derivedFromUri.size()]); // UriType
+        case 1077922663: /*derivedFrom*/ return this.derivedFrom == null ? new Base[0] : this.derivedFrom.toArray(new Base[this.derivedFrom.size()]); // CanonicalType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case -404562712: /*experimental*/ return this.experimental == null ? new Base[0] : new Base[] {this.experimental}; // BooleanType
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
@@ -2570,11 +2492,8 @@ public class SubscriptionTopic extends DomainResource {
         case 110371416: // title
           this.title = TypeConvertor.castToString(value); // StringType
           return value;
-        case -978133683: // derivedFromCanonical
-          this.getDerivedFromCanonical().add(TypeConvertor.castToCanonical(value)); // CanonicalType
-          return value;
-        case -1076333435: // derivedFromUri
-          this.getDerivedFromUri().add(TypeConvertor.castToUri(value)); // UriType
+        case 1077922663: // derivedFrom
+          this.getDerivedFrom().add(TypeConvertor.castToCanonical(value)); // CanonicalType
           return value;
         case -892481550: // status
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -2637,10 +2556,8 @@ public class SubscriptionTopic extends DomainResource {
           this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
           this.title = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("derivedFromCanonical")) {
-          this.getDerivedFromCanonical().add(TypeConvertor.castToCanonical(value));
-        } else if (name.equals("derivedFromUri")) {
-          this.getDerivedFromUri().add(TypeConvertor.castToUri(value));
+        } else if (name.equals("derivedFrom")) {
+          this.getDerivedFrom().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("status")) {
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
@@ -2684,8 +2601,7 @@ public class SubscriptionTopic extends DomainResource {
         case -1618432855:  return addIdentifier(); 
         case 351608024:  return getVersionElement();
         case 110371416:  return getTitleElement();
-        case -978133683:  return addDerivedFromCanonicalElement();
-        case -1076333435:  return addDerivedFromUriElement();
+        case 1077922663:  return addDerivedFromElement();
         case -892481550:  return getStatusElement();
         case -404562712:  return getExperimentalElement();
         case 3076014:  return getDateElement();
@@ -2713,8 +2629,7 @@ public class SubscriptionTopic extends DomainResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
-        case -978133683: /*derivedFromCanonical*/ return new String[] {"canonical"};
-        case -1076333435: /*derivedFromUri*/ return new String[] {"uri"};
+        case 1077922663: /*derivedFrom*/ return new String[] {"canonical"};
         case -892481550: /*status*/ return new String[] {"code"};
         case -404562712: /*experimental*/ return new String[] {"boolean"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
@@ -2749,11 +2664,8 @@ public class SubscriptionTopic extends DomainResource {
         else if (name.equals("title")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.title");
         }
-        else if (name.equals("derivedFromCanonical")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.derivedFromCanonical");
-        }
-        else if (name.equals("derivedFromUri")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.derivedFromUri");
+        else if (name.equals("derivedFrom")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.derivedFrom");
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubscriptionTopic.status");
@@ -2828,15 +2740,10 @@ public class SubscriptionTopic extends DomainResource {
         };
         dst.version = version == null ? null : version.copy();
         dst.title = title == null ? null : title.copy();
-        if (derivedFromCanonical != null) {
-          dst.derivedFromCanonical = new ArrayList<CanonicalType>();
-          for (CanonicalType i : derivedFromCanonical)
-            dst.derivedFromCanonical.add(i.copy());
-        };
-        if (derivedFromUri != null) {
-          dst.derivedFromUri = new ArrayList<UriType>();
-          for (UriType i : derivedFromUri)
-            dst.derivedFromUri.add(i.copy());
+        if (derivedFrom != null) {
+          dst.derivedFrom = new ArrayList<CanonicalType>();
+          for (CanonicalType i : derivedFrom)
+            dst.derivedFrom.add(i.copy());
         };
         dst.status = status == null ? null : status.copy();
         dst.experimental = experimental == null ? null : experimental.copy();
@@ -2883,10 +2790,9 @@ public class SubscriptionTopic extends DomainResource {
           return false;
         SubscriptionTopic o = (SubscriptionTopic) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
-           && compareDeep(title, o.title, true) && compareDeep(derivedFromCanonical, o.derivedFromCanonical, true)
-           && compareDeep(derivedFromUri, o.derivedFromUri, true) && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true)
-           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
+           && compareDeep(title, o.title, true) && compareDeep(derivedFrom, o.derivedFrom, true) && compareDeep(status, o.status, true)
+           && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
            && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
            && compareDeep(approvalDate, o.approvalDate, true) && compareDeep(lastReviewDate, o.lastReviewDate, true)
            && compareDeep(effectivePeriod, o.effectivePeriod, true) && compareDeep(resourceTrigger, o.resourceTrigger, true)
@@ -2901,18 +2807,17 @@ public class SubscriptionTopic extends DomainResource {
           return false;
         SubscriptionTopic o = (SubscriptionTopic) other_;
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(title, o.title, true)
-           && compareValues(derivedFromCanonical, o.derivedFromCanonical, true) && compareValues(derivedFromUri, o.derivedFromUri, true)
-           && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true)
-           && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true) && compareValues(copyright, o.copyright, true)
-           && compareValues(approvalDate, o.approvalDate, true) && compareValues(lastReviewDate, o.lastReviewDate, true)
-          ;
+           && compareValues(derivedFrom, o.derivedFrom, true) && compareValues(status, o.status, true) && compareValues(experimental, o.experimental, true)
+           && compareValues(date, o.date, true) && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true)
+           && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
+           && compareValues(lastReviewDate, o.lastReviewDate, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , title, derivedFromCanonical, derivedFromUri, status, experimental, date, publisher
-          , contact, description, useContext, jurisdiction, purpose, copyright, approvalDate
-          , lastReviewDate, effectivePeriod, resourceTrigger, canFilterBy);
+          , title, derivedFrom, status, experimental, date, publisher, contact, description
+          , useContext, jurisdiction, purpose, copyright, approvalDate, lastReviewDate, effectivePeriod
+          , resourceTrigger, canFilterBy);
       }
 
   @Override
@@ -2939,6 +2844,26 @@ public class SubscriptionTopic extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>derived-or-self</b>
+   * <p>
+   * Description: <b>A server defined search that matches either the url or derivedFrom</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SubscriptionTopic.url | SubscriptionTopic.derivedFrom</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="derived-or-self", path="SubscriptionTopic.url | SubscriptionTopic.derivedFrom", description="A server defined search that matches either the url or derivedFrom", type="uri" )
+  public static final String SP_DERIVED_OR_SELF = "derived-or-self";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>derived-or-self</b>
+   * <p>
+   * Description: <b>A server defined search that matches either the url or derivedFrom</b><br>
+   * Type: <b>uri</b><br>
+   * Path: <b>SubscriptionTopic.url | SubscriptionTopic.derivedFrom</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.UriClientParam DERIVED_OR_SELF = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_DERIVED_OR_SELF);
 
  /**
    * Search parameter: <b>identifier</b>
@@ -3108,3 +3033,4 @@ public class SubscriptionTopic extends DomainResource {
 
 
 }
+

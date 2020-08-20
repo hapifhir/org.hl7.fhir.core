@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,23 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.DeviceNameType;
-import org.hl7.fhir.r5.model.Enumerations.DeviceNameTypeEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A type of a manufactured item that is used in the provision of healthcare without being substantially changed through that activity. The device may be a medical or non-medical device.
@@ -2511,18 +2509,18 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     protected List<DeviceUdiCarrierComponent> udiCarrier;
 
     /**
-     * Status of the Device availability.
+     * Status of the Device record. This is not the status of the device like availability.
      */
     @Child(name = "status", type = {CodeType.class}, order=4, min=0, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="active | inactive | entered-in-error | unknown", formalDefinition="Status of the Device availability." )
+    @Description(shortDefinition="active | inactive | entered-in-error | unknown", formalDefinition="Status of the Device record. This is not the status of the device like availability." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-status")
     protected Enumeration<FHIRDeviceStatus> status;
 
     /**
-     * Reason for the dtatus of the Device availability.
+     * Reason for the status of the Device record. For example, why is the record not active.
      */
     @Child(name = "statusReason", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="online | paused | standby | offline | not-ready | transduc-discon | hw-discon | off", formalDefinition="Reason for the dtatus of the Device availability." )
+    @Description(shortDefinition="discarded | obsolete | removed", formalDefinition="Reason for the status of the Device record. For example, why is the record not active." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-status-reason")
     protected List<CodeableConcept> statusReason;
 
@@ -2598,10 +2596,11 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     protected List<CodeableConcept> type;
 
     /**
-     * The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.
+     * The device function, including in some cases whether or not the functionality conforms to some standard. For example, a PHD blood pressure specialization indicates that the device conforms to the IEEE 11073-10407 Blood Pressure Specialization. This is NOT an alternate name or an additional descriptive name given by the manufacturer. That would be found in the deviceName element.
+In the PHD case, there are 11073 10101 nomenclature codes that define the specialization standards and that will be used, for example, in the PHD case for the specialization.systemType element. The specialization.version would be the version of the standard if the systemType referred to a standard.
      */
     @Child(name = "specialization", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication", formalDefinition="The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication." )
+    @Description(shortDefinition="The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication", formalDefinition="The device function, including in some cases whether or not the functionality conforms to some standard. For example, a PHD blood pressure specialization indicates that the device conforms to the IEEE 11073-10407 Blood Pressure Specialization. This is NOT an alternate name or an additional descriptive name given by the manufacturer. That would be found in the deviceName element.\nIn the PHD case, there are 11073 10101 nomenclature codes that define the specialization standards and that will be used, for example, in the PHD case for the specialization.systemType element. The specialization.version would be the version of the standard if the systemType referred to a standard." )
     protected List<DeviceSpecializationComponent> specialization;
 
     /**
@@ -2877,7 +2876,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return {@link #status} (Status of the Device availability.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (Status of the Device record. This is not the status of the device like availability.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Enumeration<FHIRDeviceStatus> getStatusElement() { 
       if (this.status == null)
@@ -2897,7 +2896,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @param value {@link #status} (Status of the Device availability.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (Status of the Device record. This is not the status of the device like availability.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
     public Device setStatusElement(Enumeration<FHIRDeviceStatus> value) { 
       this.status = value;
@@ -2905,14 +2904,14 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return Status of the Device availability.
+     * @return Status of the Device record. This is not the status of the device like availability.
      */
     public FHIRDeviceStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value Status of the Device availability.
+     * @param value Status of the Device record. This is not the status of the device like availability.
      */
     public Device setStatus(FHIRDeviceStatus value) { 
       if (value == null)
@@ -2926,7 +2925,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return {@link #statusReason} (Reason for the dtatus of the Device availability.)
+     * @return {@link #statusReason} (Reason for the status of the Device record. For example, why is the record not active.)
      */
     public List<CodeableConcept> getStatusReason() { 
       if (this.statusReason == null)
@@ -3477,7 +3476,8 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
     }
 
     /**
-     * @return {@link #specialization} (The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.)
+     * @return {@link #specialization} (The device function, including in some cases whether or not the functionality conforms to some standard. For example, a PHD blood pressure specialization indicates that the device conforms to the IEEE 11073-10407 Blood Pressure Specialization. This is NOT an alternate name or an additional descriptive name given by the manufacturer. That would be found in the deviceName element.
+In the PHD case, there are 11073 10101 nomenclature codes that define the specialization standards and that will be used, for example, in the PHD case for the specialization.systemType element. The specialization.version would be the version of the standard if the systemType referred to a standard.)
      */
     public List<DeviceSpecializationComponent> getSpecialization() { 
       if (this.specialization == null)
@@ -3993,8 +3993,8 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         children.add(new Property("displayName", "string", "The name used to display by default when the device is referenced. Based on intent of use by the resource creator, this may reflect one of the names in Device.deviceName, or may be another simple name.", 0, 1, displayName));
         children.add(new Property("definition", "Reference(DeviceDefinition)", "The reference to the definition for the device.", 0, 1, definition));
         children.add(new Property("udiCarrier", "", "Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.", 0, java.lang.Integer.MAX_VALUE, udiCarrier));
-        children.add(new Property("status", "code", "Status of the Device availability.", 0, 1, status));
-        children.add(new Property("statusReason", "CodeableConcept", "Reason for the dtatus of the Device availability.", 0, java.lang.Integer.MAX_VALUE, statusReason));
+        children.add(new Property("status", "code", "Status of the Device record. This is not the status of the device like availability.", 0, 1, status));
+        children.add(new Property("statusReason", "CodeableConcept", "Reason for the status of the Device record. For example, why is the record not active.", 0, java.lang.Integer.MAX_VALUE, statusReason));
         children.add(new Property("distinctIdentifier", "string", "The distinct identification string as required by regulation for a human cell, tissue, or cellular and tissue-based product.", 0, 1, distinctIdentifier));
         children.add(new Property("manufacturer", "string", "A name of the manufacturer or entity legally responsible for the device.", 0, 1, manufacturer));
         children.add(new Property("manufactureDate", "dateTime", "The date and time when the device was manufactured.", 0, 1, manufactureDate));
@@ -4005,7 +4005,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         children.add(new Property("modelNumber", "string", "The manufacturer's model number for the device.", 0, 1, modelNumber));
         children.add(new Property("partNumber", "string", "The part number or catalog number of the device.", 0, 1, partNumber));
         children.add(new Property("type", "CodeableConcept", "The kind or type of device. A device instance may have more than one type - in which case those are the types that apply to the specific instance of the device.", 0, java.lang.Integer.MAX_VALUE, type));
-        children.add(new Property("specialization", "", "The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.", 0, java.lang.Integer.MAX_VALUE, specialization));
+        children.add(new Property("specialization", "", "The device function, including in some cases whether or not the functionality conforms to some standard. For example, a PHD blood pressure specialization indicates that the device conforms to the IEEE 11073-10407 Blood Pressure Specialization. This is NOT an alternate name or an additional descriptive name given by the manufacturer. That would be found in the deviceName element.\nIn the PHD case, there are 11073 10101 nomenclature codes that define the specialization standards and that will be used, for example, in the PHD case for the specialization.systemType element. The specialization.version would be the version of the standard if the systemType referred to a standard.", 0, java.lang.Integer.MAX_VALUE, specialization));
         children.add(new Property("version", "", "The actual design of the device or software version running on the device.", 0, java.lang.Integer.MAX_VALUE, version));
         children.add(new Property("property", "", "The actual configuration settings of a device as it actually operates, e.g., regulation status, time properties.", 0, java.lang.Integer.MAX_VALUE, property));
         children.add(new Property("patient", "Reference(Patient)", "Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in.", 0, 1, patient));
@@ -4027,8 +4027,8 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         case 1714148973: /*displayName*/  return new Property("displayName", "string", "The name used to display by default when the device is referenced. Based on intent of use by the resource creator, this may reflect one of the names in Device.deviceName, or may be another simple name.", 0, 1, displayName);
         case -1014418093: /*definition*/  return new Property("definition", "Reference(DeviceDefinition)", "The reference to the definition for the device.", 0, 1, definition);
         case -1343558178: /*udiCarrier*/  return new Property("udiCarrier", "", "Unique device identifier (UDI) assigned to device label or package.  Note that the Device may include multiple udiCarriers as it either may include just the udiCarrier for the jurisdiction it is sold, or for multiple jurisdictions it could have been sold.", 0, java.lang.Integer.MAX_VALUE, udiCarrier);
-        case -892481550: /*status*/  return new Property("status", "code", "Status of the Device availability.", 0, 1, status);
-        case 2051346646: /*statusReason*/  return new Property("statusReason", "CodeableConcept", "Reason for the dtatus of the Device availability.", 0, java.lang.Integer.MAX_VALUE, statusReason);
+        case -892481550: /*status*/  return new Property("status", "code", "Status of the Device record. This is not the status of the device like availability.", 0, 1, status);
+        case 2051346646: /*statusReason*/  return new Property("statusReason", "CodeableConcept", "Reason for the status of the Device record. For example, why is the record not active.", 0, java.lang.Integer.MAX_VALUE, statusReason);
         case -1836176187: /*distinctIdentifier*/  return new Property("distinctIdentifier", "string", "The distinct identification string as required by regulation for a human cell, tissue, or cellular and tissue-based product.", 0, 1, distinctIdentifier);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "string", "A name of the manufacturer or entity legally responsible for the device.", 0, 1, manufacturer);
         case 416714767: /*manufactureDate*/  return new Property("manufactureDate", "dateTime", "The date and time when the device was manufactured.", 0, 1, manufactureDate);
@@ -4039,7 +4039,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         case 346619858: /*modelNumber*/  return new Property("modelNumber", "string", "The manufacturer's model number for the device.", 0, 1, modelNumber);
         case -731502308: /*partNumber*/  return new Property("partNumber", "string", "The part number or catalog number of the device.", 0, 1, partNumber);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The kind or type of device. A device instance may have more than one type - in which case those are the types that apply to the specific instance of the device.", 0, java.lang.Integer.MAX_VALUE, type);
-        case 682815883: /*specialization*/  return new Property("specialization", "", "The capabilities supported on a  device, the standards to which the device conforms for a particular purpose, and used for the communication.", 0, java.lang.Integer.MAX_VALUE, specialization);
+        case 682815883: /*specialization*/  return new Property("specialization", "", "The device function, including in some cases whether or not the functionality conforms to some standard. For example, a PHD blood pressure specialization indicates that the device conforms to the IEEE 11073-10407 Blood Pressure Specialization. This is NOT an alternate name or an additional descriptive name given by the manufacturer. That would be found in the deviceName element.\nIn the PHD case, there are 11073 10101 nomenclature codes that define the specialization standards and that will be used, for example, in the PHD case for the specialization.systemType element. The specialization.version would be the version of the standard if the systemType referred to a standard.", 0, java.lang.Integer.MAX_VALUE, specialization);
         case 351608024: /*version*/  return new Property("version", "", "The actual design of the device or software version running on the device.", 0, java.lang.Integer.MAX_VALUE, version);
         case -993141291: /*property*/  return new Property("property", "", "The actual configuration settings of a device as it actually operates, e.g., regulation status, time properties.", 0, java.lang.Integer.MAX_VALUE, property);
         case -791418107: /*patient*/  return new Property("patient", "Reference(Patient)", "Patient information, if the device is affixed to, or associated to a patient for their specific use, irrespective of the procedure, use, observation, or other activity that the device is involved in.", 0, 1, patient);
@@ -5003,3 +5003,4 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
 
 
 }
+

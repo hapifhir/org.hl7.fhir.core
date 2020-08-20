@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,22 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.DaysOfWeek;
-import org.hl7.fhir.r5.model.Enumerations.DaysOfWeekEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A specific set of Roles/Locations/specialties/services that a practitioner may perform at an organization for a period of time.
@@ -57,18 +56,18 @@ public class PractitionerRole extends DomainResource {
     @Block()
     public static class PractitionerRoleAvailableTimeComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Indicates which days of the week are available between the start and end Times.
+         * Indicates which days of the week are available between the start and end times.
          */
         @Child(name = "daysOfWeek", type = {CodeType.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="mon | tue | wed | thu | fri | sat | sun", formalDefinition="Indicates which days of the week are available between the start and end Times." )
+        @Description(shortDefinition="mon | tue | wed | thu | fri | sat | sun", formalDefinition="Indicates which days of the week are available between the start and end times." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/days-of-week")
         protected List<Enumeration<DaysOfWeek>> daysOfWeek;
 
         /**
-         * Is this always available? (hence times are irrelevant) e.g. 24 hour service.
+         * Indicates always available, hence times are irrelevant.  (e.g. 24-hour service).
          */
         @Child(name = "allDay", type = {BooleanType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Always available? e.g. 24 hour service", formalDefinition="Is this always available? (hence times are irrelevant) e.g. 24 hour service." )
+        @Description(shortDefinition="Always available? e.g. 24 hour service", formalDefinition="Indicates always available, hence times are irrelevant.  (e.g. 24-hour service)." )
         protected BooleanType allDay;
 
         /**
@@ -95,7 +94,7 @@ public class PractitionerRole extends DomainResource {
       }
 
         /**
-         * @return {@link #daysOfWeek} (Indicates which days of the week are available between the start and end Times.)
+         * @return {@link #daysOfWeek} (Indicates which days of the week are available between the start and end times.)
          */
         public List<Enumeration<DaysOfWeek>> getDaysOfWeek() { 
           if (this.daysOfWeek == null)
@@ -121,7 +120,7 @@ public class PractitionerRole extends DomainResource {
         }
 
         /**
-         * @return {@link #daysOfWeek} (Indicates which days of the week are available between the start and end Times.)
+         * @return {@link #daysOfWeek} (Indicates which days of the week are available between the start and end times.)
          */
         public Enumeration<DaysOfWeek> addDaysOfWeekElement() {//2 
           Enumeration<DaysOfWeek> t = new Enumeration<DaysOfWeek>(new DaysOfWeekEnumFactory());
@@ -132,7 +131,7 @@ public class PractitionerRole extends DomainResource {
         }
 
         /**
-         * @param value {@link #daysOfWeek} (Indicates which days of the week are available between the start and end Times.)
+         * @param value {@link #daysOfWeek} (Indicates which days of the week are available between the start and end times.)
          */
         public PractitionerRoleAvailableTimeComponent addDaysOfWeek(DaysOfWeek value) { //1
           Enumeration<DaysOfWeek> t = new Enumeration<DaysOfWeek>(new DaysOfWeekEnumFactory());
@@ -144,7 +143,7 @@ public class PractitionerRole extends DomainResource {
         }
 
         /**
-         * @param value {@link #daysOfWeek} (Indicates which days of the week are available between the start and end Times.)
+         * @param value {@link #daysOfWeek} (Indicates which days of the week are available between the start and end times.)
          */
         public boolean hasDaysOfWeek(DaysOfWeek value) { 
           if (this.daysOfWeek == null)
@@ -156,7 +155,7 @@ public class PractitionerRole extends DomainResource {
         }
 
         /**
-         * @return {@link #allDay} (Is this always available? (hence times are irrelevant) e.g. 24 hour service.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
+         * @return {@link #allDay} (Indicates always available, hence times are irrelevant.  (e.g. 24-hour service).). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
          */
         public BooleanType getAllDayElement() { 
           if (this.allDay == null)
@@ -176,7 +175,7 @@ public class PractitionerRole extends DomainResource {
         }
 
         /**
-         * @param value {@link #allDay} (Is this always available? (hence times are irrelevant) e.g. 24 hour service.). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
+         * @param value {@link #allDay} (Indicates always available, hence times are irrelevant.  (e.g. 24-hour service).). This is the underlying object with id, value and extensions. The accessor "getAllDay" gives direct access to the value
          */
         public PractitionerRoleAvailableTimeComponent setAllDayElement(BooleanType value) { 
           this.allDay = value;
@@ -184,14 +183,14 @@ public class PractitionerRole extends DomainResource {
         }
 
         /**
-         * @return Is this always available? (hence times are irrelevant) e.g. 24 hour service.
+         * @return Indicates always available, hence times are irrelevant.  (e.g. 24-hour service).
          */
         public boolean getAllDay() { 
           return this.allDay == null || this.allDay.isEmpty() ? false : this.allDay.getValue();
         }
 
         /**
-         * @param value Is this always available? (hence times are irrelevant) e.g. 24 hour service.
+         * @param value Indicates always available, hence times are irrelevant.  (e.g. 24-hour service).
          */
         public PractitionerRoleAvailableTimeComponent setAllDay(boolean value) { 
             if (this.allDay == null)
@@ -300,8 +299,8 @@ public class PractitionerRole extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("daysOfWeek", "code", "Indicates which days of the week are available between the start and end Times.", 0, java.lang.Integer.MAX_VALUE, daysOfWeek));
-          children.add(new Property("allDay", "boolean", "Is this always available? (hence times are irrelevant) e.g. 24 hour service.", 0, 1, allDay));
+          children.add(new Property("daysOfWeek", "code", "Indicates which days of the week are available between the start and end times.", 0, java.lang.Integer.MAX_VALUE, daysOfWeek));
+          children.add(new Property("allDay", "boolean", "Indicates always available, hence times are irrelevant.  (e.g. 24-hour service).", 0, 1, allDay));
           children.add(new Property("availableStartTime", "time", "The opening time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableStartTime));
           children.add(new Property("availableEndTime", "time", "The closing time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableEndTime));
         }
@@ -309,8 +308,8 @@ public class PractitionerRole extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 68050338: /*daysOfWeek*/  return new Property("daysOfWeek", "code", "Indicates which days of the week are available between the start and end Times.", 0, java.lang.Integer.MAX_VALUE, daysOfWeek);
-          case -1414913477: /*allDay*/  return new Property("allDay", "boolean", "Is this always available? (hence times are irrelevant) e.g. 24 hour service.", 0, 1, allDay);
+          case 68050338: /*daysOfWeek*/  return new Property("daysOfWeek", "code", "Indicates which days of the week are available between the start and end times.", 0, java.lang.Integer.MAX_VALUE, daysOfWeek);
+          case -1414913477: /*allDay*/  return new Property("allDay", "boolean", "Indicates always available, hence times are irrelevant.  (e.g. 24-hour service).", 0, 1, allDay);
           case -1039453818: /*availableStartTime*/  return new Property("availableStartTime", "time", "The opening time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableStartTime);
           case 101151551: /*availableEndTime*/  return new Property("availableEndTime", "time", "The closing time of day. Note: If the AllDay flag is set, then this time is ignored.", 0, 1, availableEndTime);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -2125,3 +2124,4 @@ public class PractitionerRole extends DomainResource {
 
 
 }
+

@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,22 +29,26 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * Todo.
+ * Properties of a substance specific to it being a polymer.
  */
 @ResourceDef(name="SubstancePolymer", profile="http://hl7.org/fhir/StructureDefinition/SubstancePolymer")
 public class SubstancePolymer extends DomainResource {
@@ -54,17 +56,17 @@ public class SubstancePolymer extends DomainResource {
     @Block()
     public static class SubstancePolymerMonomerSetComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Todo.
+         * Captures the type of ratio to the entire polymer, e.g. Monomer/Polymer ratio, SRU/Polymer Ratio.
          */
         @Child(name = "ratioType", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="Captures the type of ratio to the entire polymer, e.g. Monomer/Polymer ratio, SRU/Polymer Ratio", formalDefinition="Captures the type of ratio to the entire polymer, e.g. Monomer/Polymer ratio, SRU/Polymer Ratio." )
         protected CodeableConcept ratioType;
 
         /**
-         * Todo.
+         * The starting materials - monomer(s) used in the synthesis of the polymer.
          */
         @Child(name = "startingMaterial", type = {}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="The starting materials - monomer(s) used in the synthesis of the polymer", formalDefinition="The starting materials - monomer(s) used in the synthesis of the polymer." )
         protected List<SubstancePolymerMonomerSetStartingMaterialComponent> startingMaterial;
 
         private static final long serialVersionUID = -933825014L;
@@ -77,7 +79,7 @@ public class SubstancePolymer extends DomainResource {
       }
 
         /**
-         * @return {@link #ratioType} (Todo.)
+         * @return {@link #ratioType} (Captures the type of ratio to the entire polymer, e.g. Monomer/Polymer ratio, SRU/Polymer Ratio.)
          */
         public CodeableConcept getRatioType() { 
           if (this.ratioType == null)
@@ -93,7 +95,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #ratioType} (Todo.)
+         * @param value {@link #ratioType} (Captures the type of ratio to the entire polymer, e.g. Monomer/Polymer ratio, SRU/Polymer Ratio.)
          */
         public SubstancePolymerMonomerSetComponent setRatioType(CodeableConcept value) { 
           this.ratioType = value;
@@ -101,7 +103,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #startingMaterial} (Todo.)
+         * @return {@link #startingMaterial} (The starting materials - monomer(s) used in the synthesis of the polymer.)
          */
         public List<SubstancePolymerMonomerSetStartingMaterialComponent> getStartingMaterial() { 
           if (this.startingMaterial == null)
@@ -155,15 +157,15 @@ public class SubstancePolymer extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("ratioType", "CodeableConcept", "Todo.", 0, 1, ratioType));
-          children.add(new Property("startingMaterial", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, startingMaterial));
+          children.add(new Property("ratioType", "CodeableConcept", "Captures the type of ratio to the entire polymer, e.g. Monomer/Polymer ratio, SRU/Polymer Ratio.", 0, 1, ratioType));
+          children.add(new Property("startingMaterial", "", "The starting materials - monomer(s) used in the synthesis of the polymer.", 0, java.lang.Integer.MAX_VALUE, startingMaterial));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 344937957: /*ratioType*/  return new Property("ratioType", "CodeableConcept", "Todo.", 0, 1, ratioType);
-          case 442919303: /*startingMaterial*/  return new Property("startingMaterial", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, startingMaterial);
+          case 344937957: /*ratioType*/  return new Property("ratioType", "CodeableConcept", "Captures the type of ratio to the entire polymer, e.g. Monomer/Polymer ratio, SRU/Polymer Ratio.", 0, 1, ratioType);
+          case 442919303: /*startingMaterial*/  return new Property("startingMaterial", "", "The starting materials - monomer(s) used in the synthesis of the polymer.", 0, java.lang.Integer.MAX_VALUE, startingMaterial);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -289,34 +291,34 @@ public class SubstancePolymer extends DomainResource {
     @Block()
     public static class SubstancePolymerMonomerSetStartingMaterialComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Todo.
+         * The type of substance for this starting material.
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="The type of substance for this starting material", formalDefinition="The type of substance for this starting material." )
         protected CodeableConcept code;
 
         /**
-         * Todo.
+         * Substance high level category, e.g. chemical substance.
          */
         @Child(name = "category", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="Substance high level category, e.g. chemical substance", formalDefinition="Substance high level category, e.g. chemical substance." )
         protected CodeableConcept category;
 
         /**
-         * Todo.
+         * Used to specify whether the attribute described is a defining element for the unique identification of the polymer.
          */
         @Child(name = "isDefining", type = {BooleanType.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="Used to specify whether the attribute described is a defining element for the unique identification of the polymer", formalDefinition="Used to specify whether the attribute described is a defining element for the unique identification of the polymer." )
         protected BooleanType isDefining;
 
         /**
-         * Todo.
+         * A percentage.
          */
-        @Child(name = "amount", type = {SubstanceAmount.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected SubstanceAmount amount;
+        @Child(name = "amount", type = {Quantity.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="A percentage", formalDefinition="A percentage." )
+        protected Quantity amount;
 
-        private static final long serialVersionUID = -254439457L;
+        private static final long serialVersionUID = -1199515148L;
 
     /**
      * Constructor
@@ -326,7 +328,7 @@ public class SubstancePolymer extends DomainResource {
       }
 
         /**
-         * @return {@link #code} (Todo.)
+         * @return {@link #code} (The type of substance for this starting material.)
          */
         public CodeableConcept getCode() { 
           if (this.code == null)
@@ -342,7 +344,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #code} (Todo.)
+         * @param value {@link #code} (The type of substance for this starting material.)
          */
         public SubstancePolymerMonomerSetStartingMaterialComponent setCode(CodeableConcept value) { 
           this.code = value;
@@ -350,7 +352,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #category} (Todo.)
+         * @return {@link #category} (Substance high level category, e.g. chemical substance.)
          */
         public CodeableConcept getCategory() { 
           if (this.category == null)
@@ -366,7 +368,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #category} (Todo.)
+         * @param value {@link #category} (Substance high level category, e.g. chemical substance.)
          */
         public SubstancePolymerMonomerSetStartingMaterialComponent setCategory(CodeableConcept value) { 
           this.category = value;
@@ -374,7 +376,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #isDefining} (Todo.). This is the underlying object with id, value and extensions. The accessor "getIsDefining" gives direct access to the value
+         * @return {@link #isDefining} (Used to specify whether the attribute described is a defining element for the unique identification of the polymer.). This is the underlying object with id, value and extensions. The accessor "getIsDefining" gives direct access to the value
          */
         public BooleanType getIsDefiningElement() { 
           if (this.isDefining == null)
@@ -394,7 +396,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #isDefining} (Todo.). This is the underlying object with id, value and extensions. The accessor "getIsDefining" gives direct access to the value
+         * @param value {@link #isDefining} (Used to specify whether the attribute described is a defining element for the unique identification of the polymer.). This is the underlying object with id, value and extensions. The accessor "getIsDefining" gives direct access to the value
          */
         public SubstancePolymerMonomerSetStartingMaterialComponent setIsDefiningElement(BooleanType value) { 
           this.isDefining = value;
@@ -402,14 +404,14 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return Todo.
+         * @return Used to specify whether the attribute described is a defining element for the unique identification of the polymer.
          */
         public boolean getIsDefining() { 
           return this.isDefining == null || this.isDefining.isEmpty() ? false : this.isDefining.getValue();
         }
 
         /**
-         * @param value Todo.
+         * @param value Used to specify whether the attribute described is a defining element for the unique identification of the polymer.
          */
         public SubstancePolymerMonomerSetStartingMaterialComponent setIsDefining(boolean value) { 
             if (this.isDefining == null)
@@ -419,14 +421,14 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #amount} (Todo.)
+         * @return {@link #amount} (A percentage.)
          */
-        public SubstanceAmount getAmount() { 
+        public Quantity getAmount() { 
           if (this.amount == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SubstancePolymerMonomerSetStartingMaterialComponent.amount");
             else if (Configuration.doAutoCreate())
-              this.amount = new SubstanceAmount(); // cc
+              this.amount = new Quantity(); // cc
           return this.amount;
         }
 
@@ -435,28 +437,28 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #amount} (Todo.)
+         * @param value {@link #amount} (A percentage.)
          */
-        public SubstancePolymerMonomerSetStartingMaterialComponent setAmount(SubstanceAmount value) { 
+        public SubstancePolymerMonomerSetStartingMaterialComponent setAmount(Quantity value) { 
           this.amount = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("code", "CodeableConcept", "Todo.", 0, 1, code));
-          children.add(new Property("category", "CodeableConcept", "Todo.", 0, 1, category));
-          children.add(new Property("isDefining", "boolean", "Todo.", 0, 1, isDefining));
-          children.add(new Property("amount", "SubstanceAmount", "Todo.", 0, 1, amount));
+          children.add(new Property("code", "CodeableConcept", "The type of substance for this starting material.", 0, 1, code));
+          children.add(new Property("category", "CodeableConcept", "Substance high level category, e.g. chemical substance.", 0, 1, category));
+          children.add(new Property("isDefining", "boolean", "Used to specify whether the attribute described is a defining element for the unique identification of the polymer.", 0, 1, isDefining));
+          children.add(new Property("amount", "Quantity", "A percentage.", 0, 1, amount));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Todo.", 0, 1, code);
-          case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Todo.", 0, 1, category);
-          case -141812990: /*isDefining*/  return new Property("isDefining", "boolean", "Todo.", 0, 1, isDefining);
-          case -1413853096: /*amount*/  return new Property("amount", "SubstanceAmount", "Todo.", 0, 1, amount);
+          case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The type of substance for this starting material.", 0, 1, code);
+          case 50511102: /*category*/  return new Property("category", "CodeableConcept", "Substance high level category, e.g. chemical substance.", 0, 1, category);
+          case -141812990: /*isDefining*/  return new Property("isDefining", "boolean", "Used to specify whether the attribute described is a defining element for the unique identification of the polymer.", 0, 1, isDefining);
+          case -1413853096: /*amount*/  return new Property("amount", "Quantity", "A percentage.", 0, 1, amount);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -468,7 +470,7 @@ public class SubstancePolymer extends DomainResource {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case -141812990: /*isDefining*/ return this.isDefining == null ? new Base[0] : new Base[] {this.isDefining}; // BooleanType
-        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // SubstanceAmount
+        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // Quantity
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -487,7 +489,7 @@ public class SubstancePolymer extends DomainResource {
           this.isDefining = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1413853096: // amount
-          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -503,7 +505,7 @@ public class SubstancePolymer extends DomainResource {
         } else if (name.equals("isDefining")) {
           this.isDefining = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("amount")) {
-          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
+          this.amount = TypeConvertor.castToQuantity(value); // Quantity
         } else
           return super.setProperty(name, value);
         return value;
@@ -527,7 +529,7 @@ public class SubstancePolymer extends DomainResource {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case -141812990: /*isDefining*/ return new String[] {"boolean"};
-        case -1413853096: /*amount*/ return new String[] {"SubstanceAmount"};
+        case -1413853096: /*amount*/ return new String[] {"Quantity"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -547,7 +549,7 @@ public class SubstancePolymer extends DomainResource {
           throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.monomerSet.startingMaterial.isDefining");
         }
         else if (name.equals("amount")) {
-          this.amount = new SubstanceAmount();
+          this.amount = new Quantity();
           return this.amount;
         }
         else
@@ -604,34 +606,27 @@ public class SubstancePolymer extends DomainResource {
     @Block()
     public static class SubstancePolymerRepeatComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Todo.
+         * A representation of an (average) molecular formula from a polymer.
          */
-        @Child(name = "numberOfUnits", type = {IntegerType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected IntegerType numberOfUnits;
-
-        /**
-         * Todo.
-         */
-        @Child(name = "averageMolecularFormula", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Child(name = "averageMolecularFormula", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="A representation of an (average) molecular formula from a polymer", formalDefinition="A representation of an (average) molecular formula from a polymer." )
         protected StringType averageMolecularFormula;
 
         /**
-         * Todo.
+         * How the quantitative amount of Structural Repeat Units is captured (e.g. Exact, Numeric, Average).
          */
-        @Child(name = "repeatUnitAmountType", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Child(name = "repeatUnitAmountType", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="How the quantitative amount of Structural Repeat Units is captured (e.g. Exact, Numeric, Average)", formalDefinition="How the quantitative amount of Structural Repeat Units is captured (e.g. Exact, Numeric, Average)." )
         protected CodeableConcept repeatUnitAmountType;
 
         /**
-         * Todo.
+         * An SRU - Structural Repeat Unit.
          */
-        @Child(name = "repeatUnit", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Child(name = "repeatUnit", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="An SRU - Structural Repeat Unit", formalDefinition="An SRU - Structural Repeat Unit." )
         protected List<SubstancePolymerRepeatRepeatUnitComponent> repeatUnit;
 
-        private static final long serialVersionUID = -988147059L;
+        private static final long serialVersionUID = -366644176L;
 
     /**
      * Constructor
@@ -641,52 +636,7 @@ public class SubstancePolymer extends DomainResource {
       }
 
         /**
-         * @return {@link #numberOfUnits} (Todo.). This is the underlying object with id, value and extensions. The accessor "getNumberOfUnits" gives direct access to the value
-         */
-        public IntegerType getNumberOfUnitsElement() { 
-          if (this.numberOfUnits == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstancePolymerRepeatComponent.numberOfUnits");
-            else if (Configuration.doAutoCreate())
-              this.numberOfUnits = new IntegerType(); // bb
-          return this.numberOfUnits;
-        }
-
-        public boolean hasNumberOfUnitsElement() { 
-          return this.numberOfUnits != null && !this.numberOfUnits.isEmpty();
-        }
-
-        public boolean hasNumberOfUnits() { 
-          return this.numberOfUnits != null && !this.numberOfUnits.isEmpty();
-        }
-
-        /**
-         * @param value {@link #numberOfUnits} (Todo.). This is the underlying object with id, value and extensions. The accessor "getNumberOfUnits" gives direct access to the value
-         */
-        public SubstancePolymerRepeatComponent setNumberOfUnitsElement(IntegerType value) { 
-          this.numberOfUnits = value;
-          return this;
-        }
-
-        /**
-         * @return Todo.
-         */
-        public int getNumberOfUnits() { 
-          return this.numberOfUnits == null || this.numberOfUnits.isEmpty() ? 0 : this.numberOfUnits.getValue();
-        }
-
-        /**
-         * @param value Todo.
-         */
-        public SubstancePolymerRepeatComponent setNumberOfUnits(int value) { 
-            if (this.numberOfUnits == null)
-              this.numberOfUnits = new IntegerType();
-            this.numberOfUnits.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #averageMolecularFormula} (Todo.). This is the underlying object with id, value and extensions. The accessor "getAverageMolecularFormula" gives direct access to the value
+         * @return {@link #averageMolecularFormula} (A representation of an (average) molecular formula from a polymer.). This is the underlying object with id, value and extensions. The accessor "getAverageMolecularFormula" gives direct access to the value
          */
         public StringType getAverageMolecularFormulaElement() { 
           if (this.averageMolecularFormula == null)
@@ -706,7 +656,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #averageMolecularFormula} (Todo.). This is the underlying object with id, value and extensions. The accessor "getAverageMolecularFormula" gives direct access to the value
+         * @param value {@link #averageMolecularFormula} (A representation of an (average) molecular formula from a polymer.). This is the underlying object with id, value and extensions. The accessor "getAverageMolecularFormula" gives direct access to the value
          */
         public SubstancePolymerRepeatComponent setAverageMolecularFormulaElement(StringType value) { 
           this.averageMolecularFormula = value;
@@ -714,14 +664,14 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return Todo.
+         * @return A representation of an (average) molecular formula from a polymer.
          */
         public String getAverageMolecularFormula() { 
           return this.averageMolecularFormula == null ? null : this.averageMolecularFormula.getValue();
         }
 
         /**
-         * @param value Todo.
+         * @param value A representation of an (average) molecular formula from a polymer.
          */
         public SubstancePolymerRepeatComponent setAverageMolecularFormula(String value) { 
           if (Utilities.noString(value))
@@ -735,7 +685,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #repeatUnitAmountType} (Todo.)
+         * @return {@link #repeatUnitAmountType} (How the quantitative amount of Structural Repeat Units is captured (e.g. Exact, Numeric, Average).)
          */
         public CodeableConcept getRepeatUnitAmountType() { 
           if (this.repeatUnitAmountType == null)
@@ -751,7 +701,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #repeatUnitAmountType} (Todo.)
+         * @param value {@link #repeatUnitAmountType} (How the quantitative amount of Structural Repeat Units is captured (e.g. Exact, Numeric, Average).)
          */
         public SubstancePolymerRepeatComponent setRepeatUnitAmountType(CodeableConcept value) { 
           this.repeatUnitAmountType = value;
@@ -759,7 +709,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #repeatUnit} (Todo.)
+         * @return {@link #repeatUnit} (An SRU - Structural Repeat Unit.)
          */
         public List<SubstancePolymerRepeatRepeatUnitComponent> getRepeatUnit() { 
           if (this.repeatUnit == null)
@@ -813,19 +763,17 @@ public class SubstancePolymer extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("numberOfUnits", "integer", "Todo.", 0, 1, numberOfUnits));
-          children.add(new Property("averageMolecularFormula", "string", "Todo.", 0, 1, averageMolecularFormula));
-          children.add(new Property("repeatUnitAmountType", "CodeableConcept", "Todo.", 0, 1, repeatUnitAmountType));
-          children.add(new Property("repeatUnit", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, repeatUnit));
+          children.add(new Property("averageMolecularFormula", "string", "A representation of an (average) molecular formula from a polymer.", 0, 1, averageMolecularFormula));
+          children.add(new Property("repeatUnitAmountType", "CodeableConcept", "How the quantitative amount of Structural Repeat Units is captured (e.g. Exact, Numeric, Average).", 0, 1, repeatUnitAmountType));
+          children.add(new Property("repeatUnit", "", "An SRU - Structural Repeat Unit.", 0, java.lang.Integer.MAX_VALUE, repeatUnit));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1321430961: /*numberOfUnits*/  return new Property("numberOfUnits", "integer", "Todo.", 0, 1, numberOfUnits);
-          case 111461715: /*averageMolecularFormula*/  return new Property("averageMolecularFormula", "string", "Todo.", 0, 1, averageMolecularFormula);
-          case -1994025263: /*repeatUnitAmountType*/  return new Property("repeatUnitAmountType", "CodeableConcept", "Todo.", 0, 1, repeatUnitAmountType);
-          case 1159607743: /*repeatUnit*/  return new Property("repeatUnit", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, repeatUnit);
+          case 111461715: /*averageMolecularFormula*/  return new Property("averageMolecularFormula", "string", "A representation of an (average) molecular formula from a polymer.", 0, 1, averageMolecularFormula);
+          case -1994025263: /*repeatUnitAmountType*/  return new Property("repeatUnitAmountType", "CodeableConcept", "How the quantitative amount of Structural Repeat Units is captured (e.g. Exact, Numeric, Average).", 0, 1, repeatUnitAmountType);
+          case 1159607743: /*repeatUnit*/  return new Property("repeatUnit", "", "An SRU - Structural Repeat Unit.", 0, java.lang.Integer.MAX_VALUE, repeatUnit);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -834,7 +782,6 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1321430961: /*numberOfUnits*/ return this.numberOfUnits == null ? new Base[0] : new Base[] {this.numberOfUnits}; // IntegerType
         case 111461715: /*averageMolecularFormula*/ return this.averageMolecularFormula == null ? new Base[0] : new Base[] {this.averageMolecularFormula}; // StringType
         case -1994025263: /*repeatUnitAmountType*/ return this.repeatUnitAmountType == null ? new Base[0] : new Base[] {this.repeatUnitAmountType}; // CodeableConcept
         case 1159607743: /*repeatUnit*/ return this.repeatUnit == null ? new Base[0] : this.repeatUnit.toArray(new Base[this.repeatUnit.size()]); // SubstancePolymerRepeatRepeatUnitComponent
@@ -846,9 +793,6 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1321430961: // numberOfUnits
-          this.numberOfUnits = TypeConvertor.castToInteger(value); // IntegerType
-          return value;
         case 111461715: // averageMolecularFormula
           this.averageMolecularFormula = TypeConvertor.castToString(value); // StringType
           return value;
@@ -865,9 +809,7 @@ public class SubstancePolymer extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("numberOfUnits")) {
-          this.numberOfUnits = TypeConvertor.castToInteger(value); // IntegerType
-        } else if (name.equals("averageMolecularFormula")) {
+        if (name.equals("averageMolecularFormula")) {
           this.averageMolecularFormula = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("repeatUnitAmountType")) {
           this.repeatUnitAmountType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -881,7 +823,6 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1321430961:  return getNumberOfUnitsElement();
         case 111461715:  return getAverageMolecularFormulaElement();
         case -1994025263:  return getRepeatUnitAmountType();
         case 1159607743:  return addRepeatUnit(); 
@@ -893,7 +834,6 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1321430961: /*numberOfUnits*/ return new String[] {"integer"};
         case 111461715: /*averageMolecularFormula*/ return new String[] {"string"};
         case -1994025263: /*repeatUnitAmountType*/ return new String[] {"CodeableConcept"};
         case 1159607743: /*repeatUnit*/ return new String[] {};
@@ -904,10 +844,7 @@ public class SubstancePolymer extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("numberOfUnits")) {
-          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.numberOfUnits");
-        }
-        else if (name.equals("averageMolecularFormula")) {
+        if (name.equals("averageMolecularFormula")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.averageMolecularFormula");
         }
         else if (name.equals("repeatUnitAmountType")) {
@@ -929,7 +866,6 @@ public class SubstancePolymer extends DomainResource {
 
       public void copyValues(SubstancePolymerRepeatComponent dst) {
         super.copyValues(dst);
-        dst.numberOfUnits = numberOfUnits == null ? null : numberOfUnits.copy();
         dst.averageMolecularFormula = averageMolecularFormula == null ? null : averageMolecularFormula.copy();
         dst.repeatUnitAmountType = repeatUnitAmountType == null ? null : repeatUnitAmountType.copy();
         if (repeatUnit != null) {
@@ -946,9 +882,8 @@ public class SubstancePolymer extends DomainResource {
         if (!(other_ instanceof SubstancePolymerRepeatComponent))
           return false;
         SubstancePolymerRepeatComponent o = (SubstancePolymerRepeatComponent) other_;
-        return compareDeep(numberOfUnits, o.numberOfUnits, true) && compareDeep(averageMolecularFormula, o.averageMolecularFormula, true)
-           && compareDeep(repeatUnitAmountType, o.repeatUnitAmountType, true) && compareDeep(repeatUnit, o.repeatUnit, true)
-          ;
+        return compareDeep(averageMolecularFormula, o.averageMolecularFormula, true) && compareDeep(repeatUnitAmountType, o.repeatUnitAmountType, true)
+           && compareDeep(repeatUnit, o.repeatUnit, true);
       }
 
       @Override
@@ -958,13 +893,12 @@ public class SubstancePolymer extends DomainResource {
         if (!(other_ instanceof SubstancePolymerRepeatComponent))
           return false;
         SubstancePolymerRepeatComponent o = (SubstancePolymerRepeatComponent) other_;
-        return compareValues(numberOfUnits, o.numberOfUnits, true) && compareValues(averageMolecularFormula, o.averageMolecularFormula, true)
-          ;
+        return compareValues(averageMolecularFormula, o.averageMolecularFormula, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(numberOfUnits, averageMolecularFormula
-          , repeatUnitAmountType, repeatUnit);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(averageMolecularFormula, repeatUnitAmountType
+          , repeatUnit);
       }
 
   public String fhirType() {
@@ -977,41 +911,41 @@ public class SubstancePolymer extends DomainResource {
     @Block()
     public static class SubstancePolymerRepeatRepeatUnitComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Todo.
+         * Structural repeat units are essential elements for defining polymers.
          */
         @Child(name = "unit", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="Structural repeat units are essential elements for defining polymers", formalDefinition="Structural repeat units are essential elements for defining polymers." )
         protected StringType unit;
 
         /**
-         * Todo.
+         * The orientation of the polymerisation, e.g. head-tail, head-head, random.
          */
         @Child(name = "orientation", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="The orientation of the polymerisation, e.g. head-tail, head-head, random", formalDefinition="The orientation of the polymerisation, e.g. head-tail, head-head, random." )
         protected CodeableConcept orientation;
 
         /**
-         * Todo.
+         * Number of repeats of this unit.
          */
-        @Child(name = "amount", type = {SubstanceAmount.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected SubstanceAmount amount;
+        @Child(name = "amount", type = {IntegerType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Number of repeats of this unit", formalDefinition="Number of repeats of this unit." )
+        protected IntegerType amount;
 
         /**
-         * Todo.
+         * Applies to homopolymer and block co-polymers where the degree of polymerisation within a block can be described.
          */
         @Child(name = "degreeOfPolymerisation", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="Applies to homopolymer and block co-polymers where the degree of polymerisation within a block can be described", formalDefinition="Applies to homopolymer and block co-polymers where the degree of polymerisation within a block can be described." )
         protected List<SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent> degreeOfPolymerisation;
 
         /**
-         * Todo.
+         * A graphical structure for this SRU.
          */
         @Child(name = "structuralRepresentation", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="A graphical structure for this SRU", formalDefinition="A graphical structure for this SRU." )
         protected List<SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent> structuralRepresentation;
 
-        private static final long serialVersionUID = -1739084500L;
+        private static final long serialVersionUID = 727054044L;
 
     /**
      * Constructor
@@ -1021,7 +955,7 @@ public class SubstancePolymer extends DomainResource {
       }
 
         /**
-         * @return {@link #unit} (Todo.). This is the underlying object with id, value and extensions. The accessor "getUnit" gives direct access to the value
+         * @return {@link #unit} (Structural repeat units are essential elements for defining polymers.). This is the underlying object with id, value and extensions. The accessor "getUnit" gives direct access to the value
          */
         public StringType getUnitElement() { 
           if (this.unit == null)
@@ -1041,7 +975,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #unit} (Todo.). This is the underlying object with id, value and extensions. The accessor "getUnit" gives direct access to the value
+         * @param value {@link #unit} (Structural repeat units are essential elements for defining polymers.). This is the underlying object with id, value and extensions. The accessor "getUnit" gives direct access to the value
          */
         public SubstancePolymerRepeatRepeatUnitComponent setUnitElement(StringType value) { 
           this.unit = value;
@@ -1049,14 +983,14 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return Todo.
+         * @return Structural repeat units are essential elements for defining polymers.
          */
         public String getUnit() { 
           return this.unit == null ? null : this.unit.getValue();
         }
 
         /**
-         * @param value Todo.
+         * @param value Structural repeat units are essential elements for defining polymers.
          */
         public SubstancePolymerRepeatRepeatUnitComponent setUnit(String value) { 
           if (Utilities.noString(value))
@@ -1070,7 +1004,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #orientation} (Todo.)
+         * @return {@link #orientation} (The orientation of the polymerisation, e.g. head-tail, head-head, random.)
          */
         public CodeableConcept getOrientation() { 
           if (this.orientation == null)
@@ -1086,7 +1020,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #orientation} (Todo.)
+         * @param value {@link #orientation} (The orientation of the polymerisation, e.g. head-tail, head-head, random.)
          */
         public SubstancePolymerRepeatRepeatUnitComponent setOrientation(CodeableConcept value) { 
           this.orientation = value;
@@ -1094,15 +1028,19 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #amount} (Todo.)
+         * @return {@link #amount} (Number of repeats of this unit.). This is the underlying object with id, value and extensions. The accessor "getAmount" gives direct access to the value
          */
-        public SubstanceAmount getAmount() { 
+        public IntegerType getAmountElement() { 
           if (this.amount == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitComponent.amount");
             else if (Configuration.doAutoCreate())
-              this.amount = new SubstanceAmount(); // cc
+              this.amount = new IntegerType(); // bb
           return this.amount;
+        }
+
+        public boolean hasAmountElement() { 
+          return this.amount != null && !this.amount.isEmpty();
         }
 
         public boolean hasAmount() { 
@@ -1110,15 +1048,32 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #amount} (Todo.)
+         * @param value {@link #amount} (Number of repeats of this unit.). This is the underlying object with id, value and extensions. The accessor "getAmount" gives direct access to the value
          */
-        public SubstancePolymerRepeatRepeatUnitComponent setAmount(SubstanceAmount value) { 
+        public SubstancePolymerRepeatRepeatUnitComponent setAmountElement(IntegerType value) { 
           this.amount = value;
           return this;
         }
 
         /**
-         * @return {@link #degreeOfPolymerisation} (Todo.)
+         * @return Number of repeats of this unit.
+         */
+        public int getAmount() { 
+          return this.amount == null || this.amount.isEmpty() ? 0 : this.amount.getValue();
+        }
+
+        /**
+         * @param value Number of repeats of this unit.
+         */
+        public SubstancePolymerRepeatRepeatUnitComponent setAmount(int value) { 
+            if (this.amount == null)
+              this.amount = new IntegerType();
+            this.amount.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #degreeOfPolymerisation} (Applies to homopolymer and block co-polymers where the degree of polymerisation within a block can be described.)
          */
         public List<SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent> getDegreeOfPolymerisation() { 
           if (this.degreeOfPolymerisation == null)
@@ -1171,7 +1126,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #structuralRepresentation} (Todo.)
+         * @return {@link #structuralRepresentation} (A graphical structure for this SRU.)
          */
         public List<SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent> getStructuralRepresentation() { 
           if (this.structuralRepresentation == null)
@@ -1225,21 +1180,21 @@ public class SubstancePolymer extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("unit", "string", "Todo.", 0, 1, unit));
-          children.add(new Property("orientation", "CodeableConcept", "Todo.", 0, 1, orientation));
-          children.add(new Property("amount", "SubstanceAmount", "Todo.", 0, 1, amount));
-          children.add(new Property("degreeOfPolymerisation", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, degreeOfPolymerisation));
-          children.add(new Property("structuralRepresentation", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, structuralRepresentation));
+          children.add(new Property("unit", "string", "Structural repeat units are essential elements for defining polymers.", 0, 1, unit));
+          children.add(new Property("orientation", "CodeableConcept", "The orientation of the polymerisation, e.g. head-tail, head-head, random.", 0, 1, orientation));
+          children.add(new Property("amount", "integer", "Number of repeats of this unit.", 0, 1, amount));
+          children.add(new Property("degreeOfPolymerisation", "", "Applies to homopolymer and block co-polymers where the degree of polymerisation within a block can be described.", 0, java.lang.Integer.MAX_VALUE, degreeOfPolymerisation));
+          children.add(new Property("structuralRepresentation", "", "A graphical structure for this SRU.", 0, java.lang.Integer.MAX_VALUE, structuralRepresentation));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3594628: /*unit*/  return new Property("unit", "string", "Todo.", 0, 1, unit);
-          case -1439500848: /*orientation*/  return new Property("orientation", "CodeableConcept", "Todo.", 0, 1, orientation);
-          case -1413853096: /*amount*/  return new Property("amount", "SubstanceAmount", "Todo.", 0, 1, amount);
-          case -159251872: /*degreeOfPolymerisation*/  return new Property("degreeOfPolymerisation", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, degreeOfPolymerisation);
-          case 14311178: /*structuralRepresentation*/  return new Property("structuralRepresentation", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, structuralRepresentation);
+          case 3594628: /*unit*/  return new Property("unit", "string", "Structural repeat units are essential elements for defining polymers.", 0, 1, unit);
+          case -1439500848: /*orientation*/  return new Property("orientation", "CodeableConcept", "The orientation of the polymerisation, e.g. head-tail, head-head, random.", 0, 1, orientation);
+          case -1413853096: /*amount*/  return new Property("amount", "integer", "Number of repeats of this unit.", 0, 1, amount);
+          case -159251872: /*degreeOfPolymerisation*/  return new Property("degreeOfPolymerisation", "", "Applies to homopolymer and block co-polymers where the degree of polymerisation within a block can be described.", 0, java.lang.Integer.MAX_VALUE, degreeOfPolymerisation);
+          case 14311178: /*structuralRepresentation*/  return new Property("structuralRepresentation", "", "A graphical structure for this SRU.", 0, java.lang.Integer.MAX_VALUE, structuralRepresentation);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1250,7 +1205,7 @@ public class SubstancePolymer extends DomainResource {
         switch (hash) {
         case 3594628: /*unit*/ return this.unit == null ? new Base[0] : new Base[] {this.unit}; // StringType
         case -1439500848: /*orientation*/ return this.orientation == null ? new Base[0] : new Base[] {this.orientation}; // CodeableConcept
-        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // SubstanceAmount
+        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // IntegerType
         case -159251872: /*degreeOfPolymerisation*/ return this.degreeOfPolymerisation == null ? new Base[0] : this.degreeOfPolymerisation.toArray(new Base[this.degreeOfPolymerisation.size()]); // SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent
         case 14311178: /*structuralRepresentation*/ return this.structuralRepresentation == null ? new Base[0] : this.structuralRepresentation.toArray(new Base[this.structuralRepresentation.size()]); // SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -1268,7 +1223,7 @@ public class SubstancePolymer extends DomainResource {
           this.orientation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1413853096: // amount
-          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
+          this.amount = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         case -159251872: // degreeOfPolymerisation
           this.getDegreeOfPolymerisation().add((SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) value); // SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent
@@ -1288,7 +1243,7 @@ public class SubstancePolymer extends DomainResource {
         } else if (name.equals("orientation")) {
           this.orientation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("amount")) {
-          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
+          this.amount = TypeConvertor.castToInteger(value); // IntegerType
         } else if (name.equals("degreeOfPolymerisation")) {
           this.getDegreeOfPolymerisation().add((SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) value);
         } else if (name.equals("structuralRepresentation")) {
@@ -1303,7 +1258,7 @@ public class SubstancePolymer extends DomainResource {
         switch (hash) {
         case 3594628:  return getUnitElement();
         case -1439500848:  return getOrientation();
-        case -1413853096:  return getAmount();
+        case -1413853096:  return getAmountElement();
         case -159251872:  return addDegreeOfPolymerisation(); 
         case 14311178:  return addStructuralRepresentation(); 
         default: return super.makeProperty(hash, name);
@@ -1316,7 +1271,7 @@ public class SubstancePolymer extends DomainResource {
         switch (hash) {
         case 3594628: /*unit*/ return new String[] {"string"};
         case -1439500848: /*orientation*/ return new String[] {"CodeableConcept"};
-        case -1413853096: /*amount*/ return new String[] {"SubstanceAmount"};
+        case -1413853096: /*amount*/ return new String[] {"integer"};
         case -159251872: /*degreeOfPolymerisation*/ return new String[] {};
         case 14311178: /*structuralRepresentation*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -1334,8 +1289,7 @@ public class SubstancePolymer extends DomainResource {
           return this.orientation;
         }
         else if (name.equals("amount")) {
-          this.amount = new SubstanceAmount();
-          return this.amount;
+          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.repeatUnit.amount");
         }
         else if (name.equals("degreeOfPolymerisation")) {
           return addDegreeOfPolymerisation();
@@ -1389,7 +1343,7 @@ public class SubstancePolymer extends DomainResource {
         if (!(other_ instanceof SubstancePolymerRepeatRepeatUnitComponent))
           return false;
         SubstancePolymerRepeatRepeatUnitComponent o = (SubstancePolymerRepeatRepeatUnitComponent) other_;
-        return compareValues(unit, o.unit, true);
+        return compareValues(unit, o.unit, true) && compareValues(amount, o.amount, true);
       }
 
       public boolean isEmpty() {
@@ -1407,20 +1361,34 @@ public class SubstancePolymer extends DomainResource {
     @Block()
     public static class SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Todo.
+         * The type of the degree of polymerisation shall be described, e.g. SRU/Polymer Ratio.
          */
-        @Child(name = "degree", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected CodeableConcept degree;
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The type of the degree of polymerisation shall be described, e.g. SRU/Polymer Ratio", formalDefinition="The type of the degree of polymerisation shall be described, e.g. SRU/Polymer Ratio." )
+        protected CodeableConcept type;
 
         /**
-         * Todo.
+         * An average amount of polymerisation.
          */
-        @Child(name = "amount", type = {SubstanceAmount.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
-        protected SubstanceAmount amount;
+        @Child(name = "average", type = {IntegerType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="An average amount of polymerisation", formalDefinition="An average amount of polymerisation." )
+        protected IntegerType average;
 
-        private static final long serialVersionUID = -1487452773L;
+        /**
+         * A low expected limit of the amount.
+         */
+        @Child(name = "low", type = {IntegerType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="A low expected limit of the amount", formalDefinition="A low expected limit of the amount." )
+        protected IntegerType low;
+
+        /**
+         * A high expected limit of the amount.
+         */
+        @Child(name = "high", type = {IntegerType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="A high expected limit of the amount", formalDefinition="A high expected limit of the amount." )
+        protected IntegerType high;
+
+        private static final long serialVersionUID = -1950663748L;
 
     /**
      * Constructor
@@ -1430,64 +1398,179 @@ public class SubstancePolymer extends DomainResource {
       }
 
         /**
-         * @return {@link #degree} (Todo.)
+         * @return {@link #type} (The type of the degree of polymerisation shall be described, e.g. SRU/Polymer Ratio.)
          */
-        public CodeableConcept getDegree() { 
-          if (this.degree == null)
+        public CodeableConcept getType() { 
+          if (this.type == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent.degree");
+              throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent.type");
             else if (Configuration.doAutoCreate())
-              this.degree = new CodeableConcept(); // cc
-          return this.degree;
+              this.type = new CodeableConcept(); // cc
+          return this.type;
         }
 
-        public boolean hasDegree() { 
-          return this.degree != null && !this.degree.isEmpty();
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
         }
 
         /**
-         * @param value {@link #degree} (Todo.)
+         * @param value {@link #type} (The type of the degree of polymerisation shall be described, e.g. SRU/Polymer Ratio.)
          */
-        public SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent setDegree(CodeableConcept value) { 
-          this.degree = value;
+        public SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent setType(CodeableConcept value) { 
+          this.type = value;
           return this;
         }
 
         /**
-         * @return {@link #amount} (Todo.)
+         * @return {@link #average} (An average amount of polymerisation.). This is the underlying object with id, value and extensions. The accessor "getAverage" gives direct access to the value
          */
-        public SubstanceAmount getAmount() { 
-          if (this.amount == null)
+        public IntegerType getAverageElement() { 
+          if (this.average == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent.amount");
+              throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent.average");
             else if (Configuration.doAutoCreate())
-              this.amount = new SubstanceAmount(); // cc
-          return this.amount;
+              this.average = new IntegerType(); // bb
+          return this.average;
         }
 
-        public boolean hasAmount() { 
-          return this.amount != null && !this.amount.isEmpty();
+        public boolean hasAverageElement() { 
+          return this.average != null && !this.average.isEmpty();
+        }
+
+        public boolean hasAverage() { 
+          return this.average != null && !this.average.isEmpty();
         }
 
         /**
-         * @param value {@link #amount} (Todo.)
+         * @param value {@link #average} (An average amount of polymerisation.). This is the underlying object with id, value and extensions. The accessor "getAverage" gives direct access to the value
          */
-        public SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent setAmount(SubstanceAmount value) { 
-          this.amount = value;
+        public SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent setAverageElement(IntegerType value) { 
+          this.average = value;
+          return this;
+        }
+
+        /**
+         * @return An average amount of polymerisation.
+         */
+        public int getAverage() { 
+          return this.average == null || this.average.isEmpty() ? 0 : this.average.getValue();
+        }
+
+        /**
+         * @param value An average amount of polymerisation.
+         */
+        public SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent setAverage(int value) { 
+            if (this.average == null)
+              this.average = new IntegerType();
+            this.average.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #low} (A low expected limit of the amount.). This is the underlying object with id, value and extensions. The accessor "getLow" gives direct access to the value
+         */
+        public IntegerType getLowElement() { 
+          if (this.low == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent.low");
+            else if (Configuration.doAutoCreate())
+              this.low = new IntegerType(); // bb
+          return this.low;
+        }
+
+        public boolean hasLowElement() { 
+          return this.low != null && !this.low.isEmpty();
+        }
+
+        public boolean hasLow() { 
+          return this.low != null && !this.low.isEmpty();
+        }
+
+        /**
+         * @param value {@link #low} (A low expected limit of the amount.). This is the underlying object with id, value and extensions. The accessor "getLow" gives direct access to the value
+         */
+        public SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent setLowElement(IntegerType value) { 
+          this.low = value;
+          return this;
+        }
+
+        /**
+         * @return A low expected limit of the amount.
+         */
+        public int getLow() { 
+          return this.low == null || this.low.isEmpty() ? 0 : this.low.getValue();
+        }
+
+        /**
+         * @param value A low expected limit of the amount.
+         */
+        public SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent setLow(int value) { 
+            if (this.low == null)
+              this.low = new IntegerType();
+            this.low.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #high} (A high expected limit of the amount.). This is the underlying object with id, value and extensions. The accessor "getHigh" gives direct access to the value
+         */
+        public IntegerType getHighElement() { 
+          if (this.high == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent.high");
+            else if (Configuration.doAutoCreate())
+              this.high = new IntegerType(); // bb
+          return this.high;
+        }
+
+        public boolean hasHighElement() { 
+          return this.high != null && !this.high.isEmpty();
+        }
+
+        public boolean hasHigh() { 
+          return this.high != null && !this.high.isEmpty();
+        }
+
+        /**
+         * @param value {@link #high} (A high expected limit of the amount.). This is the underlying object with id, value and extensions. The accessor "getHigh" gives direct access to the value
+         */
+        public SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent setHighElement(IntegerType value) { 
+          this.high = value;
+          return this;
+        }
+
+        /**
+         * @return A high expected limit of the amount.
+         */
+        public int getHigh() { 
+          return this.high == null || this.high.isEmpty() ? 0 : this.high.getValue();
+        }
+
+        /**
+         * @param value A high expected limit of the amount.
+         */
+        public SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent setHigh(int value) { 
+            if (this.high == null)
+              this.high = new IntegerType();
+            this.high.setValue(value);
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("degree", "CodeableConcept", "Todo.", 0, 1, degree));
-          children.add(new Property("amount", "SubstanceAmount", "Todo.", 0, 1, amount));
+          children.add(new Property("type", "CodeableConcept", "The type of the degree of polymerisation shall be described, e.g. SRU/Polymer Ratio.", 0, 1, type));
+          children.add(new Property("average", "integer", "An average amount of polymerisation.", 0, 1, average));
+          children.add(new Property("low", "integer", "A low expected limit of the amount.", 0, 1, low));
+          children.add(new Property("high", "integer", "A high expected limit of the amount.", 0, 1, high));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1335595316: /*degree*/  return new Property("degree", "CodeableConcept", "Todo.", 0, 1, degree);
-          case -1413853096: /*amount*/  return new Property("amount", "SubstanceAmount", "Todo.", 0, 1, amount);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of the degree of polymerisation shall be described, e.g. SRU/Polymer Ratio.", 0, 1, type);
+          case -631448035: /*average*/  return new Property("average", "integer", "An average amount of polymerisation.", 0, 1, average);
+          case 107348: /*low*/  return new Property("low", "integer", "A low expected limit of the amount.", 0, 1, low);
+          case 3202466: /*high*/  return new Property("high", "integer", "A high expected limit of the amount.", 0, 1, high);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1496,8 +1579,10 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1335595316: /*degree*/ return this.degree == null ? new Base[0] : new Base[] {this.degree}; // CodeableConcept
-        case -1413853096: /*amount*/ return this.amount == null ? new Base[0] : new Base[] {this.amount}; // SubstanceAmount
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case -631448035: /*average*/ return this.average == null ? new Base[0] : new Base[] {this.average}; // IntegerType
+        case 107348: /*low*/ return this.low == null ? new Base[0] : new Base[] {this.low}; // IntegerType
+        case 3202466: /*high*/ return this.high == null ? new Base[0] : new Base[] {this.high}; // IntegerType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1506,11 +1591,17 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1335595316: // degree
-          this.degree = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case -1413853096: // amount
-          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
+        case -631448035: // average
+          this.average = TypeConvertor.castToInteger(value); // IntegerType
+          return value;
+        case 107348: // low
+          this.low = TypeConvertor.castToInteger(value); // IntegerType
+          return value;
+        case 3202466: // high
+          this.high = TypeConvertor.castToInteger(value); // IntegerType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1519,10 +1610,14 @@ public class SubstancePolymer extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("degree")) {
-          this.degree = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("amount")) {
-          this.amount = TypeConvertor.castToSubstanceAmount(value); // SubstanceAmount
+        if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("average")) {
+          this.average = TypeConvertor.castToInteger(value); // IntegerType
+        } else if (name.equals("low")) {
+          this.low = TypeConvertor.castToInteger(value); // IntegerType
+        } else if (name.equals("high")) {
+          this.high = TypeConvertor.castToInteger(value); // IntegerType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1531,8 +1626,10 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1335595316:  return getDegree();
-        case -1413853096:  return getAmount();
+        case 3575610:  return getType();
+        case -631448035:  return getAverageElement();
+        case 107348:  return getLowElement();
+        case 3202466:  return getHighElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1541,8 +1638,10 @@ public class SubstancePolymer extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1335595316: /*degree*/ return new String[] {"CodeableConcept"};
-        case -1413853096: /*amount*/ return new String[] {"SubstanceAmount"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case -631448035: /*average*/ return new String[] {"integer"};
+        case 107348: /*low*/ return new String[] {"integer"};
+        case 3202466: /*high*/ return new String[] {"integer"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1550,13 +1649,18 @@ public class SubstancePolymer extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("degree")) {
-          this.degree = new CodeableConcept();
-          return this.degree;
+        if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
         }
-        else if (name.equals("amount")) {
-          this.amount = new SubstanceAmount();
-          return this.amount;
+        else if (name.equals("average")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.repeatUnit.degreeOfPolymerisation.average");
+        }
+        else if (name.equals("low")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.repeatUnit.degreeOfPolymerisation.low");
+        }
+        else if (name.equals("high")) {
+          throw new FHIRException("Cannot call addChild on a primitive type SubstancePolymer.repeat.repeatUnit.degreeOfPolymerisation.high");
         }
         else
           return super.addChild(name);
@@ -1570,8 +1674,10 @@ public class SubstancePolymer extends DomainResource {
 
       public void copyValues(SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent dst) {
         super.copyValues(dst);
-        dst.degree = degree == null ? null : degree.copy();
-        dst.amount = amount == null ? null : amount.copy();
+        dst.type = type == null ? null : type.copy();
+        dst.average = average == null ? null : average.copy();
+        dst.low = low == null ? null : low.copy();
+        dst.high = high == null ? null : high.copy();
       }
 
       @Override
@@ -1581,7 +1687,8 @@ public class SubstancePolymer extends DomainResource {
         if (!(other_ instanceof SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent))
           return false;
         SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent o = (SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) other_;
-        return compareDeep(degree, o.degree, true) && compareDeep(amount, o.amount, true);
+        return compareDeep(type, o.type, true) && compareDeep(average, o.average, true) && compareDeep(low, o.low, true)
+           && compareDeep(high, o.high, true);
       }
 
       @Override
@@ -1591,11 +1698,13 @@ public class SubstancePolymer extends DomainResource {
         if (!(other_ instanceof SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent))
           return false;
         SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent o = (SubstancePolymerRepeatRepeatUnitDegreeOfPolymerisationComponent) other_;
-        return true;
+        return compareValues(average, o.average, true) && compareValues(low, o.low, true) && compareValues(high, o.high, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(degree, amount);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, average, low, high
+          );
       }
 
   public String fhirType() {
@@ -1608,31 +1717,31 @@ public class SubstancePolymer extends DomainResource {
     @Block()
     public static class SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Todo.
+         * The type of structure (e.g. Full, Partial, Representative).
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="The type of structure (e.g. Full, Partial, Representative)", formalDefinition="The type of structure (e.g. Full, Partial, Representative)." )
         protected CodeableConcept type;
 
         /**
-         * Todo.
+         * The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.
          */
         @Child(name = "representation", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF", formalDefinition="The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF." )
         protected StringType representation;
 
         /**
-         * Todo.
+         * The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.
          */
         @Child(name = "format", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF", formalDefinition="The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF." )
         protected CodeableConcept format;
 
         /**
-         * Todo.
+         * An attached file with the structural representation.
          */
         @Child(name = "attachment", type = {Attachment.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Todo", formalDefinition="Todo." )
+        @Description(shortDefinition="An attached file with the structural representation", formalDefinition="An attached file with the structural representation." )
         protected Attachment attachment;
 
         private static final long serialVersionUID = -1385695515L;
@@ -1645,7 +1754,7 @@ public class SubstancePolymer extends DomainResource {
       }
 
         /**
-         * @return {@link #type} (Todo.)
+         * @return {@link #type} (The type of structure (e.g. Full, Partial, Representative).)
          */
         public CodeableConcept getType() { 
           if (this.type == null)
@@ -1661,7 +1770,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #type} (Todo.)
+         * @param value {@link #type} (The type of structure (e.g. Full, Partial, Representative).)
          */
         public SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent setType(CodeableConcept value) { 
           this.type = value;
@@ -1669,7 +1778,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #representation} (Todo.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
+         * @return {@link #representation} (The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
          */
         public StringType getRepresentationElement() { 
           if (this.representation == null)
@@ -1689,7 +1798,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #representation} (Todo.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
+         * @param value {@link #representation} (The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.). This is the underlying object with id, value and extensions. The accessor "getRepresentation" gives direct access to the value
          */
         public SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent setRepresentationElement(StringType value) { 
           this.representation = value;
@@ -1697,14 +1806,14 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return Todo.
+         * @return The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.
          */
         public String getRepresentation() { 
           return this.representation == null ? null : this.representation.getValue();
         }
 
         /**
-         * @param value Todo.
+         * @param value The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.
          */
         public SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent setRepresentation(String value) { 
           if (Utilities.noString(value))
@@ -1718,7 +1827,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #format} (Todo.)
+         * @return {@link #format} (The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.)
          */
         public CodeableConcept getFormat() { 
           if (this.format == null)
@@ -1734,7 +1843,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #format} (Todo.)
+         * @param value {@link #format} (The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.)
          */
         public SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent setFormat(CodeableConcept value) { 
           this.format = value;
@@ -1742,7 +1851,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @return {@link #attachment} (Todo.)
+         * @return {@link #attachment} (An attached file with the structural representation.)
          */
         public Attachment getAttachment() { 
           if (this.attachment == null)
@@ -1758,7 +1867,7 @@ public class SubstancePolymer extends DomainResource {
         }
 
         /**
-         * @param value {@link #attachment} (Todo.)
+         * @param value {@link #attachment} (An attached file with the structural representation.)
          */
         public SubstancePolymerRepeatRepeatUnitStructuralRepresentationComponent setAttachment(Attachment value) { 
           this.attachment = value;
@@ -1767,19 +1876,19 @@ public class SubstancePolymer extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "Todo.", 0, 1, type));
-          children.add(new Property("representation", "string", "Todo.", 0, 1, representation));
-          children.add(new Property("format", "CodeableConcept", "Todo.", 0, 1, format));
-          children.add(new Property("attachment", "Attachment", "Todo.", 0, 1, attachment));
+          children.add(new Property("type", "CodeableConcept", "The type of structure (e.g. Full, Partial, Representative).", 0, 1, type));
+          children.add(new Property("representation", "string", "The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.", 0, 1, representation));
+          children.add(new Property("format", "CodeableConcept", "The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.", 0, 1, format));
+          children.add(new Property("attachment", "Attachment", "An attached file with the structural representation.", 0, 1, attachment));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Todo.", 0, 1, type);
-          case -671065907: /*representation*/  return new Property("representation", "string", "Todo.", 0, 1, representation);
-          case -1268779017: /*format*/  return new Property("format", "CodeableConcept", "Todo.", 0, 1, format);
-          case -1963501277: /*attachment*/  return new Property("attachment", "Attachment", "Todo.", 0, 1, attachment);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of structure (e.g. Full, Partial, Representative).", 0, 1, type);
+          case -671065907: /*representation*/  return new Property("representation", "string", "The structural representation as text string in a standard format e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.", 0, 1, representation);
+          case -1268779017: /*format*/  return new Property("format", "CodeableConcept", "The format of the representation e.g. InChI, SMILES, MOLFILE, CDX, SDF, PDB, mmCIF.", 0, 1, format);
+          case -1963501277: /*attachment*/  return new Property("attachment", "Attachment", "An attached file with the structural representation.", 0, 1, attachment);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1925,38 +2034,38 @@ public class SubstancePolymer extends DomainResource {
   }
 
     /**
-     * Todo.
+     * A business idenfier for this polymer, but typically this is handled by a SubstanceDefinition identifier.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Todo", formalDefinition="Todo." )
+    @Description(shortDefinition="A business idenfier for this polymer, but typically this is handled by a SubstanceDefinition identifier", formalDefinition="A business idenfier for this polymer, but typically this is handled by a SubstanceDefinition identifier." )
     protected Identifier identifier;
 
     /**
-     * Todo.
+     * Overall type of the polymer.
      */
     @Child(name = "class", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Todo", formalDefinition="Todo." )
+    @Description(shortDefinition="Overall type of the polymer", formalDefinition="Overall type of the polymer." )
     protected CodeableConcept class_;
 
     /**
-     * Todo.
+     * Polymer geometry, e.g. linear, branched, cross-linked, network or dendritic.
      */
     @Child(name = "geometry", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Todo", formalDefinition="Todo." )
+    @Description(shortDefinition="Polymer geometry, e.g. linear, branched, cross-linked, network or dendritic", formalDefinition="Polymer geometry, e.g. linear, branched, cross-linked, network or dendritic." )
     protected CodeableConcept geometry;
 
     /**
-     * Todo.
+     * Descrtibes the copolymer sequence type (polymer connectivity).
      */
     @Child(name = "copolymerConnectivity", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Todo", formalDefinition="Todo." )
+    @Description(shortDefinition="Descrtibes the copolymer sequence type (polymer connectivity)", formalDefinition="Descrtibes the copolymer sequence type (polymer connectivity)." )
     protected List<CodeableConcept> copolymerConnectivity;
 
     /**
-     * Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.
+     * Todo - this is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.
      */
     @Child(name = "modification", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder", formalDefinition="Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder." )
+    @Description(shortDefinition="Todo - this is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder", formalDefinition="Todo - this is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder." )
     protected StringType modification;
 
     /**
@@ -1967,10 +2076,10 @@ public class SubstancePolymer extends DomainResource {
     protected List<SubstancePolymerMonomerSetComponent> monomerSet;
 
     /**
-     * Todo.
+     * Specifies and quantifies the repeated units and their configuration.
      */
     @Child(name = "repeat", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Todo", formalDefinition="Todo." )
+    @Description(shortDefinition="Specifies and quantifies the repeated units and their configuration", formalDefinition="Specifies and quantifies the repeated units and their configuration." )
     protected List<SubstancePolymerRepeatComponent> repeat;
 
     private static final long serialVersionUID = 11937102L;
@@ -1983,7 +2092,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (Todo.)
+     * @return {@link #identifier} (A business idenfier for this polymer, but typically this is handled by a SubstanceDefinition identifier.)
      */
     public Identifier getIdentifier() { 
       if (this.identifier == null)
@@ -1999,7 +2108,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @param value {@link #identifier} (Todo.)
+     * @param value {@link #identifier} (A business idenfier for this polymer, but typically this is handled by a SubstanceDefinition identifier.)
      */
     public SubstancePolymer setIdentifier(Identifier value) { 
       this.identifier = value;
@@ -2007,7 +2116,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @return {@link #class_} (Todo.)
+     * @return {@link #class_} (Overall type of the polymer.)
      */
     public CodeableConcept getClass_() { 
       if (this.class_ == null)
@@ -2023,7 +2132,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @param value {@link #class_} (Todo.)
+     * @param value {@link #class_} (Overall type of the polymer.)
      */
     public SubstancePolymer setClass_(CodeableConcept value) { 
       this.class_ = value;
@@ -2031,7 +2140,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @return {@link #geometry} (Todo.)
+     * @return {@link #geometry} (Polymer geometry, e.g. linear, branched, cross-linked, network or dendritic.)
      */
     public CodeableConcept getGeometry() { 
       if (this.geometry == null)
@@ -2047,7 +2156,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @param value {@link #geometry} (Todo.)
+     * @param value {@link #geometry} (Polymer geometry, e.g. linear, branched, cross-linked, network or dendritic.)
      */
     public SubstancePolymer setGeometry(CodeableConcept value) { 
       this.geometry = value;
@@ -2055,7 +2164,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @return {@link #copolymerConnectivity} (Todo.)
+     * @return {@link #copolymerConnectivity} (Descrtibes the copolymer sequence type (polymer connectivity).)
      */
     public List<CodeableConcept> getCopolymerConnectivity() { 
       if (this.copolymerConnectivity == null)
@@ -2108,7 +2217,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @return {@link #modification} (Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.). This is the underlying object with id, value and extensions. The accessor "getModification" gives direct access to the value
+     * @return {@link #modification} (Todo - this is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.). This is the underlying object with id, value and extensions. The accessor "getModification" gives direct access to the value
      */
     public StringType getModificationElement() { 
       if (this.modification == null)
@@ -2128,7 +2237,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @param value {@link #modification} (Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.). This is the underlying object with id, value and extensions. The accessor "getModification" gives direct access to the value
+     * @param value {@link #modification} (Todo - this is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.). This is the underlying object with id, value and extensions. The accessor "getModification" gives direct access to the value
      */
     public SubstancePolymer setModificationElement(StringType value) { 
       this.modification = value;
@@ -2136,14 +2245,14 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @return Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.
+     * @return Todo - this is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.
      */
     public String getModification() { 
       return this.modification == null ? null : this.modification.getValue();
     }
 
     /**
-     * @param value Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.
+     * @param value Todo - this is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.
      */
     public SubstancePolymer setModification(String value) { 
       if (Utilities.noString(value))
@@ -2210,7 +2319,7 @@ public class SubstancePolymer extends DomainResource {
     }
 
     /**
-     * @return {@link #repeat} (Todo.)
+     * @return {@link #repeat} (Specifies and quantifies the repeated units and their configuration.)
      */
     public List<SubstancePolymerRepeatComponent> getRepeat() { 
       if (this.repeat == null)
@@ -2264,25 +2373,25 @@ public class SubstancePolymer extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "Todo.", 0, 1, identifier));
-        children.add(new Property("class", "CodeableConcept", "Todo.", 0, 1, class_));
-        children.add(new Property("geometry", "CodeableConcept", "Todo.", 0, 1, geometry));
-        children.add(new Property("copolymerConnectivity", "CodeableConcept", "Todo.", 0, java.lang.Integer.MAX_VALUE, copolymerConnectivity));
-        children.add(new Property("modification", "string", "Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.", 0, 1, modification));
+        children.add(new Property("identifier", "Identifier", "A business idenfier for this polymer, but typically this is handled by a SubstanceDefinition identifier.", 0, 1, identifier));
+        children.add(new Property("class", "CodeableConcept", "Overall type of the polymer.", 0, 1, class_));
+        children.add(new Property("geometry", "CodeableConcept", "Polymer geometry, e.g. linear, branched, cross-linked, network or dendritic.", 0, 1, geometry));
+        children.add(new Property("copolymerConnectivity", "CodeableConcept", "Descrtibes the copolymer sequence type (polymer connectivity).", 0, java.lang.Integer.MAX_VALUE, copolymerConnectivity));
+        children.add(new Property("modification", "string", "Todo - this is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.", 0, 1, modification));
         children.add(new Property("monomerSet", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, monomerSet));
-        children.add(new Property("repeat", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, repeat));
+        children.add(new Property("repeat", "", "Specifies and quantifies the repeated units and their configuration.", 0, java.lang.Integer.MAX_VALUE, repeat));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Todo.", 0, 1, identifier);
-        case 94742904: /*class*/  return new Property("class", "CodeableConcept", "Todo.", 0, 1, class_);
-        case 1846020210: /*geometry*/  return new Property("geometry", "CodeableConcept", "Todo.", 0, 1, geometry);
-        case 997107577: /*copolymerConnectivity*/  return new Property("copolymerConnectivity", "CodeableConcept", "Todo.", 0, java.lang.Integer.MAX_VALUE, copolymerConnectivity);
-        case -684600932: /*modification*/  return new Property("modification", "string", "Todo. This is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.", 0, 1, modification);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A business idenfier for this polymer, but typically this is handled by a SubstanceDefinition identifier.", 0, 1, identifier);
+        case 94742904: /*class*/  return new Property("class", "CodeableConcept", "Overall type of the polymer.", 0, 1, class_);
+        case 1846020210: /*geometry*/  return new Property("geometry", "CodeableConcept", "Polymer geometry, e.g. linear, branched, cross-linked, network or dendritic.", 0, 1, geometry);
+        case 997107577: /*copolymerConnectivity*/  return new Property("copolymerConnectivity", "CodeableConcept", "Descrtibes the copolymer sequence type (polymer connectivity).", 0, java.lang.Integer.MAX_VALUE, copolymerConnectivity);
+        case -684600932: /*modification*/  return new Property("modification", "string", "Todo - this is intended to connect to a repeating full modification structure, also used by Protein and Nucleic Acid . String is just a placeholder.", 0, 1, modification);
         case -1622483765: /*monomerSet*/  return new Property("monomerSet", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, monomerSet);
-        case -934531685: /*repeat*/  return new Property("repeat", "", "Todo.", 0, java.lang.Integer.MAX_VALUE, repeat);
+        case -934531685: /*repeat*/  return new Property("repeat", "", "Specifies and quantifies the repeated units and their configuration.", 0, java.lang.Integer.MAX_VALUE, repeat);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2485,3 +2594,4 @@ public class SubstancePolymer extends DomainResource {
 
 
 }
+
