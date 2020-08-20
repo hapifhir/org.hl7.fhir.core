@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,19 +29,22 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * The definition and characteristics of a medicinal manufactured item, such as a tablet or capsule, as contained in a packaged medicinal product.
@@ -924,5 +925,32 @@ public class ManufacturedItemDefinition extends DomainResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
+ /**
+   * Search parameter: <b>ingredient</b>
+   * <p>
+   * Description: <b>The ingredients that make up this manufactured item</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ManufacturedItemDefinition.ingredient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="ingredient", path="ManufacturedItemDefinition.ingredient", description="The ingredients that make up this manufactured item", type="reference", target={Ingredient.class } )
+  public static final String SP_INGREDIENT = "ingredient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
+   * <p>
+   * Description: <b>The ingredients that make up this manufactured item</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ManufacturedItemDefinition.ingredient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INGREDIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ManufacturedItemDefinition:ingredient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_INGREDIENT = new ca.uhn.fhir.model.api.Include("ManufacturedItemDefinition:ingredient").toLocked();
+
 
 }
+

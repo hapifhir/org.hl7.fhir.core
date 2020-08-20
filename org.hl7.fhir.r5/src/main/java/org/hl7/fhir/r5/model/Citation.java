@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,29 +29,259 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * The Citation.
  */
 @ResourceDef(name="Citation", profile="http://hl7.org/fhir/StructureDefinition/Citation")
 public class Citation extends MetadataResource {
+
+    @Block()
+    public static class CitationSummaryComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Format for display of the citation.
+         */
+        @Child(name = "style", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Format for display of the citation", formalDefinition="Format for display of the citation." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/citation-summary-style")
+        protected CodeableConcept style;
+
+        /**
+         * The human-readable display of the citation.
+         */
+        @Child(name = "text", type = {MarkdownType.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The human-readable display of the citation", formalDefinition="The human-readable display of the citation." )
+        protected MarkdownType text;
+
+        private static final long serialVersionUID = 123416446L;
+
+    /**
+     * Constructor
+     */
+      public CitationSummaryComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public CitationSummaryComponent(String text) {
+        super();
+        this.setText(text);
+      }
+
+        /**
+         * @return {@link #style} (Format for display of the citation.)
+         */
+        public CodeableConcept getStyle() { 
+          if (this.style == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationSummaryComponent.style");
+            else if (Configuration.doAutoCreate())
+              this.style = new CodeableConcept(); // cc
+          return this.style;
+        }
+
+        public boolean hasStyle() { 
+          return this.style != null && !this.style.isEmpty();
+        }
+
+        /**
+         * @param value {@link #style} (Format for display of the citation.)
+         */
+        public CitationSummaryComponent setStyle(CodeableConcept value) { 
+          this.style = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #text} (The human-readable display of the citation.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         */
+        public MarkdownType getTextElement() { 
+          if (this.text == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationSummaryComponent.text");
+            else if (Configuration.doAutoCreate())
+              this.text = new MarkdownType(); // bb
+          return this.text;
+        }
+
+        public boolean hasTextElement() { 
+          return this.text != null && !this.text.isEmpty();
+        }
+
+        public boolean hasText() { 
+          return this.text != null && !this.text.isEmpty();
+        }
+
+        /**
+         * @param value {@link #text} (The human-readable display of the citation.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         */
+        public CitationSummaryComponent setTextElement(MarkdownType value) { 
+          this.text = value;
+          return this;
+        }
+
+        /**
+         * @return The human-readable display of the citation.
+         */
+        public String getText() { 
+          return this.text == null ? null : this.text.getValue();
+        }
+
+        /**
+         * @param value The human-readable display of the citation.
+         */
+        public CitationSummaryComponent setText(String value) { 
+            if (this.text == null)
+              this.text = new MarkdownType();
+            this.text.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("style", "CodeableConcept", "Format for display of the citation.", 0, 1, style));
+          children.add(new Property("text", "markdown", "The human-readable display of the citation.", 0, 1, text));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 109780401: /*style*/  return new Property("style", "CodeableConcept", "Format for display of the citation.", 0, 1, style);
+          case 3556653: /*text*/  return new Property("text", "markdown", "The human-readable display of the citation.", 0, 1, text);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 109780401: /*style*/ return this.style == null ? new Base[0] : new Base[] {this.style}; // CodeableConcept
+        case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // MarkdownType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 109780401: // style
+          this.style = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 3556653: // text
+          this.text = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("style")) {
+          this.style = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("text")) {
+          this.text = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 109780401:  return getStyle();
+        case 3556653:  return getTextElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 109780401: /*style*/ return new String[] {"CodeableConcept"};
+        case 3556653: /*text*/ return new String[] {"markdown"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("style")) {
+          this.style = new CodeableConcept();
+          return this.style;
+        }
+        else if (name.equals("text")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.summary.text");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CitationSummaryComponent copy() {
+        CitationSummaryComponent dst = new CitationSummaryComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CitationSummaryComponent dst) {
+        super.copyValues(dst);
+        dst.style = style == null ? null : style.copy();
+        dst.text = text == null ? null : text.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CitationSummaryComponent))
+          return false;
+        CitationSummaryComponent o = (CitationSummaryComponent) other_;
+        return compareDeep(style, o.style, true) && compareDeep(text, o.text, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CitationSummaryComponent))
+          return false;
+        CitationSummaryComponent o = (CitationSummaryComponent) other_;
+        return compareValues(text, o.text, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(style, text);
+      }
+
+  public String fhirType() {
+    return "Citation.summary";
+
+  }
+
+  }
 
     @Block()
     public static class CitationVariantCitationComponent extends BackboneElement implements IBaseBackboneElement {
@@ -731,11 +959,11 @@ public class Citation extends MetadataResource {
         /**
          * Date on which the issue of the journal was published.
          */
-        @Child(name = "publicationDate", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "publicationDate", type = {}, order=4, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Date on which the issue of the journal was published", formalDefinition="Date on which the issue of the journal was published." )
-        protected StringType publicationDate;
+        protected CitationJournalJournalIssuePublicationDateComponent publicationDate;
 
-        private static final long serialVersionUID = -1343937439L;
+        private static final long serialVersionUID = 933986267L;
 
     /**
      * Constructor
@@ -867,19 +1095,15 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #publicationDate} (Date on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDate" gives direct access to the value
+         * @return {@link #publicationDate} (Date on which the issue of the journal was published.)
          */
-        public StringType getPublicationDateElement() { 
+        public CitationJournalJournalIssuePublicationDateComponent getPublicationDate() { 
           if (this.publicationDate == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create CitationJournalJournalIssueComponent.publicationDate");
             else if (Configuration.doAutoCreate())
-              this.publicationDate = new StringType(); // bb
+              this.publicationDate = new CitationJournalJournalIssuePublicationDateComponent(); // cc
           return this.publicationDate;
-        }
-
-        public boolean hasPublicationDateElement() { 
-          return this.publicationDate != null && !this.publicationDate.isEmpty();
         }
 
         public boolean hasPublicationDate() { 
@@ -887,31 +1111,10 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #publicationDate} (Date on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDate" gives direct access to the value
+         * @param value {@link #publicationDate} (Date on which the issue of the journal was published.)
          */
-        public CitationJournalJournalIssueComponent setPublicationDateElement(StringType value) { 
+        public CitationJournalJournalIssueComponent setPublicationDate(CitationJournalJournalIssuePublicationDateComponent value) { 
           this.publicationDate = value;
-          return this;
-        }
-
-        /**
-         * @return Date on which the issue of the journal was published.
-         */
-        public String getPublicationDate() { 
-          return this.publicationDate == null ? null : this.publicationDate.getValue();
-        }
-
-        /**
-         * @param value Date on which the issue of the journal was published.
-         */
-        public CitationJournalJournalIssueComponent setPublicationDate(String value) { 
-          if (Utilities.noString(value))
-            this.publicationDate = null;
-          else {
-            if (this.publicationDate == null)
-              this.publicationDate = new StringType();
-            this.publicationDate.setValue(value);
-          }
           return this;
         }
 
@@ -920,7 +1123,7 @@ public class Citation extends MetadataResource {
           children.add(new Property("citedMedium", "CodeableConcept", "NLM codes Internet or Print.", 0, 1, citedMedium));
           children.add(new Property("volume", "string", "Volume number of journal in which the article is published.", 0, 1, volume));
           children.add(new Property("issue", "string", "Issue, part or supplement of journal in which the article is published.", 0, 1, issue));
-          children.add(new Property("publicationDate", "string", "Date on which the issue of the journal was published.", 0, 1, publicationDate));
+          children.add(new Property("publicationDate", "", "Date on which the issue of the journal was published.", 0, 1, publicationDate));
         }
 
         @Override
@@ -929,7 +1132,7 @@ public class Citation extends MetadataResource {
           case 612116418: /*citedMedium*/  return new Property("citedMedium", "CodeableConcept", "NLM codes Internet or Print.", 0, 1, citedMedium);
           case -810883302: /*volume*/  return new Property("volume", "string", "Volume number of journal in which the article is published.", 0, 1, volume);
           case 100509913: /*issue*/  return new Property("issue", "string", "Issue, part or supplement of journal in which the article is published.", 0, 1, issue);
-          case 1470566394: /*publicationDate*/  return new Property("publicationDate", "string", "Date on which the issue of the journal was published.", 0, 1, publicationDate);
+          case 1470566394: /*publicationDate*/  return new Property("publicationDate", "", "Date on which the issue of the journal was published.", 0, 1, publicationDate);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -941,7 +1144,7 @@ public class Citation extends MetadataResource {
         case 612116418: /*citedMedium*/ return this.citedMedium == null ? new Base[0] : new Base[] {this.citedMedium}; // CodeableConcept
         case -810883302: /*volume*/ return this.volume == null ? new Base[0] : new Base[] {this.volume}; // StringType
         case 100509913: /*issue*/ return this.issue == null ? new Base[0] : new Base[] {this.issue}; // StringType
-        case 1470566394: /*publicationDate*/ return this.publicationDate == null ? new Base[0] : new Base[] {this.publicationDate}; // StringType
+        case 1470566394: /*publicationDate*/ return this.publicationDate == null ? new Base[0] : new Base[] {this.publicationDate}; // CitationJournalJournalIssuePublicationDateComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -960,7 +1163,7 @@ public class Citation extends MetadataResource {
           this.issue = TypeConvertor.castToString(value); // StringType
           return value;
         case 1470566394: // publicationDate
-          this.publicationDate = TypeConvertor.castToString(value); // StringType
+          this.publicationDate = (CitationJournalJournalIssuePublicationDateComponent) value; // CitationJournalJournalIssuePublicationDateComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -976,7 +1179,7 @@ public class Citation extends MetadataResource {
         } else if (name.equals("issue")) {
           this.issue = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("publicationDate")) {
-          this.publicationDate = TypeConvertor.castToString(value); // StringType
+          this.publicationDate = (CitationJournalJournalIssuePublicationDateComponent) value; // CitationJournalJournalIssuePublicationDateComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -988,7 +1191,7 @@ public class Citation extends MetadataResource {
         case 612116418:  return getCitedMedium();
         case -810883302:  return getVolumeElement();
         case 100509913:  return getIssueElement();
-        case 1470566394:  return getPublicationDateElement();
+        case 1470566394:  return getPublicationDate();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1000,7 +1203,7 @@ public class Citation extends MetadataResource {
         case 612116418: /*citedMedium*/ return new String[] {"CodeableConcept"};
         case -810883302: /*volume*/ return new String[] {"string"};
         case 100509913: /*issue*/ return new String[] {"string"};
-        case 1470566394: /*publicationDate*/ return new String[] {"string"};
+        case 1470566394: /*publicationDate*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1019,7 +1222,8 @@ public class Citation extends MetadataResource {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.journal.journalIssue.issue");
         }
         else if (name.equals("publicationDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.journal.journalIssue.publicationDate");
+          this.publicationDate = new CitationJournalJournalIssuePublicationDateComponent();
+          return this.publicationDate;
         }
         else
           return super.addChild(name);
@@ -1057,8 +1261,7 @@ public class Citation extends MetadataResource {
         if (!(other_ instanceof CitationJournalJournalIssueComponent))
           return false;
         CitationJournalJournalIssueComponent o = (CitationJournalJournalIssueComponent) other_;
-        return compareValues(volume, o.volume, true) && compareValues(issue, o.issue, true) && compareValues(publicationDate, o.publicationDate, true)
-          ;
+        return compareValues(volume, o.volume, true) && compareValues(issue, o.issue, true);
       }
 
       public boolean isEmpty() {
@@ -1068,6 +1271,1403 @@ public class Citation extends MetadataResource {
 
   public String fhirType() {
     return "Citation.journal.journalIssue";
+
+  }
+
+  }
+
+    @Block()
+    public static class CitationJournalJournalIssuePublicationDateComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Defining the date on which the issue of the joutnal was published.
+         */
+        @Child(name = "date", type = {DateType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Defining the date on which the issue of the joutnal was published", formalDefinition="Defining the date on which the issue of the joutnal was published." )
+        protected DateType date;
+
+        /**
+         * Year on which the issue of the journal was published.
+         */
+        @Child(name = "year", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Year on which the issue of the journal was published", formalDefinition="Year on which the issue of the journal was published." )
+        protected StringType year;
+
+        /**
+         * Month on which the issue of the journal was published.
+         */
+        @Child(name = "month", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Month on which the issue of the journal was published", formalDefinition="Month on which the issue of the journal was published." )
+        protected StringType month;
+
+        /**
+         * Day on which the issue of the journal was published.
+         */
+        @Child(name = "day", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Day on which the issue of the journal was published", formalDefinition="Day on which the issue of the journal was published." )
+        protected StringType day;
+
+        /**
+         * Spring, Summer, Fall/Autumn, Winter.
+         */
+        @Child(name = "season", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Season on which the issue of the jornal was published", formalDefinition="Spring, Summer, Fall/Autumn, Winter." )
+        protected StringType season;
+
+        /**
+         * Text representation of the date of which the issue of the journal was published.
+         */
+        @Child(name = "text", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Text representation of the date of which the issue of the journal was published", formalDefinition="Text representation of the date of which the issue of the journal was published." )
+        protected StringType text;
+
+        private static final long serialVersionUID = 1585589146L;
+
+    /**
+     * Constructor
+     */
+      public CitationJournalJournalIssuePublicationDateComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #date} (Defining the date on which the issue of the joutnal was published.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+         */
+        public DateType getDateElement() { 
+          if (this.date == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationJournalJournalIssuePublicationDateComponent.date");
+            else if (Configuration.doAutoCreate())
+              this.date = new DateType(); // bb
+          return this.date;
+        }
+
+        public boolean hasDateElement() { 
+          return this.date != null && !this.date.isEmpty();
+        }
+
+        public boolean hasDate() { 
+          return this.date != null && !this.date.isEmpty();
+        }
+
+        /**
+         * @param value {@link #date} (Defining the date on which the issue of the joutnal was published.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setDateElement(DateType value) { 
+          this.date = value;
+          return this;
+        }
+
+        /**
+         * @return Defining the date on which the issue of the joutnal was published.
+         */
+        public Date getDate() { 
+          return this.date == null ? null : this.date.getValue();
+        }
+
+        /**
+         * @param value Defining the date on which the issue of the joutnal was published.
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setDate(Date value) { 
+          if (value == null)
+            this.date = null;
+          else {
+            if (this.date == null)
+              this.date = new DateType();
+            this.date.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #year} (Year on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getYear" gives direct access to the value
+         */
+        public StringType getYearElement() { 
+          if (this.year == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationJournalJournalIssuePublicationDateComponent.year");
+            else if (Configuration.doAutoCreate())
+              this.year = new StringType(); // bb
+          return this.year;
+        }
+
+        public boolean hasYearElement() { 
+          return this.year != null && !this.year.isEmpty();
+        }
+
+        public boolean hasYear() { 
+          return this.year != null && !this.year.isEmpty();
+        }
+
+        /**
+         * @param value {@link #year} (Year on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getYear" gives direct access to the value
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setYearElement(StringType value) { 
+          this.year = value;
+          return this;
+        }
+
+        /**
+         * @return Year on which the issue of the journal was published.
+         */
+        public String getYear() { 
+          return this.year == null ? null : this.year.getValue();
+        }
+
+        /**
+         * @param value Year on which the issue of the journal was published.
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setYear(String value) { 
+          if (Utilities.noString(value))
+            this.year = null;
+          else {
+            if (this.year == null)
+              this.year = new StringType();
+            this.year.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #month} (Month on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getMonth" gives direct access to the value
+         */
+        public StringType getMonthElement() { 
+          if (this.month == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationJournalJournalIssuePublicationDateComponent.month");
+            else if (Configuration.doAutoCreate())
+              this.month = new StringType(); // bb
+          return this.month;
+        }
+
+        public boolean hasMonthElement() { 
+          return this.month != null && !this.month.isEmpty();
+        }
+
+        public boolean hasMonth() { 
+          return this.month != null && !this.month.isEmpty();
+        }
+
+        /**
+         * @param value {@link #month} (Month on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getMonth" gives direct access to the value
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setMonthElement(StringType value) { 
+          this.month = value;
+          return this;
+        }
+
+        /**
+         * @return Month on which the issue of the journal was published.
+         */
+        public String getMonth() { 
+          return this.month == null ? null : this.month.getValue();
+        }
+
+        /**
+         * @param value Month on which the issue of the journal was published.
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setMonth(String value) { 
+          if (Utilities.noString(value))
+            this.month = null;
+          else {
+            if (this.month == null)
+              this.month = new StringType();
+            this.month.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #day} (Day on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getDay" gives direct access to the value
+         */
+        public StringType getDayElement() { 
+          if (this.day == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationJournalJournalIssuePublicationDateComponent.day");
+            else if (Configuration.doAutoCreate())
+              this.day = new StringType(); // bb
+          return this.day;
+        }
+
+        public boolean hasDayElement() { 
+          return this.day != null && !this.day.isEmpty();
+        }
+
+        public boolean hasDay() { 
+          return this.day != null && !this.day.isEmpty();
+        }
+
+        /**
+         * @param value {@link #day} (Day on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getDay" gives direct access to the value
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setDayElement(StringType value) { 
+          this.day = value;
+          return this;
+        }
+
+        /**
+         * @return Day on which the issue of the journal was published.
+         */
+        public String getDay() { 
+          return this.day == null ? null : this.day.getValue();
+        }
+
+        /**
+         * @param value Day on which the issue of the journal was published.
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setDay(String value) { 
+          if (Utilities.noString(value))
+            this.day = null;
+          else {
+            if (this.day == null)
+              this.day = new StringType();
+            this.day.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #season} (Spring, Summer, Fall/Autumn, Winter.). This is the underlying object with id, value and extensions. The accessor "getSeason" gives direct access to the value
+         */
+        public StringType getSeasonElement() { 
+          if (this.season == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationJournalJournalIssuePublicationDateComponent.season");
+            else if (Configuration.doAutoCreate())
+              this.season = new StringType(); // bb
+          return this.season;
+        }
+
+        public boolean hasSeasonElement() { 
+          return this.season != null && !this.season.isEmpty();
+        }
+
+        public boolean hasSeason() { 
+          return this.season != null && !this.season.isEmpty();
+        }
+
+        /**
+         * @param value {@link #season} (Spring, Summer, Fall/Autumn, Winter.). This is the underlying object with id, value and extensions. The accessor "getSeason" gives direct access to the value
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setSeasonElement(StringType value) { 
+          this.season = value;
+          return this;
+        }
+
+        /**
+         * @return Spring, Summer, Fall/Autumn, Winter.
+         */
+        public String getSeason() { 
+          return this.season == null ? null : this.season.getValue();
+        }
+
+        /**
+         * @param value Spring, Summer, Fall/Autumn, Winter.
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setSeason(String value) { 
+          if (Utilities.noString(value))
+            this.season = null;
+          else {
+            if (this.season == null)
+              this.season = new StringType();
+            this.season.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #text} (Text representation of the date of which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         */
+        public StringType getTextElement() { 
+          if (this.text == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationJournalJournalIssuePublicationDateComponent.text");
+            else if (Configuration.doAutoCreate())
+              this.text = new StringType(); // bb
+          return this.text;
+        }
+
+        public boolean hasTextElement() { 
+          return this.text != null && !this.text.isEmpty();
+        }
+
+        public boolean hasText() { 
+          return this.text != null && !this.text.isEmpty();
+        }
+
+        /**
+         * @param value {@link #text} (Text representation of the date of which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setTextElement(StringType value) { 
+          this.text = value;
+          return this;
+        }
+
+        /**
+         * @return Text representation of the date of which the issue of the journal was published.
+         */
+        public String getText() { 
+          return this.text == null ? null : this.text.getValue();
+        }
+
+        /**
+         * @param value Text representation of the date of which the issue of the journal was published.
+         */
+        public CitationJournalJournalIssuePublicationDateComponent setText(String value) { 
+          if (Utilities.noString(value))
+            this.text = null;
+          else {
+            if (this.text == null)
+              this.text = new StringType();
+            this.text.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("date", "date", "Defining the date on which the issue of the joutnal was published.", 0, 1, date));
+          children.add(new Property("year", "string", "Year on which the issue of the journal was published.", 0, 1, year));
+          children.add(new Property("month", "string", "Month on which the issue of the journal was published.", 0, 1, month));
+          children.add(new Property("day", "string", "Day on which the issue of the journal was published.", 0, 1, day));
+          children.add(new Property("season", "string", "Spring, Summer, Fall/Autumn, Winter.", 0, 1, season));
+          children.add(new Property("text", "string", "Text representation of the date of which the issue of the journal was published.", 0, 1, text));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3076014: /*date*/  return new Property("date", "date", "Defining the date on which the issue of the joutnal was published.", 0, 1, date);
+          case 3704893: /*year*/  return new Property("year", "string", "Year on which the issue of the journal was published.", 0, 1, year);
+          case 104080000: /*month*/  return new Property("month", "string", "Month on which the issue of the journal was published.", 0, 1, month);
+          case 99228: /*day*/  return new Property("day", "string", "Day on which the issue of the journal was published.", 0, 1, day);
+          case -906335517: /*season*/  return new Property("season", "string", "Spring, Summer, Fall/Autumn, Winter.", 0, 1, season);
+          case 3556653: /*text*/  return new Property("text", "string", "Text representation of the date of which the issue of the journal was published.", 0, 1, text);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateType
+        case 3704893: /*year*/ return this.year == null ? new Base[0] : new Base[] {this.year}; // StringType
+        case 104080000: /*month*/ return this.month == null ? new Base[0] : new Base[] {this.month}; // StringType
+        case 99228: /*day*/ return this.day == null ? new Base[0] : new Base[] {this.day}; // StringType
+        case -906335517: /*season*/ return this.season == null ? new Base[0] : new Base[] {this.season}; // StringType
+        case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // StringType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3076014: // date
+          this.date = TypeConvertor.castToDate(value); // DateType
+          return value;
+        case 3704893: // year
+          this.year = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 104080000: // month
+          this.month = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 99228: // day
+          this.day = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -906335517: // season
+          this.season = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 3556653: // text
+          this.text = TypeConvertor.castToString(value); // StringType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("date")) {
+          this.date = TypeConvertor.castToDate(value); // DateType
+        } else if (name.equals("year")) {
+          this.year = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("month")) {
+          this.month = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("day")) {
+          this.day = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("season")) {
+          this.season = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("text")) {
+          this.text = TypeConvertor.castToString(value); // StringType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3076014:  return getDateElement();
+        case 3704893:  return getYearElement();
+        case 104080000:  return getMonthElement();
+        case 99228:  return getDayElement();
+        case -906335517:  return getSeasonElement();
+        case 3556653:  return getTextElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3076014: /*date*/ return new String[] {"date"};
+        case 3704893: /*year*/ return new String[] {"string"};
+        case 104080000: /*month*/ return new String[] {"string"};
+        case 99228: /*day*/ return new String[] {"string"};
+        case -906335517: /*season*/ return new String[] {"string"};
+        case 3556653: /*text*/ return new String[] {"string"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("date")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.journal.journalIssue.publicationDate.date");
+        }
+        else if (name.equals("year")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.journal.journalIssue.publicationDate.year");
+        }
+        else if (name.equals("month")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.journal.journalIssue.publicationDate.month");
+        }
+        else if (name.equals("day")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.journal.journalIssue.publicationDate.day");
+        }
+        else if (name.equals("season")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.journal.journalIssue.publicationDate.season");
+        }
+        else if (name.equals("text")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.journal.journalIssue.publicationDate.text");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CitationJournalJournalIssuePublicationDateComponent copy() {
+        CitationJournalJournalIssuePublicationDateComponent dst = new CitationJournalJournalIssuePublicationDateComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CitationJournalJournalIssuePublicationDateComponent dst) {
+        super.copyValues(dst);
+        dst.date = date == null ? null : date.copy();
+        dst.year = year == null ? null : year.copy();
+        dst.month = month == null ? null : month.copy();
+        dst.day = day == null ? null : day.copy();
+        dst.season = season == null ? null : season.copy();
+        dst.text = text == null ? null : text.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CitationJournalJournalIssuePublicationDateComponent))
+          return false;
+        CitationJournalJournalIssuePublicationDateComponent o = (CitationJournalJournalIssuePublicationDateComponent) other_;
+        return compareDeep(date, o.date, true) && compareDeep(year, o.year, true) && compareDeep(month, o.month, true)
+           && compareDeep(day, o.day, true) && compareDeep(season, o.season, true) && compareDeep(text, o.text, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CitationJournalJournalIssuePublicationDateComponent))
+          return false;
+        CitationJournalJournalIssuePublicationDateComponent o = (CitationJournalJournalIssuePublicationDateComponent) other_;
+        return compareValues(date, o.date, true) && compareValues(year, o.year, true) && compareValues(month, o.month, true)
+           && compareValues(day, o.day, true) && compareValues(season, o.season, true) && compareValues(text, o.text, true)
+          ;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(date, year, month, day
+          , season, text);
+      }
+
+  public String fhirType() {
+    return "Citation.journal.journalIssue.publicationDate";
+
+  }
+
+  }
+
+    @Block()
+    public static class CitationPublicationInfoComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The collection the cited article is published in.
+         */
+        @Child(name = "publishedIn", type = {}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The collection the cited article is published in", formalDefinition="The collection the cited article is published in." )
+        protected CitationPublicationInfoPublishedInComponent publishedIn;
+
+        /**
+         * The date the article was added to the database.
+         */
+        @Child(name = "entryDate", type = {DateTimeType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The date the article was added to the database", formalDefinition="The date the article was added to the database." )
+        protected DateTimeType entryDate;
+
+        /**
+         * The date the article was last revised or updated in the database.
+         */
+        @Child(name = "revisionDate", type = {DateTimeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The date the article was last revised or updated in the database", formalDefinition="The date the article was last revised or updated in the database." )
+        protected DateTimeType revisionDate;
+
+        /**
+         * Actual or Approximate number of pages or screens.
+         */
+        @Child(name = "pageCount", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Number of pages or screens", formalDefinition="Actual or Approximate number of pages or screens." )
+        protected StringType pageCount;
+
+        private static final long serialVersionUID = -223356914L;
+
+    /**
+     * Constructor
+     */
+      public CitationPublicationInfoComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #publishedIn} (The collection the cited article is published in.)
+         */
+        public CitationPublicationInfoPublishedInComponent getPublishedIn() { 
+          if (this.publishedIn == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationPublicationInfoComponent.publishedIn");
+            else if (Configuration.doAutoCreate())
+              this.publishedIn = new CitationPublicationInfoPublishedInComponent(); // cc
+          return this.publishedIn;
+        }
+
+        public boolean hasPublishedIn() { 
+          return this.publishedIn != null && !this.publishedIn.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publishedIn} (The collection the cited article is published in.)
+         */
+        public CitationPublicationInfoComponent setPublishedIn(CitationPublicationInfoPublishedInComponent value) { 
+          this.publishedIn = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #entryDate} (The date the article was added to the database.). This is the underlying object with id, value and extensions. The accessor "getEntryDate" gives direct access to the value
+         */
+        public DateTimeType getEntryDateElement() { 
+          if (this.entryDate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationPublicationInfoComponent.entryDate");
+            else if (Configuration.doAutoCreate())
+              this.entryDate = new DateTimeType(); // bb
+          return this.entryDate;
+        }
+
+        public boolean hasEntryDateElement() { 
+          return this.entryDate != null && !this.entryDate.isEmpty();
+        }
+
+        public boolean hasEntryDate() { 
+          return this.entryDate != null && !this.entryDate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #entryDate} (The date the article was added to the database.). This is the underlying object with id, value and extensions. The accessor "getEntryDate" gives direct access to the value
+         */
+        public CitationPublicationInfoComponent setEntryDateElement(DateTimeType value) { 
+          this.entryDate = value;
+          return this;
+        }
+
+        /**
+         * @return The date the article was added to the database.
+         */
+        public Date getEntryDate() { 
+          return this.entryDate == null ? null : this.entryDate.getValue();
+        }
+
+        /**
+         * @param value The date the article was added to the database.
+         */
+        public CitationPublicationInfoComponent setEntryDate(Date value) { 
+          if (value == null)
+            this.entryDate = null;
+          else {
+            if (this.entryDate == null)
+              this.entryDate = new DateTimeType();
+            this.entryDate.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #revisionDate} (The date the article was last revised or updated in the database.). This is the underlying object with id, value and extensions. The accessor "getRevisionDate" gives direct access to the value
+         */
+        public DateTimeType getRevisionDateElement() { 
+          if (this.revisionDate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationPublicationInfoComponent.revisionDate");
+            else if (Configuration.doAutoCreate())
+              this.revisionDate = new DateTimeType(); // bb
+          return this.revisionDate;
+        }
+
+        public boolean hasRevisionDateElement() { 
+          return this.revisionDate != null && !this.revisionDate.isEmpty();
+        }
+
+        public boolean hasRevisionDate() { 
+          return this.revisionDate != null && !this.revisionDate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #revisionDate} (The date the article was last revised or updated in the database.). This is the underlying object with id, value and extensions. The accessor "getRevisionDate" gives direct access to the value
+         */
+        public CitationPublicationInfoComponent setRevisionDateElement(DateTimeType value) { 
+          this.revisionDate = value;
+          return this;
+        }
+
+        /**
+         * @return The date the article was last revised or updated in the database.
+         */
+        public Date getRevisionDate() { 
+          return this.revisionDate == null ? null : this.revisionDate.getValue();
+        }
+
+        /**
+         * @param value The date the article was last revised or updated in the database.
+         */
+        public CitationPublicationInfoComponent setRevisionDate(Date value) { 
+          if (value == null)
+            this.revisionDate = null;
+          else {
+            if (this.revisionDate == null)
+              this.revisionDate = new DateTimeType();
+            this.revisionDate.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #pageCount} (Actual or Approximate number of pages or screens.). This is the underlying object with id, value and extensions. The accessor "getPageCount" gives direct access to the value
+         */
+        public StringType getPageCountElement() { 
+          if (this.pageCount == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationPublicationInfoComponent.pageCount");
+            else if (Configuration.doAutoCreate())
+              this.pageCount = new StringType(); // bb
+          return this.pageCount;
+        }
+
+        public boolean hasPageCountElement() { 
+          return this.pageCount != null && !this.pageCount.isEmpty();
+        }
+
+        public boolean hasPageCount() { 
+          return this.pageCount != null && !this.pageCount.isEmpty();
+        }
+
+        /**
+         * @param value {@link #pageCount} (Actual or Approximate number of pages or screens.). This is the underlying object with id, value and extensions. The accessor "getPageCount" gives direct access to the value
+         */
+        public CitationPublicationInfoComponent setPageCountElement(StringType value) { 
+          this.pageCount = value;
+          return this;
+        }
+
+        /**
+         * @return Actual or Approximate number of pages or screens.
+         */
+        public String getPageCount() { 
+          return this.pageCount == null ? null : this.pageCount.getValue();
+        }
+
+        /**
+         * @param value Actual or Approximate number of pages or screens.
+         */
+        public CitationPublicationInfoComponent setPageCount(String value) { 
+          if (Utilities.noString(value))
+            this.pageCount = null;
+          else {
+            if (this.pageCount == null)
+              this.pageCount = new StringType();
+            this.pageCount.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("publishedIn", "", "The collection the cited article is published in.", 0, 1, publishedIn));
+          children.add(new Property("entryDate", "dateTime", "The date the article was added to the database.", 0, 1, entryDate));
+          children.add(new Property("revisionDate", "dateTime", "The date the article was last revised or updated in the database.", 0, 1, revisionDate));
+          children.add(new Property("pageCount", "string", "Actual or Approximate number of pages or screens.", 0, 1, pageCount));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -614144077: /*publishedIn*/  return new Property("publishedIn", "", "The collection the cited article is published in.", 0, 1, publishedIn);
+          case -479861952: /*entryDate*/  return new Property("entryDate", "dateTime", "The date the article was added to the database.", 0, 1, entryDate);
+          case -1250970071: /*revisionDate*/  return new Property("revisionDate", "dateTime", "The date the article was last revised or updated in the database.", 0, 1, revisionDate);
+          case 857882560: /*pageCount*/  return new Property("pageCount", "string", "Actual or Approximate number of pages or screens.", 0, 1, pageCount);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -614144077: /*publishedIn*/ return this.publishedIn == null ? new Base[0] : new Base[] {this.publishedIn}; // CitationPublicationInfoPublishedInComponent
+        case -479861952: /*entryDate*/ return this.entryDate == null ? new Base[0] : new Base[] {this.entryDate}; // DateTimeType
+        case -1250970071: /*revisionDate*/ return this.revisionDate == null ? new Base[0] : new Base[] {this.revisionDate}; // DateTimeType
+        case 857882560: /*pageCount*/ return this.pageCount == null ? new Base[0] : new Base[] {this.pageCount}; // StringType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -614144077: // publishedIn
+          this.publishedIn = (CitationPublicationInfoPublishedInComponent) value; // CitationPublicationInfoPublishedInComponent
+          return value;
+        case -479861952: // entryDate
+          this.entryDate = TypeConvertor.castToDateTime(value); // DateTimeType
+          return value;
+        case -1250970071: // revisionDate
+          this.revisionDate = TypeConvertor.castToDateTime(value); // DateTimeType
+          return value;
+        case 857882560: // pageCount
+          this.pageCount = TypeConvertor.castToString(value); // StringType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("publishedIn")) {
+          this.publishedIn = (CitationPublicationInfoPublishedInComponent) value; // CitationPublicationInfoPublishedInComponent
+        } else if (name.equals("entryDate")) {
+          this.entryDate = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("revisionDate")) {
+          this.revisionDate = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("pageCount")) {
+          this.pageCount = TypeConvertor.castToString(value); // StringType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -614144077:  return getPublishedIn();
+        case -479861952:  return getEntryDateElement();
+        case -1250970071:  return getRevisionDateElement();
+        case 857882560:  return getPageCountElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -614144077: /*publishedIn*/ return new String[] {};
+        case -479861952: /*entryDate*/ return new String[] {"dateTime"};
+        case -1250970071: /*revisionDate*/ return new String[] {"dateTime"};
+        case 857882560: /*pageCount*/ return new String[] {"string"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("publishedIn")) {
+          this.publishedIn = new CitationPublicationInfoPublishedInComponent();
+          return this.publishedIn;
+        }
+        else if (name.equals("entryDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.publicationInfo.entryDate");
+        }
+        else if (name.equals("revisionDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.publicationInfo.revisionDate");
+        }
+        else if (name.equals("pageCount")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.publicationInfo.pageCount");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CitationPublicationInfoComponent copy() {
+        CitationPublicationInfoComponent dst = new CitationPublicationInfoComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CitationPublicationInfoComponent dst) {
+        super.copyValues(dst);
+        dst.publishedIn = publishedIn == null ? null : publishedIn.copy();
+        dst.entryDate = entryDate == null ? null : entryDate.copy();
+        dst.revisionDate = revisionDate == null ? null : revisionDate.copy();
+        dst.pageCount = pageCount == null ? null : pageCount.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CitationPublicationInfoComponent))
+          return false;
+        CitationPublicationInfoComponent o = (CitationPublicationInfoComponent) other_;
+        return compareDeep(publishedIn, o.publishedIn, true) && compareDeep(entryDate, o.entryDate, true)
+           && compareDeep(revisionDate, o.revisionDate, true) && compareDeep(pageCount, o.pageCount, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CitationPublicationInfoComponent))
+          return false;
+        CitationPublicationInfoComponent o = (CitationPublicationInfoComponent) other_;
+        return compareValues(entryDate, o.entryDate, true) && compareValues(revisionDate, o.revisionDate, true)
+           && compareValues(pageCount, o.pageCount, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(publishedIn, entryDate, revisionDate
+          , pageCount);
+      }
+
+  public String fhirType() {
+    return "Citation.publicationInfo";
+
+  }
+
+  }
+
+    @Block()
+    public static class CitationPublicationInfoPublishedInComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Database or book.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Database or book", formalDefinition="Database or book." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/published-in-type")
+        protected CodeableConcept type;
+
+        /**
+         * Identifiers may include ISBN (International Standard Book Number) for books.
+         */
+        @Child(name = "identifier", type = {Identifier.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Identifiers may include ISBN for books", formalDefinition="Identifiers may include ISBN (International Standard Book Number) for books." )
+        protected List<Identifier> identifier;
+
+        /**
+         * Name of the database or title of the book.
+         */
+        @Child(name = "name", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Name of the database or title of the book", formalDefinition="Name of the database or title of the book." )
+        protected StringType name;
+
+        /**
+         * Name of the publisher.
+         */
+        @Child(name = "publisher", type = {Organization.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Name of the publisher", formalDefinition="Name of the publisher." )
+        protected Reference publisher;
+
+        /**
+         * Geographic location of the publisher.
+         */
+        @Child(name = "publisherLocation", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Geographic location of the publisher", formalDefinition="Geographic location of the publisher." )
+        protected StringType publisherLocation;
+
+        /**
+         * When the database was first available or when the book was published.
+         */
+        @Child(name = "startDate", type = {DateType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="When the database was first available or when the book was published", formalDefinition="When the database was first available or when the book was published." )
+        protected DateType startDate;
+
+        private static final long serialVersionUID = -618673226L;
+
+    /**
+     * Constructor
+     */
+      public CitationPublicationInfoPublishedInComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #type} (Database or book.)
+         */
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationPublicationInfoPublishedInComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (Database or book.)
+         */
+        public CitationPublicationInfoPublishedInComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #identifier} (Identifiers may include ISBN (International Standard Book Number) for books.)
+         */
+        public List<Identifier> getIdentifier() { 
+          if (this.identifier == null)
+            this.identifier = new ArrayList<Identifier>();
+          return this.identifier;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public CitationPublicationInfoPublishedInComponent setIdentifier(List<Identifier> theIdentifier) { 
+          this.identifier = theIdentifier;
+          return this;
+        }
+
+        public boolean hasIdentifier() { 
+          if (this.identifier == null)
+            return false;
+          for (Identifier item : this.identifier)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Identifier addIdentifier() { //3
+          Identifier t = new Identifier();
+          if (this.identifier == null)
+            this.identifier = new ArrayList<Identifier>();
+          this.identifier.add(t);
+          return t;
+        }
+
+        public CitationPublicationInfoPublishedInComponent addIdentifier(Identifier t) { //3
+          if (t == null)
+            return this;
+          if (this.identifier == null)
+            this.identifier = new ArrayList<Identifier>();
+          this.identifier.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
+         */
+        public Identifier getIdentifierFirstRep() { 
+          if (getIdentifier().isEmpty()) {
+            addIdentifier();
+          }
+          return getIdentifier().get(0);
+        }
+
+        /**
+         * @return {@link #name} (Name of the database or title of the book.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public StringType getNameElement() { 
+          if (this.name == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationPublicationInfoPublishedInComponent.name");
+            else if (Configuration.doAutoCreate())
+              this.name = new StringType(); // bb
+          return this.name;
+        }
+
+        public boolean hasNameElement() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        public boolean hasName() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        /**
+         * @param value {@link #name} (Name of the database or title of the book.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public CitationPublicationInfoPublishedInComponent setNameElement(StringType value) { 
+          this.name = value;
+          return this;
+        }
+
+        /**
+         * @return Name of the database or title of the book.
+         */
+        public String getName() { 
+          return this.name == null ? null : this.name.getValue();
+        }
+
+        /**
+         * @param value Name of the database or title of the book.
+         */
+        public CitationPublicationInfoPublishedInComponent setName(String value) { 
+          if (Utilities.noString(value))
+            this.name = null;
+          else {
+            if (this.name == null)
+              this.name = new StringType();
+            this.name.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #publisher} (Name of the publisher.)
+         */
+        public Reference getPublisher() { 
+          if (this.publisher == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationPublicationInfoPublishedInComponent.publisher");
+            else if (Configuration.doAutoCreate())
+              this.publisher = new Reference(); // cc
+          return this.publisher;
+        }
+
+        public boolean hasPublisher() { 
+          return this.publisher != null && !this.publisher.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publisher} (Name of the publisher.)
+         */
+        public CitationPublicationInfoPublishedInComponent setPublisher(Reference value) { 
+          this.publisher = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #publisherLocation} (Geographic location of the publisher.). This is the underlying object with id, value and extensions. The accessor "getPublisherLocation" gives direct access to the value
+         */
+        public StringType getPublisherLocationElement() { 
+          if (this.publisherLocation == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationPublicationInfoPublishedInComponent.publisherLocation");
+            else if (Configuration.doAutoCreate())
+              this.publisherLocation = new StringType(); // bb
+          return this.publisherLocation;
+        }
+
+        public boolean hasPublisherLocationElement() { 
+          return this.publisherLocation != null && !this.publisherLocation.isEmpty();
+        }
+
+        public boolean hasPublisherLocation() { 
+          return this.publisherLocation != null && !this.publisherLocation.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publisherLocation} (Geographic location of the publisher.). This is the underlying object with id, value and extensions. The accessor "getPublisherLocation" gives direct access to the value
+         */
+        public CitationPublicationInfoPublishedInComponent setPublisherLocationElement(StringType value) { 
+          this.publisherLocation = value;
+          return this;
+        }
+
+        /**
+         * @return Geographic location of the publisher.
+         */
+        public String getPublisherLocation() { 
+          return this.publisherLocation == null ? null : this.publisherLocation.getValue();
+        }
+
+        /**
+         * @param value Geographic location of the publisher.
+         */
+        public CitationPublicationInfoPublishedInComponent setPublisherLocation(String value) { 
+          if (Utilities.noString(value))
+            this.publisherLocation = null;
+          else {
+            if (this.publisherLocation == null)
+              this.publisherLocation = new StringType();
+            this.publisherLocation.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #startDate} (When the database was first available or when the book was published.). This is the underlying object with id, value and extensions. The accessor "getStartDate" gives direct access to the value
+         */
+        public DateType getStartDateElement() { 
+          if (this.startDate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationPublicationInfoPublishedInComponent.startDate");
+            else if (Configuration.doAutoCreate())
+              this.startDate = new DateType(); // bb
+          return this.startDate;
+        }
+
+        public boolean hasStartDateElement() { 
+          return this.startDate != null && !this.startDate.isEmpty();
+        }
+
+        public boolean hasStartDate() { 
+          return this.startDate != null && !this.startDate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #startDate} (When the database was first available or when the book was published.). This is the underlying object with id, value and extensions. The accessor "getStartDate" gives direct access to the value
+         */
+        public CitationPublicationInfoPublishedInComponent setStartDateElement(DateType value) { 
+          this.startDate = value;
+          return this;
+        }
+
+        /**
+         * @return When the database was first available or when the book was published.
+         */
+        public Date getStartDate() { 
+          return this.startDate == null ? null : this.startDate.getValue();
+        }
+
+        /**
+         * @param value When the database was first available or when the book was published.
+         */
+        public CitationPublicationInfoPublishedInComponent setStartDate(Date value) { 
+          if (value == null)
+            this.startDate = null;
+          else {
+            if (this.startDate == null)
+              this.startDate = new DateType();
+            this.startDate.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("type", "CodeableConcept", "Database or book.", 0, 1, type));
+          children.add(new Property("identifier", "Identifier", "Identifiers may include ISBN (International Standard Book Number) for books.", 0, java.lang.Integer.MAX_VALUE, identifier));
+          children.add(new Property("name", "string", "Name of the database or title of the book.", 0, 1, name));
+          children.add(new Property("publisher", "Reference(Organization)", "Name of the publisher.", 0, 1, publisher));
+          children.add(new Property("publisherLocation", "string", "Geographic location of the publisher.", 0, 1, publisherLocation));
+          children.add(new Property("startDate", "date", "When the database was first available or when the book was published.", 0, 1, startDate));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Database or book.", 0, 1, type);
+          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifiers may include ISBN (International Standard Book Number) for books.", 0, java.lang.Integer.MAX_VALUE, identifier);
+          case 3373707: /*name*/  return new Property("name", "string", "Name of the database or title of the book.", 0, 1, name);
+          case 1447404028: /*publisher*/  return new Property("publisher", "Reference(Organization)", "Name of the publisher.", 0, 1, publisher);
+          case -1281627695: /*publisherLocation*/  return new Property("publisherLocation", "string", "Geographic location of the publisher.", 0, 1, publisherLocation);
+          case -2129778896: /*startDate*/  return new Property("startDate", "date", "When the database was first available or when the book was published.", 0, 1, startDate);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // Reference
+        case -1281627695: /*publisherLocation*/ return this.publisherLocation == null ? new Base[0] : new Base[] {this.publisherLocation}; // StringType
+        case -2129778896: /*startDate*/ return this.startDate == null ? new Base[0] : new Base[] {this.startDate}; // DateType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -1618432855: // identifier
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
+          return value;
+        case 3373707: // name
+          this.name = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 1447404028: // publisher
+          this.publisher = TypeConvertor.castToReference(value); // Reference
+          return value;
+        case -1281627695: // publisherLocation
+          this.publisherLocation = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -2129778896: // startDate
+          this.startDate = TypeConvertor.castToDate(value); // DateType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("identifier")) {
+          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
+        } else if (name.equals("name")) {
+          this.name = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("publisher")) {
+          this.publisher = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("publisherLocation")) {
+          this.publisherLocation = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("startDate")) {
+          this.startDate = TypeConvertor.castToDate(value); // DateType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610:  return getType();
+        case -1618432855:  return addIdentifier(); 
+        case 3373707:  return getNameElement();
+        case 1447404028:  return getPublisher();
+        case -1281627695:  return getPublisherLocationElement();
+        case -2129778896:  return getStartDateElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case 3373707: /*name*/ return new String[] {"string"};
+        case 1447404028: /*publisher*/ return new String[] {"Reference"};
+        case -1281627695: /*publisherLocation*/ return new String[] {"string"};
+        case -2129778896: /*startDate*/ return new String[] {"date"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
+        }
+        else if (name.equals("identifier")) {
+          return addIdentifier();
+        }
+        else if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.publicationInfo.publishedIn.name");
+        }
+        else if (name.equals("publisher")) {
+          this.publisher = new Reference();
+          return this.publisher;
+        }
+        else if (name.equals("publisherLocation")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.publicationInfo.publishedIn.publisherLocation");
+        }
+        else if (name.equals("startDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.publicationInfo.publishedIn.startDate");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CitationPublicationInfoPublishedInComponent copy() {
+        CitationPublicationInfoPublishedInComponent dst = new CitationPublicationInfoPublishedInComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CitationPublicationInfoPublishedInComponent dst) {
+        super.copyValues(dst);
+        dst.type = type == null ? null : type.copy();
+        if (identifier != null) {
+          dst.identifier = new ArrayList<Identifier>();
+          for (Identifier i : identifier)
+            dst.identifier.add(i.copy());
+        };
+        dst.name = name == null ? null : name.copy();
+        dst.publisher = publisher == null ? null : publisher.copy();
+        dst.publisherLocation = publisherLocation == null ? null : publisherLocation.copy();
+        dst.startDate = startDate == null ? null : startDate.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CitationPublicationInfoPublishedInComponent))
+          return false;
+        CitationPublicationInfoPublishedInComponent o = (CitationPublicationInfoPublishedInComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(identifier, o.identifier, true) && compareDeep(name, o.name, true)
+           && compareDeep(publisher, o.publisher, true) && compareDeep(publisherLocation, o.publisherLocation, true)
+           && compareDeep(startDate, o.startDate, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CitationPublicationInfoPublishedInComponent))
+          return false;
+        CitationPublicationInfoPublishedInComponent o = (CitationPublicationInfoPublishedInComponent) other_;
+        return compareValues(name, o.name, true) && compareValues(publisherLocation, o.publisherLocation, true)
+           && compareValues(startDate, o.startDate, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, identifier, name, publisher
+          , publisherLocation, startDate);
+      }
+
+  public String fhirType() {
+    return "Citation.publicationInfo.publishedIn";
 
   }
 
@@ -2250,45 +3850,44 @@ public class Citation extends MetadataResource {
   }
 
     @Block()
-    public static class CitationAuthorListComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class CitationContributorshipComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Indicates if the list includes all authors, else “et al” should be appended for display.
+         * Indicates if the list includes all authors and/or contributors.
          */
         @Child(name = "complete", type = {BooleanType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Indicates if the list includes all authors, else “et al” should be appended for display", formalDefinition="Indicates if the list includes all authors, else “et al” should be appended for display." )
+        @Description(shortDefinition="Indicates if the list includes all authors and/or contributors", formalDefinition="Indicates if the list includes all authors and/or contributors." )
         protected BooleanType complete;
 
         /**
-         * An individual entity named in the author list.
+         * An individual entity named in the author list or contributor list.
          */
-        @Child(name = "author", type = {}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="An individual entity named in the author list", formalDefinition="An individual entity named in the author list." )
-        protected List<CitationAuthorListAuthorComponent> author;
+        @Child(name = "entry", type = {}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="An individual entity named in the list", formalDefinition="An individual entity named in the author list or contributor list." )
+        protected List<CitationContributorshipEntryComponent> entry;
 
-        private static final long serialVersionUID = -204175482L;
+        /**
+         * Used to record a display of the author/contributor list without separate coding for each list member.
+         */
+        @Child(name = "summary", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Used to record a display of the author/contributor list without separate coding for each list member", formalDefinition="Used to record a display of the author/contributor list without separate coding for each list member." )
+        protected List<CitationContributorshipSummaryComponent> summary;
+
+        private static final long serialVersionUID = -1399349675L;
 
     /**
      * Constructor
      */
-      public CitationAuthorListComponent() {
+      public CitationContributorshipComponent() {
         super();
-      }
-
-    /**
-     * Constructor
-     */
-      public CitationAuthorListComponent(CitationAuthorListAuthorComponent author) {
-        super();
-        this.addAuthor(author);
       }
 
         /**
-         * @return {@link #complete} (Indicates if the list includes all authors, else “et al” should be appended for display.). This is the underlying object with id, value and extensions. The accessor "getComplete" gives direct access to the value
+         * @return {@link #complete} (Indicates if the list includes all authors and/or contributors.). This is the underlying object with id, value and extensions. The accessor "getComplete" gives direct access to the value
          */
         public BooleanType getCompleteElement() { 
           if (this.complete == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorListComponent.complete");
+              throw new Error("Attempt to auto-create CitationContributorshipComponent.complete");
             else if (Configuration.doAutoCreate())
               this.complete = new BooleanType(); // bb
           return this.complete;
@@ -2303,24 +3902,24 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #complete} (Indicates if the list includes all authors, else “et al” should be appended for display.). This is the underlying object with id, value and extensions. The accessor "getComplete" gives direct access to the value
+         * @param value {@link #complete} (Indicates if the list includes all authors and/or contributors.). This is the underlying object with id, value and extensions. The accessor "getComplete" gives direct access to the value
          */
-        public CitationAuthorListComponent setCompleteElement(BooleanType value) { 
+        public CitationContributorshipComponent setCompleteElement(BooleanType value) { 
           this.complete = value;
           return this;
         }
 
         /**
-         * @return Indicates if the list includes all authors, else “et al” should be appended for display.
+         * @return Indicates if the list includes all authors and/or contributors.
          */
         public boolean getComplete() { 
           return this.complete == null || this.complete.isEmpty() ? false : this.complete.getValue();
         }
 
         /**
-         * @param value Indicates if the list includes all authors, else “et al” should be appended for display.
+         * @param value Indicates if the list includes all authors and/or contributors.
          */
-        public CitationAuthorListComponent setComplete(boolean value) { 
+        public CitationContributorshipComponent setComplete(boolean value) { 
             if (this.complete == null)
               this.complete = new BooleanType();
             this.complete.setValue(value);
@@ -2328,69 +3927,124 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #author} (An individual entity named in the author list.)
+         * @return {@link #entry} (An individual entity named in the author list or contributor list.)
          */
-        public List<CitationAuthorListAuthorComponent> getAuthor() { 
-          if (this.author == null)
-            this.author = new ArrayList<CitationAuthorListAuthorComponent>();
-          return this.author;
+        public List<CitationContributorshipEntryComponent> getEntry() { 
+          if (this.entry == null)
+            this.entry = new ArrayList<CitationContributorshipEntryComponent>();
+          return this.entry;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CitationAuthorListComponent setAuthor(List<CitationAuthorListAuthorComponent> theAuthor) { 
-          this.author = theAuthor;
+        public CitationContributorshipComponent setEntry(List<CitationContributorshipEntryComponent> theEntry) { 
+          this.entry = theEntry;
           return this;
         }
 
-        public boolean hasAuthor() { 
-          if (this.author == null)
+        public boolean hasEntry() { 
+          if (this.entry == null)
             return false;
-          for (CitationAuthorListAuthorComponent item : this.author)
+          for (CitationContributorshipEntryComponent item : this.entry)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CitationAuthorListAuthorComponent addAuthor() { //3
-          CitationAuthorListAuthorComponent t = new CitationAuthorListAuthorComponent();
-          if (this.author == null)
-            this.author = new ArrayList<CitationAuthorListAuthorComponent>();
-          this.author.add(t);
+        public CitationContributorshipEntryComponent addEntry() { //3
+          CitationContributorshipEntryComponent t = new CitationContributorshipEntryComponent();
+          if (this.entry == null)
+            this.entry = new ArrayList<CitationContributorshipEntryComponent>();
+          this.entry.add(t);
           return t;
         }
 
-        public CitationAuthorListComponent addAuthor(CitationAuthorListAuthorComponent t) { //3
+        public CitationContributorshipComponent addEntry(CitationContributorshipEntryComponent t) { //3
           if (t == null)
             return this;
-          if (this.author == null)
-            this.author = new ArrayList<CitationAuthorListAuthorComponent>();
-          this.author.add(t);
+          if (this.entry == null)
+            this.entry = new ArrayList<CitationContributorshipEntryComponent>();
+          this.entry.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #entry}, creating it if it does not already exist {3}
          */
-        public CitationAuthorListAuthorComponent getAuthorFirstRep() { 
-          if (getAuthor().isEmpty()) {
-            addAuthor();
+        public CitationContributorshipEntryComponent getEntryFirstRep() { 
+          if (getEntry().isEmpty()) {
+            addEntry();
           }
-          return getAuthor().get(0);
+          return getEntry().get(0);
+        }
+
+        /**
+         * @return {@link #summary} (Used to record a display of the author/contributor list without separate coding for each list member.)
+         */
+        public List<CitationContributorshipSummaryComponent> getSummary() { 
+          if (this.summary == null)
+            this.summary = new ArrayList<CitationContributorshipSummaryComponent>();
+          return this.summary;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public CitationContributorshipComponent setSummary(List<CitationContributorshipSummaryComponent> theSummary) { 
+          this.summary = theSummary;
+          return this;
+        }
+
+        public boolean hasSummary() { 
+          if (this.summary == null)
+            return false;
+          for (CitationContributorshipSummaryComponent item : this.summary)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CitationContributorshipSummaryComponent addSummary() { //3
+          CitationContributorshipSummaryComponent t = new CitationContributorshipSummaryComponent();
+          if (this.summary == null)
+            this.summary = new ArrayList<CitationContributorshipSummaryComponent>();
+          this.summary.add(t);
+          return t;
+        }
+
+        public CitationContributorshipComponent addSummary(CitationContributorshipSummaryComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.summary == null)
+            this.summary = new ArrayList<CitationContributorshipSummaryComponent>();
+          this.summary.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #summary}, creating it if it does not already exist {3}
+         */
+        public CitationContributorshipSummaryComponent getSummaryFirstRep() { 
+          if (getSummary().isEmpty()) {
+            addSummary();
+          }
+          return getSummary().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("complete", "boolean", "Indicates if the list includes all authors, else “et al” should be appended for display.", 0, 1, complete));
-          children.add(new Property("author", "", "An individual entity named in the author list.", 0, java.lang.Integer.MAX_VALUE, author));
+          children.add(new Property("complete", "boolean", "Indicates if the list includes all authors and/or contributors.", 0, 1, complete));
+          children.add(new Property("entry", "", "An individual entity named in the author list or contributor list.", 0, java.lang.Integer.MAX_VALUE, entry));
+          children.add(new Property("summary", "", "Used to record a display of the author/contributor list without separate coding for each list member.", 0, java.lang.Integer.MAX_VALUE, summary));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -599445191: /*complete*/  return new Property("complete", "boolean", "Indicates if the list includes all authors, else “et al” should be appended for display.", 0, 1, complete);
-          case -1406328437: /*author*/  return new Property("author", "", "An individual entity named in the author list.", 0, java.lang.Integer.MAX_VALUE, author);
+          case -599445191: /*complete*/  return new Property("complete", "boolean", "Indicates if the list includes all authors and/or contributors.", 0, 1, complete);
+          case 96667762: /*entry*/  return new Property("entry", "", "An individual entity named in the author list or contributor list.", 0, java.lang.Integer.MAX_VALUE, entry);
+          case -1857640538: /*summary*/  return new Property("summary", "", "Used to record a display of the author/contributor list without separate coding for each list member.", 0, java.lang.Integer.MAX_VALUE, summary);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -2400,7 +4054,8 @@ public class Citation extends MetadataResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -599445191: /*complete*/ return this.complete == null ? new Base[0] : new Base[] {this.complete}; // BooleanType
-        case -1406328437: /*author*/ return this.author == null ? new Base[0] : this.author.toArray(new Base[this.author.size()]); // CitationAuthorListAuthorComponent
+        case 96667762: /*entry*/ return this.entry == null ? new Base[0] : this.entry.toArray(new Base[this.entry.size()]); // CitationContributorshipEntryComponent
+        case -1857640538: /*summary*/ return this.summary == null ? new Base[0] : this.summary.toArray(new Base[this.summary.size()]); // CitationContributorshipSummaryComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2412,8 +4067,11 @@ public class Citation extends MetadataResource {
         case -599445191: // complete
           this.complete = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
-        case -1406328437: // author
-          this.getAuthor().add((CitationAuthorListAuthorComponent) value); // CitationAuthorListAuthorComponent
+        case 96667762: // entry
+          this.getEntry().add((CitationContributorshipEntryComponent) value); // CitationContributorshipEntryComponent
+          return value;
+        case -1857640538: // summary
+          this.getSummary().add((CitationContributorshipSummaryComponent) value); // CitationContributorshipSummaryComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -2424,8 +4082,10 @@ public class Citation extends MetadataResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("complete")) {
           this.complete = TypeConvertor.castToBoolean(value); // BooleanType
-        } else if (name.equals("author")) {
-          this.getAuthor().add((CitationAuthorListAuthorComponent) value);
+        } else if (name.equals("entry")) {
+          this.getEntry().add((CitationContributorshipEntryComponent) value);
+        } else if (name.equals("summary")) {
+          this.getSummary().add((CitationContributorshipSummaryComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -2435,7 +4095,8 @@ public class Citation extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -599445191:  return getCompleteElement();
-        case -1406328437:  return addAuthor(); 
+        case 96667762:  return addEntry(); 
+        case -1857640538:  return addSummary(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -2445,7 +4106,8 @@ public class Citation extends MetadataResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -599445191: /*complete*/ return new String[] {"boolean"};
-        case -1406328437: /*author*/ return new String[] {};
+        case 96667762: /*entry*/ return new String[] {};
+        case -1857640538: /*summary*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2454,28 +4116,36 @@ public class Citation extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("complete")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorList.complete");
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorship.complete");
         }
-        else if (name.equals("author")) {
-          return addAuthor();
+        else if (name.equals("entry")) {
+          return addEntry();
+        }
+        else if (name.equals("summary")) {
+          return addSummary();
         }
         else
           return super.addChild(name);
       }
 
-      public CitationAuthorListComponent copy() {
-        CitationAuthorListComponent dst = new CitationAuthorListComponent();
+      public CitationContributorshipComponent copy() {
+        CitationContributorshipComponent dst = new CitationContributorshipComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(CitationAuthorListComponent dst) {
+      public void copyValues(CitationContributorshipComponent dst) {
         super.copyValues(dst);
         dst.complete = complete == null ? null : complete.copy();
-        if (author != null) {
-          dst.author = new ArrayList<CitationAuthorListAuthorComponent>();
-          for (CitationAuthorListAuthorComponent i : author)
-            dst.author.add(i.copy());
+        if (entry != null) {
+          dst.entry = new ArrayList<CitationContributorshipEntryComponent>();
+          for (CitationContributorshipEntryComponent i : entry)
+            dst.entry.add(i.copy());
+        };
+        if (summary != null) {
+          dst.summary = new ArrayList<CitationContributorshipSummaryComponent>();
+          for (CitationContributorshipSummaryComponent i : summary)
+            dst.summary.add(i.copy());
         };
       }
 
@@ -2483,97 +4153,100 @@ public class Citation extends MetadataResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof CitationAuthorListComponent))
+        if (!(other_ instanceof CitationContributorshipComponent))
           return false;
-        CitationAuthorListComponent o = (CitationAuthorListComponent) other_;
-        return compareDeep(complete, o.complete, true) && compareDeep(author, o.author, true);
+        CitationContributorshipComponent o = (CitationContributorshipComponent) other_;
+        return compareDeep(complete, o.complete, true) && compareDeep(entry, o.entry, true) && compareDeep(summary, o.summary, true)
+          ;
       }
 
       @Override
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof CitationAuthorListComponent))
+        if (!(other_ instanceof CitationContributorshipComponent))
           return false;
-        CitationAuthorListComponent o = (CitationAuthorListComponent) other_;
+        CitationContributorshipComponent o = (CitationContributorshipComponent) other_;
         return compareValues(complete, o.complete, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(complete, author);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(complete, entry, summary
+          );
       }
 
   public String fhirType() {
-    return "Citation.authorList";
+    return "Citation.contributorship";
 
   }
 
   }
 
     @Block()
-    public static class CitationAuthorListAuthorComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class CitationContributorshipEntryComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Surname or single name.
+         * A name associated with the individual.
          */
-        @Child(name = "lastName", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Surname or single name", formalDefinition="Surname or single name." )
-        protected StringType lastName;
-
-        /**
-         * Remainder of name except for suffix.
-         */
-        @Child(name = "foreName", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Remainder of name except for suffix", formalDefinition="Remainder of name except for suffix." )
-        protected StringType foreName;
-
-        /**
-         * Eg 2nd, 3rd, Jr, Sr.
-         */
-        @Child(name = "suffix", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Eg 2nd, 3rd, Jr, Sr", formalDefinition="Eg 2nd, 3rd, Jr, Sr." )
-        protected StringType suffix;
+        @Child(name = "name", type = {HumanName.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="A name associated with the person", formalDefinition="A name associated with the individual." )
+        protected HumanName name;
 
         /**
          * Initials for forename.
          */
-        @Child(name = "initials", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "initials", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Initials for forename", formalDefinition="Initials for forename." )
         protected StringType initials;
 
         /**
          * Used for collective or corporate name as an author.
          */
-        @Child(name = "collectiveName", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "collectiveName", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Used for collective or corporate name as an author", formalDefinition="Used for collective or corporate name as an author." )
         protected StringType collectiveName;
 
         /**
-         * Author identifier, eg ORCID.
+         * Unique person identifier.
          */
-        @Child(name = "identifier", type = {Identifier.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Author identifier, eg ORCID", formalDefinition="Author identifier, eg ORCID." )
+        @Child(name = "identifier", type = {Identifier.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Author identifier, eg ORCID", formalDefinition="Unique person identifier." )
         protected List<Identifier> identifier;
 
         /**
-         * Organizational affiliation.
+         * Organization affiliated with the entity.
          */
-        @Child(name = "affiliationInfo", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Organizational affiliation", formalDefinition="Organizational affiliation." )
-        protected List<CitationAuthorListAuthorAffiliationInfoComponent> affiliationInfo;
+        @Child(name = "affiliationInfo", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Organizational affiliation", formalDefinition="Organization affiliated with the entity." )
+        protected List<CitationContributorshipEntryAffiliationInfoComponent> affiliationInfo;
 
         /**
-         * Physical mailing address for the author.
+         * Physical mailing address for the author or contributor.
          */
-        @Child(name = "address", type = {StringType.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Physical mailing address for the author", formalDefinition="Physical mailing address for the author." )
-        protected List<StringType> address;
+        @Child(name = "address", type = {Address.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Physical mailing address", formalDefinition="Physical mailing address for the author or contributor." )
+        protected List<Address> address;
 
         /**
-         * Email or telephone contact methods for the author.
+         * Email or telephone contact methods for the author or contributor.
          */
-        @Child(name = "telecom", type = {ContactPoint.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Email or telephone contact methods for the author", formalDefinition="Email or telephone contact methods for the author." )
+        @Child(name = "telecom", type = {ContactPoint.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Email or telephone contact methods for", formalDefinition="Email or telephone contact methods for the author or contributor." )
         protected List<ContactPoint> telecom;
+
+        /**
+         * This element identifies the specific nature of an individual’s contribution with respect to the cited work.
+         */
+        @Child(name = "contribution", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="The specific contributions", formalDefinition="This element identifies the specific nature of an individual’s contribution with respect to the cited work." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/citation-contribution")
+        protected List<CodeableConcept> contribution;
+
+        /**
+         * False, missing, or empty elements implies authorship.
+         */
+        @Child(name = "notAnAuthor", type = {BooleanType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Used to identify non-author contributors", formalDefinition="False, missing, or empty elements implies authorship." )
+        protected BooleanType notAnAuthor;
 
         /**
          * Indication of which author is the corresponding author for the article cited.
@@ -2589,159 +4262,36 @@ public class Citation extends MetadataResource {
         @Description(shortDefinition="Used to code order of authors", formalDefinition="Used to code order of authors." )
         protected PositiveIntType listOrder;
 
-        private static final long serialVersionUID = 1461164632L;
+        private static final long serialVersionUID = -298558035L;
 
     /**
      * Constructor
      */
-      public CitationAuthorListAuthorComponent() {
+      public CitationContributorshipEntryComponent() {
         super();
       }
 
         /**
-         * @return {@link #lastName} (Surname or single name.). This is the underlying object with id, value and extensions. The accessor "getLastName" gives direct access to the value
+         * @return {@link #name} (A name associated with the individual.)
          */
-        public StringType getLastNameElement() { 
-          if (this.lastName == null)
+        public HumanName getName() { 
+          if (this.name == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorListAuthorComponent.lastName");
+              throw new Error("Attempt to auto-create CitationContributorshipEntryComponent.name");
             else if (Configuration.doAutoCreate())
-              this.lastName = new StringType(); // bb
-          return this.lastName;
+              this.name = new HumanName(); // cc
+          return this.name;
         }
 
-        public boolean hasLastNameElement() { 
-          return this.lastName != null && !this.lastName.isEmpty();
-        }
-
-        public boolean hasLastName() { 
-          return this.lastName != null && !this.lastName.isEmpty();
+        public boolean hasName() { 
+          return this.name != null && !this.name.isEmpty();
         }
 
         /**
-         * @param value {@link #lastName} (Surname or single name.). This is the underlying object with id, value and extensions. The accessor "getLastName" gives direct access to the value
+         * @param value {@link #name} (A name associated with the individual.)
          */
-        public CitationAuthorListAuthorComponent setLastNameElement(StringType value) { 
-          this.lastName = value;
-          return this;
-        }
-
-        /**
-         * @return Surname or single name.
-         */
-        public String getLastName() { 
-          return this.lastName == null ? null : this.lastName.getValue();
-        }
-
-        /**
-         * @param value Surname or single name.
-         */
-        public CitationAuthorListAuthorComponent setLastName(String value) { 
-          if (Utilities.noString(value))
-            this.lastName = null;
-          else {
-            if (this.lastName == null)
-              this.lastName = new StringType();
-            this.lastName.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #foreName} (Remainder of name except for suffix.). This is the underlying object with id, value and extensions. The accessor "getForeName" gives direct access to the value
-         */
-        public StringType getForeNameElement() { 
-          if (this.foreName == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorListAuthorComponent.foreName");
-            else if (Configuration.doAutoCreate())
-              this.foreName = new StringType(); // bb
-          return this.foreName;
-        }
-
-        public boolean hasForeNameElement() { 
-          return this.foreName != null && !this.foreName.isEmpty();
-        }
-
-        public boolean hasForeName() { 
-          return this.foreName != null && !this.foreName.isEmpty();
-        }
-
-        /**
-         * @param value {@link #foreName} (Remainder of name except for suffix.). This is the underlying object with id, value and extensions. The accessor "getForeName" gives direct access to the value
-         */
-        public CitationAuthorListAuthorComponent setForeNameElement(StringType value) { 
-          this.foreName = value;
-          return this;
-        }
-
-        /**
-         * @return Remainder of name except for suffix.
-         */
-        public String getForeName() { 
-          return this.foreName == null ? null : this.foreName.getValue();
-        }
-
-        /**
-         * @param value Remainder of name except for suffix.
-         */
-        public CitationAuthorListAuthorComponent setForeName(String value) { 
-          if (Utilities.noString(value))
-            this.foreName = null;
-          else {
-            if (this.foreName == null)
-              this.foreName = new StringType();
-            this.foreName.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #suffix} (Eg 2nd, 3rd, Jr, Sr.). This is the underlying object with id, value and extensions. The accessor "getSuffix" gives direct access to the value
-         */
-        public StringType getSuffixElement() { 
-          if (this.suffix == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorListAuthorComponent.suffix");
-            else if (Configuration.doAutoCreate())
-              this.suffix = new StringType(); // bb
-          return this.suffix;
-        }
-
-        public boolean hasSuffixElement() { 
-          return this.suffix != null && !this.suffix.isEmpty();
-        }
-
-        public boolean hasSuffix() { 
-          return this.suffix != null && !this.suffix.isEmpty();
-        }
-
-        /**
-         * @param value {@link #suffix} (Eg 2nd, 3rd, Jr, Sr.). This is the underlying object with id, value and extensions. The accessor "getSuffix" gives direct access to the value
-         */
-        public CitationAuthorListAuthorComponent setSuffixElement(StringType value) { 
-          this.suffix = value;
-          return this;
-        }
-
-        /**
-         * @return Eg 2nd, 3rd, Jr, Sr.
-         */
-        public String getSuffix() { 
-          return this.suffix == null ? null : this.suffix.getValue();
-        }
-
-        /**
-         * @param value Eg 2nd, 3rd, Jr, Sr.
-         */
-        public CitationAuthorListAuthorComponent setSuffix(String value) { 
-          if (Utilities.noString(value))
-            this.suffix = null;
-          else {
-            if (this.suffix == null)
-              this.suffix = new StringType();
-            this.suffix.setValue(value);
-          }
+        public CitationContributorshipEntryComponent setName(HumanName value) { 
+          this.name = value;
           return this;
         }
 
@@ -2751,7 +4301,7 @@ public class Citation extends MetadataResource {
         public StringType getInitialsElement() { 
           if (this.initials == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorListAuthorComponent.initials");
+              throw new Error("Attempt to auto-create CitationContributorshipEntryComponent.initials");
             else if (Configuration.doAutoCreate())
               this.initials = new StringType(); // bb
           return this.initials;
@@ -2768,7 +4318,7 @@ public class Citation extends MetadataResource {
         /**
          * @param value {@link #initials} (Initials for forename.). This is the underlying object with id, value and extensions. The accessor "getInitials" gives direct access to the value
          */
-        public CitationAuthorListAuthorComponent setInitialsElement(StringType value) { 
+        public CitationContributorshipEntryComponent setInitialsElement(StringType value) { 
           this.initials = value;
           return this;
         }
@@ -2783,7 +4333,7 @@ public class Citation extends MetadataResource {
         /**
          * @param value Initials for forename.
          */
-        public CitationAuthorListAuthorComponent setInitials(String value) { 
+        public CitationContributorshipEntryComponent setInitials(String value) { 
           if (Utilities.noString(value))
             this.initials = null;
           else {
@@ -2800,7 +4350,7 @@ public class Citation extends MetadataResource {
         public StringType getCollectiveNameElement() { 
           if (this.collectiveName == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorListAuthorComponent.collectiveName");
+              throw new Error("Attempt to auto-create CitationContributorshipEntryComponent.collectiveName");
             else if (Configuration.doAutoCreate())
               this.collectiveName = new StringType(); // bb
           return this.collectiveName;
@@ -2817,7 +4367,7 @@ public class Citation extends MetadataResource {
         /**
          * @param value {@link #collectiveName} (Used for collective or corporate name as an author.). This is the underlying object with id, value and extensions. The accessor "getCollectiveName" gives direct access to the value
          */
-        public CitationAuthorListAuthorComponent setCollectiveNameElement(StringType value) { 
+        public CitationContributorshipEntryComponent setCollectiveNameElement(StringType value) { 
           this.collectiveName = value;
           return this;
         }
@@ -2832,7 +4382,7 @@ public class Citation extends MetadataResource {
         /**
          * @param value Used for collective or corporate name as an author.
          */
-        public CitationAuthorListAuthorComponent setCollectiveName(String value) { 
+        public CitationContributorshipEntryComponent setCollectiveName(String value) { 
           if (Utilities.noString(value))
             this.collectiveName = null;
           else {
@@ -2844,7 +4394,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #identifier} (Author identifier, eg ORCID.)
+         * @return {@link #identifier} (Unique person identifier.)
          */
         public List<Identifier> getIdentifier() { 
           if (this.identifier == null)
@@ -2855,7 +4405,7 @@ public class Citation extends MetadataResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CitationAuthorListAuthorComponent setIdentifier(List<Identifier> theIdentifier) { 
+        public CitationContributorshipEntryComponent setIdentifier(List<Identifier> theIdentifier) { 
           this.identifier = theIdentifier;
           return this;
         }
@@ -2877,7 +4427,7 @@ public class Citation extends MetadataResource {
           return t;
         }
 
-        public CitationAuthorListAuthorComponent addIdentifier(Identifier t) { //3
+        public CitationContributorshipEntryComponent addIdentifier(Identifier t) { //3
           if (t == null)
             return this;
           if (this.identifier == null)
@@ -2897,18 +4447,18 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #affiliationInfo} (Organizational affiliation.)
+         * @return {@link #affiliationInfo} (Organization affiliated with the entity.)
          */
-        public List<CitationAuthorListAuthorAffiliationInfoComponent> getAffiliationInfo() { 
+        public List<CitationContributorshipEntryAffiliationInfoComponent> getAffiliationInfo() { 
           if (this.affiliationInfo == null)
-            this.affiliationInfo = new ArrayList<CitationAuthorListAuthorAffiliationInfoComponent>();
+            this.affiliationInfo = new ArrayList<CitationContributorshipEntryAffiliationInfoComponent>();
           return this.affiliationInfo;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CitationAuthorListAuthorComponent setAffiliationInfo(List<CitationAuthorListAuthorAffiliationInfoComponent> theAffiliationInfo) { 
+        public CitationContributorshipEntryComponent setAffiliationInfo(List<CitationContributorshipEntryAffiliationInfoComponent> theAffiliationInfo) { 
           this.affiliationInfo = theAffiliationInfo;
           return this;
         }
@@ -2916,25 +4466,25 @@ public class Citation extends MetadataResource {
         public boolean hasAffiliationInfo() { 
           if (this.affiliationInfo == null)
             return false;
-          for (CitationAuthorListAuthorAffiliationInfoComponent item : this.affiliationInfo)
+          for (CitationContributorshipEntryAffiliationInfoComponent item : this.affiliationInfo)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CitationAuthorListAuthorAffiliationInfoComponent addAffiliationInfo() { //3
-          CitationAuthorListAuthorAffiliationInfoComponent t = new CitationAuthorListAuthorAffiliationInfoComponent();
+        public CitationContributorshipEntryAffiliationInfoComponent addAffiliationInfo() { //3
+          CitationContributorshipEntryAffiliationInfoComponent t = new CitationContributorshipEntryAffiliationInfoComponent();
           if (this.affiliationInfo == null)
-            this.affiliationInfo = new ArrayList<CitationAuthorListAuthorAffiliationInfoComponent>();
+            this.affiliationInfo = new ArrayList<CitationContributorshipEntryAffiliationInfoComponent>();
           this.affiliationInfo.add(t);
           return t;
         }
 
-        public CitationAuthorListAuthorComponent addAffiliationInfo(CitationAuthorListAuthorAffiliationInfoComponent t) { //3
+        public CitationContributorshipEntryComponent addAffiliationInfo(CitationContributorshipEntryAffiliationInfoComponent t) { //3
           if (t == null)
             return this;
           if (this.affiliationInfo == null)
-            this.affiliationInfo = new ArrayList<CitationAuthorListAuthorAffiliationInfoComponent>();
+            this.affiliationInfo = new ArrayList<CitationContributorshipEntryAffiliationInfoComponent>();
           this.affiliationInfo.add(t);
           return this;
         }
@@ -2942,7 +4492,7 @@ public class Citation extends MetadataResource {
         /**
          * @return The first repetition of repeating field {@link #affiliationInfo}, creating it if it does not already exist {3}
          */
-        public CitationAuthorListAuthorAffiliationInfoComponent getAffiliationInfoFirstRep() { 
+        public CitationContributorshipEntryAffiliationInfoComponent getAffiliationInfoFirstRep() { 
           if (getAffiliationInfo().isEmpty()) {
             addAffiliationInfo();
           }
@@ -2950,18 +4500,18 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #address} (Physical mailing address for the author.)
+         * @return {@link #address} (Physical mailing address for the author or contributor.)
          */
-        public List<StringType> getAddress() { 
+        public List<Address> getAddress() { 
           if (this.address == null)
-            this.address = new ArrayList<StringType>();
+            this.address = new ArrayList<Address>();
           return this.address;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CitationAuthorListAuthorComponent setAddress(List<StringType> theAddress) { 
+        public CitationContributorshipEntryComponent setAddress(List<Address> theAddress) { 
           this.address = theAddress;
           return this;
         }
@@ -2969,49 +4519,41 @@ public class Citation extends MetadataResource {
         public boolean hasAddress() { 
           if (this.address == null)
             return false;
-          for (StringType item : this.address)
+          for (Address item : this.address)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        /**
-         * @return {@link #address} (Physical mailing address for the author.)
-         */
-        public StringType addAddressElement() {//2 
-          StringType t = new StringType();
+        public Address addAddress() { //3
+          Address t = new Address();
           if (this.address == null)
-            this.address = new ArrayList<StringType>();
+            this.address = new ArrayList<Address>();
           this.address.add(t);
           return t;
         }
 
-        /**
-         * @param value {@link #address} (Physical mailing address for the author.)
-         */
-        public CitationAuthorListAuthorComponent addAddress(String value) { //1
-          StringType t = new StringType();
-          t.setValue(value);
+        public CitationContributorshipEntryComponent addAddress(Address t) { //3
+          if (t == null)
+            return this;
           if (this.address == null)
-            this.address = new ArrayList<StringType>();
+            this.address = new ArrayList<Address>();
           this.address.add(t);
           return this;
         }
 
         /**
-         * @param value {@link #address} (Physical mailing address for the author.)
+         * @return The first repetition of repeating field {@link #address}, creating it if it does not already exist {3}
          */
-        public boolean hasAddress(String value) { 
-          if (this.address == null)
-            return false;
-          for (StringType v : this.address)
-            if (v.getValue().equals(value)) // string
-              return true;
-          return false;
+        public Address getAddressFirstRep() { 
+          if (getAddress().isEmpty()) {
+            addAddress();
+          }
+          return getAddress().get(0);
         }
 
         /**
-         * @return {@link #telecom} (Email or telephone contact methods for the author.)
+         * @return {@link #telecom} (Email or telephone contact methods for the author or contributor.)
          */
         public List<ContactPoint> getTelecom() { 
           if (this.telecom == null)
@@ -3022,7 +4564,7 @@ public class Citation extends MetadataResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CitationAuthorListAuthorComponent setTelecom(List<ContactPoint> theTelecom) { 
+        public CitationContributorshipEntryComponent setTelecom(List<ContactPoint> theTelecom) { 
           this.telecom = theTelecom;
           return this;
         }
@@ -3044,7 +4586,7 @@ public class Citation extends MetadataResource {
           return t;
         }
 
-        public CitationAuthorListAuthorComponent addTelecom(ContactPoint t) { //3
+        public CitationContributorshipEntryComponent addTelecom(ContactPoint t) { //3
           if (t == null)
             return this;
           if (this.telecom == null)
@@ -3064,1568 +4606,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #correspondingAuthor} (Indication of which author is the corresponding author for the article cited.). This is the underlying object with id, value and extensions. The accessor "getCorrespondingAuthor" gives direct access to the value
-         */
-        public BooleanType getCorrespondingAuthorElement() { 
-          if (this.correspondingAuthor == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorListAuthorComponent.correspondingAuthor");
-            else if (Configuration.doAutoCreate())
-              this.correspondingAuthor = new BooleanType(); // bb
-          return this.correspondingAuthor;
-        }
-
-        public boolean hasCorrespondingAuthorElement() { 
-          return this.correspondingAuthor != null && !this.correspondingAuthor.isEmpty();
-        }
-
-        public boolean hasCorrespondingAuthor() { 
-          return this.correspondingAuthor != null && !this.correspondingAuthor.isEmpty();
-        }
-
-        /**
-         * @param value {@link #correspondingAuthor} (Indication of which author is the corresponding author for the article cited.). This is the underlying object with id, value and extensions. The accessor "getCorrespondingAuthor" gives direct access to the value
-         */
-        public CitationAuthorListAuthorComponent setCorrespondingAuthorElement(BooleanType value) { 
-          this.correspondingAuthor = value;
-          return this;
-        }
-
-        /**
-         * @return Indication of which author is the corresponding author for the article cited.
-         */
-        public boolean getCorrespondingAuthor() { 
-          return this.correspondingAuthor == null || this.correspondingAuthor.isEmpty() ? false : this.correspondingAuthor.getValue();
-        }
-
-        /**
-         * @param value Indication of which author is the corresponding author for the article cited.
-         */
-        public CitationAuthorListAuthorComponent setCorrespondingAuthor(boolean value) { 
-            if (this.correspondingAuthor == null)
-              this.correspondingAuthor = new BooleanType();
-            this.correspondingAuthor.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #listOrder} (Used to code order of authors.). This is the underlying object with id, value and extensions. The accessor "getListOrder" gives direct access to the value
-         */
-        public PositiveIntType getListOrderElement() { 
-          if (this.listOrder == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorListAuthorComponent.listOrder");
-            else if (Configuration.doAutoCreate())
-              this.listOrder = new PositiveIntType(); // bb
-          return this.listOrder;
-        }
-
-        public boolean hasListOrderElement() { 
-          return this.listOrder != null && !this.listOrder.isEmpty();
-        }
-
-        public boolean hasListOrder() { 
-          return this.listOrder != null && !this.listOrder.isEmpty();
-        }
-
-        /**
-         * @param value {@link #listOrder} (Used to code order of authors.). This is the underlying object with id, value and extensions. The accessor "getListOrder" gives direct access to the value
-         */
-        public CitationAuthorListAuthorComponent setListOrderElement(PositiveIntType value) { 
-          this.listOrder = value;
-          return this;
-        }
-
-        /**
-         * @return Used to code order of authors.
-         */
-        public int getListOrder() { 
-          return this.listOrder == null || this.listOrder.isEmpty() ? 0 : this.listOrder.getValue();
-        }
-
-        /**
-         * @param value Used to code order of authors.
-         */
-        public CitationAuthorListAuthorComponent setListOrder(int value) { 
-            if (this.listOrder == null)
-              this.listOrder = new PositiveIntType();
-            this.listOrder.setValue(value);
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("lastName", "string", "Surname or single name.", 0, 1, lastName));
-          children.add(new Property("foreName", "string", "Remainder of name except for suffix.", 0, 1, foreName));
-          children.add(new Property("suffix", "string", "Eg 2nd, 3rd, Jr, Sr.", 0, 1, suffix));
-          children.add(new Property("initials", "string", "Initials for forename.", 0, 1, initials));
-          children.add(new Property("collectiveName", "string", "Used for collective or corporate name as an author.", 0, 1, collectiveName));
-          children.add(new Property("identifier", "Identifier", "Author identifier, eg ORCID.", 0, java.lang.Integer.MAX_VALUE, identifier));
-          children.add(new Property("affiliationInfo", "", "Organizational affiliation.", 0, java.lang.Integer.MAX_VALUE, affiliationInfo));
-          children.add(new Property("address", "string", "Physical mailing address for the author.", 0, java.lang.Integer.MAX_VALUE, address));
-          children.add(new Property("telecom", "ContactPoint", "Email or telephone contact methods for the author.", 0, java.lang.Integer.MAX_VALUE, telecom));
-          children.add(new Property("correspondingAuthor", "boolean", "Indication of which author is the corresponding author for the article cited.", 0, 1, correspondingAuthor));
-          children.add(new Property("listOrder", "positiveInt", "Used to code order of authors.", 0, 1, listOrder));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1459599807: /*lastName*/  return new Property("lastName", "string", "Surname or single name.", 0, 1, lastName);
-          case 466107751: /*foreName*/  return new Property("foreName", "string", "Remainder of name except for suffix.", 0, 1, foreName);
-          case -891422895: /*suffix*/  return new Property("suffix", "string", "Eg 2nd, 3rd, Jr, Sr.", 0, 1, suffix);
-          case 269062575: /*initials*/  return new Property("initials", "string", "Initials for forename.", 0, 1, initials);
-          case 502871833: /*collectiveName*/  return new Property("collectiveName", "string", "Used for collective or corporate name as an author.", 0, 1, collectiveName);
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Author identifier, eg ORCID.", 0, java.lang.Integer.MAX_VALUE, identifier);
-          case -215129154: /*affiliationInfo*/  return new Property("affiliationInfo", "", "Organizational affiliation.", 0, java.lang.Integer.MAX_VALUE, affiliationInfo);
-          case -1147692044: /*address*/  return new Property("address", "string", "Physical mailing address for the author.", 0, java.lang.Integer.MAX_VALUE, address);
-          case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "Email or telephone contact methods for the author.", 0, java.lang.Integer.MAX_VALUE, telecom);
-          case 1413890206: /*correspondingAuthor*/  return new Property("correspondingAuthor", "boolean", "Indication of which author is the corresponding author for the article cited.", 0, 1, correspondingAuthor);
-          case -1238918832: /*listOrder*/  return new Property("listOrder", "positiveInt", "Used to code order of authors.", 0, 1, listOrder);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1459599807: /*lastName*/ return this.lastName == null ? new Base[0] : new Base[] {this.lastName}; // StringType
-        case 466107751: /*foreName*/ return this.foreName == null ? new Base[0] : new Base[] {this.foreName}; // StringType
-        case -891422895: /*suffix*/ return this.suffix == null ? new Base[0] : new Base[] {this.suffix}; // StringType
-        case 269062575: /*initials*/ return this.initials == null ? new Base[0] : new Base[] {this.initials}; // StringType
-        case 502871833: /*collectiveName*/ return this.collectiveName == null ? new Base[0] : new Base[] {this.collectiveName}; // StringType
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -215129154: /*affiliationInfo*/ return this.affiliationInfo == null ? new Base[0] : this.affiliationInfo.toArray(new Base[this.affiliationInfo.size()]); // CitationAuthorListAuthorAffiliationInfoComponent
-        case -1147692044: /*address*/ return this.address == null ? new Base[0] : this.address.toArray(new Base[this.address.size()]); // StringType
-        case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
-        case 1413890206: /*correspondingAuthor*/ return this.correspondingAuthor == null ? new Base[0] : new Base[] {this.correspondingAuthor}; // BooleanType
-        case -1238918832: /*listOrder*/ return this.listOrder == null ? new Base[0] : new Base[] {this.listOrder}; // PositiveIntType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1459599807: // lastName
-          this.lastName = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 466107751: // foreName
-          this.foreName = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -891422895: // suffix
-          this.suffix = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 269062575: // initials
-          this.initials = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 502871833: // collectiveName
-          this.collectiveName = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -1618432855: // identifier
-          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
-          return value;
-        case -215129154: // affiliationInfo
-          this.getAffiliationInfo().add((CitationAuthorListAuthorAffiliationInfoComponent) value); // CitationAuthorListAuthorAffiliationInfoComponent
-          return value;
-        case -1147692044: // address
-          this.getAddress().add(TypeConvertor.castToString(value)); // StringType
-          return value;
-        case -1429363305: // telecom
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
-          return value;
-        case 1413890206: // correspondingAuthor
-          this.correspondingAuthor = TypeConvertor.castToBoolean(value); // BooleanType
-          return value;
-        case -1238918832: // listOrder
-          this.listOrder = TypeConvertor.castToPositiveInt(value); // PositiveIntType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("lastName")) {
-          this.lastName = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("foreName")) {
-          this.foreName = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("suffix")) {
-          this.suffix = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("initials")) {
-          this.initials = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("collectiveName")) {
-          this.collectiveName = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("identifier")) {
-          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
-        } else if (name.equals("affiliationInfo")) {
-          this.getAffiliationInfo().add((CitationAuthorListAuthorAffiliationInfoComponent) value);
-        } else if (name.equals("address")) {
-          this.getAddress().add(TypeConvertor.castToString(value));
-        } else if (name.equals("telecom")) {
-          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
-        } else if (name.equals("correspondingAuthor")) {
-          this.correspondingAuthor = TypeConvertor.castToBoolean(value); // BooleanType
-        } else if (name.equals("listOrder")) {
-          this.listOrder = TypeConvertor.castToPositiveInt(value); // PositiveIntType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1459599807:  return getLastNameElement();
-        case 466107751:  return getForeNameElement();
-        case -891422895:  return getSuffixElement();
-        case 269062575:  return getInitialsElement();
-        case 502871833:  return getCollectiveNameElement();
-        case -1618432855:  return addIdentifier(); 
-        case -215129154:  return addAffiliationInfo(); 
-        case -1147692044:  return addAddressElement();
-        case -1429363305:  return addTelecom(); 
-        case 1413890206:  return getCorrespondingAuthorElement();
-        case -1238918832:  return getListOrderElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1459599807: /*lastName*/ return new String[] {"string"};
-        case 466107751: /*foreName*/ return new String[] {"string"};
-        case -891422895: /*suffix*/ return new String[] {"string"};
-        case 269062575: /*initials*/ return new String[] {"string"};
-        case 502871833: /*collectiveName*/ return new String[] {"string"};
-        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
-        case -215129154: /*affiliationInfo*/ return new String[] {};
-        case -1147692044: /*address*/ return new String[] {"string"};
-        case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
-        case 1413890206: /*correspondingAuthor*/ return new String[] {"boolean"};
-        case -1238918832: /*listOrder*/ return new String[] {"positiveInt"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("lastName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorList.author.lastName");
-        }
-        else if (name.equals("foreName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorList.author.foreName");
-        }
-        else if (name.equals("suffix")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorList.author.suffix");
-        }
-        else if (name.equals("initials")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorList.author.initials");
-        }
-        else if (name.equals("collectiveName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorList.author.collectiveName");
-        }
-        else if (name.equals("identifier")) {
-          return addIdentifier();
-        }
-        else if (name.equals("affiliationInfo")) {
-          return addAffiliationInfo();
-        }
-        else if (name.equals("address")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorList.author.address");
-        }
-        else if (name.equals("telecom")) {
-          return addTelecom();
-        }
-        else if (name.equals("correspondingAuthor")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorList.author.correspondingAuthor");
-        }
-        else if (name.equals("listOrder")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorList.author.listOrder");
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public CitationAuthorListAuthorComponent copy() {
-        CitationAuthorListAuthorComponent dst = new CitationAuthorListAuthorComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(CitationAuthorListAuthorComponent dst) {
-        super.copyValues(dst);
-        dst.lastName = lastName == null ? null : lastName.copy();
-        dst.foreName = foreName == null ? null : foreName.copy();
-        dst.suffix = suffix == null ? null : suffix.copy();
-        dst.initials = initials == null ? null : initials.copy();
-        dst.collectiveName = collectiveName == null ? null : collectiveName.copy();
-        if (identifier != null) {
-          dst.identifier = new ArrayList<Identifier>();
-          for (Identifier i : identifier)
-            dst.identifier.add(i.copy());
-        };
-        if (affiliationInfo != null) {
-          dst.affiliationInfo = new ArrayList<CitationAuthorListAuthorAffiliationInfoComponent>();
-          for (CitationAuthorListAuthorAffiliationInfoComponent i : affiliationInfo)
-            dst.affiliationInfo.add(i.copy());
-        };
-        if (address != null) {
-          dst.address = new ArrayList<StringType>();
-          for (StringType i : address)
-            dst.address.add(i.copy());
-        };
-        if (telecom != null) {
-          dst.telecom = new ArrayList<ContactPoint>();
-          for (ContactPoint i : telecom)
-            dst.telecom.add(i.copy());
-        };
-        dst.correspondingAuthor = correspondingAuthor == null ? null : correspondingAuthor.copy();
-        dst.listOrder = listOrder == null ? null : listOrder.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof CitationAuthorListAuthorComponent))
-          return false;
-        CitationAuthorListAuthorComponent o = (CitationAuthorListAuthorComponent) other_;
-        return compareDeep(lastName, o.lastName, true) && compareDeep(foreName, o.foreName, true) && compareDeep(suffix, o.suffix, true)
-           && compareDeep(initials, o.initials, true) && compareDeep(collectiveName, o.collectiveName, true)
-           && compareDeep(identifier, o.identifier, true) && compareDeep(affiliationInfo, o.affiliationInfo, true)
-           && compareDeep(address, o.address, true) && compareDeep(telecom, o.telecom, true) && compareDeep(correspondingAuthor, o.correspondingAuthor, true)
-           && compareDeep(listOrder, o.listOrder, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof CitationAuthorListAuthorComponent))
-          return false;
-        CitationAuthorListAuthorComponent o = (CitationAuthorListAuthorComponent) other_;
-        return compareValues(lastName, o.lastName, true) && compareValues(foreName, o.foreName, true) && compareValues(suffix, o.suffix, true)
-           && compareValues(initials, o.initials, true) && compareValues(collectiveName, o.collectiveName, true)
-           && compareValues(address, o.address, true) && compareValues(correspondingAuthor, o.correspondingAuthor, true)
-           && compareValues(listOrder, o.listOrder, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(lastName, foreName, suffix
-          , initials, collectiveName, identifier, affiliationInfo, address, telecom, correspondingAuthor
-          , listOrder);
-      }
-
-  public String fhirType() {
-    return "Citation.authorList.author";
-
-  }
-
-  }
-
-    @Block()
-    public static class CitationAuthorListAuthorAffiliationInfoComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Display for the organization.
-         */
-        @Child(name = "affiliation", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Display for the organization", formalDefinition="Display for the organization." )
-        protected StringType affiliation;
-
-        /**
-         * Role.
-         */
-        @Child(name = "role", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Role", formalDefinition="Role." )
-        protected StringType role;
-
-        /**
-         * Identifier for the organization.
-         */
-        @Child(name = "identifier", type = {Identifier.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Identifier for the organization", formalDefinition="Identifier for the organization." )
-        protected List<Identifier> identifier;
-
-        private static final long serialVersionUID = 548335522L;
-
-    /**
-     * Constructor
-     */
-      public CitationAuthorListAuthorAffiliationInfoComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #affiliation} (Display for the organization.). This is the underlying object with id, value and extensions. The accessor "getAffiliation" gives direct access to the value
-         */
-        public StringType getAffiliationElement() { 
-          if (this.affiliation == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorListAuthorAffiliationInfoComponent.affiliation");
-            else if (Configuration.doAutoCreate())
-              this.affiliation = new StringType(); // bb
-          return this.affiliation;
-        }
-
-        public boolean hasAffiliationElement() { 
-          return this.affiliation != null && !this.affiliation.isEmpty();
-        }
-
-        public boolean hasAffiliation() { 
-          return this.affiliation != null && !this.affiliation.isEmpty();
-        }
-
-        /**
-         * @param value {@link #affiliation} (Display for the organization.). This is the underlying object with id, value and extensions. The accessor "getAffiliation" gives direct access to the value
-         */
-        public CitationAuthorListAuthorAffiliationInfoComponent setAffiliationElement(StringType value) { 
-          this.affiliation = value;
-          return this;
-        }
-
-        /**
-         * @return Display for the organization.
-         */
-        public String getAffiliation() { 
-          return this.affiliation == null ? null : this.affiliation.getValue();
-        }
-
-        /**
-         * @param value Display for the organization.
-         */
-        public CitationAuthorListAuthorAffiliationInfoComponent setAffiliation(String value) { 
-          if (Utilities.noString(value))
-            this.affiliation = null;
-          else {
-            if (this.affiliation == null)
-              this.affiliation = new StringType();
-            this.affiliation.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #role} (Role.). This is the underlying object with id, value and extensions. The accessor "getRole" gives direct access to the value
-         */
-        public StringType getRoleElement() { 
-          if (this.role == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorListAuthorAffiliationInfoComponent.role");
-            else if (Configuration.doAutoCreate())
-              this.role = new StringType(); // bb
-          return this.role;
-        }
-
-        public boolean hasRoleElement() { 
-          return this.role != null && !this.role.isEmpty();
-        }
-
-        public boolean hasRole() { 
-          return this.role != null && !this.role.isEmpty();
-        }
-
-        /**
-         * @param value {@link #role} (Role.). This is the underlying object with id, value and extensions. The accessor "getRole" gives direct access to the value
-         */
-        public CitationAuthorListAuthorAffiliationInfoComponent setRoleElement(StringType value) { 
-          this.role = value;
-          return this;
-        }
-
-        /**
-         * @return Role.
-         */
-        public String getRole() { 
-          return this.role == null ? null : this.role.getValue();
-        }
-
-        /**
-         * @param value Role.
-         */
-        public CitationAuthorListAuthorAffiliationInfoComponent setRole(String value) { 
-          if (Utilities.noString(value))
-            this.role = null;
-          else {
-            if (this.role == null)
-              this.role = new StringType();
-            this.role.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #identifier} (Identifier for the organization.)
-         */
-        public List<Identifier> getIdentifier() { 
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          return this.identifier;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public CitationAuthorListAuthorAffiliationInfoComponent setIdentifier(List<Identifier> theIdentifier) { 
-          this.identifier = theIdentifier;
-          return this;
-        }
-
-        public boolean hasIdentifier() { 
-          if (this.identifier == null)
-            return false;
-          for (Identifier item : this.identifier)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public Identifier addIdentifier() { //3
-          Identifier t = new Identifier();
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          this.identifier.add(t);
-          return t;
-        }
-
-        public CitationAuthorListAuthorAffiliationInfoComponent addIdentifier(Identifier t) { //3
-          if (t == null)
-            return this;
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          this.identifier.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
-         */
-        public Identifier getIdentifierFirstRep() { 
-          if (getIdentifier().isEmpty()) {
-            addIdentifier();
-          }
-          return getIdentifier().get(0);
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("affiliation", "string", "Display for the organization.", 0, 1, affiliation));
-          children.add(new Property("role", "string", "Role.", 0, 1, role));
-          children.add(new Property("identifier", "Identifier", "Identifier for the organization.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case 2019918576: /*affiliation*/  return new Property("affiliation", "string", "Display for the organization.", 0, 1, affiliation);
-          case 3506294: /*role*/  return new Property("role", "string", "Role.", 0, 1, role);
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier for the organization.", 0, java.lang.Integer.MAX_VALUE, identifier);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case 2019918576: /*affiliation*/ return this.affiliation == null ? new Base[0] : new Base[] {this.affiliation}; // StringType
-        case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // StringType
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case 2019918576: // affiliation
-          this.affiliation = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 3506294: // role
-          this.role = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -1618432855: // identifier
-          this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("affiliation")) {
-          this.affiliation = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("role")) {
-          this.role = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("identifier")) {
-          this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 2019918576:  return getAffiliationElement();
-        case 3506294:  return getRoleElement();
-        case -1618432855:  return addIdentifier(); 
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case 2019918576: /*affiliation*/ return new String[] {"string"};
-        case 3506294: /*role*/ return new String[] {"string"};
-        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("affiliation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorList.author.affiliationInfo.affiliation");
-        }
-        else if (name.equals("role")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorList.author.affiliationInfo.role");
-        }
-        else if (name.equals("identifier")) {
-          return addIdentifier();
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public CitationAuthorListAuthorAffiliationInfoComponent copy() {
-        CitationAuthorListAuthorAffiliationInfoComponent dst = new CitationAuthorListAuthorAffiliationInfoComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(CitationAuthorListAuthorAffiliationInfoComponent dst) {
-        super.copyValues(dst);
-        dst.affiliation = affiliation == null ? null : affiliation.copy();
-        dst.role = role == null ? null : role.copy();
-        if (identifier != null) {
-          dst.identifier = new ArrayList<Identifier>();
-          for (Identifier i : identifier)
-            dst.identifier.add(i.copy());
-        };
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof CitationAuthorListAuthorAffiliationInfoComponent))
-          return false;
-        CitationAuthorListAuthorAffiliationInfoComponent o = (CitationAuthorListAuthorAffiliationInfoComponent) other_;
-        return compareDeep(affiliation, o.affiliation, true) && compareDeep(role, o.role, true) && compareDeep(identifier, o.identifier, true)
-          ;
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof CitationAuthorListAuthorAffiliationInfoComponent))
-          return false;
-        CitationAuthorListAuthorAffiliationInfoComponent o = (CitationAuthorListAuthorAffiliationInfoComponent) other_;
-        return compareValues(affiliation, o.affiliation, true) && compareValues(role, o.role, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(affiliation, role, identifier
-          );
-      }
-
-  public String fhirType() {
-    return "Citation.authorList.author.affiliationInfo";
-
-  }
-
-  }
-
-    @Block()
-    public static class CitationAuthorStringComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Used to code the producer or rule for creating the display string.
-         */
-        @Child(name = "source", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Used to code the producer or rule for creating the display string", formalDefinition="Used to code the producer or rule for creating the display string." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/author-string-source")
-        protected CodeableConcept source;
-
-        /**
-         * The display string for the author list.
-         */
-        @Child(name = "value", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="The display string for the author list", formalDefinition="The display string for the author list." )
-        protected StringType value;
-
-        private static final long serialVersionUID = -1218527170L;
-
-    /**
-     * Constructor
-     */
-      public CitationAuthorStringComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public CitationAuthorStringComponent(String value) {
-        super();
-        this.setValue(value);
-      }
-
-        /**
-         * @return {@link #source} (Used to code the producer or rule for creating the display string.)
-         */
-        public CodeableConcept getSource() { 
-          if (this.source == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorStringComponent.source");
-            else if (Configuration.doAutoCreate())
-              this.source = new CodeableConcept(); // cc
-          return this.source;
-        }
-
-        public boolean hasSource() { 
-          return this.source != null && !this.source.isEmpty();
-        }
-
-        /**
-         * @param value {@link #source} (Used to code the producer or rule for creating the display string.)
-         */
-        public CitationAuthorStringComponent setSource(CodeableConcept value) { 
-          this.source = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #value} (The display string for the author list.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
-         */
-        public StringType getValueElement() { 
-          if (this.value == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationAuthorStringComponent.value");
-            else if (Configuration.doAutoCreate())
-              this.value = new StringType(); // bb
-          return this.value;
-        }
-
-        public boolean hasValueElement() { 
-          return this.value != null && !this.value.isEmpty();
-        }
-
-        public boolean hasValue() { 
-          return this.value != null && !this.value.isEmpty();
-        }
-
-        /**
-         * @param value {@link #value} (The display string for the author list.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
-         */
-        public CitationAuthorStringComponent setValueElement(StringType value) { 
-          this.value = value;
-          return this;
-        }
-
-        /**
-         * @return The display string for the author list.
-         */
-        public String getValue() { 
-          return this.value == null ? null : this.value.getValue();
-        }
-
-        /**
-         * @param value The display string for the author list.
-         */
-        public CitationAuthorStringComponent setValue(String value) { 
-            if (this.value == null)
-              this.value = new StringType();
-            this.value.setValue(value);
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("source", "CodeableConcept", "Used to code the producer or rule for creating the display string.", 0, 1, source));
-          children.add(new Property("value", "string", "The display string for the author list.", 0, 1, value));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -896505829: /*source*/  return new Property("source", "CodeableConcept", "Used to code the producer or rule for creating the display string.", 0, 1, source);
-          case 111972721: /*value*/  return new Property("value", "string", "The display string for the author list.", 0, 1, value);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // CodeableConcept
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // StringType
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -896505829: // source
-          this.source = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-          return value;
-        case 111972721: // value
-          this.value = TypeConvertor.castToString(value); // StringType
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("source")) {
-          this.source = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("value")) {
-          this.value = TypeConvertor.castToString(value); // StringType
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -896505829:  return getSource();
-        case 111972721:  return getValueElement();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -896505829: /*source*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"string"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("source")) {
-          this.source = new CodeableConcept();
-          return this.source;
-        }
-        else if (name.equals("value")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.authorString.value");
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public CitationAuthorStringComponent copy() {
-        CitationAuthorStringComponent dst = new CitationAuthorStringComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(CitationAuthorStringComponent dst) {
-        super.copyValues(dst);
-        dst.source = source == null ? null : source.copy();
-        dst.value = value == null ? null : value.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof CitationAuthorStringComponent))
-          return false;
-        CitationAuthorStringComponent o = (CitationAuthorStringComponent) other_;
-        return compareDeep(source, o.source, true) && compareDeep(value, o.value, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof CitationAuthorStringComponent))
-          return false;
-        CitationAuthorStringComponent o = (CitationAuthorStringComponent) other_;
-        return compareValues(value, o.value, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(source, value);
-      }
-
-  public String fhirType() {
-    return "Citation.authorString";
-
-  }
-
-  }
-
-    @Block()
-    public static class CitationContributorListComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Indicates if the list includes all contributors.
-         */
-        @Child(name = "complete", type = {BooleanType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Indicates if the list includes all contributors", formalDefinition="Indicates if the list includes all contributors." )
-        protected BooleanType complete;
-
-        /**
-         * An individual entity named in the contributor list.
-         */
-        @Child(name = "contributor", type = {}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="An individual entity named in the contributor list", formalDefinition="An individual entity named in the contributor list." )
-        protected List<CitationContributorListContributorComponent> contributor;
-
-        private static final long serialVersionUID = 1922271126L;
-
-    /**
-     * Constructor
-     */
-      public CitationContributorListComponent() {
-        super();
-      }
-
-    /**
-     * Constructor
-     */
-      public CitationContributorListComponent(CitationContributorListContributorComponent contributor) {
-        super();
-        this.addContributor(contributor);
-      }
-
-        /**
-         * @return {@link #complete} (Indicates if the list includes all contributors.). This is the underlying object with id, value and extensions. The accessor "getComplete" gives direct access to the value
-         */
-        public BooleanType getCompleteElement() { 
-          if (this.complete == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationContributorListComponent.complete");
-            else if (Configuration.doAutoCreate())
-              this.complete = new BooleanType(); // bb
-          return this.complete;
-        }
-
-        public boolean hasCompleteElement() { 
-          return this.complete != null && !this.complete.isEmpty();
-        }
-
-        public boolean hasComplete() { 
-          return this.complete != null && !this.complete.isEmpty();
-        }
-
-        /**
-         * @param value {@link #complete} (Indicates if the list includes all contributors.). This is the underlying object with id, value and extensions. The accessor "getComplete" gives direct access to the value
-         */
-        public CitationContributorListComponent setCompleteElement(BooleanType value) { 
-          this.complete = value;
-          return this;
-        }
-
-        /**
-         * @return Indicates if the list includes all contributors.
-         */
-        public boolean getComplete() { 
-          return this.complete == null || this.complete.isEmpty() ? false : this.complete.getValue();
-        }
-
-        /**
-         * @param value Indicates if the list includes all contributors.
-         */
-        public CitationContributorListComponent setComplete(boolean value) { 
-            if (this.complete == null)
-              this.complete = new BooleanType();
-            this.complete.setValue(value);
-          return this;
-        }
-
-        /**
-         * @return {@link #contributor} (An individual entity named in the contributor list.)
-         */
-        public List<CitationContributorListContributorComponent> getContributor() { 
-          if (this.contributor == null)
-            this.contributor = new ArrayList<CitationContributorListContributorComponent>();
-          return this.contributor;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public CitationContributorListComponent setContributor(List<CitationContributorListContributorComponent> theContributor) { 
-          this.contributor = theContributor;
-          return this;
-        }
-
-        public boolean hasContributor() { 
-          if (this.contributor == null)
-            return false;
-          for (CitationContributorListContributorComponent item : this.contributor)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CitationContributorListContributorComponent addContributor() { //3
-          CitationContributorListContributorComponent t = new CitationContributorListContributorComponent();
-          if (this.contributor == null)
-            this.contributor = new ArrayList<CitationContributorListContributorComponent>();
-          this.contributor.add(t);
-          return t;
-        }
-
-        public CitationContributorListComponent addContributor(CitationContributorListContributorComponent t) { //3
-          if (t == null)
-            return this;
-          if (this.contributor == null)
-            this.contributor = new ArrayList<CitationContributorListContributorComponent>();
-          this.contributor.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #contributor}, creating it if it does not already exist {3}
-         */
-        public CitationContributorListContributorComponent getContributorFirstRep() { 
-          if (getContributor().isEmpty()) {
-            addContributor();
-          }
-          return getContributor().get(0);
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("complete", "boolean", "Indicates if the list includes all contributors.", 0, 1, complete));
-          children.add(new Property("contributor", "", "An individual entity named in the contributor list.", 0, java.lang.Integer.MAX_VALUE, contributor));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -599445191: /*complete*/  return new Property("complete", "boolean", "Indicates if the list includes all contributors.", 0, 1, complete);
-          case -1895276325: /*contributor*/  return new Property("contributor", "", "An individual entity named in the contributor list.", 0, java.lang.Integer.MAX_VALUE, contributor);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -599445191: /*complete*/ return this.complete == null ? new Base[0] : new Base[] {this.complete}; // BooleanType
-        case -1895276325: /*contributor*/ return this.contributor == null ? new Base[0] : this.contributor.toArray(new Base[this.contributor.size()]); // CitationContributorListContributorComponent
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -599445191: // complete
-          this.complete = TypeConvertor.castToBoolean(value); // BooleanType
-          return value;
-        case -1895276325: // contributor
-          this.getContributor().add((CitationContributorListContributorComponent) value); // CitationContributorListContributorComponent
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("complete")) {
-          this.complete = TypeConvertor.castToBoolean(value); // BooleanType
-        } else if (name.equals("contributor")) {
-          this.getContributor().add((CitationContributorListContributorComponent) value);
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -599445191:  return getCompleteElement();
-        case -1895276325:  return addContributor(); 
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -599445191: /*complete*/ return new String[] {"boolean"};
-        case -1895276325: /*contributor*/ return new String[] {};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("complete")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorList.complete");
-        }
-        else if (name.equals("contributor")) {
-          return addContributor();
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public CitationContributorListComponent copy() {
-        CitationContributorListComponent dst = new CitationContributorListComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(CitationContributorListComponent dst) {
-        super.copyValues(dst);
-        dst.complete = complete == null ? null : complete.copy();
-        if (contributor != null) {
-          dst.contributor = new ArrayList<CitationContributorListContributorComponent>();
-          for (CitationContributorListContributorComponent i : contributor)
-            dst.contributor.add(i.copy());
-        };
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof CitationContributorListComponent))
-          return false;
-        CitationContributorListComponent o = (CitationContributorListComponent) other_;
-        return compareDeep(complete, o.complete, true) && compareDeep(contributor, o.contributor, true)
-          ;
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof CitationContributorListComponent))
-          return false;
-        CitationContributorListComponent o = (CitationContributorListComponent) other_;
-        return compareValues(complete, o.complete, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(complete, contributor);
-      }
-
-  public String fhirType() {
-    return "Citation.contributorList";
-
-  }
-
-  }
-
-    @Block()
-    public static class CitationContributorListContributorComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Surname or single name.
-         */
-        @Child(name = "lastName", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Surname or single name", formalDefinition="Surname or single name." )
-        protected StringType lastName;
-
-        /**
-         * Remainder of name except for suffix.
-         */
-        @Child(name = "foreName", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Remainder of name except for suffix", formalDefinition="Remainder of name except for suffix." )
-        protected StringType foreName;
-
-        /**
-         * Eg 2nd, 3rd, Jr, Sr.
-         */
-        @Child(name = "suffix", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Eg 2nd, 3rd, Jr, Sr", formalDefinition="Eg 2nd, 3rd, Jr, Sr." )
-        protected StringType suffix;
-
-        /**
-         * Initials for forename.
-         */
-        @Child(name = "initials", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Initials for forename", formalDefinition="Initials for forename." )
-        protected StringType initials;
-
-        /**
-         * Used for collective or corporate name as a contributor.
-         */
-        @Child(name = "collectiveName", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Used for collective or corporate name as a contributor", formalDefinition="Used for collective or corporate name as a contributor." )
-        protected StringType collectiveName;
-
-        /**
-         * Contributor identifier, eg ORCID.
-         */
-        @Child(name = "identifier", type = {Identifier.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Contributor identifier, eg ORCID", formalDefinition="Contributor identifier, eg ORCID." )
-        protected List<Identifier> identifier;
-
-        /**
-         * The specific contributions.
-         */
-        @Child(name = "contribution", type = {CodeableConcept.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="The specific contributions", formalDefinition="The specific contributions." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/citation-contribution")
-        protected List<CodeableConcept> contribution;
-
-        /**
-         * Organizational affiliation.
-         */
-        @Child(name = "affiliationInfo", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Organizational affiliation", formalDefinition="Organizational affiliation." )
-        protected List<CitationContributorListContributorAffiliationInfoComponent> affiliationInfo;
-
-        /**
-         * Used to code order of contributors.
-         */
-        @Child(name = "listOrder", type = {PositiveIntType.class}, order=9, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Used to code order of contributors", formalDefinition="Used to code order of contributors." )
-        protected PositiveIntType listOrder;
-
-        private static final long serialVersionUID = 160410057L;
-
-    /**
-     * Constructor
-     */
-      public CitationContributorListContributorComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #lastName} (Surname or single name.). This is the underlying object with id, value and extensions. The accessor "getLastName" gives direct access to the value
-         */
-        public StringType getLastNameElement() { 
-          if (this.lastName == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationContributorListContributorComponent.lastName");
-            else if (Configuration.doAutoCreate())
-              this.lastName = new StringType(); // bb
-          return this.lastName;
-        }
-
-        public boolean hasLastNameElement() { 
-          return this.lastName != null && !this.lastName.isEmpty();
-        }
-
-        public boolean hasLastName() { 
-          return this.lastName != null && !this.lastName.isEmpty();
-        }
-
-        /**
-         * @param value {@link #lastName} (Surname or single name.). This is the underlying object with id, value and extensions. The accessor "getLastName" gives direct access to the value
-         */
-        public CitationContributorListContributorComponent setLastNameElement(StringType value) { 
-          this.lastName = value;
-          return this;
-        }
-
-        /**
-         * @return Surname or single name.
-         */
-        public String getLastName() { 
-          return this.lastName == null ? null : this.lastName.getValue();
-        }
-
-        /**
-         * @param value Surname or single name.
-         */
-        public CitationContributorListContributorComponent setLastName(String value) { 
-          if (Utilities.noString(value))
-            this.lastName = null;
-          else {
-            if (this.lastName == null)
-              this.lastName = new StringType();
-            this.lastName.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #foreName} (Remainder of name except for suffix.). This is the underlying object with id, value and extensions. The accessor "getForeName" gives direct access to the value
-         */
-        public StringType getForeNameElement() { 
-          if (this.foreName == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationContributorListContributorComponent.foreName");
-            else if (Configuration.doAutoCreate())
-              this.foreName = new StringType(); // bb
-          return this.foreName;
-        }
-
-        public boolean hasForeNameElement() { 
-          return this.foreName != null && !this.foreName.isEmpty();
-        }
-
-        public boolean hasForeName() { 
-          return this.foreName != null && !this.foreName.isEmpty();
-        }
-
-        /**
-         * @param value {@link #foreName} (Remainder of name except for suffix.). This is the underlying object with id, value and extensions. The accessor "getForeName" gives direct access to the value
-         */
-        public CitationContributorListContributorComponent setForeNameElement(StringType value) { 
-          this.foreName = value;
-          return this;
-        }
-
-        /**
-         * @return Remainder of name except for suffix.
-         */
-        public String getForeName() { 
-          return this.foreName == null ? null : this.foreName.getValue();
-        }
-
-        /**
-         * @param value Remainder of name except for suffix.
-         */
-        public CitationContributorListContributorComponent setForeName(String value) { 
-          if (Utilities.noString(value))
-            this.foreName = null;
-          else {
-            if (this.foreName == null)
-              this.foreName = new StringType();
-            this.foreName.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #suffix} (Eg 2nd, 3rd, Jr, Sr.). This is the underlying object with id, value and extensions. The accessor "getSuffix" gives direct access to the value
-         */
-        public StringType getSuffixElement() { 
-          if (this.suffix == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationContributorListContributorComponent.suffix");
-            else if (Configuration.doAutoCreate())
-              this.suffix = new StringType(); // bb
-          return this.suffix;
-        }
-
-        public boolean hasSuffixElement() { 
-          return this.suffix != null && !this.suffix.isEmpty();
-        }
-
-        public boolean hasSuffix() { 
-          return this.suffix != null && !this.suffix.isEmpty();
-        }
-
-        /**
-         * @param value {@link #suffix} (Eg 2nd, 3rd, Jr, Sr.). This is the underlying object with id, value and extensions. The accessor "getSuffix" gives direct access to the value
-         */
-        public CitationContributorListContributorComponent setSuffixElement(StringType value) { 
-          this.suffix = value;
-          return this;
-        }
-
-        /**
-         * @return Eg 2nd, 3rd, Jr, Sr.
-         */
-        public String getSuffix() { 
-          return this.suffix == null ? null : this.suffix.getValue();
-        }
-
-        /**
-         * @param value Eg 2nd, 3rd, Jr, Sr.
-         */
-        public CitationContributorListContributorComponent setSuffix(String value) { 
-          if (Utilities.noString(value))
-            this.suffix = null;
-          else {
-            if (this.suffix == null)
-              this.suffix = new StringType();
-            this.suffix.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #initials} (Initials for forename.). This is the underlying object with id, value and extensions. The accessor "getInitials" gives direct access to the value
-         */
-        public StringType getInitialsElement() { 
-          if (this.initials == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationContributorListContributorComponent.initials");
-            else if (Configuration.doAutoCreate())
-              this.initials = new StringType(); // bb
-          return this.initials;
-        }
-
-        public boolean hasInitialsElement() { 
-          return this.initials != null && !this.initials.isEmpty();
-        }
-
-        public boolean hasInitials() { 
-          return this.initials != null && !this.initials.isEmpty();
-        }
-
-        /**
-         * @param value {@link #initials} (Initials for forename.). This is the underlying object with id, value and extensions. The accessor "getInitials" gives direct access to the value
-         */
-        public CitationContributorListContributorComponent setInitialsElement(StringType value) { 
-          this.initials = value;
-          return this;
-        }
-
-        /**
-         * @return Initials for forename.
-         */
-        public String getInitials() { 
-          return this.initials == null ? null : this.initials.getValue();
-        }
-
-        /**
-         * @param value Initials for forename.
-         */
-        public CitationContributorListContributorComponent setInitials(String value) { 
-          if (Utilities.noString(value))
-            this.initials = null;
-          else {
-            if (this.initials == null)
-              this.initials = new StringType();
-            this.initials.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #collectiveName} (Used for collective or corporate name as a contributor.). This is the underlying object with id, value and extensions. The accessor "getCollectiveName" gives direct access to the value
-         */
-        public StringType getCollectiveNameElement() { 
-          if (this.collectiveName == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationContributorListContributorComponent.collectiveName");
-            else if (Configuration.doAutoCreate())
-              this.collectiveName = new StringType(); // bb
-          return this.collectiveName;
-        }
-
-        public boolean hasCollectiveNameElement() { 
-          return this.collectiveName != null && !this.collectiveName.isEmpty();
-        }
-
-        public boolean hasCollectiveName() { 
-          return this.collectiveName != null && !this.collectiveName.isEmpty();
-        }
-
-        /**
-         * @param value {@link #collectiveName} (Used for collective or corporate name as a contributor.). This is the underlying object with id, value and extensions. The accessor "getCollectiveName" gives direct access to the value
-         */
-        public CitationContributorListContributorComponent setCollectiveNameElement(StringType value) { 
-          this.collectiveName = value;
-          return this;
-        }
-
-        /**
-         * @return Used for collective or corporate name as a contributor.
-         */
-        public String getCollectiveName() { 
-          return this.collectiveName == null ? null : this.collectiveName.getValue();
-        }
-
-        /**
-         * @param value Used for collective or corporate name as a contributor.
-         */
-        public CitationContributorListContributorComponent setCollectiveName(String value) { 
-          if (Utilities.noString(value))
-            this.collectiveName = null;
-          else {
-            if (this.collectiveName == null)
-              this.collectiveName = new StringType();
-            this.collectiveName.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #identifier} (Contributor identifier, eg ORCID.)
-         */
-        public List<Identifier> getIdentifier() { 
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          return this.identifier;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public CitationContributorListContributorComponent setIdentifier(List<Identifier> theIdentifier) { 
-          this.identifier = theIdentifier;
-          return this;
-        }
-
-        public boolean hasIdentifier() { 
-          if (this.identifier == null)
-            return false;
-          for (Identifier item : this.identifier)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public Identifier addIdentifier() { //3
-          Identifier t = new Identifier();
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          this.identifier.add(t);
-          return t;
-        }
-
-        public CitationContributorListContributorComponent addIdentifier(Identifier t) { //3
-          if (t == null)
-            return this;
-          if (this.identifier == null)
-            this.identifier = new ArrayList<Identifier>();
-          this.identifier.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #identifier}, creating it if it does not already exist {3}
-         */
-        public Identifier getIdentifierFirstRep() { 
-          if (getIdentifier().isEmpty()) {
-            addIdentifier();
-          }
-          return getIdentifier().get(0);
-        }
-
-        /**
-         * @return {@link #contribution} (The specific contributions.)
+         * @return {@link #contribution} (This element identifies the specific nature of an individual’s contribution with respect to the cited work.)
          */
         public List<CodeableConcept> getContribution() { 
           if (this.contribution == null)
@@ -4636,7 +4617,7 @@ public class Citation extends MetadataResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CitationContributorListContributorComponent setContribution(List<CodeableConcept> theContribution) { 
+        public CitationContributorshipEntryComponent setContribution(List<CodeableConcept> theContribution) { 
           this.contribution = theContribution;
           return this;
         }
@@ -4658,7 +4639,7 @@ public class Citation extends MetadataResource {
           return t;
         }
 
-        public CitationContributorListContributorComponent addContribution(CodeableConcept t) { //3
+        public CitationContributorshipEntryComponent addContribution(CodeableConcept t) { //3
           if (t == null)
             return this;
           if (this.contribution == null)
@@ -4678,65 +4659,102 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #affiliationInfo} (Organizational affiliation.)
+         * @return {@link #notAnAuthor} (False, missing, or empty elements implies authorship.). This is the underlying object with id, value and extensions. The accessor "getNotAnAuthor" gives direct access to the value
          */
-        public List<CitationContributorListContributorAffiliationInfoComponent> getAffiliationInfo() { 
-          if (this.affiliationInfo == null)
-            this.affiliationInfo = new ArrayList<CitationContributorListContributorAffiliationInfoComponent>();
-          return this.affiliationInfo;
+        public BooleanType getNotAnAuthorElement() { 
+          if (this.notAnAuthor == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationContributorshipEntryComponent.notAnAuthor");
+            else if (Configuration.doAutoCreate())
+              this.notAnAuthor = new BooleanType(); // bb
+          return this.notAnAuthor;
+        }
+
+        public boolean hasNotAnAuthorElement() { 
+          return this.notAnAuthor != null && !this.notAnAuthor.isEmpty();
+        }
+
+        public boolean hasNotAnAuthor() { 
+          return this.notAnAuthor != null && !this.notAnAuthor.isEmpty();
         }
 
         /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
+         * @param value {@link #notAnAuthor} (False, missing, or empty elements implies authorship.). This is the underlying object with id, value and extensions. The accessor "getNotAnAuthor" gives direct access to the value
          */
-        public CitationContributorListContributorComponent setAffiliationInfo(List<CitationContributorListContributorAffiliationInfoComponent> theAffiliationInfo) { 
-          this.affiliationInfo = theAffiliationInfo;
-          return this;
-        }
-
-        public boolean hasAffiliationInfo() { 
-          if (this.affiliationInfo == null)
-            return false;
-          for (CitationContributorListContributorAffiliationInfoComponent item : this.affiliationInfo)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CitationContributorListContributorAffiliationInfoComponent addAffiliationInfo() { //3
-          CitationContributorListContributorAffiliationInfoComponent t = new CitationContributorListContributorAffiliationInfoComponent();
-          if (this.affiliationInfo == null)
-            this.affiliationInfo = new ArrayList<CitationContributorListContributorAffiliationInfoComponent>();
-          this.affiliationInfo.add(t);
-          return t;
-        }
-
-        public CitationContributorListContributorComponent addAffiliationInfo(CitationContributorListContributorAffiliationInfoComponent t) { //3
-          if (t == null)
-            return this;
-          if (this.affiliationInfo == null)
-            this.affiliationInfo = new ArrayList<CitationContributorListContributorAffiliationInfoComponent>();
-          this.affiliationInfo.add(t);
+        public CitationContributorshipEntryComponent setNotAnAuthorElement(BooleanType value) { 
+          this.notAnAuthor = value;
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #affiliationInfo}, creating it if it does not already exist {3}
+         * @return False, missing, or empty elements implies authorship.
          */
-        public CitationContributorListContributorAffiliationInfoComponent getAffiliationInfoFirstRep() { 
-          if (getAffiliationInfo().isEmpty()) {
-            addAffiliationInfo();
-          }
-          return getAffiliationInfo().get(0);
+        public boolean getNotAnAuthor() { 
+          return this.notAnAuthor == null || this.notAnAuthor.isEmpty() ? false : this.notAnAuthor.getValue();
         }
 
         /**
-         * @return {@link #listOrder} (Used to code order of contributors.). This is the underlying object with id, value and extensions. The accessor "getListOrder" gives direct access to the value
+         * @param value False, missing, or empty elements implies authorship.
+         */
+        public CitationContributorshipEntryComponent setNotAnAuthor(boolean value) { 
+            if (this.notAnAuthor == null)
+              this.notAnAuthor = new BooleanType();
+            this.notAnAuthor.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #correspondingAuthor} (Indication of which author is the corresponding author for the article cited.). This is the underlying object with id, value and extensions. The accessor "getCorrespondingAuthor" gives direct access to the value
+         */
+        public BooleanType getCorrespondingAuthorElement() { 
+          if (this.correspondingAuthor == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationContributorshipEntryComponent.correspondingAuthor");
+            else if (Configuration.doAutoCreate())
+              this.correspondingAuthor = new BooleanType(); // bb
+          return this.correspondingAuthor;
+        }
+
+        public boolean hasCorrespondingAuthorElement() { 
+          return this.correspondingAuthor != null && !this.correspondingAuthor.isEmpty();
+        }
+
+        public boolean hasCorrespondingAuthor() { 
+          return this.correspondingAuthor != null && !this.correspondingAuthor.isEmpty();
+        }
+
+        /**
+         * @param value {@link #correspondingAuthor} (Indication of which author is the corresponding author for the article cited.). This is the underlying object with id, value and extensions. The accessor "getCorrespondingAuthor" gives direct access to the value
+         */
+        public CitationContributorshipEntryComponent setCorrespondingAuthorElement(BooleanType value) { 
+          this.correspondingAuthor = value;
+          return this;
+        }
+
+        /**
+         * @return Indication of which author is the corresponding author for the article cited.
+         */
+        public boolean getCorrespondingAuthor() { 
+          return this.correspondingAuthor == null || this.correspondingAuthor.isEmpty() ? false : this.correspondingAuthor.getValue();
+        }
+
+        /**
+         * @param value Indication of which author is the corresponding author for the article cited.
+         */
+        public CitationContributorshipEntryComponent setCorrespondingAuthor(boolean value) { 
+            if (this.correspondingAuthor == null)
+              this.correspondingAuthor = new BooleanType();
+            this.correspondingAuthor.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #listOrder} (Used to code order of authors.). This is the underlying object with id, value and extensions. The accessor "getListOrder" gives direct access to the value
          */
         public PositiveIntType getListOrderElement() { 
           if (this.listOrder == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationContributorListContributorComponent.listOrder");
+              throw new Error("Attempt to auto-create CitationContributorshipEntryComponent.listOrder");
             else if (Configuration.doAutoCreate())
               this.listOrder = new PositiveIntType(); // bb
           return this.listOrder;
@@ -4751,24 +4769,24 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #listOrder} (Used to code order of contributors.). This is the underlying object with id, value and extensions. The accessor "getListOrder" gives direct access to the value
+         * @param value {@link #listOrder} (Used to code order of authors.). This is the underlying object with id, value and extensions. The accessor "getListOrder" gives direct access to the value
          */
-        public CitationContributorListContributorComponent setListOrderElement(PositiveIntType value) { 
+        public CitationContributorshipEntryComponent setListOrderElement(PositiveIntType value) { 
           this.listOrder = value;
           return this;
         }
 
         /**
-         * @return Used to code order of contributors.
+         * @return Used to code order of authors.
          */
         public int getListOrder() { 
           return this.listOrder == null || this.listOrder.isEmpty() ? 0 : this.listOrder.getValue();
         }
 
         /**
-         * @param value Used to code order of contributors.
+         * @param value Used to code order of authors.
          */
-        public CitationContributorListContributorComponent setListOrder(int value) { 
+        public CitationContributorshipEntryComponent setListOrder(int value) { 
             if (this.listOrder == null)
               this.listOrder = new PositiveIntType();
             this.listOrder.setValue(value);
@@ -4777,29 +4795,33 @@ public class Citation extends MetadataResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("lastName", "string", "Surname or single name.", 0, 1, lastName));
-          children.add(new Property("foreName", "string", "Remainder of name except for suffix.", 0, 1, foreName));
-          children.add(new Property("suffix", "string", "Eg 2nd, 3rd, Jr, Sr.", 0, 1, suffix));
+          children.add(new Property("name", "HumanName", "A name associated with the individual.", 0, 1, name));
           children.add(new Property("initials", "string", "Initials for forename.", 0, 1, initials));
-          children.add(new Property("collectiveName", "string", "Used for collective or corporate name as a contributor.", 0, 1, collectiveName));
-          children.add(new Property("identifier", "Identifier", "Contributor identifier, eg ORCID.", 0, java.lang.Integer.MAX_VALUE, identifier));
-          children.add(new Property("contribution", "CodeableConcept", "The specific contributions.", 0, java.lang.Integer.MAX_VALUE, contribution));
-          children.add(new Property("affiliationInfo", "", "Organizational affiliation.", 0, java.lang.Integer.MAX_VALUE, affiliationInfo));
-          children.add(new Property("listOrder", "positiveInt", "Used to code order of contributors.", 0, 1, listOrder));
+          children.add(new Property("collectiveName", "string", "Used for collective or corporate name as an author.", 0, 1, collectiveName));
+          children.add(new Property("identifier", "Identifier", "Unique person identifier.", 0, java.lang.Integer.MAX_VALUE, identifier));
+          children.add(new Property("affiliationInfo", "", "Organization affiliated with the entity.", 0, java.lang.Integer.MAX_VALUE, affiliationInfo));
+          children.add(new Property("address", "Address", "Physical mailing address for the author or contributor.", 0, java.lang.Integer.MAX_VALUE, address));
+          children.add(new Property("telecom", "ContactPoint", "Email or telephone contact methods for the author or contributor.", 0, java.lang.Integer.MAX_VALUE, telecom));
+          children.add(new Property("contribution", "CodeableConcept", "This element identifies the specific nature of an individual’s contribution with respect to the cited work.", 0, java.lang.Integer.MAX_VALUE, contribution));
+          children.add(new Property("notAnAuthor", "boolean", "False, missing, or empty elements implies authorship.", 0, 1, notAnAuthor));
+          children.add(new Property("correspondingAuthor", "boolean", "Indication of which author is the corresponding author for the article cited.", 0, 1, correspondingAuthor));
+          children.add(new Property("listOrder", "positiveInt", "Used to code order of authors.", 0, 1, listOrder));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1459599807: /*lastName*/  return new Property("lastName", "string", "Surname or single name.", 0, 1, lastName);
-          case 466107751: /*foreName*/  return new Property("foreName", "string", "Remainder of name except for suffix.", 0, 1, foreName);
-          case -891422895: /*suffix*/  return new Property("suffix", "string", "Eg 2nd, 3rd, Jr, Sr.", 0, 1, suffix);
+          case 3373707: /*name*/  return new Property("name", "HumanName", "A name associated with the individual.", 0, 1, name);
           case 269062575: /*initials*/  return new Property("initials", "string", "Initials for forename.", 0, 1, initials);
-          case 502871833: /*collectiveName*/  return new Property("collectiveName", "string", "Used for collective or corporate name as a contributor.", 0, 1, collectiveName);
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Contributor identifier, eg ORCID.", 0, java.lang.Integer.MAX_VALUE, identifier);
-          case 1375970320: /*contribution*/  return new Property("contribution", "CodeableConcept", "The specific contributions.", 0, java.lang.Integer.MAX_VALUE, contribution);
-          case -215129154: /*affiliationInfo*/  return new Property("affiliationInfo", "", "Organizational affiliation.", 0, java.lang.Integer.MAX_VALUE, affiliationInfo);
-          case -1238918832: /*listOrder*/  return new Property("listOrder", "positiveInt", "Used to code order of contributors.", 0, 1, listOrder);
+          case 502871833: /*collectiveName*/  return new Property("collectiveName", "string", "Used for collective or corporate name as an author.", 0, 1, collectiveName);
+          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique person identifier.", 0, java.lang.Integer.MAX_VALUE, identifier);
+          case -215129154: /*affiliationInfo*/  return new Property("affiliationInfo", "", "Organization affiliated with the entity.", 0, java.lang.Integer.MAX_VALUE, affiliationInfo);
+          case -1147692044: /*address*/  return new Property("address", "Address", "Physical mailing address for the author or contributor.", 0, java.lang.Integer.MAX_VALUE, address);
+          case -1429363305: /*telecom*/  return new Property("telecom", "ContactPoint", "Email or telephone contact methods for the author or contributor.", 0, java.lang.Integer.MAX_VALUE, telecom);
+          case 1375970320: /*contribution*/  return new Property("contribution", "CodeableConcept", "This element identifies the specific nature of an individual’s contribution with respect to the cited work.", 0, java.lang.Integer.MAX_VALUE, contribution);
+          case -1513418741: /*notAnAuthor*/  return new Property("notAnAuthor", "boolean", "False, missing, or empty elements implies authorship.", 0, 1, notAnAuthor);
+          case 1413890206: /*correspondingAuthor*/  return new Property("correspondingAuthor", "boolean", "Indication of which author is the corresponding author for the article cited.", 0, 1, correspondingAuthor);
+          case -1238918832: /*listOrder*/  return new Property("listOrder", "positiveInt", "Used to code order of authors.", 0, 1, listOrder);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -4808,14 +4830,16 @@ public class Citation extends MetadataResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1459599807: /*lastName*/ return this.lastName == null ? new Base[0] : new Base[] {this.lastName}; // StringType
-        case 466107751: /*foreName*/ return this.foreName == null ? new Base[0] : new Base[] {this.foreName}; // StringType
-        case -891422895: /*suffix*/ return this.suffix == null ? new Base[0] : new Base[] {this.suffix}; // StringType
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // HumanName
         case 269062575: /*initials*/ return this.initials == null ? new Base[0] : new Base[] {this.initials}; // StringType
         case 502871833: /*collectiveName*/ return this.collectiveName == null ? new Base[0] : new Base[] {this.collectiveName}; // StringType
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case -215129154: /*affiliationInfo*/ return this.affiliationInfo == null ? new Base[0] : this.affiliationInfo.toArray(new Base[this.affiliationInfo.size()]); // CitationContributorshipEntryAffiliationInfoComponent
+        case -1147692044: /*address*/ return this.address == null ? new Base[0] : this.address.toArray(new Base[this.address.size()]); // Address
+        case -1429363305: /*telecom*/ return this.telecom == null ? new Base[0] : this.telecom.toArray(new Base[this.telecom.size()]); // ContactPoint
         case 1375970320: /*contribution*/ return this.contribution == null ? new Base[0] : this.contribution.toArray(new Base[this.contribution.size()]); // CodeableConcept
-        case -215129154: /*affiliationInfo*/ return this.affiliationInfo == null ? new Base[0] : this.affiliationInfo.toArray(new Base[this.affiliationInfo.size()]); // CitationContributorListContributorAffiliationInfoComponent
+        case -1513418741: /*notAnAuthor*/ return this.notAnAuthor == null ? new Base[0] : new Base[] {this.notAnAuthor}; // BooleanType
+        case 1413890206: /*correspondingAuthor*/ return this.correspondingAuthor == null ? new Base[0] : new Base[] {this.correspondingAuthor}; // BooleanType
         case -1238918832: /*listOrder*/ return this.listOrder == null ? new Base[0] : new Base[] {this.listOrder}; // PositiveIntType
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -4825,14 +4849,8 @@ public class Citation extends MetadataResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1459599807: // lastName
-          this.lastName = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 466107751: // foreName
-          this.foreName = TypeConvertor.castToString(value); // StringType
-          return value;
-        case -891422895: // suffix
-          this.suffix = TypeConvertor.castToString(value); // StringType
+        case 3373707: // name
+          this.name = TypeConvertor.castToHumanName(value); // HumanName
           return value;
         case 269062575: // initials
           this.initials = TypeConvertor.castToString(value); // StringType
@@ -4843,11 +4861,23 @@ public class Citation extends MetadataResource {
         case -1618432855: // identifier
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
+        case -215129154: // affiliationInfo
+          this.getAffiliationInfo().add((CitationContributorshipEntryAffiliationInfoComponent) value); // CitationContributorshipEntryAffiliationInfoComponent
+          return value;
+        case -1147692044: // address
+          this.getAddress().add(TypeConvertor.castToAddress(value)); // Address
+          return value;
+        case -1429363305: // telecom
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value)); // ContactPoint
+          return value;
         case 1375970320: // contribution
           this.getContribution().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
-        case -215129154: // affiliationInfo
-          this.getAffiliationInfo().add((CitationContributorListContributorAffiliationInfoComponent) value); // CitationContributorListContributorAffiliationInfoComponent
+        case -1513418741: // notAnAuthor
+          this.notAnAuthor = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case 1413890206: // correspondingAuthor
+          this.correspondingAuthor = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
         case -1238918832: // listOrder
           this.listOrder = TypeConvertor.castToPositiveInt(value); // PositiveIntType
@@ -4859,22 +4889,26 @@ public class Citation extends MetadataResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("lastName")) {
-          this.lastName = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("foreName")) {
-          this.foreName = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("suffix")) {
-          this.suffix = TypeConvertor.castToString(value); // StringType
+        if (name.equals("name")) {
+          this.name = TypeConvertor.castToHumanName(value); // HumanName
         } else if (name.equals("initials")) {
           this.initials = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("collectiveName")) {
           this.collectiveName = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
+        } else if (name.equals("affiliationInfo")) {
+          this.getAffiliationInfo().add((CitationContributorshipEntryAffiliationInfoComponent) value);
+        } else if (name.equals("address")) {
+          this.getAddress().add(TypeConvertor.castToAddress(value));
+        } else if (name.equals("telecom")) {
+          this.getTelecom().add(TypeConvertor.castToContactPoint(value));
         } else if (name.equals("contribution")) {
           this.getContribution().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("affiliationInfo")) {
-          this.getAffiliationInfo().add((CitationContributorListContributorAffiliationInfoComponent) value);
+        } else if (name.equals("notAnAuthor")) {
+          this.notAnAuthor = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("correspondingAuthor")) {
+          this.correspondingAuthor = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("listOrder")) {
           this.listOrder = TypeConvertor.castToPositiveInt(value); // PositiveIntType
         } else
@@ -4885,14 +4919,16 @@ public class Citation extends MetadataResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1459599807:  return getLastNameElement();
-        case 466107751:  return getForeNameElement();
-        case -891422895:  return getSuffixElement();
+        case 3373707:  return getName();
         case 269062575:  return getInitialsElement();
         case 502871833:  return getCollectiveNameElement();
         case -1618432855:  return addIdentifier(); 
-        case 1375970320:  return addContribution(); 
         case -215129154:  return addAffiliationInfo(); 
+        case -1147692044:  return addAddress(); 
+        case -1429363305:  return addTelecom(); 
+        case 1375970320:  return addContribution(); 
+        case -1513418741:  return getNotAnAuthorElement();
+        case 1413890206:  return getCorrespondingAuthorElement();
         case -1238918832:  return getListOrderElement();
         default: return super.makeProperty(hash, name);
         }
@@ -4902,14 +4938,16 @@ public class Citation extends MetadataResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1459599807: /*lastName*/ return new String[] {"string"};
-        case 466107751: /*foreName*/ return new String[] {"string"};
-        case -891422895: /*suffix*/ return new String[] {"string"};
+        case 3373707: /*name*/ return new String[] {"HumanName"};
         case 269062575: /*initials*/ return new String[] {"string"};
         case 502871833: /*collectiveName*/ return new String[] {"string"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
-        case 1375970320: /*contribution*/ return new String[] {"CodeableConcept"};
         case -215129154: /*affiliationInfo*/ return new String[] {};
+        case -1147692044: /*address*/ return new String[] {"Address"};
+        case -1429363305: /*telecom*/ return new String[] {"ContactPoint"};
+        case 1375970320: /*contribution*/ return new String[] {"CodeableConcept"};
+        case -1513418741: /*notAnAuthor*/ return new String[] {"boolean"};
+        case 1413890206: /*correspondingAuthor*/ return new String[] {"boolean"};
         case -1238918832: /*listOrder*/ return new String[] {"positiveInt"};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -4918,48 +4956,53 @@ public class Citation extends MetadataResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("lastName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorList.contributor.lastName");
-        }
-        else if (name.equals("foreName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorList.contributor.foreName");
-        }
-        else if (name.equals("suffix")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorList.contributor.suffix");
+        if (name.equals("name")) {
+          this.name = new HumanName();
+          return this.name;
         }
         else if (name.equals("initials")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorList.contributor.initials");
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorship.entry.initials");
         }
         else if (name.equals("collectiveName")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorList.contributor.collectiveName");
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorship.entry.collectiveName");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
         }
-        else if (name.equals("contribution")) {
-          return addContribution();
-        }
         else if (name.equals("affiliationInfo")) {
           return addAffiliationInfo();
         }
+        else if (name.equals("address")) {
+          return addAddress();
+        }
+        else if (name.equals("telecom")) {
+          return addTelecom();
+        }
+        else if (name.equals("contribution")) {
+          return addContribution();
+        }
+        else if (name.equals("notAnAuthor")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorship.entry.notAnAuthor");
+        }
+        else if (name.equals("correspondingAuthor")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorship.entry.correspondingAuthor");
+        }
         else if (name.equals("listOrder")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorList.contributor.listOrder");
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorship.entry.listOrder");
         }
         else
           return super.addChild(name);
       }
 
-      public CitationContributorListContributorComponent copy() {
-        CitationContributorListContributorComponent dst = new CitationContributorListContributorComponent();
+      public CitationContributorshipEntryComponent copy() {
+        CitationContributorshipEntryComponent dst = new CitationContributorshipEntryComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(CitationContributorListContributorComponent dst) {
+      public void copyValues(CitationContributorshipEntryComponent dst) {
         super.copyValues(dst);
-        dst.lastName = lastName == null ? null : lastName.copy();
-        dst.foreName = foreName == null ? null : foreName.copy();
-        dst.suffix = suffix == null ? null : suffix.copy();
+        dst.name = name == null ? null : name.copy();
         dst.initials = initials == null ? null : initials.copy();
         dst.collectiveName = collectiveName == null ? null : collectiveName.copy();
         if (identifier != null) {
@@ -4967,16 +5010,28 @@ public class Citation extends MetadataResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
+        if (affiliationInfo != null) {
+          dst.affiliationInfo = new ArrayList<CitationContributorshipEntryAffiliationInfoComponent>();
+          for (CitationContributorshipEntryAffiliationInfoComponent i : affiliationInfo)
+            dst.affiliationInfo.add(i.copy());
+        };
+        if (address != null) {
+          dst.address = new ArrayList<Address>();
+          for (Address i : address)
+            dst.address.add(i.copy());
+        };
+        if (telecom != null) {
+          dst.telecom = new ArrayList<ContactPoint>();
+          for (ContactPoint i : telecom)
+            dst.telecom.add(i.copy());
+        };
         if (contribution != null) {
           dst.contribution = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : contribution)
             dst.contribution.add(i.copy());
         };
-        if (affiliationInfo != null) {
-          dst.affiliationInfo = new ArrayList<CitationContributorListContributorAffiliationInfoComponent>();
-          for (CitationContributorListContributorAffiliationInfoComponent i : affiliationInfo)
-            dst.affiliationInfo.add(i.copy());
-        };
+        dst.notAnAuthor = notAnAuthor == null ? null : notAnAuthor.copy();
+        dst.correspondingAuthor = correspondingAuthor == null ? null : correspondingAuthor.copy();
         dst.listOrder = listOrder == null ? null : listOrder.copy();
       }
 
@@ -4984,43 +5039,43 @@ public class Citation extends MetadataResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof CitationContributorListContributorComponent))
+        if (!(other_ instanceof CitationContributorshipEntryComponent))
           return false;
-        CitationContributorListContributorComponent o = (CitationContributorListContributorComponent) other_;
-        return compareDeep(lastName, o.lastName, true) && compareDeep(foreName, o.foreName, true) && compareDeep(suffix, o.suffix, true)
-           && compareDeep(initials, o.initials, true) && compareDeep(collectiveName, o.collectiveName, true)
-           && compareDeep(identifier, o.identifier, true) && compareDeep(contribution, o.contribution, true)
-           && compareDeep(affiliationInfo, o.affiliationInfo, true) && compareDeep(listOrder, o.listOrder, true)
-          ;
+        CitationContributorshipEntryComponent o = (CitationContributorshipEntryComponent) other_;
+        return compareDeep(name, o.name, true) && compareDeep(initials, o.initials, true) && compareDeep(collectiveName, o.collectiveName, true)
+           && compareDeep(identifier, o.identifier, true) && compareDeep(affiliationInfo, o.affiliationInfo, true)
+           && compareDeep(address, o.address, true) && compareDeep(telecom, o.telecom, true) && compareDeep(contribution, o.contribution, true)
+           && compareDeep(notAnAuthor, o.notAnAuthor, true) && compareDeep(correspondingAuthor, o.correspondingAuthor, true)
+           && compareDeep(listOrder, o.listOrder, true);
       }
 
       @Override
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof CitationContributorListContributorComponent))
+        if (!(other_ instanceof CitationContributorshipEntryComponent))
           return false;
-        CitationContributorListContributorComponent o = (CitationContributorListContributorComponent) other_;
-        return compareValues(lastName, o.lastName, true) && compareValues(foreName, o.foreName, true) && compareValues(suffix, o.suffix, true)
-           && compareValues(initials, o.initials, true) && compareValues(collectiveName, o.collectiveName, true)
+        CitationContributorshipEntryComponent o = (CitationContributorshipEntryComponent) other_;
+        return compareValues(initials, o.initials, true) && compareValues(collectiveName, o.collectiveName, true)
+           && compareValues(notAnAuthor, o.notAnAuthor, true) && compareValues(correspondingAuthor, o.correspondingAuthor, true)
            && compareValues(listOrder, o.listOrder, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(lastName, foreName, suffix
-          , initials, collectiveName, identifier, contribution, affiliationInfo, listOrder
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, initials, collectiveName
+          , identifier, affiliationInfo, address, telecom, contribution, notAnAuthor, correspondingAuthor
+          , listOrder);
       }
 
   public String fhirType() {
-    return "Citation.contributorList.contributor";
+    return "Citation.contributorship.entry";
 
   }
 
   }
 
     @Block()
-    public static class CitationContributorListContributorAffiliationInfoComponent extends BackboneElement implements IBaseBackboneElement {
+    public static class CitationContributorshipEntryAffiliationInfoComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Display for the organization.
          */
@@ -5029,10 +5084,10 @@ public class Citation extends MetadataResource {
         protected StringType affiliation;
 
         /**
-         * Role.
+         * Role within the organization, such as professional title.
          */
         @Child(name = "role", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Role", formalDefinition="Role." )
+        @Description(shortDefinition="Role within the organization, such as professional title", formalDefinition="Role within the organization, such as professional title." )
         protected StringType role;
 
         /**
@@ -5047,7 +5102,7 @@ public class Citation extends MetadataResource {
     /**
      * Constructor
      */
-      public CitationContributorListContributorAffiliationInfoComponent() {
+      public CitationContributorshipEntryAffiliationInfoComponent() {
         super();
       }
 
@@ -5057,7 +5112,7 @@ public class Citation extends MetadataResource {
         public StringType getAffiliationElement() { 
           if (this.affiliation == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationContributorListContributorAffiliationInfoComponent.affiliation");
+              throw new Error("Attempt to auto-create CitationContributorshipEntryAffiliationInfoComponent.affiliation");
             else if (Configuration.doAutoCreate())
               this.affiliation = new StringType(); // bb
           return this.affiliation;
@@ -5074,7 +5129,7 @@ public class Citation extends MetadataResource {
         /**
          * @param value {@link #affiliation} (Display for the organization.). This is the underlying object with id, value and extensions. The accessor "getAffiliation" gives direct access to the value
          */
-        public CitationContributorListContributorAffiliationInfoComponent setAffiliationElement(StringType value) { 
+        public CitationContributorshipEntryAffiliationInfoComponent setAffiliationElement(StringType value) { 
           this.affiliation = value;
           return this;
         }
@@ -5089,7 +5144,7 @@ public class Citation extends MetadataResource {
         /**
          * @param value Display for the organization.
          */
-        public CitationContributorListContributorAffiliationInfoComponent setAffiliation(String value) { 
+        public CitationContributorshipEntryAffiliationInfoComponent setAffiliation(String value) { 
           if (Utilities.noString(value))
             this.affiliation = null;
           else {
@@ -5101,12 +5156,12 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #role} (Role.). This is the underlying object with id, value and extensions. The accessor "getRole" gives direct access to the value
+         * @return {@link #role} (Role within the organization, such as professional title.). This is the underlying object with id, value and extensions. The accessor "getRole" gives direct access to the value
          */
         public StringType getRoleElement() { 
           if (this.role == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create CitationContributorListContributorAffiliationInfoComponent.role");
+              throw new Error("Attempt to auto-create CitationContributorshipEntryAffiliationInfoComponent.role");
             else if (Configuration.doAutoCreate())
               this.role = new StringType(); // bb
           return this.role;
@@ -5121,24 +5176,24 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #role} (Role.). This is the underlying object with id, value and extensions. The accessor "getRole" gives direct access to the value
+         * @param value {@link #role} (Role within the organization, such as professional title.). This is the underlying object with id, value and extensions. The accessor "getRole" gives direct access to the value
          */
-        public CitationContributorListContributorAffiliationInfoComponent setRoleElement(StringType value) { 
+        public CitationContributorshipEntryAffiliationInfoComponent setRoleElement(StringType value) { 
           this.role = value;
           return this;
         }
 
         /**
-         * @return Role.
+         * @return Role within the organization, such as professional title.
          */
         public String getRole() { 
           return this.role == null ? null : this.role.getValue();
         }
 
         /**
-         * @param value Role.
+         * @param value Role within the organization, such as professional title.
          */
-        public CitationContributorListContributorAffiliationInfoComponent setRole(String value) { 
+        public CitationContributorshipEntryAffiliationInfoComponent setRole(String value) { 
           if (Utilities.noString(value))
             this.role = null;
           else {
@@ -5161,7 +5216,7 @@ public class Citation extends MetadataResource {
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public CitationContributorListContributorAffiliationInfoComponent setIdentifier(List<Identifier> theIdentifier) { 
+        public CitationContributorshipEntryAffiliationInfoComponent setIdentifier(List<Identifier> theIdentifier) { 
           this.identifier = theIdentifier;
           return this;
         }
@@ -5183,7 +5238,7 @@ public class Citation extends MetadataResource {
           return t;
         }
 
-        public CitationContributorListContributorAffiliationInfoComponent addIdentifier(Identifier t) { //3
+        public CitationContributorshipEntryAffiliationInfoComponent addIdentifier(Identifier t) { //3
           if (t == null)
             return this;
           if (this.identifier == null)
@@ -5205,7 +5260,7 @@ public class Citation extends MetadataResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("affiliation", "string", "Display for the organization.", 0, 1, affiliation));
-          children.add(new Property("role", "string", "Role.", 0, 1, role));
+          children.add(new Property("role", "string", "Role within the organization, such as professional title.", 0, 1, role));
           children.add(new Property("identifier", "Identifier", "Identifier for the organization.", 0, java.lang.Integer.MAX_VALUE, identifier));
         }
 
@@ -5213,7 +5268,7 @@ public class Citation extends MetadataResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 2019918576: /*affiliation*/  return new Property("affiliation", "string", "Display for the organization.", 0, 1, affiliation);
-          case 3506294: /*role*/  return new Property("role", "string", "Role.", 0, 1, role);
+          case 3506294: /*role*/  return new Property("role", "string", "Role within the organization, such as professional title.", 0, 1, role);
           case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier for the organization.", 0, java.lang.Integer.MAX_VALUE, identifier);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -5286,10 +5341,10 @@ public class Citation extends MetadataResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("affiliation")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorList.contributor.affiliationInfo.affiliation");
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorship.entry.affiliationInfo.affiliation");
         }
         else if (name.equals("role")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorList.contributor.affiliationInfo.role");
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorship.entry.affiliationInfo.role");
         }
         else if (name.equals("identifier")) {
           return addIdentifier();
@@ -5298,13 +5353,13 @@ public class Citation extends MetadataResource {
           return super.addChild(name);
       }
 
-      public CitationContributorListContributorAffiliationInfoComponent copy() {
-        CitationContributorListContributorAffiliationInfoComponent dst = new CitationContributorListContributorAffiliationInfoComponent();
+      public CitationContributorshipEntryAffiliationInfoComponent copy() {
+        CitationContributorshipEntryAffiliationInfoComponent dst = new CitationContributorshipEntryAffiliationInfoComponent();
         copyValues(dst);
         return dst;
       }
 
-      public void copyValues(CitationContributorListContributorAffiliationInfoComponent dst) {
+      public void copyValues(CitationContributorshipEntryAffiliationInfoComponent dst) {
         super.copyValues(dst);
         dst.affiliation = affiliation == null ? null : affiliation.copy();
         dst.role = role == null ? null : role.copy();
@@ -5319,9 +5374,9 @@ public class Citation extends MetadataResource {
       public boolean equalsDeep(Base other_) {
         if (!super.equalsDeep(other_))
           return false;
-        if (!(other_ instanceof CitationContributorListContributorAffiliationInfoComponent))
+        if (!(other_ instanceof CitationContributorshipEntryAffiliationInfoComponent))
           return false;
-        CitationContributorListContributorAffiliationInfoComponent o = (CitationContributorListContributorAffiliationInfoComponent) other_;
+        CitationContributorshipEntryAffiliationInfoComponent o = (CitationContributorshipEntryAffiliationInfoComponent) other_;
         return compareDeep(affiliation, o.affiliation, true) && compareDeep(role, o.role, true) && compareDeep(identifier, o.identifier, true)
           ;
       }
@@ -5330,9 +5385,9 @@ public class Citation extends MetadataResource {
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof CitationContributorListContributorAffiliationInfoComponent))
+        if (!(other_ instanceof CitationContributorshipEntryAffiliationInfoComponent))
           return false;
-        CitationContributorListContributorAffiliationInfoComponent o = (CitationContributorListContributorAffiliationInfoComponent) other_;
+        CitationContributorshipEntryAffiliationInfoComponent o = (CitationContributorshipEntryAffiliationInfoComponent) other_;
         return compareValues(affiliation, o.affiliation, true) && compareValues(role, o.role, true);
       }
 
@@ -5342,7 +5397,333 @@ public class Citation extends MetadataResource {
       }
 
   public String fhirType() {
-    return "Citation.contributorList.contributor.affiliationInfo";
+    return "Citation.contributorship.entry.affiliationInfo";
+
+  }
+
+  }
+
+    @Block()
+    public static class CitationContributorshipSummaryComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Used most commonly to express an author list or a contributorship statement.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Either authorList or contributorshipStatement", formalDefinition="Used most commonly to express an author list or a contributorship statement." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contributor-summary-type")
+        protected CodeableConcept type;
+
+        /**
+         * The format for the display string.
+         */
+        @Child(name = "style", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The format for the display string", formalDefinition="The format for the display string." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contributor-summary-style")
+        protected CodeableConcept style;
+
+        /**
+         * Used to code the producer or rule for creating the display string.
+         */
+        @Child(name = "source", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Used to code the producer or rule for creating the display string", formalDefinition="Used to code the producer or rule for creating the display string." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/contributor-summary-source")
+        protected CodeableConcept source;
+
+        /**
+         * The display string for the author list, contributor list, or contributorship statement.
+         */
+        @Child(name = "value", type = {MarkdownType.class}, order=4, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The display string for the author list, contributor list, or contributorship statement", formalDefinition="The display string for the author list, contributor list, or contributorship statement." )
+        protected MarkdownType value;
+
+        private static final long serialVersionUID = 1353383781L;
+
+    /**
+     * Constructor
+     */
+      public CitationContributorshipSummaryComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public CitationContributorshipSummaryComponent(String value) {
+        super();
+        this.setValue(value);
+      }
+
+        /**
+         * @return {@link #type} (Used most commonly to express an author list or a contributorship statement.)
+         */
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationContributorshipSummaryComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (Used most commonly to express an author list or a contributorship statement.)
+         */
+        public CitationContributorshipSummaryComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #style} (The format for the display string.)
+         */
+        public CodeableConcept getStyle() { 
+          if (this.style == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationContributorshipSummaryComponent.style");
+            else if (Configuration.doAutoCreate())
+              this.style = new CodeableConcept(); // cc
+          return this.style;
+        }
+
+        public boolean hasStyle() { 
+          return this.style != null && !this.style.isEmpty();
+        }
+
+        /**
+         * @param value {@link #style} (The format for the display string.)
+         */
+        public CitationContributorshipSummaryComponent setStyle(CodeableConcept value) { 
+          this.style = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #source} (Used to code the producer or rule for creating the display string.)
+         */
+        public CodeableConcept getSource() { 
+          if (this.source == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationContributorshipSummaryComponent.source");
+            else if (Configuration.doAutoCreate())
+              this.source = new CodeableConcept(); // cc
+          return this.source;
+        }
+
+        public boolean hasSource() { 
+          return this.source != null && !this.source.isEmpty();
+        }
+
+        /**
+         * @param value {@link #source} (Used to code the producer or rule for creating the display string.)
+         */
+        public CitationContributorshipSummaryComponent setSource(CodeableConcept value) { 
+          this.source = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (The display string for the author list, contributor list, or contributorship statement.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+         */
+        public MarkdownType getValueElement() { 
+          if (this.value == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationContributorshipSummaryComponent.value");
+            else if (Configuration.doAutoCreate())
+              this.value = new MarkdownType(); // bb
+          return this.value;
+        }
+
+        public boolean hasValueElement() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (The display string for the author list, contributor list, or contributorship statement.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+         */
+        public CitationContributorshipSummaryComponent setValueElement(MarkdownType value) { 
+          this.value = value;
+          return this;
+        }
+
+        /**
+         * @return The display string for the author list, contributor list, or contributorship statement.
+         */
+        public String getValue() { 
+          return this.value == null ? null : this.value.getValue();
+        }
+
+        /**
+         * @param value The display string for the author list, contributor list, or contributorship statement.
+         */
+        public CitationContributorshipSummaryComponent setValue(String value) { 
+            if (this.value == null)
+              this.value = new MarkdownType();
+            this.value.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("type", "CodeableConcept", "Used most commonly to express an author list or a contributorship statement.", 0, 1, type));
+          children.add(new Property("style", "CodeableConcept", "The format for the display string.", 0, 1, style));
+          children.add(new Property("source", "CodeableConcept", "Used to code the producer or rule for creating the display string.", 0, 1, source));
+          children.add(new Property("value", "markdown", "The display string for the author list, contributor list, or contributorship statement.", 0, 1, value));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Used most commonly to express an author list or a contributorship statement.", 0, 1, type);
+          case 109780401: /*style*/  return new Property("style", "CodeableConcept", "The format for the display string.", 0, 1, style);
+          case -896505829: /*source*/  return new Property("source", "CodeableConcept", "Used to code the producer or rule for creating the display string.", 0, 1, source);
+          case 111972721: /*value*/  return new Property("value", "markdown", "The display string for the author list, contributor list, or contributorship statement.", 0, 1, value);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 109780401: /*style*/ return this.style == null ? new Base[0] : new Base[] {this.style}; // CodeableConcept
+        case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // CodeableConcept
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // MarkdownType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 109780401: // style
+          this.style = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -896505829: // source
+          this.source = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 111972721: // value
+          this.value = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("style")) {
+          this.style = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("source")) {
+          this.source = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("value")) {
+          this.value = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610:  return getType();
+        case 109780401:  return getStyle();
+        case -896505829:  return getSource();
+        case 111972721:  return getValueElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 109780401: /*style*/ return new String[] {"CodeableConcept"};
+        case -896505829: /*source*/ return new String[] {"CodeableConcept"};
+        case 111972721: /*value*/ return new String[] {"markdown"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
+        }
+        else if (name.equals("style")) {
+          this.style = new CodeableConcept();
+          return this.style;
+        }
+        else if (name.equals("source")) {
+          this.source = new CodeableConcept();
+          return this.source;
+        }
+        else if (name.equals("value")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.contributorship.summary.value");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CitationContributorshipSummaryComponent copy() {
+        CitationContributorshipSummaryComponent dst = new CitationContributorshipSummaryComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CitationContributorshipSummaryComponent dst) {
+        super.copyValues(dst);
+        dst.type = type == null ? null : type.copy();
+        dst.style = style == null ? null : style.copy();
+        dst.source = source == null ? null : source.copy();
+        dst.value = value == null ? null : value.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CitationContributorshipSummaryComponent))
+          return false;
+        CitationContributorshipSummaryComponent o = (CitationContributorshipSummaryComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(style, o.style, true) && compareDeep(source, o.source, true)
+           && compareDeep(value, o.value, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CitationContributorshipSummaryComponent))
+          return false;
+        CitationContributorshipSummaryComponent o = (CitationContributorshipSummaryComponent) other_;
+        return compareValues(value, o.value, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, style, source, value
+          );
+      }
+
+  public String fhirType() {
+    return "Citation.contributorship.summary";
 
   }
 
@@ -5359,10 +5740,10 @@ public class Citation extends MetadataResource {
         protected CodeableConcept publishingModel;
 
         /**
-         * Language in which the article is published.
+         * Language in which this form of the article is published.
          */
         @Child(name = "language", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Language in which the article is published", formalDefinition="Language in which the article is published." )
+        @Description(shortDefinition="Language in which this form of the article is published", formalDefinition="Language in which this form of the article is published." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
         protected CodeableConcept language;
 
@@ -5380,7 +5761,14 @@ public class Citation extends MetadataResource {
         @Description(shortDefinition="Indicates the inclusive pages for the article cited", formalDefinition="Indicates the inclusive pages for the article cited." )
         protected CitationAlternativeFormPaginationComponent pagination;
 
-        private static final long serialVersionUID = -991805122L;
+        /**
+         * Citation detail for sources other than journals such as books and databases.
+         */
+        @Child(name = "publicationInfo", type = {}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Citation detail for sources other than journals", formalDefinition="Citation detail for sources other than journals such as books and databases." )
+        protected CitationAlternativeFormPublicationInfoComponent publicationInfo;
+
+        private static final long serialVersionUID = 1567425409L;
 
     /**
      * Constructor
@@ -5414,7 +5802,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #language} (Language in which the article is published.)
+         * @return {@link #language} (Language in which this form of the article is published.)
          */
         public CodeableConcept getLanguage() { 
           if (this.language == null)
@@ -5430,7 +5818,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #language} (Language in which the article is published.)
+         * @param value {@link #language} (Language in which this form of the article is published.)
          */
         public CitationAlternativeFormComponent setLanguage(CodeableConcept value) { 
           this.language = value;
@@ -5485,21 +5873,47 @@ public class Citation extends MetadataResource {
           return this;
         }
 
+        /**
+         * @return {@link #publicationInfo} (Citation detail for sources other than journals such as books and databases.)
+         */
+        public CitationAlternativeFormPublicationInfoComponent getPublicationInfo() { 
+          if (this.publicationInfo == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormComponent.publicationInfo");
+            else if (Configuration.doAutoCreate())
+              this.publicationInfo = new CitationAlternativeFormPublicationInfoComponent(); // cc
+          return this.publicationInfo;
+        }
+
+        public boolean hasPublicationInfo() { 
+          return this.publicationInfo != null && !this.publicationInfo.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publicationInfo} (Citation detail for sources other than journals such as books and databases.)
+         */
+        public CitationAlternativeFormComponent setPublicationInfo(CitationAlternativeFormPublicationInfoComponent value) { 
+          this.publicationInfo = value;
+          return this;
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("publishingModel", "CodeableConcept", "Identify the medium/media in which the cited article is published, eg print, electronic or print-electronic.", 0, 1, publishingModel));
-          children.add(new Property("language", "CodeableConcept", "Language in which the article is published.", 0, 1, language));
+          children.add(new Property("language", "CodeableConcept", "Language in which this form of the article is published.", 0, 1, language));
           children.add(new Property("journalIssue", "", "The specific issue in which the cited article resides.", 0, 1, journalIssue));
           children.add(new Property("pagination", "", "Indicates the inclusive pages for the article cited.", 0, 1, pagination));
+          children.add(new Property("publicationInfo", "", "Citation detail for sources other than journals such as books and databases.", 0, 1, publicationInfo));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 747318902: /*publishingModel*/  return new Property("publishingModel", "CodeableConcept", "Identify the medium/media in which the cited article is published, eg print, electronic or print-electronic.", 0, 1, publishingModel);
-          case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "Language in which the article is published.", 0, 1, language);
+          case -1613589672: /*language*/  return new Property("language", "CodeableConcept", "Language in which this form of the article is published.", 0, 1, language);
           case -716835870: /*journalIssue*/  return new Property("journalIssue", "", "The specific issue in which the cited article resides.", 0, 1, journalIssue);
           case 1297692570: /*pagination*/  return new Property("pagination", "", "Indicates the inclusive pages for the article cited.", 0, 1, pagination);
+          case 1470727418: /*publicationInfo*/  return new Property("publicationInfo", "", "Citation detail for sources other than journals such as books and databases.", 0, 1, publicationInfo);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -5512,6 +5926,7 @@ public class Citation extends MetadataResource {
         case -1613589672: /*language*/ return this.language == null ? new Base[0] : new Base[] {this.language}; // CodeableConcept
         case -716835870: /*journalIssue*/ return this.journalIssue == null ? new Base[0] : new Base[] {this.journalIssue}; // CitationAlternativeFormJournalIssueComponent
         case 1297692570: /*pagination*/ return this.pagination == null ? new Base[0] : new Base[] {this.pagination}; // CitationAlternativeFormPaginationComponent
+        case 1470727418: /*publicationInfo*/ return this.publicationInfo == null ? new Base[0] : new Base[] {this.publicationInfo}; // CitationAlternativeFormPublicationInfoComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -5532,6 +5947,9 @@ public class Citation extends MetadataResource {
         case 1297692570: // pagination
           this.pagination = (CitationAlternativeFormPaginationComponent) value; // CitationAlternativeFormPaginationComponent
           return value;
+        case 1470727418: // publicationInfo
+          this.publicationInfo = (CitationAlternativeFormPublicationInfoComponent) value; // CitationAlternativeFormPublicationInfoComponent
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -5547,6 +5965,8 @@ public class Citation extends MetadataResource {
           this.journalIssue = (CitationAlternativeFormJournalIssueComponent) value; // CitationAlternativeFormJournalIssueComponent
         } else if (name.equals("pagination")) {
           this.pagination = (CitationAlternativeFormPaginationComponent) value; // CitationAlternativeFormPaginationComponent
+        } else if (name.equals("publicationInfo")) {
+          this.publicationInfo = (CitationAlternativeFormPublicationInfoComponent) value; // CitationAlternativeFormPublicationInfoComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -5559,6 +5979,7 @@ public class Citation extends MetadataResource {
         case -1613589672:  return getLanguage();
         case -716835870:  return getJournalIssue();
         case 1297692570:  return getPagination();
+        case 1470727418:  return getPublicationInfo();
         default: return super.makeProperty(hash, name);
         }
 
@@ -5571,6 +5992,7 @@ public class Citation extends MetadataResource {
         case -1613589672: /*language*/ return new String[] {"CodeableConcept"};
         case -716835870: /*journalIssue*/ return new String[] {};
         case 1297692570: /*pagination*/ return new String[] {};
+        case 1470727418: /*publicationInfo*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -5594,6 +6016,10 @@ public class Citation extends MetadataResource {
           this.pagination = new CitationAlternativeFormPaginationComponent();
           return this.pagination;
         }
+        else if (name.equals("publicationInfo")) {
+          this.publicationInfo = new CitationAlternativeFormPublicationInfoComponent();
+          return this.publicationInfo;
+        }
         else
           return super.addChild(name);
       }
@@ -5610,6 +6036,7 @@ public class Citation extends MetadataResource {
         dst.language = language == null ? null : language.copy();
         dst.journalIssue = journalIssue == null ? null : journalIssue.copy();
         dst.pagination = pagination == null ? null : pagination.copy();
+        dst.publicationInfo = publicationInfo == null ? null : publicationInfo.copy();
       }
 
       @Override
@@ -5621,7 +6048,7 @@ public class Citation extends MetadataResource {
         CitationAlternativeFormComponent o = (CitationAlternativeFormComponent) other_;
         return compareDeep(publishingModel, o.publishingModel, true) && compareDeep(language, o.language, true)
            && compareDeep(journalIssue, o.journalIssue, true) && compareDeep(pagination, o.pagination, true)
-          ;
+           && compareDeep(publicationInfo, o.publicationInfo, true);
       }
 
       @Override
@@ -5636,7 +6063,7 @@ public class Citation extends MetadataResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(publishingModel, language
-          , journalIssue, pagination);
+          , journalIssue, pagination, publicationInfo);
       }
 
   public String fhirType() {
@@ -5649,10 +6076,10 @@ public class Citation extends MetadataResource {
     @Block()
     public static class CitationAlternativeFormJournalIssueComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * NLM codes Internet or Print.
+         * Describes the form of the medium cited. Common codes are "Internet" or "Print.".
          */
         @Child(name = "citedMedium", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="NLM codes Internet or Print", formalDefinition="NLM codes Internet or Print." )
+        @Description(shortDefinition="Internet or Print", formalDefinition="Describes the form of the medium cited. Common codes are \"Internet\" or \"Print.\"." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/journal-issue-medium")
         protected CodeableConcept citedMedium;
 
@@ -5671,13 +6098,13 @@ public class Citation extends MetadataResource {
         protected StringType issue;
 
         /**
-         * Date on which the issue of the journal was published.
+         * Defining the date on which the issue of the joutnal was published.
          */
-        @Child(name = "publicationDate", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Date on which the issue of the journal was published", formalDefinition="Date on which the issue of the journal was published." )
-        protected StringType publicationDate;
+        @Child(name = "publicationDate", type = {}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Defining the date on which the issue of the joutnal was published", formalDefinition="Defining the date on which the issue of the joutnal was published." )
+        protected CitationAlternativeFormJournalIssuePublicationDateComponent publicationDate;
 
-        private static final long serialVersionUID = -1343937439L;
+        private static final long serialVersionUID = 2080837313L;
 
     /**
      * Constructor
@@ -5687,7 +6114,7 @@ public class Citation extends MetadataResource {
       }
 
         /**
-         * @return {@link #citedMedium} (NLM codes Internet or Print.)
+         * @return {@link #citedMedium} (Describes the form of the medium cited. Common codes are "Internet" or "Print.".)
          */
         public CodeableConcept getCitedMedium() { 
           if (this.citedMedium == null)
@@ -5703,7 +6130,7 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #citedMedium} (NLM codes Internet or Print.)
+         * @param value {@link #citedMedium} (Describes the form of the medium cited. Common codes are "Internet" or "Print.".)
          */
         public CitationAlternativeFormJournalIssueComponent setCitedMedium(CodeableConcept value) { 
           this.citedMedium = value;
@@ -5809,19 +6236,15 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @return {@link #publicationDate} (Date on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDate" gives direct access to the value
+         * @return {@link #publicationDate} (Defining the date on which the issue of the joutnal was published.)
          */
-        public StringType getPublicationDateElement() { 
+        public CitationAlternativeFormJournalIssuePublicationDateComponent getPublicationDate() { 
           if (this.publicationDate == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create CitationAlternativeFormJournalIssueComponent.publicationDate");
             else if (Configuration.doAutoCreate())
-              this.publicationDate = new StringType(); // bb
+              this.publicationDate = new CitationAlternativeFormJournalIssuePublicationDateComponent(); // cc
           return this.publicationDate;
-        }
-
-        public boolean hasPublicationDateElement() { 
-          return this.publicationDate != null && !this.publicationDate.isEmpty();
         }
 
         public boolean hasPublicationDate() { 
@@ -5829,49 +6252,28 @@ public class Citation extends MetadataResource {
         }
 
         /**
-         * @param value {@link #publicationDate} (Date on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getPublicationDate" gives direct access to the value
+         * @param value {@link #publicationDate} (Defining the date on which the issue of the joutnal was published.)
          */
-        public CitationAlternativeFormJournalIssueComponent setPublicationDateElement(StringType value) { 
+        public CitationAlternativeFormJournalIssueComponent setPublicationDate(CitationAlternativeFormJournalIssuePublicationDateComponent value) { 
           this.publicationDate = value;
-          return this;
-        }
-
-        /**
-         * @return Date on which the issue of the journal was published.
-         */
-        public String getPublicationDate() { 
-          return this.publicationDate == null ? null : this.publicationDate.getValue();
-        }
-
-        /**
-         * @param value Date on which the issue of the journal was published.
-         */
-        public CitationAlternativeFormJournalIssueComponent setPublicationDate(String value) { 
-          if (Utilities.noString(value))
-            this.publicationDate = null;
-          else {
-            if (this.publicationDate == null)
-              this.publicationDate = new StringType();
-            this.publicationDate.setValue(value);
-          }
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("citedMedium", "CodeableConcept", "NLM codes Internet or Print.", 0, 1, citedMedium));
+          children.add(new Property("citedMedium", "CodeableConcept", "Describes the form of the medium cited. Common codes are \"Internet\" or \"Print.\".", 0, 1, citedMedium));
           children.add(new Property("volume", "string", "Volume number of journal in which the article is published.", 0, 1, volume));
           children.add(new Property("issue", "string", "Issue, part or supplement of journal in which the article is published.", 0, 1, issue));
-          children.add(new Property("publicationDate", "string", "Date on which the issue of the journal was published.", 0, 1, publicationDate));
+          children.add(new Property("publicationDate", "", "Defining the date on which the issue of the joutnal was published.", 0, 1, publicationDate));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 612116418: /*citedMedium*/  return new Property("citedMedium", "CodeableConcept", "NLM codes Internet or Print.", 0, 1, citedMedium);
+          case 612116418: /*citedMedium*/  return new Property("citedMedium", "CodeableConcept", "Describes the form of the medium cited. Common codes are \"Internet\" or \"Print.\".", 0, 1, citedMedium);
           case -810883302: /*volume*/  return new Property("volume", "string", "Volume number of journal in which the article is published.", 0, 1, volume);
           case 100509913: /*issue*/  return new Property("issue", "string", "Issue, part or supplement of journal in which the article is published.", 0, 1, issue);
-          case 1470566394: /*publicationDate*/  return new Property("publicationDate", "string", "Date on which the issue of the journal was published.", 0, 1, publicationDate);
+          case 1470566394: /*publicationDate*/  return new Property("publicationDate", "", "Defining the date on which the issue of the joutnal was published.", 0, 1, publicationDate);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -5883,7 +6285,7 @@ public class Citation extends MetadataResource {
         case 612116418: /*citedMedium*/ return this.citedMedium == null ? new Base[0] : new Base[] {this.citedMedium}; // CodeableConcept
         case -810883302: /*volume*/ return this.volume == null ? new Base[0] : new Base[] {this.volume}; // StringType
         case 100509913: /*issue*/ return this.issue == null ? new Base[0] : new Base[] {this.issue}; // StringType
-        case 1470566394: /*publicationDate*/ return this.publicationDate == null ? new Base[0] : new Base[] {this.publicationDate}; // StringType
+        case 1470566394: /*publicationDate*/ return this.publicationDate == null ? new Base[0] : new Base[] {this.publicationDate}; // CitationAlternativeFormJournalIssuePublicationDateComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -5902,7 +6304,7 @@ public class Citation extends MetadataResource {
           this.issue = TypeConvertor.castToString(value); // StringType
           return value;
         case 1470566394: // publicationDate
-          this.publicationDate = TypeConvertor.castToString(value); // StringType
+          this.publicationDate = (CitationAlternativeFormJournalIssuePublicationDateComponent) value; // CitationAlternativeFormJournalIssuePublicationDateComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -5918,7 +6320,7 @@ public class Citation extends MetadataResource {
         } else if (name.equals("issue")) {
           this.issue = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("publicationDate")) {
-          this.publicationDate = TypeConvertor.castToString(value); // StringType
+          this.publicationDate = (CitationAlternativeFormJournalIssuePublicationDateComponent) value; // CitationAlternativeFormJournalIssuePublicationDateComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -5930,7 +6332,7 @@ public class Citation extends MetadataResource {
         case 612116418:  return getCitedMedium();
         case -810883302:  return getVolumeElement();
         case 100509913:  return getIssueElement();
-        case 1470566394:  return getPublicationDateElement();
+        case 1470566394:  return getPublicationDate();
         default: return super.makeProperty(hash, name);
         }
 
@@ -5942,7 +6344,7 @@ public class Citation extends MetadataResource {
         case 612116418: /*citedMedium*/ return new String[] {"CodeableConcept"};
         case -810883302: /*volume*/ return new String[] {"string"};
         case 100509913: /*issue*/ return new String[] {"string"};
-        case 1470566394: /*publicationDate*/ return new String[] {"string"};
+        case 1470566394: /*publicationDate*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -5961,7 +6363,8 @@ public class Citation extends MetadataResource {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.journalIssue.issue");
         }
         else if (name.equals("publicationDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.journalIssue.publicationDate");
+          this.publicationDate = new CitationAlternativeFormJournalIssuePublicationDateComponent();
+          return this.publicationDate;
         }
         else
           return super.addChild(name);
@@ -5999,8 +6402,7 @@ public class Citation extends MetadataResource {
         if (!(other_ instanceof CitationAlternativeFormJournalIssueComponent))
           return false;
         CitationAlternativeFormJournalIssueComponent o = (CitationAlternativeFormJournalIssueComponent) other_;
-        return compareValues(volume, o.volume, true) && compareValues(issue, o.issue, true) && compareValues(publicationDate, o.publicationDate, true)
-          ;
+        return compareValues(volume, o.volume, true) && compareValues(issue, o.issue, true);
       }
 
       public boolean isEmpty() {
@@ -6010,6 +6412,540 @@ public class Citation extends MetadataResource {
 
   public String fhirType() {
     return "Citation.alternativeForm.journalIssue";
+
+  }
+
+  }
+
+    @Block()
+    public static class CitationAlternativeFormJournalIssuePublicationDateComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Date on which the issue of the journal was published.
+         */
+        @Child(name = "date", type = {DateType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Date on which the issue of the journal was published", formalDefinition="Date on which the issue of the journal was published." )
+        protected DateType date;
+
+        /**
+         * Year on which the issue of the journal was published.
+         */
+        @Child(name = "year", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Year on which the issue of the journal was published", formalDefinition="Year on which the issue of the journal was published." )
+        protected StringType year;
+
+        /**
+         * Month on which the issue of the journal was published.
+         */
+        @Child(name = "month", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Month on which the issue of the journal was published", formalDefinition="Month on which the issue of the journal was published." )
+        protected StringType month;
+
+        /**
+         * Day on which the issue of the journal was published.
+         */
+        @Child(name = "day", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Day on which the issue of the journal was published", formalDefinition="Day on which the issue of the journal was published." )
+        protected StringType day;
+
+        /**
+         * Spring, Summer, Fall/Autumn, Winter.
+         */
+        @Child(name = "season", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Season on which the issue of the jornal was published", formalDefinition="Spring, Summer, Fall/Autumn, Winter." )
+        protected StringType season;
+
+        /**
+         * Text representation of the date of which the issue of the journal was published.
+         */
+        @Child(name = "text", type = {StringType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Text representation of the date of which the issue of the journal was published", formalDefinition="Text representation of the date of which the issue of the journal was published." )
+        protected StringType text;
+
+        private static final long serialVersionUID = 1585589146L;
+
+    /**
+     * Constructor
+     */
+      public CitationAlternativeFormJournalIssuePublicationDateComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #date} (Date on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+         */
+        public DateType getDateElement() { 
+          if (this.date == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormJournalIssuePublicationDateComponent.date");
+            else if (Configuration.doAutoCreate())
+              this.date = new DateType(); // bb
+          return this.date;
+        }
+
+        public boolean hasDateElement() { 
+          return this.date != null && !this.date.isEmpty();
+        }
+
+        public boolean hasDate() { 
+          return this.date != null && !this.date.isEmpty();
+        }
+
+        /**
+         * @param value {@link #date} (Date on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getDate" gives direct access to the value
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setDateElement(DateType value) { 
+          this.date = value;
+          return this;
+        }
+
+        /**
+         * @return Date on which the issue of the journal was published.
+         */
+        public Date getDate() { 
+          return this.date == null ? null : this.date.getValue();
+        }
+
+        /**
+         * @param value Date on which the issue of the journal was published.
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setDate(Date value) { 
+          if (value == null)
+            this.date = null;
+          else {
+            if (this.date == null)
+              this.date = new DateType();
+            this.date.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #year} (Year on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getYear" gives direct access to the value
+         */
+        public StringType getYearElement() { 
+          if (this.year == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormJournalIssuePublicationDateComponent.year");
+            else if (Configuration.doAutoCreate())
+              this.year = new StringType(); // bb
+          return this.year;
+        }
+
+        public boolean hasYearElement() { 
+          return this.year != null && !this.year.isEmpty();
+        }
+
+        public boolean hasYear() { 
+          return this.year != null && !this.year.isEmpty();
+        }
+
+        /**
+         * @param value {@link #year} (Year on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getYear" gives direct access to the value
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setYearElement(StringType value) { 
+          this.year = value;
+          return this;
+        }
+
+        /**
+         * @return Year on which the issue of the journal was published.
+         */
+        public String getYear() { 
+          return this.year == null ? null : this.year.getValue();
+        }
+
+        /**
+         * @param value Year on which the issue of the journal was published.
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setYear(String value) { 
+          if (Utilities.noString(value))
+            this.year = null;
+          else {
+            if (this.year == null)
+              this.year = new StringType();
+            this.year.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #month} (Month on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getMonth" gives direct access to the value
+         */
+        public StringType getMonthElement() { 
+          if (this.month == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormJournalIssuePublicationDateComponent.month");
+            else if (Configuration.doAutoCreate())
+              this.month = new StringType(); // bb
+          return this.month;
+        }
+
+        public boolean hasMonthElement() { 
+          return this.month != null && !this.month.isEmpty();
+        }
+
+        public boolean hasMonth() { 
+          return this.month != null && !this.month.isEmpty();
+        }
+
+        /**
+         * @param value {@link #month} (Month on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getMonth" gives direct access to the value
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setMonthElement(StringType value) { 
+          this.month = value;
+          return this;
+        }
+
+        /**
+         * @return Month on which the issue of the journal was published.
+         */
+        public String getMonth() { 
+          return this.month == null ? null : this.month.getValue();
+        }
+
+        /**
+         * @param value Month on which the issue of the journal was published.
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setMonth(String value) { 
+          if (Utilities.noString(value))
+            this.month = null;
+          else {
+            if (this.month == null)
+              this.month = new StringType();
+            this.month.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #day} (Day on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getDay" gives direct access to the value
+         */
+        public StringType getDayElement() { 
+          if (this.day == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormJournalIssuePublicationDateComponent.day");
+            else if (Configuration.doAutoCreate())
+              this.day = new StringType(); // bb
+          return this.day;
+        }
+
+        public boolean hasDayElement() { 
+          return this.day != null && !this.day.isEmpty();
+        }
+
+        public boolean hasDay() { 
+          return this.day != null && !this.day.isEmpty();
+        }
+
+        /**
+         * @param value {@link #day} (Day on which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getDay" gives direct access to the value
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setDayElement(StringType value) { 
+          this.day = value;
+          return this;
+        }
+
+        /**
+         * @return Day on which the issue of the journal was published.
+         */
+        public String getDay() { 
+          return this.day == null ? null : this.day.getValue();
+        }
+
+        /**
+         * @param value Day on which the issue of the journal was published.
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setDay(String value) { 
+          if (Utilities.noString(value))
+            this.day = null;
+          else {
+            if (this.day == null)
+              this.day = new StringType();
+            this.day.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #season} (Spring, Summer, Fall/Autumn, Winter.). This is the underlying object with id, value and extensions. The accessor "getSeason" gives direct access to the value
+         */
+        public StringType getSeasonElement() { 
+          if (this.season == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormJournalIssuePublicationDateComponent.season");
+            else if (Configuration.doAutoCreate())
+              this.season = new StringType(); // bb
+          return this.season;
+        }
+
+        public boolean hasSeasonElement() { 
+          return this.season != null && !this.season.isEmpty();
+        }
+
+        public boolean hasSeason() { 
+          return this.season != null && !this.season.isEmpty();
+        }
+
+        /**
+         * @param value {@link #season} (Spring, Summer, Fall/Autumn, Winter.). This is the underlying object with id, value and extensions. The accessor "getSeason" gives direct access to the value
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setSeasonElement(StringType value) { 
+          this.season = value;
+          return this;
+        }
+
+        /**
+         * @return Spring, Summer, Fall/Autumn, Winter.
+         */
+        public String getSeason() { 
+          return this.season == null ? null : this.season.getValue();
+        }
+
+        /**
+         * @param value Spring, Summer, Fall/Autumn, Winter.
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setSeason(String value) { 
+          if (Utilities.noString(value))
+            this.season = null;
+          else {
+            if (this.season == null)
+              this.season = new StringType();
+            this.season.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #text} (Text representation of the date of which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         */
+        public StringType getTextElement() { 
+          if (this.text == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormJournalIssuePublicationDateComponent.text");
+            else if (Configuration.doAutoCreate())
+              this.text = new StringType(); // bb
+          return this.text;
+        }
+
+        public boolean hasTextElement() { 
+          return this.text != null && !this.text.isEmpty();
+        }
+
+        public boolean hasText() { 
+          return this.text != null && !this.text.isEmpty();
+        }
+
+        /**
+         * @param value {@link #text} (Text representation of the date of which the issue of the journal was published.). This is the underlying object with id, value and extensions. The accessor "getText" gives direct access to the value
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setTextElement(StringType value) { 
+          this.text = value;
+          return this;
+        }
+
+        /**
+         * @return Text representation of the date of which the issue of the journal was published.
+         */
+        public String getText() { 
+          return this.text == null ? null : this.text.getValue();
+        }
+
+        /**
+         * @param value Text representation of the date of which the issue of the journal was published.
+         */
+        public CitationAlternativeFormJournalIssuePublicationDateComponent setText(String value) { 
+          if (Utilities.noString(value))
+            this.text = null;
+          else {
+            if (this.text == null)
+              this.text = new StringType();
+            this.text.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("date", "date", "Date on which the issue of the journal was published.", 0, 1, date));
+          children.add(new Property("year", "string", "Year on which the issue of the journal was published.", 0, 1, year));
+          children.add(new Property("month", "string", "Month on which the issue of the journal was published.", 0, 1, month));
+          children.add(new Property("day", "string", "Day on which the issue of the journal was published.", 0, 1, day));
+          children.add(new Property("season", "string", "Spring, Summer, Fall/Autumn, Winter.", 0, 1, season));
+          children.add(new Property("text", "string", "Text representation of the date of which the issue of the journal was published.", 0, 1, text));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3076014: /*date*/  return new Property("date", "date", "Date on which the issue of the journal was published.", 0, 1, date);
+          case 3704893: /*year*/  return new Property("year", "string", "Year on which the issue of the journal was published.", 0, 1, year);
+          case 104080000: /*month*/  return new Property("month", "string", "Month on which the issue of the journal was published.", 0, 1, month);
+          case 99228: /*day*/  return new Property("day", "string", "Day on which the issue of the journal was published.", 0, 1, day);
+          case -906335517: /*season*/  return new Property("season", "string", "Spring, Summer, Fall/Autumn, Winter.", 0, 1, season);
+          case 3556653: /*text*/  return new Property("text", "string", "Text representation of the date of which the issue of the journal was published.", 0, 1, text);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateType
+        case 3704893: /*year*/ return this.year == null ? new Base[0] : new Base[] {this.year}; // StringType
+        case 104080000: /*month*/ return this.month == null ? new Base[0] : new Base[] {this.month}; // StringType
+        case 99228: /*day*/ return this.day == null ? new Base[0] : new Base[] {this.day}; // StringType
+        case -906335517: /*season*/ return this.season == null ? new Base[0] : new Base[] {this.season}; // StringType
+        case 3556653: /*text*/ return this.text == null ? new Base[0] : new Base[] {this.text}; // StringType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3076014: // date
+          this.date = TypeConvertor.castToDate(value); // DateType
+          return value;
+        case 3704893: // year
+          this.year = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 104080000: // month
+          this.month = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 99228: // day
+          this.day = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -906335517: // season
+          this.season = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 3556653: // text
+          this.text = TypeConvertor.castToString(value); // StringType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("date")) {
+          this.date = TypeConvertor.castToDate(value); // DateType
+        } else if (name.equals("year")) {
+          this.year = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("month")) {
+          this.month = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("day")) {
+          this.day = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("season")) {
+          this.season = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("text")) {
+          this.text = TypeConvertor.castToString(value); // StringType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3076014:  return getDateElement();
+        case 3704893:  return getYearElement();
+        case 104080000:  return getMonthElement();
+        case 99228:  return getDayElement();
+        case -906335517:  return getSeasonElement();
+        case 3556653:  return getTextElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3076014: /*date*/ return new String[] {"date"};
+        case 3704893: /*year*/ return new String[] {"string"};
+        case 104080000: /*month*/ return new String[] {"string"};
+        case 99228: /*day*/ return new String[] {"string"};
+        case -906335517: /*season*/ return new String[] {"string"};
+        case 3556653: /*text*/ return new String[] {"string"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("date")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.journalIssue.publicationDate.date");
+        }
+        else if (name.equals("year")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.journalIssue.publicationDate.year");
+        }
+        else if (name.equals("month")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.journalIssue.publicationDate.month");
+        }
+        else if (name.equals("day")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.journalIssue.publicationDate.day");
+        }
+        else if (name.equals("season")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.journalIssue.publicationDate.season");
+        }
+        else if (name.equals("text")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.journalIssue.publicationDate.text");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CitationAlternativeFormJournalIssuePublicationDateComponent copy() {
+        CitationAlternativeFormJournalIssuePublicationDateComponent dst = new CitationAlternativeFormJournalIssuePublicationDateComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CitationAlternativeFormJournalIssuePublicationDateComponent dst) {
+        super.copyValues(dst);
+        dst.date = date == null ? null : date.copy();
+        dst.year = year == null ? null : year.copy();
+        dst.month = month == null ? null : month.copy();
+        dst.day = day == null ? null : day.copy();
+        dst.season = season == null ? null : season.copy();
+        dst.text = text == null ? null : text.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CitationAlternativeFormJournalIssuePublicationDateComponent))
+          return false;
+        CitationAlternativeFormJournalIssuePublicationDateComponent o = (CitationAlternativeFormJournalIssuePublicationDateComponent) other_;
+        return compareDeep(date, o.date, true) && compareDeep(year, o.year, true) && compareDeep(month, o.month, true)
+           && compareDeep(day, o.day, true) && compareDeep(season, o.season, true) && compareDeep(text, o.text, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CitationAlternativeFormJournalIssuePublicationDateComponent))
+          return false;
+        CitationAlternativeFormJournalIssuePublicationDateComponent o = (CitationAlternativeFormJournalIssuePublicationDateComponent) other_;
+        return compareValues(date, o.date, true) && compareValues(year, o.year, true) && compareValues(month, o.month, true)
+           && compareValues(day, o.day, true) && compareValues(season, o.season, true) && compareValues(text, o.text, true)
+          ;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(date, year, month, day
+          , season, text);
+      }
+
+  public String fhirType() {
+    return "Citation.alternativeForm.journalIssue.publicationDate";
 
   }
 
@@ -6332,6 +7268,1305 @@ public class Citation extends MetadataResource {
 
   public String fhirType() {
     return "Citation.alternativeForm.pagination";
+
+  }
+
+  }
+
+    @Block()
+    public static class CitationAlternativeFormPublicationInfoComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The collection the cited article is published in.
+         */
+        @Child(name = "publishedIn", type = {}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The collection the cited article is published in", formalDefinition="The collection the cited article is published in." )
+        protected CitationAlternativeFormPublicationInfoPublishedInComponent publishedIn;
+
+        /**
+         * The date the article was added to the database.
+         */
+        @Child(name = "entryDate", type = {DateTimeType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The date the article was added to the database", formalDefinition="The date the article was added to the database." )
+        protected DateTimeType entryDate;
+
+        /**
+         * The date the article was last revised or updated in the database.
+         */
+        @Child(name = "revisionDate", type = {DateTimeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The date the article was last revised or updated in the database", formalDefinition="The date the article was last revised or updated in the database." )
+        protected DateTimeType revisionDate;
+
+        /**
+         * Actual or Approximate number of pages or screens.
+         */
+        @Child(name = "pageCount", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Number of pages or screens", formalDefinition="Actual or Approximate number of pages or screens." )
+        protected StringType pageCount;
+
+        private static final long serialVersionUID = -1109876499L;
+
+    /**
+     * Constructor
+     */
+      public CitationAlternativeFormPublicationInfoComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #publishedIn} (The collection the cited article is published in.)
+         */
+        public CitationAlternativeFormPublicationInfoPublishedInComponent getPublishedIn() { 
+          if (this.publishedIn == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormPublicationInfoComponent.publishedIn");
+            else if (Configuration.doAutoCreate())
+              this.publishedIn = new CitationAlternativeFormPublicationInfoPublishedInComponent(); // cc
+          return this.publishedIn;
+        }
+
+        public boolean hasPublishedIn() { 
+          return this.publishedIn != null && !this.publishedIn.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publishedIn} (The collection the cited article is published in.)
+         */
+        public CitationAlternativeFormPublicationInfoComponent setPublishedIn(CitationAlternativeFormPublicationInfoPublishedInComponent value) { 
+          this.publishedIn = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #entryDate} (The date the article was added to the database.). This is the underlying object with id, value and extensions. The accessor "getEntryDate" gives direct access to the value
+         */
+        public DateTimeType getEntryDateElement() { 
+          if (this.entryDate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormPublicationInfoComponent.entryDate");
+            else if (Configuration.doAutoCreate())
+              this.entryDate = new DateTimeType(); // bb
+          return this.entryDate;
+        }
+
+        public boolean hasEntryDateElement() { 
+          return this.entryDate != null && !this.entryDate.isEmpty();
+        }
+
+        public boolean hasEntryDate() { 
+          return this.entryDate != null && !this.entryDate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #entryDate} (The date the article was added to the database.). This is the underlying object with id, value and extensions. The accessor "getEntryDate" gives direct access to the value
+         */
+        public CitationAlternativeFormPublicationInfoComponent setEntryDateElement(DateTimeType value) { 
+          this.entryDate = value;
+          return this;
+        }
+
+        /**
+         * @return The date the article was added to the database.
+         */
+        public Date getEntryDate() { 
+          return this.entryDate == null ? null : this.entryDate.getValue();
+        }
+
+        /**
+         * @param value The date the article was added to the database.
+         */
+        public CitationAlternativeFormPublicationInfoComponent setEntryDate(Date value) { 
+          if (value == null)
+            this.entryDate = null;
+          else {
+            if (this.entryDate == null)
+              this.entryDate = new DateTimeType();
+            this.entryDate.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #revisionDate} (The date the article was last revised or updated in the database.). This is the underlying object with id, value and extensions. The accessor "getRevisionDate" gives direct access to the value
+         */
+        public DateTimeType getRevisionDateElement() { 
+          if (this.revisionDate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormPublicationInfoComponent.revisionDate");
+            else if (Configuration.doAutoCreate())
+              this.revisionDate = new DateTimeType(); // bb
+          return this.revisionDate;
+        }
+
+        public boolean hasRevisionDateElement() { 
+          return this.revisionDate != null && !this.revisionDate.isEmpty();
+        }
+
+        public boolean hasRevisionDate() { 
+          return this.revisionDate != null && !this.revisionDate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #revisionDate} (The date the article was last revised or updated in the database.). This is the underlying object with id, value and extensions. The accessor "getRevisionDate" gives direct access to the value
+         */
+        public CitationAlternativeFormPublicationInfoComponent setRevisionDateElement(DateTimeType value) { 
+          this.revisionDate = value;
+          return this;
+        }
+
+        /**
+         * @return The date the article was last revised or updated in the database.
+         */
+        public Date getRevisionDate() { 
+          return this.revisionDate == null ? null : this.revisionDate.getValue();
+        }
+
+        /**
+         * @param value The date the article was last revised or updated in the database.
+         */
+        public CitationAlternativeFormPublicationInfoComponent setRevisionDate(Date value) { 
+          if (value == null)
+            this.revisionDate = null;
+          else {
+            if (this.revisionDate == null)
+              this.revisionDate = new DateTimeType();
+            this.revisionDate.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #pageCount} (Actual or Approximate number of pages or screens.). This is the underlying object with id, value and extensions. The accessor "getPageCount" gives direct access to the value
+         */
+        public StringType getPageCountElement() { 
+          if (this.pageCount == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormPublicationInfoComponent.pageCount");
+            else if (Configuration.doAutoCreate())
+              this.pageCount = new StringType(); // bb
+          return this.pageCount;
+        }
+
+        public boolean hasPageCountElement() { 
+          return this.pageCount != null && !this.pageCount.isEmpty();
+        }
+
+        public boolean hasPageCount() { 
+          return this.pageCount != null && !this.pageCount.isEmpty();
+        }
+
+        /**
+         * @param value {@link #pageCount} (Actual or Approximate number of pages or screens.). This is the underlying object with id, value and extensions. The accessor "getPageCount" gives direct access to the value
+         */
+        public CitationAlternativeFormPublicationInfoComponent setPageCountElement(StringType value) { 
+          this.pageCount = value;
+          return this;
+        }
+
+        /**
+         * @return Actual or Approximate number of pages or screens.
+         */
+        public String getPageCount() { 
+          return this.pageCount == null ? null : this.pageCount.getValue();
+        }
+
+        /**
+         * @param value Actual or Approximate number of pages or screens.
+         */
+        public CitationAlternativeFormPublicationInfoComponent setPageCount(String value) { 
+          if (Utilities.noString(value))
+            this.pageCount = null;
+          else {
+            if (this.pageCount == null)
+              this.pageCount = new StringType();
+            this.pageCount.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("publishedIn", "", "The collection the cited article is published in.", 0, 1, publishedIn));
+          children.add(new Property("entryDate", "dateTime", "The date the article was added to the database.", 0, 1, entryDate));
+          children.add(new Property("revisionDate", "dateTime", "The date the article was last revised or updated in the database.", 0, 1, revisionDate));
+          children.add(new Property("pageCount", "string", "Actual or Approximate number of pages or screens.", 0, 1, pageCount));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -614144077: /*publishedIn*/  return new Property("publishedIn", "", "The collection the cited article is published in.", 0, 1, publishedIn);
+          case -479861952: /*entryDate*/  return new Property("entryDate", "dateTime", "The date the article was added to the database.", 0, 1, entryDate);
+          case -1250970071: /*revisionDate*/  return new Property("revisionDate", "dateTime", "The date the article was last revised or updated in the database.", 0, 1, revisionDate);
+          case 857882560: /*pageCount*/  return new Property("pageCount", "string", "Actual or Approximate number of pages or screens.", 0, 1, pageCount);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -614144077: /*publishedIn*/ return this.publishedIn == null ? new Base[0] : new Base[] {this.publishedIn}; // CitationAlternativeFormPublicationInfoPublishedInComponent
+        case -479861952: /*entryDate*/ return this.entryDate == null ? new Base[0] : new Base[] {this.entryDate}; // DateTimeType
+        case -1250970071: /*revisionDate*/ return this.revisionDate == null ? new Base[0] : new Base[] {this.revisionDate}; // DateTimeType
+        case 857882560: /*pageCount*/ return this.pageCount == null ? new Base[0] : new Base[] {this.pageCount}; // StringType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -614144077: // publishedIn
+          this.publishedIn = (CitationAlternativeFormPublicationInfoPublishedInComponent) value; // CitationAlternativeFormPublicationInfoPublishedInComponent
+          return value;
+        case -479861952: // entryDate
+          this.entryDate = TypeConvertor.castToDateTime(value); // DateTimeType
+          return value;
+        case -1250970071: // revisionDate
+          this.revisionDate = TypeConvertor.castToDateTime(value); // DateTimeType
+          return value;
+        case 857882560: // pageCount
+          this.pageCount = TypeConvertor.castToString(value); // StringType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("publishedIn")) {
+          this.publishedIn = (CitationAlternativeFormPublicationInfoPublishedInComponent) value; // CitationAlternativeFormPublicationInfoPublishedInComponent
+        } else if (name.equals("entryDate")) {
+          this.entryDate = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("revisionDate")) {
+          this.revisionDate = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("pageCount")) {
+          this.pageCount = TypeConvertor.castToString(value); // StringType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -614144077:  return getPublishedIn();
+        case -479861952:  return getEntryDateElement();
+        case -1250970071:  return getRevisionDateElement();
+        case 857882560:  return getPageCountElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -614144077: /*publishedIn*/ return new String[] {};
+        case -479861952: /*entryDate*/ return new String[] {"dateTime"};
+        case -1250970071: /*revisionDate*/ return new String[] {"dateTime"};
+        case 857882560: /*pageCount*/ return new String[] {"string"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("publishedIn")) {
+          this.publishedIn = new CitationAlternativeFormPublicationInfoPublishedInComponent();
+          return this.publishedIn;
+        }
+        else if (name.equals("entryDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.publicationInfo.entryDate");
+        }
+        else if (name.equals("revisionDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.publicationInfo.revisionDate");
+        }
+        else if (name.equals("pageCount")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.publicationInfo.pageCount");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CitationAlternativeFormPublicationInfoComponent copy() {
+        CitationAlternativeFormPublicationInfoComponent dst = new CitationAlternativeFormPublicationInfoComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CitationAlternativeFormPublicationInfoComponent dst) {
+        super.copyValues(dst);
+        dst.publishedIn = publishedIn == null ? null : publishedIn.copy();
+        dst.entryDate = entryDate == null ? null : entryDate.copy();
+        dst.revisionDate = revisionDate == null ? null : revisionDate.copy();
+        dst.pageCount = pageCount == null ? null : pageCount.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CitationAlternativeFormPublicationInfoComponent))
+          return false;
+        CitationAlternativeFormPublicationInfoComponent o = (CitationAlternativeFormPublicationInfoComponent) other_;
+        return compareDeep(publishedIn, o.publishedIn, true) && compareDeep(entryDate, o.entryDate, true)
+           && compareDeep(revisionDate, o.revisionDate, true) && compareDeep(pageCount, o.pageCount, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CitationAlternativeFormPublicationInfoComponent))
+          return false;
+        CitationAlternativeFormPublicationInfoComponent o = (CitationAlternativeFormPublicationInfoComponent) other_;
+        return compareValues(entryDate, o.entryDate, true) && compareValues(revisionDate, o.revisionDate, true)
+           && compareValues(pageCount, o.pageCount, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(publishedIn, entryDate, revisionDate
+          , pageCount);
+      }
+
+  public String fhirType() {
+    return "Citation.alternativeForm.publicationInfo";
+
+  }
+
+  }
+
+    @Block()
+    public static class CitationAlternativeFormPublicationInfoPublishedInComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Database or book.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Database or book", formalDefinition="Database or book." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/published-in-type")
+        protected CodeableConcept type;
+
+        /**
+         * Name of the database or title of the book.
+         */
+        @Child(name = "name", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Name of the database or title of the book", formalDefinition="Name of the database or title of the book." )
+        protected StringType name;
+
+        /**
+         * Name of the publisher.
+         */
+        @Child(name = "publisher", type = {Organization.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Name of the publisher", formalDefinition="Name of the publisher." )
+        protected Reference publisher;
+
+        /**
+         * Geographic location of the publisher.
+         */
+        @Child(name = "publisherLocation", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Geographic location of the publisher", formalDefinition="Geographic location of the publisher." )
+        protected StringType publisherLocation;
+
+        /**
+         * When the database was first available or when the book was published.
+         */
+        @Child(name = "startDate", type = {DateType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="When the database was first available or when the book was published", formalDefinition="When the database was first available or when the book was published." )
+        protected DateType startDate;
+
+        private static final long serialVersionUID = 17141502L;
+
+    /**
+     * Constructor
+     */
+      public CitationAlternativeFormPublicationInfoPublishedInComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #type} (Database or book.)
+         */
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormPublicationInfoPublishedInComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (Database or book.)
+         */
+        public CitationAlternativeFormPublicationInfoPublishedInComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #name} (Name of the database or title of the book.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public StringType getNameElement() { 
+          if (this.name == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormPublicationInfoPublishedInComponent.name");
+            else if (Configuration.doAutoCreate())
+              this.name = new StringType(); // bb
+          return this.name;
+        }
+
+        public boolean hasNameElement() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        public boolean hasName() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        /**
+         * @param value {@link #name} (Name of the database or title of the book.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public CitationAlternativeFormPublicationInfoPublishedInComponent setNameElement(StringType value) { 
+          this.name = value;
+          return this;
+        }
+
+        /**
+         * @return Name of the database or title of the book.
+         */
+        public String getName() { 
+          return this.name == null ? null : this.name.getValue();
+        }
+
+        /**
+         * @param value Name of the database or title of the book.
+         */
+        public CitationAlternativeFormPublicationInfoPublishedInComponent setName(String value) { 
+          if (Utilities.noString(value))
+            this.name = null;
+          else {
+            if (this.name == null)
+              this.name = new StringType();
+            this.name.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #publisher} (Name of the publisher.)
+         */
+        public Reference getPublisher() { 
+          if (this.publisher == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormPublicationInfoPublishedInComponent.publisher");
+            else if (Configuration.doAutoCreate())
+              this.publisher = new Reference(); // cc
+          return this.publisher;
+        }
+
+        public boolean hasPublisher() { 
+          return this.publisher != null && !this.publisher.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publisher} (Name of the publisher.)
+         */
+        public CitationAlternativeFormPublicationInfoPublishedInComponent setPublisher(Reference value) { 
+          this.publisher = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #publisherLocation} (Geographic location of the publisher.). This is the underlying object with id, value and extensions. The accessor "getPublisherLocation" gives direct access to the value
+         */
+        public StringType getPublisherLocationElement() { 
+          if (this.publisherLocation == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormPublicationInfoPublishedInComponent.publisherLocation");
+            else if (Configuration.doAutoCreate())
+              this.publisherLocation = new StringType(); // bb
+          return this.publisherLocation;
+        }
+
+        public boolean hasPublisherLocationElement() { 
+          return this.publisherLocation != null && !this.publisherLocation.isEmpty();
+        }
+
+        public boolean hasPublisherLocation() { 
+          return this.publisherLocation != null && !this.publisherLocation.isEmpty();
+        }
+
+        /**
+         * @param value {@link #publisherLocation} (Geographic location of the publisher.). This is the underlying object with id, value and extensions. The accessor "getPublisherLocation" gives direct access to the value
+         */
+        public CitationAlternativeFormPublicationInfoPublishedInComponent setPublisherLocationElement(StringType value) { 
+          this.publisherLocation = value;
+          return this;
+        }
+
+        /**
+         * @return Geographic location of the publisher.
+         */
+        public String getPublisherLocation() { 
+          return this.publisherLocation == null ? null : this.publisherLocation.getValue();
+        }
+
+        /**
+         * @param value Geographic location of the publisher.
+         */
+        public CitationAlternativeFormPublicationInfoPublishedInComponent setPublisherLocation(String value) { 
+          if (Utilities.noString(value))
+            this.publisherLocation = null;
+          else {
+            if (this.publisherLocation == null)
+              this.publisherLocation = new StringType();
+            this.publisherLocation.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #startDate} (When the database was first available or when the book was published.). This is the underlying object with id, value and extensions. The accessor "getStartDate" gives direct access to the value
+         */
+        public DateType getStartDateElement() { 
+          if (this.startDate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationAlternativeFormPublicationInfoPublishedInComponent.startDate");
+            else if (Configuration.doAutoCreate())
+              this.startDate = new DateType(); // bb
+          return this.startDate;
+        }
+
+        public boolean hasStartDateElement() { 
+          return this.startDate != null && !this.startDate.isEmpty();
+        }
+
+        public boolean hasStartDate() { 
+          return this.startDate != null && !this.startDate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #startDate} (When the database was first available or when the book was published.). This is the underlying object with id, value and extensions. The accessor "getStartDate" gives direct access to the value
+         */
+        public CitationAlternativeFormPublicationInfoPublishedInComponent setStartDateElement(DateType value) { 
+          this.startDate = value;
+          return this;
+        }
+
+        /**
+         * @return When the database was first available or when the book was published.
+         */
+        public Date getStartDate() { 
+          return this.startDate == null ? null : this.startDate.getValue();
+        }
+
+        /**
+         * @param value When the database was first available or when the book was published.
+         */
+        public CitationAlternativeFormPublicationInfoPublishedInComponent setStartDate(Date value) { 
+          if (value == null)
+            this.startDate = null;
+          else {
+            if (this.startDate == null)
+              this.startDate = new DateType();
+            this.startDate.setValue(value);
+          }
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("type", "CodeableConcept", "Database or book.", 0, 1, type));
+          children.add(new Property("name", "string", "Name of the database or title of the book.", 0, 1, name));
+          children.add(new Property("publisher", "Reference(Organization)", "Name of the publisher.", 0, 1, publisher));
+          children.add(new Property("publisherLocation", "string", "Geographic location of the publisher.", 0, 1, publisherLocation));
+          children.add(new Property("startDate", "date", "When the database was first available or when the book was published.", 0, 1, startDate));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Database or book.", 0, 1, type);
+          case 3373707: /*name*/  return new Property("name", "string", "Name of the database or title of the book.", 0, 1, name);
+          case 1447404028: /*publisher*/  return new Property("publisher", "Reference(Organization)", "Name of the publisher.", 0, 1, publisher);
+          case -1281627695: /*publisherLocation*/  return new Property("publisherLocation", "string", "Geographic location of the publisher.", 0, 1, publisherLocation);
+          case -2129778896: /*startDate*/  return new Property("startDate", "date", "When the database was first available or when the book was published.", 0, 1, startDate);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // Reference
+        case -1281627695: /*publisherLocation*/ return this.publisherLocation == null ? new Base[0] : new Base[] {this.publisherLocation}; // StringType
+        case -2129778896: /*startDate*/ return this.startDate == null ? new Base[0] : new Base[] {this.startDate}; // DateType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 3373707: // name
+          this.name = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 1447404028: // publisher
+          this.publisher = TypeConvertor.castToReference(value); // Reference
+          return value;
+        case -1281627695: // publisherLocation
+          this.publisherLocation = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -2129778896: // startDate
+          this.startDate = TypeConvertor.castToDate(value); // DateType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("name")) {
+          this.name = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("publisher")) {
+          this.publisher = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("publisherLocation")) {
+          this.publisherLocation = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("startDate")) {
+          this.startDate = TypeConvertor.castToDate(value); // DateType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610:  return getType();
+        case 3373707:  return getNameElement();
+        case 1447404028:  return getPublisher();
+        case -1281627695:  return getPublisherLocationElement();
+        case -2129778896:  return getStartDateElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 3373707: /*name*/ return new String[] {"string"};
+        case 1447404028: /*publisher*/ return new String[] {"Reference"};
+        case -1281627695: /*publisherLocation*/ return new String[] {"string"};
+        case -2129778896: /*startDate*/ return new String[] {"date"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
+        }
+        else if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.publicationInfo.publishedIn.name");
+        }
+        else if (name.equals("publisher")) {
+          this.publisher = new Reference();
+          return this.publisher;
+        }
+        else if (name.equals("publisherLocation")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.publicationInfo.publishedIn.publisherLocation");
+        }
+        else if (name.equals("startDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.alternativeForm.publicationInfo.publishedIn.startDate");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CitationAlternativeFormPublicationInfoPublishedInComponent copy() {
+        CitationAlternativeFormPublicationInfoPublishedInComponent dst = new CitationAlternativeFormPublicationInfoPublishedInComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CitationAlternativeFormPublicationInfoPublishedInComponent dst) {
+        super.copyValues(dst);
+        dst.type = type == null ? null : type.copy();
+        dst.name = name == null ? null : name.copy();
+        dst.publisher = publisher == null ? null : publisher.copy();
+        dst.publisherLocation = publisherLocation == null ? null : publisherLocation.copy();
+        dst.startDate = startDate == null ? null : startDate.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CitationAlternativeFormPublicationInfoPublishedInComponent))
+          return false;
+        CitationAlternativeFormPublicationInfoPublishedInComponent o = (CitationAlternativeFormPublicationInfoPublishedInComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(name, o.name, true) && compareDeep(publisher, o.publisher, true)
+           && compareDeep(publisherLocation, o.publisherLocation, true) && compareDeep(startDate, o.startDate, true)
+          ;
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CitationAlternativeFormPublicationInfoPublishedInComponent))
+          return false;
+        CitationAlternativeFormPublicationInfoPublishedInComponent o = (CitationAlternativeFormPublicationInfoPublishedInComponent) other_;
+        return compareValues(name, o.name, true) && compareValues(publisherLocation, o.publisherLocation, true)
+           && compareValues(startDate, o.startDate, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, name, publisher, publisherLocation
+          , startDate);
+      }
+
+  public String fhirType() {
+    return "Citation.alternativeForm.publicationInfo.publishedIn";
+
+  }
+
+  }
+
+    @Block()
+    public static class CitationKeywordListComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The entity responsible for the creation or maintenance of this keyword list.
+         */
+        @Child(name = "owner", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Author, publisher, or custodian of the keyword list", formalDefinition="The entity responsible for the creation or maintenance of this keyword list." )
+        protected StringType owner;
+
+        /**
+         * For each keyword in the keyword list.
+         */
+        @Child(name = "keyword", type = {}, order=2, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="For each keyword in the keyword list", formalDefinition="For each keyword in the keyword list." )
+        protected List<CitationKeywordListKeywordComponent> keyword;
+
+        private static final long serialVersionUID = -1638002879L;
+
+    /**
+     * Constructor
+     */
+      public CitationKeywordListComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public CitationKeywordListComponent(CitationKeywordListKeywordComponent keyword) {
+        super();
+        this.addKeyword(keyword);
+      }
+
+        /**
+         * @return {@link #owner} (The entity responsible for the creation or maintenance of this keyword list.). This is the underlying object with id, value and extensions. The accessor "getOwner" gives direct access to the value
+         */
+        public StringType getOwnerElement() { 
+          if (this.owner == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationKeywordListComponent.owner");
+            else if (Configuration.doAutoCreate())
+              this.owner = new StringType(); // bb
+          return this.owner;
+        }
+
+        public boolean hasOwnerElement() { 
+          return this.owner != null && !this.owner.isEmpty();
+        }
+
+        public boolean hasOwner() { 
+          return this.owner != null && !this.owner.isEmpty();
+        }
+
+        /**
+         * @param value {@link #owner} (The entity responsible for the creation or maintenance of this keyword list.). This is the underlying object with id, value and extensions. The accessor "getOwner" gives direct access to the value
+         */
+        public CitationKeywordListComponent setOwnerElement(StringType value) { 
+          this.owner = value;
+          return this;
+        }
+
+        /**
+         * @return The entity responsible for the creation or maintenance of this keyword list.
+         */
+        public String getOwner() { 
+          return this.owner == null ? null : this.owner.getValue();
+        }
+
+        /**
+         * @param value The entity responsible for the creation or maintenance of this keyword list.
+         */
+        public CitationKeywordListComponent setOwner(String value) { 
+          if (Utilities.noString(value))
+            this.owner = null;
+          else {
+            if (this.owner == null)
+              this.owner = new StringType();
+            this.owner.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #keyword} (For each keyword in the keyword list.)
+         */
+        public List<CitationKeywordListKeywordComponent> getKeyword() { 
+          if (this.keyword == null)
+            this.keyword = new ArrayList<CitationKeywordListKeywordComponent>();
+          return this.keyword;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public CitationKeywordListComponent setKeyword(List<CitationKeywordListKeywordComponent> theKeyword) { 
+          this.keyword = theKeyword;
+          return this;
+        }
+
+        public boolean hasKeyword() { 
+          if (this.keyword == null)
+            return false;
+          for (CitationKeywordListKeywordComponent item : this.keyword)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CitationKeywordListKeywordComponent addKeyword() { //3
+          CitationKeywordListKeywordComponent t = new CitationKeywordListKeywordComponent();
+          if (this.keyword == null)
+            this.keyword = new ArrayList<CitationKeywordListKeywordComponent>();
+          this.keyword.add(t);
+          return t;
+        }
+
+        public CitationKeywordListComponent addKeyword(CitationKeywordListKeywordComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.keyword == null)
+            this.keyword = new ArrayList<CitationKeywordListKeywordComponent>();
+          this.keyword.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #keyword}, creating it if it does not already exist {3}
+         */
+        public CitationKeywordListKeywordComponent getKeywordFirstRep() { 
+          if (getKeyword().isEmpty()) {
+            addKeyword();
+          }
+          return getKeyword().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("owner", "string", "The entity responsible for the creation or maintenance of this keyword list.", 0, 1, owner));
+          children.add(new Property("keyword", "", "For each keyword in the keyword list.", 0, java.lang.Integer.MAX_VALUE, keyword));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 106164915: /*owner*/  return new Property("owner", "string", "The entity responsible for the creation or maintenance of this keyword list.", 0, 1, owner);
+          case -814408215: /*keyword*/  return new Property("keyword", "", "For each keyword in the keyword list.", 0, java.lang.Integer.MAX_VALUE, keyword);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 106164915: /*owner*/ return this.owner == null ? new Base[0] : new Base[] {this.owner}; // StringType
+        case -814408215: /*keyword*/ return this.keyword == null ? new Base[0] : this.keyword.toArray(new Base[this.keyword.size()]); // CitationKeywordListKeywordComponent
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 106164915: // owner
+          this.owner = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -814408215: // keyword
+          this.getKeyword().add((CitationKeywordListKeywordComponent) value); // CitationKeywordListKeywordComponent
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("owner")) {
+          this.owner = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("keyword")) {
+          this.getKeyword().add((CitationKeywordListKeywordComponent) value);
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 106164915:  return getOwnerElement();
+        case -814408215:  return addKeyword(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 106164915: /*owner*/ return new String[] {"string"};
+        case -814408215: /*keyword*/ return new String[] {};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("owner")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.keywordList.owner");
+        }
+        else if (name.equals("keyword")) {
+          return addKeyword();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CitationKeywordListComponent copy() {
+        CitationKeywordListComponent dst = new CitationKeywordListComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CitationKeywordListComponent dst) {
+        super.copyValues(dst);
+        dst.owner = owner == null ? null : owner.copy();
+        if (keyword != null) {
+          dst.keyword = new ArrayList<CitationKeywordListKeywordComponent>();
+          for (CitationKeywordListKeywordComponent i : keyword)
+            dst.keyword.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CitationKeywordListComponent))
+          return false;
+        CitationKeywordListComponent o = (CitationKeywordListComponent) other_;
+        return compareDeep(owner, o.owner, true) && compareDeep(keyword, o.keyword, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CitationKeywordListComponent))
+          return false;
+        CitationKeywordListComponent o = (CitationKeywordListComponent) other_;
+        return compareValues(owner, o.owner, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(owner, keyword);
+      }
+
+  public String fhirType() {
+    return "Citation.keywordList";
+
+  }
+
+  }
+
+    @Block()
+    public static class CitationKeywordListKeywordComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * Whether or not it is a major topic.
+         */
+        @Child(name = "majorTopic", type = {BooleanType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Whether or not it is a major topic", formalDefinition="Whether or not it is a major topic." )
+        protected BooleanType majorTopic;
+
+        /**
+         * The actual keyword.
+         */
+        @Child(name = "value", type = {StringType.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="The actual keyword", formalDefinition="The actual keyword." )
+        protected StringType value;
+
+        private static final long serialVersionUID = 853626648L;
+
+    /**
+     * Constructor
+     */
+      public CitationKeywordListKeywordComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public CitationKeywordListKeywordComponent(String value) {
+        super();
+        this.setValue(value);
+      }
+
+        /**
+         * @return {@link #majorTopic} (Whether or not it is a major topic.). This is the underlying object with id, value and extensions. The accessor "getMajorTopic" gives direct access to the value
+         */
+        public BooleanType getMajorTopicElement() { 
+          if (this.majorTopic == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationKeywordListKeywordComponent.majorTopic");
+            else if (Configuration.doAutoCreate())
+              this.majorTopic = new BooleanType(); // bb
+          return this.majorTopic;
+        }
+
+        public boolean hasMajorTopicElement() { 
+          return this.majorTopic != null && !this.majorTopic.isEmpty();
+        }
+
+        public boolean hasMajorTopic() { 
+          return this.majorTopic != null && !this.majorTopic.isEmpty();
+        }
+
+        /**
+         * @param value {@link #majorTopic} (Whether or not it is a major topic.). This is the underlying object with id, value and extensions. The accessor "getMajorTopic" gives direct access to the value
+         */
+        public CitationKeywordListKeywordComponent setMajorTopicElement(BooleanType value) { 
+          this.majorTopic = value;
+          return this;
+        }
+
+        /**
+         * @return Whether or not it is a major topic.
+         */
+        public boolean getMajorTopic() { 
+          return this.majorTopic == null || this.majorTopic.isEmpty() ? false : this.majorTopic.getValue();
+        }
+
+        /**
+         * @param value Whether or not it is a major topic.
+         */
+        public CitationKeywordListKeywordComponent setMajorTopic(boolean value) { 
+            if (this.majorTopic == null)
+              this.majorTopic = new BooleanType();
+            this.majorTopic.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (The actual keyword.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+         */
+        public StringType getValueElement() { 
+          if (this.value == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CitationKeywordListKeywordComponent.value");
+            else if (Configuration.doAutoCreate())
+              this.value = new StringType(); // bb
+          return this.value;
+        }
+
+        public boolean hasValueElement() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (The actual keyword.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+         */
+        public CitationKeywordListKeywordComponent setValueElement(StringType value) { 
+          this.value = value;
+          return this;
+        }
+
+        /**
+         * @return The actual keyword.
+         */
+        public String getValue() { 
+          return this.value == null ? null : this.value.getValue();
+        }
+
+        /**
+         * @param value The actual keyword.
+         */
+        public CitationKeywordListKeywordComponent setValue(String value) { 
+            if (this.value == null)
+              this.value = new StringType();
+            this.value.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("majorTopic", "boolean", "Whether or not it is a major topic.", 0, 1, majorTopic));
+          children.add(new Property("value", "string", "The actual keyword.", 0, 1, value));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case -341847306: /*majorTopic*/  return new Property("majorTopic", "boolean", "Whether or not it is a major topic.", 0, 1, majorTopic);
+          case 111972721: /*value*/  return new Property("value", "string", "The actual keyword.", 0, 1, value);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case -341847306: /*majorTopic*/ return this.majorTopic == null ? new Base[0] : new Base[] {this.majorTopic}; // BooleanType
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // StringType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case -341847306: // majorTopic
+          this.majorTopic = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
+        case 111972721: // value
+          this.value = TypeConvertor.castToString(value); // StringType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("majorTopic")) {
+          this.majorTopic = TypeConvertor.castToBoolean(value); // BooleanType
+        } else if (name.equals("value")) {
+          this.value = TypeConvertor.castToString(value); // StringType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -341847306:  return getMajorTopicElement();
+        case 111972721:  return getValueElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case -341847306: /*majorTopic*/ return new String[] {"boolean"};
+        case 111972721: /*value*/ return new String[] {"string"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("majorTopic")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.keywordList.keyword.majorTopic");
+        }
+        else if (name.equals("value")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Citation.keywordList.keyword.value");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CitationKeywordListKeywordComponent copy() {
+        CitationKeywordListKeywordComponent dst = new CitationKeywordListKeywordComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CitationKeywordListKeywordComponent dst) {
+        super.copyValues(dst);
+        dst.majorTopic = majorTopic == null ? null : majorTopic.copy();
+        dst.value = value == null ? null : value.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CitationKeywordListKeywordComponent))
+          return false;
+        CitationKeywordListKeywordComponent o = (CitationKeywordListKeywordComponent) other_;
+        return compareDeep(majorTopic, o.majorTopic, true) && compareDeep(value, o.value, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CitationKeywordListKeywordComponent))
+          return false;
+        CitationKeywordListKeywordComponent o = (CitationKeywordListKeywordComponent) other_;
+        return compareValues(majorTopic, o.majorTopic, true) && compareValues(value, o.value, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(majorTopic, value);
+      }
+
+  public String fhirType() {
+    return "Citation.keywordList.keyword";
 
   }
 
@@ -7633,16 +9868,9 @@ public class Citation extends MetadataResource {
     protected UriType url;
 
     /**
-     * The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
-     */
-    @Child(name = "version", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Business version of this summary", formalDefinition="The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence." )
-    protected StringType version;
-
-    /**
      * The status of this summary. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=2, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this summary. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -7650,23 +9878,30 @@ public class Citation extends MetadataResource {
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate citation instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Use context", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate citation instances." )
     protected List<UsageContext> useContext;
 
     /**
-     * A formal identifier that is used to identify this summary when it is represented in other formats, or referenced in a specification, model, design or an instance. May include DOI, PMID, PMCID, etc.
+     * A formal identifier that is used to identify this citation when it is represented in other formats, or referenced in a specification, model, design or an instance.
      */
-    @Child(name = "identifier", type = {Identifier.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="May include DOI, PMID, PMCID, etc.", formalDefinition="A formal identifier that is used to identify this summary when it is represented in other formats, or referenced in a specification, model, design or an instance. May include DOI, PMID, PMCID, etc." )
+    @Child(name = "identifier", type = {Identifier.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="May include DOI, PMID, PMCID, etc.", formalDefinition="A formal identifier that is used to identify this citation when it is represented in other formats, or referenced in a specification, model, design or an instance." )
     protected List<Identifier> identifier;
 
     /**
-     * May include trial registry identifiers.
+     * A formal identifier that is used to identify things closely related to this citation.
      */
-    @Child(name = "relatedIdentifier", type = {Identifier.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="May include trial registry identifiers", formalDefinition="May include trial registry identifiers." )
+    @Child(name = "relatedIdentifier", type = {Identifier.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="May include trial registry identifiers", formalDefinition="A formal identifier that is used to identify things closely related to this citation." )
     protected List<Identifier> relatedIdentifier;
+
+    /**
+     * A human-readable display of the citation.
+     */
+    @Child(name = "summary", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="A human-readable display of the citation", formalDefinition="A human-readable display of the citation." )
+    protected List<CitationSummaryComponent> summary;
 
     /**
      * Date Cited.
@@ -7698,79 +9933,72 @@ public class Citation extends MetadataResource {
     protected CitationJournalComponent journal;
 
     /**
+     * Citation detail for sources other than journals such as books and databases.
+     */
+    @Child(name = "publicationInfo", type = {}, order=10, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Citation detail for sources other than journals", formalDefinition="Citation detail for sources other than journals such as books and databases." )
+    protected CitationPublicationInfoComponent publicationInfo;
+
+    /**
      * Full title of the article.
      */
-    @Child(name = "articleTitle", type = {MarkdownType.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "articleTitle", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Full title of the article", formalDefinition="Full title of the article." )
     protected MarkdownType articleTitle;
 
     /**
      * Used for variant titles, such as translations.
      */
-    @Child(name = "alternativeTitle", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "alternativeTitle", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Used for variant titles, such as translations", formalDefinition="Used for variant titles, such as translations." )
     protected List<CitationAlternativeTitleComponent> alternativeTitle;
 
     /**
      * Indicates the inclusive pages for the article cited.
      */
-    @Child(name = "pagination", type = {}, order=12, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "pagination", type = {}, order=13, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Indicates the inclusive pages for the article cited", formalDefinition="Indicates the inclusive pages for the article cited." )
     protected CitationPaginationComponent pagination;
 
     /**
      * Used for any URL for the article cited.
      */
-    @Child(name = "articleUrl", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "articleUrl", type = {}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Used for any URL for the article cited", formalDefinition="Used for any URL for the article cited." )
     protected List<CitationArticleUrlComponent> articleUrl;
 
     /**
-     * Abstract text, may include structured labels.
+     * Abstract text, as published; may include structured labels.
      */
-    @Child(name = "abstract", type = {MarkdownType.class}, order=14, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Abstract text", formalDefinition="Abstract text, may include structured labels." )
+    @Child(name = "abstract", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Abstract text", formalDefinition="Abstract text, as published; may include structured labels." )
     protected MarkdownType abstract_;
 
     /**
      * Copyright information for the abstract text.
      */
-    @Child(name = "abstractCopyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "abstractCopyright", type = {MarkdownType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Abstract copyright", formalDefinition="Copyright information for the abstract text." )
     protected MarkdownType abstractCopyright;
 
     /**
      * Used for variant abstracts, such as translations.
      */
-    @Child(name = "alternativeAbstract", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "alternativeAbstract", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Used for variant abstracts, such as translations", formalDefinition="Used for variant abstracts, such as translations." )
     protected List<CitationAlternativeAbstractComponent> alternativeAbstract;
 
     /**
-     * Personal and collective author names.
+     * This element is used to list authors and other contributors, their contact information, specific contributions, and summary statements.
      */
-    @Child(name = "authorList", type = {}, order=17, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Personal and collective author names", formalDefinition="Personal and collective author names." )
-    protected CitationAuthorListComponent authorList;
-
-    /**
-     * Used to record a display of the author list without separate coding for each author.
-     */
-    @Child(name = "authorString", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Used to record a display of the author list without separate coding for each author", formalDefinition="Used to record a display of the author list without separate coding for each author." )
-    protected List<CitationAuthorStringComponent> authorString;
-
-    /**
-     * Personal and collective contributor names.
-     */
-    @Child(name = "contributorList", type = {}, order=19, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Personal and collective contributor names", formalDefinition="Personal and collective contributor names." )
-    protected CitationContributorListComponent contributorList;
+    @Child(name = "contributorship", type = {}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Attribution of authors and other contributors", formalDefinition="This element is used to list authors and other contributors, their contact information, specific contributions, and summary statements." )
+    protected CitationContributorshipComponent contributorship;
 
     /**
      * The language in which the article is published.
      */
-    @Child(name = "articleLanguage", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "articleLanguage", type = {CodeableConcept.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="The language in which the article is published", formalDefinition="The language in which the article is published." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/languages")
     protected CodeableConcept articleLanguage;
@@ -7778,23 +10006,30 @@ public class Citation extends MetadataResource {
     /**
      * Used to represent alternative forms of the article that are not separate citations.
      */
-    @Child(name = "alternativeForm", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "alternativeForm", type = {}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Used to represent alternative forms of the article that are not separate citations", formalDefinition="Used to represent alternative forms of the article that are not separate citations." )
     protected List<CitationAlternativeFormComponent> alternativeForm;
 
     /**
      * Used for many classifiers including PublicationType, CitationSubset, MeshHeading, Chemical.
      */
-    @Child(name = "classifier", type = {CodeableConcept.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "classifier", type = {CodeableConcept.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Used for many classifiers including PublicationType, CitationSubset, MeshHeading, Chemical", formalDefinition="Used for many classifiers including PublicationType, CitationSubset, MeshHeading, Chemical." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/citation-classifier")
     protected List<CodeableConcept> classifier;
 
     /**
-     * Used for referencing EvidenceReport resource.
+     * A list of words classified as keywords for specific use in search functions.
+     */
+    @Child(name = "keywordList", type = {}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Used to support keyword searches", formalDefinition="A list of words classified as keywords for specific use in search functions." )
+    protected List<CitationKeywordListComponent> keywordList;
+
+    /**
+     * Link or citation to artifact associated with the referenced material.
      */
     @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Link or citation to artifact associated with the summary", formalDefinition="Used for referencing EvidenceReport resource." )
+    @Description(shortDefinition="Link or citation to artifact associated with the referenced material", formalDefinition="Link or citation to artifact associated with the referenced material." )
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
@@ -7811,7 +10046,7 @@ public class Citation extends MetadataResource {
     @Description(shortDefinition="These elements are items with values assigned by MEDLINE or PubMed management", formalDefinition="These elements are items with values assigned by MEDLINE or PubMed management." )
     protected CitationMedlinePubMedComponent medlinePubMed;
 
-    private static final long serialVersionUID = 1796797816L;
+    private static final long serialVersionUID = -3279077L;
 
   /**
    * Constructor
@@ -7873,55 +10108,6 @@ public class Citation extends MetadataResource {
         if (this.url == null)
           this.url = new UriType();
         this.url.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #version} (The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
-     */
-    public StringType getVersionElement() { 
-      if (this.version == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Citation.version");
-        else if (Configuration.doAutoCreate())
-          this.version = new StringType(); // bb
-      return this.version;
-    }
-
-    public boolean hasVersionElement() { 
-      return this.version != null && !this.version.isEmpty();
-    }
-
-    public boolean hasVersion() { 
-      return this.version != null && !this.version.isEmpty();
-    }
-
-    /**
-     * @param value {@link #version} (The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
-     */
-    public Citation setVersionElement(StringType value) { 
-      this.version = value;
-      return this;
-    }
-
-    /**
-     * @return The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
-     */
-    public String getVersion() { 
-      return this.version == null ? null : this.version.getValue();
-    }
-
-    /**
-     * @param value The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
-     */
-    public Citation setVersion(String value) { 
-      if (Utilities.noString(value))
-        this.version = null;
-      else {
-        if (this.version == null)
-          this.version = new StringType();
-        this.version.setValue(value);
       }
       return this;
     }
@@ -8025,7 +10211,7 @@ public class Citation extends MetadataResource {
     }
 
     /**
-     * @return {@link #identifier} (A formal identifier that is used to identify this summary when it is represented in other formats, or referenced in a specification, model, design or an instance. May include DOI, PMID, PMCID, etc.)
+     * @return {@link #identifier} (A formal identifier that is used to identify this citation when it is represented in other formats, or referenced in a specification, model, design or an instance.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -8078,7 +10264,7 @@ public class Citation extends MetadataResource {
     }
 
     /**
-     * @return {@link #relatedIdentifier} (May include trial registry identifiers.)
+     * @return {@link #relatedIdentifier} (A formal identifier that is used to identify things closely related to this citation.)
      */
     public List<Identifier> getRelatedIdentifier() { 
       if (this.relatedIdentifier == null)
@@ -8128,6 +10314,59 @@ public class Citation extends MetadataResource {
         addRelatedIdentifier();
       }
       return getRelatedIdentifier().get(0);
+    }
+
+    /**
+     * @return {@link #summary} (A human-readable display of the citation.)
+     */
+    public List<CitationSummaryComponent> getSummary() { 
+      if (this.summary == null)
+        this.summary = new ArrayList<CitationSummaryComponent>();
+      return this.summary;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Citation setSummary(List<CitationSummaryComponent> theSummary) { 
+      this.summary = theSummary;
+      return this;
+    }
+
+    public boolean hasSummary() { 
+      if (this.summary == null)
+        return false;
+      for (CitationSummaryComponent item : this.summary)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CitationSummaryComponent addSummary() { //3
+      CitationSummaryComponent t = new CitationSummaryComponent();
+      if (this.summary == null)
+        this.summary = new ArrayList<CitationSummaryComponent>();
+      this.summary.add(t);
+      return t;
+    }
+
+    public Citation addSummary(CitationSummaryComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.summary == null)
+        this.summary = new ArrayList<CitationSummaryComponent>();
+      this.summary.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #summary}, creating it if it does not already exist {3}
+     */
+    public CitationSummaryComponent getSummaryFirstRep() { 
+      if (getSummary().isEmpty()) {
+        addSummary();
+      }
+      return getSummary().get(0);
     }
 
     /**
@@ -8248,6 +10487,30 @@ public class Citation extends MetadataResource {
      */
     public Citation setJournal(CitationJournalComponent value) { 
       this.journal = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #publicationInfo} (Citation detail for sources other than journals such as books and databases.)
+     */
+    public CitationPublicationInfoComponent getPublicationInfo() { 
+      if (this.publicationInfo == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Citation.publicationInfo");
+        else if (Configuration.doAutoCreate())
+          this.publicationInfo = new CitationPublicationInfoComponent(); // cc
+      return this.publicationInfo;
+    }
+
+    public boolean hasPublicationInfo() { 
+      return this.publicationInfo != null && !this.publicationInfo.isEmpty();
+    }
+
+    /**
+     * @param value {@link #publicationInfo} (Citation detail for sources other than journals such as books and databases.)
+     */
+    public Citation setPublicationInfo(CitationPublicationInfoComponent value) { 
+      this.publicationInfo = value;
       return this;
     }
 
@@ -8431,7 +10694,7 @@ public class Citation extends MetadataResource {
     }
 
     /**
-     * @return {@link #abstract_} (Abstract text, may include structured labels.). This is the underlying object with id, value and extensions. The accessor "getAbstract" gives direct access to the value
+     * @return {@link #abstract_} (Abstract text, as published; may include structured labels.). This is the underlying object with id, value and extensions. The accessor "getAbstract" gives direct access to the value
      */
     public MarkdownType getAbstractElement() { 
       if (this.abstract_ == null)
@@ -8451,7 +10714,7 @@ public class Citation extends MetadataResource {
     }
 
     /**
-     * @param value {@link #abstract_} (Abstract text, may include structured labels.). This is the underlying object with id, value and extensions. The accessor "getAbstract" gives direct access to the value
+     * @param value {@link #abstract_} (Abstract text, as published; may include structured labels.). This is the underlying object with id, value and extensions. The accessor "getAbstract" gives direct access to the value
      */
     public Citation setAbstractElement(MarkdownType value) { 
       this.abstract_ = value;
@@ -8459,14 +10722,14 @@ public class Citation extends MetadataResource {
     }
 
     /**
-     * @return Abstract text, may include structured labels.
+     * @return Abstract text, as published; may include structured labels.
      */
     public String getAbstract() { 
       return this.abstract_ == null ? null : this.abstract_.getValue();
     }
 
     /**
-     * @param value Abstract text, may include structured labels.
+     * @param value Abstract text, as published; may include structured labels.
      */
     public Citation setAbstract(String value) { 
       if (value == null)
@@ -8582,103 +10845,26 @@ public class Citation extends MetadataResource {
     }
 
     /**
-     * @return {@link #authorList} (Personal and collective author names.)
+     * @return {@link #contributorship} (This element is used to list authors and other contributors, their contact information, specific contributions, and summary statements.)
      */
-    public CitationAuthorListComponent getAuthorList() { 
-      if (this.authorList == null)
+    public CitationContributorshipComponent getContributorship() { 
+      if (this.contributorship == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Citation.authorList");
+          throw new Error("Attempt to auto-create Citation.contributorship");
         else if (Configuration.doAutoCreate())
-          this.authorList = new CitationAuthorListComponent(); // cc
-      return this.authorList;
+          this.contributorship = new CitationContributorshipComponent(); // cc
+      return this.contributorship;
     }
 
-    public boolean hasAuthorList() { 
-      return this.authorList != null && !this.authorList.isEmpty();
-    }
-
-    /**
-     * @param value {@link #authorList} (Personal and collective author names.)
-     */
-    public Citation setAuthorList(CitationAuthorListComponent value) { 
-      this.authorList = value;
-      return this;
+    public boolean hasContributorship() { 
+      return this.contributorship != null && !this.contributorship.isEmpty();
     }
 
     /**
-     * @return {@link #authorString} (Used to record a display of the author list without separate coding for each author.)
+     * @param value {@link #contributorship} (This element is used to list authors and other contributors, their contact information, specific contributions, and summary statements.)
      */
-    public List<CitationAuthorStringComponent> getAuthorString() { 
-      if (this.authorString == null)
-        this.authorString = new ArrayList<CitationAuthorStringComponent>();
-      return this.authorString;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Citation setAuthorString(List<CitationAuthorStringComponent> theAuthorString) { 
-      this.authorString = theAuthorString;
-      return this;
-    }
-
-    public boolean hasAuthorString() { 
-      if (this.authorString == null)
-        return false;
-      for (CitationAuthorStringComponent item : this.authorString)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public CitationAuthorStringComponent addAuthorString() { //3
-      CitationAuthorStringComponent t = new CitationAuthorStringComponent();
-      if (this.authorString == null)
-        this.authorString = new ArrayList<CitationAuthorStringComponent>();
-      this.authorString.add(t);
-      return t;
-    }
-
-    public Citation addAuthorString(CitationAuthorStringComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.authorString == null)
-        this.authorString = new ArrayList<CitationAuthorStringComponent>();
-      this.authorString.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #authorString}, creating it if it does not already exist {3}
-     */
-    public CitationAuthorStringComponent getAuthorStringFirstRep() { 
-      if (getAuthorString().isEmpty()) {
-        addAuthorString();
-      }
-      return getAuthorString().get(0);
-    }
-
-    /**
-     * @return {@link #contributorList} (Personal and collective contributor names.)
-     */
-    public CitationContributorListComponent getContributorList() { 
-      if (this.contributorList == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create Citation.contributorList");
-        else if (Configuration.doAutoCreate())
-          this.contributorList = new CitationContributorListComponent(); // cc
-      return this.contributorList;
-    }
-
-    public boolean hasContributorList() { 
-      return this.contributorList != null && !this.contributorList.isEmpty();
-    }
-
-    /**
-     * @param value {@link #contributorList} (Personal and collective contributor names.)
-     */
-    public Citation setContributorList(CitationContributorListComponent value) { 
-      this.contributorList = value;
+    public Citation setContributorship(CitationContributorshipComponent value) { 
+      this.contributorship = value;
       return this;
     }
 
@@ -8813,7 +10999,60 @@ public class Citation extends MetadataResource {
     }
 
     /**
-     * @return {@link #relatedArtifact} (Used for referencing EvidenceReport resource.)
+     * @return {@link #keywordList} (A list of words classified as keywords for specific use in search functions.)
+     */
+    public List<CitationKeywordListComponent> getKeywordList() { 
+      if (this.keywordList == null)
+        this.keywordList = new ArrayList<CitationKeywordListComponent>();
+      return this.keywordList;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Citation setKeywordList(List<CitationKeywordListComponent> theKeywordList) { 
+      this.keywordList = theKeywordList;
+      return this;
+    }
+
+    public boolean hasKeywordList() { 
+      if (this.keywordList == null)
+        return false;
+      for (CitationKeywordListComponent item : this.keywordList)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CitationKeywordListComponent addKeywordList() { //3
+      CitationKeywordListComponent t = new CitationKeywordListComponent();
+      if (this.keywordList == null)
+        this.keywordList = new ArrayList<CitationKeywordListComponent>();
+      this.keywordList.add(t);
+      return t;
+    }
+
+    public Citation addKeywordList(CitationKeywordListComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.keywordList == null)
+        this.keywordList = new ArrayList<CitationKeywordListComponent>();
+      this.keywordList.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #keywordList}, creating it if it does not already exist {3}
+     */
+    public CitationKeywordListComponent getKeywordListFirstRep() { 
+      if (getKeywordList().isEmpty()) {
+        addKeywordList();
+      }
+      return getKeywordList().get(0);
+    }
+
+    /**
+     * @return {@link #relatedArtifact} (Link or citation to artifact associated with the referenced material.)
      */
     public List<RelatedArtifact> getRelatedArtifact() { 
       if (this.relatedArtifact == null)
@@ -8942,6 +11181,42 @@ public class Citation extends MetadataResource {
       return this;
     }
 
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getVersionMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #version} (The identifier that is used to identify this version of the citation when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the citation author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+     */
+    public StringType getVersionElement() { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"version\"");
+    }
+
+    public boolean hasVersionElement() { 
+      return false;
+    }
+    public boolean hasVersion() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #version} (The identifier that is used to identify this version of the citation when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the citation author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.). This is the underlying object with id, value and extensions. The accessor "getVersion" gives direct access to the value
+     */
+    public Citation setVersionElement(StringType value) { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"version\"");
+    }
+    public String getVersion() { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"version\"");
+    }
+    /**
+     * @param value The identifier that is used to identify this version of the citation when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the citation author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.
+     */
+    public Citation setVersion(String value) { 
+      throw new Error("The resource type \"Citation\" does not implement the property \"version\"");
+    }
     /**
      * not supported on this implementation
      */
@@ -9398,29 +11673,29 @@ public class Citation extends MetadataResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url));
-        children.add(new Property("version", "string", "The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
         children.add(new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate citation instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
-        children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this summary when it is represented in other formats, or referenced in a specification, model, design or an instance. May include DOI, PMID, PMCID, etc.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("relatedIdentifier", "Identifier", "May include trial registry identifiers.", 0, java.lang.Integer.MAX_VALUE, relatedIdentifier));
+        children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this citation when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("relatedIdentifier", "Identifier", "A formal identifier that is used to identify things closely related to this citation.", 0, java.lang.Integer.MAX_VALUE, relatedIdentifier));
+        children.add(new Property("summary", "", "A human-readable display of the citation.", 0, java.lang.Integer.MAX_VALUE, summary));
         children.add(new Property("dateCited", "dateTime", "Date Cited.", 0, 1, dateCited));
         children.add(new Property("variantCitation", "", "Variant citation.", 0, 1, variantCitation));
         children.add(new Property("publishingModel", "CodeableConcept", "Identify the medium/media in which the cited article is published, eg print, electronic or print-electronic.", 0, 1, publishingModel));
         children.add(new Property("journal", "", "Contains identifiers and classifiers for the journal cited.", 0, 1, journal));
+        children.add(new Property("publicationInfo", "", "Citation detail for sources other than journals such as books and databases.", 0, 1, publicationInfo));
         children.add(new Property("articleTitle", "markdown", "Full title of the article.", 0, 1, articleTitle));
         children.add(new Property("alternativeTitle", "", "Used for variant titles, such as translations.", 0, java.lang.Integer.MAX_VALUE, alternativeTitle));
         children.add(new Property("pagination", "", "Indicates the inclusive pages for the article cited.", 0, 1, pagination));
         children.add(new Property("articleUrl", "", "Used for any URL for the article cited.", 0, java.lang.Integer.MAX_VALUE, articleUrl));
-        children.add(new Property("abstract", "markdown", "Abstract text, may include structured labels.", 0, 1, abstract_));
+        children.add(new Property("abstract", "markdown", "Abstract text, as published; may include structured labels.", 0, 1, abstract_));
         children.add(new Property("abstractCopyright", "markdown", "Copyright information for the abstract text.", 0, 1, abstractCopyright));
         children.add(new Property("alternativeAbstract", "", "Used for variant abstracts, such as translations.", 0, java.lang.Integer.MAX_VALUE, alternativeAbstract));
-        children.add(new Property("authorList", "", "Personal and collective author names.", 0, 1, authorList));
-        children.add(new Property("authorString", "", "Used to record a display of the author list without separate coding for each author.", 0, java.lang.Integer.MAX_VALUE, authorString));
-        children.add(new Property("contributorList", "", "Personal and collective contributor names.", 0, 1, contributorList));
+        children.add(new Property("contributorship", "", "This element is used to list authors and other contributors, their contact information, specific contributions, and summary statements.", 0, 1, contributorship));
         children.add(new Property("articleLanguage", "CodeableConcept", "The language in which the article is published.", 0, 1, articleLanguage));
         children.add(new Property("alternativeForm", "", "Used to represent alternative forms of the article that are not separate citations.", 0, java.lang.Integer.MAX_VALUE, alternativeForm));
         children.add(new Property("classifier", "CodeableConcept", "Used for many classifiers including PublicationType, CitationSubset, MeshHeading, Chemical.", 0, java.lang.Integer.MAX_VALUE, classifier));
-        children.add(new Property("relatedArtifact", "RelatedArtifact", "Used for referencing EvidenceReport resource.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
+        children.add(new Property("keywordList", "", "A list of words classified as keywords for specific use in search functions.", 0, java.lang.Integer.MAX_VALUE, keywordList));
+        children.add(new Property("relatedArtifact", "RelatedArtifact", "Link or citation to artifact associated with the referenced material.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
         children.add(new Property("note", "Annotation", "Used for general notes and annotations not coded elsewhere.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("medlinePubMed", "", "These elements are items with values assigned by MEDLINE or PubMed management.", 0, 1, medlinePubMed));
       }
@@ -9429,29 +11704,29 @@ public class Citation extends MetadataResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case 116079: /*url*/  return new Property("url", "uri", "An absolute URI that is used to identify this citation when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url);
-        case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate citation instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this summary when it is represented in other formats, or referenced in a specification, model, design or an instance. May include DOI, PMID, PMCID, etc.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -1007604940: /*relatedIdentifier*/  return new Property("relatedIdentifier", "Identifier", "May include trial registry identifiers.", 0, java.lang.Integer.MAX_VALUE, relatedIdentifier);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this citation when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -1007604940: /*relatedIdentifier*/  return new Property("relatedIdentifier", "Identifier", "A formal identifier that is used to identify things closely related to this citation.", 0, java.lang.Integer.MAX_VALUE, relatedIdentifier);
+        case -1857640538: /*summary*/  return new Property("summary", "", "A human-readable display of the citation.", 0, java.lang.Integer.MAX_VALUE, summary);
         case -275034401: /*dateCited*/  return new Property("dateCited", "dateTime", "Date Cited.", 0, 1, dateCited);
         case -1653134708: /*variantCitation*/  return new Property("variantCitation", "", "Variant citation.", 0, 1, variantCitation);
         case 747318902: /*publishingModel*/  return new Property("publishingModel", "CodeableConcept", "Identify the medium/media in which the cited article is published, eg print, electronic or print-electronic.", 0, 1, publishingModel);
         case -1419464905: /*journal*/  return new Property("journal", "", "Contains identifiers and classifiers for the journal cited.", 0, 1, journal);
+        case 1470727418: /*publicationInfo*/  return new Property("publicationInfo", "", "Citation detail for sources other than journals such as books and databases.", 0, 1, publicationInfo);
         case -404746494: /*articleTitle*/  return new Property("articleTitle", "markdown", "Full title of the article.", 0, 1, articleTitle);
         case -1478308181: /*alternativeTitle*/  return new Property("alternativeTitle", "", "Used for variant titles, such as translations.", 0, java.lang.Integer.MAX_VALUE, alternativeTitle);
         case 1297692570: /*pagination*/  return new Property("pagination", "", "Indicates the inclusive pages for the article cited.", 0, 1, pagination);
         case 164943001: /*articleUrl*/  return new Property("articleUrl", "", "Used for any URL for the article cited.", 0, java.lang.Integer.MAX_VALUE, articleUrl);
-        case 1732898850: /*abstract*/  return new Property("abstract", "markdown", "Abstract text, may include structured labels.", 0, 1, abstract_);
+        case 1732898850: /*abstract*/  return new Property("abstract", "markdown", "Abstract text, as published; may include structured labels.", 0, 1, abstract_);
         case -656627259: /*abstractCopyright*/  return new Property("abstractCopyright", "markdown", "Copyright information for the abstract text.", 0, 1, abstractCopyright);
         case -376340753: /*alternativeAbstract*/  return new Property("alternativeAbstract", "", "Used for variant abstracts, such as translations.", 0, java.lang.Integer.MAX_VALUE, alternativeAbstract);
-        case -1501591351: /*authorList*/  return new Property("authorList", "", "Personal and collective author names.", 0, 1, authorList);
-        case 290249084: /*authorString*/  return new Property("authorString", "", "Used to record a display of the author list without separate coding for each author.", 0, java.lang.Integer.MAX_VALUE, authorString);
-        case 537567257: /*contributorList*/  return new Property("contributorList", "", "Personal and collective contributor names.", 0, 1, contributorList);
+        case 538727831: /*contributorship*/  return new Property("contributorship", "", "This element is used to list authors and other contributors, their contact information, specific contributions, and summary statements.", 0, 1, contributorship);
         case -1573097874: /*articleLanguage*/  return new Property("articleLanguage", "CodeableConcept", "The language in which the article is published.", 0, 1, articleLanguage);
         case 2030111249: /*alternativeForm*/  return new Property("alternativeForm", "", "Used to represent alternative forms of the article that are not separate citations.", 0, java.lang.Integer.MAX_VALUE, alternativeForm);
         case -281470431: /*classifier*/  return new Property("classifier", "CodeableConcept", "Used for many classifiers including PublicationType, CitationSubset, MeshHeading, Chemical.", 0, java.lang.Integer.MAX_VALUE, classifier);
-        case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Used for referencing EvidenceReport resource.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
+        case -1298782681: /*keywordList*/  return new Property("keywordList", "", "A list of words classified as keywords for specific use in search functions.", 0, java.lang.Integer.MAX_VALUE, keywordList);
+        case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Link or citation to artifact associated with the referenced material.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Used for general notes and annotations not coded elsewhere.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1342445201: /*medlinePubMed*/  return new Property("medlinePubMed", "", "These elements are items with values assigned by MEDLINE or PubMed management.", 0, 1, medlinePubMed);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -9463,15 +11738,16 @@ public class Citation extends MetadataResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
-        case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case -669707736: /*useContext*/ return this.useContext == null ? new Base[0] : this.useContext.toArray(new Base[this.useContext.size()]); // UsageContext
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case -1007604940: /*relatedIdentifier*/ return this.relatedIdentifier == null ? new Base[0] : this.relatedIdentifier.toArray(new Base[this.relatedIdentifier.size()]); // Identifier
+        case -1857640538: /*summary*/ return this.summary == null ? new Base[0] : this.summary.toArray(new Base[this.summary.size()]); // CitationSummaryComponent
         case -275034401: /*dateCited*/ return this.dateCited == null ? new Base[0] : new Base[] {this.dateCited}; // DateTimeType
         case -1653134708: /*variantCitation*/ return this.variantCitation == null ? new Base[0] : new Base[] {this.variantCitation}; // CitationVariantCitationComponent
         case 747318902: /*publishingModel*/ return this.publishingModel == null ? new Base[0] : new Base[] {this.publishingModel}; // CodeableConcept
         case -1419464905: /*journal*/ return this.journal == null ? new Base[0] : new Base[] {this.journal}; // CitationJournalComponent
+        case 1470727418: /*publicationInfo*/ return this.publicationInfo == null ? new Base[0] : new Base[] {this.publicationInfo}; // CitationPublicationInfoComponent
         case -404746494: /*articleTitle*/ return this.articleTitle == null ? new Base[0] : new Base[] {this.articleTitle}; // MarkdownType
         case -1478308181: /*alternativeTitle*/ return this.alternativeTitle == null ? new Base[0] : this.alternativeTitle.toArray(new Base[this.alternativeTitle.size()]); // CitationAlternativeTitleComponent
         case 1297692570: /*pagination*/ return this.pagination == null ? new Base[0] : new Base[] {this.pagination}; // CitationPaginationComponent
@@ -9479,12 +11755,11 @@ public class Citation extends MetadataResource {
         case 1732898850: /*abstract*/ return this.abstract_ == null ? new Base[0] : new Base[] {this.abstract_}; // MarkdownType
         case -656627259: /*abstractCopyright*/ return this.abstractCopyright == null ? new Base[0] : new Base[] {this.abstractCopyright}; // MarkdownType
         case -376340753: /*alternativeAbstract*/ return this.alternativeAbstract == null ? new Base[0] : this.alternativeAbstract.toArray(new Base[this.alternativeAbstract.size()]); // CitationAlternativeAbstractComponent
-        case -1501591351: /*authorList*/ return this.authorList == null ? new Base[0] : new Base[] {this.authorList}; // CitationAuthorListComponent
-        case 290249084: /*authorString*/ return this.authorString == null ? new Base[0] : this.authorString.toArray(new Base[this.authorString.size()]); // CitationAuthorStringComponent
-        case 537567257: /*contributorList*/ return this.contributorList == null ? new Base[0] : new Base[] {this.contributorList}; // CitationContributorListComponent
+        case 538727831: /*contributorship*/ return this.contributorship == null ? new Base[0] : new Base[] {this.contributorship}; // CitationContributorshipComponent
         case -1573097874: /*articleLanguage*/ return this.articleLanguage == null ? new Base[0] : new Base[] {this.articleLanguage}; // CodeableConcept
         case 2030111249: /*alternativeForm*/ return this.alternativeForm == null ? new Base[0] : this.alternativeForm.toArray(new Base[this.alternativeForm.size()]); // CitationAlternativeFormComponent
         case -281470431: /*classifier*/ return this.classifier == null ? new Base[0] : this.classifier.toArray(new Base[this.classifier.size()]); // CodeableConcept
+        case -1298782681: /*keywordList*/ return this.keywordList == null ? new Base[0] : this.keywordList.toArray(new Base[this.keywordList.size()]); // CitationKeywordListComponent
         case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -1342445201: /*medlinePubMed*/ return this.medlinePubMed == null ? new Base[0] : new Base[] {this.medlinePubMed}; // CitationMedlinePubMedComponent
@@ -9499,9 +11774,6 @@ public class Citation extends MetadataResource {
         case 116079: // url
           this.url = TypeConvertor.castToUri(value); // UriType
           return value;
-        case 351608024: // version
-          this.version = TypeConvertor.castToString(value); // StringType
-          return value;
         case -892481550: // status
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
@@ -9515,6 +11787,9 @@ public class Citation extends MetadataResource {
         case -1007604940: // relatedIdentifier
           this.getRelatedIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
+        case -1857640538: // summary
+          this.getSummary().add((CitationSummaryComponent) value); // CitationSummaryComponent
+          return value;
         case -275034401: // dateCited
           this.dateCited = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
@@ -9526,6 +11801,9 @@ public class Citation extends MetadataResource {
           return value;
         case -1419464905: // journal
           this.journal = (CitationJournalComponent) value; // CitationJournalComponent
+          return value;
+        case 1470727418: // publicationInfo
+          this.publicationInfo = (CitationPublicationInfoComponent) value; // CitationPublicationInfoComponent
           return value;
         case -404746494: // articleTitle
           this.articleTitle = TypeConvertor.castToMarkdown(value); // MarkdownType
@@ -9548,14 +11826,8 @@ public class Citation extends MetadataResource {
         case -376340753: // alternativeAbstract
           this.getAlternativeAbstract().add((CitationAlternativeAbstractComponent) value); // CitationAlternativeAbstractComponent
           return value;
-        case -1501591351: // authorList
-          this.authorList = (CitationAuthorListComponent) value; // CitationAuthorListComponent
-          return value;
-        case 290249084: // authorString
-          this.getAuthorString().add((CitationAuthorStringComponent) value); // CitationAuthorStringComponent
-          return value;
-        case 537567257: // contributorList
-          this.contributorList = (CitationContributorListComponent) value; // CitationContributorListComponent
+        case 538727831: // contributorship
+          this.contributorship = (CitationContributorshipComponent) value; // CitationContributorshipComponent
           return value;
         case -1573097874: // articleLanguage
           this.articleLanguage = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -9565,6 +11837,9 @@ public class Citation extends MetadataResource {
           return value;
         case -281470431: // classifier
           this.getClassifier().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case -1298782681: // keywordList
+          this.getKeywordList().add((CitationKeywordListComponent) value); // CitationKeywordListComponent
           return value;
         case 666807069: // relatedArtifact
           this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
@@ -9584,8 +11859,6 @@ public class Citation extends MetadataResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("url")) {
           this.url = TypeConvertor.castToUri(value); // UriType
-        } else if (name.equals("version")) {
-          this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("status")) {
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
@@ -9595,6 +11868,8 @@ public class Citation extends MetadataResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("relatedIdentifier")) {
           this.getRelatedIdentifier().add(TypeConvertor.castToIdentifier(value));
+        } else if (name.equals("summary")) {
+          this.getSummary().add((CitationSummaryComponent) value);
         } else if (name.equals("dateCited")) {
           this.dateCited = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("variantCitation")) {
@@ -9603,6 +11878,8 @@ public class Citation extends MetadataResource {
           this.publishingModel = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("journal")) {
           this.journal = (CitationJournalComponent) value; // CitationJournalComponent
+        } else if (name.equals("publicationInfo")) {
+          this.publicationInfo = (CitationPublicationInfoComponent) value; // CitationPublicationInfoComponent
         } else if (name.equals("articleTitle")) {
           this.articleTitle = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("alternativeTitle")) {
@@ -9617,18 +11894,16 @@ public class Citation extends MetadataResource {
           this.abstractCopyright = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("alternativeAbstract")) {
           this.getAlternativeAbstract().add((CitationAlternativeAbstractComponent) value);
-        } else if (name.equals("authorList")) {
-          this.authorList = (CitationAuthorListComponent) value; // CitationAuthorListComponent
-        } else if (name.equals("authorString")) {
-          this.getAuthorString().add((CitationAuthorStringComponent) value);
-        } else if (name.equals("contributorList")) {
-          this.contributorList = (CitationContributorListComponent) value; // CitationContributorListComponent
+        } else if (name.equals("contributorship")) {
+          this.contributorship = (CitationContributorshipComponent) value; // CitationContributorshipComponent
         } else if (name.equals("articleLanguage")) {
           this.articleLanguage = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("alternativeForm")) {
           this.getAlternativeForm().add((CitationAlternativeFormComponent) value);
         } else if (name.equals("classifier")) {
           this.getClassifier().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("keywordList")) {
+          this.getKeywordList().add((CitationKeywordListComponent) value);
         } else if (name.equals("relatedArtifact")) {
           this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
         } else if (name.equals("note")) {
@@ -9644,15 +11919,16 @@ public class Citation extends MetadataResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 116079:  return getUrlElement();
-        case 351608024:  return getVersionElement();
         case -892481550:  return getStatusElement();
         case -669707736:  return addUseContext(); 
         case -1618432855:  return addIdentifier(); 
         case -1007604940:  return addRelatedIdentifier(); 
+        case -1857640538:  return addSummary(); 
         case -275034401:  return getDateCitedElement();
         case -1653134708:  return getVariantCitation();
         case 747318902:  return getPublishingModel();
         case -1419464905:  return getJournal();
+        case 1470727418:  return getPublicationInfo();
         case -404746494:  return getArticleTitleElement();
         case -1478308181:  return addAlternativeTitle(); 
         case 1297692570:  return getPagination();
@@ -9660,12 +11936,11 @@ public class Citation extends MetadataResource {
         case 1732898850:  return getAbstractElement();
         case -656627259:  return getAbstractCopyrightElement();
         case -376340753:  return addAlternativeAbstract(); 
-        case -1501591351:  return getAuthorList();
-        case 290249084:  return addAuthorString(); 
-        case 537567257:  return getContributorList();
+        case 538727831:  return getContributorship();
         case -1573097874:  return getArticleLanguage();
         case 2030111249:  return addAlternativeForm(); 
         case -281470431:  return addClassifier(); 
+        case -1298782681:  return addKeywordList(); 
         case 666807069:  return addRelatedArtifact(); 
         case 3387378:  return addNote(); 
         case -1342445201:  return getMedlinePubMed();
@@ -9678,15 +11953,16 @@ public class Citation extends MetadataResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 116079: /*url*/ return new String[] {"uri"};
-        case 351608024: /*version*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"code"};
         case -669707736: /*useContext*/ return new String[] {"UsageContext"};
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case -1007604940: /*relatedIdentifier*/ return new String[] {"Identifier"};
+        case -1857640538: /*summary*/ return new String[] {};
         case -275034401: /*dateCited*/ return new String[] {"dateTime"};
         case -1653134708: /*variantCitation*/ return new String[] {};
         case 747318902: /*publishingModel*/ return new String[] {"CodeableConcept"};
         case -1419464905: /*journal*/ return new String[] {};
+        case 1470727418: /*publicationInfo*/ return new String[] {};
         case -404746494: /*articleTitle*/ return new String[] {"markdown"};
         case -1478308181: /*alternativeTitle*/ return new String[] {};
         case 1297692570: /*pagination*/ return new String[] {};
@@ -9694,12 +11970,11 @@ public class Citation extends MetadataResource {
         case 1732898850: /*abstract*/ return new String[] {"markdown"};
         case -656627259: /*abstractCopyright*/ return new String[] {"markdown"};
         case -376340753: /*alternativeAbstract*/ return new String[] {};
-        case -1501591351: /*authorList*/ return new String[] {};
-        case 290249084: /*authorString*/ return new String[] {};
-        case 537567257: /*contributorList*/ return new String[] {};
+        case 538727831: /*contributorship*/ return new String[] {};
         case -1573097874: /*articleLanguage*/ return new String[] {"CodeableConcept"};
         case 2030111249: /*alternativeForm*/ return new String[] {};
         case -281470431: /*classifier*/ return new String[] {"CodeableConcept"};
+        case -1298782681: /*keywordList*/ return new String[] {};
         case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -1342445201: /*medlinePubMed*/ return new String[] {};
@@ -9713,9 +11988,6 @@ public class Citation extends MetadataResource {
         if (name.equals("url")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.url");
         }
-        else if (name.equals("version")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Citation.version");
-        }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.status");
         }
@@ -9727,6 +11999,9 @@ public class Citation extends MetadataResource {
         }
         else if (name.equals("relatedIdentifier")) {
           return addRelatedIdentifier();
+        }
+        else if (name.equals("summary")) {
+          return addSummary();
         }
         else if (name.equals("dateCited")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.dateCited");
@@ -9742,6 +12017,10 @@ public class Citation extends MetadataResource {
         else if (name.equals("journal")) {
           this.journal = new CitationJournalComponent();
           return this.journal;
+        }
+        else if (name.equals("publicationInfo")) {
+          this.publicationInfo = new CitationPublicationInfoComponent();
+          return this.publicationInfo;
         }
         else if (name.equals("articleTitle")) {
           throw new FHIRException("Cannot call addChild on a primitive type Citation.articleTitle");
@@ -9765,16 +12044,9 @@ public class Citation extends MetadataResource {
         else if (name.equals("alternativeAbstract")) {
           return addAlternativeAbstract();
         }
-        else if (name.equals("authorList")) {
-          this.authorList = new CitationAuthorListComponent();
-          return this.authorList;
-        }
-        else if (name.equals("authorString")) {
-          return addAuthorString();
-        }
-        else if (name.equals("contributorList")) {
-          this.contributorList = new CitationContributorListComponent();
-          return this.contributorList;
+        else if (name.equals("contributorship")) {
+          this.contributorship = new CitationContributorshipComponent();
+          return this.contributorship;
         }
         else if (name.equals("articleLanguage")) {
           this.articleLanguage = new CodeableConcept();
@@ -9785,6 +12057,9 @@ public class Citation extends MetadataResource {
         }
         else if (name.equals("classifier")) {
           return addClassifier();
+        }
+        else if (name.equals("keywordList")) {
+          return addKeywordList();
         }
         else if (name.equals("relatedArtifact")) {
           return addRelatedArtifact();
@@ -9814,7 +12089,6 @@ public class Citation extends MetadataResource {
       public void copyValues(Citation dst) {
         super.copyValues(dst);
         dst.url = url == null ? null : url.copy();
-        dst.version = version == null ? null : version.copy();
         dst.status = status == null ? null : status.copy();
         if (useContext != null) {
           dst.useContext = new ArrayList<UsageContext>();
@@ -9831,10 +12105,16 @@ public class Citation extends MetadataResource {
           for (Identifier i : relatedIdentifier)
             dst.relatedIdentifier.add(i.copy());
         };
+        if (summary != null) {
+          dst.summary = new ArrayList<CitationSummaryComponent>();
+          for (CitationSummaryComponent i : summary)
+            dst.summary.add(i.copy());
+        };
         dst.dateCited = dateCited == null ? null : dateCited.copy();
         dst.variantCitation = variantCitation == null ? null : variantCitation.copy();
         dst.publishingModel = publishingModel == null ? null : publishingModel.copy();
         dst.journal = journal == null ? null : journal.copy();
+        dst.publicationInfo = publicationInfo == null ? null : publicationInfo.copy();
         dst.articleTitle = articleTitle == null ? null : articleTitle.copy();
         if (alternativeTitle != null) {
           dst.alternativeTitle = new ArrayList<CitationAlternativeTitleComponent>();
@@ -9854,13 +12134,7 @@ public class Citation extends MetadataResource {
           for (CitationAlternativeAbstractComponent i : alternativeAbstract)
             dst.alternativeAbstract.add(i.copy());
         };
-        dst.authorList = authorList == null ? null : authorList.copy();
-        if (authorString != null) {
-          dst.authorString = new ArrayList<CitationAuthorStringComponent>();
-          for (CitationAuthorStringComponent i : authorString)
-            dst.authorString.add(i.copy());
-        };
-        dst.contributorList = contributorList == null ? null : contributorList.copy();
+        dst.contributorship = contributorship == null ? null : contributorship.copy();
         dst.articleLanguage = articleLanguage == null ? null : articleLanguage.copy();
         if (alternativeForm != null) {
           dst.alternativeForm = new ArrayList<CitationAlternativeFormComponent>();
@@ -9871,6 +12145,11 @@ public class Citation extends MetadataResource {
           dst.classifier = new ArrayList<CodeableConcept>();
           for (CodeableConcept i : classifier)
             dst.classifier.add(i.copy());
+        };
+        if (keywordList != null) {
+          dst.keywordList = new ArrayList<CitationKeywordListComponent>();
+          for (CitationKeywordListComponent i : keywordList)
+            dst.keywordList.add(i.copy());
         };
         if (relatedArtifact != null) {
           dst.relatedArtifact = new ArrayList<RelatedArtifact>();
@@ -9896,16 +12175,16 @@ public class Citation extends MetadataResource {
         if (!(other_ instanceof Citation))
           return false;
         Citation o = (Citation) other_;
-        return compareDeep(url, o.url, true) && compareDeep(version, o.version, true) && compareDeep(status, o.status, true)
-           && compareDeep(useContext, o.useContext, true) && compareDeep(identifier, o.identifier, true) && compareDeep(relatedIdentifier, o.relatedIdentifier, true)
-           && compareDeep(dateCited, o.dateCited, true) && compareDeep(variantCitation, o.variantCitation, true)
+        return compareDeep(url, o.url, true) && compareDeep(status, o.status, true) && compareDeep(useContext, o.useContext, true)
+           && compareDeep(identifier, o.identifier, true) && compareDeep(relatedIdentifier, o.relatedIdentifier, true)
+           && compareDeep(summary, o.summary, true) && compareDeep(dateCited, o.dateCited, true) && compareDeep(variantCitation, o.variantCitation, true)
            && compareDeep(publishingModel, o.publishingModel, true) && compareDeep(journal, o.journal, true)
-           && compareDeep(articleTitle, o.articleTitle, true) && compareDeep(alternativeTitle, o.alternativeTitle, true)
-           && compareDeep(pagination, o.pagination, true) && compareDeep(articleUrl, o.articleUrl, true) && compareDeep(abstract_, o.abstract_, true)
-           && compareDeep(abstractCopyright, o.abstractCopyright, true) && compareDeep(alternativeAbstract, o.alternativeAbstract, true)
-           && compareDeep(authorList, o.authorList, true) && compareDeep(authorString, o.authorString, true)
-           && compareDeep(contributorList, o.contributorList, true) && compareDeep(articleLanguage, o.articleLanguage, true)
-           && compareDeep(alternativeForm, o.alternativeForm, true) && compareDeep(classifier, o.classifier, true)
+           && compareDeep(publicationInfo, o.publicationInfo, true) && compareDeep(articleTitle, o.articleTitle, true)
+           && compareDeep(alternativeTitle, o.alternativeTitle, true) && compareDeep(pagination, o.pagination, true)
+           && compareDeep(articleUrl, o.articleUrl, true) && compareDeep(abstract_, o.abstract_, true) && compareDeep(abstractCopyright, o.abstractCopyright, true)
+           && compareDeep(alternativeAbstract, o.alternativeAbstract, true) && compareDeep(contributorship, o.contributorship, true)
+           && compareDeep(articleLanguage, o.articleLanguage, true) && compareDeep(alternativeForm, o.alternativeForm, true)
+           && compareDeep(classifier, o.classifier, true) && compareDeep(keywordList, o.keywordList, true)
            && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(note, o.note, true) && compareDeep(medlinePubMed, o.medlinePubMed, true)
           ;
       }
@@ -9917,18 +12196,18 @@ public class Citation extends MetadataResource {
         if (!(other_ instanceof Citation))
           return false;
         Citation o = (Citation) other_;
-        return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(status, o.status, true)
-           && compareValues(dateCited, o.dateCited, true) && compareValues(articleTitle, o.articleTitle, true)
-           && compareValues(abstract_, o.abstract_, true) && compareValues(abstractCopyright, o.abstractCopyright, true)
-          ;
+        return compareValues(url, o.url, true) && compareValues(status, o.status, true) && compareValues(dateCited, o.dateCited, true)
+           && compareValues(articleTitle, o.articleTitle, true) && compareValues(abstract_, o.abstract_, true)
+           && compareValues(abstractCopyright, o.abstractCopyright, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, version, status, useContext
-          , identifier, relatedIdentifier, dateCited, variantCitation, publishingModel, journal
-          , articleTitle, alternativeTitle, pagination, articleUrl, abstract_, abstractCopyright
-          , alternativeAbstract, authorList, authorString, contributorList, articleLanguage
-          , alternativeForm, classifier, relatedArtifact, note, medlinePubMed);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, status, useContext
+          , identifier, relatedIdentifier, summary, dateCited, variantCitation, publishingModel
+          , journal, publicationInfo, articleTitle, alternativeTitle, pagination, articleUrl
+          , abstract_, abstractCopyright, alternativeAbstract, contributorship, articleLanguage
+          , alternativeForm, classifier, keywordList, relatedArtifact, note, medlinePubMed
+          );
       }
 
   @Override
@@ -10096,25 +12375,6 @@ public class Citation extends MetadataResource {
    */
   public static final ca.uhn.fhir.rest.gclient.UriClientParam URL = new ca.uhn.fhir.rest.gclient.UriClientParam(SP_URL);
 
- /**
-   * Search parameter: <b>version</b>
-   * <p>
-   * Description: <b>The business version of the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.version</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="version", path="Citation.version", description="The business version of the citation", type="token" )
-  public static final String SP_VERSION = "version";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>version</b>
-   * <p>
-   * Description: <b>The business version of the citation</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Citation.version</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
-
 
 }
+

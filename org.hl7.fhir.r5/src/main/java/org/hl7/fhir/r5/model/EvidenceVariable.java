@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,23 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * The EvidenceVariable resource describes an element that knowledge (Evidence) is about.
@@ -143,114 +141,6 @@ public class EvidenceVariable extends MetadataResource {
       return "?";
       }
     public String toSystem(CharacteristicCombination code) {
-      return code.getSystem();
-      }
-    }
-
-    public enum EvidenceVariableType {
-        /**
-         * The variable is dichotomous, such as present or absent.
-         */
-        DICHOTOMOUS, 
-        /**
-         * The variable is a continuous result such as a quantity.
-         */
-        CONTINUOUS, 
-        /**
-         * The variable is described narratively rather than quantitatively.
-         */
-        DESCRIPTIVE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static EvidenceVariableType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("dichotomous".equals(codeString))
-          return DICHOTOMOUS;
-        if ("continuous".equals(codeString))
-          return CONTINUOUS;
-        if ("descriptive".equals(codeString))
-          return DESCRIPTIVE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown EvidenceVariableType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case DICHOTOMOUS: return "dichotomous";
-            case CONTINUOUS: return "continuous";
-            case DESCRIPTIVE: return "descriptive";
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case DICHOTOMOUS: return "http://hl7.org/fhir/variable-type";
-            case CONTINUOUS: return "http://hl7.org/fhir/variable-type";
-            case DESCRIPTIVE: return "http://hl7.org/fhir/variable-type";
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case DICHOTOMOUS: return "The variable is dichotomous, such as present or absent.";
-            case CONTINUOUS: return "The variable is a continuous result such as a quantity.";
-            case DESCRIPTIVE: return "The variable is described narratively rather than quantitatively.";
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case DICHOTOMOUS: return "Dichotomous";
-            case CONTINUOUS: return "Continuous";
-            case DESCRIPTIVE: return "Descriptive";
-            default: return "?";
-          }
-        }
-    }
-
-  public static class EvidenceVariableTypeEnumFactory implements EnumFactory<EvidenceVariableType> {
-    public EvidenceVariableType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("dichotomous".equals(codeString))
-          return EvidenceVariableType.DICHOTOMOUS;
-        if ("continuous".equals(codeString))
-          return EvidenceVariableType.CONTINUOUS;
-        if ("descriptive".equals(codeString))
-          return EvidenceVariableType.DESCRIPTIVE;
-        throw new IllegalArgumentException("Unknown EvidenceVariableType code '"+codeString+"'");
-        }
-        public Enumeration<EvidenceVariableType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<EvidenceVariableType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("dichotomous".equals(codeString))
-          return new Enumeration<EvidenceVariableType>(this, EvidenceVariableType.DICHOTOMOUS);
-        if ("continuous".equals(codeString))
-          return new Enumeration<EvidenceVariableType>(this, EvidenceVariableType.CONTINUOUS);
-        if ("descriptive".equals(codeString))
-          return new Enumeration<EvidenceVariableType>(this, EvidenceVariableType.DESCRIPTIVE);
-        throw new FHIRException("Unknown EvidenceVariableType code '"+codeString+"'");
-        }
-    public String toCode(EvidenceVariableType code) {
-      if (code == EvidenceVariableType.DICHOTOMOUS)
-        return "dichotomous";
-      if (code == EvidenceVariableType.CONTINUOUS)
-        return "continuous";
-      if (code == EvidenceVariableType.DESCRIPTIVE)
-        return "descriptive";
-      return "?";
-      }
-    public String toSystem(EvidenceVariableType code) {
       return code.getSystem();
       }
     }
@@ -1353,6 +1243,286 @@ public class EvidenceVariable extends MetadataResource {
 
   }
 
+    @Block()
+    public static class EvidenceVariableCategoryComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A human-readable title or representation of the grouping.
+         */
+        @Child(name = "name", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Description of the grouping", formalDefinition="A human-readable title or representation of the grouping." )
+        protected StringType name;
+
+        /**
+         * Value or set of values that define the grouping.
+         */
+        @Child(name = "value", type = {CodeableConcept.class, Quantity.class, Range.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Definition of the grouping", formalDefinition="Value or set of values that define the grouping." )
+        protected DataType value;
+
+        private static final long serialVersionUID = 1839679495L;
+
+    /**
+     * Constructor
+     */
+      public EvidenceVariableCategoryComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #name} (A human-readable title or representation of the grouping.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public StringType getNameElement() { 
+          if (this.name == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceVariableCategoryComponent.name");
+            else if (Configuration.doAutoCreate())
+              this.name = new StringType(); // bb
+          return this.name;
+        }
+
+        public boolean hasNameElement() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        public boolean hasName() { 
+          return this.name != null && !this.name.isEmpty();
+        }
+
+        /**
+         * @param value {@link #name} (A human-readable title or representation of the grouping.). This is the underlying object with id, value and extensions. The accessor "getName" gives direct access to the value
+         */
+        public EvidenceVariableCategoryComponent setNameElement(StringType value) { 
+          this.name = value;
+          return this;
+        }
+
+        /**
+         * @return A human-readable title or representation of the grouping.
+         */
+        public String getName() { 
+          return this.name == null ? null : this.name.getValue();
+        }
+
+        /**
+         * @param value A human-readable title or representation of the grouping.
+         */
+        public EvidenceVariableCategoryComponent setName(String value) { 
+          if (Utilities.noString(value))
+            this.name = null;
+          else {
+            if (this.name == null)
+              this.name = new StringType();
+            this.name.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (Value or set of values that define the grouping.)
+         */
+        public DataType getValue() { 
+          return this.value;
+        }
+
+        /**
+         * @return {@link #value} (Value or set of values that define the grouping.)
+         */
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
+        }
+
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
+        }
+
+        /**
+         * @return {@link #value} (Value or set of values that define the grouping.)
+         */
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
+        }
+
+        public boolean hasValueQuantity() { 
+          return this != null && this.value instanceof Quantity;
+        }
+
+        /**
+         * @return {@link #value} (Value or set of values that define the grouping.)
+         */
+        public Range getValueRange() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Range();
+          if (!(this.value instanceof Range))
+            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Range) this.value;
+        }
+
+        public boolean hasValueRange() { 
+          return this != null && this.value instanceof Range;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (Value or set of values that define the grouping.)
+         */
+        public EvidenceVariableCategoryComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof CodeableConcept || value instanceof Quantity || value instanceof Range))
+            throw new Error("Not the right type for EvidenceVariable.category.value[x]: "+value.fhirType());
+          this.value = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("name", "string", "A human-readable title or representation of the grouping.", 0, 1, name));
+          children.add(new Property("value[x]", "CodeableConcept|Quantity|Range", "Value or set of values that define the grouping.", 0, 1, value));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3373707: /*name*/  return new Property("name", "string", "A human-readable title or representation of the grouping.", 0, 1, name);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|Quantity|Range", "Value or set of values that define the grouping.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|Quantity|Range", "Value or set of values that define the grouping.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Value or set of values that define the grouping.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Value or set of values that define the grouping.", 0, 1, value);
+          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "Value or set of values that define the grouping.", 0, 1, value);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3373707: // name
+          this.name = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 111972721: // value
+          this.value = TypeConvertor.castToType(value); // DataType
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("name")) {
+          this.name = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3373707:  return getNameElement();
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3373707: /*name*/ return new String[] {"string"};
+        case 111972721: /*value*/ return new String[] {"CodeableConcept", "Quantity", "Range"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("name")) {
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.category.name");
+        }
+        else if (name.equals("valueCodeableConcept")) {
+          this.value = new CodeableConcept();
+          return this.value;
+        }
+        else if (name.equals("valueQuantity")) {
+          this.value = new Quantity();
+          return this.value;
+        }
+        else if (name.equals("valueRange")) {
+          this.value = new Range();
+          return this.value;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public EvidenceVariableCategoryComponent copy() {
+        EvidenceVariableCategoryComponent dst = new EvidenceVariableCategoryComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(EvidenceVariableCategoryComponent dst) {
+        super.copyValues(dst);
+        dst.name = name == null ? null : name.copy();
+        dst.value = value == null ? null : value.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof EvidenceVariableCategoryComponent))
+          return false;
+        EvidenceVariableCategoryComponent o = (EvidenceVariableCategoryComponent) other_;
+        return compareDeep(name, o.name, true) && compareDeep(value, o.value, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof EvidenceVariableCategoryComponent))
+          return false;
+        EvidenceVariableCategoryComponent o = (EvidenceVariableCategoryComponent) other_;
+        return compareValues(name, o.name, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, value);
+      }
+
+  public String fhirType() {
+    return "EvidenceVariable.category";
+
+  }
+
+  }
+
     /**
      * An absolute URI that is used to identify this evidence variable when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this evidence variable is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the evidence variable is stored on different servers.
      */
@@ -1418,138 +1588,86 @@ public class EvidenceVariable extends MetadataResource {
     protected DateTimeType date;
 
     /**
-     * The name of the organization or individual that published the evidence variable.
-     */
-    @Child(name = "publisher", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the evidence variable." )
-    protected StringType publisher;
-
-    /**
-     * Contact details to assist a user in finding and communicating with the publisher.
-     */
-    @Child(name = "contact", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
-    protected List<ContactDetail> contact;
-
-    /**
      * A free text natural language description of the evidence variable from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Natural language description of the evidence variable", formalDefinition="A free text natural language description of the evidence variable from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * A human-readable string to clarify or explain concepts about the resource.
      */
-    @Child(name = "note", type = {Annotation.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Used for footnotes or explanatory notes", formalDefinition="A human-readable string to clarify or explain concepts about the resource." )
     protected List<Annotation> note;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence variable instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence variable instances." )
     protected List<UsageContext> useContext;
 
     /**
-     * A legal or geographic region in which the evidence variable is intended to be used.
+     * The name of the organization or individual that published the evidence variable.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Intended jurisdiction for evidence variable (if applicable)", formalDefinition="A legal or geographic region in which the evidence variable is intended to be used." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
-    protected List<CodeableConcept> jurisdiction;
+    @Child(name = "publisher", type = {StringType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the evidence variable." )
+    protected StringType publisher;
 
     /**
-     * A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable.
+     * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable." )
-    protected MarkdownType copyright;
-
-    /**
-     * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
-     */
-    @Child(name = "approvalDate", type = {DateType.class}, order=16, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="When the evidence variable was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
-    protected DateType approvalDate;
-
-    /**
-     * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
-     */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=17, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="When the evidence variable was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
-    protected DateType lastReviewDate;
-
-    /**
-     * The period during which the evidence variable content was or is planned to be in active use.
-     */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=18, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="When the evidence variable is expected to be used", formalDefinition="The period during which the evidence variable content was or is planned to be in active use." )
-    protected Period effectivePeriod;
-
-    /**
-     * Descriptive topics related to the content of the EvidenceVariable. Topics provide a high-level categorization grouping types of EvidenceVariables that can be useful for filtering and searching.
-     */
-    @Child(name = "topic", type = {CodeableConcept.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="The category of the EvidenceVariable, such as Education, Treatment, Assessment, etc.", formalDefinition="Descriptive topics related to the content of the EvidenceVariable. Topics provide a high-level categorization grouping types of EvidenceVariables that can be useful for filtering and searching." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/definition-topic")
-    protected List<CodeableConcept> topic;
+    @Child(name = "contact", type = {ContactDetail.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
+    protected List<ContactDetail> contact;
 
     /**
      * An individiual or organization primarily involved in the creation and maintenance of the content.
      */
-    @Child(name = "author", type = {ContactDetail.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "author", type = {ContactDetail.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who authored the content", formalDefinition="An individiual or organization primarily involved in the creation and maintenance of the content." )
     protected List<ContactDetail> author;
 
     /**
      * An individual or organization primarily responsible for internal coherence of the content.
      */
-    @Child(name = "editor", type = {ContactDetail.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "editor", type = {ContactDetail.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who edited the content", formalDefinition="An individual or organization primarily responsible for internal coherence of the content." )
     protected List<ContactDetail> editor;
 
     /**
      * An individual or organization primarily responsible for review of some aspect of the content.
      */
-    @Child(name = "reviewer", type = {ContactDetail.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who reviewed the content", formalDefinition="An individual or organization primarily responsible for review of some aspect of the content." )
     protected List<ContactDetail> reviewer;
 
     /**
      * An individual or organization responsible for officially endorsing the content for use in some setting.
      */
-    @Child(name = "endorser", type = {ContactDetail.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "endorser", type = {ContactDetail.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who endorsed the content", formalDefinition="An individual or organization responsible for officially endorsing the content for use in some setting." )
     protected List<ContactDetail> endorser;
 
     /**
      * Related artifacts such as additional documentation, justification, or bibliographic references.
      */
-    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional documentation, citations, etc.", formalDefinition="Related artifacts such as additional documentation, justification, or bibliographic references." )
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
-     * Used for an outcome to classify.
-     */
-    @Child(name = "type", type = {CodeType.class}, order=25, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="dichotomous | continuous | descriptive", formalDefinition="Used for an outcome to classify." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/variable-type")
-    protected Enumeration<EvidenceVariableType> type;
-
-    /**
      * True if the actual variable measured, false if a conceptual representation of the intended variable.
      */
-    @Child(name = "actual", type = {BooleanType.class}, order=26, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "actual", type = {BooleanType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Actual or conceptual", formalDefinition="True if the actual variable measured, false if a conceptual representation of the intended variable." )
     protected BooleanType actual;
 
     /**
      * Used to specify if two or more characteristics are combined with OR or AND.
      */
-    @Child(name = "characteristicCombination", type = {CodeType.class}, order=27, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "characteristicCombination", type = {CodeType.class}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="intersection | union", formalDefinition="Used to specify if two or more characteristics are combined with OR or AND." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/characteristic-combination")
     protected Enumeration<CharacteristicCombination> characteristicCombination;
@@ -1557,11 +1675,26 @@ public class EvidenceVariable extends MetadataResource {
     /**
      * A characteristic that defines the members of the evidence element. Multiple characteristics are applied with "and" semantics.
      */
-    @Child(name = "characteristic", type = {}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "characteristic", type = {}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="What defines the members of the evidence element", formalDefinition="A characteristic that defines the members of the evidence element. Multiple characteristics are applied with \"and\" semantics." )
     protected List<EvidenceVariableCharacteristicComponent> characteristic;
 
-    private static final long serialVersionUID = 769110431L;
+    /**
+     * Used for an outcome to classify.
+     */
+    @Child(name = "handling", type = {CodeType.class}, order=22, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="continuous | dichotomous | ordinal | polychotomous", formalDefinition="Used for an outcome to classify." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/variable-handling")
+    protected Enumeration<EvidenceVariableHandling> handling;
+
+    /**
+     * A grouping (or set of values) described along with other groupings to specify the set of groupings allowed for the variable.
+     */
+    @Child(name = "category", type = {}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="A grouping for ordinal or polychotomous variables", formalDefinition="A grouping (or set of values) described along with other groupings to specify the set of groupings allowed for the variable." )
+    protected List<EvidenceVariableCategoryComponent> category;
+
+    private static final long serialVersionUID = 449375263L;
 
   /**
    * Constructor
@@ -2020,108 +2153,6 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
-     * @return {@link #publisher} (The name of the organization or individual that published the evidence variable.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
-     */
-    public StringType getPublisherElement() { 
-      if (this.publisher == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create EvidenceVariable.publisher");
-        else if (Configuration.doAutoCreate())
-          this.publisher = new StringType(); // bb
-      return this.publisher;
-    }
-
-    public boolean hasPublisherElement() { 
-      return this.publisher != null && !this.publisher.isEmpty();
-    }
-
-    public boolean hasPublisher() { 
-      return this.publisher != null && !this.publisher.isEmpty();
-    }
-
-    /**
-     * @param value {@link #publisher} (The name of the organization or individual that published the evidence variable.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
-     */
-    public EvidenceVariable setPublisherElement(StringType value) { 
-      this.publisher = value;
-      return this;
-    }
-
-    /**
-     * @return The name of the organization or individual that published the evidence variable.
-     */
-    public String getPublisher() { 
-      return this.publisher == null ? null : this.publisher.getValue();
-    }
-
-    /**
-     * @param value The name of the organization or individual that published the evidence variable.
-     */
-    public EvidenceVariable setPublisher(String value) { 
-      if (Utilities.noString(value))
-        this.publisher = null;
-      else {
-        if (this.publisher == null)
-          this.publisher = new StringType();
-        this.publisher.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #contact} (Contact details to assist a user in finding and communicating with the publisher.)
-     */
-    public List<ContactDetail> getContact() { 
-      if (this.contact == null)
-        this.contact = new ArrayList<ContactDetail>();
-      return this.contact;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public EvidenceVariable setContact(List<ContactDetail> theContact) { 
-      this.contact = theContact;
-      return this;
-    }
-
-    public boolean hasContact() { 
-      if (this.contact == null)
-        return false;
-      for (ContactDetail item : this.contact)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public ContactDetail addContact() { //3
-      ContactDetail t = new ContactDetail();
-      if (this.contact == null)
-        this.contact = new ArrayList<ContactDetail>();
-      this.contact.add(t);
-      return t;
-    }
-
-    public EvidenceVariable addContact(ContactDetail t) { //3
-      if (t == null)
-        return this;
-      if (this.contact == null)
-        this.contact = new ArrayList<ContactDetail>();
-      this.contact.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
-     */
-    public ContactDetail getContactFirstRep() { 
-      if (getContact().isEmpty()) {
-        addContact();
-      }
-      return getContact().get(0);
-    }
-
-    /**
      * @return {@link #description} (A free text natural language description of the evidence variable from a consumer's perspective.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public MarkdownType getDescriptionElement() { 
@@ -2277,280 +2308,105 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
-     * @return {@link #jurisdiction} (A legal or geographic region in which the evidence variable is intended to be used.)
+     * @return {@link #publisher} (The name of the organization or individual that published the evidence variable.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
      */
-    public List<CodeableConcept> getJurisdiction() { 
-      if (this.jurisdiction == null)
-        this.jurisdiction = new ArrayList<CodeableConcept>();
-      return this.jurisdiction;
+    public StringType getPublisherElement() { 
+      if (this.publisher == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create EvidenceVariable.publisher");
+        else if (Configuration.doAutoCreate())
+          this.publisher = new StringType(); // bb
+      return this.publisher;
+    }
+
+    public boolean hasPublisherElement() { 
+      return this.publisher != null && !this.publisher.isEmpty();
+    }
+
+    public boolean hasPublisher() { 
+      return this.publisher != null && !this.publisher.isEmpty();
+    }
+
+    /**
+     * @param value {@link #publisher} (The name of the organization or individual that published the evidence variable.). This is the underlying object with id, value and extensions. The accessor "getPublisher" gives direct access to the value
+     */
+    public EvidenceVariable setPublisherElement(StringType value) { 
+      this.publisher = value;
+      return this;
+    }
+
+    /**
+     * @return The name of the organization or individual that published the evidence variable.
+     */
+    public String getPublisher() { 
+      return this.publisher == null ? null : this.publisher.getValue();
+    }
+
+    /**
+     * @param value The name of the organization or individual that published the evidence variable.
+     */
+    public EvidenceVariable setPublisher(String value) { 
+      if (Utilities.noString(value))
+        this.publisher = null;
+      else {
+        if (this.publisher == null)
+          this.publisher = new StringType();
+        this.publisher.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #contact} (Contact details to assist a user in finding and communicating with the publisher.)
+     */
+    public List<ContactDetail> getContact() { 
+      if (this.contact == null)
+        this.contact = new ArrayList<ContactDetail>();
+      return this.contact;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public EvidenceVariable setJurisdiction(List<CodeableConcept> theJurisdiction) { 
-      this.jurisdiction = theJurisdiction;
+    public EvidenceVariable setContact(List<ContactDetail> theContact) { 
+      this.contact = theContact;
       return this;
     }
 
-    public boolean hasJurisdiction() { 
-      if (this.jurisdiction == null)
+    public boolean hasContact() { 
+      if (this.contact == null)
         return false;
-      for (CodeableConcept item : this.jurisdiction)
+      for (ContactDetail item : this.contact)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public CodeableConcept addJurisdiction() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.jurisdiction == null)
-        this.jurisdiction = new ArrayList<CodeableConcept>();
-      this.jurisdiction.add(t);
+    public ContactDetail addContact() { //3
+      ContactDetail t = new ContactDetail();
+      if (this.contact == null)
+        this.contact = new ArrayList<ContactDetail>();
+      this.contact.add(t);
       return t;
     }
 
-    public EvidenceVariable addJurisdiction(CodeableConcept t) { //3
+    public EvidenceVariable addContact(ContactDetail t) { //3
       if (t == null)
         return this;
-      if (this.jurisdiction == null)
-        this.jurisdiction = new ArrayList<CodeableConcept>();
-      this.jurisdiction.add(t);
+      if (this.contact == null)
+        this.contact = new ArrayList<ContactDetail>();
+      this.contact.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #contact}, creating it if it does not already exist {3}
      */
-    public CodeableConcept getJurisdictionFirstRep() { 
-      if (getJurisdiction().isEmpty()) {
-        addJurisdiction();
+    public ContactDetail getContactFirstRep() { 
+      if (getContact().isEmpty()) {
+        addContact();
       }
-      return getJurisdiction().get(0);
-    }
-
-    /**
-     * @return {@link #copyright} (A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
-     */
-    public MarkdownType getCopyrightElement() { 
-      if (this.copyright == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create EvidenceVariable.copyright");
-        else if (Configuration.doAutoCreate())
-          this.copyright = new MarkdownType(); // bb
-      return this.copyright;
-    }
-
-    public boolean hasCopyrightElement() { 
-      return this.copyright != null && !this.copyright.isEmpty();
-    }
-
-    public boolean hasCopyright() { 
-      return this.copyright != null && !this.copyright.isEmpty();
-    }
-
-    /**
-     * @param value {@link #copyright} (A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
-     */
-    public EvidenceVariable setCopyrightElement(MarkdownType value) { 
-      this.copyright = value;
-      return this;
-    }
-
-    /**
-     * @return A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable.
-     */
-    public String getCopyright() { 
-      return this.copyright == null ? null : this.copyright.getValue();
-    }
-
-    /**
-     * @param value A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable.
-     */
-    public EvidenceVariable setCopyright(String value) { 
-      if (value == null)
-        this.copyright = null;
-      else {
-        if (this.copyright == null)
-          this.copyright = new MarkdownType();
-        this.copyright.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
-     */
-    public DateType getApprovalDateElement() { 
-      if (this.approvalDate == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create EvidenceVariable.approvalDate");
-        else if (Configuration.doAutoCreate())
-          this.approvalDate = new DateType(); // bb
-      return this.approvalDate;
-    }
-
-    public boolean hasApprovalDateElement() { 
-      return this.approvalDate != null && !this.approvalDate.isEmpty();
-    }
-
-    public boolean hasApprovalDate() { 
-      return this.approvalDate != null && !this.approvalDate.isEmpty();
-    }
-
-    /**
-     * @param value {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
-     */
-    public EvidenceVariable setApprovalDateElement(DateType value) { 
-      this.approvalDate = value;
-      return this;
-    }
-
-    /**
-     * @return The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
-     */
-    public Date getApprovalDate() { 
-      return this.approvalDate == null ? null : this.approvalDate.getValue();
-    }
-
-    /**
-     * @param value The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
-     */
-    public EvidenceVariable setApprovalDate(Date value) { 
-      if (value == null)
-        this.approvalDate = null;
-      else {
-        if (this.approvalDate == null)
-          this.approvalDate = new DateType();
-        this.approvalDate.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
-     */
-    public DateType getLastReviewDateElement() { 
-      if (this.lastReviewDate == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create EvidenceVariable.lastReviewDate");
-        else if (Configuration.doAutoCreate())
-          this.lastReviewDate = new DateType(); // bb
-      return this.lastReviewDate;
-    }
-
-    public boolean hasLastReviewDateElement() { 
-      return this.lastReviewDate != null && !this.lastReviewDate.isEmpty();
-    }
-
-    public boolean hasLastReviewDate() { 
-      return this.lastReviewDate != null && !this.lastReviewDate.isEmpty();
-    }
-
-    /**
-     * @param value {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
-     */
-    public EvidenceVariable setLastReviewDateElement(DateType value) { 
-      this.lastReviewDate = value;
-      return this;
-    }
-
-    /**
-     * @return The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
-     */
-    public Date getLastReviewDate() { 
-      return this.lastReviewDate == null ? null : this.lastReviewDate.getValue();
-    }
-
-    /**
-     * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
-     */
-    public EvidenceVariable setLastReviewDate(Date value) { 
-      if (value == null)
-        this.lastReviewDate = null;
-      else {
-        if (this.lastReviewDate == null)
-          this.lastReviewDate = new DateType();
-        this.lastReviewDate.setValue(value);
-      }
-      return this;
-    }
-
-    /**
-     * @return {@link #effectivePeriod} (The period during which the evidence variable content was or is planned to be in active use.)
-     */
-    public Period getEffectivePeriod() { 
-      if (this.effectivePeriod == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create EvidenceVariable.effectivePeriod");
-        else if (Configuration.doAutoCreate())
-          this.effectivePeriod = new Period(); // cc
-      return this.effectivePeriod;
-    }
-
-    public boolean hasEffectivePeriod() { 
-      return this.effectivePeriod != null && !this.effectivePeriod.isEmpty();
-    }
-
-    /**
-     * @param value {@link #effectivePeriod} (The period during which the evidence variable content was or is planned to be in active use.)
-     */
-    public EvidenceVariable setEffectivePeriod(Period value) { 
-      this.effectivePeriod = value;
-      return this;
-    }
-
-    /**
-     * @return {@link #topic} (Descriptive topics related to the content of the EvidenceVariable. Topics provide a high-level categorization grouping types of EvidenceVariables that can be useful for filtering and searching.)
-     */
-    public List<CodeableConcept> getTopic() { 
-      if (this.topic == null)
-        this.topic = new ArrayList<CodeableConcept>();
-      return this.topic;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public EvidenceVariable setTopic(List<CodeableConcept> theTopic) { 
-      this.topic = theTopic;
-      return this;
-    }
-
-    public boolean hasTopic() { 
-      if (this.topic == null)
-        return false;
-      for (CodeableConcept item : this.topic)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public CodeableConcept addTopic() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.topic == null)
-        this.topic = new ArrayList<CodeableConcept>();
-      this.topic.add(t);
-      return t;
-    }
-
-    public EvidenceVariable addTopic(CodeableConcept t) { //3
-      if (t == null)
-        return this;
-      if (this.topic == null)
-        this.topic = new ArrayList<CodeableConcept>();
-      this.topic.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {3}
-     */
-    public CodeableConcept getTopicFirstRep() { 
-      if (getTopic().isEmpty()) {
-        addTopic();
-      }
-      return getTopic().get(0);
+      return getContact().get(0);
     }
 
     /**
@@ -2819,55 +2675,6 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
-     * @return {@link #type} (Used for an outcome to classify.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
-     */
-    public Enumeration<EvidenceVariableType> getTypeElement() { 
-      if (this.type == null)
-        if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create EvidenceVariable.type");
-        else if (Configuration.doAutoCreate())
-          this.type = new Enumeration<EvidenceVariableType>(new EvidenceVariableTypeEnumFactory()); // bb
-      return this.type;
-    }
-
-    public boolean hasTypeElement() { 
-      return this.type != null && !this.type.isEmpty();
-    }
-
-    public boolean hasType() { 
-      return this.type != null && !this.type.isEmpty();
-    }
-
-    /**
-     * @param value {@link #type} (Used for an outcome to classify.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
-     */
-    public EvidenceVariable setTypeElement(Enumeration<EvidenceVariableType> value) { 
-      this.type = value;
-      return this;
-    }
-
-    /**
-     * @return Used for an outcome to classify.
-     */
-    public EvidenceVariableType getType() { 
-      return this.type == null ? null : this.type.getValue();
-    }
-
-    /**
-     * @param value Used for an outcome to classify.
-     */
-    public EvidenceVariable setType(EvidenceVariableType value) { 
-      if (value == null)
-        this.type = null;
-      else {
-        if (this.type == null)
-          this.type = new Enumeration<EvidenceVariableType>(new EvidenceVariableTypeEnumFactory());
-        this.type.setValue(value);
-      }
-      return this;
-    }
-
-    /**
      * @return {@link #actual} (True if the actual variable measured, false if a conceptual representation of the intended variable.). This is the underlying object with id, value and extensions. The accessor "getActual" gives direct access to the value
      */
     public BooleanType getActualElement() { 
@@ -3015,6 +2822,108 @@ public class EvidenceVariable extends MetadataResource {
     }
 
     /**
+     * @return {@link #handling} (Used for an outcome to classify.). This is the underlying object with id, value and extensions. The accessor "getHandling" gives direct access to the value
+     */
+    public Enumeration<EvidenceVariableHandling> getHandlingElement() { 
+      if (this.handling == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create EvidenceVariable.handling");
+        else if (Configuration.doAutoCreate())
+          this.handling = new Enumeration<EvidenceVariableHandling>(new EvidenceVariableHandlingEnumFactory()); // bb
+      return this.handling;
+    }
+
+    public boolean hasHandlingElement() { 
+      return this.handling != null && !this.handling.isEmpty();
+    }
+
+    public boolean hasHandling() { 
+      return this.handling != null && !this.handling.isEmpty();
+    }
+
+    /**
+     * @param value {@link #handling} (Used for an outcome to classify.). This is the underlying object with id, value and extensions. The accessor "getHandling" gives direct access to the value
+     */
+    public EvidenceVariable setHandlingElement(Enumeration<EvidenceVariableHandling> value) { 
+      this.handling = value;
+      return this;
+    }
+
+    /**
+     * @return Used for an outcome to classify.
+     */
+    public EvidenceVariableHandling getHandling() { 
+      return this.handling == null ? null : this.handling.getValue();
+    }
+
+    /**
+     * @param value Used for an outcome to classify.
+     */
+    public EvidenceVariable setHandling(EvidenceVariableHandling value) { 
+      if (value == null)
+        this.handling = null;
+      else {
+        if (this.handling == null)
+          this.handling = new Enumeration<EvidenceVariableHandling>(new EvidenceVariableHandlingEnumFactory());
+        this.handling.setValue(value);
+      }
+      return this;
+    }
+
+    /**
+     * @return {@link #category} (A grouping (or set of values) described along with other groupings to specify the set of groupings allowed for the variable.)
+     */
+    public List<EvidenceVariableCategoryComponent> getCategory() { 
+      if (this.category == null)
+        this.category = new ArrayList<EvidenceVariableCategoryComponent>();
+      return this.category;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public EvidenceVariable setCategory(List<EvidenceVariableCategoryComponent> theCategory) { 
+      this.category = theCategory;
+      return this;
+    }
+
+    public boolean hasCategory() { 
+      if (this.category == null)
+        return false;
+      for (EvidenceVariableCategoryComponent item : this.category)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public EvidenceVariableCategoryComponent addCategory() { //3
+      EvidenceVariableCategoryComponent t = new EvidenceVariableCategoryComponent();
+      if (this.category == null)
+        this.category = new ArrayList<EvidenceVariableCategoryComponent>();
+      this.category.add(t);
+      return t;
+    }
+
+    public EvidenceVariable addCategory(EvidenceVariableCategoryComponent t) { //3
+      if (t == null)
+        return this;
+      if (this.category == null)
+        this.category = new ArrayList<EvidenceVariableCategoryComponent>();
+      this.category.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #category}, creating it if it does not already exist {3}
+     */
+    public EvidenceVariableCategoryComponent getCategoryFirstRep() { 
+      if (getCategory().isEmpty()) {
+        addCategory();
+      }
+      return getCategory().get(0);
+    }
+
+    /**
      * not supported on this implementation
      */
     @Override
@@ -3054,6 +2963,41 @@ public class EvidenceVariable extends MetadataResource {
      * not supported on this implementation
      */
     @Override
+    public int getJurisdictionMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #jurisdiction} (A legal or geographic region in which the evidence variable is intended to be used.)
+     */
+    public List<CodeableConcept> getJurisdiction() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public EvidenceVariable setJurisdiction(List<CodeableConcept> theJurisdiction) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"jurisdiction\"");
+    }
+    public boolean hasJurisdiction() { 
+      return false;
+    }
+
+    public CodeableConcept addJurisdiction() { //3
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"jurisdiction\"");
+    }
+    public EvidenceVariable addJurisdiction(CodeableConcept t) { //3
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"jurisdiction\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #jurisdiction}, creating it if it does not already exist {2}
+     */
+    public CodeableConcept getJurisdictionFirstRep() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"jurisdiction\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
     public int getPurposeMax() { 
       return 0;
     }
@@ -3086,6 +3030,137 @@ public class EvidenceVariable extends MetadataResource {
     public EvidenceVariable setPurpose(String value) { 
       throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"purpose\"");
     }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getCopyrightMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #copyright} (A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     */
+    public MarkdownType getCopyrightElement() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"copyright\"");
+    }
+
+    public boolean hasCopyrightElement() { 
+      return false;
+    }
+    public boolean hasCopyright() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #copyright} (A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable.). This is the underlying object with id, value and extensions. The accessor "getCopyright" gives direct access to the value
+     */
+    public EvidenceVariable setCopyrightElement(MarkdownType value) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"copyright\"");
+    }
+    public String getCopyright() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"copyright\"");
+    }
+    /**
+     * @param value A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable.
+     */
+    public EvidenceVariable setCopyright(String value) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"copyright\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getApprovalDateMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
+     */
+    public DateType getApprovalDateElement() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"approvalDate\"");
+    }
+
+    public boolean hasApprovalDateElement() { 
+      return false;
+    }
+    public boolean hasApprovalDate() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #approvalDate} (The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.). This is the underlying object with id, value and extensions. The accessor "getApprovalDate" gives direct access to the value
+     */
+    public EvidenceVariable setApprovalDateElement(DateType value) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"approvalDate\"");
+    }
+    public Date getApprovalDate() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"approvalDate\"");
+    }
+    /**
+     * @param value The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
+     */
+    public EvidenceVariable setApprovalDate(Date value) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"approvalDate\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getLastReviewDateMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
+     */
+    public DateType getLastReviewDateElement() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"lastReviewDate\"");
+    }
+
+    public boolean hasLastReviewDateElement() { 
+      return false;
+    }
+    public boolean hasLastReviewDate() {
+      return false;
+    }
+
+    /**
+     * @param value {@link #lastReviewDate} (The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.). This is the underlying object with id, value and extensions. The accessor "getLastReviewDate" gives direct access to the value
+     */
+    public EvidenceVariable setLastReviewDateElement(DateType value) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"lastReviewDate\"");
+    }
+    public Date getLastReviewDate() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"lastReviewDate\"");
+    }
+    /**
+     * @param value The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
+     */
+    public EvidenceVariable setLastReviewDate(Date value) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"lastReviewDate\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getEffectivePeriodMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #effectivePeriod} (The period during which the evidence variable content was or is planned to be in active use.)
+     */
+    public Period getEffectivePeriod() { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"effectivePeriod\"");
+    }
+    public boolean hasEffectivePeriod() { 
+      return false;
+    }
+    /**
+     * @param value {@link #effectivePeriod} (The period during which the evidence variable content was or is planned to be in active use.)
+     */
+    public EvidenceVariable setEffectivePeriod(Period value) { 
+      throw new Error("The resource type \"EvidenceVariable\" does not implement the property \"effectivePeriod\"");
+    }
+
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this evidence variable when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this evidence variable is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the evidence variable is stored on different servers.", 0, 1, url));
@@ -3097,26 +3172,21 @@ public class EvidenceVariable extends MetadataResource {
         children.add(new Property("subtitle", "string", "An explanatory or alternate title for the EvidenceVariable giving additional information about its content.", 0, 1, subtitle));
         children.add(new Property("status", "code", "The status of this evidence variable. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the evidence variable was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the evidence variable changes.", 0, 1, date));
-        children.add(new Property("publisher", "string", "The name of the organization or individual that published the evidence variable.", 0, 1, publisher));
-        children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("description", "markdown", "A free text natural language description of the evidence variable from a consumer's perspective.", 0, 1, description));
         children.add(new Property("note", "Annotation", "A human-readable string to clarify or explain concepts about the resource.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence variable instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
-        children.add(new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the evidence variable is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
-        children.add(new Property("copyright", "markdown", "A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable.", 0, 1, copyright));
-        children.add(new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate));
-        children.add(new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate));
-        children.add(new Property("effectivePeriod", "Period", "The period during which the evidence variable content was or is planned to be in active use.", 0, 1, effectivePeriod));
-        children.add(new Property("topic", "CodeableConcept", "Descriptive topics related to the content of the EvidenceVariable. Topics provide a high-level categorization grouping types of EvidenceVariables that can be useful for filtering and searching.", 0, java.lang.Integer.MAX_VALUE, topic));
+        children.add(new Property("publisher", "string", "The name of the organization or individual that published the evidence variable.", 0, 1, publisher));
+        children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
         children.add(new Property("author", "ContactDetail", "An individiual or organization primarily involved in the creation and maintenance of the content.", 0, java.lang.Integer.MAX_VALUE, author));
         children.add(new Property("editor", "ContactDetail", "An individual or organization primarily responsible for internal coherence of the content.", 0, java.lang.Integer.MAX_VALUE, editor));
         children.add(new Property("reviewer", "ContactDetail", "An individual or organization primarily responsible for review of some aspect of the content.", 0, java.lang.Integer.MAX_VALUE, reviewer));
         children.add(new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the content for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser));
         children.add(new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, or bibliographic references.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact));
-        children.add(new Property("type", "code", "Used for an outcome to classify.", 0, 1, type));
         children.add(new Property("actual", "boolean", "True if the actual variable measured, false if a conceptual representation of the intended variable.", 0, 1, actual));
         children.add(new Property("characteristicCombination", "code", "Used to specify if two or more characteristics are combined with OR or AND.", 0, 1, characteristicCombination));
         children.add(new Property("characteristic", "", "A characteristic that defines the members of the evidence element. Multiple characteristics are applied with \"and\" semantics.", 0, java.lang.Integer.MAX_VALUE, characteristic));
+        children.add(new Property("handling", "code", "Used for an outcome to classify.", 0, 1, handling));
+        children.add(new Property("category", "", "A grouping (or set of values) described along with other groupings to specify the set of groupings allowed for the variable.", 0, java.lang.Integer.MAX_VALUE, category));
       }
 
       @Override
@@ -3131,26 +3201,21 @@ public class EvidenceVariable extends MetadataResource {
         case -2060497896: /*subtitle*/  return new Property("subtitle", "string", "An explanatory or alternate title for the EvidenceVariable giving additional information about its content.", 0, 1, subtitle);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this evidence variable. Enables tracking the life-cycle of the content.", 0, 1, status);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the evidence variable was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the evidence variable changes.", 0, 1, date);
-        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the evidence variable.", 0, 1, publisher);
-        case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1724546052: /*description*/  return new Property("description", "markdown", "A free text natural language description of the evidence variable from a consumer's perspective.", 0, 1, description);
         case 3387378: /*note*/  return new Property("note", "Annotation", "A human-readable string to clarify or explain concepts about the resource.", 0, java.lang.Integer.MAX_VALUE, note);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence variable instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
-        case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the evidence variable is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
-        case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the evidence variable and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the evidence variable.", 0, 1, copyright);
-        case 223539345: /*approvalDate*/  return new Property("approvalDate", "date", "The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.", 0, 1, approvalDate);
-        case -1687512484: /*lastReviewDate*/  return new Property("lastReviewDate", "date", "The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.", 0, 1, lastReviewDate);
-        case -403934648: /*effectivePeriod*/  return new Property("effectivePeriod", "Period", "The period during which the evidence variable content was or is planned to be in active use.", 0, 1, effectivePeriod);
-        case 110546223: /*topic*/  return new Property("topic", "CodeableConcept", "Descriptive topics related to the content of the EvidenceVariable. Topics provide a high-level categorization grouping types of EvidenceVariables that can be useful for filtering and searching.", 0, java.lang.Integer.MAX_VALUE, topic);
+        case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the evidence variable.", 0, 1, publisher);
+        case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
         case -1406328437: /*author*/  return new Property("author", "ContactDetail", "An individiual or organization primarily involved in the creation and maintenance of the content.", 0, java.lang.Integer.MAX_VALUE, author);
         case -1307827859: /*editor*/  return new Property("editor", "ContactDetail", "An individual or organization primarily responsible for internal coherence of the content.", 0, java.lang.Integer.MAX_VALUE, editor);
         case -261190139: /*reviewer*/  return new Property("reviewer", "ContactDetail", "An individual or organization primarily responsible for review of some aspect of the content.", 0, java.lang.Integer.MAX_VALUE, reviewer);
         case 1740277666: /*endorser*/  return new Property("endorser", "ContactDetail", "An individual or organization responsible for officially endorsing the content for use in some setting.", 0, java.lang.Integer.MAX_VALUE, endorser);
         case 666807069: /*relatedArtifact*/  return new Property("relatedArtifact", "RelatedArtifact", "Related artifacts such as additional documentation, justification, or bibliographic references.", 0, java.lang.Integer.MAX_VALUE, relatedArtifact);
-        case 3575610: /*type*/  return new Property("type", "code", "Used for an outcome to classify.", 0, 1, type);
         case -1422939762: /*actual*/  return new Property("actual", "boolean", "True if the actual variable measured, false if a conceptual representation of the intended variable.", 0, 1, actual);
         case -861347276: /*characteristicCombination*/  return new Property("characteristicCombination", "code", "Used to specify if two or more characteristics are combined with OR or AND.", 0, 1, characteristicCombination);
         case 366313883: /*characteristic*/  return new Property("characteristic", "", "A characteristic that defines the members of the evidence element. Multiple characteristics are applied with \"and\" semantics.", 0, java.lang.Integer.MAX_VALUE, characteristic);
+        case 2072805: /*handling*/  return new Property("handling", "code", "Used for an outcome to classify.", 0, 1, handling);
+        case 50511102: /*category*/  return new Property("category", "", "A grouping (or set of values) described along with other groupings to specify the set of groupings allowed for the variable.", 0, java.lang.Integer.MAX_VALUE, category);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -3168,26 +3233,21 @@ public class EvidenceVariable extends MetadataResource {
         case -2060497896: /*subtitle*/ return this.subtitle == null ? new Base[0] : new Base[] {this.subtitle}; // StringType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
-        case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // StringType
-        case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactDetail
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -669707736: /*useContext*/ return this.useContext == null ? new Base[0] : this.useContext.toArray(new Base[this.useContext.size()]); // UsageContext
-        case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
-        case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
-        case 223539345: /*approvalDate*/ return this.approvalDate == null ? new Base[0] : new Base[] {this.approvalDate}; // DateType
-        case -1687512484: /*lastReviewDate*/ return this.lastReviewDate == null ? new Base[0] : new Base[] {this.lastReviewDate}; // DateType
-        case -403934648: /*effectivePeriod*/ return this.effectivePeriod == null ? new Base[0] : new Base[] {this.effectivePeriod}; // Period
-        case 110546223: /*topic*/ return this.topic == null ? new Base[0] : this.topic.toArray(new Base[this.topic.size()]); // CodeableConcept
+        case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // StringType
+        case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactDetail
         case -1406328437: /*author*/ return this.author == null ? new Base[0] : this.author.toArray(new Base[this.author.size()]); // ContactDetail
         case -1307827859: /*editor*/ return this.editor == null ? new Base[0] : this.editor.toArray(new Base[this.editor.size()]); // ContactDetail
         case -261190139: /*reviewer*/ return this.reviewer == null ? new Base[0] : this.reviewer.toArray(new Base[this.reviewer.size()]); // ContactDetail
         case 1740277666: /*endorser*/ return this.endorser == null ? new Base[0] : this.endorser.toArray(new Base[this.endorser.size()]); // ContactDetail
         case 666807069: /*relatedArtifact*/ return this.relatedArtifact == null ? new Base[0] : this.relatedArtifact.toArray(new Base[this.relatedArtifact.size()]); // RelatedArtifact
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<EvidenceVariableType>
         case -1422939762: /*actual*/ return this.actual == null ? new Base[0] : new Base[] {this.actual}; // BooleanType
         case -861347276: /*characteristicCombination*/ return this.characteristicCombination == null ? new Base[0] : new Base[] {this.characteristicCombination}; // Enumeration<CharacteristicCombination>
         case 366313883: /*characteristic*/ return this.characteristic == null ? new Base[0] : this.characteristic.toArray(new Base[this.characteristic.size()]); // EvidenceVariableCharacteristicComponent
+        case 2072805: /*handling*/ return this.handling == null ? new Base[0] : new Base[] {this.handling}; // Enumeration<EvidenceVariableHandling>
+        case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // EvidenceVariableCategoryComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -3224,12 +3284,6 @@ public class EvidenceVariable extends MetadataResource {
         case 3076014: // date
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
-        case 1447404028: // publisher
-          this.publisher = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 951526432: // contact
-          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
-          return value;
         case -1724546052: // description
           this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
@@ -3239,23 +3293,11 @@ public class EvidenceVariable extends MetadataResource {
         case -669707736: // useContext
           this.getUseContext().add(TypeConvertor.castToUsageContext(value)); // UsageContext
           return value;
-        case -507075711: // jurisdiction
-          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+        case 1447404028: // publisher
+          this.publisher = TypeConvertor.castToString(value); // StringType
           return value;
-        case 1522889671: // copyright
-          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
-          return value;
-        case 223539345: // approvalDate
-          this.approvalDate = TypeConvertor.castToDate(value); // DateType
-          return value;
-        case -1687512484: // lastReviewDate
-          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
-          return value;
-        case -403934648: // effectivePeriod
-          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
-          return value;
-        case 110546223: // topic
-          this.getTopic().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+        case 951526432: // contact
+          this.getContact().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
           return value;
         case -1406328437: // author
           this.getAuthor().add(TypeConvertor.castToContactDetail(value)); // ContactDetail
@@ -3272,10 +3314,6 @@ public class EvidenceVariable extends MetadataResource {
         case 666807069: // relatedArtifact
           this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value)); // RelatedArtifact
           return value;
-        case 3575610: // type
-          value = new EvidenceVariableTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<EvidenceVariableType>
-          return value;
         case -1422939762: // actual
           this.actual = TypeConvertor.castToBoolean(value); // BooleanType
           return value;
@@ -3285,6 +3323,13 @@ public class EvidenceVariable extends MetadataResource {
           return value;
         case 366313883: // characteristic
           this.getCharacteristic().add((EvidenceVariableCharacteristicComponent) value); // EvidenceVariableCharacteristicComponent
+          return value;
+        case 2072805: // handling
+          value = new EvidenceVariableHandlingEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.handling = (Enumeration) value; // Enumeration<EvidenceVariableHandling>
+          return value;
+        case 50511102: // category
+          this.getCategory().add((EvidenceVariableCategoryComponent) value); // EvidenceVariableCategoryComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -3312,28 +3357,16 @@ public class EvidenceVariable extends MetadataResource {
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("date")) {
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
-        } else if (name.equals("publisher")) {
-          this.publisher = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("contact")) {
-          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("description")) {
           this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("useContext")) {
           this.getUseContext().add(TypeConvertor.castToUsageContext(value));
-        } else if (name.equals("jurisdiction")) {
-          this.getJurisdiction().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("copyright")) {
-          this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
-        } else if (name.equals("approvalDate")) {
-          this.approvalDate = TypeConvertor.castToDate(value); // DateType
-        } else if (name.equals("lastReviewDate")) {
-          this.lastReviewDate = TypeConvertor.castToDate(value); // DateType
-        } else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = TypeConvertor.castToPeriod(value); // Period
-        } else if (name.equals("topic")) {
-          this.getTopic().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("publisher")) {
+          this.publisher = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("contact")) {
+          this.getContact().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("author")) {
           this.getAuthor().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("editor")) {
@@ -3344,9 +3377,6 @@ public class EvidenceVariable extends MetadataResource {
           this.getEndorser().add(TypeConvertor.castToContactDetail(value));
         } else if (name.equals("relatedArtifact")) {
           this.getRelatedArtifact().add(TypeConvertor.castToRelatedArtifact(value));
-        } else if (name.equals("type")) {
-          value = new EvidenceVariableTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.type = (Enumeration) value; // Enumeration<EvidenceVariableType>
         } else if (name.equals("actual")) {
           this.actual = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("characteristicCombination")) {
@@ -3354,6 +3384,11 @@ public class EvidenceVariable extends MetadataResource {
           this.characteristicCombination = (Enumeration) value; // Enumeration<CharacteristicCombination>
         } else if (name.equals("characteristic")) {
           this.getCharacteristic().add((EvidenceVariableCharacteristicComponent) value);
+        } else if (name.equals("handling")) {
+          value = new EvidenceVariableHandlingEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.handling = (Enumeration) value; // Enumeration<EvidenceVariableHandling>
+        } else if (name.equals("category")) {
+          this.getCategory().add((EvidenceVariableCategoryComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -3371,26 +3406,21 @@ public class EvidenceVariable extends MetadataResource {
         case -2060497896:  return getSubtitleElement();
         case -892481550:  return getStatusElement();
         case 3076014:  return getDateElement();
-        case 1447404028:  return getPublisherElement();
-        case 951526432:  return addContact(); 
         case -1724546052:  return getDescriptionElement();
         case 3387378:  return addNote(); 
         case -669707736:  return addUseContext(); 
-        case -507075711:  return addJurisdiction(); 
-        case 1522889671:  return getCopyrightElement();
-        case 223539345:  return getApprovalDateElement();
-        case -1687512484:  return getLastReviewDateElement();
-        case -403934648:  return getEffectivePeriod();
-        case 110546223:  return addTopic(); 
+        case 1447404028:  return getPublisherElement();
+        case 951526432:  return addContact(); 
         case -1406328437:  return addAuthor(); 
         case -1307827859:  return addEditor(); 
         case -261190139:  return addReviewer(); 
         case 1740277666:  return addEndorser(); 
         case 666807069:  return addRelatedArtifact(); 
-        case 3575610:  return getTypeElement();
         case -1422939762:  return getActualElement();
         case -861347276:  return getCharacteristicCombinationElement();
         case 366313883:  return addCharacteristic(); 
+        case 2072805:  return getHandlingElement();
+        case 50511102:  return addCategory(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -3408,26 +3438,21 @@ public class EvidenceVariable extends MetadataResource {
         case -2060497896: /*subtitle*/ return new String[] {"string"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
-        case 1447404028: /*publisher*/ return new String[] {"string"};
-        case 951526432: /*contact*/ return new String[] {"ContactDetail"};
         case -1724546052: /*description*/ return new String[] {"markdown"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -669707736: /*useContext*/ return new String[] {"UsageContext"};
-        case -507075711: /*jurisdiction*/ return new String[] {"CodeableConcept"};
-        case 1522889671: /*copyright*/ return new String[] {"markdown"};
-        case 223539345: /*approvalDate*/ return new String[] {"date"};
-        case -1687512484: /*lastReviewDate*/ return new String[] {"date"};
-        case -403934648: /*effectivePeriod*/ return new String[] {"Period"};
-        case 110546223: /*topic*/ return new String[] {"CodeableConcept"};
+        case 1447404028: /*publisher*/ return new String[] {"string"};
+        case 951526432: /*contact*/ return new String[] {"ContactDetail"};
         case -1406328437: /*author*/ return new String[] {"ContactDetail"};
         case -1307827859: /*editor*/ return new String[] {"ContactDetail"};
         case -261190139: /*reviewer*/ return new String[] {"ContactDetail"};
         case 1740277666: /*endorser*/ return new String[] {"ContactDetail"};
         case 666807069: /*relatedArtifact*/ return new String[] {"RelatedArtifact"};
-        case 3575610: /*type*/ return new String[] {"code"};
         case -1422939762: /*actual*/ return new String[] {"boolean"};
         case -861347276: /*characteristicCombination*/ return new String[] {"code"};
         case 366313883: /*characteristic*/ return new String[] {};
+        case 2072805: /*handling*/ return new String[] {"code"};
+        case 50511102: /*category*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -3462,12 +3487,6 @@ public class EvidenceVariable extends MetadataResource {
         else if (name.equals("date")) {
           throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.date");
         }
-        else if (name.equals("publisher")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.publisher");
-        }
-        else if (name.equals("contact")) {
-          return addContact();
-        }
         else if (name.equals("description")) {
           throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.description");
         }
@@ -3477,24 +3496,11 @@ public class EvidenceVariable extends MetadataResource {
         else if (name.equals("useContext")) {
           return addUseContext();
         }
-        else if (name.equals("jurisdiction")) {
-          return addJurisdiction();
+        else if (name.equals("publisher")) {
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.publisher");
         }
-        else if (name.equals("copyright")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.copyright");
-        }
-        else if (name.equals("approvalDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.approvalDate");
-        }
-        else if (name.equals("lastReviewDate")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.lastReviewDate");
-        }
-        else if (name.equals("effectivePeriod")) {
-          this.effectivePeriod = new Period();
-          return this.effectivePeriod;
-        }
-        else if (name.equals("topic")) {
-          return addTopic();
+        else if (name.equals("contact")) {
+          return addContact();
         }
         else if (name.equals("author")) {
           return addAuthor();
@@ -3511,9 +3517,6 @@ public class EvidenceVariable extends MetadataResource {
         else if (name.equals("relatedArtifact")) {
           return addRelatedArtifact();
         }
-        else if (name.equals("type")) {
-          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.type");
-        }
         else if (name.equals("actual")) {
           throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.actual");
         }
@@ -3522,6 +3525,12 @@ public class EvidenceVariable extends MetadataResource {
         }
         else if (name.equals("characteristic")) {
           return addCharacteristic();
+        }
+        else if (name.equals("handling")) {
+          throw new FHIRException("Cannot call addChild on a primitive type EvidenceVariable.handling");
+        }
+        else if (name.equals("category")) {
+          return addCategory();
         }
         else
           return super.addChild(name);
@@ -3553,12 +3562,6 @@ public class EvidenceVariable extends MetadataResource {
         dst.subtitle = subtitle == null ? null : subtitle.copy();
         dst.status = status == null ? null : status.copy();
         dst.date = date == null ? null : date.copy();
-        dst.publisher = publisher == null ? null : publisher.copy();
-        if (contact != null) {
-          dst.contact = new ArrayList<ContactDetail>();
-          for (ContactDetail i : contact)
-            dst.contact.add(i.copy());
-        };
         dst.description = description == null ? null : description.copy();
         if (note != null) {
           dst.note = new ArrayList<Annotation>();
@@ -3570,19 +3573,11 @@ public class EvidenceVariable extends MetadataResource {
           for (UsageContext i : useContext)
             dst.useContext.add(i.copy());
         };
-        if (jurisdiction != null) {
-          dst.jurisdiction = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : jurisdiction)
-            dst.jurisdiction.add(i.copy());
-        };
-        dst.copyright = copyright == null ? null : copyright.copy();
-        dst.approvalDate = approvalDate == null ? null : approvalDate.copy();
-        dst.lastReviewDate = lastReviewDate == null ? null : lastReviewDate.copy();
-        dst.effectivePeriod = effectivePeriod == null ? null : effectivePeriod.copy();
-        if (topic != null) {
-          dst.topic = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : topic)
-            dst.topic.add(i.copy());
+        dst.publisher = publisher == null ? null : publisher.copy();
+        if (contact != null) {
+          dst.contact = new ArrayList<ContactDetail>();
+          for (ContactDetail i : contact)
+            dst.contact.add(i.copy());
         };
         if (author != null) {
           dst.author = new ArrayList<ContactDetail>();
@@ -3609,13 +3604,18 @@ public class EvidenceVariable extends MetadataResource {
           for (RelatedArtifact i : relatedArtifact)
             dst.relatedArtifact.add(i.copy());
         };
-        dst.type = type == null ? null : type.copy();
         dst.actual = actual == null ? null : actual.copy();
         dst.characteristicCombination = characteristicCombination == null ? null : characteristicCombination.copy();
         if (characteristic != null) {
           dst.characteristic = new ArrayList<EvidenceVariableCharacteristicComponent>();
           for (EvidenceVariableCharacteristicComponent i : characteristic)
             dst.characteristic.add(i.copy());
+        };
+        dst.handling = handling == null ? null : handling.copy();
+        if (category != null) {
+          dst.category = new ArrayList<EvidenceVariableCategoryComponent>();
+          for (EvidenceVariableCategoryComponent i : category)
+            dst.category.add(i.copy());
         };
       }
 
@@ -3633,14 +3633,12 @@ public class EvidenceVariable extends MetadataResource {
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
            && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(shortTitle, o.shortTitle, true)
            && compareDeep(subtitle, o.subtitle, true) && compareDeep(status, o.status, true) && compareDeep(date, o.date, true)
-           && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true)
-           && compareDeep(note, o.note, true) && compareDeep(useContext, o.useContext, true) && compareDeep(jurisdiction, o.jurisdiction, true)
-           && compareDeep(copyright, o.copyright, true) && compareDeep(approvalDate, o.approvalDate, true)
-           && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(effectivePeriod, o.effectivePeriod, true)
-           && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true) && compareDeep(editor, o.editor, true)
-           && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true) && compareDeep(relatedArtifact, o.relatedArtifact, true)
-           && compareDeep(type, o.type, true) && compareDeep(actual, o.actual, true) && compareDeep(characteristicCombination, o.characteristicCombination, true)
-           && compareDeep(characteristic, o.characteristic, true);
+           && compareDeep(description, o.description, true) && compareDeep(note, o.note, true) && compareDeep(useContext, o.useContext, true)
+           && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true) && compareDeep(author, o.author, true)
+           && compareDeep(editor, o.editor, true) && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true)
+           && compareDeep(relatedArtifact, o.relatedArtifact, true) && compareDeep(actual, o.actual, true)
+           && compareDeep(characteristicCombination, o.characteristicCombination, true) && compareDeep(characteristic, o.characteristic, true)
+           && compareDeep(handling, o.handling, true) && compareDeep(category, o.category, true);
       }
 
       @Override
@@ -3652,18 +3650,16 @@ public class EvidenceVariable extends MetadataResource {
         EvidenceVariable o = (EvidenceVariable) other_;
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
            && compareValues(title, o.title, true) && compareValues(shortTitle, o.shortTitle, true) && compareValues(subtitle, o.subtitle, true)
-           && compareValues(status, o.status, true) && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true)
-           && compareValues(description, o.description, true) && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
-           && compareValues(lastReviewDate, o.lastReviewDate, true) && compareValues(type, o.type, true) && compareValues(actual, o.actual, true)
-           && compareValues(characteristicCombination, o.characteristicCombination, true);
+           && compareValues(status, o.status, true) && compareValues(date, o.date, true) && compareValues(description, o.description, true)
+           && compareValues(publisher, o.publisher, true) && compareValues(actual, o.actual, true) && compareValues(characteristicCombination, o.characteristicCombination, true)
+           && compareValues(handling, o.handling, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , name, title, shortTitle, subtitle, status, date, publisher, contact, description
-          , note, useContext, jurisdiction, copyright, approvalDate, lastReviewDate, effectivePeriod
-          , topic, author, editor, reviewer, endorser, relatedArtifact, type, actual, characteristicCombination
-          , characteristic);
+          , name, title, shortTitle, subtitle, status, date, description, note, useContext
+          , publisher, contact, author, editor, reviewer, endorser, relatedArtifact, actual
+          , characteristicCombination, characteristic, handling, category);
       }
 
   @Override
@@ -3679,7 +3675,7 @@ public class EvidenceVariable extends MetadataResource {
    * Path: <b>EvidenceVariable.relatedArtifact.where(type='composed-of').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="composed-of", path="EvidenceVariable.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceFocus.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="composed-of", path="EvidenceVariable.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_COMPOSED_OF = "composed-of";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>composed-of</b>
@@ -3825,7 +3821,7 @@ public class EvidenceVariable extends MetadataResource {
    * Path: <b>EvidenceVariable.relatedArtifact.where(type='depends-on').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="depends-on", path="EvidenceVariable.relatedArtifact.where(type='depends-on').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceFocus.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="depends-on", path="EvidenceVariable.relatedArtifact.where(type='depends-on').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DEPENDS_ON = "depends-on";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>depends-on</b>
@@ -3851,7 +3847,7 @@ public class EvidenceVariable extends MetadataResource {
    * Path: <b>EvidenceVariable.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="derived-from", path="EvidenceVariable.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceFocus.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="derived-from", path="EvidenceVariable.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DERIVED_FROM = "derived-from";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
@@ -3890,26 +3886,6 @@ public class EvidenceVariable extends MetadataResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
 
  /**
-   * Search parameter: <b>effective</b>
-   * <p>
-   * Description: <b>The time during which the evidence variable is intended to be in use</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>EvidenceVariable.effectivePeriod</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="effective", path="EvidenceVariable.effectivePeriod", description="The time during which the evidence variable is intended to be in use", type="date" )
-  public static final String SP_EFFECTIVE = "effective";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>effective</b>
-   * <p>
-   * Description: <b>The time during which the evidence variable is intended to be in use</b><br>
-   * Type: <b>date</b><br>
-   * Path: <b>EvidenceVariable.effectivePeriod</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.DateClientParam EFFECTIVE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EFFECTIVE);
-
- /**
    * Search parameter: <b>identifier</b>
    * <p>
    * Description: <b>External identifier for the evidence variable</b><br>
@@ -3928,26 +3904,6 @@ public class EvidenceVariable extends MetadataResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the evidence variable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.jurisdiction</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="jurisdiction", path="EvidenceVariable.jurisdiction", description="Intended jurisdiction for the evidence variable", type="token" )
-  public static final String SP_JURISDICTION = "jurisdiction";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>jurisdiction</b>
-   * <p>
-   * Description: <b>Intended jurisdiction for the evidence variable</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.jurisdiction</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam JURISDICTION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_JURISDICTION);
 
  /**
    * Search parameter: <b>name</b>
@@ -3977,7 +3933,7 @@ public class EvidenceVariable extends MetadataResource {
    * Path: <b>EvidenceVariable.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="predecessor", path="EvidenceVariable.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceFocus.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="predecessor", path="EvidenceVariable.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PREDECESSOR = "predecessor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
@@ -4043,7 +3999,7 @@ public class EvidenceVariable extends MetadataResource {
    * Path: <b>EvidenceVariable.relatedArtifact.where(type='successor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="successor", path="EvidenceVariable.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceFocus.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="successor", path="EvidenceVariable.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUCCESSOR = "successor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>successor</b>
@@ -4086,17 +4042,17 @@ public class EvidenceVariable extends MetadataResource {
    * <p>
    * Description: <b>Topics associated with the EvidenceVariable</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.topic</b><br>
+   * Path: <b>null</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="topic", path="EvidenceVariable.topic", description="Topics associated with the EvidenceVariable", type="token" )
+  @SearchParamDefinition(name="topic", path="", description="Topics associated with the EvidenceVariable", type="token" )
   public static final String SP_TOPIC = "topic";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>topic</b>
    * <p>
    * Description: <b>Topics associated with the EvidenceVariable</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>EvidenceVariable.topic</b><br>
+   * Path: <b>null</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TOPIC = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TOPIC);
@@ -4143,3 +4099,4 @@ public class EvidenceVariable extends MetadataResource {
 
 
 }
+

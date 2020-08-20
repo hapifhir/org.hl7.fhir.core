@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,24 +29,28 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.DatatypeDef;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+
 import org.hl7.fhir.instance.model.api.ICompositeType;
 import  org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import  org.hl7.fhir.r5.model.Enumerations.BindingStrengthEnumFactory;
 import  org.hl7.fhir.r5.utils.ToolingExtensions;
+import  org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import  org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
-import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.DatatypeDef;
-import ca.uhn.fhir.model.api.annotation.Description;
 /**
  * Base StructureDefinition for ElementDefinition Type: Captures constraints on each element within the resource, profile, or extension.
  */
@@ -2248,8 +2250,7 @@ public class ElementDefinition extends BackboneType implements ICompositeType {
   }
 
 // added from java-adornments.txt:
-
-  public boolean hasTarget() {
+public boolean hasTarget() {
     return Utilities.existsInList(getCode(), "Reference", "canonical", "CodeableReference");
   }
   
@@ -11276,122 +11277,122 @@ When pattern[x] is used to constrain a complex object, it means that each proper
       }
 
 // Manual code (from Configuration.txt)t:
-  
-  public String toString() {
-    if (hasId())
-      return getId();
-    if (hasSliceName())
-      return getPath()+":"+getSliceName();
-    else
-      return getPath();
-  }
-    
-  public void makeBase(String path, int min, String max) {
-    ElementDefinitionBaseComponent self = getBase();
-    self.setPath(path);
-    self.setMin(min);
-    self.setMax(max);
-  }
-  
-  public void makeBase() {
-    ElementDefinitionBaseComponent self = getBase();
-    self.setPath(getPath());
-    self.setMin(getMin());
-    self.setMax(getMax());
-  }
- 
-  
-  public String typeSummary() {
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-    for (TypeRefComponent tr : getType()) {
-      if (tr.hasCode())
-        b.append(tr.getWorkingCode());
-    }
-    return b.toString();
-  }
-  
-  public String typeSummaryVB() {
-    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|");
-    for (TypeRefComponent tr : getType()) {
-      if (tr.hasCode())
-        b.append(tr.getWorkingCode());
-    }
-    return b.toString().replace(" ", "");
-  }
-  
-  public TypeRefComponent getType(String code) {
-    for (TypeRefComponent tr : getType()) 
-      if (tr.getCode().equals(code))
+
+
+      public String toString() {
+        if (hasId())
+          return getId();
+        if (hasSliceName())
+          return getPath()+":"+getSliceName();
+        else
+          return getPath();
+      }
+        
+      public void makeBase(String path, int min, String max) {
+        ElementDefinitionBaseComponent self = getBase();
+        self.setPath(path);
+        self.setMin(min);
+        self.setMax(max);
+      }
+      
+      public void makeBase() {
+        ElementDefinitionBaseComponent self = getBase();
+        self.setPath(getPath());
+        self.setMin(getMin());
+        self.setMax(getMax());
+      }
+     
+      
+      public String typeSummary() {
+        CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
+        for (TypeRefComponent tr : getType()) {
+          if (tr.hasCode())
+            b.append(tr.getWorkingCode());
+        }
+        return b.toString();
+      }
+      
+      public String typeSummaryVB() {
+        CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("|");
+        for (TypeRefComponent tr : getType()) {
+          if (tr.hasCode())
+            b.append(tr.getWorkingCode());
+        }
+        return b.toString().replace(" ", "");
+      }
+      
+      public TypeRefComponent getType(String code) {
+        for (TypeRefComponent tr : getType()) 
+          if (tr.getCode().equals(code))
+            return tr;
+        TypeRefComponent tr = new TypeRefComponent();
+        tr.setCode(code);
+        type.add(tr);
         return tr;
-    TypeRefComponent tr = new TypeRefComponent();
-    tr.setCode(code);
-    type.add(tr);
-    return tr;
-  }
+      }
 
-  public static final boolean NOT_MODIFIER = false;
-  public static final boolean NOT_IN_SUMMARY = false;
-  public static final boolean IS_MODIFIER = true;
-  public static final boolean IS_IN_SUMMARY = true;
-  public ElementDefinition(boolean defaults, boolean modifier, boolean inSummary) {
-    super();
-    if (defaults) {
-      setIsModifier(modifier);
-      setIsSummary(inSummary);
-    }
-  }  
+      public static final boolean NOT_MODIFIER = false;
+      public static final boolean NOT_IN_SUMMARY = false;
+      public static final boolean IS_MODIFIER = true;
+      public static final boolean IS_IN_SUMMARY = true;
+      public ElementDefinition(boolean defaults, boolean modifier, boolean inSummary) {
+        super();
+        if (defaults) {
+          setIsModifier(modifier);
+          setIsSummary(inSummary);
+        }
+      }  
 
- public String present() {
-    return hasId() ? getId() : getPath();
-  }
+     public String present() {
+        return hasId() ? getId() : getPath();
+      }
 
-  public boolean hasCondition(IdType id) {
-    for (IdType c : getCondition()) {
-      if (c.primitiveValue().equals(id.primitiveValue()))
-        return true;
-    }
-    return false;
-  }
+      public boolean hasCondition(IdType id) {
+        for (IdType c : getCondition()) {
+          if (c.primitiveValue().equals(id.primitiveValue()))
+            return true;
+        }
+        return false;
+      }
 
-  public boolean hasConstraint(String key) {
-    for (ElementDefinitionConstraintComponent c : getConstraint()) {
-      if (c.getKey().equals(key))
-        return true;
-    }
-    return false;
-  }
+      public boolean hasConstraint(String key) {
+        for (ElementDefinitionConstraintComponent c : getConstraint()) {
+          if (c.getKey().equals(key))
+            return true;
+        }
+        return false;
+      }
 
-  public boolean hasCode(Coding c) {
-    for (Coding t : getCode()) {
-      if (t.getSystem().equals(c.getSystem()) && t.getCode().equals(c.getCode()))
-        return true;
-    }
-    return false;
-  }  
+      public boolean hasCode(Coding c) {
+        for (Coding t : getCode()) {
+          if (t.getSystem().equals(c.getSystem()) && t.getCode().equals(c.getCode()))
+            return true;
+        }
+        return false;
+      }  
 
-  public boolean isChoice() {
-    return getPath().endsWith("[x]");
-  }  
+      public boolean isChoice() {
+        return getPath().endsWith("[x]");
+      }  
 
-  public String getName() {
-    return hasPath() ? getPath().contains(".") ? getPath().substring(getPath().lastIndexOf(".")+1) : getPath() : null;
-  }
+      public String getName() {
+        return hasPath() ? getPath().contains(".") ? getPath().substring(getPath().lastIndexOf(".")+1) : getPath() : null;
+      }
 
-  public boolean unbounded() {
-    return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
-  }
+      public boolean unbounded() {
+        return getMax().equals("*") || Integer.parseInt(getMax()) > 1;
+      }
 
-  public boolean isMandatory() {
-    return getMin() > 0;
-  }
+      public boolean isMandatory() {
+        return getMin() > 0;
+      }
 
-  public boolean isInlineType() {
-    return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
-  }  
-
-
+      public boolean isInlineType() {
+        return getType().size() == 1 && Utilities.existsInList(getType().get(0).getCode(), "Element", "BackboneElement");
+      }  
 
 
 // end addition
 
 }
+

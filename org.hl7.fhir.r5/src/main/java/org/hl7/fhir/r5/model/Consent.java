@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,21 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A record of a healthcare consumer’s  choices  or choices made on their behalf by a third party, which permits or denies identified recipient(s) or recipient role(s) to perform one or more actions within a given policy context, for specific purposes and periods of time.
@@ -2437,10 +2437,10 @@ public class Consent extends DomainResource {
     protected Enumeration<ConsentState> status;
 
     /**
-     * A selector of the type of consent being presented: Privacy, Treatment,  or Research.  This list is now extensible.
+     * A selector of the type of consent being presented with the base being Privacy, Treatment,  or Research.
      */
     @Child(name = "scope", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="Which of the four areas this resource covers (extensible)", formalDefinition="A selector of the type of consent being presented: Privacy, Treatment,  or Research.  This list is now extensible." )
+    @Description(shortDefinition="Which of the three areas this resource covers (extensible)", formalDefinition="A selector of the type of consent being presented with the base being Privacy, Treatment,  or Research." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/consent-scope")
     protected CodeableConcept scope;
 
@@ -2474,37 +2474,44 @@ public class Consent extends DomainResource {
     protected List<Reference> performer;
 
     /**
-     * The organization that manages the consent, and the framework within which it is executed.
+     * The actor that manages the consent through its lifecycle.
      */
-    @Child(name = "organization", type = {Organization.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Custodian of the consent", formalDefinition="The organization that manages the consent, and the framework within which it is executed." )
-    protected List<Reference> organization;
+    @Child(name = "manager", type = {HealthcareService.class, Organization.class, Patient.class, Practitioner.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Consent workflow management", formalDefinition="The actor that manages the consent through its lifecycle." )
+    protected List<Reference> manager;
+
+    /**
+     * The actor that controls/enforces the access according to the consent.
+     */
+    @Child(name = "controller", type = {HealthcareService.class, Organization.class, Patient.class, Practitioner.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Consent Enforcer", formalDefinition="The actor that controls/enforces the access according to the consent." )
+    protected List<Reference> controller;
 
     /**
      * The source on which this consent statement is based. The source might be a scanned original paper form.
      */
-    @Child(name = "sourceAttachment", type = {Attachment.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "sourceAttachment", type = {Attachment.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Source from which this consent is taken", formalDefinition="The source on which this consent statement is based. The source might be a scanned original paper form." )
     protected List<Attachment> sourceAttachment;
 
     /**
      * A reference to a consent that links back to such a source, a reference to a document repository (e.g. XDS) that stores the original consent document.
      */
-    @Child(name = "sourceReference", type = {Consent.class, DocumentReference.class, Contract.class, QuestionnaireResponse.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "sourceReference", type = {Consent.class, DocumentReference.class, Contract.class, QuestionnaireResponse.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Source from which this consent is taken", formalDefinition="A reference to a consent that links back to such a source, a reference to a document repository (e.g. XDS) that stores the original consent document." )
     protected List<Reference> sourceReference;
 
     /**
      * The references to the policies that are included in this consent scope. Policies may be organizational, but are often defined jurisdictionally, or in law.
      */
-    @Child(name = "policy", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "policy", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Policies covered by this consent", formalDefinition="The references to the policies that are included in this consent scope. Policies may be organizational, but are often defined jurisdictionally, or in law." )
     protected List<ConsentPolicyComponent> policy;
 
     /**
      * A reference to the specific base computable regulation or policy.
      */
-    @Child(name = "policyRule", type = {CodeableConcept.class}, order=11, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "policyRule", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Regulation that this consents to", formalDefinition="A reference to the specific base computable regulation or policy." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/consent-policy")
     protected CodeableConcept policyRule;
@@ -2512,18 +2519,18 @@ public class Consent extends DomainResource {
     /**
      * Whether a treatment instruction (e.g. artificial respiration yes or no) was verified with the patient, his/her family or another authorized person.
      */
-    @Child(name = "verification", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "verification", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Consent Verified by patient or family", formalDefinition="Whether a treatment instruction (e.g. artificial respiration yes or no) was verified with the patient, his/her family or another authorized person." )
     protected List<ConsentVerificationComponent> verification;
 
     /**
      * An exception to the base policy of this consent. An exception can be an addition or removal of access permissions.
      */
-    @Child(name = "provision", type = {}, order=13, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "provision", type = {}, order=14, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Constraints to the base Consent.policyRule/Consent.policy", formalDefinition="An exception to the base policy of this consent. An exception can be an addition or removal of access permissions." )
     protected ProvisionComponent provision;
 
-    private static final long serialVersionUID = -1510572988L;
+    private static final long serialVersionUID = -528055185L;
 
   /**
    * Constructor
@@ -2641,7 +2648,7 @@ public class Consent extends DomainResource {
     }
 
     /**
-     * @return {@link #scope} (A selector of the type of consent being presented: Privacy, Treatment,  or Research.  This list is now extensible.)
+     * @return {@link #scope} (A selector of the type of consent being presented with the base being Privacy, Treatment,  or Research.)
      */
     public CodeableConcept getScope() { 
       if (this.scope == null)
@@ -2657,7 +2664,7 @@ public class Consent extends DomainResource {
     }
 
     /**
-     * @param value {@link #scope} (A selector of the type of consent being presented: Privacy, Treatment,  or Research.  This list is now extensible.)
+     * @param value {@link #scope} (A selector of the type of consent being presented with the base being Privacy, Treatment,  or Research.)
      */
     public Consent setScope(CodeableConcept value) { 
       this.scope = value;
@@ -2844,56 +2851,109 @@ public class Consent extends DomainResource {
     }
 
     /**
-     * @return {@link #organization} (The organization that manages the consent, and the framework within which it is executed.)
+     * @return {@link #manager} (The actor that manages the consent through its lifecycle.)
      */
-    public List<Reference> getOrganization() { 
-      if (this.organization == null)
-        this.organization = new ArrayList<Reference>();
-      return this.organization;
+    public List<Reference> getManager() { 
+      if (this.manager == null)
+        this.manager = new ArrayList<Reference>();
+      return this.manager;
     }
 
     /**
      * @return Returns a reference to <code>this</code> for easy method chaining
      */
-    public Consent setOrganization(List<Reference> theOrganization) { 
-      this.organization = theOrganization;
+    public Consent setManager(List<Reference> theManager) { 
+      this.manager = theManager;
       return this;
     }
 
-    public boolean hasOrganization() { 
-      if (this.organization == null)
+    public boolean hasManager() { 
+      if (this.manager == null)
         return false;
-      for (Reference item : this.organization)
+      for (Reference item : this.manager)
         if (!item.isEmpty())
           return true;
       return false;
     }
 
-    public Reference addOrganization() { //3
+    public Reference addManager() { //3
       Reference t = new Reference();
-      if (this.organization == null)
-        this.organization = new ArrayList<Reference>();
-      this.organization.add(t);
+      if (this.manager == null)
+        this.manager = new ArrayList<Reference>();
+      this.manager.add(t);
       return t;
     }
 
-    public Consent addOrganization(Reference t) { //3
+    public Consent addManager(Reference t) { //3
       if (t == null)
         return this;
-      if (this.organization == null)
-        this.organization = new ArrayList<Reference>();
-      this.organization.add(t);
+      if (this.manager == null)
+        this.manager = new ArrayList<Reference>();
+      this.manager.add(t);
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #organization}, creating it if it does not already exist {3}
+     * @return The first repetition of repeating field {@link #manager}, creating it if it does not already exist {3}
      */
-    public Reference getOrganizationFirstRep() { 
-      if (getOrganization().isEmpty()) {
-        addOrganization();
+    public Reference getManagerFirstRep() { 
+      if (getManager().isEmpty()) {
+        addManager();
       }
-      return getOrganization().get(0);
+      return getManager().get(0);
+    }
+
+    /**
+     * @return {@link #controller} (The actor that controls/enforces the access according to the consent.)
+     */
+    public List<Reference> getController() { 
+      if (this.controller == null)
+        this.controller = new ArrayList<Reference>();
+      return this.controller;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Consent setController(List<Reference> theController) { 
+      this.controller = theController;
+      return this;
+    }
+
+    public boolean hasController() { 
+      if (this.controller == null)
+        return false;
+      for (Reference item : this.controller)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addController() { //3
+      Reference t = new Reference();
+      if (this.controller == null)
+        this.controller = new ArrayList<Reference>();
+      this.controller.add(t);
+      return t;
+    }
+
+    public Consent addController(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.controller == null)
+        this.controller = new ArrayList<Reference>();
+      this.controller.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #controller}, creating it if it does not already exist {3}
+     */
+    public Reference getControllerFirstRep() { 
+      if (getController().isEmpty()) {
+        addController();
+      }
+      return getController().get(0);
     }
 
     /**
@@ -3160,12 +3220,13 @@ public class Consent extends DomainResource {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Unique identifier for this copy of the Consent Statement.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("status", "code", "Indicates the current state of this Consent resource.", 0, 1, status));
-        children.add(new Property("scope", "CodeableConcept", "A selector of the type of consent being presented: Privacy, Treatment,  or Research.  This list is now extensible.", 0, 1, scope));
+        children.add(new Property("scope", "CodeableConcept", "A selector of the type of consent being presented with the base being Privacy, Treatment,  or Research.", 0, 1, scope));
         children.add(new Property("category", "CodeableConcept", "A classification of the type of consents found in the statement. This element supports indexing and retrieval of consent statements.", 0, java.lang.Integer.MAX_VALUE, category));
         children.add(new Property("subject", "Reference(Patient|Practitioner)", "The patient/healthcare practitioner to whom this consent applies.", 0, 1, subject));
         children.add(new Property("dateTime", "dateTime", "Date and time the consent instance was agreed to.", 0, 1, dateTime));
         children.add(new Property("performer", "Reference(CareTeam|HealthcareService|Organization|Patient|Practitioner|RelatedPerson|PractitionerRole)", "Either the Grantor, which is the entity responsible for granting the rights listed in a Consent Directive or the Grantee, which is the entity responsible for complying with the Consent Directive, including any obligations or limitations on authorizations and enforcement of prohibitions.", 0, java.lang.Integer.MAX_VALUE, performer));
-        children.add(new Property("organization", "Reference(Organization)", "The organization that manages the consent, and the framework within which it is executed.", 0, java.lang.Integer.MAX_VALUE, organization));
+        children.add(new Property("manager", "Reference(HealthcareService|Organization|Patient|Practitioner)", "The actor that manages the consent through its lifecycle.", 0, java.lang.Integer.MAX_VALUE, manager));
+        children.add(new Property("controller", "Reference(HealthcareService|Organization|Patient|Practitioner)", "The actor that controls/enforces the access according to the consent.", 0, java.lang.Integer.MAX_VALUE, controller));
         children.add(new Property("sourceAttachment", "Attachment", "The source on which this consent statement is based. The source might be a scanned original paper form.", 0, java.lang.Integer.MAX_VALUE, sourceAttachment));
         children.add(new Property("sourceReference", "Reference(Consent|DocumentReference|Contract|QuestionnaireResponse)", "A reference to a consent that links back to such a source, a reference to a document repository (e.g. XDS) that stores the original consent document.", 0, java.lang.Integer.MAX_VALUE, sourceReference));
         children.add(new Property("policy", "", "The references to the policies that are included in this consent scope. Policies may be organizational, but are often defined jurisdictionally, or in law.", 0, java.lang.Integer.MAX_VALUE, policy));
@@ -3179,12 +3240,13 @@ public class Consent extends DomainResource {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique identifier for this copy of the Consent Statement.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case -892481550: /*status*/  return new Property("status", "code", "Indicates the current state of this Consent resource.", 0, 1, status);
-        case 109264468: /*scope*/  return new Property("scope", "CodeableConcept", "A selector of the type of consent being presented: Privacy, Treatment,  or Research.  This list is now extensible.", 0, 1, scope);
+        case 109264468: /*scope*/  return new Property("scope", "CodeableConcept", "A selector of the type of consent being presented with the base being Privacy, Treatment,  or Research.", 0, 1, scope);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A classification of the type of consents found in the statement. This element supports indexing and retrieval of consent statements.", 0, java.lang.Integer.MAX_VALUE, category);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Practitioner)", "The patient/healthcare practitioner to whom this consent applies.", 0, 1, subject);
         case 1792749467: /*dateTime*/  return new Property("dateTime", "dateTime", "Date and time the consent instance was agreed to.", 0, 1, dateTime);
         case 481140686: /*performer*/  return new Property("performer", "Reference(CareTeam|HealthcareService|Organization|Patient|Practitioner|RelatedPerson|PractitionerRole)", "Either the Grantor, which is the entity responsible for granting the rights listed in a Consent Directive or the Grantee, which is the entity responsible for complying with the Consent Directive, including any obligations or limitations on authorizations and enforcement of prohibitions.", 0, java.lang.Integer.MAX_VALUE, performer);
-        case 1178922291: /*organization*/  return new Property("organization", "Reference(Organization)", "The organization that manages the consent, and the framework within which it is executed.", 0, java.lang.Integer.MAX_VALUE, organization);
+        case 835260333: /*manager*/  return new Property("manager", "Reference(HealthcareService|Organization|Patient|Practitioner)", "The actor that manages the consent through its lifecycle.", 0, java.lang.Integer.MAX_VALUE, manager);
+        case 637428636: /*controller*/  return new Property("controller", "Reference(HealthcareService|Organization|Patient|Practitioner)", "The actor that controls/enforces the access according to the consent.", 0, java.lang.Integer.MAX_VALUE, controller);
         case 1964406686: /*sourceAttachment*/  return new Property("sourceAttachment", "Attachment", "The source on which this consent statement is based. The source might be a scanned original paper form.", 0, java.lang.Integer.MAX_VALUE, sourceAttachment);
         case -244259472: /*sourceReference*/  return new Property("sourceReference", "Reference(Consent|DocumentReference|Contract|QuestionnaireResponse)", "A reference to a consent that links back to such a source, a reference to a document repository (e.g. XDS) that stores the original consent document.", 0, java.lang.Integer.MAX_VALUE, sourceReference);
         case -982670030: /*policy*/  return new Property("policy", "", "The references to the policies that are included in this consent scope. Policies may be organizational, but are often defined jurisdictionally, or in law.", 0, java.lang.Integer.MAX_VALUE, policy);
@@ -3206,7 +3268,8 @@ public class Consent extends DomainResource {
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1792749467: /*dateTime*/ return this.dateTime == null ? new Base[0] : new Base[] {this.dateTime}; // DateTimeType
         case 481140686: /*performer*/ return this.performer == null ? new Base[0] : this.performer.toArray(new Base[this.performer.size()]); // Reference
-        case 1178922291: /*organization*/ return this.organization == null ? new Base[0] : this.organization.toArray(new Base[this.organization.size()]); // Reference
+        case 835260333: /*manager*/ return this.manager == null ? new Base[0] : this.manager.toArray(new Base[this.manager.size()]); // Reference
+        case 637428636: /*controller*/ return this.controller == null ? new Base[0] : this.controller.toArray(new Base[this.controller.size()]); // Reference
         case 1964406686: /*sourceAttachment*/ return this.sourceAttachment == null ? new Base[0] : this.sourceAttachment.toArray(new Base[this.sourceAttachment.size()]); // Attachment
         case -244259472: /*sourceReference*/ return this.sourceReference == null ? new Base[0] : this.sourceReference.toArray(new Base[this.sourceReference.size()]); // Reference
         case -982670030: /*policy*/ return this.policy == null ? new Base[0] : this.policy.toArray(new Base[this.policy.size()]); // ConsentPolicyComponent
@@ -3243,8 +3306,11 @@ public class Consent extends DomainResource {
         case 481140686: // performer
           this.getPerformer().add(TypeConvertor.castToReference(value)); // Reference
           return value;
-        case 1178922291: // organization
-          this.getOrganization().add(TypeConvertor.castToReference(value)); // Reference
+        case 835260333: // manager
+          this.getManager().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
+        case 637428636: // controller
+          this.getController().add(TypeConvertor.castToReference(value)); // Reference
           return value;
         case 1964406686: // sourceAttachment
           this.getSourceAttachment().add(TypeConvertor.castToAttachment(value)); // Attachment
@@ -3286,8 +3352,10 @@ public class Consent extends DomainResource {
           this.dateTime = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("performer")) {
           this.getPerformer().add(TypeConvertor.castToReference(value));
-        } else if (name.equals("organization")) {
-          this.getOrganization().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("manager")) {
+          this.getManager().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("controller")) {
+          this.getController().add(TypeConvertor.castToReference(value));
         } else if (name.equals("sourceAttachment")) {
           this.getSourceAttachment().add(TypeConvertor.castToAttachment(value));
         } else if (name.equals("sourceReference")) {
@@ -3315,7 +3383,8 @@ public class Consent extends DomainResource {
         case -1867885268:  return getSubject();
         case 1792749467:  return getDateTimeElement();
         case 481140686:  return addPerformer(); 
-        case 1178922291:  return addOrganization(); 
+        case 835260333:  return addManager(); 
+        case 637428636:  return addController(); 
         case 1964406686:  return addSourceAttachment(); 
         case -244259472:  return addSourceReference(); 
         case -982670030:  return addPolicy(); 
@@ -3337,7 +3406,8 @@ public class Consent extends DomainResource {
         case -1867885268: /*subject*/ return new String[] {"Reference"};
         case 1792749467: /*dateTime*/ return new String[] {"dateTime"};
         case 481140686: /*performer*/ return new String[] {"Reference"};
-        case 1178922291: /*organization*/ return new String[] {"Reference"};
+        case 835260333: /*manager*/ return new String[] {"Reference"};
+        case 637428636: /*controller*/ return new String[] {"Reference"};
         case 1964406686: /*sourceAttachment*/ return new String[] {"Attachment"};
         case -244259472: /*sourceReference*/ return new String[] {"Reference"};
         case -982670030: /*policy*/ return new String[] {};
@@ -3374,8 +3444,11 @@ public class Consent extends DomainResource {
         else if (name.equals("performer")) {
           return addPerformer();
         }
-        else if (name.equals("organization")) {
-          return addOrganization();
+        else if (name.equals("manager")) {
+          return addManager();
+        }
+        else if (name.equals("controller")) {
+          return addController();
         }
         else if (name.equals("sourceAttachment")) {
           return addSourceAttachment();
@@ -3433,10 +3506,15 @@ public class Consent extends DomainResource {
           for (Reference i : performer)
             dst.performer.add(i.copy());
         };
-        if (organization != null) {
-          dst.organization = new ArrayList<Reference>();
-          for (Reference i : organization)
-            dst.organization.add(i.copy());
+        if (manager != null) {
+          dst.manager = new ArrayList<Reference>();
+          for (Reference i : manager)
+            dst.manager.add(i.copy());
+        };
+        if (controller != null) {
+          dst.controller = new ArrayList<Reference>();
+          for (Reference i : controller)
+            dst.controller.add(i.copy());
         };
         if (sourceAttachment != null) {
           dst.sourceAttachment = new ArrayList<Attachment>();
@@ -3475,7 +3553,7 @@ public class Consent extends DomainResource {
         Consent o = (Consent) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(scope, o.scope, true)
            && compareDeep(category, o.category, true) && compareDeep(subject, o.subject, true) && compareDeep(dateTime, o.dateTime, true)
-           && compareDeep(performer, o.performer, true) && compareDeep(organization, o.organization, true)
+           && compareDeep(performer, o.performer, true) && compareDeep(manager, o.manager, true) && compareDeep(controller, o.controller, true)
            && compareDeep(sourceAttachment, o.sourceAttachment, true) && compareDeep(sourceReference, o.sourceReference, true)
            && compareDeep(policy, o.policy, true) && compareDeep(policyRule, o.policyRule, true) && compareDeep(verification, o.verification, true)
            && compareDeep(provision, o.provision, true);
@@ -3493,8 +3571,8 @@ public class Consent extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, scope
-          , category, subject, dateTime, performer, organization, sourceAttachment, sourceReference
-          , policy, policyRule, verification, provision);
+          , category, subject, dateTime, performer, manager, controller, sourceAttachment
+          , sourceReference, policy, policyRule, verification, provision);
       }
 
   @Override
@@ -3595,6 +3673,32 @@ public class Consent extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_CONSENTOR = new ca.uhn.fhir.model.api.Include("Consent:consentor").toLocked();
 
  /**
+   * Search parameter: <b>controller</b>
+   * <p>
+   * Description: <b>Consent Enforcer</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Consent.controller</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="controller", path="Consent.controller", description="Consent Enforcer", type="reference", target={HealthcareService.class, Organization.class, Patient.class, Practitioner.class } )
+  public static final String SP_CONTROLLER = "controller";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>controller</b>
+   * <p>
+   * Description: <b>Consent Enforcer</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Consent.controller</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTROLLER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTROLLER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Consent:controller</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONTROLLER = new ca.uhn.fhir.model.api.Include("Consent:controller").toLocked();
+
+ /**
    * Search parameter: <b>data</b>
    * <p>
    * Description: <b>The actual data reference</b><br>
@@ -3602,7 +3706,7 @@ public class Consent extends DomainResource {
    * Path: <b>Consent.provision.data.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="data", path="Consent.provision.data.reference", description="The actual data reference", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceFocus.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="data", path="Consent.provision.data.reference", description="The actual data reference", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DATA = "data";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>data</b>
@@ -3621,30 +3725,30 @@ public class Consent extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_DATA = new ca.uhn.fhir.model.api.Include("Consent:data").toLocked();
 
  /**
-   * Search parameter: <b>organization</b>
+   * Search parameter: <b>manager</b>
    * <p>
-   * Description: <b>Custodian of the consent</b><br>
+   * Description: <b>Consent workflow management</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Consent.organization</b><br>
+   * Path: <b>Consent.manager</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="organization", path="Consent.organization", description="Custodian of the consent", type="reference", target={Organization.class } )
-  public static final String SP_ORGANIZATION = "organization";
+  @SearchParamDefinition(name="manager", path="Consent.manager", description="Consent workflow management", type="reference", target={HealthcareService.class, Organization.class, Patient.class, Practitioner.class } )
+  public static final String SP_MANAGER = "manager";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>organization</b>
+   * <b>Fluent Client</b> search parameter constant for <b>manager</b>
    * <p>
-   * Description: <b>Custodian of the consent</b><br>
+   * Description: <b>Consent workflow management</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>Consent.organization</b><br>
+   * Path: <b>Consent.manager</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ORGANIZATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ORGANIZATION);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANAGER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANAGER);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>Consent:organization</b>".
+   * the path value of "<b>Consent:manager</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ORGANIZATION = new ca.uhn.fhir.model.api.Include("Consent:organization").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MANAGER = new ca.uhn.fhir.model.api.Include("Consent:manager").toLocked();
 
  /**
    * Search parameter: <b>period</b>
@@ -3709,17 +3813,17 @@ public class Consent extends DomainResource {
  /**
    * Search parameter: <b>scope</b>
    * <p>
-   * Description: <b>Which of the four areas this resource covers (extensible)</b><br>
+   * Description: <b>Which of the three areas this resource covers (extensible)</b><br>
    * Type: <b>token</b><br>
    * Path: <b>Consent.scope</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="scope", path="Consent.scope", description="Which of the four areas this resource covers (extensible)", type="token" )
+  @SearchParamDefinition(name="scope", path="Consent.scope", description="Which of the three areas this resource covers (extensible)", type="token" )
   public static final String SP_SCOPE = "scope";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>scope</b>
    * <p>
-   * Description: <b>Which of the four areas this resource covers (extensible)</b><br>
+   * Description: <b>Which of the three areas this resource covers (extensible)</b><br>
    * Type: <b>token</b><br>
    * Path: <b>Consent.scope</b><br>
    * </p>
@@ -3800,7 +3904,7 @@ public class Consent extends DomainResource {
    * Path: <b>Consent.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="Consent.subject", description="Who the consent applies to", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class, Practitioner.class } )
+  @SearchParamDefinition(name="subject", path="Consent.subject", description="Who the consent applies to", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class, Practitioner.class, ResearchSubject.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
@@ -3931,7 +4035,7 @@ public class Consent extends DomainResource {
 * [DeviceRequest](devicerequest.html): Business identifier for request/order
 * [DiagnosticReport](diagnosticreport.html): An identifier for the report
 * [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
-* [DocumentReference](documentreference.html): Master Version Specific Identifier
+* [DocumentReference](documentreference.html): Identifier of the attachment binary
 * [Encounter](encounter.html): Identifier(s) by which this encounter is known
 * [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
 * [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
@@ -3953,10 +4057,10 @@ public class Consent extends DomainResource {
 * [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Master Version Specific Identifier\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -3973,7 +4077,7 @@ public class Consent extends DomainResource {
 * [DeviceRequest](devicerequest.html): Business identifier for request/order
 * [DiagnosticReport](diagnosticreport.html): An identifier for the report
 * [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
-* [DocumentReference](documentreference.html): Master Version Specific Identifier
+* [DocumentReference](documentreference.html): Identifier of the attachment binary
 * [Encounter](encounter.html): Identifier(s) by which this encounter is known
 * [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
 * [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
@@ -3995,7 +4099,7 @@ public class Consent extends DomainResource {
 * [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
 </b><br>
    * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.masterIdentifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
@@ -4096,3 +4200,4 @@ public class Consent extends DomainResource {
 
 
 }
+

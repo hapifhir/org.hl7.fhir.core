@@ -6,6 +6,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodesEnumFactory;
+import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgePackagingComponent;
 import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodes;
 import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodesEnumFactory;
 
@@ -70,7 +71,7 @@ public class MedicationKnowledge40_50 extends VersionConvertor_40_50 {
         // tgt.addAdministrationGuidelines(convertMedicationKnowledgeAdministrationGuidelinesComponent(t));
         for (org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeMedicineClassificationComponent t : src.getMedicineClassification()) tgt.addMedicineClassification(convertMedicationKnowledgeMedicineClassificationComponent(t));
         if (src.hasPackaging())
-            tgt.setPackaging(convertMedicationKnowledgePackagingComponent(src.getPackaging()));
+            tgt.addPackaging(convertMedicationKnowledgePackagingComponent(src.getPackaging()));
         for (org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeDrugCharacteristicComponent t : src.getDrugCharacteristic()) tgt.addDrugCharacteristic(convertMedicationKnowledgeDrugCharacteristicComponent(t));
         // for (org.hl7.fhir.r4.model.Reference t : src.getContraindication())
         // tgt.addContraindication(convertReference(t));
@@ -109,8 +110,8 @@ public class MedicationKnowledge40_50 extends VersionConvertor_40_50 {
         // for (org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeAdministrationGuidelinesComponent t : src.getAdministrationGuidelines())
         // tgt.addAdministrationGuidelines(convertMedicationKnowledgeAdministrationGuidelinesComponent(t));
         for (org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeMedicineClassificationComponent t : src.getMedicineClassification()) tgt.addMedicineClassification(convertMedicationKnowledgeMedicineClassificationComponent(t));
-        if (src.hasPackaging())
-            tgt.setPackaging(convertMedicationKnowledgePackagingComponent(src.getPackaging()));
+        for (MedicationKnowledgePackagingComponent t : src.getPackaging())
+            tgt.setPackaging(convertMedicationKnowledgePackagingComponent(t));
         for (org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeDrugCharacteristicComponent t : src.getDrugCharacteristic()) tgt.addDrugCharacteristic(convertMedicationKnowledgeDrugCharacteristicComponent(t));
         // for (org.hl7.fhir.r5.model.Reference t : src.getContraindication())
         // tgt.addContraindication(convertReference(t));
@@ -266,8 +267,8 @@ public class MedicationKnowledge40_50 extends VersionConvertor_40_50 {
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasSource())
             tgt.setSourceElement(convertString(src.getSourceElement()));
-        if (src.hasCost())
-            tgt.setCost(convertMoney(src.getCost()));
+        if (src.hasCostMoney())
+            tgt.setCost(convertMoney(src.getCostMoney()));
         return tgt;
     }
 
