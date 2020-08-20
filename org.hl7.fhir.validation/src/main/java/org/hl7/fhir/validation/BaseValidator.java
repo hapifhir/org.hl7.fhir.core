@@ -603,8 +603,10 @@ public class BaseValidator {
             fr = context.fetchResource(ValueSet.class, reference);
           }
         }
-        if (fr == null)
+        if (fr == null) {
           fr = ValueSetUtilities.generateImplicitValueSet(reference);
+        } 
+       
         timeTracker.tx(t);
         return fr;
       }

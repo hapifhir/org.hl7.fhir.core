@@ -890,8 +890,7 @@ public class StructureMapUtilities {
 		    lexer.token("types");
         group.setTypeMode(StructureMapGroupTypeMode.TYPES);
 		  }
-		} else
-		  group.setTypeMode(StructureMapGroupTypeMode.NONE);
+		} 
 		group.setName(lexer.take());
 		if (lexer.hasToken("(")) {
 		  newFmt = true;
@@ -908,7 +907,6 @@ public class StructureMapUtilities {
 			group.setExtends(lexer.take());
 		}
 		if (newFmt) {
-      group.setTypeMode(StructureMapGroupTypeMode.NONE);
 		  if (lexer.hasToken("<")) {
         lexer.token("<");
         lexer.token("<");
@@ -1605,7 +1603,7 @@ public class StructureMapUtilities {
   }
 
   private boolean matchesByType(StructureMap map, StructureMapGroupComponent grp, String srcType, String tgtType) throws FHIRException {
-    if (grp.getTypeMode() == StructureMapGroupTypeMode.NONE)
+    if (!grp.hasTypeMode())
       return false;
     if (grp.getInput().size() != 2 || grp.getInput().get(0).getMode() != StructureMapInputMode.SOURCE || grp.getInput().get(1).getMode() != StructureMapInputMode.TARGET)
       return false;

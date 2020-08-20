@@ -14,7 +14,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.LiquidEngine;
-import org.hl7.fhir.r5.utils.LiquidEngine.ILiquidEngineIcludeResolver;
+import org.hl7.fhir.r5.utils.LiquidEngine.ILiquidEngineIncludeResolver;
 import org.hl7.fhir.r5.utils.LiquidEngine.LiquidDocument;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-public class LiquidEngineTests implements ILiquidEngineIcludeResolver {
+public class LiquidEngineTests implements ILiquidEngineIncludeResolver {
 
   private static Map<String, Resource> resources = new HashedMap<>();
   private static JsonObject testdoc = null;

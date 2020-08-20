@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,24 +29,25 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.r5.model.Enumerations.PublicationStatusEnumFactory;
-import org.hl7.fhir.r5.utils.StructureMapUtilities;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+
+import org.hl7.fhir.r5.utils.StructureMapUtilities;
 /**
  * A Map of relationships between 2 structures that can be used to transform data.
  */
@@ -149,10 +148,6 @@ public class StructureMap extends CanonicalResource {
 
     public enum StructureMapGroupTypeMode {
         /**
-         * This group is not a default group for the types.
-         */
-        NONE, 
-        /**
          * This group is a default mapping group for the specified types and for the primary source type.
          */
         TYPES, 
@@ -167,8 +162,6 @@ public class StructureMap extends CanonicalResource {
         public static StructureMapGroupTypeMode fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("none".equals(codeString))
-          return NONE;
         if ("types".equals(codeString))
           return TYPES;
         if ("type-and-types".equals(codeString))
@@ -180,7 +173,6 @@ public class StructureMap extends CanonicalResource {
         }
         public String toCode() {
           switch (this) {
-            case NONE: return "none";
             case TYPES: return "types";
             case TYPEANDTYPES: return "type-and-types";
             default: return "?";
@@ -188,7 +180,6 @@ public class StructureMap extends CanonicalResource {
         }
         public String getSystem() {
           switch (this) {
-            case NONE: return "http://hl7.org/fhir/map-group-type-mode";
             case TYPES: return "http://hl7.org/fhir/map-group-type-mode";
             case TYPEANDTYPES: return "http://hl7.org/fhir/map-group-type-mode";
             default: return "?";
@@ -196,7 +187,6 @@ public class StructureMap extends CanonicalResource {
         }
         public String getDefinition() {
           switch (this) {
-            case NONE: return "This group is not a default group for the types.";
             case TYPES: return "This group is a default mapping group for the specified types and for the primary source type.";
             case TYPEANDTYPES: return "This group is a default mapping group for the specified types.";
             default: return "?";
@@ -204,7 +194,6 @@ public class StructureMap extends CanonicalResource {
         }
         public String getDisplay() {
           switch (this) {
-            case NONE: return "Not a Default";
             case TYPES: return "Default for Type Combination";
             case TYPEANDTYPES: return "Default for type + combination";
             default: return "?";
@@ -217,8 +206,6 @@ public class StructureMap extends CanonicalResource {
       if (codeString == null || "".equals(codeString))
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("none".equals(codeString))
-          return StructureMapGroupTypeMode.NONE;
         if ("types".equals(codeString))
           return StructureMapGroupTypeMode.TYPES;
         if ("type-and-types".equals(codeString))
@@ -233,8 +220,6 @@ public class StructureMap extends CanonicalResource {
           String codeString = ((PrimitiveType) code).asStringValue();
           if (codeString == null || "".equals(codeString))
             return null;
-        if ("none".equals(codeString))
-          return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.NONE);
         if ("types".equals(codeString))
           return new Enumeration<StructureMapGroupTypeMode>(this, StructureMapGroupTypeMode.TYPES);
         if ("type-and-types".equals(codeString))
@@ -242,8 +227,6 @@ public class StructureMap extends CanonicalResource {
         throw new FHIRException("Unknown StructureMapGroupTypeMode code '"+codeString+"'");
         }
     public String toCode(StructureMapGroupTypeMode code) {
-      if (code == StructureMapGroupTypeMode.NONE)
-        return "none";
       if (code == StructureMapGroupTypeMode.TYPES)
         return "types";
       if (code == StructureMapGroupTypeMode.TYPEANDTYPES)
@@ -1482,8 +1465,8 @@ public class StructureMap extends CanonicalResource {
         /**
          * If this is the default rule set to apply for the source type or this combination of types.
          */
-        @Child(name = "typeMode", type = {CodeType.class}, order=3, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="none | types | type-and-types", formalDefinition="If this is the default rule set to apply for the source type or this combination of types." )
+        @Child(name = "typeMode", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="types | type-and-types", formalDefinition="If this is the default rule set to apply for the source type or this combination of types." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/map-group-type-mode")
         protected Enumeration<StructureMapGroupTypeMode> typeMode;
 
@@ -1504,7 +1487,7 @@ public class StructureMap extends CanonicalResource {
         /**
          * Transform Rule from source to target.
          */
-        @Child(name = "rule", type = {}, order=6, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "rule", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Transform Rule from source to target", formalDefinition="Transform Rule from source to target." )
         protected List<StructureMapGroupRuleComponent> rule;
 
@@ -1520,12 +1503,10 @@ public class StructureMap extends CanonicalResource {
     /**
      * Constructor
      */
-      public StructureMapGroupComponent(String name, StructureMapGroupTypeMode typeMode, StructureMapGroupInputComponent input, StructureMapGroupRuleComponent rule) {
+      public StructureMapGroupComponent(String name, StructureMapGroupInputComponent input) {
         super();
         this.setName(name);
-        this.setTypeMode(typeMode);
         this.addInput(input);
-        this.addRule(rule);
       }
 
         /**
@@ -1661,9 +1642,13 @@ public class StructureMap extends CanonicalResource {
          * @param value If this is the default rule set to apply for the source type or this combination of types.
          */
         public StructureMapGroupComponent setTypeMode(StructureMapGroupTypeMode value) { 
+          if (value == null)
+            this.typeMode = null;
+          else {
             if (this.typeMode == null)
               this.typeMode = new Enumeration<StructureMapGroupTypeMode>(new StructureMapGroupTypeModeEnumFactory());
             this.typeMode.setValue(value);
+          }
           return this;
         }
 
@@ -2017,12 +2002,9 @@ public class StructureMap extends CanonicalResource {
   }
 
 // added from java-adornments.txt:
-
-  public String toString() {
+public String toString() {
     return StructureMapUtilities.groupToString(this);
   }
-
-
 // end addition
   }
 
@@ -2427,7 +2409,7 @@ public class StructureMap extends CanonicalResource {
         /**
          * Name of the rule for internal references.
          */
-        @Child(name = "name", type = {IdType.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "name", type = {IdType.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Name of the rule for internal references", formalDefinition="Name of the rule for internal references." )
         protected IdType name;
 
@@ -2478,9 +2460,8 @@ public class StructureMap extends CanonicalResource {
     /**
      * Constructor
      */
-      public StructureMapGroupRuleComponent(String name, StructureMapGroupRuleSourceComponent source) {
+      public StructureMapGroupRuleComponent(StructureMapGroupRuleSourceComponent source) {
         super();
-        this.setName(name);
         this.addSource(source);
       }
 
@@ -2523,9 +2504,13 @@ public class StructureMap extends CanonicalResource {
          * @param value Name of the rule for internal references.
          */
         public StructureMapGroupRuleComponent setName(String value) { 
+          if (Utilities.noString(value))
+            this.name = null;
+          else {
             if (this.name == null)
               this.name = new IdType();
             this.name.setValue(value);
+          }
           return this;
         }
 
@@ -2990,12 +2975,9 @@ public class StructureMap extends CanonicalResource {
   }
 
 // added from java-adornments.txt:
-
-  public String toString() {
+public String toString() {
     return StructureMapUtilities.ruleToString(this);
   }
-
-
 // end addition
   }
 
@@ -4878,12 +4860,9 @@ public class StructureMap extends CanonicalResource {
   }
 
 // added from java-adornments.txt:
-
-  public String toString() {
+public String toString() {
     return StructureMapUtilities.sourceToString(this);
   }
-
-
 // end addition
   }
 
@@ -5593,12 +5572,9 @@ public class StructureMap extends CanonicalResource {
   }
 
 // added from java-adornments.txt:
-
-  public String toString() {
+public String toString() {
     return StructureMapUtilities.targetToString(this);
   }
-
-
 // end addition
   }
 
@@ -5859,13 +5835,9 @@ public class StructureMap extends CanonicalResource {
   }
 
 // added from java-adornments.txt:
-
-      public String toString() {
+public String toString() {
         return value == null ? "null!" : value.toString();
       }
-
-
-
 // end addition
   }
 
@@ -8345,12 +8317,10 @@ public class StructureMap extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 // Manual code (from Configuration.txt)t:
-
-  public String toString() {
+public String toString() {
     return StructureMapUtilities.render(this);
   }
-
-
 // end addition
 
 }
+

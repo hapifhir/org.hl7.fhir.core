@@ -149,59 +149,37 @@ public class Composition40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification> convertDocumentConfidentiality(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Composition.DocumentConfidentiality> src) throws FHIRException {
+    static public org.hl7.fhir.r5.model.CodeType convertDocumentConfidentiality(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Composition.DocumentConfidentiality> src) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassificationEnumFactory());
+        org.hl7.fhir.r5.model.CodeType tgt = new org.hl7.fhir.r5.model.CodeType();
         VersionConvertor_40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case U:
-                tgt.setValue(org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.U);
-                break;
-            case L:
-                tgt.setValue(org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.L);
-                break;
-            case M:
-                tgt.setValue(org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.M);
-                break;
-            case N:
-                tgt.setValue(org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.N);
-                break;
-            case R:
-                tgt.setValue(org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.R);
-                break;
-            case V:
-                tgt.setValue(org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.V);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.NULL);
-                break;
-        }
+        tgt.setValue(src.getValue().toCode());
         return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Composition.DocumentConfidentiality> convertDocumentConfidentiality(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification> src) throws FHIRException {
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Composition.DocumentConfidentiality> convertDocumentConfidentiality(org.hl7.fhir.r5.model.CodeType src) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Composition.DocumentConfidentiality> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Composition.DocumentConfidentialityEnumFactory());
         VersionConvertor_40_50.copyElement(src, tgt);
         switch(src.getValue()) {
-            case U:
+            case "U":
                 tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentConfidentiality.U);
                 break;
-            case L:
+            case "L":
                 tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentConfidentiality.L);
                 break;
-            case M:
+            case "M":
                 tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentConfidentiality.M);
                 break;
-            case N:
+            case "N":
                 tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentConfidentiality.N);
                 break;
-            case R:
+            case "R":
                 tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentConfidentiality.R);
                 break;
-            case V:
+            case "V":
                 tgt.setValue(org.hl7.fhir.r4.model.Composition.DocumentConfidentiality.V);
                 break;
             default:

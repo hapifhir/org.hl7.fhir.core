@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,19 +29,24 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseElement;
-import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 import org.hl7.fhir.utilities.Utilities;
-
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+
+import org.hl7.fhir.instance.model.api.IBaseElement;
+import  org.hl7.fhir.instance.model.api.IBaseHasExtensions;
 /**
  * Base StructureDefinition for Element Type: Base definition for all elements in a resource.
  */
@@ -300,7 +303,7 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       }
 
 // Manual code (from Configuration.txt)t:
-  @Override
+ @Override
   public String getIdBase() {
     return getId();
   }
@@ -426,6 +429,8 @@ public abstract class Element extends Base implements IBaseHasExtensions, IBaseE
       throw new FHIRException("Extension could not be converted to a string");
     return ext.get(0).getValue().primitiveValue();
   }
+
 // end addition
 
 }
+

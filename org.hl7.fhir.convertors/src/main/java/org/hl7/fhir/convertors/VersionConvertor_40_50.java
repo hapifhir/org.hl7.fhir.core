@@ -289,6 +289,12 @@ public class VersionConvertor_40_50 {
         return tgt;
     }
 
+    public static org.hl7.fhir.r5.model.MarkdownType convertStringToMarkdown(org.hl7.fhir.r4.model.StringType src) throws FHIRException {
+      org.hl7.fhir.r5.model.MarkdownType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.MarkdownType(src.getValue()) : new org.hl7.fhir.r5.model.MarkdownType();
+      copyElement(src, tgt);
+      return tgt;
+  }
+
     public static org.hl7.fhir.r4.model.StringType convertString(org.hl7.fhir.r5.model.StringType src) throws FHIRException {
         org.hl7.fhir.r4.model.StringType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.StringType(src.getValue()) : new org.hl7.fhir.r4.model.StringType();
         copyElement(src, tgt);
@@ -1842,8 +1848,6 @@ public class VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ProductShelfLife tgt = new org.hl7.fhir.r5.model.ProductShelfLife();
         copyBackboneElement(src, tgt);
-        if (src.hasIdentifier())
-            tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
         if (src.hasPeriod())
@@ -1857,12 +1861,10 @@ public class VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ProductShelfLife tgt = new org.hl7.fhir.r4.model.ProductShelfLife();
         copyBackboneElement(src, tgt);
-        if (src.hasIdentifier())
-            tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
-        if (src.hasPeriod())
-            tgt.setPeriod(convertQuantity(src.getPeriod()));
+        if (src.hasPeriodQuantity())
+            tgt.setPeriod(convertQuantity(src.getPeriodQuantity()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialPrecautionsForStorage()) tgt.addSpecialPrecautionsForStorage(convertCodeableConcept(t));
         return tgt;
     }

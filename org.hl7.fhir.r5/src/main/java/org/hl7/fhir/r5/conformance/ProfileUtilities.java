@@ -2165,9 +2165,25 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (j < markdown.length()) {
           String url = markdown.substring(i+2, j);
           if (!Utilities.isAbsoluteUrl(url) && !url.startsWith("..")) {
-            b.append("](");
-            b.append(webUrl);
-            i = i + 1;
+            // 
+            // In principle, relative URLs are supposed to be converted to absolute URLs in snapshots. 
+            // that's what this code is doing. 
+            // 
+            // But that hasn't always happened and there's packages out there where the snapshots 
+            // contain relative references that actually are references to the main specification 
+            // 
+            // This code is trying to guess which relative references are actually to the
+            // base specification.
+            // 
+            if (isLikelySourceURLReference(url)) {
+              b.append("](");
+              b.append(baseSpecUrl());
+              i = i + 1;
+            } else {
+              b.append("](");
+              b.append(webUrl);
+              i = i + 1;
+            }
           } else
             b.append(markdown.charAt(i));
         } else 
@@ -2180,6 +2196,34 @@ public class ProfileUtilities extends TranslatingUtilities {
     return b.toString();
   }
 
+
+  private boolean isLikelySourceURLReference(String url) {
+    return 
+        url.startsWith("extensibility.html") || 
+        url.startsWith("observation.html") || 
+        url.startsWith("datatypes.html") || 
+        (url.startsWith("extension-") || url.contains(".html")) || 
+        url.startsWith("resource-definitions.html");
+  }
+
+  private String baseSpecUrl() {
+    if (VersionUtilities.isR5Ver(context.getVersion())) {
+      return "http://build.fhir.org/";
+    }
+    if (VersionUtilities.isR4Ver(context.getVersion())) {
+      return "http://hl7.org/fhir/R4/";
+    }
+    if (VersionUtilities.isR3Ver(context.getVersion())) {
+      return "http://hl7.org/fhir/STU3/";
+    }
+    if (VersionUtilities.isR2BVer(context.getVersion())) {
+      return "http://hl7.org/fhir/2016May/";
+    }
+    if (VersionUtilities.isR2Ver(context.getVersion())) {
+      return "http://hl7.org/fhir/DSTU2/";
+    }
+    return "";
+  }
 
   private List<ElementDefinition> getSiblings(List<ElementDefinition> list, ElementDefinition current) {
     List<ElementDefinition> result = new ArrayList<ElementDefinition>();

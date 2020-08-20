@@ -51,7 +51,7 @@ public class Consent40_50 extends VersionConvertor_40_50 {
         if (src.hasDateTime())
             tgt.setDateTimeElement(convertDateTime(src.getDateTimeElement()));
         for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getOrganization()) tgt.addOrganization(convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getOrganization()) tgt.addManager(convertReference(t));
         if (src.hasSourceAttachment())
             tgt.addSourceAttachment(convertAttachment(src.getSourceAttachment()));
         if (src.hasSourceReference())
@@ -81,7 +81,8 @@ public class Consent40_50 extends VersionConvertor_40_50 {
         if (src.hasDateTime())
             tgt.setDateTimeElement(convertDateTime(src.getDateTimeElement()));
         for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(convertReference(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getOrganization()) tgt.addOrganization(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getManager()) tgt.addOrganization(convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getController()) tgt.addOrganization(convertReference(t));
         if (src.hasSourceAttachment())
             tgt.setSource(convertType(src.getSourceAttachmentFirstRep()));
         if (src.hasSourceReference())

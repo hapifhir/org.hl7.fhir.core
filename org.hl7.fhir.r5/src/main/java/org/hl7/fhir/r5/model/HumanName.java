@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,20 +29,24 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import  org.hl7.fhir.instance.model.api.IPrimitiveType;
-import org.hl7.fhir.utilities.Utilities;
-
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
+
 import ca.uhn.fhir.util.DatatypeUtil;
+import  org.hl7.fhir.instance.model.api.IPrimitiveType;
 /**
  * Base StructureDefinition for HumanName Type: A human's name with the ability to identify parts and usage.
  */
@@ -855,7 +857,7 @@ public class HumanName extends DataType implements ICompositeType {
       }
 
 // Manual code (from Configuration.txt)t:
- /** 
+/** 
   /** 
    * Returns all repetitions of {@link #getGiven() given name} as a space separated string 
    *  
@@ -920,9 +922,8 @@ public class HumanName extends DataType implements ICompositeType {
       b.append(next.getValue()); 
     } 
     return b.toString(); 
-  } 
-
-
+  }
 // end addition
 
 }
+

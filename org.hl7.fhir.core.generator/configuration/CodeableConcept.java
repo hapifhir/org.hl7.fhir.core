@@ -24,3 +24,67 @@ public boolean hasCoding(String system, String code) {
   public boolean hasCoding(Coding coding) {
     return hasCoding(coding.getSystem(), coding.getCode());
   }
+  
+ public boolean hasCoding(String system) {
+    for (Coding c : getCoding()) {
+      if (system.equals(c.getSystem())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public String getCode(String system) {
+    for (Coding c : getCoding()) {
+      if (system.equals(c.getSystem())) {
+        return c.getCode();
+      }
+    }
+    return null;
+  }
+
+  public static CodeableConcept merge(CodeableConcept l, CodeableConcept r) {
+    CodeableConcept res = new CodeableConcept();
+    List<Coding> handled = new ArrayList<>();
+    for (Coding c : l.getCoding()) {
+      boolean done = false;
+      for (Coding t : r.getCoding()) {
+        if (t.matches(c)) {
+          handled.add(t);
+          res.getCoding().add(Coding.merge(c, t));
+          done = true;
+          break;
+        }
+      }
+      if (!done) {
+       res.getCoding().add(c.copy());
+      }
+    }
+    for (Coding c : r.getCoding()) {
+      if (!handled.contains(c)) {
+        res.getCoding().add(c);
+      }
+    }
+    if (l.hasText()) {
+      res.setText(l.getText());
+    } else {
+      res.setText(r.getText());
+    }
+    return res;
+  }
+
+  public static CodeableConcept intersect(CodeableConcept l, CodeableConcept r) {
+    CodeableConcept res = new CodeableConcept();
+    for (Coding c : l.getCoding()) {
+      for (Coding t : r.getCoding()) {
+        if (t.matches(c)) {
+          res.getCoding().add(Coding.intersect(c, t));
+          break;
+        }
+      }
+    }
+    if (l.hasText() && r.hasText() && l.getText().equals(r.getText())) {
+      res.setText(l.getText());
+    }
+    return res;
+  }  

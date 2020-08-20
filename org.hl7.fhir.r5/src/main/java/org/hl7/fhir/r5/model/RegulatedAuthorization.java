@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,20 +29,22 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * The regulatory authorization of a medicinal product, device or process.
@@ -715,7 +715,7 @@ public class RegulatedAuthorization extends DomainResource {
     /**
      * The type of product or service that is being authorized.
      */
-    @Child(name = "subject", type = {MedicinalProductDefinition.class, PackagedProductDefinition.class, DeviceDefinition.class, ResearchStudy.class, ActivityDefinition.class, PlanDefinition.class, ObservationDefinition.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "subject", type = {MedicinalProductDefinition.class, BiologicallyDerivedProduct.class, NutritionProduct.class, PackagedProductDefinition.class, SubstanceDefinition.class, DeviceDefinition.class, ResearchStudy.class, ActivityDefinition.class, PlanDefinition.class, ObservationDefinition.class, Practitioner.class, Organization.class, Location.class}, order=1, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The type of product or service that is being authorized", formalDefinition="The type of product or service that is being authorized." )
     protected Reference subject;
 
@@ -797,10 +797,10 @@ public class RegulatedAuthorization extends DomainResource {
     protected List<Reference> jurisdictionalAuthorization;
 
     /**
-     * Marketing Authorization Holder.
+     * The organization that holds the granted authorization.
      */
     @Child(name = "holder", type = {Organization.class}, order=13, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Marketing Authorization Holder", formalDefinition="Marketing Authorization Holder." )
+    @Description(shortDefinition="The organization that holds the granted authorization", formalDefinition="The organization that holds the granted authorization." )
     protected Reference holder;
 
     /**
@@ -1361,7 +1361,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @return {@link #holder} (Marketing Authorization Holder.)
+     * @return {@link #holder} (The organization that holds the granted authorization.)
      */
     public Reference getHolder() { 
       if (this.holder == null)
@@ -1377,7 +1377,7 @@ public class RegulatedAuthorization extends DomainResource {
     }
 
     /**
-     * @param value {@link #holder} (Marketing Authorization Holder.)
+     * @param value {@link #holder} (The organization that holds the granted authorization.)
      */
     public RegulatedAuthorization setHolder(Reference value) { 
       this.holder = value;
@@ -1435,7 +1435,7 @@ public class RegulatedAuthorization extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifier for the authorization, typically assigned by the authorizing body.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("subject", "Reference(MedicinalProductDefinition|PackagedProductDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition|ObservationDefinition)", "The type of product or service that is being authorized.", 0, 1, subject));
+        children.add(new Property("subject", "Reference(MedicinalProductDefinition|BiologicallyDerivedProduct|NutritionProduct|PackagedProductDefinition|SubstanceDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition|ObservationDefinition|Practitioner|Organization|Location)", "The type of product or service that is being authorized.", 0, 1, subject));
         children.add(new Property("type", "CodeableConcept", "Overall type of this authorization, for example drug marketing approval, orphan drug designation.", 0, 1, type));
         children.add(new Property("description", "markdown", "General textual supporting information.", 0, 1, description));
         children.add(new Property("region", "CodeableConcept", "The region (country, jurisdiction etc.) in which the marketing authorization has been granted.", 0, java.lang.Integer.MAX_VALUE, region));
@@ -1447,7 +1447,7 @@ public class RegulatedAuthorization extends DomainResource {
         children.add(new Property("basis", "CodeableConcept", "The legal or regulatory framework against which this authorization is granted, or other reasons for it.", 0, java.lang.Integer.MAX_VALUE, basis));
         children.add(new Property("relatedDate", "", "Other dates associated with the authorization. It is common for an authorization to have renewal dates, initial time limited phases and so on.", 0, java.lang.Integer.MAX_VALUE, relatedDate));
         children.add(new Property("jurisdictionalAuthorization", "Reference(RegulatedAuthorization)", "Authorization in areas within a country.", 0, java.lang.Integer.MAX_VALUE, jurisdictionalAuthorization));
-        children.add(new Property("holder", "Reference(Organization)", "Marketing Authorization Holder.", 0, 1, holder));
+        children.add(new Property("holder", "Reference(Organization)", "The organization that holds the granted authorization.", 0, 1, holder));
         children.add(new Property("regulator", "Reference(Organization)", "Medicines Regulatory Agency.", 0, 1, regulator));
         children.add(new Property("case", "", "The case or regulatory procedure for granting or amending a marketing authorization.", 0, 1, case_));
       }
@@ -1456,7 +1456,7 @@ public class RegulatedAuthorization extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier for the authorization, typically assigned by the authorizing body.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|PackagedProductDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition|ObservationDefinition)", "The type of product or service that is being authorized.", 0, 1, subject);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|BiologicallyDerivedProduct|NutritionProduct|PackagedProductDefinition|SubstanceDefinition|DeviceDefinition|ResearchStudy|ActivityDefinition|PlanDefinition|ObservationDefinition|Practitioner|Organization|Location)", "The type of product or service that is being authorized.", 0, 1, subject);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Overall type of this authorization, for example drug marketing approval, orphan drug designation.", 0, 1, type);
         case -1724546052: /*description*/  return new Property("description", "markdown", "General textual supporting information.", 0, 1, description);
         case -934795532: /*region*/  return new Property("region", "CodeableConcept", "The region (country, jurisdiction etc.) in which the marketing authorization has been granted.", 0, java.lang.Integer.MAX_VALUE, region);
@@ -1471,7 +1471,7 @@ public class RegulatedAuthorization extends DomainResource {
         case 93508670: /*basis*/  return new Property("basis", "CodeableConcept", "The legal or regulatory framework against which this authorization is granted, or other reasons for it.", 0, java.lang.Integer.MAX_VALUE, basis);
         case 1112535673: /*relatedDate*/  return new Property("relatedDate", "", "Other dates associated with the authorization. It is common for an authorization to have renewal dates, initial time limited phases and so on.", 0, java.lang.Integer.MAX_VALUE, relatedDate);
         case 1459432557: /*jurisdictionalAuthorization*/  return new Property("jurisdictionalAuthorization", "Reference(RegulatedAuthorization)", "Authorization in areas within a country.", 0, java.lang.Integer.MAX_VALUE, jurisdictionalAuthorization);
-        case -1211707988: /*holder*/  return new Property("holder", "Reference(Organization)", "Marketing Authorization Holder.", 0, 1, holder);
+        case -1211707988: /*holder*/  return new Property("holder", "Reference(Organization)", "The organization that holds the granted authorization.", 0, 1, holder);
         case 414760449: /*regulator*/  return new Property("regulator", "Reference(Organization)", "Medicines Regulatory Agency.", 0, 1, regulator);
         case 3046192: /*case*/  return new Property("case", "", "The case or regulatory procedure for granting or amending a marketing authorization.", 0, 1, case_);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1850,17 +1850,17 @@ public class RegulatedAuthorization extends DomainResource {
  /**
    * Search parameter: <b>holder</b>
    * <p>
-   * Description: <b>Marketing Authorization Holder</b><br>
+   * Description: <b>The organization that holds the granted authorization</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>RegulatedAuthorization.holder</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="holder", path="RegulatedAuthorization.holder", description="Marketing Authorization Holder", type="reference", target={Organization.class } )
+  @SearchParamDefinition(name="holder", path="RegulatedAuthorization.holder", description="The organization that holds the granted authorization", type="reference", target={Organization.class } )
   public static final String SP_HOLDER = "holder";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>holder</b>
    * <p>
-   * Description: <b>Marketing Authorization Holder</b><br>
+   * Description: <b>The organization that holds the granted authorization</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>RegulatedAuthorization.holder</b><br>
    * </p>
@@ -1941,7 +1941,7 @@ public class RegulatedAuthorization extends DomainResource {
    * Path: <b>RegulatedAuthorization.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="RegulatedAuthorization.subject", description="The type of product or service that is being authorized", type="reference", target={ActivityDefinition.class, DeviceDefinition.class, MedicinalProductDefinition.class, ObservationDefinition.class, PackagedProductDefinition.class, PlanDefinition.class, ResearchStudy.class } )
+  @SearchParamDefinition(name="subject", path="RegulatedAuthorization.subject", description="The type of product or service that is being authorized", type="reference", target={ActivityDefinition.class, BiologicallyDerivedProduct.class, DeviceDefinition.class, Location.class, MedicinalProductDefinition.class, NutritionProduct.class, ObservationDefinition.class, Organization.class, PackagedProductDefinition.class, PlanDefinition.class, Practitioner.class, ResearchStudy.class, SubstanceDefinition.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
@@ -1961,3 +1961,4 @@ public class RegulatedAuthorization extends DomainResource {
 
 
 }
+
