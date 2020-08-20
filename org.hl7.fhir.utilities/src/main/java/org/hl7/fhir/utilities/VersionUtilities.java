@@ -77,6 +77,9 @@ public class VersionUtilities {
     if (v != null && v.startsWith(CURRENT_VERSION)) {
       return "hl7.fhir.r5.core";
     }
+    if ("4.4.0".equals(v)) {
+      return "hl7.fhir.r5.core";
+    }
     return null;
   }
 
