@@ -26,6 +26,7 @@ import org.hl7.fhir.utilities.cache.ToolsVersion;
 public class PhinVadsImporter {
 
   public static void main(String[] args) throws FileNotFoundException, FHIRException, IOException, ParseException {
+//    new PhinVadsImporter().importValueSet(TextFile.fileToBytes("C:\\work\\org.hl7.fhir\\packages\\us.cdc.phinvads-source\\source\\PHVS_BirthDefectsLateralityatDiagnosis_HL7_V1.txt"));
     PhinVadsImporter self = new PhinVadsImporter();
     self.init();
     self.process(args[0], args[1]);
@@ -61,17 +62,20 @@ public class PhinVadsImporter {
   private ValueSet importValueSet(byte[] source) throws FHIRException, IOException, ParseException {
     // first thing do is split into 2 
     List<byte[]> parts = Utilities.splitBytes(source, "\r\n\r\n".getBytes());
-    if (parts.size() != 2) {
+    if (parts.size() < 2) {
+      TextFile.bytesToFile(source, "c:\\temp\\phinvads.txt");
       throw new FHIRException("Unable to parse phinvads value set: "+parts.size()+" parts found");
     }
     CSVReader rdr = new CSVReader(new ByteArrayInputStream(parts.get(0)));
     rdr.setDelimiter('\t');
+    rdr.setMultiline(true);
     rdr.readHeaders();
     rdr.line();
     
     ValueSet vs = new ValueSet();
     vs.setId(rdr.cell("Value Set OID"));
     vs.setUrl("https://phinvads.cdc.gov/fhir/ValueSet/"+vs.getId());
+    vs.getMeta().setSource("https://phinvads.cdc.gov/vads/ViewValueSet.action?oid="+vs.getId());
     vs.setVersion(rdr.cell("Value Set Version"));
     vs.setTitle(rdr.cell("Value Set Name"));
     vs.setName(rdr.cell("Value Set Code"));
@@ -83,7 +87,8 @@ public class PhinVadsImporter {
       vs.setDate(new SimpleDateFormat("mm/dd/yyyy").parse(rdr.cell("VS Last Updated Date")));
     }
     
-    rdr = new CSVReader(new ByteArrayInputStream(parts.get(1)));
+    rdr = new CSVReader(new ByteArrayInputStream(parts.get(parts.size()-1)));
+    rdr.setMultiline(true);
     rdr.setDelimiter('\t');
     rdr.readHeaders();
     while (rdr.line()) {
@@ -103,8 +108,14 @@ public class PhinVadsImporter {
 
   private ConceptSetComponent getInclude(ValueSet vs, String url, String csver) {
     for (ConceptSetComponent t : vs.getCompose().getInclude()) {
-      if (t.getSystem().equals(url) && t.getVersion().equals(csver)) {
-        return t;
+      if (csver == null) {
+        if (t.getSystem().equals(url) && !t.hasVersion()) {
+          return t;
+        }        
+      } else {
+        if (t.getSystem().equals(url) && t.hasVersion() && t.getVersion().equals(csver)) {
+          return t;
+        }
       }
     }
     ConceptSetComponent c = vs.getCompose().addInclude();

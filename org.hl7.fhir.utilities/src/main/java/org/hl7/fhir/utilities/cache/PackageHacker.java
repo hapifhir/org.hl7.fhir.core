@@ -25,7 +25,7 @@ import com.google.gson.JsonObject;
 public class PackageHacker {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\us\\davinci-pdex-plan-net\\2020Feb\\package.tgz");
+    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\2020Sep\\hl7.fhir.r5.expansions.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -56,11 +56,11 @@ public class PackageHacker {
   }
 
   private void change(JsonObject npm, Map<String, byte[]> content) throws FileNotFoundException, IOException {
-//    fixVersions(npm);
+    fixVersions(npm);
 //    npm.remove("url");
 //    npm.addProperty("url", url);
-//    npm.remove("version");
-//    npm.addProperty("version", "1.0.0");
+    npm.remove("version");
+    npm.addProperty("version", "4.5.0");
 //    npm.remove("canonical");
 //    npm.addProperty("canonical", "http://hl7.org/fhir/us/davinci-drug-formulary");
 ////    npm.remove("description");
@@ -80,11 +80,7 @@ public class PackageHacker {
     npm.remove("fhirVersions");
     JsonArray a = new JsonArray();
     npm.add("fhirVersions", a);
-    a.add("4.2.0");
-    npm.remove("fhir-version-list");
-    a = new JsonArray();
-    npm.add("fhir-version-list", a);
-    a.add("4.2.0");
+    a.add("4.5.0");
   }
 
   private void setProperty(JsonObject npm, String name, String value) {
