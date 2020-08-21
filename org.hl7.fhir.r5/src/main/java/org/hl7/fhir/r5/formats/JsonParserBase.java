@@ -72,6 +72,7 @@ import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Element;
 import org.hl7.fhir.r5.model.IdType;
+import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.utilities.TextFile;
@@ -324,11 +325,19 @@ public abstract class JsonParserBase extends ParserBase implements IParser {
 //  }
 
   protected boolean anyHasExtras(List<? extends Element> list) {
-	  for (Element e : list) {
-	  	if (e.hasExtension() || !Utilities.noString(e.getId()))
-	  		return true;
-	  }
-	  return false;
+    for (Element e : list) {
+      if (e.hasExtension() || !Utilities.noString(e.getId()))
+        return true;
+    }
+    return false;
+  }
+
+  protected boolean anyHasValue(List<? extends PrimitiveType> list) {
+    for (PrimitiveType e : list) {
+      if (e.hasValue())
+        return true;
+    }
+    return false;
   }
 
 	protected boolean makeComments(Element element) {

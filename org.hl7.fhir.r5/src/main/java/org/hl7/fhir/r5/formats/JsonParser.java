@@ -32,7 +32,7 @@ package org.hl7.fhir.r5.formats;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Fri, Aug 21, 2020 14:46+1000 for FHIR v4.5.0
 
 
 
@@ -32122,10 +32122,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("text", element.getTextElement(), false);
       }
       if (element.hasLine()) {
+        if (anyHasValue(element.getLine())) {
         openArray("line");
         for (StringType e : element.getLine()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getLine().get(element.getLine().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getLine())) {
           openArray("_line");
           for (StringType e : element.getLine()) 
@@ -32435,10 +32437,12 @@ public class JsonParser extends JsonParserBase {
         composeEnumerationExtras("type", element.getTypeElement(), new Enumerations.FHIRAllTypesEnumFactory(), false);
       }
       if (element.hasProfile()) {
+        if (anyHasValue(element.getProfile())) {
         openArray("profile");
         for (CanonicalType e : element.getProfile()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getProfile().get(element.getProfile().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getProfile())) {
           openArray("_profile");
           for (CanonicalType e : element.getProfile()) 
@@ -32450,10 +32454,12 @@ public class JsonParser extends JsonParserBase {
         composeType("subject", element.getSubject());
       }
       if (element.hasMustSupport()) {
+        if (anyHasValue(element.getMustSupport())) {
         openArray("mustSupport");
         for (StringType e : element.getMustSupport()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getMustSupport().get(element.getMustSupport().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getMustSupport())) {
           openArray("_mustSupport");
           for (StringType e : element.getMustSupport()) 
@@ -32727,10 +32733,12 @@ public class JsonParser extends JsonParserBase {
         composeMarkdownExtras("requirements", element.getRequirementsElement(), false);
       }
       if (element.hasAlias()) {
+        if (anyHasValue(element.getAlias())) {
         openArray("alias");
         for (StringType e : element.getAlias()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getAlias().get(element.getAlias().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getAlias())) {
           openArray("_alias");
           for (StringType e : element.getAlias()) 
@@ -32793,10 +32801,12 @@ public class JsonParser extends JsonParserBase {
         composeIntegerExtras("maxLength", element.getMaxLengthElement(), false);
       }
       if (element.hasCondition()) {
+        if (anyHasValue(element.getCondition())) {
         openArray("condition");
         for (IdType e : element.getCondition()) 
-          composeIdCore(null, e, true);
+            composeIdCore(null, e, e != element.getCondition().get(element.getCondition().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getCondition())) {
           openArray("_condition");
           for (IdType e : element.getCondition()) 
@@ -32926,10 +32936,12 @@ public class JsonParser extends JsonParserBase {
         composeUriExtras("code", element.getCodeElement(), false);
       }
       if (element.hasProfile()) {
+        if (anyHasValue(element.getProfile())) {
         openArray("profile");
         for (CanonicalType e : element.getProfile()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getProfile().get(element.getProfile().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getProfile())) {
           openArray("_profile");
           for (CanonicalType e : element.getProfile()) 
@@ -32938,10 +32950,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasTargetProfile()) {
+        if (anyHasValue(element.getTargetProfile())) {
         openArray("targetProfile");
         for (CanonicalType e : element.getTargetProfile()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getTargetProfile().get(element.getTargetProfile().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getTargetProfile())) {
           openArray("_targetProfile");
           for (CanonicalType e : element.getTargetProfile()) 
@@ -33152,10 +33166,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("family", element.getFamilyElement(), false);
       }
       if (element.hasGiven()) {
+        if (anyHasValue(element.getGiven())) {
         openArray("given");
         for (StringType e : element.getGiven()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getGiven().get(element.getGiven().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getGiven())) {
           openArray("_given");
           for (StringType e : element.getGiven()) 
@@ -33164,10 +33180,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasPrefix()) {
+        if (anyHasValue(element.getPrefix())) {
         openArray("prefix");
         for (StringType e : element.getPrefix()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getPrefix().get(element.getPrefix().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPrefix())) {
           openArray("_prefix");
           for (StringType e : element.getPrefix()) 
@@ -33176,10 +33194,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasSuffix()) {
+        if (anyHasValue(element.getSuffix())) {
         openArray("suffix");
         for (StringType e : element.getSuffix()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getSuffix().get(element.getSuffix().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSuffix())) {
           openArray("_suffix");
           for (StringType e : element.getSuffix()) 
@@ -33276,10 +33296,12 @@ public class JsonParser extends JsonParserBase {
         composeUriExtras("source", element.getSourceElement(), false);
       }
       if (element.hasProfile()) {
+        if (anyHasValue(element.getProfile())) {
         openArray("profile");
         for (CanonicalType e : element.getProfile()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getProfile().get(element.getProfile().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getProfile())) {
           openArray("_profile");
           for (CanonicalType e : element.getProfile()) 
@@ -33521,10 +33543,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("shape", element.getShapeElement(), false);
       }
       if (element.hasColor()) {
+        if (anyHasValue(element.getColor())) {
         openArray("color");
         for (StringType e : element.getColor()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getColor().get(element.getColor().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getColor())) {
           openArray("_color");
           for (StringType e : element.getColor()) 
@@ -33533,10 +33557,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasImprint()) {
+        if (anyHasValue(element.getImprint())) {
         openArray("imprint");
         for (StringType e : element.getImprint()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getImprint().get(element.getImprint().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getImprint())) {
           openArray("_imprint");
           for (StringType e : element.getImprint()) 
@@ -34021,10 +34047,12 @@ public class JsonParser extends JsonParserBase {
   protected void composeTimingProperties(Timing element) throws IOException {
     composeBackboneTypeProperties(element);
       if (element.hasEvent()) {
-        openArray("event");
-        for (DateTimeType e : element.getEvent()) 
-          composeDateTimeCore(null, e, true);
-        closeArray();
+        if (anyHasValue(element.getEvent())) {
+          openArray("event");
+          for (DateTimeType e : element.getEvent()) 
+            composeDateTimeCore(null, e, e != element.getEvent().get(element.getEvent().size()-1));
+          closeArray();
+        }
         if (anyHasExtras(element.getEvent())) {
           openArray("_event");
           for (DateTimeType e : element.getEvent()) 
@@ -34106,10 +34134,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasTimeOfDay()) {
+        if (anyHasValue(element.getTimeOfDay())) {
         openArray("timeOfDay");
         for (TimeType e : element.getTimeOfDay()) 
-          composeTimeCore(null, e, true);
+            composeTimeCore(null, e, e != element.getTimeOfDay().get(element.getTimeOfDay().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getTimeOfDay())) {
           openArray("_timeOfDay");
           for (TimeType e : element.getTimeOfDay()) 
@@ -34476,10 +34506,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasLibrary()) {
+        if (anyHasValue(element.getLibrary())) {
         openArray("library");
         for (CanonicalType e : element.getLibrary()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getLibrary().get(element.getLibrary().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getLibrary())) {
           openArray("_library");
           for (CanonicalType e : element.getLibrary()) 
@@ -35405,10 +35437,12 @@ public class JsonParser extends JsonParserBase {
         composeReference("location", element.getLocation());
       }
       if (element.hasPolicy()) {
+        if (anyHasValue(element.getPolicy())) {
         openArray("policy");
         for (UriType e : element.getPolicy()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getPolicy().get(element.getPolicy().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPolicy())) {
           openArray("_policy");
           for (UriType e : element.getPolicy()) 
@@ -36052,10 +36086,12 @@ public class JsonParser extends JsonParserBase {
         composeEnumerationExtras("kind", element.getKindElement(), new Enumerations.CapabilityStatementKindEnumFactory(), false);
       }
       if (element.hasInstantiates()) {
+        if (anyHasValue(element.getInstantiates())) {
         openArray("instantiates");
         for (CanonicalType e : element.getInstantiates()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiates().get(element.getInstantiates().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiates())) {
           openArray("_instantiates");
           for (CanonicalType e : element.getInstantiates()) 
@@ -36064,10 +36100,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasImports()) {
+        if (anyHasValue(element.getImports())) {
         openArray("imports");
         for (CanonicalType e : element.getImports()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getImports().get(element.getImports().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getImports())) {
           openArray("_imports");
           for (CanonicalType e : element.getImports()) 
@@ -36086,10 +36124,12 @@ public class JsonParser extends JsonParserBase {
         composeEnumerationExtras("fhirVersion", element.getFhirVersionElement(), new Enumerations.FHIRVersionEnumFactory(), false);
       }
       if (element.hasFormat()) {
+        if (anyHasValue(element.getFormat())) {
         openArray("format");
         for (CodeType e : element.getFormat()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getFormat().get(element.getFormat().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getFormat())) {
           openArray("_format");
           for (CodeType e : element.getFormat()) 
@@ -36098,10 +36138,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasPatchFormat()) {
+        if (anyHasValue(element.getPatchFormat())) {
         openArray("patchFormat");
         for (CodeType e : element.getPatchFormat()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getPatchFormat().get(element.getPatchFormat().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPatchFormat())) {
           openArray("_patchFormat");
           for (CodeType e : element.getPatchFormat()) 
@@ -36110,10 +36152,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasImplementationGuide()) {
+        if (anyHasValue(element.getImplementationGuide())) {
         openArray("implementationGuide");
         for (CanonicalType e : element.getImplementationGuide()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getImplementationGuide().get(element.getImplementationGuide().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getImplementationGuide())) {
           openArray("_implementationGuide");
           for (CanonicalType e : element.getImplementationGuide()) 
@@ -36234,10 +36278,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasCompartment()) {
+        if (anyHasValue(element.getCompartment())) {
         openArray("compartment");
         for (CanonicalType e : element.getCompartment()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getCompartment().get(element.getCompartment().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getCompartment())) {
           openArray("_compartment");
           for (CanonicalType e : element.getCompartment()) 
@@ -36292,10 +36338,12 @@ public class JsonParser extends JsonParserBase {
         composeCanonicalExtras("profile", element.getProfileElement(), false);
       }
       if (element.hasSupportedProfile()) {
+        if (anyHasValue(element.getSupportedProfile())) {
         openArray("supportedProfile");
         for (CanonicalType e : element.getSupportedProfile()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getSupportedProfile().get(element.getSupportedProfile().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSupportedProfile())) {
           openArray("_supportedProfile");
           for (CanonicalType e : element.getSupportedProfile()) 
@@ -36354,10 +36402,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasSearchInclude()) {
+        if (anyHasValue(element.getSearchInclude())) {
         openArray("searchInclude");
         for (StringType e : element.getSearchInclude()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getSearchInclude().get(element.getSearchInclude().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSearchInclude())) {
           openArray("_searchInclude");
           for (StringType e : element.getSearchInclude()) 
@@ -36366,10 +36416,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasSearchRevInclude()) {
+        if (anyHasValue(element.getSearchRevInclude())) {
         openArray("searchRevInclude");
         for (StringType e : element.getSearchRevInclude()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getSearchRevInclude().get(element.getSearchRevInclude().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSearchRevInclude())) {
           openArray("_searchRevInclude");
           for (StringType e : element.getSearchRevInclude()) 
@@ -36654,10 +36706,12 @@ public class JsonParser extends JsonParserBase {
         composeEnumerationExtras("kind", element.getKindElement(), new Enumerations.CapabilityStatementKindEnumFactory(), false);
       }
       if (element.hasInstantiates()) {
+        if (anyHasValue(element.getInstantiates())) {
         openArray("instantiates");
         for (CanonicalType e : element.getInstantiates()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiates().get(element.getInstantiates().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiates())) {
           openArray("_instantiates");
           for (CanonicalType e : element.getInstantiates()) 
@@ -36666,10 +36720,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasImports()) {
+        if (anyHasValue(element.getImports())) {
         openArray("imports");
         for (CanonicalType e : element.getImports()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getImports().get(element.getImports().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getImports())) {
           openArray("_imports");
           for (CanonicalType e : element.getImports()) 
@@ -36688,10 +36744,12 @@ public class JsonParser extends JsonParserBase {
         composeEnumerationExtras("fhirVersion", element.getFhirVersionElement(), new Enumerations.FHIRVersionEnumFactory(), false);
       }
       if (element.hasFormat()) {
+        if (anyHasValue(element.getFormat())) {
         openArray("format");
         for (CodeType e : element.getFormat()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getFormat().get(element.getFormat().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getFormat())) {
           openArray("_format");
           for (CodeType e : element.getFormat()) 
@@ -36700,10 +36758,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasPatchFormat()) {
+        if (anyHasValue(element.getPatchFormat())) {
         openArray("patchFormat");
         for (CodeType e : element.getPatchFormat()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getPatchFormat().get(element.getPatchFormat().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPatchFormat())) {
           openArray("_patchFormat");
           for (CodeType e : element.getPatchFormat()) 
@@ -36712,10 +36772,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasImplementationGuide()) {
+        if (anyHasValue(element.getImplementationGuide())) {
         openArray("implementationGuide");
         for (CanonicalType e : element.getImplementationGuide()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getImplementationGuide().get(element.getImplementationGuide().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getImplementationGuide())) {
           openArray("_implementationGuide");
           for (CanonicalType e : element.getImplementationGuide()) 
@@ -36821,10 +36883,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasCompartment()) {
+        if (anyHasValue(element.getCompartment())) {
         openArray("compartment");
         for (CanonicalType e : element.getCompartment()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getCompartment().get(element.getCompartment().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getCompartment())) {
           openArray("_compartment");
           for (CanonicalType e : element.getCompartment()) 
@@ -36853,10 +36917,12 @@ public class JsonParser extends JsonParserBase {
         composeCanonicalExtras("profile", element.getProfileElement(), false);
       }
       if (element.hasSupportedProfile()) {
+        if (anyHasValue(element.getSupportedProfile())) {
         openArray("supportedProfile");
         for (CanonicalType e : element.getSupportedProfile()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getSupportedProfile().get(element.getSupportedProfile().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSupportedProfile())) {
           openArray("_supportedProfile");
           for (CanonicalType e : element.getSupportedProfile()) 
@@ -36996,10 +37062,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -37008,10 +37076,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -37164,10 +37234,12 @@ public class JsonParser extends JsonParserBase {
         composeEnumerationExtras("kind", element.getKindElement(), new CarePlan.CarePlanActivityKindEnumFactory(), false);
       }
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -37176,10 +37248,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -37448,10 +37522,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasDefinitionUri()) {
+        if (anyHasValue(element.getDefinitionUri())) {
         openArray("definitionUri");
         for (UriType e : element.getDefinitionUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getDefinitionUri().get(element.getDefinitionUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDefinitionUri())) {
           openArray("_definitionUri");
           for (UriType e : element.getDefinitionUri()) 
@@ -37460,10 +37536,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasDefinitionCanonical()) {
+        if (anyHasValue(element.getDefinitionCanonical())) {
         openArray("definitionCanonical");
         for (CanonicalType e : element.getDefinitionCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getDefinitionCanonical().get(element.getDefinitionCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDefinitionCanonical())) {
           openArray("_definitionCanonical");
           for (CanonicalType e : element.getDefinitionCanonical()) 
@@ -37616,10 +37694,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("title", element.getTitleElement(), false);
       }
       if (element.hasDerivedFromUri()) {
+        if (anyHasValue(element.getDerivedFromUri())) {
         openArray("derivedFromUri");
         for (UriType e : element.getDerivedFromUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getDerivedFromUri().get(element.getDerivedFromUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDerivedFromUri())) {
           openArray("_derivedFromUri");
           for (UriType e : element.getDerivedFromUri()) 
@@ -37628,10 +37708,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasPartOf()) {
+        if (anyHasValue(element.getPartOf())) {
         openArray("partOf");
         for (CanonicalType e : element.getPartOf()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getPartOf().get(element.getPartOf().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPartOf())) {
           openArray("_partOf");
           for (CanonicalType e : element.getPartOf()) 
@@ -37640,10 +37722,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasReplaces()) {
+        if (anyHasValue(element.getReplaces())) {
         openArray("replaces");
         for (CanonicalType e : element.getReplaces()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getReplaces().get(element.getReplaces().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getReplaces())) {
           openArray("_replaces");
           for (CanonicalType e : element.getReplaces()) 
@@ -38984,10 +39068,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("businessArrangement", element.getBusinessArrangementElement(), false);
       }
       if (element.hasPreAuthRef()) {
+        if (anyHasValue(element.getPreAuthRef())) {
         openArray("preAuthRef");
         for (StringType e : element.getPreAuthRef()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getPreAuthRef().get(element.getPreAuthRef().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPreAuthRef())) {
           openArray("_preAuthRef");
           for (StringType e : element.getPreAuthRef()) 
@@ -39037,10 +39123,12 @@ public class JsonParser extends JsonParserBase {
         composePositiveIntExtras("sequence", element.getSequenceElement(), false);
       }
       if (element.hasCareTeamSequence()) {
+        if (anyHasValue(element.getCareTeamSequence())) {
         openArray("careTeamSequence");
         for (PositiveIntType e : element.getCareTeamSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getCareTeamSequence().get(element.getCareTeamSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getCareTeamSequence())) {
           openArray("_careTeamSequence");
           for (PositiveIntType e : element.getCareTeamSequence()) 
@@ -39049,10 +39137,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasDiagnosisSequence()) {
+        if (anyHasValue(element.getDiagnosisSequence())) {
         openArray("diagnosisSequence");
         for (PositiveIntType e : element.getDiagnosisSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getDiagnosisSequence().get(element.getDiagnosisSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDiagnosisSequence())) {
           openArray("_diagnosisSequence");
           for (PositiveIntType e : element.getDiagnosisSequence()) 
@@ -39061,10 +39151,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasProcedureSequence()) {
+        if (anyHasValue(element.getProcedureSequence())) {
         openArray("procedureSequence");
         for (PositiveIntType e : element.getProcedureSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getProcedureSequence().get(element.getProcedureSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getProcedureSequence())) {
           openArray("_procedureSequence");
           for (PositiveIntType e : element.getProcedureSequence()) 
@@ -39073,10 +39165,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInformationSequence()) {
+        if (anyHasValue(element.getInformationSequence())) {
         openArray("informationSequence");
         for (PositiveIntType e : element.getInformationSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getInformationSequence().get(element.getInformationSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInformationSequence())) {
           openArray("_informationSequence");
           for (PositiveIntType e : element.getInformationSequence()) 
@@ -39411,10 +39505,12 @@ public class JsonParser extends JsonParserBase {
         composePositiveIntExtras("itemSequence", element.getItemSequenceElement(), false);
       }
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -39476,10 +39572,12 @@ public class JsonParser extends JsonParserBase {
         composePositiveIntExtras("detailSequence", element.getDetailSequenceElement(), false);
       }
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -39516,10 +39614,12 @@ public class JsonParser extends JsonParserBase {
         composePositiveIntExtras("subDetailSequence", element.getSubDetailSequenceElement(), false);
       }
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -39546,10 +39646,12 @@ public class JsonParser extends JsonParserBase {
   protected void composeAddedItemComponentProperties(ClaimResponse.AddedItemComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasItemSequence()) {
+        if (anyHasValue(element.getItemSequence())) {
         openArray("itemSequence");
         for (PositiveIntType e : element.getItemSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getItemSequence().get(element.getItemSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getItemSequence())) {
           openArray("_itemSequence");
           for (PositiveIntType e : element.getItemSequence()) 
@@ -39558,10 +39660,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasDetailSequence()) {
+        if (anyHasValue(element.getDetailSequence())) {
         openArray("detailSequence");
         for (PositiveIntType e : element.getDetailSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getDetailSequence().get(element.getDetailSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDetailSequence())) {
           openArray("_detailSequence");
           for (PositiveIntType e : element.getDetailSequence()) 
@@ -39570,10 +39674,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasSubdetailSequence()) {
+        if (anyHasValue(element.getSubdetailSequence())) {
         openArray("subdetailSequence");
         for (PositiveIntType e : element.getSubdetailSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getSubdetailSequence().get(element.getSubdetailSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSubdetailSequence())) {
           openArray("_subdetailSequence");
           for (PositiveIntType e : element.getSubdetailSequence()) 
@@ -39631,10 +39737,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -39689,10 +39797,12 @@ public class JsonParser extends JsonParserBase {
         composeMoney("net", element.getNet());
       }
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -39747,10 +39857,12 @@ public class JsonParser extends JsonParserBase {
         composeMoney("net", element.getNet());
       }
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -39951,10 +40063,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasProtocol()) {
+        if (anyHasValue(element.getProtocol())) {
         openArray("protocol");
         for (UriType e : element.getProtocol()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getProtocol().get(element.getProtocol().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getProtocol())) {
           openArray("_protocol");
           for (UriType e : element.getProtocol()) 
@@ -40527,10 +40641,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -40539,10 +40655,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -40872,10 +40990,12 @@ public class JsonParser extends JsonParserBase {
         composeCodeExtras("code", element.getCodeElement(), false);
       }
       if (element.hasParam()) {
+        if (anyHasValue(element.getParam())) {
         openArray("param");
         for (StringType e : element.getParam()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getParam().get(element.getParam().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getParam())) {
           openArray("_param");
           for (StringType e : element.getParam()) 
@@ -41567,10 +41687,12 @@ public class JsonParser extends JsonParserBase {
         composeBooleanExtras("hasStage", element.getHasStageElement(), false);
       }
       if (element.hasDefinition()) {
+        if (anyHasValue(element.getDefinition())) {
         openArray("definition");
         for (UriType e : element.getDefinition()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getDefinition().get(element.getDefinition().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDefinition())) {
           openArray("_definition");
           for (UriType e : element.getDefinition()) 
@@ -41840,10 +41962,12 @@ public class JsonParser extends JsonParserBase {
         composeReference("verifiedWith", element.getVerifiedWith());
       }
       if (element.hasVerificationDate()) {
+        if (anyHasValue(element.getVerificationDate())) {
         openArray("verificationDate");
         for (DateTimeType e : element.getVerificationDate()) 
-          composeDateTimeCore(null, e, true);
+            composeDateTimeCore(null, e, e != element.getVerificationDate().get(element.getVerificationDate().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getVerificationDate())) {
           openArray("_verificationDate");
           for (DateTimeType e : element.getVerificationDate()) 
@@ -42047,10 +42171,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("subtitle", element.getSubtitleElement(), false);
       }
       if (element.hasAlias()) {
+        if (anyHasValue(element.getAlias())) {
         openArray("alias");
         for (StringType e : element.getAlias()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getAlias().get(element.getAlias().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getAlias())) {
           openArray("_alias");
           for (StringType e : element.getAlias()) 
@@ -42232,10 +42358,12 @@ public class JsonParser extends JsonParserBase {
   protected void composeSecurityLabelComponentProperties(Contract.SecurityLabelComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasNumber()) {
+        if (anyHasValue(element.getNumber())) {
         openArray("number");
         for (UnsignedIntType e : element.getNumber()) 
-          composeUnsignedIntCore(null, e, true);
+            composeUnsignedIntCore(null, e, e != element.getNumber().get(element.getNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNumber())) {
           openArray("_number");
           for (UnsignedIntType e : element.getNumber()) 
@@ -42308,10 +42436,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("text", element.getTextElement(), false);
       }
       if (element.hasLinkId()) {
+        if (anyHasValue(element.getLinkId())) {
         openArray("linkId");
         for (StringType e : element.getLinkId()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getLinkId().get(element.getLinkId().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getLinkId())) {
           openArray("_linkId");
           for (StringType e : element.getLinkId()) 
@@ -42320,10 +42450,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasSecurityLabelNumber()) {
+        if (anyHasValue(element.getSecurityLabelNumber())) {
         openArray("securityLabelNumber");
         for (UnsignedIntType e : element.getSecurityLabelNumber()) 
-          composeUnsignedIntCore(null, e, true);
+            composeUnsignedIntCore(null, e, e != element.getSecurityLabelNumber().get(element.getSecurityLabelNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSecurityLabelNumber())) {
           openArray("_securityLabelNumber");
           for (UnsignedIntType e : element.getSecurityLabelNumber()) 
@@ -42436,10 +42568,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("text", element.getTextElement(), false);
       }
       if (element.hasLinkId()) {
+        if (anyHasValue(element.getLinkId())) {
         openArray("linkId");
         for (StringType e : element.getLinkId()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getLinkId().get(element.getLinkId().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getLinkId())) {
           openArray("_linkId");
           for (StringType e : element.getLinkId()) 
@@ -42454,10 +42588,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasSecurityLabelNumber()) {
+        if (anyHasValue(element.getSecurityLabelNumber())) {
         openArray("securityLabelNumber");
         for (UnsignedIntType e : element.getSecurityLabelNumber()) 
-          composeUnsignedIntCore(null, e, true);
+            composeUnsignedIntCore(null, e, e != element.getSecurityLabelNumber().get(element.getSecurityLabelNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSecurityLabelNumber())) {
           openArray("_securityLabelNumber");
           for (UnsignedIntType e : element.getSecurityLabelNumber()) 
@@ -42550,10 +42686,12 @@ public class JsonParser extends JsonParserBase {
         composeReference("recipient", element.getRecipient());
       }
       if (element.hasLinkId()) {
+        if (anyHasValue(element.getLinkId())) {
         openArray("linkId");
         for (StringType e : element.getLinkId()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getLinkId().get(element.getLinkId().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getLinkId())) {
           openArray("_linkId");
           for (StringType e : element.getLinkId()) 
@@ -42562,10 +42700,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasSecurityLabelNumber()) {
+        if (anyHasValue(element.getSecurityLabelNumber())) {
         openArray("securityLabelNumber");
         for (UnsignedIntType e : element.getSecurityLabelNumber()) 
-          composeUnsignedIntCore(null, e, true);
+            composeUnsignedIntCore(null, e, e != element.getSecurityLabelNumber().get(element.getSecurityLabelNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSecurityLabelNumber())) {
           openArray("_securityLabelNumber");
           for (UnsignedIntType e : element.getSecurityLabelNumber()) 
@@ -42602,10 +42742,12 @@ public class JsonParser extends JsonParserBase {
         composeCodeableConcept("intent", element.getIntent());
       }
       if (element.hasLinkId()) {
+        if (anyHasValue(element.getLinkId())) {
         openArray("linkId");
         for (StringType e : element.getLinkId()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getLinkId().get(element.getLinkId().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getLinkId())) {
           openArray("_linkId");
           for (StringType e : element.getLinkId()) 
@@ -42620,10 +42762,12 @@ public class JsonParser extends JsonParserBase {
         composeReference("context", element.getContext());
       }
       if (element.hasContextLinkId()) {
+        if (anyHasValue(element.getContextLinkId())) {
         openArray("contextLinkId");
         for (StringType e : element.getContextLinkId()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getContextLinkId().get(element.getContextLinkId().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getContextLinkId())) {
           openArray("_contextLinkId");
           for (StringType e : element.getContextLinkId()) 
@@ -42641,10 +42785,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasRequesterLinkId()) {
+        if (anyHasValue(element.getRequesterLinkId())) {
         openArray("requesterLinkId");
         for (StringType e : element.getRequesterLinkId()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getRequesterLinkId().get(element.getRequesterLinkId().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getRequesterLinkId())) {
           openArray("_requesterLinkId");
           for (StringType e : element.getRequesterLinkId()) 
@@ -42665,10 +42811,12 @@ public class JsonParser extends JsonParserBase {
         composeReference("performer", element.getPerformer());
       }
       if (element.hasPerformerLinkId()) {
+        if (anyHasValue(element.getPerformerLinkId())) {
         openArray("performerLinkId");
         for (StringType e : element.getPerformerLinkId()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getPerformerLinkId().get(element.getPerformerLinkId().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPerformerLinkId())) {
           openArray("_performerLinkId");
           for (StringType e : element.getPerformerLinkId()) 
@@ -42683,10 +42831,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasReasonLinkId()) {
+        if (anyHasValue(element.getReasonLinkId())) {
         openArray("reasonLinkId");
         for (StringType e : element.getReasonLinkId()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getReasonLinkId().get(element.getReasonLinkId().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getReasonLinkId())) {
           openArray("_reasonLinkId");
           for (StringType e : element.getReasonLinkId()) 
@@ -42701,10 +42851,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasSecurityLabelNumber()) {
+        if (anyHasValue(element.getSecurityLabelNumber())) {
         openArray("securityLabelNumber");
         for (UnsignedIntType e : element.getSecurityLabelNumber()) 
-          composeUnsignedIntCore(null, e, true);
+            composeUnsignedIntCore(null, e, e != element.getSecurityLabelNumber().get(element.getSecurityLabelNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSecurityLabelNumber())) {
           openArray("_securityLabelNumber");
           for (UnsignedIntType e : element.getSecurityLabelNumber()) 
@@ -43084,10 +43236,12 @@ public class JsonParser extends JsonParserBase {
   protected void composeDetailsComponentProperties(CoverageEligibilityRequest.DetailsComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasSupportingInfoSequence()) {
+        if (anyHasValue(element.getSupportingInfoSequence())) {
         openArray("supportingInfoSequence");
         for (PositiveIntType e : element.getSupportingInfoSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getSupportingInfoSequence().get(element.getSupportingInfoSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSupportingInfoSequence())) {
           openArray("_supportingInfoSequence");
           for (PositiveIntType e : element.getSupportingInfoSequence()) 
@@ -43820,10 +43974,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasVersion()) {
+        if (anyHasValue(element.getVersion())) {
         openArray("version");
         for (StringType e : element.getVersion()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getVersion().get(element.getVersion().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getVersion())) {
           openArray("_version");
           for (StringType e : element.getVersion()) 
@@ -44122,10 +44278,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -44134,10 +44292,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -45034,10 +45194,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasPayloadMimeType()) {
+        if (anyHasValue(element.getPayloadMimeType())) {
         openArray("payloadMimeType");
         for (CodeType e : element.getPayloadMimeType()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getPayloadMimeType().get(element.getPayloadMimeType().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPayloadMimeType())) {
           openArray("_payloadMimeType");
           for (CodeType e : element.getPayloadMimeType()) 
@@ -45050,10 +45212,12 @@ public class JsonParser extends JsonParserBase {
         composeUrlExtras("address", element.getAddressElement(), false);
       }
       if (element.hasHeader()) {
+        if (anyHasValue(element.getHeader())) {
         openArray("header");
         for (StringType e : element.getHeader()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getHeader().get(element.getHeader().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getHeader())) {
           openArray("_header");
           for (StringType e : element.getHeader()) 
@@ -46163,10 +46327,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasWorkflow()) {
+        if (anyHasValue(element.getWorkflow())) {
         openArray("workflow");
         for (CanonicalType e : element.getWorkflow()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getWorkflow().get(element.getWorkflow().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getWorkflow())) {
           openArray("_workflow");
           for (CanonicalType e : element.getWorkflow()) 
@@ -46518,10 +46684,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("disposition", element.getDispositionElement(), false);
       }
       if (element.hasPreAuthRef()) {
+        if (anyHasValue(element.getPreAuthRef())) {
         openArray("preAuthRef");
         for (StringType e : element.getPreAuthRef()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getPreAuthRef().get(element.getPreAuthRef().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPreAuthRef())) {
           openArray("_preAuthRef");
           for (StringType e : element.getPreAuthRef()) 
@@ -46805,10 +46973,12 @@ public class JsonParser extends JsonParserBase {
         composeReference("coverage", element.getCoverage());
       }
       if (element.hasPreAuthRef()) {
+        if (anyHasValue(element.getPreAuthRef())) {
         openArray("preAuthRef");
         for (StringType e : element.getPreAuthRef()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getPreAuthRef().get(element.getPreAuthRef().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPreAuthRef())) {
           openArray("_preAuthRef");
           for (StringType e : element.getPreAuthRef()) 
@@ -46855,10 +47025,12 @@ public class JsonParser extends JsonParserBase {
         composePositiveIntExtras("sequence", element.getSequenceElement(), false);
       }
       if (element.hasCareTeamSequence()) {
+        if (anyHasValue(element.getCareTeamSequence())) {
         openArray("careTeamSequence");
         for (PositiveIntType e : element.getCareTeamSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getCareTeamSequence().get(element.getCareTeamSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getCareTeamSequence())) {
           openArray("_careTeamSequence");
           for (PositiveIntType e : element.getCareTeamSequence()) 
@@ -46867,10 +47039,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasDiagnosisSequence()) {
+        if (anyHasValue(element.getDiagnosisSequence())) {
         openArray("diagnosisSequence");
         for (PositiveIntType e : element.getDiagnosisSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getDiagnosisSequence().get(element.getDiagnosisSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDiagnosisSequence())) {
           openArray("_diagnosisSequence");
           for (PositiveIntType e : element.getDiagnosisSequence()) 
@@ -46879,10 +47053,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasProcedureSequence()) {
+        if (anyHasValue(element.getProcedureSequence())) {
         openArray("procedureSequence");
         for (PositiveIntType e : element.getProcedureSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getProcedureSequence().get(element.getProcedureSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getProcedureSequence())) {
           openArray("_procedureSequence");
           for (PositiveIntType e : element.getProcedureSequence()) 
@@ -46891,10 +47067,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInformationSequence()) {
+        if (anyHasValue(element.getInformationSequence())) {
         openArray("informationSequence");
         for (PositiveIntType e : element.getInformationSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getInformationSequence().get(element.getInformationSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInformationSequence())) {
           openArray("_informationSequence");
           for (PositiveIntType e : element.getInformationSequence()) 
@@ -46964,10 +47142,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -47069,10 +47249,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -47149,10 +47331,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -47179,10 +47363,12 @@ public class JsonParser extends JsonParserBase {
   protected void composeAddedItemComponentProperties(ExplanationOfBenefit.AddedItemComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasItemSequence()) {
+        if (anyHasValue(element.getItemSequence())) {
         openArray("itemSequence");
         for (PositiveIntType e : element.getItemSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getItemSequence().get(element.getItemSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getItemSequence())) {
           openArray("_itemSequence");
           for (PositiveIntType e : element.getItemSequence()) 
@@ -47191,10 +47377,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasDetailSequence()) {
+        if (anyHasValue(element.getDetailSequence())) {
         openArray("detailSequence");
         for (PositiveIntType e : element.getDetailSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getDetailSequence().get(element.getDetailSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDetailSequence())) {
           openArray("_detailSequence");
           for (PositiveIntType e : element.getDetailSequence()) 
@@ -47203,10 +47391,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasSubDetailSequence()) {
+        if (anyHasValue(element.getSubDetailSequence())) {
         openArray("subDetailSequence");
         for (PositiveIntType e : element.getSubDetailSequence()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getSubDetailSequence().get(element.getSubDetailSequence().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSubDetailSequence())) {
           openArray("_subDetailSequence");
           for (PositiveIntType e : element.getSubDetailSequence()) 
@@ -47264,10 +47454,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -47322,10 +47514,12 @@ public class JsonParser extends JsonParserBase {
         composeMoney("net", element.getNet());
       }
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -47380,10 +47574,12 @@ public class JsonParser extends JsonParserBase {
         composeMoney("net", element.getNet());
       }
       if (element.hasNoteNumber()) {
+        if (anyHasValue(element.getNoteNumber())) {
         openArray("noteNumber");
         for (PositiveIntType e : element.getNoteNumber()) 
-          composePositiveIntCore(null, e, true);
+            composePositiveIntCore(null, e, e != element.getNoteNumber().get(element.getNoteNumber().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNoteNumber())) {
           openArray("_noteNumber");
           for (PositiveIntType e : element.getNoteNumber()) 
@@ -47554,10 +47750,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -47566,10 +47764,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -48652,10 +48852,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -48664,10 +48866,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -48971,10 +49175,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -48983,10 +49189,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -49456,10 +49664,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasImage()) {
+        if (anyHasValue(element.getImage())) {
         openArray("image");
         for (StringType e : element.getImage()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getImage().get(element.getImage().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getImage())) {
           openArray("_image");
           for (StringType e : element.getImage()) 
@@ -49468,10 +49678,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasOther()) {
+        if (anyHasValue(element.getOther())) {
         openArray("other");
         for (StringType e : element.getOther()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getOther().get(element.getOther().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getOther())) {
           openArray("_other");
           for (StringType e : element.getOther()) 
@@ -49522,10 +49734,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("title", element.getTitleElement(), false);
       }
       if (element.hasAnchor()) {
+        if (anyHasValue(element.getAnchor())) {
         openArray("anchor");
         for (StringType e : element.getAnchor()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getAnchor().get(element.getAnchor().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getAnchor())) {
           openArray("_anchor");
           for (StringType e : element.getAnchor()) 
@@ -49738,10 +49952,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("name", element.getNameElement(), false);
       }
       if (element.hasAlias()) {
+        if (anyHasValue(element.getAlias())) {
         openArray("alias");
         for (StringType e : element.getAlias()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getAlias().get(element.getAlias().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getAlias())) {
           openArray("_alias");
           for (StringType e : element.getAlias()) 
@@ -50497,10 +50713,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("name", element.getNameElement(), false);
       }
       if (element.hasAlias()) {
+        if (anyHasValue(element.getAlias())) {
         openArray("alias");
         for (StringType e : element.getAlias()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getAlias().get(element.getAlias().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getAlias())) {
           openArray("_alias");
           for (StringType e : element.getAlias()) 
@@ -50816,10 +51034,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasLibrary()) {
+        if (anyHasValue(element.getLibrary())) {
         openArray("library");
         for (CanonicalType e : element.getLibrary()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getLibrary().get(element.getLibrary().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getLibrary())) {
           openArray("_library");
           for (CanonicalType e : element.getLibrary()) 
@@ -50863,10 +51083,12 @@ public class JsonParser extends JsonParserBase {
         composeCodeableConcept("improvementNotation", element.getImprovementNotation());
       }
       if (element.hasDefinition()) {
+        if (anyHasValue(element.getDefinition())) {
         openArray("definition");
         for (MarkdownType e : element.getDefinition()) 
-          composeMarkdownCore(null, e, true);
+            composeMarkdownCore(null, e, e != element.getDefinition().get(element.getDefinition().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDefinition())) {
           openArray("_definition");
           for (MarkdownType e : element.getDefinition()) 
@@ -51326,10 +51548,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -51338,10 +51562,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -51696,10 +51922,12 @@ public class JsonParser extends JsonParserBase {
         composeQuantity("amount", element.getAmount());
       }
       if (element.hasSynonym()) {
+        if (anyHasValue(element.getSynonym())) {
         openArray("synonym");
         for (StringType e : element.getSynonym()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getSynonym().get(element.getSynonym().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSynonym())) {
           openArray("_synonym");
           for (StringType e : element.getSynonym()) 
@@ -52231,10 +52459,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -52243,10 +52473,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -52790,10 +53022,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("title", element.getTitleElement(), false);
       }
       if (element.hasReplaces()) {
+        if (anyHasValue(element.getReplaces())) {
         openArray("replaces");
         for (CanonicalType e : element.getReplaces()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getReplaces().get(element.getReplaces().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getReplaces())) {
           openArray("_replaces");
           for (CanonicalType e : element.getReplaces()) 
@@ -52852,10 +53086,12 @@ public class JsonParser extends JsonParserBase {
         composeCanonicalExtras("base", element.getBaseElement(), false);
       }
       if (element.hasParent()) {
+        if (anyHasValue(element.getParent())) {
         openArray("parent");
         for (CanonicalType e : element.getParent()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getParent().get(element.getParent().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getParent())) {
           openArray("_parent");
           for (CanonicalType e : element.getParent()) 
@@ -52887,10 +53123,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasGraph()) {
+        if (anyHasValue(element.getGraph())) {
         openArray("graph");
         for (CanonicalType e : element.getGraph()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getGraph().get(element.getGraph().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getGraph())) {
           openArray("_graph");
           for (CanonicalType e : element.getGraph()) 
@@ -53319,10 +53557,12 @@ public class JsonParser extends JsonParserBase {
   protected void composeMolecularSequenceQualityRocComponentProperties(MolecularSequence.MolecularSequenceQualityRocComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasScore()) {
+        if (anyHasValue(element.getScore())) {
         openArray("score");
         for (IntegerType e : element.getScore()) 
-          composeIntegerCore(null, e, true);
+            composeIntegerCore(null, e, e != element.getScore().get(element.getScore().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getScore())) {
           openArray("_score");
           for (IntegerType e : element.getScore()) 
@@ -53331,10 +53571,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasNumTP()) {
+        if (anyHasValue(element.getNumTP())) {
         openArray("numTP");
         for (IntegerType e : element.getNumTP()) 
-          composeIntegerCore(null, e, true);
+            composeIntegerCore(null, e, e != element.getNumTP().get(element.getNumTP().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNumTP())) {
           openArray("_numTP");
           for (IntegerType e : element.getNumTP()) 
@@ -53343,10 +53585,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasNumFP()) {
+        if (anyHasValue(element.getNumFP())) {
         openArray("numFP");
         for (IntegerType e : element.getNumFP()) 
-          composeIntegerCore(null, e, true);
+            composeIntegerCore(null, e, e != element.getNumFP().get(element.getNumFP().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNumFP())) {
           openArray("_numFP");
           for (IntegerType e : element.getNumFP()) 
@@ -53355,10 +53599,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasNumFN()) {
+        if (anyHasValue(element.getNumFN())) {
         openArray("numFN");
         for (IntegerType e : element.getNumFN()) 
-          composeIntegerCore(null, e, true);
+            composeIntegerCore(null, e, e != element.getNumFN().get(element.getNumFN().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getNumFN())) {
           openArray("_numFN");
           for (IntegerType e : element.getNumFN()) 
@@ -53367,10 +53613,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasPrecision()) {
+        if (anyHasValue(element.getPrecision())) {
         openArray("precision");
         for (DecimalType e : element.getPrecision()) 
-          composeDecimalCore(null, e, true);
+            composeDecimalCore(null, e, e != element.getPrecision().get(element.getPrecision().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPrecision())) {
           openArray("_precision");
           for (DecimalType e : element.getPrecision()) 
@@ -53379,10 +53627,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasSensitivity()) {
+        if (anyHasValue(element.getSensitivity())) {
         openArray("sensitivity");
         for (DecimalType e : element.getSensitivity()) 
-          composeDecimalCore(null, e, true);
+            composeDecimalCore(null, e, e != element.getSensitivity().get(element.getSensitivity().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSensitivity())) {
           openArray("_sensitivity");
           for (DecimalType e : element.getSensitivity()) 
@@ -53391,10 +53641,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasFMeasure()) {
+        if (anyHasValue(element.getFMeasure())) {
         openArray("fMeasure");
         for (DecimalType e : element.getFMeasure()) 
-          composeDecimalCore(null, e, true);
+            composeDecimalCore(null, e, e != element.getFMeasure().get(element.getFMeasure().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getFMeasure())) {
           openArray("_fMeasure");
           for (DecimalType e : element.getFMeasure()) 
@@ -53634,10 +53886,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -53646,10 +53900,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -53825,10 +54081,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -53837,10 +54095,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -53849,10 +54109,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiates()) {
+        if (anyHasValue(element.getInstantiates())) {
         openArray("instantiates");
         for (UriType e : element.getInstantiates()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiates().get(element.getInstantiates().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiates())) {
           openArray("_instantiates");
           for (UriType e : element.getInstantiates()) 
@@ -54468,10 +54730,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("title", element.getTitleElement(), false);
       }
       if (element.hasDerivedFromCanonical()) {
+        if (anyHasValue(element.getDerivedFromCanonical())) {
         openArray("derivedFromCanonical");
         for (CanonicalType e : element.getDerivedFromCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getDerivedFromCanonical().get(element.getDerivedFromCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDerivedFromCanonical())) {
           openArray("_derivedFromCanonical");
           for (CanonicalType e : element.getDerivedFromCanonical()) 
@@ -54480,10 +54744,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasDerivedFromUri()) {
+        if (anyHasValue(element.getDerivedFromUri())) {
         openArray("derivedFromUri");
         for (UriType e : element.getDerivedFromUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getDerivedFromUri().get(element.getDerivedFromUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDerivedFromUri())) {
           openArray("_derivedFromUri");
           for (UriType e : element.getDerivedFromUri()) 
@@ -54821,10 +55087,12 @@ public class JsonParser extends JsonParserBase {
         composeCanonicalExtras("base", element.getBaseElement(), false);
       }
       if (element.hasResource()) {
+        if (anyHasValue(element.getResource())) {
         openArray("resource");
         for (CodeType e : element.getResource()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getResource().get(element.getResource().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getResource())) {
           openArray("_resource");
           for (CodeType e : element.getResource()) 
@@ -54901,10 +55169,12 @@ public class JsonParser extends JsonParserBase {
         composeEnumerationExtras("type", element.getTypeElement(), new Enumerations.FHIRAllTypesEnumFactory(), false);
       }
       if (element.hasTargetProfile()) {
+        if (anyHasValue(element.getTargetProfile())) {
         openArray("targetProfile");
         for (CanonicalType e : element.getTargetProfile()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getTargetProfile().get(element.getTargetProfile().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getTargetProfile())) {
           openArray("_targetProfile");
           for (CanonicalType e : element.getTargetProfile()) 
@@ -54984,10 +55254,12 @@ public class JsonParser extends JsonParserBase {
   protected void composeOperationDefinitionOverloadComponentProperties(OperationDefinition.OperationDefinitionOverloadComponent element) throws IOException {
     composeBackboneElementProperties(element);
       if (element.hasParameterName()) {
+        if (anyHasValue(element.getParameterName())) {
         openArray("parameterName");
         for (StringType e : element.getParameterName()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getParameterName().get(element.getParameterName().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getParameterName())) {
           openArray("_parameterName");
           for (StringType e : element.getParameterName()) 
@@ -55044,10 +55316,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("diagnostics", element.getDiagnosticsElement(), false);
       }
       if (element.hasLocation()) {
+        if (anyHasValue(element.getLocation())) {
         openArray("location");
         for (StringType e : element.getLocation()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getLocation().get(element.getLocation().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getLocation())) {
           openArray("_location");
           for (StringType e : element.getLocation()) 
@@ -55056,10 +55330,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasExpression()) {
+        if (anyHasValue(element.getExpression())) {
         openArray("expression");
         for (StringType e : element.getExpression()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getExpression().get(element.getExpression().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getExpression())) {
           openArray("_expression");
           for (StringType e : element.getExpression()) 
@@ -55099,10 +55375,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("name", element.getNameElement(), false);
       }
       if (element.hasAlias()) {
+        if (anyHasValue(element.getAlias())) {
         openArray("alias");
         for (StringType e : element.getAlias()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getAlias().get(element.getAlias().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getAlias())) {
           openArray("_alias");
           for (StringType e : element.getAlias()) 
@@ -55863,10 +56141,12 @@ public class JsonParser extends JsonParserBase {
         composeReference("asserter", element.getAsserter());
       }
       if (element.hasAssertionDate()) {
+        if (anyHasValue(element.getAssertionDate())) {
         openArray("assertionDate");
         for (DateTimeType e : element.getAssertionDate()) 
-          composeDateTimeCore(null, e, true);
+            composeDateTimeCore(null, e, e != element.getAssertionDate().get(element.getAssertionDate().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getAssertionDate())) {
           openArray("_assertionDate");
           for (DateTimeType e : element.getAssertionDate()) 
@@ -56177,10 +56457,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasLibrary()) {
+        if (anyHasValue(element.getLibrary())) {
         openArray("library");
         for (CanonicalType e : element.getLibrary()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getLibrary().get(element.getLibrary().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getLibrary())) {
           openArray("_library");
           for (CanonicalType e : element.getLibrary()) 
@@ -56314,10 +56596,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasGoalId()) {
+        if (anyHasValue(element.getGoalId())) {
         openArray("goalId");
         for (IdType e : element.getGoalId()) 
-          composeIdCore(null, e, true);
+            composeIdCore(null, e, e != element.getGoalId().get(element.getGoalId().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getGoalId())) {
           openArray("_goalId");
           for (IdType e : element.getGoalId()) 
@@ -56736,10 +57020,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -56748,10 +57034,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -56936,10 +57224,12 @@ public class JsonParser extends JsonParserBase {
         composeInstantExtras("recorded", element.getRecordedElement(), false);
       }
       if (element.hasPolicy()) {
+        if (anyHasValue(element.getPolicy())) {
         openArray("policy");
         for (UriType e : element.getPolicy()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getPolicy().get(element.getPolicy().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getPolicy())) {
           openArray("_policy");
           for (UriType e : element.getPolicy()) 
@@ -57063,10 +57353,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("title", element.getTitleElement(), false);
       }
       if (element.hasDerivedFrom()) {
+        if (anyHasValue(element.getDerivedFrom())) {
         openArray("derivedFrom");
         for (CanonicalType e : element.getDerivedFrom()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getDerivedFrom().get(element.getDerivedFrom().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDerivedFrom())) {
           openArray("_derivedFrom");
           for (CanonicalType e : element.getDerivedFrom()) 
@@ -57083,10 +57375,12 @@ public class JsonParser extends JsonParserBase {
         composeBooleanExtras("experimental", element.getExperimentalElement(), false);
       }
       if (element.hasSubjectType()) {
+        if (anyHasValue(element.getSubjectType())) {
         openArray("subjectType");
         for (CodeType e : element.getSubjectType()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getSubjectType().get(element.getSubjectType().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getSubjectType())) {
           openArray("_subjectType");
           for (CodeType e : element.getSubjectType()) 
@@ -57643,10 +57937,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -57655,10 +57951,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -58348,10 +58646,12 @@ public class JsonParser extends JsonParserBase {
         composeCodeExtras("code", element.getCodeElement(), false);
       }
       if (element.hasBase()) {
+        if (anyHasValue(element.getBase())) {
         openArray("base");
         for (CodeType e : element.getBase()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getBase().get(element.getBase().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getBase())) {
           openArray("_base");
           for (CodeType e : element.getBase()) 
@@ -58376,10 +58676,12 @@ public class JsonParser extends JsonParserBase {
         composeEnumerationExtras("xpathUsage", element.getXpathUsageElement(), new SearchParameter.XPathUsageTypeEnumFactory(), false);
       }
       if (element.hasTarget()) {
+        if (anyHasValue(element.getTarget())) {
         openArray("target");
         for (CodeType e : element.getTarget()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getTarget().get(element.getTarget().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getTarget())) {
           openArray("_target");
           for (CodeType e : element.getTarget()) 
@@ -58420,10 +58722,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasChain()) {
+        if (anyHasValue(element.getChain())) {
         openArray("chain");
         for (StringType e : element.getChain()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getChain().get(element.getChain().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getChain())) {
           openArray("_chain");
           for (StringType e : element.getChain()) 
@@ -58475,10 +58779,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasInstantiatesCanonical()) {
+        if (anyHasValue(element.getInstantiatesCanonical())) {
         openArray("instantiatesCanonical");
         for (CanonicalType e : element.getInstantiatesCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getInstantiatesCanonical().get(element.getInstantiatesCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesCanonical())) {
           openArray("_instantiatesCanonical");
           for (CanonicalType e : element.getInstantiatesCanonical()) 
@@ -58487,10 +58793,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasInstantiatesUri()) {
+        if (anyHasValue(element.getInstantiatesUri())) {
         openArray("instantiatesUri");
         for (UriType e : element.getInstantiatesUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getInstantiatesUri().get(element.getInstantiatesUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getInstantiatesUri())) {
           openArray("_instantiatesUri");
           for (UriType e : element.getInstantiatesUri()) 
@@ -58883,10 +59191,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("title", element.getTitleElement(), false);
       }
       if (element.hasDerivedFromCanonical()) {
+        if (anyHasValue(element.getDerivedFromCanonical())) {
         openArray("derivedFromCanonical");
         for (CanonicalType e : element.getDerivedFromCanonical()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getDerivedFromCanonical().get(element.getDerivedFromCanonical().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDerivedFromCanonical())) {
           openArray("_derivedFromCanonical");
           for (CanonicalType e : element.getDerivedFromCanonical()) 
@@ -58895,10 +59205,12 @@ public class JsonParser extends JsonParserBase {
         }
       };
       if (element.hasDerivedFromUri()) {
+        if (anyHasValue(element.getDerivedFromUri())) {
         openArray("derivedFromUri");
         for (UriType e : element.getDerivedFromUri()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getDerivedFromUri().get(element.getDerivedFromUri().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDerivedFromUri())) {
           openArray("_derivedFromUri");
           for (UriType e : element.getDerivedFromUri()) 
@@ -59236,10 +59548,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasContextInvariant()) {
+        if (anyHasValue(element.getContextInvariant())) {
         openArray("contextInvariant");
         for (StringType e : element.getContextInvariant()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getContextInvariant().get(element.getContextInvariant().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getContextInvariant())) {
           openArray("_contextInvariant");
           for (StringType e : element.getContextInvariant()) 
@@ -59435,10 +59749,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasImport()) {
+        if (anyHasValue(element.getImport())) {
         openArray("import");
         for (CanonicalType e : element.getImport()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getImport().get(element.getImport().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getImport())) {
           openArray("_import");
           for (CanonicalType e : element.getImport()) 
@@ -59733,10 +60049,12 @@ public class JsonParser extends JsonParserBase {
         composeIdExtras("name", element.getNameElement(), false);
       }
       if (element.hasVariable()) {
+        if (anyHasValue(element.getVariable())) {
         openArray("variable");
         for (StringType e : element.getVariable()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getVariable().get(element.getVariable().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getVariable())) {
           openArray("_variable");
           for (StringType e : element.getVariable()) 
@@ -59800,10 +60118,12 @@ public class JsonParser extends JsonParserBase {
         composeUrlExtras("endpoint", element.getEndpointElement(), false);
       }
       if (element.hasHeader()) {
+        if (anyHasValue(element.getHeader())) {
         openArray("header");
         for (StringType e : element.getHeader()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getHeader().get(element.getHeader().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getHeader())) {
           openArray("_header");
           for (StringType e : element.getHeader()) 
@@ -59921,10 +60241,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("title", element.getTitleElement(), false);
       }
       if (element.hasDerivedFrom()) {
+        if (anyHasValue(element.getDerivedFrom())) {
         openArray("derivedFrom");
         for (CanonicalType e : element.getDerivedFrom()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getDerivedFrom().get(element.getDerivedFrom().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDerivedFrom())) {
           openArray("_derivedFrom");
           for (CanonicalType e : element.getDerivedFrom()) 
@@ -60014,10 +60336,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("description", element.getDescriptionElement(), false);
       }
       if (element.hasResourceType()) {
+        if (anyHasValue(element.getResourceType())) {
         openArray("resourceType");
         for (CodeType e : element.getResourceType()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getResourceType().get(element.getResourceType().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getResourceType())) {
           openArray("_resourceType");
           for (CodeType e : element.getResourceType()) 
@@ -60041,10 +60365,12 @@ public class JsonParser extends JsonParserBase {
         composeSubscriptionTopicResourceTriggerQueryCriteriaComponent("queryCriteria", element.getQueryCriteria());
       }
       if (element.hasFhirPathCriteria()) {
+        if (anyHasValue(element.getFhirPathCriteria())) {
         openArray("fhirPathCriteria");
         for (StringType e : element.getFhirPathCriteria()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getFhirPathCriteria().get(element.getFhirPathCriteria().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getFhirPathCriteria())) {
           openArray("_fhirPathCriteria");
           for (StringType e : element.getFhirPathCriteria()) 
@@ -61016,10 +61342,12 @@ public class JsonParser extends JsonParserBase {
         composeIntegerExtras("numberOfSubunits", element.getNumberOfSubunitsElement(), false);
       }
       if (element.hasDisulfideLinkage()) {
+        if (anyHasValue(element.getDisulfideLinkage())) {
         openArray("disulfideLinkage");
         for (StringType e : element.getDisulfideLinkage()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getDisulfideLinkage().get(element.getDisulfideLinkage().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getDisulfideLinkage())) {
           openArray("_disulfideLinkage");
           for (StringType e : element.getDisulfideLinkage()) 
@@ -61228,10 +61556,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasParentSubstanceName()) {
+        if (anyHasValue(element.getParentSubstanceName())) {
         openArray("parentSubstanceName");
         for (StringType e : element.getParentSubstanceName()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getParentSubstanceName().get(element.getParentSubstanceName().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getParentSubstanceName())) {
           openArray("_parentSubstanceName");
           for (StringType e : element.getParentSubstanceName()) 
@@ -61246,10 +61576,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasGeographicalLocation()) {
+        if (anyHasValue(element.getGeographicalLocation())) {
         openArray("geographicalLocation");
         for (StringType e : element.getGeographicalLocation()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getGeographicalLocation().get(element.getGeographicalLocation().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getGeographicalLocation())) {
           openArray("_geographicalLocation");
           for (StringType e : element.getGeographicalLocation()) 
@@ -61993,10 +62325,12 @@ public class JsonParser extends JsonParserBase {
         composeBooleanExtras("compositional", element.getCompositionalElement(), false);
       }
       if (element.hasLanguage()) {
+        if (anyHasValue(element.getLanguage())) {
         openArray("language");
         for (CodeType e : element.getLanguage()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getLanguage().get(element.getLanguage().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getLanguage())) {
           openArray("_language");
           for (CodeType e : element.getLanguage()) 
@@ -62011,10 +62345,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasProperty()) {
+        if (anyHasValue(element.getProperty())) {
         openArray("property");
         for (CodeType e : element.getProperty()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getProperty().get(element.getProperty().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getProperty())) {
           openArray("_property");
           for (CodeType e : element.getProperty()) 
@@ -62039,10 +62375,12 @@ public class JsonParser extends JsonParserBase {
         composeCodeExtras("code", element.getCodeElement(), false);
       }
       if (element.hasOp()) {
+        if (anyHasValue(element.getOp())) {
         openArray("op");
         for (CodeType e : element.getOp()) 
-          composeCodeCore(null, e, true);
+            composeCodeCore(null, e, e != element.getOp().get(element.getOp().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getOp())) {
           openArray("_op");
           for (CodeType e : element.getOp()) 
@@ -62624,10 +62962,12 @@ public class JsonParser extends JsonParserBase {
         composeStringExtras("description", element.getDescriptionElement(), false);
       }
       if (element.hasOrigin()) {
+        if (anyHasValue(element.getOrigin())) {
         openArray("origin");
         for (IntegerType e : element.getOrigin()) 
-          composeIntegerCore(null, e, true);
+            composeIntegerCore(null, e, e != element.getOrigin().get(element.getOrigin().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getOrigin())) {
           openArray("_origin");
           for (IntegerType e : element.getOrigin()) 
@@ -62640,10 +62980,12 @@ public class JsonParser extends JsonParserBase {
         composeIntegerExtras("destination", element.getDestinationElement(), false);
       }
       if (element.hasLink()) {
+        if (anyHasValue(element.getLink())) {
         openArray("link");
         for (UriType e : element.getLink()) 
-          composeUriCore(null, e, true);
+            composeUriCore(null, e, e != element.getLink().get(element.getLink().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getLink())) {
           openArray("_link");
           for (UriType e : element.getLink()) 
@@ -63158,10 +63500,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasProperty()) {
+        if (anyHasValue(element.getProperty())) {
         openArray("property");
         for (StringType e : element.getProperty()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getProperty().get(element.getProperty().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getProperty())) {
           openArray("_property");
           for (StringType e : element.getProperty()) 
@@ -63202,10 +63546,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasValueSet()) {
+        if (anyHasValue(element.getValueSet())) {
         openArray("valueSet");
         for (CanonicalType e : element.getValueSet()) 
-          composeCanonicalCore(null, e, true);
+            composeCanonicalCore(null, e, e != element.getValueSet().get(element.getValueSet().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getValueSet())) {
           openArray("_valueSet");
           for (CanonicalType e : element.getValueSet()) 
@@ -63462,10 +63808,12 @@ public class JsonParser extends JsonParserBase {
         closeArray();
       };
       if (element.hasTargetLocation()) {
+        if (anyHasValue(element.getTargetLocation())) {
         openArray("targetLocation");
         for (StringType e : element.getTargetLocation()) 
-          composeStringCore(null, e, true);
+            composeStringCore(null, e, e != element.getTargetLocation().get(element.getTargetLocation().size()-1));
         closeArray();
+        }
         if (anyHasExtras(element.getTargetLocation())) {
           openArray("_targetLocation");
           for (StringType e : element.getTargetLocation()) 
