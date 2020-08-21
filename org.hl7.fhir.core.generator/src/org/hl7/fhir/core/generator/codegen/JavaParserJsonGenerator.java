@@ -436,10 +436,12 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           }
 
           if (isPrimitive(ed) || ed.typeSummary().startsWith("canonical(")) {
-            composer.append("        openArray(\""+name+"\");\r\n");
-            composer.append("        for ("+(tn.contains("(") ? stn : upFirst(tn))+" e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");
-            composer.append("          "+comp+"Core(null, e, true);\r\n");
-            composer.append("        closeArray();\r\n");
+            composer.append("        if (anyHasValue(element.get"+upFirst(getElementName(name, false))+"())) {\r\n");
+            composer.append("          openArray(\""+name+"\");\r\n");
+            composer.append("          for ("+(tn.contains("(") ? stn : upFirst(tn))+" e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");
+            composer.append("            "+comp+"Core(null, e, e != element.get"+upFirst(getElementName(name, false))+"().get(element.get"+upFirst(getElementName(name, false))+"().size()-1));\r\n");
+            composer.append("          closeArray();\r\n");
+            composer.append("        }\r\n");
             composer.append("        if (anyHasExtras(element.get"+upFirst(getElementName(name, false))+"())) {\r\n");
             composer.append("          openArray(\"_"+name+"\");\r\n");
             composer.append("          for ("+(stn.contains("(") ? stn : upFirst(stn))+" e : element.get"+upFirst(getElementName(name, false))+"()) \r\n");
