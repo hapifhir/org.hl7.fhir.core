@@ -10,7 +10,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import java.util.List;
 
 public class MedicationRequest10_30 {
-  public static org.hl7.fhir.dstu3.model.MedicationRequest convertMedicationDispense(org.hl7.fhir.dstu2.model.MedicationOrder src) throws FHIRException {
+  public static org.hl7.fhir.dstu3.model.MedicationRequest convertMedicationOrder(org.hl7.fhir.dstu2.model.MedicationOrder src) throws FHIRException {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.MedicationRequest tgt = new org.hl7.fhir.dstu3.model.MedicationRequest();
