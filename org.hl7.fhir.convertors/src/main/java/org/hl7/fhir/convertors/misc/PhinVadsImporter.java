@@ -52,7 +52,9 @@ public class PhinVadsImporter {
       try {
         System.out.println("Process "+f.getName());
         ValueSet vs = importValueSet(TextFile.fileToBytes(f));
-        new JsonParser().compose(new FileOutputStream(Utilities.path(dest, "ValueSet-"+vs.getId()+".json")), vs);
+        if (vs.getId() != null) {
+          new JsonParser().compose(new FileOutputStream(Utilities.path(dest, "ValueSet-"+vs.getId()+".json")), vs);
+        }
       } catch (Exception e) {
         e.printStackTrace();       
       }
@@ -74,7 +76,7 @@ public class PhinVadsImporter {
     
     ValueSet vs = new ValueSet();
     vs.setId(rdr.cell("Value Set OID"));
-    vs.setUrl("https://phinvads.cdc.gov/fhir/ValueSet/"+vs.getId());
+    vs.setUrl("http://phinvads.cdc.gov/fhir/ValueSet/"+vs.getId());
     vs.getMeta().setSource("https://phinvads.cdc.gov/vads/ViewValueSet.action?oid="+vs.getId());
     vs.setVersion(rdr.cell("Value Set Version"));
     vs.setTitle(rdr.cell("Value Set Name"));
@@ -100,10 +102,29 @@ public class PhinVadsImporter {
       if (url == null) {
         url = "urn:oid:"+csoid;
       }
+      csver = fixVersionforSystem(url, csver);
       ConceptSetComponent inc = getInclude(vs, url, csver);
       inc.addConcept().setCode(code).setDisplay(display);
     }
     return vs;
+  }
+
+  private String fixVersionforSystem(String url, String csver) {
+    if ("http://snomed.info/sct".equals(url)) {
+      return "http://snomed.info/sct|http://snomed.info/sct/731000124108/"+csver;
+    }
+    if ("http://loinc.org".equals(url)) {
+      return csver;
+    }
+    if ("http://www.nlm.nih.gov/research/umls/rxnorm".equals(url)) {
+      if (csver.length() == 8) {
+        return csver.substring(4,6)+csver.substring(6,8)+csver.substring(0,4);
+      } else {
+        return csver;        
+      }
+      
+    }
+    return csver;
   }
 
   private ConceptSetComponent getInclude(ValueSet vs, String url, String csver) {
