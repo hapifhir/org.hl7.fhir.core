@@ -770,13 +770,19 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else
         return txRule(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, I18nConstants.TERMINOLOGY_PASSTHROUGH_TX_MESSAGE, s.getMessage(), system, code);
       return true;
-    } else if (system.startsWith("http://hl7.org/fhir")) {
+    } else if (system.startsWith("http://build.fhir.org") || system.startsWith("https://build.fhir.org")) {
+      rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_WRONG_BUILD, system, suggestSystemForBuild(system));        
+      return false;
+    } else if (system.startsWith("http://hl7.org/fhir") || system.startsWith("https://hl7.org/fhir") || system.startsWith("http://www.hl7.org/fhir") || system.startsWith("https://www.hl7.org/fhir")) {
       if (Utilities.existsInList(system, "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/cvx", "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/icd-10-cm", 
-               "http://hl7.org/fhir/sid/icd-9-cm", "http://hl7.org/fhir/sid/icd-9", "http://hl7.org/fhir/sid/ndc", "http://hl7.org/fhir/sid/srt"))
+               "http://hl7.org/fhir/sid/icd-9-cm", "http://hl7.org/fhir/sid/icd-9", "http://hl7.org/fhir/sid/ndc", "http://hl7.org/fhir/sid/srt")) {
         return true; // else don't check these (for now)
-      else if (system.startsWith("http://hl7.org/fhir/test"))
+      } else if (system.startsWith("http://hl7.org/fhir/test")) {
         return true; // we don't validate these
-      else {
+      } else if (system.endsWith(".html")) {
+        rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_WRONG_HTML, system, suggestSystemForPage(system));        
+        return false;
+      } else {
         CodeSystem cs = getCodeSystem(system);
         if (rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, cs != null, I18nConstants.TERMINOLOGY_TX_SYSTEM_UNKNOWN, system)) {
           ConceptDefinitionComponent def = getCodeDefinition(cs, code);
@@ -813,6 +819,59 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
   }
 
+  private Object suggestSystemForPage(String system) {
+    if (system.contains("/codesystem-")) {
+      String s = system.substring(system.indexOf("/codesystem-")+12);
+      String url = "http://hl7.org/fhir/"+s.replace(".html", "");
+      if (context.fetchCodeSystem(url) != null) {
+        return url;
+      } else {
+        return "{unable to determine intended url}";
+      }
+    }
+    if (system.contains("/valueset-")) {
+      String s = system.substring(system.indexOf("/valueset-")+8);
+      String url = "http://hl7.org/fhir/"+s.replace(".html", "");
+      if (context.fetchCodeSystem(url) != null) {
+        return url;
+      } else {
+        return "{unable to determine intended url}";
+      }
+    }
+    return "{unable to determine intended url}";
+  }
+
+  private Object suggestSystemForBuild(String system) {
+    if (system.contains("/codesystem-")) {
+      String s = system.substring(system.indexOf("/codesystem-")+12);
+      String url = "http://hl7.org/fhir/"+s.replace(".html", "");
+      if (context.fetchCodeSystem(url) != null) {
+        return url;
+      } else {
+        return "{unable to determine intended url}";
+      }
+    }
+    if (system.contains("/valueset-")) {
+      String s = system.substring(system.indexOf("/valueset-")+8);
+      String url = "http://hl7.org/fhir/"+s.replace(".html", "");
+      if (context.fetchCodeSystem(url) != null) {
+        return url;
+      } else {
+        return "{unable to determine intended url}";
+      }
+    }
+    system = system.replace("https://", "http://");
+    if (system.length() < 22) {
+      return "{unable to determine intended url}";
+    }
+    system = "http://hl7.org/fhir/"+system.substring(22).replace(".html", "");
+    if (context.fetchCodeSystem(system) != null) {
+      return system;
+    } else {
+      return "{unable to determine intended url}";
+    }
+  }
+  
   private boolean startsWithButIsNot(String system, String... uri) {
     for (String s : uri)
       if (!system.equals(s) && system.startsWith(s))
