@@ -397,6 +397,8 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_SYSTEM_NO_CODE = "TERMINOLOGY_TX_SYSTEM_NO_CODE";
   public static final String TERMINOLOGY_TX_SYSTEM_RELATIVE = "Terminology_TX_System_Relative";
   public static final String TERMINOLOGY_TX_SYSTEM_UNKNOWN = "Terminology_TX_System_Unknown";
+  public static final String TERMINOLOGY_TX_SYSTEM_WRONG_BUILD = "TERMINOLOGY_TX_SYSTEM_WRONG_BUILD";
+  public static final String TERMINOLOGY_TX_SYSTEM_WRONG_HTML = "TERMINOLOGY_TX_SYSTEM_WRONG_HTML";
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET = "Terminology_TX_System_ValueSet";
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET2 = "Terminology_TX_System_ValueSet2";
   public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND = "Terminology_TX_ValueSet_NotFound";

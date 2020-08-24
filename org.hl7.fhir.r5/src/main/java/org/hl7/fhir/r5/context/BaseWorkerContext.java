@@ -62,6 +62,7 @@ import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
+import org.hl7.fhir.r5.model.CodeSystem.ConceptPropertyComponent;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
@@ -69,6 +70,7 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.Identifier;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
@@ -181,6 +183,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   
   private UcumService ucumService;
   protected Map<String, byte[]> binaries = new HashMap<String, byte[]>();
+  protected Map<String, String> oidCache = new HashMap<>();
 
   protected Map<String, Map<String, ValidationResult>> validationCache = new HashMap<String, Map<String,ValidationResult>>();
   protected String tsServer;
@@ -336,6 +339,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
       map.put(r.getId(), r);
 
+      if (r instanceof CodeSystem || r instanceof NamingSystem) {
+        oidCache.clear();
+      }
+      
       if (r instanceof CanonicalResource) {
         CanonicalResource m = (CanonicalResource) r;
         String url = m.getUrl();
@@ -1633,20 +1640,53 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (oid != null && oid.startsWith("urn:oid:")) {
         oid = oid.substring(8);
       }
+      if (oidCache.containsKey(oid)) {
+        return oidCache.get(oid);
+      }
 
       String uri = OIDUtils.getUriForOid(oid);
       if (uri != null) {
+        oidCache.put(oid, uri);
         return uri;
+      }
+      CodeSystem cs = fetchCodeSystem("http://terminology.hl7.org/CodeSystem/v2-tables");
+      if (cs != null) {
+        for (ConceptDefinitionComponent cc : cs.getConcept()) {
+          for (ConceptPropertyComponent cp : cc.getProperty()) {
+            if (Utilities.existsInList(cp.getCode(), "v2-table-oid", "v2-cs-oid") && oid.equals(cp.getValue().primitiveValue())) {
+              for (ConceptPropertyComponent cp2 : cc.getProperty()) {
+                if ("v2-cs-uri".equals(cp2.getCode())) {
+                  oidCache.put(oid, cp2.getValue().primitiveValue());
+                  return cp2.getValue().primitiveValue();                  
+                }
+              }              
+            }
+          }
+        }
+      }
+      for (CodeSystem css : codeSystems.getList()) {
+        if (("urn:oid:"+oid).equals(css.getUrl())) {
+          oidCache.put(oid, css.getUrl());
+          return css.getUrl();
+        }
+        for (Identifier id : css.getIdentifier()) {
+          if ("urn:ietf:rfc:3986".equals(id.getSystem()) && ("urn:oid:"+oid).equals(id.getValue())) {
+            oidCache.put(oid, css.getUrl());
+            return css.getUrl();
+          }
+        }
       }
       for (NamingSystem ns : systems.getList()) {
         if (hasOid(ns, oid)) {
           uri = getUri(ns);
           if (uri != null) {
+            oidCache.put(oid, null);
             return null;
           }
         }
       }
     }
+    oidCache.put(oid, null);
     return null;
   }
   
