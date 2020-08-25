@@ -914,6 +914,9 @@ public class StructureMapUtilities {
 	  String comment = null;
     if (lexer.hasComment()) {
       comment = getMultiLineComments(lexer);
+      if (lexer.done()) {
+        return ;
+      }
     }
 		lexer.token("group");
 		StructureMapGroupComponent group = result.addGroup();
@@ -1010,7 +1013,6 @@ public class StructureMapUtilities {
 
 	private void parseRule(StructureMap map, List<StructureMapGroupRuleComponent> list, FHIRLexer lexer, boolean newFmt) throws FHIRException {
 		StructureMapGroupRuleComponent rule = new StructureMapGroupRuleComponent(); 
-		list.add(rule);
 		if (!newFmt) {
 		  rule.setName(lexer.takeDottedToken());
 		  lexer.token(":");
@@ -1018,8 +1020,12 @@ public class StructureMapUtilities {
     } else {
       if (lexer.hasComment()) {
         rule.setDocumentation(this.getMultiLineComments(lexer));
+        if (lexer.hasToken("}")) {
+          return ; // catched a comment at the end
+        }
       }
     }
+    list.add(rule);
 		boolean done = false;
 		while (!done) {
 			parseSource(rule, lexer);
