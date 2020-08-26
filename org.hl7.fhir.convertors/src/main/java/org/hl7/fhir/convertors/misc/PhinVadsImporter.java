@@ -23,28 +23,18 @@ import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.NpmPackage;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
 
-public class PhinVadsImporter {
+public class PhinVadsImporter extends OIDBasedValueSetImporter {
 
   public static void main(String[] args) throws FileNotFoundException, FHIRException, IOException, ParseException {
 //    new PhinVadsImporter().importValueSet(TextFile.fileToBytes("C:\\work\\org.hl7.fhir\\packages\\us.cdc.phinvads-source\\source\\PHVS_BirthDefectsLateralityatDiagnosis_HL7_V1.txt"));
     PhinVadsImporter self = new PhinVadsImporter();
-    self.init();
     self.process(args[0], args[1]);
   }
 
-  private IWorkerContext context;
   
-  public PhinVadsImporter() {
+  public PhinVadsImporter() throws FileNotFoundException, FHIRException, IOException {
     super();
-  }
-
-  private void init() throws FileNotFoundException, FHIRException, IOException {
-    FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    NpmPackage npm = pcm.loadPackage("hl7.fhir.r5.core", "current");
-    SimpleWorkerContext ctxt = SimpleWorkerContext.fromPackage(npm);
-    ctxt.setAllowLoadingDuplicates(true);
-    ctxt.loadFromPackage(pcm.loadPackage("hl7.terminology"), null);
-    context = ctxt;
+    init();
   }
 
   private void process(String source, String dest) {
@@ -84,6 +74,8 @@ public class PhinVadsImporter {
     vs.setDescription(rdr.cell("Value Set Definition"));
     if ("Published".equals(rdr.cell("Value Set Status"))) {
       vs.setStatus(PublicationStatus.ACTIVE);
+    } else { 
+      vs.setStatus(PublicationStatus.DRAFT);
     }
     if (rdr.has("VS Last Updated Date")) {
       vs.setDate(new SimpleDateFormat("mm/dd/yyyy").parse(rdr.cell("VS Last Updated Date")));
@@ -109,40 +101,5 @@ public class PhinVadsImporter {
     return vs;
   }
 
-  private String fixVersionforSystem(String url, String csver) {
-    if ("http://snomed.info/sct".equals(url)) {
-      return "http://snomed.info/sct|http://snomed.info/sct/731000124108/"+csver;
-    }
-    if ("http://loinc.org".equals(url)) {
-      return csver;
-    }
-    if ("http://www.nlm.nih.gov/research/umls/rxnorm".equals(url)) {
-      if (csver.length() == 8) {
-        return csver.substring(4,6)+csver.substring(6,8)+csver.substring(0,4);
-      } else {
-        return csver;        
-      }
-      
-    }
-    return csver;
-  }
-
-  private ConceptSetComponent getInclude(ValueSet vs, String url, String csver) {
-    for (ConceptSetComponent t : vs.getCompose().getInclude()) {
-      if (csver == null) {
-        if (t.getSystem().equals(url) && !t.hasVersion()) {
-          return t;
-        }        
-      } else {
-        if (t.getSystem().equals(url) && t.hasVersion() && t.getVersion().equals(csver)) {
-          return t;
-        }
-      }
-    }
-    ConceptSetComponent c = vs.getCompose().addInclude();
-    c.setSystem(url);
-    c.setVersion(csver);
-    return c;
-  }
-
+ 
 }
