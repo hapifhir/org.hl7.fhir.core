@@ -7,6 +7,8 @@ import org.hl7.fhir.validation.ValidationEngine;
 
 public class Common {
 
+  public static final String DEFAULT_TX_SERVER = "http://tx.fhir.org";
+
   public static String getVersion(String[] args) {
     String v = Params.getParam(args, "-version");
     if (v == null) {
@@ -75,9 +77,16 @@ public class Common {
     }
   }
 
+  /**
+   * Default validation engine will point to "http://tx.fhir.org" terminology server.
+   */
   public static ValidationEngine getValidationEngine(String version, String definitions, String txLog) throws Exception {
-    System.out.println("Loading (v = " + version + ", tx server http://tx.fhir.org)");
-    return new ValidationEngine(definitions, "http://tx.fhir.org", txLog, FhirPublication.fromCode(version), version);
+    return getValidationEngine(version, DEFAULT_TX_SERVER, definitions, txLog);
+  }
+
+  public static ValidationEngine getValidationEngine(String version, String txServer, String definitions, String txLog) throws Exception {
+    System.out.println("Loading (v = " + version + ", tx server -> " + txServer + ")");
+    return new ValidationEngine(definitions, txServer, txLog, FhirPublication.fromCode(version), version);
   }
 
 }
