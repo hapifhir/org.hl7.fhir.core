@@ -7,6 +7,7 @@ import org.hl7.fhir.utilities.graphql.EGraphEngine;
 import org.hl7.fhir.utilities.graphql.EGraphQLException;
 import org.hl7.fhir.utilities.graphql.Package;
 import org.hl7.fhir.utilities.graphql.Parser;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -17,8 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.assertTrue;
 
 @Disabled
 public class GraphQLParserTests {
@@ -40,7 +39,7 @@ public class GraphQLParserTests {
   @MethodSource("data")
   public void test(String name, String test) throws IOException, EGraphQLException, EGraphEngine {
     Package doc = Parser.parse(test);
-    assertTrue(doc != null);
+    Assertions.assertTrue(doc != null);
   }
 
 
