@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -251,7 +249,7 @@ public class CDARoundTripTests {
 		  TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"), FhirFormat.XML);
 	  
 	  List<Element> title = xml.getChildrenByName("title");
-	  assertTrue(title != null && title.size() == 1);
+    Assertions.assertTrue(title != null && title.size() == 1);
 	  
 	  
 	  Element value = title.get(0).getChildren().get(0);
@@ -261,7 +259,7 @@ public class CDARoundTripTests {
 	  ByteArrayOutputStream baosXml = new ByteArrayOutputStream();
 	  Manager.compose(TestingUtilities.context(), xml, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
 	  String cdaSerialised = baosXml.toString("UTF-8");
-	  assertTrue(cdaSerialised.indexOf("öé") > 0);
+    Assertions.assertTrue(cdaSerialised.indexOf("öé") > 0);
 	}
 
 }
