@@ -188,7 +188,7 @@ public class XmlParser extends ParserBase {
     String name = element.getLocalName();
     String path = "/"+pathPrefix(ns)+name;
     
-    StructureDefinition sd = getDefinition(line(element), col(element), ns, name);
+    StructureDefinition sd = getDefinition(line(element), col(element), (ns == null ? "default" : ns), name);
     if (sd == null)
       return null;
 
@@ -240,7 +240,11 @@ public class XmlParser extends ParserBase {
       if (empty(element) && FormatUtilities.FHIR_NS.equals(element.getNamespaceURI())) // this rule only applies to FHIR Content
         logError(line(element), col(element), path, IssueType.INVALID, context.formatMessage(I18nConstants.ELEMENT_MUST_HAVE_SOME_CONTENT), IssueSeverity.ERROR);
       String ns = prop.getXmlNamespace();
-      if (!element.getNamespaceURI().equals(ns))
+      String elementNs = element.getNamespaceURI();
+      if (elementNs == null) {
+        elementNs = "default";
+      }
+      if (!elementNs.equals(ns))
         logError(line(element), col(element), path, IssueType.INVALID, context.formatMessage(I18nConstants.WRONG_NAMESPACE__EXPECTED_, ns), IssueSeverity.ERROR);
     }
   }
@@ -539,7 +543,10 @@ public class XmlParser extends ParserBase {
     xml.setSortAttributes(false);
     xml.setPretty(style == OutputStyle.PRETTY);
     xml.start();
-    xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
+    String ns = e.getProperty().getXmlNamespace();
+    if (ns!=null && !"default".equals(ns)) {
+      xml.setDefaultNamespace(ns);
+    }
     if (hasTypeAttr(e))
       xml.namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
     addNamespaces(xml, e);
@@ -549,7 +556,7 @@ public class XmlParser extends ParserBase {
 
   private void addNamespaces(IXMLWriter xml, Element e) throws IOException {
     String ns = e.getProperty().getXmlNamespace();
-    if (ns!=null && !xml.getDefaultNamespace().equals(ns)){
+    if (ns!=null && xml.getDefaultNamespace()!=null && !xml.getDefaultNamespace().equals(ns)){
       if (!xml.namespaceDefined(ns)) {
         String prefix = pathPrefix(ns);
         if (prefix.endsWith(":")) {
