@@ -4839,7 +4839,7 @@ public class FHIRPathEngine {
             while (exsd!=null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
               exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition());
             }
-            if (exsd.getUrl().equals(targetUrl)) {
+            if (exsd != null && exsd.getUrl().equals(targetUrl)) {
               if (profileUtilities.getChildMap(sd, t).isEmpty()) {
                 sd = exsd;
               }
