@@ -34,6 +34,8 @@ package org.hl7.fhir.r5.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hl7.fhir.utilities.MergedList.IMatcher;
+
 /**
  * A child element or property defined by the FHIR specification
  * This class is defined as a helper class when iterating the 
@@ -47,7 +49,17 @@ import java.util.List;
  */
 public class Property {
 
-	/**
+	public static class PropertyMatcher implements IMatcher<Property> {
+
+    @Override
+    public boolean match(Property l, Property r) {
+      return l.getName().equals(r.getName());
+    }
+
+  }
+
+
+  /**
 	 * The name of the property as found in the FHIR specification
 	 */
 	private String name;

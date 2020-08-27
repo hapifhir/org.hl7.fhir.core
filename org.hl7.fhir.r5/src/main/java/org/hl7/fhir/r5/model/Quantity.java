@@ -624,6 +624,13 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
       res.setCode(code);
       return res;
     }
+
+  @Override
+  public String toString() {
+    return getValue().toPlainString()+ (hasUnit() || hasCode() ? " '"+(hasUnit() ? getUnit() : getCode())+"'" : "");
+  }
+   
+   
 // end addition
 
 }
