@@ -83,7 +83,7 @@ public class ParsingTests {
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String name) throws Exception {
-    System.out.println(name);
+//    System.out.println(name);
     byte[] b = TextFile.streamToBytes(npm.load("package", name));
     String src = new String(b);
     Resource r = new JsonParser().parse(b);
