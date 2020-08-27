@@ -178,8 +178,10 @@ public class FHIRPathTests {
       outcome.clear();
       outcome.add(new BooleanType(ok));
     }
-    if (fp.hasLog())
+    if (fp.hasLog()) {
+      System.out.println(name);
       System.out.println(fp.takeLog());
+    }
 
     List<Element> expected = new ArrayList<Element>();
     XMLUtil.getNamedChildren(test, "output", expected);
@@ -214,6 +216,7 @@ public class FHIRPathTests {
           } else {
             Assertions.assertTrue(outcome.get(i) instanceof PrimitiveType, String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()));
             if (!(v.equals(((PrimitiveType) outcome.get(i)).asStringValue()))) {
+              System.out.println(name);
               System.out.println(String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));
             }
             Assertions.assertEquals(v, ((PrimitiveType) outcome.get(i)).asStringValue(), String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));

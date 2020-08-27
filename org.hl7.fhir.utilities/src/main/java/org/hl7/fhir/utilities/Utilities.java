@@ -42,6 +42,8 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
@@ -1103,11 +1105,17 @@ public class Utilities {
       return true;
     if (Utilities.noString(l) || Utilities.noString(r))
       return false;
-    l = l.toLowerCase().trim();
-    r = r.toLowerCase().trim(); // not that this should make any difference
-    return l.startsWith(r) || r.startsWith(l);
+    if (!Utilities.isDecimal(l, true) || !Utilities.isDecimal(r, true))
+      return false;
+    BigDecimal dl = new BigDecimal(l);
+    BigDecimal dr = new BigDecimal(r);
+    if (dl.scale() < dr.scale()) {
+      dr = dr.setScale(dl.scale(), RoundingMode.HALF_UP);
+    } else if (dl.scale() > dr.scale()) {
+      dl = dl.setScale(dr.scale(), RoundingMode.HALF_UP);
+    }
+    return dl.equals(dr);
   }
-
 
   public static String getFileExtension(String fn) {
     return fn.contains(".") ? fn.substring(fn.lastIndexOf(".") + 1) : "";

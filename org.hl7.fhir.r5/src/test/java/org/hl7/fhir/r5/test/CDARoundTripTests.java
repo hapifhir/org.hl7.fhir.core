@@ -39,7 +39,7 @@ public class CDARoundTripTests {
 		context.loadFromFile(TestingUtilities.loadTestResourceStream("validator", "cda", "cda.xml"), "cda.xml", null);
 		for (StructureDefinition sd : context.getStructures()) {
 			if (!sd.hasSnapshot()) {
-				System.out.println("generate snapshot for " + sd.getUrl());
+//				System.out.println("generate snapshot for " + sd.getUrl());
 				context.generateSnapshot(sd, true);
 			}
 		}
