@@ -89,18 +89,18 @@ public class ProvenanceRenderer extends ResourceRenderer {
       hasRole = hasRole || a.hasRole(); 
       hasOnBehalfOf = hasOnBehalfOf || a.hasOnBehalfOf(); 
     }    
-    x.para().tx("Agents");
+    x.para().b().tx("Agents");
     t = x.table("grid");
     tr = t.tr();
     if (hasType) {
-      tr.td().b().tx("type");
+      tr.td().b().tx("Type");
     }
     if (hasRole) {
-      tr.td().b().tx("role");
+      tr.td().b().tx("Role");
     }
     tr.td().b().tx("who");
     if (hasOnBehalfOf) {
-      tr.td().b().tx("onBehalfOf");
+      tr.td().b().tx("On Behalf Of");
     }
     for (ProvenanceAgentComponent a : prv.getAgent()) {
       tr = t.tr();
