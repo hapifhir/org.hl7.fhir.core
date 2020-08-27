@@ -72,7 +72,9 @@ public class ExpressionNode {
     Empty, Not, Exists, SubsetOf, SupersetOf, IsDistinct, Distinct, Count, Where, Select, All, Repeat, Aggregate, Item /*implicit from name[]*/, As, Is, Single,
     First, Last, Tail, Skip, Take, Union, Combine, Intersect, Exclude, Iif, Upper, Lower, ToChars, IndexOf, Substring, StartsWith, EndsWith, Matches, ReplaceMatches, Contains, Replace, Length,  
     Children, Descendants, MemberOf, Trace, Check, Today, Now, Resolve, Extension, AllFalse, AnyFalse, AllTrue, AnyTrue,
-    HasValue, OfType, Type, ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo,
+    HasValue, OfType, Type, ConvertsToBoolean, ConvertsToInteger, ConvertsToString, ConvertsToDecimal, ConvertsToQuantity, ConvertsToDateTime, ConvertsToDate, ConvertsToTime, ToBoolean, ToInteger, ToString, ToDecimal, ToQuantity, ToDateTime, ToTime, ConformsTo,
+    Round, Sqrt, Abs, Ceiling, Exp, Floor, Ln, Log, Power, Truncate,
+    
     // R3 functions
     Encode, Decode, Escape, Unescape, Trim, Split, Join, 
     // Local extensions to FHIRPath
@@ -159,8 +161,19 @@ public class ExpressionNode {
       if (name.equals("convertsToQuantity")) return Function.ConvertsToQuantity;
       if (name.equals("convertsToBoolean")) return Function.ConvertsToBoolean;
       if (name.equals("convertsToDateTime")) return Function.ConvertsToDateTime;
+      if (name.equals("convertsToDate")) return Function.ConvertsToDate;
       if (name.equals("convertsToTime")) return Function.ConvertsToTime;
       if (name.equals("conformsTo")) return Function.ConformsTo;
+      if (name.equals("round")) return Function.Round;
+      if (name.equals("sqrt")) return Function.Sqrt;
+      if (name.equals("abs")) return Function.Abs;
+      if (name.equals("ceiling")) return Function.Ceiling;
+      if (name.equals("exp")) return Function.Exp;
+      if (name.equals("floor")) return Function.Floor;
+      if (name.equals("ln")) return Function.Ln;
+      if (name.equals("log")) return Function.Log;
+      if (name.equals("power")) return Function.Power;
+      if (name.equals("truncate")) return Function.Truncate;      
       return null;
     }
     public String toCode() {
@@ -244,8 +257,20 @@ public class ExpressionNode {
       case ConvertsToBoolean : return "convertsToBoolean";
       case ConvertsToQuantity : return "convertsToQuantity";
       case ConvertsToDateTime : return "convertsToDateTime";
+      case ConvertsToDate : return "convertsToDate";
       case ConvertsToTime : return "isTime";
       case ConformsTo : return "conformsTo";
+      case Round : return "round";
+      case Sqrt : return "sqrt";
+      case Abs : return "abs";
+      case Ceiling : return "ceiling";
+      case Exp : return "exp";
+      case Floor : return "floor";
+      case Ln : return "ln";
+      case Log : return "log";
+      case Power : return "power";
+      case Truncate: return "truncate";
+      
       default: return "?custom?";
       }
     }

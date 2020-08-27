@@ -205,6 +205,8 @@ public interface IResourceValidator {
   public boolean isAllowExamples();
   public void setAllowExamples(boolean value) ;
  
+  public boolean isNoCheckAggregation();
+  public void setNoCheckAggregation(boolean value);
   /**
    * CrumbTrail - whether the validator creates hints to 
    * @return
