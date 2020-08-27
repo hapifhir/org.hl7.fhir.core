@@ -312,7 +312,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof Identifier) {
       renderIdentifier(x, (Identifier) e);
     } else if (e instanceof org.hl7.fhir.r5.model.IntegerType) {
-      x.addText(Integer.toString(((org.hl7.fhir.r5.model.IntegerType) e).getValue()));
+      if (((org.hl7.fhir.r5.model.IntegerType) e).hasValue()) {
+        x.addText(Integer.toString(((org.hl7.fhir.r5.model.IntegerType) e).getValue()));
+      } else {
+        x.addText("??");
+      }
     } else if (e instanceof org.hl7.fhir.r5.model.DecimalType) {
       x.addText(((org.hl7.fhir.r5.model.DecimalType) e).getValue().toString());
     } else if (e instanceof HumanName) {
