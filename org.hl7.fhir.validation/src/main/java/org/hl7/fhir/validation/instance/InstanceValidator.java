@@ -3496,12 +3496,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (BUNDLE.equals(element.fhirType())) {
       resolveBundleReferences(element, new ArrayList<Element>());
     }
-    startInner(hostContext, errors, resource, element, defn, stack, hostContext.isCheckSpecials());
 
+    List<Element> profiles = new ArrayList<Element>();
     Element meta = element.getNamedChild(META);
     if (meta != null) {
-      List<Element> profiles = new ArrayList<Element>();
       meta.getNamedChildren("profile", profiles);
+    }
+    if (profiles.isEmpty()) {
+      startInner(hostContext, errors, resource, element, defn, stack, hostContext.isCheckSpecials());
+    } else {
       int i = 0;
       for (Element profile : profiles) {
         StructureDefinition sd = context.fetchResource(StructureDefinition.class, profile.primitiveValue());
@@ -3520,7 +3523,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           } else if (warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", sd != null, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN, profile.primitiveValue())) {
             signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_META, sd.getUrl());
             stack.resetIds();
-            startInner(hostContext, errors, resource, element, sd, stack, false);
+            startInner(hostContext, errors, resource, element, sd, stack, hostContext.isCheckSpecials());
           }
         }
         i++;
