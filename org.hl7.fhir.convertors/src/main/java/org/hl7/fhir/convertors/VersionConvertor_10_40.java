@@ -3236,6 +3236,8 @@ public class VersionConvertor_10_40 {
             return MedicationDispense10_40.convertMedicationDispense((org.hl7.fhir.dstu2.model.MedicationDispense) src);
         if (src instanceof org.hl7.fhir.dstu2.model.MedicationStatement)
             return MedicationStatement10_40.convertMedicationStatement((org.hl7.fhir.dstu2.model.MedicationStatement) src);
+        if (src instanceof org.hl7.fhir.dstu2.model.MedicationOrder)
+            return MedicationRequest10_40.convertMedicationRequest((org.hl7.fhir.dstu2.model.MedicationOrder) src);
         if (src instanceof org.hl7.fhir.dstu2.model.MessageHeader)
             return MessageHeader10_40.convertMessageHeader((org.hl7.fhir.dstu2.model.MessageHeader) src);
         if (src instanceof org.hl7.fhir.dstu2.model.NamingSystem)
