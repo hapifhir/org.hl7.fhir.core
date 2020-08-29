@@ -12,7 +12,7 @@ import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.r4.utils.EOperationOutcome;
 import org.hl7.fhir.r4.utils.NarrativeGenerator;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ import java.io.*;
 
 public class ResourceRoundTripTests {
 
-  @Before
+  @BeforeAll
   public void setUp() throws Exception {
   }
 

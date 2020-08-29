@@ -3,6 +3,7 @@ package org.hl7.fhir.dstu2016may.test;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.dstu2016may.model.DateType;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,8 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
-import static org.junit.Assert.assertEquals;
 
 public class BaseDateTimeTypeTest {
 	private SimpleDateFormat myDateInstantParser;
@@ -34,7 +33,7 @@ public class BaseDateTimeTypeTest {
 		
 		DateType date = new DateType();
 		date.setValue(time, TemporalPrecisionEnum.DAY);
-		assertEquals("2012-01-02", date.getValueAsString());
+		Assertions.assertEquals("2012-01-02", date.getValueAsString());
 	}
 	
 	/**
@@ -50,6 +49,6 @@ public class BaseDateTimeTypeTest {
 		
 		DateType date = new DateType();
 		date.setValue(time);
-		assertEquals("2012-01-02", date.getValueAsString());
+    Assertions.assertEquals("2012-01-02", date.getValueAsString());
 	}
 }

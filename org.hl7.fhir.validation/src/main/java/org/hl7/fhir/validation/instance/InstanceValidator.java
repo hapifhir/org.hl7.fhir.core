@@ -333,6 +333,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private BestPracticeWarningLevel bpWarnings;
   private String validationLanguage;
   private boolean baseOnly;
+  private boolean noCheckAggregation;
  
   private List<ImplementationGuide> igs = new ArrayList<>();
   private List<String> extensionDomains = new ArrayList<String>();
@@ -2535,9 +2536,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
           rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, ok, I18nConstants.REFERENCE_REF_BADTARGETTYPE, ft, types.toString());
         }
-        if (type.hasAggregation()) {
+        if (type.hasAggregation() && !noCheckAggregation) {
           boolean modeOk = false;
+          CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
           for (Enumeration<AggregationMode> mode : type.getAggregation()) {
+            b.append(mode.getCode());
             if (mode.getValue().equals(AggregationMode.CONTAINED) && refType.equals("contained"))
               modeOk = true;
             else if (mode.getValue().equals(AggregationMode.BUNDLED) && refType.equals("bundled"))
@@ -2545,7 +2548,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             else if (mode.getValue().equals(AggregationMode.REFERENCED) && (refType.equals("bundled") || refType.equals("remote")))
               modeOk = true;
           }
-          rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, modeOk, I18nConstants.REFERENCE_REF_AGGREGATION, refType);
+          rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, modeOk, I18nConstants.REFERENCE_REF_AGGREGATION, refType, b.toString());
         }
       }
     }
@@ -4892,4 +4895,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.validateValueSetCodesOnTxServer = value;    
   }
 
+  public boolean isNoCheckAggregation() {
+    return noCheckAggregation;
+  }
+
+  public void setNoCheckAggregation(boolean noCheckAggregation) {
+    this.noCheckAggregation = noCheckAggregation;
+  }
+
+  
 }

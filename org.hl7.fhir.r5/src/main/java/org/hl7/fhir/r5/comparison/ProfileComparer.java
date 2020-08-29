@@ -942,12 +942,12 @@ public class ProfileComparer extends CanonicalResourceComparer {
         nc = utilsRight.genElementNameCell(gen, combined.getRight(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName);
       }
       if (combined.hasLeft()) {
-        frame(utilsRight.genElementCells(gen, combined.getLeft(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName, nc), leftColor);
+        frame(utilsRight.genElementCells(gen, combined.getLeft(),  "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used , ref, sName, nc, false), leftColor);
       } else {
         frame(spacers(row, 4, gen), leftColor);
       }
       if (combined.hasRight()) {
-        frame(utilsRight.genElementCells(gen, combined.getRight(), "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used, ref, sName, nc), rightColor);
+        frame(utilsRight.genElementCells(gen, combined.getRight(), "??", true, corePath, prefix, root, false, false, null, typesRow, row, false, ext, used, ref, sName, nc, false), rightColor);
       } else {
         frame(spacers(row, 4, gen), rightColor);
       }

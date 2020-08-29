@@ -19,6 +19,7 @@ import org.hl7.fhir.utilities.graphql.IGraphQLStorageServices;
 import org.hl7.fhir.utilities.graphql.NameValue;
 import org.hl7.fhir.utilities.graphql.Parser;
 import org.hl7.fhir.utilities.xml.XMLUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -35,8 +36,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.assertTrue;
 
 @Disabled
 public class GraphQLEngineTests implements IGraphQLStorageServices {
@@ -86,15 +85,15 @@ public class GraphQLEngineTests implements IGraphQLStorageServices {
       msg = e.getMessage();
     }
     if (ok) {
-      assertTrue("Expected to fail, but didn't", !output.equals("$error"));
+      Assertions.assertTrue(!output.equals("$error"), "Expected to fail, but didn't");
       StringBuilder str = new StringBuilder();
       gql.getOutput().setWriteWrapper(false);
       gql.getOutput().write(str, 0);
       TextFile.stringToFile(str.toString(), TestingUtilities.resourceNameToFile("graphql", output + ".out"));
       msg = TestingUtilities.checkJsonIsSame(TestingUtilities.resourceNameToFile("graphql", output + ".out"), TestingUtilities.resourceNameToFile("graphql", output));
-      assertTrue(msg, Utilities.noString(msg));
+      Assertions.assertTrue(Utilities.noString(msg), msg);
     } else
-      assertTrue("Error, but proper output was expected (" + msg + ")", output.equals("$error"));
+      Assertions.assertTrue(output.equals("$error"), "Error, but proper output was expected (" + msg + ")");
   }
 
   @Override
