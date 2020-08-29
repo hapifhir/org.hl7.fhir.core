@@ -36,6 +36,7 @@ import org.hl7.fhir.convertors.conv10_40.ImplementationGuide10_40;
 import org.hl7.fhir.convertors.conv10_40.List10_40;
 import org.hl7.fhir.convertors.conv10_40.Location10_40;
 import org.hl7.fhir.convertors.conv10_40.MedicationDispense10_40;
+import org.hl7.fhir.convertors.conv10_40.MedicationRequest10_40;
 import org.hl7.fhir.convertors.conv10_40.MedicationStatement10_40;
 import org.hl7.fhir.convertors.conv10_40.MessageHeader10_40;
 import org.hl7.fhir.convertors.conv10_40.NamingSystem10_40;
