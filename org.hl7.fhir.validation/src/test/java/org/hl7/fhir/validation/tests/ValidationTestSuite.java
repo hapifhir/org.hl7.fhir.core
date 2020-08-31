@@ -212,14 +212,16 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("security-checks")) {
       val.setSecurityChecks(content.get("security-checks").getAsBoolean());
     }
-    val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
-    System.out.println(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
-    if (name.endsWith(".json"))
-      val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
-    else
-      val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
-    System.out.println(val.reportTimes());
-    checkOutcomes(errors, content, null);
+    if (content.has("logical")==false) {
+      val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
+      System.out.println(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
+      if (name.endsWith(".json"))
+        val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
+      else
+        val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
+      System.out.println(val.reportTimes());
+      checkOutcomes(errors, content, null);
+    }
     if (content.has("profile")) {
       System.out.print("** Profile: ");
       JsonObject profile = content.getAsJsonObject("profile");
