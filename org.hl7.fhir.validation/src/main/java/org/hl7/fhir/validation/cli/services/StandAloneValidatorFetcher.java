@@ -22,7 +22,8 @@ import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher.IPackageI
 public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
 
   public interface IPackageInstaller {
-    public void loadIg(String src, boolean recursive) throws IOException, FHIRException;
+    public boolean packageExists(String id, String ver) throws IOException, FHIRException;
+    public void loadPackage(String id, String ver) throws IOException, FHIRException;
   }
 
   private BasePackageCacheManager pcm;
@@ -63,13 +64,13 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
     // ok maybe it's a reference to a package we know
     String base = findBaseUrl(url);
     String pid = pcm.getPackageId(base);
-    if (url.contains("|")) {
-      pid = pid+"#"+url.substring(url.indexOf("|")+1);
-    }
+    String ver = url.contains("|") ? url.substring(url.indexOf("|")+1) : null;
     if (pid != null) {
-      installer.loadIg(pid, false);
-      NpmPackage pi = pcm.loadPackage(pid);
-      return pi.hasCanonical(url);      
+      if (installer.packageExists(pid, ver)) {
+        installer.loadPackage(pid, ver);
+        NpmPackage pi = pcm.loadPackage(pid);
+        return pi.hasCanonical(url);
+      }
     }
     
     if (!url.startsWith("http://hl7.org/fhir")) {

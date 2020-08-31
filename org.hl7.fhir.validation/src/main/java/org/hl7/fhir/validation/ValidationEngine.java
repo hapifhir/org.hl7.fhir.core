@@ -38,6 +38,7 @@ import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher.IPackageI
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackage;
@@ -351,8 +352,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     context = SimpleWorkerContext.fromNothing();
   }
     
-  public void setTerminologyServer(String src, String log, FhirPublication version) throws FHIRException, URISyntaxException {
-    connectToTSServer(src, log, version);   
+  public String setTerminologyServer(String src, String log, FhirPublication version) throws FHIRException, URISyntaxException {
+    return connectToTSServer(src, log, version);   
   }
   
   public boolean isHintAboutNonMustSupport() {
@@ -382,7 +383,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
 
   public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString) throws FHIRException, IOException, URISyntaxException {
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    loadCoreDefinitions(src, false);
+    loadCoreDefinitions(src, false, null);
     context.setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
     setTerminologyServer(txsrvr, txLog, version);    
     this.version = vString;
@@ -390,13 +391,20 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   
   public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString) throws FHIRException, IOException, URISyntaxException {
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    loadCoreDefinitions(src, false);
+    loadCoreDefinitions(src, false, null);
     setTerminologyServer(txsrvr, txLog, version);
     this.version = vString;
   }
   
+  public ValidationEngine(String src, FhirPublication version, String vString, TimeTracker tt) throws FHIRException, IOException, URISyntaxException {
+    pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    loadCoreDefinitions(src, false, tt);
+    this.version = vString;
+  }
+  
+  
   public ValidationEngine(String src) throws FHIRException, IOException {
-    loadCoreDefinitions(src, false);
+    loadCoreDefinitions(src, false, null);
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
   }
   
@@ -408,7 +416,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     this.language = language;
   }
 
-  private void loadCoreDefinitions(String src, boolean recursive) throws FHIRException, IOException {
+  private void loadCoreDefinitions(String src, boolean recursive, TimeTracker tt) throws FHIRException, IOException {
     if (pcm == null) {
       pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     }
@@ -427,6 +435,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     context.setCacheId(UUID.randomUUID().toString());
     context.setAllowLoadingDuplicates(true); // because of Forge
     context.setExpansionProfile(makeExpProfile());
+    if (tt != null) {
+      context.setClock(tt);
+    }
     NpmPackage npmX = pcm.loadPackage("hl7.fhir.xver-extensions", "0.0.4");
     context.loadFromPackage(npmX, null);
   }
@@ -912,16 +923,17 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return checkIsResource(TextFile.fileToBytes(path), path);
   }
 
-  public void connectToTSServer(String url, String log, FhirPublication version) throws URISyntaxException, FHIRException {
+  public String connectToTSServer(String url, String log, FhirPublication version) throws URISyntaxException, FHIRException {
     context.setTlogging(false);
     if (url == null) {
       context.setCanRunWithoutTerminology(true);
+      return "n/a: No Terminology Server";
     } else {
       try {
-        context.connectToTSServer(TerminologyClientFactory.makeClient(url, version), log);
+        return context.connectToTSServer(TerminologyClientFactory.makeClient(url, version), log);
       } catch (Exception e) {
         if (context.isCanRunWithoutTerminology()) {
-          System.out.println("Running without Terminology Server (error: "+e.getMessage()+")");
+          return "n/a: Running without Terminology Server (error: "+e.getMessage()+")";
         } else 
           throw e;
       }
@@ -956,9 +968,16 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
           }
         }
       }
-      context.loadFromPackage(npm, loaderForVersion(npm.fhirVersion()));
+      System.out.print("  Load " + src);
+      if (!src.contains("#")) {
+        System.out.print("#"+npm.version());
+      } 
+      int count = context.loadFromPackage(npm, loaderForVersion(npm.fhirVersion()));
+      System.out.println(" - "+count+" resources ("+context.clock().milestone()+")");        
     } else {    
+      System.out.print("  Load " + src);
       String canonical = null;
+      int count = 0;
       Map<String, byte[]> source = loadIgSource(src, recursive, true);
       String version = Constants.VERSION;
       if (this.version != null) {
@@ -972,6 +991,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
         if (!exemptFile(fn)) {
           Resource r = loadFileWithErrorChecking(version, t, fn);
           if (r != null) {
+            count++;
             context.cacheResource(r);
             if (r instanceof ImplementationGuide) {
               canonical = ((ImplementationGuide) r).getUrl();
@@ -988,6 +1008,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       if (canonical != null) {
         grabNatives(source, canonical);
       }
+      System.out.println(" - "+count+" resources ("+context.clock().milestone()+")");        
     }
   }
 
@@ -1247,22 +1268,27 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
   
   public Resource validate(List<String> sources, List<String> profiles) throws FHIRException, IOException {
+    if (profiles.size() > 0) {
+      System.out.println("  Profiles: "+profiles);
+    }
     List<String> refs = new ArrayList<String>();
     boolean asBundle = handleSources(sources, refs);
     Bundle results = new Bundle();
     results.setType(Bundle.BundleType.COLLECTION);
     for (String ref : refs) {
+      TimeTracker.Session tts = context.clock().start("validation");
+      context.clock().milestone(); 
+      System.out.print("  Validate " + ref);
       Content cnt = loadContent(ref, "validate");
-      if (refs.size() > 1)
-        System.out.println("Validate "+ref);
       try {
         OperationOutcome outcome = validate(ref, cnt.focus, cnt.cntType, profiles);
         ToolingExtensions.addStringExtension(outcome, ToolingExtensions.EXT_OO_FILE, ref);
-        if (refs.size() > 1)
-          produceValidationSummary(outcome);
+        System.out.println(" " + context.clock().milestone());
         results.addEntry().setResource(outcome);
+        tts.end();
       } catch (Exception e) {
         System.out.println("Validation Infrastructure fail validating "+ref+": "+e.getMessage());
+        tts.end();
         throw new FHIRException(e);
       }
     }
@@ -1271,14 +1297,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     else
       return results.getEntryFirstRep().getResource();
   }
-  
-  private void produceValidationSummary(OperationOutcome oo) {
-    for (OperationOutcomeIssueComponent iss : oo.getIssue()) {
-      if (iss.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR || iss.getSeverity() == org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.FATAL) {
-        System.out.println("  "+iss.getSeverity().toCode()+": "+iss.getDetails().getText());
-      }
-    } 
-  }
+
 
   public OperationOutcome validateString(String location, String source, FhirFormat format, List<String> profiles) throws FHIRException, IOException, EOperationOutcome, SAXException {
     return validate(location, source.getBytes(), format, profiles);
@@ -2360,14 +2379,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return TextFile.streamToBytes(c.getInputStream());
   }
 
-  public void doneLoading(long loadStart) {
-    if (showTimes) {
-      String s = String.format("Load Time (ms): %d", (System.nanoTime() - loadStart) / 1000000);
-      System.out.println(s);
-   }
-    
-  }
-
   public FilesystemPackageCacheManager getPcm() {
     return pcm;
   }
@@ -2376,5 +2387,13 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return bundleValidationRules;
    }
 
+  public boolean packageExists(String id, String ver) throws IOException, FHIRException {
+    return pcm.packageExists(id, ver);
+  }
   
+  
+  public void loadPackage(String id, String ver) throws IOException, FHIRException {
+    loadIg(id+(ver == null ? "" : "#"+ver), true);
+  }
+ 
 }

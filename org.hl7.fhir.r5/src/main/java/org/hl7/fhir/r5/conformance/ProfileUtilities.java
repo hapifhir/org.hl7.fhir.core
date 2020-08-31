@@ -4105,7 +4105,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).addStyle("color: darkgreen")));
             } else {
               c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "As shown", null).addStyle("color: darkgreen")));
-              genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath, mustSupportOnly);              
+              genFixedValue(gen, row, definition.getFixed(), snapshot, false, corePath, false);              
             }
             if (isCoded(definition.getFixed()) && !hasDescription(definition.getFixed())) {
               Piece p = describeCoded(gen, definition.getFixed());
@@ -4119,7 +4119,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen")));
             else {
               c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, "At least the following", null).addStyle("color: darkgreen")));
-              genFixedValue(gen, row, definition.getPattern(), snapshot, true, corePath, false);
+              genFixedValue(gen, row, definition.getPattern(), snapshot, true, corePath, mustSupportOnly);
             }
           } else if (definition.hasExample()) {
             for (ElementDefinitionExampleComponent ex : definition.getExample()) {
@@ -4267,7 +4267,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               c.addPiece(gen.new Piece("br"));
               c.getPieces().add(gen.new Piece(null, "Fixed Value: ", null).addStyle("font-weight: bold"));
               c.getPieces().add(gen.new Piece(null, "(complex)", null).addStyle("color: darkgreen"));
-              genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath, false);
+              genFixedValue(gen, row, (DataType) b, snapshot, pattern, corePath, skipnoValue);
             }
           }
         }

@@ -238,19 +238,26 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       if (c.getAppContext() instanceof Element) {
-        Element bnd = (Element) c.getAppContext();
-        Base res = resolveInBundle(url, bnd);
-        if (res != null) {
-          return res;
+        Element element = (Element) c.getAppContext();
+        while (element != null) {
+          Base res = resolveInBundle(url, element);
+          if (res != null) {
+            return res;
+          }
+          element = element.getParentForValidator();  
         }
       }
       Base res = resolveInBundle(url, c.getResource());
       if (res != null) {
         return res;
       }
-      res = resolveInBundle(url, c.getContainer());
-      if (res != null) {
-        return res;
+      Element element = c.getRootResource();
+      while (element != null) {
+        res = resolveInBundle(url, element);
+        if (res != null) {
+          return res;
+        }
+        element = element.getParentForValidator();  
       }
 
       if (externalHostServices != null) {
@@ -279,6 +286,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (item instanceof Resource) {
         try {
           Element e = new ObjectConverter(context).convert((Resource) item);
+          setParents(e);
           self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, e, validationLanguage));
         } catch (IOException e1) {
           throw new FHIRException(e1);
@@ -682,6 +690,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     resourceTracker.clear();
     executionId = UUID.randomUUID().toString();
     baseOnly = profiles.isEmpty();
+    setParents(element);
 
     long t = System.nanoTime();
     if (profiles == null || profiles.isEmpty()) {
@@ -696,6 +705,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     timeTracker.overall(t);
   }
+
 
   private void checkElementUsage(List<ValidationMessage> errors, Element element, NodeStack stack) {
     String elementUsage = element.getUserString("elementSupported");
@@ -2418,6 +2428,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               throw new FHIRException(e);
             }
             if (ext != null) {
+              setParents(ext);
               fetchCache.put(ref, ext);
             }
           }
@@ -3156,6 +3167,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return fetchCache.get(ref);
     } else {
       Element res = fetcher.fetch(appContext, ref);
+      setParents(res);
       fetchCache.put(ref, res);
       return res;
     }
@@ -4903,5 +4915,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     this.noCheckAggregation = noCheckAggregation;
   }
 
+ 
+  public static void setParents(Element element) {
+    if (element != null && !element.hasParentForValidator()) {
+      element.setParentForValidator(null);
+      setParentsInner(element);
+    }
+  }
   
+  public static void setParentsInner(Element element) {
+    for (Element child : element.getChildren()) {
+      child.setParentForValidator(element);
+      setParentsInner(child);
+    }
+    
+  }
+
 }

@@ -324,5 +324,8 @@ public abstract class ResourceRenderer extends DataRenderer {
      }
    }
 
+   public static String makeInternalBundleLink(String fullUrl) {
+     return fullUrl.replace(":", "-");
+   }
 
 }
