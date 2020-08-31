@@ -4768,8 +4768,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       case 2:
         return checkResourceType(parts[0]);
       default:
-        if (parts[parts.length - 2].equals("_history"))
+        if (parts[parts.length - 2].equals("_history")) {
+          if (parts.length < 4) {
+            return null;
+          }
           return checkResourceType(parts[parts.length - 4]);
+        }
         else
           return checkResourceType(parts[parts.length - 2]);
     }
