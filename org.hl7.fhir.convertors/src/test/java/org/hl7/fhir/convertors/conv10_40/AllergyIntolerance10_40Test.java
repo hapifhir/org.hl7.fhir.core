@@ -36,8 +36,14 @@ public class AllergyIntolerance10_40Test {
         org.hl7.fhir.r4.formats.JsonParser r4_parser = new org.hl7.fhir.r4.formats.JsonParser();
         org.hl7.fhir.r4.model.Resource r4_expected = r4_parser.parse(r4_exepected_input);
 
-        Assertions.assertTrue(r4_expected.equalsDeep(r4_actual),
-    "Failed comparing\n" + r4_parser.composeString(r4_actual) + "\nand\n" + r4_parser.composeString(r4_expected)
+        if (!r4_expected.equalsDeep(r4_actual)) {
+          System.out.println("Expected");
+          System.out.println(r4_parser.composeString(r4_expected));
+          System.out.println();
+          System.out.println("Actual");
+          System.out.println(r4_parser.composeString(r4_actual));
+        }
+        Assertions.assertTrue(r4_expected.equalsDeep(r4_actual), "Failed comparing\n" + r4_parser.composeString(r4_actual) + "\nand\n" + r4_parser.composeString(r4_expected)
         );
     }
 }
