@@ -12,7 +12,7 @@
     "display": "amitriptyline 10 MG tablet"},
   "subject": {"reference": "https://open-ic.epic.com/Argonaut/api/FHIR/DSTU2/Patient/Tbt3KuCY0B5PSrJvCu2j-PlK.aiHsu2xUjUM8bWpetXoB",
     "display": "Jason Argonaut"},
-  "authoredOn": "2016-11-13T00:00:00+02:00",
+  "authoredOn": "2016-11-13T00:00:00",
   "requester": {"reference": "https://open-ic.epic.com/Argonaut/api/FHIR/DSTU2/Practitioner/T-kmjPGEVPAmnBfmx56HsKgB",
     "display": "Historical Provider, MD"},
   "dosageInstruction": [{"text": "Take 10 mg by mouth nightly.",

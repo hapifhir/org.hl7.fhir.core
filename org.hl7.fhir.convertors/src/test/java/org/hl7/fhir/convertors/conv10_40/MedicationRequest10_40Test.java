@@ -14,8 +14,8 @@ public class MedicationRequest10_40Test {
     @Test
     @DisplayName("Test 10_40 MedicationRequest conversion")
     public void testMedicationRequestConversion() throws IOException {
-        InputStream dstu2_input = this.getClass().getResourceAsStream("/example_medication_request_10.json");
-        InputStream r4_exepected_input = this.getClass().getResourceAsStream("/example_medication_request_40.json");
+        InputStream dstu2_input = this.getClass().getResourceAsStream("/0_medication_request_10.json");
+        InputStream r4_exepected_input = this.getClass().getResourceAsStream("/0_medication_request_40.json");
 
         org.hl7.fhir.dstu2.model.MedicationOrder dstu2 = (org.hl7.fhir.dstu2.model.MedicationOrder) new org.hl7.fhir.dstu2.formats.JsonParser().parse(dstu2_input);
         VersionConvertorAdvisor40 advisor = new IGR2ConvertorAdvisor();
