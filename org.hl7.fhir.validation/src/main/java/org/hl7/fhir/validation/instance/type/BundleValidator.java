@@ -140,7 +140,7 @@ public class BundleValidator extends BaseValidator{
       NodeStack localStack = stack.push(section, i, null, null);
 
       // technically R4+, but there won't be matches from before that
-      validateDocumentReference(errors, entries, section, stack, fullUrl, id, false, "author", "Section");
+      validateDocumentReference(errors, entries, section, stack, fullUrl, id, true, "author", "Section");
       validateDocumentReference(errors, entries, section, stack, fullUrl, id, false, "focus", "Section");
 
       List<Element> sectionEntries = new ArrayList<Element>();
