@@ -3072,6 +3072,8 @@ public class VersionConvertor_10_30 {
       return Appointment10_30.convertAppointment((org.hl7.fhir.dstu2.model.Appointment) src);
     if (src instanceof org.hl7.fhir.dstu2.model.AppointmentResponse)
       return AppointmentResponse10_30.convertAppointmentResponse((org.hl7.fhir.dstu2.model.AppointmentResponse) src);
+    if (src instanceof org.hl7.fhir.dstu2.model.AllergyIntolerance)
+      return AllergyIntolerance10_30.convertAllergyIntolerance((org.hl7.fhir.dstu2.model.AllergyIntolerance) src);
     if (src instanceof org.hl7.fhir.dstu2.model.AuditEvent)
       return AuditEvent10_30.convertAuditEvent((org.hl7.fhir.dstu2.model.AuditEvent) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Basic)
