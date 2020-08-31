@@ -90,7 +90,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   //  private static final String SECONDARY_SERVER = "http://local.fhir.org:960/packages";
   public static final String PACKAGE_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*$";
-  public static final String PACKAGE_VERSION_REGEX_OPT = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+(\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*)$";
+  public static final String PACKAGE_VERSION_REGEX_OPT = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+(\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*)?$";
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
   private static final String CACHE_VERSION = "3"; // second version - see wiki page
   private String cacheFolder;
@@ -862,7 +862,38 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
   }
 
+  public boolean packageExists(String id, String ver) throws IOException {
+    if (packageInstalled(id, ver)) {
+      return true;
+    }
+    for (String s : getPackageServers()) {
+      if (new PackageClient(s).exists(id, ver)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
+  public boolean packageInstalled(String id, String version) {
+    for (NpmPackage p : temporaryPackages) {
+      if (p.name().equals(id) && ("current".equals(version) || "dev".equals(version) || p.version().equals(version))) {
+        return true;
+      }
+      if (p.name().equals(id) && Utilities.noString(version)) {
+        return true;
+      }
+    }
+
+    for (String f : sorted(new File(cacheFolder).list())) {
+      if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
+        return true;
+      }
+    }
+    if ("dev".equals(version))
+      return packageInstalled(id, "current");
+    else
+      return false;
+  }
 
 
 

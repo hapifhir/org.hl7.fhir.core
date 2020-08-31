@@ -15,12 +15,12 @@ import java.io.IOException;
 public class Display {
 
   public static void printCliArgumentsAndInfo(String[] args) throws IOException {
-    System.out.print("Arguments:");
+    System.out.println("  Paths:  Current = " + System.getProperty("user.dir") + ", Package Cache = " + new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).getFolder());
+    System.out.print("  Params:");
     for (String s : args) {
       System.out.print(s.contains(" ") ? " \"" + s + "\"" : " " + s);
     }
     System.out.println();
-    System.out.println("Directories: Current = " + System.getProperty("user.dir") + ", Package Cache = " + new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).getFolder());
   }
 
   public static void displayHelpDetails() {
