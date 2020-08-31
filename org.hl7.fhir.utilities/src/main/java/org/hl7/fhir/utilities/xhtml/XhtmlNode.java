@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseXhtml;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -474,6 +475,13 @@ public class XhtmlNode implements IBaseXhtml {
   
   public XhtmlNode h2() {
     return addTag("h2");
+  }
+  
+  public XhtmlNode h(int level) {
+    if (level < 1 || level > 6) {
+      throw new FHIRException("Illegal Header level "+level);
+    }
+    return addTag("h"+Integer.toString(level));
   }
   
   public XhtmlNode h3() {

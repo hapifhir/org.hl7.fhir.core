@@ -63,6 +63,7 @@ import java.net.URI;
 
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
@@ -131,10 +132,11 @@ public class Validator {
   }
 
   public static void main(String[] args) throws Exception {
+    TimeTracker tt = new TimeTracker();
+    TimeTracker.Session tts = tt.start("Loading"); 
 
-    long loadStart = System.nanoTime();
     System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
-    System.out.println("Detected Java version: " + System.getProperty("java.version") + " from " + System.getProperty("java.home") + " on " + System.getProperty("os.arch") + " (" + System.getProperty("sun.arch.data.model") + "bit). " + toMB(Runtime.getRuntime().maxMemory()) + "MB available");
+    System.out.println("  Java:   " + System.getProperty("java.version") + " from " + System.getProperty("java.home") + " on " + System.getProperty("os.arch") + " (" + System.getProperty("sun.arch.data.model") + "bit). " + toMB(Runtime.getRuntime().maxMemory()) + "MB available");
     String proxy = getNamedParam(args, Params.PROXY);
     if (!Utilities.noString(proxy)) {
       String[] p = proxy.split("\\:");
@@ -146,7 +148,7 @@ public class Validator {
       cliContext = Params.loadCliContext(args);
       String v = Common.getVersion(args);
       String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
-      ValidationEngine validationEngine = Common.getValidationEngine(v, definitions, cliContext.getTxLog());
+      ValidationEngine validationEngine = Common.getValidationEngine(v, definitions, cliContext.getTxLog(), null);
       ValidatorGui.start(cliContext, validationEngine, true);
     } else if (Params.hasParam(args, Params.TEST)) {
       Common.runValidationEngineTests();
@@ -167,7 +169,7 @@ public class Validator {
         }
         String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
         String definitions = VersionUtilities.packageForVersion(v) + "#" + v;        
-        ValidationEngine validator = ValidationService.getValidator(cliContext, definitions);
+        ValidationEngine validator = ValidationService.getValidator(cliContext, definitions, tt);
         ComparisonService.doLeftRightComparison(args, dest, validator);
       }
     } else {
@@ -178,9 +180,11 @@ public class Validator {
         cliContext.setSv(determineVersion(cliContext));
       }
 
+      System.out.println("Loading");
       // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).  Version gets spit out a couple of lines later after we've loaded the context
       String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
-      ValidationEngine validator = ValidationService.getValidator(cliContext, definitions);
+      ValidationEngine validator = ValidationService.getValidator(cliContext, definitions, tt);
+      tts.end();
       if (cliContext.getMode() == EngineMode.VERSION) {
 
         ValidationService.transformVersion(cliContext, validator);
@@ -194,22 +198,21 @@ public class Validator {
         ValidationService.convertSources(cliContext, validator);
       } else if (cliContext.getMode() == EngineMode.FHIRPATH) {
         ValidationService.evaluateFhirpath(cliContext, validator);
-      } else {
-        if (definitions == null) {
-          throw new Exception("Must provide a defn when doing validation");
-        }
+      } else {      
         for (String s : cliContext.getProfiles()) {
           if (!validator.getContext().hasResource(StructureDefinition.class, s) && !validator.getContext().hasResource(ImplementationGuide.class, s)) {
-            System.out.println("Fetch Profile from " + s);
+            System.out.println("  Fetch Profile from " + s);
             validator.loadProfile(cliContext.getLocations().getOrDefault(s, s));
           }
         }
+        System.out.println("Validating");
         if (cliContext.getMode() == EngineMode.SCAN) {
           ValidationService.validateScan(cliContext, validator);
         } else {
-          ValidationService.validateSources(cliContext, validator, loadStart);
+          ValidationService.validateSources(cliContext, validator);
         }
       }
+      System.out.println("Done. "+tt.report());
     }
 
   }

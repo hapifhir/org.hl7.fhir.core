@@ -78,6 +78,7 @@ import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.BasePackageCacheManager;
@@ -810,9 +811,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return loadedPackages.contains(id+"#"+ver);
   }
 
-
-
- 
-
-
+  public void setClock(TimeTracker tt) {
+    clock = tt;
+    
+  }
 }

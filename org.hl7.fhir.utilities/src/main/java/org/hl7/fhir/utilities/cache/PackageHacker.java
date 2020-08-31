@@ -25,7 +25,7 @@ import com.google.gson.JsonObject;
 public class PackageHacker {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\2020Sep\\hl7.fhir.r5.expansions.tgz");
+    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\uv\\cdisc-lab\\package.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -57,10 +57,10 @@ public class PackageHacker {
 
   private void change(JsonObject npm, Map<String, byte[]> content) throws FileNotFoundException, IOException {
     fixVersions(npm);
-//    npm.remove("url");
-//    npm.addProperty("url", url);
-    npm.remove("version");
-    npm.addProperty("version", "4.5.0");
+    npm.remove("url");
+    npm.addProperty("url", "http://hl7.org/fhir/uv/cdisc-lab/STU1");
+    npm.remove("name");
+    npm.addProperty("name", "hl7.fhir.uv.cdisc-lab");
 //    npm.remove("canonical");
 //    npm.addProperty("canonical", "http://hl7.org/fhir/us/davinci-drug-formulary");
 ////    npm.remove("description");
