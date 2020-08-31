@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.hl7.fhir.convertors.conv10_40.AllergyIntolerance10_40;
 import org.hl7.fhir.convertors.conv10_40.Appointment10_40;
 import org.hl7.fhir.convertors.conv10_40.AppointmentResponse10_40;
 import org.hl7.fhir.convertors.conv10_40.AuditEvent10_40;
@@ -3174,6 +3175,8 @@ public class VersionConvertor_10_40 {
             return Parameters10_40.convertParameters((org.hl7.fhir.dstu2.model.Parameters) src);
         if (src instanceof org.hl7.fhir.dstu2.model.Appointment)
             return Appointment10_40.convertAppointment((org.hl7.fhir.dstu2.model.Appointment) src);
+        if (src instanceof org.hl7.fhir.dstu2.model.AllergyIntolerance)
+            return AllergyIntolerance10_40.convertAllergyIntolerance((org.hl7.fhir.dstu2.model.AllergyIntolerance) src);
         if (src instanceof org.hl7.fhir.dstu2.model.AppointmentResponse)
             return AppointmentResponse10_40.convertAppointmentResponse((org.hl7.fhir.dstu2.model.AppointmentResponse) src);
         if (src instanceof org.hl7.fhir.dstu2.model.AuditEvent)
