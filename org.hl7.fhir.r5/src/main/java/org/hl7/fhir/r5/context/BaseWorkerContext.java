@@ -109,6 +109,7 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.terminologies.ValueSetExpanderSimple;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.OIDUtils;
+import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.TranslationServices;
 import org.hl7.fhir.utilities.Utilities;
@@ -200,17 +201,19 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected Parameters expParameters;
   private TranslationServices translator = new NullTranslator();
   protected TerminologyCache txCache;
-
+  protected TimeTracker clock;
   private boolean tlogging = true;
   
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     txCache = new TerminologyCache(lock, null);
     setValidationMessageLanguage(getLocale());
+    clock = new TimeTracker();
   }
 
   public BaseWorkerContext(Locale locale) throws FileNotFoundException, IOException, FHIRException {
     txCache = new TerminologyCache(lock, null);
     setValidationMessageLanguage(locale);
+    clock = new TimeTracker();
   }
 
   public BaseWorkerContext(CanonicalResourceManager<CodeSystem> codeSystems, CanonicalResourceManager<ValueSet> valueSets, CanonicalResourceManager<ConceptMap> maps, CanonicalResourceManager<StructureDefinition> profiles,
@@ -221,6 +224,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     this.maps = maps;
     this.structures = profiles;
     this.guides = guides;
+    clock = new TimeTracker();
   }
 
   protected void copy(BaseWorkerContext other) {
@@ -1914,5 +1918,15 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
-  
+  public TimeTracker clock() {
+    return clock;
+  }
+ 
+
+  public int countAllCaches() {
+    return codeSystems.size() + valueSets.size() + maps.size() + transforms.size() + structures.size() + measures.size() + libraries.size() + 
+        guides.size() + capstmts.size() + searchParameters.size() + questionnaires.size() + operations.size() + plans.size() + systems.size();
+  }
+
+
 }
