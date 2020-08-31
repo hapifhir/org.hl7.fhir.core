@@ -28,7 +28,7 @@ public class ValidatorGui {
     CliContext cliContext = new CliContext();
     String v = Common.getVersion(args);
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
-    ValidationEngine validationEngine = Common.getValidationEngine(v, definitions, cliContext.getTxLog());
+    ValidationEngine validationEngine = Common.getValidationEngine(v, definitions, cliContext.getTxLog(), null);
     start(new CliContext(), validationEngine, false);
   }
 

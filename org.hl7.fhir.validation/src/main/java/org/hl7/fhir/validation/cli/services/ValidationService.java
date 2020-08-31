@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
@@ -36,7 +37,6 @@ public class ValidationService {
     } else {
       System.out.println("  .. validate " + request.listSourceFiles());
     }
-    validator.prepare(); // generate any missing snapshots
 
     ValidationResponse response = new ValidationResponse();
     for (FileInfo fp : request.getFilesToValidate()) {
@@ -62,22 +62,19 @@ public class ValidationService {
     ve.scanForVersions(cliContext.getSources(), versions);
     return versions;
   }
-  public static void validateSources(CliContext cliContext, ValidationEngine validator, long loadStart) throws Exception {
-    validator.doneLoading(loadStart);
-    if (cliContext.getProfiles().size() > 0) {
-      System.out.println("  .. validate " + cliContext.getSources() + " against " + cliContext.getProfiles().toString());
-    } else {
-      System.out.println("  .. validate " + cliContext.getSources());
-    }
-    validator.prepare(); // generate any missing snapshots
+  
+  public static void validateSources(CliContext cliContext, ValidationEngine validator) throws Exception {
     Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles());
     int ec = 0;
+    System.out.println("Done. "+validator.getContext().clock().report());
+    System.out.println();
+
     if (cliContext.getOutput() == null) {
       if (r instanceof Bundle)
         for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry())
-          ec = displayOperationOutcome((OperationOutcome) e.getResource()) + ec;
+          ec = ec + displayOperationOutcome((OperationOutcome) e.getResource(), ((Bundle) r).getEntry().size() > 1) + ec;
       else
-        ec = displayOperationOutcome((OperationOutcome) r);
+        ec = displayOperationOutcome((OperationOutcome) r, false);
     } else {
       IParser x;
       if (cliContext.getOutput() != null && cliContext.getOutput().endsWith(".json")) {
@@ -193,16 +190,20 @@ public class ValidationService {
     }
   }
 
-  public static ValidationEngine getValidator(CliContext cliContext, String definitions) throws Exception {
-    System.out.println("  .. FHIR Version " + cliContext.getSv() + ", definitions from " + definitions);
-    System.out.println("  .. connect to tx server @ " + cliContext.getTxServer());
-    ValidationEngine validator = new ValidationEngine(definitions, cliContext.getTxServer(), cliContext.getTxLog(), FhirPublication.fromCode(cliContext.getSv()), cliContext.getSv());
+  public static ValidationEngine getValidator(CliContext cliContext, String definitions, TimeTracker tt) throws Exception {
+    tt.milestone();
+    System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
+    FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
+    ValidationEngine validator = new ValidationEngine(definitions, ver, cliContext.getSv(), tt);
+    System.out.println(" - "+validator.getContext().countAllCaches()+" resources ("+tt.milestone()+")");
+    System.out.print("  Terminology server " + cliContext.getTxServer());
+    String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver); 
+    System.out.println(" - Version "+txver+" ("+tt.milestone()+")");
     validator.setDebug(cliContext.isDoDebug());
-    System.out.println("    (v" + validator.getContext().getVersion() + ")");
     for (String src : cliContext.getIgs()) {
-      System.out.println("+  .. load IG from " + src);
       validator.loadIg(src, cliContext.isRecursive());
     }
+    System.out.print("  Get set... ");
     validator.setQuestionnaires(cliContext.getQuestionnaires());
     validator.setNative(cliContext.isDoNative());
     validator.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
@@ -218,10 +219,13 @@ public class ValidationService {
     validator.setFetcher(new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator));
     validator.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
     TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
+    validator.prepare(); // generate any missing snapshots
+    System.out.println(" go ("+tt.milestone()+")");
+
     return validator;
   }
 
-  public static int displayOperationOutcome(OperationOutcome oo) {
+  public static int displayOperationOutcome(OperationOutcome oo, boolean hasMultiples) {
     int error = 0;
     int warn = 0;
     int info = 0;
@@ -235,12 +239,24 @@ public class ValidationService {
       else
         info++;
     }
-
-    System.out.println((error == 0 ? "Success..." : "*FAILURE* ") + "validating " + file + ": " + " error:" + Integer.toString(error) + " warn:" + Integer.toString(warn) + " info:" + Integer.toString(info));
+        
+    if (hasMultiples) {
+      System.out.print("-- ");
+      System.out.print(file);
+      System.out.print(" --");
+      System.out.println(Utilities.padLeft("",  '-', Integer.max(38, file.length()+6)));
+    }
+    System.out.println((error == 0 ? "Success" : "*FAILURE*") + ": " + Integer.toString(error) + " errors, " + Integer.toString(warn) + " warnings, " + Integer.toString(info)+" notes");
     for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
       System.out.println(getIssueSummary(issue));
     }
-    System.out.println();
+    if (hasMultiples) {
+      System.out.print("---");
+      System.out.print(Utilities.padLeft("",  '-', file.length()));
+      System.out.print("---");
+      System.out.println(Utilities.padLeft("",  '-', Integer.max(38, file.length()+6)));
+      System.out.println();
+    }
     return error;
   }
 
