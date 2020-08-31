@@ -12,9 +12,9 @@ public class AllergyIntolerance10_30 {
         VersionConvertor_10_30.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu2.model.Identifier identifier : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(identifier));
         if (src.hasOnset())
-            tgt.setOnset(new org.hl7.fhir.dstu3.model.DateTimeType(src.getOnset()));
+            tgt.setOnset(VersionConvertor_10_30.convertDateTime(src.getOnsetElement()));
         if (src.hasRecordedDate())
-            tgt.setAssertedDate(src.getRecordedDate());
+            tgt.setAssertedDateElement(VersionConvertor_10_30.convertDateTime(src.getRecordedDateElement()));
         if (src.hasRecorder())
             tgt.setRecorder(VersionConvertor_10_30.convertReference(src.getRecorder()));
         if (src.hasPatient())
@@ -40,7 +40,7 @@ public class AllergyIntolerance10_30 {
         if (src.hasCategory())
             tgt.addCategory(org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceCategory.fromCode(src.getCategory().toCode()));
         if (src.hasLastOccurence())
-            tgt.setLastOccurrence(src.getLastOccurence());
+            tgt.setLastOccurrenceElement(VersionConvertor_10_30.convertDateTime(src.getLastOccurenceElement()));
         if (src.hasNote())
             tgt.addNote(VersionConvertor_10_30.convertAnnotation(src.getNote()));
         for (org.hl7.fhir.dstu2.model.AllergyIntolerance.AllergyIntoleranceReactionComponent reaction : src.getReaction())
@@ -63,9 +63,9 @@ public class AllergyIntolerance10_30 {
             ));
         for (org.hl7.fhir.dstu2.model.CodeableConcept concept : src.getManifestation()) tgt.addManifestation(VersionConvertor_10_30.convertCodeableConcept(concept));
         if (src.hasDescription())
-            src.setDescription(src.getDescription());
+            tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
         if (src.hasOnset())
-            tgt.setOnset(src.getOnset());
+            tgt.setOnsetElement(VersionConvertor_10_30.convertDateTime(src.getOnsetElement()));
         if (src.hasSeverity())
             tgt.setSeverity(org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceSeverity.fromCode(src.getSeverity().toCode()));
         if (src.hasExposureRoute())
