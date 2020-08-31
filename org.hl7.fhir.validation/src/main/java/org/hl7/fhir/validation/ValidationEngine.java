@@ -1334,8 +1334,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return isBundle;
   }
 
-  public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles) throws FHIRException, IOException, EOperationOutcome {
-    List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
+  public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator();
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return messagesToOutcome(messages);
