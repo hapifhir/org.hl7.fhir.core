@@ -13,7 +13,7 @@ public class AllergyIntolerance10_40 {
         if (src.hasOnset())
             tgt.setOnset(VersionConvertor_10_40.convertType(src.getOnsetElement()));
         if (src.hasRecordedDate())
-            tgt.setRecordedDate(src.getRecordedDate());
+            tgt.setRecordedDateElement(VersionConvertor_10_40.convertDateTime(src.getRecordedDateElement()));
         if (src.hasRecorder())
             tgt.setRecorder(VersionConvertor_10_40.convertReference(src.getRecorder()));
         if (src.hasPatient())
@@ -44,8 +44,8 @@ public class AllergyIntolerance10_40 {
             tgt.setType(org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceType.fromCode(src.getType().toCode()));
         if (src.hasCategory())
             tgt.addCategory(org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceCategory.fromCode(src.getCategory().toCode()));
-        if (src.hasLastOccurence())
-            tgt.setLastOccurrence(src.getLastOccurence());
+        if (src.hasLastOccurenceElement())
+            tgt.setLastOccurrenceElement(VersionConvertor_10_40.convertDateTime(src.getLastOccurenceElement()));
         if (src.hasNote())
             tgt.addNote(VersionConvertor_10_40.convertAnnotation(src.getNote()));
         for (org.hl7.fhir.dstu2.model.AllergyIntolerance.AllergyIntoleranceReactionComponent reaction : src.getReaction())
@@ -68,9 +68,9 @@ public class AllergyIntolerance10_40 {
             ));
         for (org.hl7.fhir.dstu2.model.CodeableConcept concept : src.getManifestation()) tgt.addManifestation(VersionConvertor_10_40.convertCodeableConcept(concept));
         if (src.hasDescription())
-            src.setDescription(src.getDescription());
+            tgt.setDescriptionElement(VersionConvertor_10_40.convertString(src.getDescriptionElement()));
         if (src.hasOnset())
-            tgt.setOnset(src.getOnset());
+            tgt.setOnsetElement(VersionConvertor_10_40.convertDateTime(src.getOnsetElement()));
         if (src.hasSeverity())
             tgt.setSeverity(org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceSeverity.fromCode(src.getSeverity().toCode()));
         if (src.hasExposureRoute())

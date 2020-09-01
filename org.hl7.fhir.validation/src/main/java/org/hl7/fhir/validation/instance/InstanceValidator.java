@@ -2398,6 +2398,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // special known URLs that can't be validated but are known to be valid
       return;
     }
+    warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, !isSuspiciousReference(ref), I18nConstants.REFERENCE_REF_SUSPICIOUS, ref);      
 
     ResolvedReference we = localResolve(ref, stack, errors, path, (Element) hostContext.getAppContext(), element);
     String refType;
@@ -2439,10 +2440,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     String ft;
-    if (we != null)
+    if (we != null) {
       ft = we.getType();
-    else
+    } else {
       ft = tryParse(ref);
+    }
 
     if (reference.hasType()) { // R4 onwards...
       // the type has to match the specified
@@ -2594,6 +2596,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (pol == ReferenceValidationPolicy.CHECK_VALID) {
       // todo....
     }
+  }
+
+  private boolean isSuspiciousReference(String url) {
+    if (!assumeValidRestReferences || url == null || Utilities.isAbsoluteUrl(url)) {
+      return false;
+    }
+    String[] parts = url.split("\\/");
+    if (parts.length == 2 && context.getResourceNames().contains(parts[0]) && Utilities.isValidId(parts[1])) {
+      return false;
+    }
+    if (parts.length == 4 && context.getResourceNames().contains(parts[0]) && Utilities.isValidId(parts[1]) && "_history".equals(parts[2]) && Utilities.isValidId(parts[3])) {
+      return false;
+    }
+    return true;
   }
 
   private String asListByUrl(Collection<StructureDefinition> list) {
@@ -4842,7 +4858,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       case 2:
         return checkResourceType(parts[0]);
       default:
-        if (parts[parts.length - 2].equals("_history"))
+        if (parts[parts.length - 2].equals("_history") && parts.length >= 4)
           return checkResourceType(parts[parts.length - 4]);
         else
           return checkResourceType(parts[parts.length - 2]);

@@ -331,6 +331,7 @@ public class I18nConstants {
   public static final String REFERENCE_REF_NOTFOUND_BUNDLE = "Reference_REF_NotFound_Bundle";
   public static final String REFERENCE_REF_NOTYPE = "Reference_REF_NoType";
   public static final String REFERENCE_REF_RESOURCETYPE = "Reference_REF_ResourceType";
+  public static final String REFERENCE_REF_SUSPICIOUS = "REFERENCE_REF_SUSPICIOUS";
   public static final String REFERENCE_REF_WRONGTARGET = "Reference_REF_WrongTarget";
   public static final String REFERENCE_TO__CANNOT_BE_RESOLVED = "reference_to__cannot_be_resolved";
   public static final String REFERENCE__REFERS_TO_A__NOT_A_VALUESET = "Reference__refers_to_a__not_a_ValueSet";
