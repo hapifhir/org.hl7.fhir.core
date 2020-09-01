@@ -38,7 +38,7 @@ public class ValidationOutcome {
   }
 
   @JsonProperty("issues")
-  public ValidationOutcome setIssues(List<ValidationMessage> issues) {
+  public ValidationOutcome setMessages(List<ValidationMessage> issues) {
     this.messages = issues;
     return this;
   }
