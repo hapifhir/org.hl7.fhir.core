@@ -65,6 +65,7 @@ import org.hl7.fhir.convertors.conv10_40.ValueSet10_40;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu2.model.Parameters;
 import org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent;
+import org.hl7.fhir.dstu2.model.PositiveIntType;
 import org.hl7.fhir.dstu2.model.Reference;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -3422,5 +3423,11 @@ public class VersionConvertor_10_40 {
 
     public static org.hl7.fhir.dstu2.model.Resource convertResource(org.hl7.fhir.r4.model.Resource src) throws FHIRException {
         return convertResource(src, null);
+    }
+
+    public static UnsignedIntType convertUnsignedIntToPositive(PositiveIntType src) {
+      org.hl7.fhir.r4.model.UnsignedIntType tgt = src.hasValue() ? new org.hl7.fhir.r4.model.UnsignedIntType(src.getValue()) : new org.hl7.fhir.r4.model.UnsignedIntType();
+      copyElement(src, tgt);
+      return tgt;
     }
 }
