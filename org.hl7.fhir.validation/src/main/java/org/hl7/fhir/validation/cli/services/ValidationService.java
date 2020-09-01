@@ -11,12 +11,14 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
 import org.hl7.fhir.validation.cli.model.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,14 +42,11 @@ public class ValidationService {
 
     ValidationResponse response = new ValidationResponse();
     for (FileInfo fp : request.getFilesToValidate()) {
-      OperationOutcome operationOutcome = validator.validate(fp.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fp.getFileType()),
-        request.getCliContext().getProfiles());
-      ValidationOutcome outcome = new ValidationOutcome();
-
-      // Need to set file content to null as server can't handle json in json
-      //fp.setFileContent(null);
-      outcome.setFileInfo(fp);
-      operationOutcome.getIssue().forEach(outcome::addIssue);
+      List<ValidationMessage> messages = new ArrayList<>();
+      validator.validate(fp.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fp.getFileType()),
+        request.getCliContext().getProfiles(), messages);
+      ValidationOutcome outcome = new ValidationOutcome().setFileInfo(fp);
+      messages.forEach(outcome::addMessage);
       response.addOutcome(outcome);
     }
     return response;
@@ -143,9 +142,9 @@ public class ValidationService {
       List<StructureDefinition> structures = validator.getContext().allStructures();
       for (StructureDefinition sd : structures) {
         if (!sd.hasSnapshot()) {
-          if (sd.getKind()!=null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
+          if (sd.getKind() != null && sd.getKind() == StructureDefinitionKind.LOGICAL) {
             validator.getContext().generateSnapshot(sd, true);
-          }  else {
+          } else {
             validator.getContext().generateSnapshot(sd, false);
           }
         }
