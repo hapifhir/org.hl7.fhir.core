@@ -70,6 +70,7 @@ public class ParametersRenderer extends ResourceRenderer {
         td.tx(XhtmlNode.NBSP);        
       }
       td.tx(p.get("name").primitiveValue());
+      // Grahame: p.has("value") doesn't fire because the property names are things like valueString or valueBoolean and has("value") doesn't find those.
       if (p.has("value")) {
         renderBase(tr.td(), p.get("value"));
       } else if (p.has("resource")) {
@@ -87,7 +88,7 @@ public class ParametersRenderer extends ResourceRenderer {
         }
       } else if (p.has("part")) {
         tr.td();
-        PropertyWrapper pw = getProperty(p, "parameter");
+        PropertyWrapper pw = getProperty(p, "part");
         paramsW(tbl, pw.getValues(), 1);
       }
     }
