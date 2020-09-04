@@ -8,6 +8,7 @@ import java.util.List;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Encounter;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.Patient;
@@ -29,12 +30,21 @@ public class DirectWrappers {
   public static class PropertyWrapperDirect extends RendererWrapperImpl implements PropertyWrapper {
     private Property wrapped;
     private List<BaseWrapper> list;
+    private ElementDefinition ed;
 
     public PropertyWrapperDirect(RenderingContext context, Property wrapped) {
       super(context);
       if (wrapped == null)
         throw new Error("wrapped == null");
       this.wrapped = wrapped;
+    }
+
+    public PropertyWrapperDirect(RenderingContext context, Property wrapped, ElementDefinition ed) {
+      super(context);
+      if (wrapped == null)
+        throw new Error("wrapped == null");
+      this.wrapped = wrapped;
+      this.ed = ed;
     }
 
     @Override
@@ -105,6 +115,11 @@ public class DirectWrappers {
     @Override
     public String fhirType() {
       return wrapped.getTypeCode();
+    }
+
+    @Override
+    public ElementDefinition getElementDefinition() {
+      return ed;
     }
   }
 
