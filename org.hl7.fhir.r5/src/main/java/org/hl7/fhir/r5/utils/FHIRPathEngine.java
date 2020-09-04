@@ -319,6 +319,20 @@ public class FHIRPathEngine {
     }
   }
 
+  public FHIRPathEngine(IWorkerContext worker, ProfileUtilities utilities) {
+    super();
+    this.worker = worker;
+    profileUtilities = utilities; 
+    for (StructureDefinition sd : worker.getStructures()) {
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
+        allTypes.put(sd.getName(), sd);
+      }
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) { 
+        primitiveTypes.add(sd.getName());
+      }
+    }
+  }
+
 
   // --- 3 methods to override in children -------------------------------------------------------
   // if you don't override, it falls through to the using the base reference implementation 

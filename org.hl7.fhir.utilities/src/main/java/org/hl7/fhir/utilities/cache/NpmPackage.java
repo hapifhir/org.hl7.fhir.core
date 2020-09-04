@@ -1091,6 +1091,10 @@ public class NpmPackage {
     }
     return true;
   }
+
+  public boolean isNotForPublication() {
+    return JSONUtil.bool(npm, "notForPublication");
+ }
   
   
 }

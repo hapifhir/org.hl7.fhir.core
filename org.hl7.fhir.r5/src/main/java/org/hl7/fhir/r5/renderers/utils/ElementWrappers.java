@@ -58,7 +58,7 @@ public class ElementWrappers {
         throw new FHIRException(e.getMessage(), e);
       }
       if (context.getParser() == null) {
-        System.out.println("Noe version specific parser provided");
+        System.out.println("No version specific parser provided");
       } 
       if (context.getParser() == null) {
         throw new Error("No type parser provided to renderer context");
@@ -322,6 +322,11 @@ public class ElementWrappers {
     @Override
     public String fhirType() {
       return getTypeCode();
+    }
+
+    @Override
+    public ElementDefinition getElementDefinition() {
+      return definition;
     }
 
   }

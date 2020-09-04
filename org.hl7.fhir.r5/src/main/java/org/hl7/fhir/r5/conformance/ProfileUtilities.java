@@ -78,6 +78,9 @@ import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations.BindingStrength;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
+import org.hl7.fhir.r5.model.ExpressionNode;
+import org.hl7.fhir.r5.model.ExpressionNode.Kind;
+import org.hl7.fhir.r5.model.ExpressionNode.Operation;
 import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.IntegerType;
@@ -99,6 +102,8 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.TerminologyRenderer;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
+import org.hl7.fhir.r5.utils.FHIRLexer;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.TranslatingUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
@@ -200,7 +205,31 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
   }
 
-
+  public static class ElementChoiceGroup {
+    private Row row;
+    private String name;
+    private boolean mandatory;
+    private List<String> elements = new ArrayList<>();
+    
+    public ElementChoiceGroup(String name, boolean mandatory) {
+      super();
+      this.name = name;
+      this.mandatory = mandatory;
+    }
+    public Row getRow() {
+      return row;
+    }
+    public List<String> getElements() {
+      return elements;
+    }
+    public void setRow(Row row) {
+      this.row = row;      
+    }
+    public String getName() {
+      return name;
+    }
+  }
+  
   private static final int MAX_RECURSION_LIMIT = 10;
   
   public class ExtensionContext {
@@ -268,6 +297,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   // note that ProfileUtilities are used re-entrantly internally, so nothing with process state can be here
   private final IWorkerContext context;
+  private FHIRPathEngine fpe;
   private List<ValidationMessage> messages;
   private List<String> snapshotStack = new ArrayList<String>();
   private ProfileKnowledgeProvider pkp;
@@ -284,6 +314,9 @@ public class ProfileUtilities extends TranslatingUtilities {
     this.context = context;
     this.messages = messages;
     this.pkp = pkp;
+    if (context != null) {
+      this.fpe = new FHIRPathEngine(context, this);
+    }
   }
   
   public static class UnusedTracker {
@@ -538,6 +571,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       processPaths("", derived.getSnapshot(), baseSnapshot, diff, baseCursor, diffCursor, baseSnapshot.getElement().size()-1, 
           derived.getDifferential().hasElement() ? derived.getDifferential().getElement().size()-1 : -1, url, webUrl, derived.present(), null, null, false, base.getUrl(), null, false, null, new ArrayList<ElementRedirection>(), base);
+      checkGroupConstraints(derived);
       if (derived.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
         for (ElementDefinition e : diff.getElement()) {
           if (!e.hasUserData(GENERATED_IN_SNAPSHOT)) {
@@ -664,6 +698,81 @@ public class ProfileUtilities extends TranslatingUtilities {
       throw e;
     }
     derived.clearUserData("profileutils.snapshot.generating");
+  }
+
+  private void checkGroupConstraints(StructureDefinition derived) {
+    List<ElementDefinition> toRemove = new ArrayList<>();
+//    List<ElementDefinition> processed = new ArrayList<>();
+    for (ElementDefinition element : derived.getSnapshot().getElement()) {
+      if (!toRemove.contains(element) && !element.hasSlicing() && !"0".equals(element.getMax())) {
+        checkForChildrenInGroup(derived, toRemove, element);
+      }
+    }
+    derived.getSnapshot().getElement().removeAll(toRemove);
+  }
+
+  public void checkForChildrenInGroup(StructureDefinition derived, List<ElementDefinition> toRemove, ElementDefinition element) throws Error {
+    List<ElementDefinition> children = getChildren(derived, element);
+    List<ElementChoiceGroup> groups = readChoices(element, children);
+    for (ElementChoiceGroup group : groups) {
+      System.out.println(children);
+      String mandated = null;
+      Set<String> names = new HashSet<>();
+      for (ElementDefinition ed : children) {
+        String name = tail(ed.getPath());
+        if (names.contains(name)) {
+          throw new Error("huh?");
+        } else {
+          names.add(name);
+        }
+        if (group.getElements().contains(name)) {
+          if (ed.getMin() == 1) {
+            if (mandated == null) {
+              mandated = name;
+            } else {
+              throw new Error("Error: there are two mandatory elements in "+derived.getUrl()+" when there can only be one: "+mandated+" and "+name);
+            }
+          }
+        }
+      }
+      if (mandated != null) {
+        for (ElementDefinition ed : children) {
+          String name = tail(ed.getPath());
+          if (group.getElements().contains(name) && !mandated.equals(name)) {
+            ed.setMax("0");
+            addAllChildren(derived, ed, toRemove);
+          }
+        }
+      }
+    }
+  }
+
+  private List<ElementDefinition> getChildren(StructureDefinition derived, ElementDefinition element) {
+    List<ElementDefinition> elements = derived.getSnapshot().getElement();
+    int index = elements.indexOf(element) + 1;
+    String path = element.getPath()+".";
+    List<ElementDefinition> list = new ArrayList<>();
+    while (index < elements.size()) {
+      ElementDefinition e = elements.get(index);
+      String p = e.getPath();
+      if (p.startsWith(path) && !e.hasSliceName()) {
+        if (!p.substring(path.length()).contains(".")) {
+          list.add(e);
+        }
+        index++;
+      } else  {
+        break;
+      }
+    }
+    return list;
+  }
+
+  private void addAllChildren(StructureDefinition derived, ElementDefinition element, List<ElementDefinition> toRemove) {
+    List<ElementDefinition> children = getChildList(derived, element);
+    for (ElementDefinition child : children) {
+      toRemove.add(child);
+      addAllChildren(derived, child, toRemove);
+    }
   }
 
   private void checkDifferential(List<ElementDefinition> elements, String type, String url) {
@@ -3620,12 +3729,17 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
           
         Row currRow = row;
+        List<ElementChoiceGroup> groups = readChoices(element, children);
         boolean isExtension = Utilities.existsInList(tail(element.getPath()), "extension", "modifierExtension");
         for (ElementDefinition child : children) {
-          if (!child.hasSliceName())
+          if (!child.hasSliceName()) {
             currRow = row; 
-          if (logicalModel || !child.getPath().endsWith(".id") || (child.getPath().endsWith(".id") && (profile != null) && (profile.getDerivation() == TypeDerivationRule.CONSTRAINT)))  
-            currRow = genElement(defPath, gen, currRow.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, currRow, mustSupport);
+          }
+          Row childRow = chooseChildRowByGroup(gen, currRow, groups, child, element, isConstraintMode);
+          
+          if (logicalModel || !child.getPath().endsWith(".id") || (child.getPath().endsWith(".id") && (profile != null) && (profile.getDerivation() == TypeDerivationRule.CONSTRAINT))) {  
+            currRow = genElement(defPath, gen, childRow.getSubRows(), child, all, profiles, showMissing, profileBaseFileName, isExtension, snapshot, corePath, imagePath, false, logicalModel, isConstraintMode, allInvariants, currRow, mustSupport);
+          }
         }
 //        if (!snapshot && (extensions == null || !extensions))
 //          for (ElementDefinition child : children)
@@ -3637,6 +3751,34 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
     return slicingRow;
+  }
+
+  private Row chooseChildRowByGroup(HierarchicalTableGenerator gen, Row row, List<ElementChoiceGroup> groups, ElementDefinition element, ElementDefinition parent, boolean isConstraintMode) {
+    String name = tail(element.getPath());
+    for (ElementChoiceGroup grp : groups) {
+      if (grp.getElements().contains(name)) {
+        if (grp.getRow() == null) {
+          grp.setRow(makeChoiceElementRow(gen, row, grp, parent, isConstraintMode));
+        }
+        return grp.getRow();
+      }
+    }
+    return row;
+  }
+
+  private Row makeChoiceElementRow(HierarchicalTableGenerator gen, Row prow, ElementChoiceGroup grp, ElementDefinition parent, boolean isConstraintMode) {
+    Row row = gen.new Row();
+    row.setAnchor(parent.getPath()+"-"+grp.getName());
+    row.setColor(getRowColor(parent, isConstraintMode));
+    row.setLineColor(1);
+    row.setIcon("icon_choice.gif", HierarchicalTableGenerator.TEXT_ICON_CHOICE);
+    row.getCells().add(gen.new Cell(null, null, "(Choice of one)", "", null));
+    row.getCells().add(gen.new Cell());
+    row.getCells().add(gen.new Cell(null, null, (grp.mandatory ? "1" : "0")+"..1", "", null));
+    row.getCells().add(gen.new Cell());
+    row.getCells().add(gen.new Cell());
+    prow.getSubRows().add(row);
+    return row;
   }
 
   public Cell genElementNameCell(HierarchicalTableGenerator gen, ElementDefinition element, String profileBaseFileName, boolean snapshot, String corePath,
@@ -3985,7 +4127,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       if (root) {
         if (profile.getAbstract()) {
-          if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           c.addPiece(gen.new Piece(null, "This is an abstract profile", null));          
         }
       }
@@ -3993,10 +4135,10 @@ public class ProfileUtilities extends TranslatingUtilities {
         c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).addStyle("color: darkgreen")));
       } else {
         if (definition != null && definition.hasShort()) {
-          if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           c.addPiece(checkForNoChange(definition.getShortElement(), gen.new Piece(null, gt(definition.getShortElement()), null)));
         } else if (fallback != null && fallback.hasShort()) {
-          if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           c.addPiece(gen.new Piece(null, gt(fallback.getShortElement()), null).addStyle("opacity: 0.5"));
         }
         if (url != null) {
@@ -4041,7 +4183,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
 
         if (definition.hasSlicing()) {
-          if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "Slice")+": ", null).addStyle("font-weight:bold"));
           c.getPieces().add(gen.new Piece(null, describeSlice(definition.getSlicing()), null));
         }
@@ -4095,7 +4237,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           }
 
           if (definition.hasFixed()) {
-            if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, translate("sd.table", "Fixed Value")+": ", null).addStyle("font-weight:bold")));
             if (!useTableForFixedValues || definition.getFixed().isPrimitive()) {
               String s = buildJson(definition.getFixed());
@@ -4113,7 +4255,7 @@ public class ProfileUtilities extends TranslatingUtilities {
                 c.getPieces().add(p);
             }
           } else if (definition.hasPattern()) {
-            if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, translate("sd.table", "Required Pattern")+": ", null).addStyle("font-weight:bold")));
             if (!useTableForFixedValues || definition.getPattern().isPrimitive())
               c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen")));
@@ -4123,13 +4265,13 @@ public class ProfileUtilities extends TranslatingUtilities {
             }
           } else if (definition.hasExample()) {
             for (ElementDefinitionExampleComponent ex : definition.getExample()) {
-              if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
               c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, translate("sd.table", "Example")+("".equals("General")? "" : " "+ex.getLabel())+": ", null).addStyle("font-weight:bold")));
               c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).addStyle("color: darkgreen")));
             }
           }
           if (definition.hasMaxLength() && definition.getMaxLength()!=0) {
-            if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, "Max Length: ", null).addStyle("font-weight:bold")));
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen")));
           }
@@ -4367,7 +4509,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
 
         if (definition.hasSlicing()) {
-          if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
           c.getPieces().add(gen.new Piece(null, "Slice: ", null).addStyle("font-weight:bold"));
           c.getPieces().add(gen.new Piece(null, describeSlice(definition.getSlicing()), null));
         }
@@ -4389,12 +4531,16 @@ public class ProfileUtilities extends TranslatingUtilities {
             }
           }
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {
-            if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getKey()+": ", null).addStyle("font-weight:bold")));
-            c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getHuman(), null)));
+            if (inv.getHumanElement().hasExtension("http://hl7.org/fhir/StructureDefinition/rendering-markdown")) {
+              c.addMarkdown(inv.getHumanElement().getExtensionString("http://hl7.org/fhir/StructureDefinition/rendering-markdown"));
+            } else {
+              c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, inv.getHuman(), null)));
+            }
           }
           if (definition.hasFixed()) {
-            if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "Fixed Value: ", null).addStyle("font-weight:bold")));
             String s = buildJson(definition.getFixed());
             String link = null;
@@ -4402,18 +4548,18 @@ public class ProfileUtilities extends TranslatingUtilities {
               link = pkp.getLinkForUrl(corePath, s);
             c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(link, s, null).addStyle("color: darkgreen")));
           } else if (definition.hasPattern()) {
-            if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, "Required Pattern: ", null).addStyle("font-weight:bold")));
             c.getPieces().add(checkForNoChange(definition.getPattern(), gen.new Piece(null, buildJson(definition.getPattern()), null).addStyle("color: darkgreen")));
           } else if (definition.hasExample()) {
             for (ElementDefinitionExampleComponent ex : definition.getExample()) {
-              if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+              if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
               c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, "Example'"+("".equals("General")? "" : " "+ex.getLabel()+"'")+": ", null).addStyle("font-weight:bold")));
               c.getPieces().add(checkForNoChange(ex, gen.new Piece(null, buildJson(ex.getValue()), null).addStyle("color: darkgreen")));
             }
           }
           if (definition.hasMaxLength() && definition.getMaxLength()!=0) {
-            if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, "Max Length: ", null).addStyle("font-weight:bold")));
             c.getPieces().add(checkForNoChange(definition.getMaxLengthElement(), gen.new Piece(null, Integer.toString(definition.getMaxLength()), null).addStyle("color: darkgreen")));
           }
@@ -4434,14 +4580,14 @@ public class ProfileUtilities extends TranslatingUtilities {
             }
           }
           if (definition.hasDefinition()) {
-            if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(gen.new Piece(null, "Definition: ", null).addStyle("font-weight:bold"));
             c.addPiece(gen.new Piece("br"));
             c.addMarkdown(definition.getDefinition());
 //            c.getPieces().add(checkForNoChange(definition.getCommentElement(), gen.new Piece(null, definition.getComment(), null)));
           }
           if (definition.getComment()!=null) {
-            if (!c.getPieces().isEmpty()) c.addPiece(gen.new Piece("br"));
+            if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(gen.new Piece(null, "Comments: ", null).addStyle("font-weight:bold"));
             c.addPiece(gen.new Piece("br"));
             c.addMarkdown(definition.getComment());
@@ -5934,6 +6080,64 @@ public class ProfileUtilities extends TranslatingUtilities {
     return this;
   }
 
+
+  public List<ElementChoiceGroup> readChoices(ElementDefinition ed, List<ElementDefinition> children) {
+    List<ElementChoiceGroup> result = new ArrayList<>();
+    for (ElementDefinitionConstraintComponent c : ed.getConstraint()) {
+      ElementChoiceGroup grp = processConstraint(children, c);
+      if (grp != null) {
+        result.add(grp);
+      }
+    }
+    return result;
+  }
+
+  private ElementChoiceGroup processConstraint(List<ElementDefinition> children, ElementDefinitionConstraintComponent c) {
+    if (!c.hasExpression()) {
+      return null;
+    }
+    ExpressionNode expr = fpe.parse(c.getExpression());
+    if (expr.getKind() != Kind.Group || expr.getOpNext() == null || !(expr.getOperation() == Operation.Equals || expr.getOperation() == Operation.LessOrEqual)) {
+      return null;      
+    }
+    ExpressionNode n1 = expr.getGroup();
+    ExpressionNode n2 = expr.getOpNext();
+    if (n2.getKind() != Kind.Constant || n2.getInner() != null || n2.getOpNext() != null || !"1".equals(n2.getConstant().primitiveValue())) {
+      return null;
+    }
+    ElementChoiceGroup grp = new ElementChoiceGroup(c.getKey(), expr.getOperation() == Operation.Equals);
+    while (n1 != null) {
+      if (n1.getKind() != Kind.Name || n1.getInner() != null) {
+        return null;
+      }
+      grp.elements.add(n1.getName());
+      if (n1.getOperation() == null || n1.getOperation() == Operation.Union) {
+        n1 = n1.getOpNext();
+      } else {
+        return null;
+      }
+    }
+    int total = 0;
+    for (String n : grp.elements) {
+      boolean found = false;
+      for (ElementDefinition child : children) {
+        String name = tail(child.getPath());
+        if (n.equals(name)) {
+          found = true;
+          if (!"0".equals(child.getMax())) {
+            total++;
+          }
+        }
+      }
+      if (!found) {
+        return null;
+      }
+    }
+    if (total <= 1) {
+      return null;
+    }
+    return grp;
+  }
 
 
   
