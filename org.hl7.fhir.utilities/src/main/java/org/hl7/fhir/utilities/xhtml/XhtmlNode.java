@@ -741,6 +741,12 @@ public class XhtmlNode implements IBaseXhtml {
   }
 
 
+  public XhtmlNode backgroundColor(String color) {
+    style("background-color: "+color);
+    return this;
+  }
+
+
   
 
   

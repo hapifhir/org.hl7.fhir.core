@@ -171,8 +171,9 @@ private Map<String, Object> userData;
     List<Property> children = new ArrayList<Property>();
     listChildren(children);
     for (Property c : children)
-      if (c.getName().equals(name))
+      if (c.getName().equals(name) || c.getName().equals(name+"[x]")) {
         return c;
+      }
       return null;
     }
   

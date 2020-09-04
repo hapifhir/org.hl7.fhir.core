@@ -8,6 +8,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.renderers.ResourceRenderer;
@@ -28,6 +29,7 @@ public class BaseWrappers {
     public int getMinCardinality();
     public int getMaxCardinality();
     public StructureDefinition getStructure();
+    public ElementDefinition getElementDefinition();
     public BaseWrapper value();
     public ResourceWrapper getAsResource();
     public String fhirType();
