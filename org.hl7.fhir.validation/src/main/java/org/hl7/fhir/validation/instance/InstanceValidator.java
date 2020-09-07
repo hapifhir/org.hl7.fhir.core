@@ -491,17 +491,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
 
-  private void bpCheck(List<ValidationMessage> errors, IssueType invalid, int line, int col, String literalPath, boolean test, String message) {
+  private void bpCheck(List<ValidationMessage> errors, IssueType invalid, int line, int col, String literalPath, boolean test, String message, Object... theMessageArguments) {
     if (bpWarnings != null) {
       switch (bpWarnings) {
         case Error:
-          rule(errors, invalid, line, col, literalPath, test, message);
+          rule(errors, invalid, line, col, literalPath, test, message, theMessageArguments);
           break;
         case Warning:
-          warning(errors, invalid, line, col, literalPath, test, message);
+          warning(errors, invalid, line, col, literalPath, test, message, theMessageArguments);
           break;
         case Hint:
-          hint(errors, invalid, line, col, literalPath, test, message);
+          hint(errors, invalid, line, col, literalPath, test, message, theMessageArguments);
           break;
         default: // do nothing
           break;
@@ -2319,6 +2319,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     
     if (system != null || code != null ) {
       checkCodedElement(theErrors, thePath, element, theProfile, definition, false, false, theStack, code, system, unit);
+    }
+    
+    if (code != null && "http://unitsofmeasure.org".equals(system)) {
+      int b = code.indexOf("{");
+      int e = code.indexOf("}");
+      if (b >= 0 && e > 0 && b < e) {
+        bpCheck(theErrors, IssueType.BUSINESSRULE, element.line(), element.col(), thePath, !code.contains("{"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS, code.substring(b, e+1));
+      }
     }
   }
 
