@@ -58,6 +58,7 @@ import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
@@ -1021,6 +1022,21 @@ public class DataRenderer extends Renderer {
   }
   
 
+  public XhtmlNode makeExceptionXhtml(Exception e, String function) {
+    XhtmlNode xn;
+    xn = new XhtmlNode(NodeType.Element, "div");
+    xn.para().b().tx("Exception "+function+": "+e.getMessage()).addComment(getStackTrace(e));
+    return xn;
+  }
 
+  private String getStackTrace(Exception e) {
+    StringBuilder b = new StringBuilder();
+    b.append("\r\n");
+    for (StackTraceElement t : e.getStackTrace()) {
+      b.append(t.getClassName()+"."+t.getMethodName()+" ("+t.getFileName()+":"+t.getLineNumber());
+      b.append("\r\n");
+    }
+    return b.toString();
+  }
 
 }
