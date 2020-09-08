@@ -206,6 +206,11 @@ public class DOMWrappers {
       return getTypeCode();
     }
 
+    @Override
+    public ElementDefinition getElementDefinition() {
+      return definition;
+    }
+
   }
 
   public static class ResourceWrapperElement extends WrapperBaseImpl implements ResourceWrapper {

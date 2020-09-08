@@ -319,6 +319,20 @@ public class FHIRPathEngine {
     }
   }
 
+  public FHIRPathEngine(IWorkerContext worker, ProfileUtilities utilities) {
+    super();
+    this.worker = worker;
+    profileUtilities = utilities; 
+    for (StructureDefinition sd : worker.getStructures()) {
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
+        allTypes.put(sd.getName(), sd);
+      }
+      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) { 
+        primitiveTypes.add(sd.getName());
+      }
+    }
+  }
+
 
   // --- 3 methods to override in children -------------------------------------------------------
   // if you don't override, it falls through to the using the base reference implementation 
@@ -781,6 +795,10 @@ public class FHIRPathEngine {
       return item.primitiveValue();
     } else if (item instanceof Quantity) {
       Quantity q = (Quantity) item;
+      if (q.hasUnit() && Utilities.existsInList(q.getUnit(), "year", "years", "month", "months", "week", "weeks", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds", "millisecond", "milliseconds")
+          && (!q.hasSystem() || q.getSystem().equals("http://unitsofmeasure.org"))) {
+        return q.getValue().toPlainString()+" "+q.getUnit();
+      }
       if (q.getSystem().equals("http://unitsofmeasure.org")) {
         String u = "'"+q.getCode()+"'";
         return q.getValue().toPlainString()+" "+u;
@@ -940,12 +958,14 @@ public class FHIRPathEngine {
       if (!isString && !lexer.done() && (result.getConstant() instanceof IntegerType || result.getConstant() instanceof DecimalType) && (lexer.isStringConstant() || lexer.hasToken("year", "years", "month", "months", "week", "weeks", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds", "millisecond", "milliseconds"))) {
         // it's a quantity
         String ucum = null;
+        String unit = null;
         if (lexer.hasToken("year", "years", "month", "months", "week", "weeks", "day", "days", "hour", "hours", "minute", "minutes", "second", "seconds", "millisecond", "milliseconds")) {
           String s = lexer.take();
+          unit = s;
           if (s.equals("year") || s.equals("years")) {
-            ucum = "a";
+            // this is not the UCUM year
           } else if (s.equals("month") || s.equals("months")) {
-            ucum = "mo";
+            // this is not the UCUM month
           } else if (s.equals("week") || s.equals("weeks")) {
             ucum = "wk";
           } else if (s.equals("day") || s.equals("days")) {
@@ -962,7 +982,7 @@ public class FHIRPathEngine {
         } else {
           ucum = lexer.readConstant("units");
         }
-        result.setConstant(new Quantity().setValue(new BigDecimal(result.getConstant().primitiveValue())).setSystem("http://unitsofmeasure.org").setCode(ucum));
+        result.setConstant(new Quantity().setValue(new BigDecimal(result.getConstant().primitiveValue())).setUnit(unit).setSystem(ucum == null ? null : "http://unitsofmeasure.org").setCode(ucum));
       }
       result.setEnd(lexer.getCurrentLocation());
     } else if ("(".equals(lexer.getCurrent())) {
@@ -1920,18 +1940,50 @@ public class FHIRPathEngine {
     }      
   }
 
-  private boolean qtyEqual(Quantity left, Quantity right) {
+  private Boolean qtyEqual(Quantity left, Quantity right) {
+    if (!left.hasValue() && !right.hasValue()) {
+      return true;
+    }
+    if (!left.hasValue() || !right.hasValue()) {
+      return null;
+    }
     if (worker.getUcumService() != null) {
-      DecimalType dl = qtyToCanonical(left);
-      DecimalType dr = qtyToCanonical(right);
+      Pair dl = qtyToCanonicalPair(left);
+      Pair dr = qtyToCanonicalPair(right);
       if (dl != null && dr != null) {
-        return doEquals(dl,  dr);
+        if (dl.getCode().equals(dr.getCode())) {
+          return doEquals(new DecimalType(dl.getValue().asDecimal()), new DecimalType(dr.getValue().asDecimal()));          
+        } else {
+          return false;
+        }
       }
     }
-    return left.equals(right);
+    if (left.hasCode() || right.hasCode()) {
+      if (!(left.hasCode() && right.hasCode()) || !left.getCode().equals(right.getCode())) {
+        return null;
+      }
+    } else if (!left.hasUnit() || right.hasUnit()) {
+      if (!(left.hasUnit() && right.hasUnit()) || !left.getUnit().equals(right.getUnit())) {
+        return null;
+      }
+    }
+    return doEquals(new DecimalType(left.getValue()), new DecimalType(right.getValue()));
   }
 
-  private DecimalType qtyToCanonical(Quantity q) {
+  private Pair qtyToCanonicalPair(Quantity q) {
+    if (!"http://unitsofmeasure.org".equals(q.getSystem())) {
+      return null;
+    }
+    try {
+      Pair p = new Pair(new Decimal(q.getValue().toPlainString()), q.getCode() == null ? "1" : q.getCode());
+      Pair c = worker.getUcumService().getCanonicalForm(p);
+      return c;
+    } catch (UcumException e) {
+      return null;
+    }
+  }
+
+  private DecimalType qtyToCanonicalDecimal(Quantity q) {
     if (!"http://unitsofmeasure.org".equals(q.getSystem())) {
       return null;
     }
@@ -1961,15 +2013,34 @@ public class FHIRPathEngine {
   }
 
 
-  private boolean qtyEquivalent(Quantity left, Quantity right) throws PathEngineException {
+  private Boolean qtyEquivalent(Quantity left, Quantity right) throws PathEngineException {
+    if (!left.hasValue() && !right.hasValue()) {
+      return true;
+    }
+    if (!left.hasValue() || !right.hasValue()) {
+      return null;
+    }
     if (worker.getUcumService() != null) {
-      DecimalType dl = qtyToCanonical(left);
-      DecimalType dr = qtyToCanonical(right);
+      Pair dl = qtyToCanonicalPair(left);
+      Pair dr = qtyToCanonicalPair(right);
       if (dl != null && dr != null) {
-        return doEquivalent(dl,  dr);
+        if (dl.getCode().equals(dr.getCode())) {
+          return doEquivalent(new DecimalType(dl.getValue().asDecimal()), new DecimalType(dr.getValue().asDecimal()));          
+        } else {
+          return false;
+        }
       }
     }
-    return left.equals(right);
+    if (left.hasCode() || right.hasCode()) {
+      if (!(left.hasCode() && right.hasCode()) || !left.getCode().equals(right.getCode())) {
+        return null;
+      }
+    } else if (!left.hasUnit() || right.hasUnit()) {
+      if (!(left.hasUnit() && right.hasUnit()) || !left.getUnit().equals(right.getUnit())) {
+        return null;
+      }
+    }
+    return doEquivalent(new DecimalType(left.getValue()), new DecimalType(right.getValue()));
   }
 
 
@@ -2058,9 +2129,9 @@ public class FHIRPathEngine {
           return makeBoolean(false);
         } else {
           List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonical((Quantity) left.get(0)));
+          dl.add(qtyToCanonicalDecimal((Quantity) left.get(0)));
           List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonical((Quantity) right.get(0)));
+          dr.add(qtyToCanonicalDecimal((Quantity) right.get(0)));
           return opLessThan(dl, dr);
         }
       }
@@ -2105,9 +2176,9 @@ public class FHIRPathEngine {
           return makeBoolean(false);
         } else {
           List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonical((Quantity) left.get(0)));
+          dl.add(qtyToCanonicalDecimal((Quantity) left.get(0)));
           List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonical((Quantity) right.get(0)));
+          dr.add(qtyToCanonicalDecimal((Quantity) right.get(0)));
           return opGreater(dl, dr);
         }
       }
@@ -2155,9 +2226,9 @@ public class FHIRPathEngine {
           return makeBoolean(false);
         } else {
           List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonical((Quantity) left.get(0)));
+          dl.add(qtyToCanonicalDecimal((Quantity) left.get(0)));
           List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonical((Quantity) right.get(0)));
+          dr.add(qtyToCanonicalDecimal((Quantity) right.get(0)));
           return opLessOrEqual(dl, dr);
         }
       }
@@ -2203,9 +2274,9 @@ public class FHIRPathEngine {
           return makeBoolean(false);
         } else {
           List<Base> dl = new ArrayList<Base>();
-          dl.add(qtyToCanonical((Quantity) left.get(0)));
+          dl.add(qtyToCanonicalDecimal((Quantity) left.get(0)));
           List<Base> dr = new ArrayList<Base>();
-          dr.add(qtyToCanonical((Quantity) right.get(0)));
+          dr.add(qtyToCanonicalDecimal((Quantity) right.get(0)));
           return opGreaterOrEqual(dl, dr);
         }
       }
@@ -4843,7 +4914,7 @@ public class FHIRPathEngine {
       if (s.equals("year") || s.equals("years")) {
         return Quantity.fromUcum(v, "a");
       } else if (s.equals("month") || s.equals("months")) {
-        return Quantity.fromUcum(v, "mo");
+        return Quantity.fromUcum(v, "mo_s");
       } else if (s.equals("week") || s.equals("weeks")) {
         return Quantity.fromUcum(v, "wk");
       } else if (s.equals("day") || s.equals("days")) {

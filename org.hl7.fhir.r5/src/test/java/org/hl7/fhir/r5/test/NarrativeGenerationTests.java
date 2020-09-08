@@ -11,22 +11,32 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Questionnaire;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.ResourceRenderer;
+import org.hl7.fhir.r5.renderers.utils.ElementWrappers;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
+import org.hl7.fhir.r5.renderers.utils.RenderingContext.ITypeParser;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.QuestionnaireRendererMode;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
+import org.hl7.fhir.r5.test.NarrativeGenerationTests.TestTypeParser;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -39,6 +49,15 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class NarrativeGenerationTests {
+
+  public class TestTypeParser implements ITypeParser {
+
+    @Override
+    public Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException {
+      return new org.hl7.fhir.r5.formats.XmlParser().parseType(xml, type); 
+    }
+
+  }
 
   public static final String WINDOWS = "WINDOWS";
 
@@ -57,11 +76,13 @@ public class NarrativeGenerationTests {
   public static class TestDetails {
     private String id;
     private boolean header;
+    private boolean meta;
 
     public TestDetails(Element test) {
       super();
       id = test.getAttribute("id");
       header = "true".equals(test.getAttribute("header"));
+      meta = "true".equals(test.getAttribute("meta"));
     }
 
     public String getId() {
@@ -70,6 +91,10 @@ public class NarrativeGenerationTests {
 
     public boolean isHeader() {
       return header;
+    }
+
+    public boolean isMeta() {
+      return meta;
     } 
     
   }
@@ -107,19 +132,30 @@ public class NarrativeGenerationTests {
     rc.setHeader(test.isHeader());
     rc.setDefinitionsTarget("test.html");
     rc.setTerminologyServiceOptions(TerminologyServiceOptions.defaults());
-    IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-expected.xml"), new FileOutputStream(TestingUtilities.tempFile("narrative", test.getId() + "-expected.xml")));
-    DomainResource source;
-    if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + "-input.json")) {
-      source = (DomainResource) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-input.json"));
+    rc.setParser(new TestTypeParser());
+    Resource source;
+    if (TestingUtilities.findTestResource("r5", "narrative", test.getId() + ".json")) {
+      source = (Resource) new JsonParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".json"));
     } else {
-      source = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-input.xml"));      
+      source = (Resource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"));      
     }
-    DomainResource target = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-expected.xml"));
-    RendererFactory.factory(source, rc).render(source);
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("narrative", test.getId() + "-actual.xml")), source);
-    source = (DomainResource) new XmlParser().parse(new FileInputStream(TestingUtilities.tempFile("narrative", test.getId() + "-actual.xml")));
-    String html = HEADER+new XhtmlComposer(true).compose(source.getText().getDiv())+FOOTER;
-    TextFile.stringToFile(html, TestingUtilities.tempFile("narrative", test.getId() + ".html"));
-    Assertions.assertTrue(source.equalsDeep(target), "Output does not match expected");
+    
+    XhtmlNode x = RendererFactory.factory(source, rc).build(source);
+    String target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".html"));
+    String output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
+    TextFile.stringToFile(target, TestingUtilities.tempFile("narrative", test.getId() + ".target.html"));
+    TextFile.stringToFile(output, TestingUtilities.tempFile("narrative", test.getId() + ".output.html"));
+    Assertions.assertTrue(output.equals(target), "Output does not match expected");
+    
+    if (test.isMeta()) {
+      org.hl7.fhir.r5.elementmodel.Element e = Manager.parse(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
+      x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
+
+      target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-meta.html"));
+      output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
+      TextFile.stringToFile(output, TestingUtilities.tempFile("narrative", test.getId() + "-meta.output.html"));
+      Assertions.assertTrue(output.equals(target), "Output does not match expected (meta)");     
+    }
   }
+  
 }

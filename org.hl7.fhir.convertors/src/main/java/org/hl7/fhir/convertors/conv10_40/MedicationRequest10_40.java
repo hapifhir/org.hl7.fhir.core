@@ -15,7 +15,7 @@ public class MedicationRequest10_40 {
         tgt.setIntent(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.ORDER);
         for (org.hl7.fhir.dstu2.model.Identifier identifier : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(identifier));
         if (src.hasDateWritten())
-            tgt.setAuthoredOn(src.getDateWritten());
+            tgt.setAuthoredOnElement(VersionConvertor_10_40.convertDateTime(src.getDateWrittenElement()));
         if (src.hasStatus())
             tgt.setStatus(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.fromCode(src.getStatus().toCode()));
         if (src.hasPatient())
@@ -48,7 +48,7 @@ public class MedicationRequest10_40 {
             return null;
         org.hl7.fhir.r4.model.Dosage tgt = new org.hl7.fhir.r4.model.Dosage();
         if (src.hasText())
-            tgt.setText(src.getText());
+            tgt.setTextElement(VersionConvertor_10_40.convertString(src.getTextElement()));
         if (src.hasAdditionalInstructions())
             tgt.addAdditionalInstruction(VersionConvertor_10_40.convertCodeableConcept(src.getAdditionalInstructions()));
         if (src.hasTiming())
@@ -79,7 +79,7 @@ public class MedicationRequest10_40 {
         if (src.hasValidityPeriod())
             tgt.setValidityPeriod(VersionConvertor_10_40.convertPeriod(src.getValidityPeriod()));
         if (src.hasNumberOfRepeatsAllowed())
-            tgt.setNumberOfRepeatsAllowed(src.getNumberOfRepeatsAllowed());
+            tgt.setNumberOfRepeatsAllowedElement(VersionConvertor_10_40.convertUnsignedIntToPositive(src.getNumberOfRepeatsAllowedElement()));
         if (src.hasQuantity())
             tgt.setQuantity(VersionConvertor_10_40.convertSimpleQuantity(src.getQuantity()));
         if (src.hasExpectedSupplyDuration())

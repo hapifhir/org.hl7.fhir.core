@@ -491,17 +491,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return false;
   }
 
-  private void bpCheck(List<ValidationMessage> errors, IssueType invalid, int line, int col, String literalPath, boolean test, String message) {
+  private void bpCheck(List<ValidationMessage> errors, IssueType invalid, int line, int col, String literalPath, boolean test, String message, Object... theMessageArguments) {
     if (bpWarnings != null) {
       switch (bpWarnings) {
         case Error:
-          rule(errors, invalid, line, col, literalPath, test, message);
+          rule(errors, invalid, line, col, literalPath, test, message, theMessageArguments);
           break;
         case Warning:
-          warning(errors, invalid, line, col, literalPath, test, message);
+          warning(errors, invalid, line, col, literalPath, test, message, theMessageArguments);
           break;
         case Hint:
-          hint(errors, invalid, line, col, literalPath, test, message);
+          hint(errors, invalid, line, col, literalPath, test, message, theMessageArguments);
           break;
         default: // do nothing
           break;
@@ -2070,7 +2070,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         checkInnerNS(errors, e, path, xhtml.getChildNodes());
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, "div".equals(xhtml.getName()), I18nConstants.XHTML_XHTML_NAME_INVALID, ns);
         // check that no illegal elements and attributes have been used
-        checkInnerNames(errors, e, path, xhtml.getChildNodes());
+        checkInnerNames(errors, e, path, xhtml.getChildNodes(), false);
         checkUrls(errors, e, path, xhtml.getChildNodes());
       }
     }
@@ -2171,7 +2171,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       "http://hl7.org/fhirpath/System.Decimal", "http://hl7.org/fhirpath/System.Date", "http://hl7.org/fhirpath/System.Time", "http://hl7.org/fhirpath/System.DateTime", "http://hl7.org/fhirpath/System.Quantity");
   }
 
-  private void checkInnerNames(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list) {
+  private void checkInnerNames(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list, boolean inPara) {
     for (XhtmlNode node : list) {
       if (node.getNodeType() == NodeType.Comment) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, !node.getContent().startsWith("DOCTYPE"), I18nConstants.XHTML_XHTML_DOCTYPE_ILLEGAL);
@@ -2181,9 +2181,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           "p", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "a", "span", "b", "em", "i", "strong",
           "small", "big", "tt", "small", "dfn", "q", "var", "abbr", "acronym", "cite", "blockquote", "hr", "address", "bdo", "kbd", "q", "sub", "sup",
           "ul", "ol", "li", "dl", "dt", "dd", "pre", "table", "caption", "colgroup", "col", "thead", "tr", "tfoot", "tbody", "th", "td",
-          "code", "samp", "img", "map", "area"
-
-        ), I18nConstants.XHTML_XHTML_ELEMENT_ILLEGAL, node.getName());
+          "code", "samp", "img", "map", "area"), I18nConstants.XHTML_XHTML_ELEMENT_ILLEGAL, node.getName());
+        
         for (String an : node.getAttributes().keySet()) {
           boolean ok = an.startsWith("xmlns") || Utilities.existsInList(an,
             "title", "style", "class", ID, "lang", "xml:lang", "dir", "accesskey", "tabindex",
@@ -2195,11 +2194,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               "img.alt", "img.longdesc", "img.height", "img.width", "img.usemap", "img.ismap", "map.name", "area.shape",
               "area.coords", "area.href", "area.nohref", "area.alt", "table.summary", "table.width", "table.border",
               "table.frame", "table.rules", "table.cellspacing", "table.cellpadding", "pre.space", "td.nowrap"
-            );
-          if (!ok)
+            );          
+          if (!ok) {
             rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.XHTML_XHTML_ATTRIBUTE_ILLEGAL, an, node.getName());
+          }
         }
-        checkInnerNames(errors, e, path, node.getChildNodes());
+        
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, !(inPara && Utilities.existsInList(node.getName(), "div",  "blockquote", "table", "ol", "ul", "p")) , I18nConstants.XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA, node.getName());
+        
+        checkInnerNames(errors, e, path, node.getChildNodes(), inPara || "p".equals(node.getName()));
       }
     }
   }
@@ -2319,6 +2322,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     
     if (system != null || code != null ) {
       checkCodedElement(theErrors, thePath, element, theProfile, definition, false, false, theStack, code, system, unit);
+    }
+    
+    if (code != null && "http://unitsofmeasure.org".equals(system)) {
+      int b = code.indexOf("{");
+      int e = code.indexOf("}");
+      if (b >= 0 && e > 0 && b < e) {
+        bpCheck(theErrors, IssueType.BUSINESSRULE, element.line(), element.col(), thePath, !code.contains("{"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS, code.substring(b, e+1));
+      }
     }
   }
 

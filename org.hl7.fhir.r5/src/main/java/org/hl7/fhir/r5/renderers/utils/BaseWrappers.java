@@ -8,6 +8,7 @@ import java.util.List;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.renderers.ResourceRenderer;
@@ -28,6 +29,7 @@ public class BaseWrappers {
     public int getMinCardinality();
     public int getMaxCardinality();
     public StructureDefinition getStructure();
+    public ElementDefinition getElementDefinition();
     public BaseWrapper value();
     public ResourceWrapper getAsResource();
     public String fhirType();
@@ -87,7 +89,7 @@ public class BaseWrappers {
     @Override
     public boolean has(String name) {
       for (PropertyWrapper p : children()) {
-        if (p.getName().equals(name)) {
+        if (p.getName().equals(name) || p.getName().equals(name+"[x]") ) {
           return p.hasValues();
         }
       }
@@ -97,7 +99,7 @@ public class BaseWrappers {
     @Override
     public Base get(String name) throws UnsupportedEncodingException, FHIRException, IOException {
       for (PropertyWrapper p : children()) {
-        if (p.getName().equals(name)) {
+        if (p.getName().equals(name) || p.getName().equals(name+"[x]")) {
           if (p.hasValues()) {
             return p.getValues().get(0).getBase();
           } else {
@@ -111,7 +113,7 @@ public class BaseWrappers {
     @Override
     public List<BaseWrapper> children(String name) throws UnsupportedEncodingException, FHIRException, IOException {
       for (PropertyWrapper p : children()) {
-        if (p.getName().equals(name)) {
+        if (p.getName().equals(name) || p.getName().equals(name+"[x]")) {
           List<BaseWrapper> res = new ArrayList<>();
           for (BaseWrapper b : p.getValues()) {
             res.add(b);
