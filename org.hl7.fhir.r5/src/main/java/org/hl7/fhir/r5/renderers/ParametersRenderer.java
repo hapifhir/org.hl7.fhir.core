@@ -31,13 +31,19 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class ParametersRenderer extends ResourceRenderer {
   
+  public ParametersRenderer(RenderingContext context) {
+    super(context);
+  }
+
   public ParametersRenderer(RenderingContext context, ResourceContext rcontext) {
     super(context, rcontext);
   }
 
-
   @Override
   public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
+    x.h2().tx("Parameters");
+    XhtmlNode tbl = x.table("grid");
+    params(tbl, ((Parameters) r).getParameter(), 0);
     return false;
   }
 

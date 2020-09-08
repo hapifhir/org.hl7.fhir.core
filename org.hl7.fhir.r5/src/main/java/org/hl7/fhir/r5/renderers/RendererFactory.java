@@ -72,6 +72,9 @@ public class RendererFactory {
     if ("OperationOutcome".equals(resourceName)) {
       return new OperationOutcomeRenderer(context);
     }
+    if ("Parameters".equals(resourceName)) {
+      return new ParametersRenderer(context);
+    }
     return new ProfileDrivenRenderer(context);    
   }
 

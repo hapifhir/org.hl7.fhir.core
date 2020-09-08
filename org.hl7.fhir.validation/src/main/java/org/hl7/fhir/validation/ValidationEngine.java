@@ -34,6 +34,7 @@ import org.hl7.fhir.r5.utils.*;
 import org.hl7.fhir.r5.utils.IResourceValidator.*;
 import org.hl7.fhir.r5.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher.IPackageInstaller;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.utilities.IniFile;
@@ -309,6 +310,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   private List<ImplementationGuide> igs = new ArrayList<>();
   private boolean showTimes;
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
+  private Map<String, ValidationControl> validationControl = new HashMap<>();
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -1580,6 +1582,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.setFetcher(this);
     validator.getImplementationGuides().addAll(igs);
     validator.getBundleValidationRules().addAll(bundleValidationRules);
+    validator.getValidationControl().putAll(validationControl );
     return validator;
   }
 
@@ -2391,9 +2394,27 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return pcm.packageExists(id, ver);
   }
   
-  
   public void loadPackage(String id, String ver) throws IOException, FHIRException {
     loadIg(id+(ver == null ? "" : "#"+ver), true);
   }
- 
+
+  /**
+   * Systems that host the ValidationEngine can use this to control what validation the validator performs.
+   *  
+   * Using this, you can turn particular kinds of validation on and off. In addition, you can override 
+   * the error | warning | hint level and make it a different level.
+   * 
+   * Each entry has
+   * * 'allowed': a boolean flag. if this is false, the Validator will not report the error. 
+   * * 'level' : set to error, warning, information 
+   * 
+   * Entries are registered by ID, using the IDs in /org.hl7.fhir.utilities/src/main/resources/Messages.properties
+   * 
+   * This feature is not supported by the validator CLI - and won't be. It's for systems hosting 
+   * the validation framework in their own implementation context
+   */
+  public Map<String, ValidationControl> getValidationControl() {
+    return validationControl;
+  }
+  
 }
