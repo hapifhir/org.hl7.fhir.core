@@ -41,6 +41,7 @@ import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.r5.model.Meta;
 import org.hl7.fhir.r5.model.Narrative;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.Period;
 import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Property;
@@ -320,6 +321,12 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       } else {
         x.addText("??");
       }
+    } else if (e instanceof org.hl7.fhir.r5.model.Integer64Type) {
+      if (((org.hl7.fhir.r5.model.Integer64Type) e).hasValue()) {
+        x.addText(Long.toString(((org.hl7.fhir.r5.model.Integer64Type) e).getValue()));
+      } else {
+        x.addText("??");
+      }
     } else if (e instanceof org.hl7.fhir.r5.model.DecimalType) {
       x.addText(((org.hl7.fhir.r5.model.DecimalType) e).getValue().toString());
     } else if (e instanceof HumanName) {
@@ -387,12 +394,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof ElementDefinition) {
       x.tx("todo-bundle");
     } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta)) {
-      StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(e.fhirType());
-      if (sd == null)
-        throw new NotImplementedException("type "+e.getClass().getName()+" not handled yet, and no structure found");
-      else
-        generateByProfile(res, sd, ew, sd.getSnapshot().getElement(), sd.getSnapshot().getElementFirstRep(),
-            getChildrenForPath(sd.getSnapshot().getElement(), sd.getSnapshot().getElementFirstRep().getPath()), x, e.fhirType(), showCodeDetails, indent + 1);
+      throw new NotImplementedException("type "+e.getClass().getName()+" not handled - should not be here");
     }
   }
 
@@ -553,12 +555,28 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
 
   private boolean isPrimitive(ElementDefinition e) {
     //we can tell if e is a primitive because it has types
-    if (e.getType().isEmpty())
+    if (e.getType().isEmpty()) {
       return false;
-    if (e.getType().size() == 1 && isBase(e.getType().get(0).getWorkingCode()))
+    }
+    if (e.getType().size() == 1 && isBase(e.getType().get(0).getWorkingCode())) {
       return false;
-    return true;
-    //    return !e.getType().isEmpty()
+    }
+    if (e.getType().size() > 1) {
+      return true;
+    }
+    StructureDefinition sd = context.getWorker().fetchTypeDefinition(e.getTypeFirstRep().getCode());
+    if (sd != null) {
+      if (sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) {
+        return true;
+      }
+      if (sd.getKind() == StructureDefinitionKind.COMPLEXTYPE) {
+        if (Utilities.existsInList(e.getTypeFirstRep().getCode(), "Extension", "CodeableConcept", "Coding", "Annotation", "Identifier", "HumanName", "SampledData", 
+            "Address", "ContactPoint", "ContactDetail", "Timing", "Range", "Quantity", "Ratio", "Period", "Reference")) {
+          return true;
+        }        
+      }
+    }
+    return false;
   }
 
   private boolean isBase(String code) {
@@ -646,31 +664,32 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       filterGrandChildren(grandChildren, path+"."+p.getName(), p);
       if (p.getValues().size() > 0) {
          if (isPrimitive(child)) {
-          XhtmlNode para = x.para();
-          String name = p.getName();
-          if (name.endsWith("[x]"))
-            name = name.substring(0, name.length() - 3);
-          if (showCodeDetails || !isDefaultValue(displayHints, p.getValues())) {
-            para.b().addText(name);
-            para.tx(": ");
-            if (renderAsList(child) && p.getValues().size() > 1) {
-              XhtmlNode list = x.ul();
-              for (BaseWrapper v : p.getValues())
-                renderLeaf(res, v, child, x, list.li(), false, showCodeDetails, displayHints, path, indent);
-            } else {
-              boolean first = true;
-              for (BaseWrapper v : p.getValues()) {
-                if (first)
-                  first = false;
-                else
-                  para.tx(", ");
-                renderLeaf(res, v, child, x, para, false, showCodeDetails, displayHints, path, indent);
-              }
-            }
-          }
-        } else if (canDoTable(path, p, grandChildren)) {
+           XhtmlNode para = x.isPara() ? para = x : x.para();
+           String name = p.getName();
+           if (name.endsWith("[x]"))
+             name = name.substring(0, name.length() - 3);
+           if (showCodeDetails || !isDefaultValue(displayHints, p.getValues())) {
+             para.b().addText(name);
+             para.tx(": ");
+             if (renderAsList(child) && p.getValues().size() > 1) {
+               XhtmlNode list = x.ul();
+               for (BaseWrapper v : p.getValues())
+                 renderLeaf(res, v, child, x, list.li(), false, showCodeDetails, displayHints, path, indent);
+             } else {
+               boolean first = true;
+               for (BaseWrapper v : p.getValues()) {
+                 if (first) {
+                   first = false;
+                 } else {
+                   para.tx(", ");
+                 }
+                 renderLeaf(res, v, child, x, para, false, showCodeDetails, displayHints, path, indent);
+               }
+             }
+           }
+        } else if (canDoTable(path, p, grandChildren, x)) {
           x.addTag(getHeader()).addText(Utilities.capitalize(Utilities.camelCase(Utilities.pluralizeMe(p.getName()))));
-          XhtmlNode tbl = x.table( "grid");
+          XhtmlNode tbl = x.table("grid");
           XhtmlNode tr = tbl.tr();
           tr.td().tx("-"); // work around problem with empty table rows
           addColumnHeadings(tr, grandChildren);
@@ -737,8 +756,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return res;
   }
   
-  private boolean canDoTable(String path, PropertyWrapper p, List<ElementDefinition> grandChildren) {
+  private boolean canDoTable(String path, PropertyWrapper p, List<ElementDefinition> grandChildren, XhtmlNode x) {
     if (isExtension(p)) {
+      return false;
+    }
+    if (x.getName().equals("p")) {
       return false;
     }
     for (ElementDefinition e : grandChildren) {
@@ -830,15 +852,17 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 getContext().getWorker().cacheResource(ed);
               }
             }
-            if (p.getName().equals("modifierExtension") && ed == null)
+            if (p.getName().equals("modifierExtension") && ed == null) {
               throw new DefinitionException("Unknown modifier extension "+url);
+            }
             PropertyWrapper pe = map.get(p.getName()+"["+url+"]");
             if (pe == null) {
               if (ed == null) {
-                if (url.startsWith("http://hl7.org/fhir") && !url.startsWith("http://hl7.org/fhir/us"))
+                if (url.startsWith("http://hl7.org/fhir") && !url.startsWith("http://hl7.org/fhir/us")) {
                   throw new DefinitionException("unknown extension "+url);
+                }
                 // System.out.println("unknown extension "+url);
-                pe = new PropertyWrapperDirect(this.context, new Property(p.getName()+"["+url+"]", p.getTypeCode(), p.getDefinition(), p.getMinCardinality(), p.getMaxCardinality(), ex), ed.getSnapshot().getElementFirstRep());
+                pe = new PropertyWrapperDirect(this.context, new Property(p.getName()+"["+url+"]", p.getTypeCode(), p.getDefinition(), p.getMinCardinality(), p.getMaxCardinality(), ex), null);
               } else {
                 ElementDefinition def = ed.getSnapshot().getElement().get(0);
                 pe = new PropertyWrapperDirect(this.context, new Property(p.getName()+"["+url+"]", "Extension", def.getDefinition(), def.getMin(), def.getMax().equals("*") ? Integer.MAX_VALUE : Integer.parseInt(def.getMax()), ex), ed.getSnapshot().getElementFirstRep());
