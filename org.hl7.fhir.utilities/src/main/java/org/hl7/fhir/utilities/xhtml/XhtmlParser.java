@@ -536,8 +536,9 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
             return;
           else
           {
-            if (mustBeWellFormed)
+            if (mustBeWellFormed) {
               throw new FHIRFormatError("Malformed XHTML: Found \"</"+n.getName()+">\" expecting \"</"+node.getName()+">\""+descLoc());
+            }
             for (int i = parents.size() - 1; i >= 0; i--)
             {
               if (parents.get(i).getName().equals(n))
