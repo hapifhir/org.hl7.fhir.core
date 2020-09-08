@@ -295,8 +295,7 @@ public class BundleRenderer extends ResourceRenderer {
               try {
                 xn = rr.build(be.getResource());
               } catch (Exception e) {
-                xn = new XhtmlNode();
-                xn.para().b().tx("Exception generating narrative: "+e.getMessage());
+                xn = makeExceptionXhtml(e, "generating narrative");
               }
             }
             root.blockquote().getChildNodes().addAll(checkInternalLinks(b, xn.getChildNodes()));

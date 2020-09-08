@@ -152,7 +152,7 @@ public class NarrativeGenerationTests {
       x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
 
       target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-meta.html"));
-      output = HEADER+new XhtmlComposer(true).compose(x)+FOOTER;
+      output = HEADER+new XhtmlComposer(true, true).compose(x)+FOOTER;
       TextFile.stringToFile(output, TestingUtilities.tempFile("narrative", test.getId() + "-meta.output.html"));
       Assertions.assertTrue(output.equals(target), "Output does not match expected (meta)");     
     }

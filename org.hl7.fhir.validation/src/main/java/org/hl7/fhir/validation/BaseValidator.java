@@ -2,7 +2,12 @@ package org.hl7.fhir.validation;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -64,6 +69,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
  */
 import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -78,9 +85,27 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 
 public class BaseValidator {
+
+  public class ValidationControl {
+    private boolean allowed;
+    private IssueSeverity level;
+    
+    public ValidationControl(boolean allowed, IssueSeverity level) {
+      super();
+      this.allowed = allowed;
+      this.level = level;
+    }
+    public boolean isAllowed() {
+      return allowed;
+    }
+    public IssueSeverity getLevel() {
+      return level;
+    }
+  }
 
   protected final String META = "meta";
   protected final String ENTRY = "entry";
@@ -98,7 +123,16 @@ public class BaseValidator {
   protected Source source;
   protected IWorkerContext context;
   protected TimeTracker timeTracker = new TimeTracker();
-
+  
+  /**
+   * Use to control what validation the validator performs. 
+   * Using this, you can turn particular kinds of validation on and off 
+   * In addition, you can override the error | warning | hint level and make it a different level
+   * 
+   * There is no way to do this using the command line validator; it's a service that is only 
+   * offered when the validator is hosted in some other process
+   */
+  private Map<String, ValidationControl> validationControl = new HashMap<>();
 
   public BaseValidator(IWorkerContext context){
     this.context = context;
@@ -287,7 +321,10 @@ public class BaseValidator {
   protected boolean txRule(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
       String message = context.formatMessage(theMessage, theMessageArguments);
-      errors.add(new ValidationMessage(Source.TerminologyEngine, type, line, col, path, message, IssueSeverity.ERROR).setTxLink(txLink));
+      ValidationMessage vm = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, message, IssueSeverity.ERROR).setMessageId(theMessage);
+      if (checkMsgId(theMessage, vm)) {
+        errors.add(vm.setTxLink(txLink));
+      }
     }
     return thePass;
   }
@@ -415,8 +452,21 @@ public class BaseValidator {
 
   protected ValidationMessage addValidationMessage(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity, Source theSource, String id) {
     ValidationMessage validationMessage = new ValidationMessage(theSource, type, line, col, path, msg, theSeverity).setMessageId(id);
-    errors.add(validationMessage);
+    if (checkMsgId(id, validationMessage)) {
+      errors.add(validationMessage);
+    }
     return validationMessage;
+  }
+
+  public boolean checkMsgId(String id, ValidationMessage vm) { 
+    if (id != null && validationControl.containsKey(id)) {
+      ValidationControl control = validationControl.get(id);
+      if (control.level != null) {
+        vm.setLevel(control.level);
+      }
+      return control.isAllowed();
+    }
+    return true;
   }
 
   /**
@@ -429,7 +479,10 @@ public class BaseValidator {
   protected boolean txWarning(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
-      errors.add(new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg));
+      ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg);
+      if (checkMsgId(msg, vmsg)) {
+        errors.add(vmsg);
+      }
     }
     return thePass;
 
@@ -567,7 +620,10 @@ public class BaseValidator {
   }
 
   protected void addValidationMessage(List<ValidationMessage> errors, IssueType type, String path, String msg, String html, IssueSeverity theSeverity, String id) {
-    errors.add(new ValidationMessage(source, type, -1, -1, path, msg, html, theSeverity).setMessageId(id));
+    ValidationMessage vm = new ValidationMessage(source, type, -1, -1, path, msg, html, theSeverity);
+    if (checkMsgId(id, vm)) {
+      errors.add(vm.setMessageId(id));
+    }
   }
 
   /**
@@ -800,6 +856,10 @@ public class BaseValidator {
     } else {
       return q.matches("([_a-zA-Z][_a-zA-Z0-9]*=[^=&]+)(&([_a-zA-Z][_a-zA-Z0-9]*=[^=&]+))*");
     }
+  }
+
+  public Map<String, ValidationControl> getValidationControl() {
+    return validationControl;
   }
 
 

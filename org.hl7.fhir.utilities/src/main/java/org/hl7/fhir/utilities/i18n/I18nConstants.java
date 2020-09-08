@@ -161,7 +161,7 @@ public class I18nConstants {
   public static final String FHIRPATH_UNKNOWN_CONSTANT = "FHIRPATH_UNKNOWN_CONSTANT";
   public static final String FHIRPATH_UNKNOWN_CONTEXT = "FHIRPATH_UNKNOWN_CONTEXT";
   public static final String FHIRPATH_UNKNOWN_CONTEXT_ELEMENT = "FHIRPATH_UNKNOWN_CONTEXT_ELEMENT";
-  public static final String FHIRPATH_UNKNOWN_NAME = "FHIRPATH_UNWKNOWN_NAME";
+  public static final String FHIRPATH_UNKNOWN_NAME = "FHIRPATH_UNKNOWN_NAME";
   public static final String FHIRPATH_WRONG_PARAM_TYPE = "FHIRPATH_WRONG_PARAM_TYPE";
   public static final String FIXED_TYPE_CHECKS_DT_ADDRESS_LINE = "Fixed_Type_Checks_DT_Address_Line";
   public static final String FIXED_TYPE_CHECKS_DT_NAME_FAMILY = "Fixed_Type_Checks_DT_Name_Family";
@@ -466,6 +466,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX = "Type_Specific_Checks_DT_Primitive_Regex";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT = "Type_Specific_Checks_DT_Primitive_ValueExt";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS = "Type_Specific_Checks_DT_Primitive_WS";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS = "TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_LENGTH = "Type_Specific_Checks_DT_String_Length";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS = "Type_Specific_Checks_DT_String_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID = "Type_Specific_Checks_DT_Time_Valid";
@@ -578,6 +579,7 @@ public class I18nConstants {
   public static final String XHTML_XHTML_ATTRIBUTE_ILLEGAL = "XHTML_XHTML_Attribute_Illegal";
   public static final String XHTML_XHTML_DOCTYPE_ILLEGAL = "XHTML_XHTML_DOCTYPE_ILLEGAL";
   public static final String XHTML_XHTML_ELEMENT_ILLEGAL = "XHTML_XHTML_Element_Illegal";
+  public static final String XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA = "XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA";
   public static final String XHTML_XHTML_NAME_INVALID = "XHTML_XHTML_Name_Invalid";
   public static final String XHTML_XHTML_NS_INVALID = "XHTML_XHTML_NS_InValid";
   public static final String XML_ATTR_VALUE_INVALID = "xml_attr_value_invalid";

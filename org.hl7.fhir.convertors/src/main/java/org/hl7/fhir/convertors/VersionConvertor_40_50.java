@@ -3742,7 +3742,7 @@ public class VersionConvertor_40_50 {
             return convertUsageContext((org.hl7.fhir.r4.model.UsageContext) src);
         if (src instanceof org.hl7.fhir.r4.model.ElementDefinition)
             return convertElementDefinition((org.hl7.fhir.r4.model.ElementDefinition) src);
-        throw new Error("Unknown type " + src.fhirType());
+        throw new FHIRException("Unknown type " + src.fhirType());
     }
 
     public static org.hl7.fhir.r4.model.Type convertType(org.hl7.fhir.r5.model.DataType src) throws FHIRException {
@@ -3868,7 +3868,7 @@ public class VersionConvertor_40_50 {
             return convertUsageContext((org.hl7.fhir.r5.model.UsageContext) src);
         if (src instanceof org.hl7.fhir.r5.model.ElementDefinition)
             return convertElementDefinition((org.hl7.fhir.r5.model.ElementDefinition) src);
-        throw new Error("Unknown type " + src.fhirType());
+        throw new FHIRException("Unknown type " + src.fhirType());
     }
 
     protected static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
@@ -4174,7 +4174,7 @@ public class VersionConvertor_40_50 {
             return VerificationResult40_50.convertVerificationResult((org.hl7.fhir.r4.model.VerificationResult) src);
         if (src instanceof org.hl7.fhir.r4.model.VisionPrescription)
             return VisionPrescription40_50.convertVisionPrescription((org.hl7.fhir.r4.model.VisionPrescription) src);
-        throw new Error("Unknown resource " + src.fhirType());
+        throw new FHIRException("Unknown resource " + src.fhirType());
     }
 
     public static org.hl7.fhir.r4.model.Resource convertResource(org.hl7.fhir.r5.model.Resource src) throws FHIRException {
@@ -4441,7 +4441,7 @@ public class VersionConvertor_40_50 {
             return VerificationResult40_50.convertVerificationResult((org.hl7.fhir.r5.model.VerificationResult) src);
         if (src instanceof org.hl7.fhir.r5.model.VisionPrescription)
             return VisionPrescription40_50.convertVisionPrescription((org.hl7.fhir.r5.model.VisionPrescription) src);
-        throw new Error("Unknown resource " + src.fhirType());
+        throw new FHIRException("Unknown resource " + src.fhirType());
     }
 
     protected static org.hl7.fhir.r5.model.CodeType convertResourceEnum(org.hl7.fhir.r4.model.CodeType src) {
