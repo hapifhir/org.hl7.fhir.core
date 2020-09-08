@@ -224,7 +224,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       else
         val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
       System.out.println(val.reportTimes());
-      checkOutcomes(errors, content, null);
+      checkOutcomes(errors, content, null, name);
     }
     if (content.has("profile")) {
       System.out.print("** Profile: ");
@@ -256,7 +256,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       else
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, asSdList(sd));
       System.out.println(val.reportTimes());
-      checkOutcomes(errorsProfile, profile, filename);
+      checkOutcomes(errorsProfile, profile, filename, name);
     }
     if (content.has("logical")) {
       JsonObject logical = content.getAsJsonObject("logical");
@@ -280,7 +280,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
           Assert.assertTrue(fp.evaluateToBoolean(null, le, le, le, fp.parse(exp)));
         }
       }
-      checkOutcomes(errorsLogical, logical, "logical");
+      checkOutcomes(errorsLogical, logical, "logical", name);
     }
   }
 
@@ -342,7 +342,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
   }
 
-  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile) {
+  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile, String name) {
     JsonObject java = focus.getAsJsonObject("java");
     int ec = 0;
     int wc = 0;
@@ -371,6 +371,9 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
       Assert.assertEquals("Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".", java.get("errorCount").getAsInt(), ec);
+      if (name.equals("icd-9-condition.xml")) {
+        Assert.assertEquals("Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(1) + " errors, but found " + Integer.toString(ec) + ".", 1, ec);
+      }
       if (java.has("warningCount")) {
         Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".", java.get("warningCount").getAsInt(), wc);
       }
