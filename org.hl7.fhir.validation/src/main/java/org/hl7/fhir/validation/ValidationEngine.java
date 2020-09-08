@@ -762,6 +762,18 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     context.getLoadedPackages().add(pi.name()+"#"+pi.version());
     Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (String s : pi.dependencies()) {
+      if (s.endsWith(".x") && s.length()>2) {
+        String packageMajorMinor = s.substring(0, s.length()-2);
+        boolean found = false;
+        for (int i=0; i<context.getLoadedPackages().size() && !found; ++i) {
+          String loadedPackage = context.getLoadedPackages().get(i);
+          if (loadedPackage.startsWith(packageMajorMinor)) {
+            found = true;
+          }
+        }
+        if (found)
+          continue ;
+      }
       if (! context.getLoadedPackages().contains(s)) {
         if (!VersionUtilities.isCorePackage(s)) {
           System.out.println("+  .. load IG from "+s);
