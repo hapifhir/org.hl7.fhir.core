@@ -208,5 +208,19 @@ public class PackageClient {
     }
   }
   
+  public String getLatestVersion(String id, String majMinVersion) throws IOException {
+    List<PackageInfo> list = getVersions(id);
+    if (list.isEmpty()) {
+      throw new IOException("Package not found: "+id);
+    } else {
+      String v = majMinVersion;
+      for (PackageInfo p : list) {
+        if (VersionUtilities.isMajMinOrLaterPatch(v, p.version)) {
+          v = p.version;
+        }
+      }
+      return v;
+    }
+  }
 
 }
