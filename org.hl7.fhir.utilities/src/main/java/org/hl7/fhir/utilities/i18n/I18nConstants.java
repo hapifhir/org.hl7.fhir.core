@@ -579,6 +579,7 @@ public class I18nConstants {
   public static final String XHTML_XHTML_ATTRIBUTE_ILLEGAL = "XHTML_XHTML_Attribute_Illegal";
   public static final String XHTML_XHTML_DOCTYPE_ILLEGAL = "XHTML_XHTML_DOCTYPE_ILLEGAL";
   public static final String XHTML_XHTML_ELEMENT_ILLEGAL = "XHTML_XHTML_Element_Illegal";
+  public static final String XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA = "XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA";
   public static final String XHTML_XHTML_NAME_INVALID = "XHTML_XHTML_Name_Invalid";
   public static final String XHTML_XHTML_NS_INVALID = "XHTML_XHTML_NS_InValid";
   public static final String XML_ATTR_VALUE_INVALID = "xml_attr_value_invalid";
