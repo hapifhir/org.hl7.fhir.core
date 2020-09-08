@@ -56,6 +56,12 @@ public class MarkDownProcessor {
 
 
   public String process(String source, String context) {
+    if (source == null) {
+      return null;
+    }
+    if ("".equals(source)) {
+      return "";
+    }
     switch (dialect) {
     case DARING_FIREBALL : return Processor.process(source); 
     case COMMON_MARK : return processCommonMark(source); 

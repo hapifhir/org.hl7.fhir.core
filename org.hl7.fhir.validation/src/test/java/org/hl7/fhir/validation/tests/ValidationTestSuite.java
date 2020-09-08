@@ -36,6 +36,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
+import org.hl7.fhir.r5.utils.IResourceValidator.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
 import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
@@ -204,6 +205,9 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     } else {
       val.setDebug(false);
     }
+    if (content.has("best-practice")) {
+      val.setBestPracticeWarningLevel(BestPracticeWarningLevel.valueOf(content.get("best-practice").getAsString()));
+    }
     if (content.has("examples")) {
       val.setAllowExamples(content.get("examples").getAsBoolean());
     } else {
@@ -367,10 +371,12 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
       Assert.assertEquals("Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".", java.get("errorCount").getAsInt(), ec);
-      if (java.has("warningCount"))
+      if (java.has("warningCount")) {
         Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".", java.get("warningCount").getAsInt(), wc);
-      if (java.has("infoCount"))
+      }
+      if (java.has("infoCount")) {
         Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".", java.get("infoCount").getAsInt(), hc);
+      }
     }
     if (java.has("error-locations")) {
       JsonArray el = java.getAsJsonArray("error-locations");
