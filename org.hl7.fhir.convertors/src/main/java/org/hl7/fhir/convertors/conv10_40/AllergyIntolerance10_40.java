@@ -9,6 +9,7 @@ public class AllergyIntolerance10_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.AllergyIntolerance tgt = new org.hl7.fhir.r4.model.AllergyIntolerance();
+        VersionConvertor_10_40.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
         if (src.hasOnset())
             tgt.setOnset(VersionConvertor_10_40.convertType(src.getOnsetElement()));
