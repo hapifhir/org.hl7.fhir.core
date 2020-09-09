@@ -224,7 +224,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       else
         val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
       System.out.println(val.reportTimes());
-      checkOutcomes(errors, content, null);
+      checkOutcomes(errors, content, null, name);
     }
     if (content.has("profile")) {
       System.out.print("** Profile: ");
@@ -256,7 +256,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       else
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, asSdList(sd));
       System.out.println(val.reportTimes());
-      checkOutcomes(errorsProfile, profile, filename);
+      checkOutcomes(errorsProfile, profile, filename, name);
     }
     if (content.has("logical")) {
       JsonObject logical = content.getAsJsonObject("logical");
@@ -280,7 +280,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           Assert.assertTrue(fp.evaluateToBoolean(null, le, le, le, fp.parse(exp)));
         }
       }
-      checkOutcomes(errorsLogical, logical, "logical");
+      checkOutcomes(errorsLogical, logical, "logical", name);
     }
   }
 
@@ -342,7 +342,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
   }
 
-  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile) {
+  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile, String name) {
     JsonObject java = focus.getAsJsonObject("java");
     int ec = 0;
     int wc = 0;
