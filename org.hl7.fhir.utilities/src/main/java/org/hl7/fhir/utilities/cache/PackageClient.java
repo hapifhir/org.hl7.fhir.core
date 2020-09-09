@@ -86,7 +86,7 @@ public class PackageClient {
   public boolean exists(String id, String ver) throws IOException {
     List<PackageInfo> vl = getVersions(id);
     for (PackageInfo pi : vl) {
-      if (ver.equals(pi.getVersion())) {
+      if (ver == null || ver.equals(pi.getVersion())) {
         return true;
       }
     }
