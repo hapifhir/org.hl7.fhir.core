@@ -127,15 +127,17 @@ public class FHIRPathTests {
     int ndx = 0;
     for (int i = 0; i < p.getChildNodes().getLength(); i++) {
       Node c = p.getChildNodes().item(i);
-      if (c == e)
+      if (c == e) {
         break;
-      else if (c instanceof Element)
+      } else if (c instanceof Element) {
         ndx++;
+      }
     }
-    if (Utilities.noString(s))
+    if (Utilities.noString(s)) {
       s = "?? - G " + p.getAttribute("name") + "[" + Integer.toString(ndx + 1) + "]";
-    else
+    } else {
       s = s + " - G " + p.getAttribute("name") + "[" + Integer.toString(ndx + 1) + "]";
+    }
     return s;
   }
 
@@ -157,9 +159,9 @@ public class FHIRPathTests {
 
     ExpressionNode node = fp.parse(expression);
     try {
-      if (Utilities.noString(input))
+      if (Utilities.noString(input)) {
         fp.check(null, null, node);
-      else {
+      } else {
         res = resources.get(input);
         if (res == null) {
           res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", input));
@@ -191,15 +193,17 @@ public class FHIRPathTests {
       for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
         String tn = outcome.get(i).fhirType();
         String s;
-        if (outcome.get(i) instanceof Quantity)
+        if (outcome.get(i) instanceof Quantity) {
           s = fp.convertToString(outcome.get(i));
-        else
+        } else {
           s = ((PrimitiveType) outcome.get(i)).asStringValue();
+        }
         boolean found = false;
         for (Element e : expected) {
           if ((Utilities.noString(e.getAttribute("type")) || e.getAttribute("type").equals(tn)) &&
-            (Utilities.noString(e.getTextContent()) || e.getTextContent().equals(s)))
+              (Utilities.noString(e.getTextContent()) || e.getTextContent().equals(s))) {
             found = true;
+          }
         }
         Assertions.assertTrue(found, String.format("Outcome %d: Value %s of type %s not expected for %s", i, s, tn, expression));
       }
