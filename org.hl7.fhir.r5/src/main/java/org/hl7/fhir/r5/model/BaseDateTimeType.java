@@ -866,8 +866,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     if (hasTimezone() != theOther.hasTimezone()) {
       if (!couldBeTheSameTime(this, theOther)) {
         return false;
-      } else if (getPrecision() != theOther.getPrecision()) {
-        return false;
       } else {
         return null;
       }
@@ -884,8 +882,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
       return i == null ? null : i == 0;
     }    
   }
-
-
 
   private boolean couldBeTheSameTime(BaseDateTimeType theArg1, BaseDateTimeType theArg2) {
     long lowLeft = theArg1.getValue().getTime();
