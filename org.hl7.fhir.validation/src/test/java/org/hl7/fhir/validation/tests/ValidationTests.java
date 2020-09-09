@@ -70,7 +70,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 @RunWith(Parameterized.class)
-public class ValidationTestSuite implements IEvaluationContext, IValidatorResourceFetcher {
+public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher {
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
 
@@ -105,7 +105,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   private static Map<String, ValidationEngine> ve = new HashMap<>();
   private static ValidationEngine vCurr;
 
-  public ValidationTestSuite(String name, JsonObject content) {
+  public ValidationTests(String name, JsonObject content) {
     this.name = name;
     this.content = content;
   }
