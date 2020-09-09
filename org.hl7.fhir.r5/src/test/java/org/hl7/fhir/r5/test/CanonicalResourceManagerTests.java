@@ -5,11 +5,10 @@ import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.r5.test.CanonicalResourceManagerTester.DeferredLoadTestResource;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class CanonicalResourceManagerTester {
+public class CanonicalResourceManagerTests {
 
   public class DeferredLoadTestResource extends CanonicalResourceProxy {
     private CanonicalResource resource;

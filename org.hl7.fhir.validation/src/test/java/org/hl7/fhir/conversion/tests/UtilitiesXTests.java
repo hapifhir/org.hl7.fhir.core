@@ -74,7 +74,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 
-public class TestingUtilitiesX {
+public class UtilitiesXTests {
   private static final boolean SHOW_DIFF = true;
   
 	static public Map<String, IWorkerContext> fcontexts;
@@ -88,7 +88,7 @@ public class TestingUtilitiesX {
 	    try {
 	      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
 	      IWorkerContext fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage(VersionUtilities.packageForVersion(version), version), loaderForVersion(version));
-	      fcontext.setUcumService(new UcumEssenceService(TestingUtilitiesX.loadTestResourceStream("ucum", "ucum-essence.xml")));
+	      fcontext.setUcumService(new UcumEssenceService(UtilitiesXTests.loadTestResourceStream("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());
 	      fcontexts.put(version, fcontext);
 	    } catch (Exception e) {
@@ -482,7 +482,7 @@ public class TestingUtilitiesX {
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
       try {
-        InputStream inputStream = TestingUtilitiesX.class.getResourceAsStream(classpath);
+        InputStream inputStream = UtilitiesXTests.class.getResourceAsStream(classpath);
         return inputStream != null;
       } catch (Throwable t) {
         return false;
@@ -504,7 +504,7 @@ public class TestingUtilitiesX {
       // resolve from the package 
       String contents;
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
-      try (InputStream inputStream = TestingUtilitiesX.class.getResourceAsStream(classpath)) {
+      try (InputStream inputStream = UtilitiesXTests.class.getResourceAsStream(classpath)) {
         if (inputStream == null) {
           throw new IOException("Can't find file on classpath: " + classpath);
         }
@@ -520,7 +520,7 @@ public class TestingUtilitiesX {
       return new FileInputStream(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
-      InputStream s = TestingUtilitiesX.class.getResourceAsStream(classpath);
+      InputStream s = UtilitiesXTests.class.getResourceAsStream(classpath);
       if (s == null) {
         throw new Error("unable to find resource "+classpath);
       }
@@ -534,7 +534,7 @@ public class TestingUtilitiesX {
       return TextFile.fileToBytes(n);
     } else {
       String classpath = ("/org/hl7/fhir/testcases/"+ Utilities.pathURL(paths));
-      InputStream s = TestingUtilitiesX.class.getResourceAsStream(classpath);
+      InputStream s = UtilitiesXTests.class.getResourceAsStream(classpath);
       if (s == null) {
         throw new Error("unable to find resource "+classpath);
       }
