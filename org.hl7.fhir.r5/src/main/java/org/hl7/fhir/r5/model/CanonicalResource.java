@@ -533,11 +533,11 @@ public abstract class CanonicalResource extends DomainResource {
       }
 
 // Manual code (from Configuration.txt)t:
-  @Override
+      @Override
       public String toString() {
         return fhirType()+"["+getUrl()+"]";
       }
-      
+
       public String present() {
         if (hasTitle())
           return getTitle();
@@ -545,10 +545,14 @@ public abstract class CanonicalResource extends DomainResource {
           return getName();
         return toString();
       }
-      
- public String getVUrl() {
+
+      public String getVUrl() {
         return getUrl() + (hasVersion() ? "|"+getVersion() : "");
-      }      
+      }
+
+      public boolean supportsCopyright() {
+        return true;
+      }
 // end addition
 
 }
