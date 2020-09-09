@@ -866,8 +866,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     if (hasTimezone() != theOther.hasTimezone()) {
       if (!couldBeTheSameTime(this, theOther)) {
         return false;
-      } else if (getPrecision() != theOther.getPrecision()) {
-        return false;
       } else {
         return null;
       }
