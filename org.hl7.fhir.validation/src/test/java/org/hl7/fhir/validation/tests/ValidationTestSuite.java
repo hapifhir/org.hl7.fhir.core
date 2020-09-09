@@ -371,9 +371,6 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
       Assert.assertEquals("Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".", java.get("errorCount").getAsInt(), ec);
-      if (name.equals("icd-9-condition.xml")) {
-        Assert.assertEquals("Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(1) + " errors, but found " + Integer.toString(ec) + ".", 1, ec);
-      }
       if (java.has("warningCount")) {
         Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".", java.get("warningCount").getAsInt(), wc);
       }
