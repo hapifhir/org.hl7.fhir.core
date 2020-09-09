@@ -883,8 +883,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     }    
   }
 
-
-
   private boolean couldBeTheSameTime(BaseDateTimeType theArg1, BaseDateTimeType theArg2) {
     long lowLeft = theArg1.getValue().getTime();
     long highLeft = theArg1.getHighEdge().getValue().getTime();
