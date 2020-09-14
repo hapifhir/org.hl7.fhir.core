@@ -2885,7 +2885,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             StructureDefinition sd = context.fetchRawProfile(url);
             if (sd == null) {
               if (messages != null) {
-                messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, purl+"#"+derived.getPath(), "Connect check whether the target profile "+url+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
+                messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, purl+"#"+derived.getPath(), "Cannot check whether the target profile "+url+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
               }
               url = null;
               tgtOk = true; // suppress error message
