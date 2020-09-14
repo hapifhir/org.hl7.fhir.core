@@ -166,7 +166,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
     hierarchy = hierarchy || csNav.isRestructure();
     
     List<String> langs = new ArrayList<>();
-    addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, true, commentS, version, deprecated, properties), maps);
+    addMapHeaders(addTableHeaderRowStandard(t, hierarchy, display, true, commentS, version, deprecated, properties, null, false), maps);
     for (ConceptDefinitionComponent c : csNav.getConcepts(null)) {
       hasExtensions = addDefineRowToTable(t, c, 0, hierarchy, display, commentS, version, deprecated, maps, cs.getUrl(), cs, properties, csNav, langs) || hasExtensions;
     }
