@@ -259,6 +259,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       checkOutcomes(errorsProfile, profile, filename, name);
     }
     if (content.has("logical")) {
+      System.out.print("** Logical: ");
+
       JsonObject logical = content.getAsJsonObject("logical");
       if (logical.has("supporting")) {
         for (JsonElement e : logical.getAsJsonArray("supporting")) {
@@ -269,6 +271,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
             val.getContext().generateSnapshot((StructureDefinition) mr, true);
           }
           val.getContext().cacheResource(mr);
+        }
+      }
+      if (logical.has("packages")) {
+        for (JsonElement e : logical.getAsJsonArray("packages")) {
+          vCurr.loadIg(e.getAsString(), true);
         }
       }
       List<ValidationMessage> errorsLogical = new ArrayList<ValidationMessage>();
