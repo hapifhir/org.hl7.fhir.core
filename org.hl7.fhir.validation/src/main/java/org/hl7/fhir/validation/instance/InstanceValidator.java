@@ -3293,7 +3293,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (n == null) {
       long t = System.nanoTime();
       // GG: this approach is flawed because it treats discriminators individually rather than collectively
-      StringBuilder expression = new StringBuilder("true");
+      ExpressionBuilder expression = new ExpressionBuilder("true");
       boolean anyFound = false;
       Set<String> discriminators = new HashSet<>();
       for (ElementDefinitionSlicingDiscriminatorComponent s : slicer.getSlicing().getDiscriminator()) {
@@ -3326,9 +3326,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else
               throw new DefinitionException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES, discriminator, ed.getId(), profile.getUrl()));
             if (discriminator.isEmpty())
-              expression.append(" and $this is " + type);
+              expression.append("$this is " + type);
             else
-              expression.append(" and " + discriminator + " is " + type);
+              expression.append(discriminator + " is " + type);
           } else if (s.getType() == DiscriminatorType.PROFILE) {
             if (criteriaElement.getType().size() == 0) {
               throw new DefinitionException(context.formatMessage(I18nConstants.PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE__IN_PROFILE_, criteriaElement.getId(), profile.getUrl()));
@@ -3344,15 +3344,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               for (CanonicalType c : list) {
                 b.append(discriminator + ".conformsTo('" + c.getValue() + "')");
               }
-              expression.append(" and (" + b + ")");
+              expression.append("(" + b + ")");
             } else {
-              expression.append(" and " + discriminator + ".conformsTo('" + list.get(0).getValue() + "')");
+              expression.append(discriminator + ".conformsTo('" + list.get(0).getValue() + "')");
             }
           } else if (s.getType() == DiscriminatorType.EXISTS) {
             if (criteriaElement.hasMin() && criteriaElement.getMin() >= 1)
-              expression.append(" and (" + discriminator + ".exists())");
+              expression.append("(" + discriminator + ".exists())");
             else if (criteriaElement.hasMax() && criteriaElement.getMax().equals("0"))
-              expression.append(" and (" + discriminator + ".exists().not())");
+              expression.append("(" + discriminator + ".exists().not())");
             else
               throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0, discriminator, ed.getId()));
           } else if (criteriaElement.hasFixed()) {
@@ -3360,7 +3360,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           } else if (criteriaElement.hasPattern()) {
             buildPattternExpression(ed, expression, discriminator, criteriaElement);
           } else if (criteriaElement.hasBinding() && criteriaElement.getBinding().hasStrength() && criteriaElement.getBinding().getStrength().equals(BindingStrength.REQUIRED) && criteriaElement.getBinding().hasValueSet()) {
-            expression.append(" and (" + discriminator + " memberOf '" + criteriaElement.getBinding().getValueSet() + "')");
+            expression.append("(" + discriminator + " memberOf '" + criteriaElement.getBinding().getValueSet() + "')");
           } else {
             found = false;
           }
@@ -3416,98 +3416,62 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ok;
   }
 
-  private void buildPattternExpression(ElementDefinition ed, StringBuilder expression, String discriminator, ElementDefinition criteriaElement) throws DefinitionException {
+  private void buildPattternExpression(ElementDefinition ed, ExpressionBuilder builder, String discriminator, ElementDefinition criteriaElement) throws DefinitionException {
     DataType pattern = criteriaElement.getPattern();
     if (pattern instanceof CodeableConcept) {
-      CodeableConcept cc = (CodeableConcept) pattern;
-      expression.append(" and ");
-      buildCodeableConceptExpression(ed, expression, discriminator, cc);
+      buildCodeableConceptExpression(ed, builder, discriminator, (CodeableConcept) pattern);
     } else if (pattern instanceof Coding) {
-      Coding c = (Coding) pattern;
-      expression.append(" and ");
-      buildCodingExpression(ed, expression, discriminator, c);
+      buildCodingExpression(ed, builder, discriminator, (Coding) pattern);
     } else if (pattern instanceof BooleanType || pattern instanceof IntegerType || pattern instanceof DecimalType) {
-      expression.append(" and ");
-      buildPrimitiveExpression(ed, expression, discriminator, pattern, false);
+      buildPrimitiveExpression(ed, builder, discriminator, pattern, false);
     } else if (pattern instanceof PrimitiveType) {
-      expression.append(" and ");
-      buildPrimitiveExpression(ed, expression, discriminator, pattern, true);
+      buildPrimitiveExpression(ed, builder, discriminator, pattern, true);
     } else if (pattern instanceof Identifier) {
-      Identifier ii = (Identifier) pattern;
-      expression.append(" and ");
-      buildIdentifierExpression(ed, expression, discriminator, ii);
+      buildIdentifierExpression(ed, builder, discriminator, (Identifier) pattern);
     } else if (pattern instanceof HumanName) {
-      HumanName name = (HumanName) pattern;
-      expression.append(" and ");
-      buildHumanNameExpression(ed, expression, discriminator, name);
+      buildHumanNameExpression(ed, builder, discriminator, (HumanName) pattern);
     } else if (pattern instanceof Address) {
-      Address add = (Address) pattern;
-      expression.append(" and ");
-      buildAddressExpression(ed, expression, discriminator, add);
+      buildAddressExpression(ed, builder, discriminator, (Address) pattern);
     } else {
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_FIXED_PATTERN_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__, discriminator, ed.getId(), pattern.fhirType()));
     }
   }
 
-  private void buildIdentifierExpression(ElementDefinition ed, StringBuilder expression, String discriminator, Identifier ii)
+  private void buildIdentifierExpression(ElementDefinition ed, ExpressionBuilder builder, String discriminator, Identifier ii)
     throws DefinitionException {
     if (ii.hasExtension())
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
-    boolean first = true;
-    expression.append(discriminator + ".where(");
+    builder.append(discriminator + ".where(");
     if (ii.hasSystem()) {
-      first = false;
-      expression.append("system = '" + ii.getSystem() + "'");
+      builder.append("system = '" + ii.getSystem() + "'");
     }
     if (ii.hasValue()) {
-      if (first)
-        first = false;
-      else
-        expression.append(" and ");
-      expression.append("value = '" + ii.getValue() + "'");
+      builder.append("value = '" + ii.getValue() + "'");
     }
     if (ii.hasUse()) {
-      if (first)
-        first = false;
-      else
-        expression.append(" and ");
-      expression.append("use = '" + ii.getUse() + "'");
+      builder.append("use = '" + ii.getUse() + "'");
     }
     if (ii.hasType()) {
-      if (first)
-        first = false;
-      else
-        expression.append(" and ");
-      buildCodeableConceptExpression(ed, expression, TYPE, ii.getType());
+      buildCodeableConceptExpression(ed, builder, TYPE, ii.getType());
     }
-    if (first) {
+    if (builder.isFirstCoding()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), ii.fhirType()));
     }
-    expression.append(").exists()");
+    builder.append(").exists()");
   }
 
-  private void buildHumanNameExpression(ElementDefinition ed, StringBuilder expression, String discriminator, HumanName name) throws DefinitionException {
+  private void buildHumanNameExpression(ElementDefinition ed, ExpressionBuilder builder, String discriminator, HumanName name) throws DefinitionException {
     if (name.hasExtension())
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
-    boolean first = true;
-    expression.append(discriminator + ".where(");
+    builder.append(discriminator + ".where(");
     if (name.hasUse()) {
-      first = false;
-      expression.append("use = '" + name.getUse().toCode() + "'");
+      builder.append("use = '" + name.getUse().toCode() + "'");
     }
     if (name.hasText()) {
-      if (first)
-        first = false;
-      else
-        expression.append(" and ");
-      expression.append("text = '" + name.getText() + "'");
+      builder.append("text = '" + name.getText() + "'");
     }
     if (name.hasFamily()) {
-      if (first)
-        first = false;
-      else
-        expression.append(" and ");
-      expression.append("family = '" + name.getFamily() + "'");
+      builder.append("family = '" + name.getFamily() + "'");
     }
     if (name.hasGiven()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), name.fhirType(), "given"));
@@ -3521,50 +3485,41 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (name.hasPeriod()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), name.fhirType(), "period"));
     }
-    if (first) {
+    if (builder.isFirstCoding()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), name.fhirType()));
     }
 
-    expression.append(").exists()");
+    builder.append(").exists()");
   }
 
-  private void buildAddressExpression(ElementDefinition ed, StringBuilder expression, String discriminator, Address add) throws DefinitionException {
+  private void buildAddressExpression(ElementDefinition ed, ExpressionBuilder builder, String discriminator, Address add) throws DefinitionException {
     if (add.hasExtension()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
     }
-    boolean first = true;
-    expression.append(discriminator + ".where(");
+    builder.append(discriminator + ".where(");
     if (add.hasUse()) {
-      first = false;
-      expression.append("use = '" + add.getUse().toCode() + "'");
+      builder.append("use = '" + add.getUse().toCode() + "'");
     }
     if (add.hasType()) {
-      if (first) first = false; else expression.append(" and ");
-      expression.append("type = '" + add.getType().toCode() + "'");
+      builder.append("type = '" + add.getType().toCode() + "'");
     }
     if (add.hasText()) {
-      if (first) first = false; else expression.append(" and ");
-      expression.append("text = '" + add.getText() + "'");
+      builder.append("text = '" + add.getText() + "'");
     }
     if (add.hasCity()) {
-      if (first) first = false; else expression.append(" and ");
-      expression.append("city = '" + add.getCity() + "'");
+      builder.append("city = '" + add.getCity() + "'");
     }
     if (add.hasDistrict()) {
-      if (first) first = false; else expression.append(" and ");
-      expression.append("district = '" + add.getDistrict() + "'");
+      builder.append("district = '" + add.getDistrict() + "'");
     }
     if (add.hasState()) {
-      if (first) first = false; else expression.append(" and ");
-      expression.append("state = '" + add.getState() + "'");
+      builder.append("state = '" + add.getState() + "'");
     }
     if (add.hasPostalCode()) {
-      if (first) first = false; else expression.append(" and ");
-      expression.append("postalCode = '" + add.getPostalCode() + "'");
+      builder.append("postalCode = '" + add.getPostalCode() + "'");
     }
     if (add.hasCountry()) {
-      if (first) first = false; else expression.append(" and ");
-      expression.append("country = '" + add.getCountry() + "'");
+      builder.append("country = '" + add.getCountry() + "'");
     }       
     if (add.hasLine()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), add.fhirType(), "line"));
@@ -3572,13 +3527,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (add.hasPeriod()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), add.fhirType(), "period"));
     }
-    if (first) {
+    if (builder.isFirstCoding()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), add.fhirType()));
     }
-    expression.append(").exists()");
+    builder.append(").exists()");
   }
 
-  private void buildCodeableConceptExpression(ElementDefinition ed, StringBuilder expression, String discriminator, CodeableConcept cc)
+  private void buildCodeableConceptExpression(ElementDefinition ed, ExpressionBuilder builder, String discriminator, CodeableConcept cc)
     throws DefinitionException {
     if (cc.hasText())
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__USING_TEXT__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
@@ -3586,115 +3541,90 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__MUST_HAVE_AT_LEAST_ONE_CODING__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
     if (cc.hasExtension())
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
-    boolean firstCoding = true;
     for (Coding c : cc.getCoding()) {
       if (c.hasExtension())
         throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
-      if (firstCoding) firstCoding = false;
-      else expression.append(" and ");
-      expression.append(discriminator + ".coding.where(");
-      boolean first = true;
+      builder.append(discriminator + ".coding.where(");
       if (c.hasSystem()) {
-        first = false;
-        expression.append("system = '" + c.getSystem() + "'");
+        builder.append("system = '" + c.getSystem() + "'");
       }
       if (c.hasVersion()) {
-        if (first) first = false;
-        else expression.append(" and ");
-        expression.append("version = '" + c.getVersion() + "'");
+        builder.append("version = '" + c.getVersion() + "'");
       }
       if (c.hasCode()) {
-        if (first) first = false;
-        else expression.append(" and ");
-        expression.append("code = '" + c.getCode() + "'");
+        builder.append("code = '" + c.getCode() + "'");
       }
       if (c.hasDisplay()) {
-        if (first) first = false;
-        else expression.append(" and ");
-        expression.append("display = '" + c.getDisplay() + "'");
+        builder.append("display = '" + c.getDisplay() + "'");
       }
-      if (first) {
+      if (builder.isFirstCoding()) {
         throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), cc.fhirType()));
       }
-      expression.append(").exists()");
+      builder.append(").exists()");
     }
   }
 
-  private void buildCodingExpression(ElementDefinition ed, StringBuilder expression, String discriminator, Coding c)
+  private void buildCodingExpression(ElementDefinition ed, ExpressionBuilder builder, String discriminator, Coding c)
     throws DefinitionException {
     if (c.hasExtension())
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
-    expression.append(discriminator + ".where(");
-    boolean first = true;
+    builder.append(discriminator + ".where(");
     if (c.hasSystem()) {
-      first = false;
-      expression.append("system = '" + c.getSystem() + "'");
+      builder.append("system = '" + c.getSystem() + "'");
     }
     if (c.hasVersion()) {
-      if (first) first = false;
-      else expression.append(" and ");
-      expression.append("version = '" + c.getVersion() + "'");
+      builder.append("version = '" + c.getVersion() + "'");
     }
     if (c.hasCode()) {
-      if (first) first = false;
-      else expression.append(" and ");
-      expression.append("code = '" + c.getCode() + "'");
+      builder.append("code = '" + c.getCode() + "'");
     }
     if (c.hasDisplay()) {
-      if (first) first = false;
-      else expression.append(" and ");
-      expression.append("display = '" + c.getDisplay() + "'");
+      builder.append("display = '" + c.getDisplay() + "'");
     }
-    if (first) {
+    if (builder.isFirstCoding()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), c.fhirType()));
     }
-    expression.append(").exists()");
+    builder.append(").exists()");
   }
 
-  private void buildPrimitiveExpression(ElementDefinition ed, StringBuilder expression, String discriminator, DataType p, boolean quotes) throws DefinitionException {
+  private void buildPrimitiveExpression(ElementDefinition ed, ExpressionBuilder builder, String discriminator, DataType p, boolean quotes) throws DefinitionException {
       if (p.hasExtension())
         throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_CODEABLECONCEPT_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
       if (quotes) {        
-        expression.append(discriminator + ".where(value = '" + p.primitiveValue() + "'");
+        builder.append(discriminator + ".where(value = '" + p.primitiveValue() + "'");
       } else {
-        expression.append(discriminator + ".where(value = " + p.primitiveValue() + "");
+        builder.append(discriminator + ".where(value = " + p.primitiveValue() + "");
       }
-      expression.append(").exists()");
+      builder.append(").exists()");
     }
 
-  private void buildFixedExpression(ElementDefinition ed, StringBuilder expression, String discriminator, ElementDefinition criteriaElement) throws DefinitionException {
+  private void buildFixedExpression(ElementDefinition ed, ExpressionBuilder builder, String discriminator, ElementDefinition criteriaElement) throws DefinitionException {
     DataType fixed = criteriaElement.getFixed();
     if (fixed instanceof CodeableConcept) {
-      CodeableConcept cc = (CodeableConcept) fixed;
-      expression.append(" and ");
-      buildCodeableConceptExpression(ed, expression, discriminator, cc);
+      buildCodeableConceptExpression(ed, builder, discriminator, (CodeableConcept) fixed);
     } else if (fixed instanceof Identifier) {
-      Identifier ii = (Identifier) fixed;
-      expression.append(" and ");
-      buildIdentifierExpression(ed, expression, discriminator, ii);
+      buildIdentifierExpression(ed, builder, discriminator, (Identifier) fixed);
     } else if (fixed instanceof Coding) {
-      Coding c = (Coding) fixed;
-      expression.append(" and ");
-      buildCodingExpression(ed, expression, discriminator, c);
+      buildCodingExpression(ed, builder, discriminator, (Coding) fixed);
     } else {
-      expression.append(" and (");
+      builder.append("(");
       if (fixed instanceof StringType) {
         Gson gson = new Gson();
-        String json = gson.toJson((StringType) fixed);
+        String json = gson.toJson(fixed);
         String escapedString = json.substring(json.indexOf(":") + 2);
         escapedString = escapedString.substring(0, escapedString.indexOf(",\"myStringValue") - 1);
-        expression.append("'" + escapedString + "'");
+        builder.append("'" + escapedString + "'");
       } else if (fixed instanceof UriType) {
-        expression.append("'" + ((UriType) fixed).asStringValue() + "'");
+        builder.append("'" + ((UriType) fixed).asStringValue() + "'");
       } else if (fixed instanceof IntegerType) {
-        expression.append(((IntegerType) fixed).asStringValue());
+        builder.append(((IntegerType) fixed).asStringValue());
       } else if (fixed instanceof DecimalType) {
-        expression.append(((IntegerType) fixed).asStringValue());
+        builder.append(((IntegerType) fixed).asStringValue());
       } else if (fixed instanceof BooleanType) {
-        expression.append(((BooleanType) fixed).asStringValue());
+        builder.append(((BooleanType) fixed).asStringValue());
       } else
         throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_FIXED_VALUE_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__, discriminator, ed.getId(), fixed.getClass().getName()));
-      expression.append(" in " + discriminator + ")");
+      builder.forceAppend(" in " + discriminator + ")");
     }
   }
 
