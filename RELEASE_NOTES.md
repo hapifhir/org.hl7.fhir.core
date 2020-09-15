@@ -5,5 +5,6 @@ Validator:
 
 Other code Changes:
 * Improve language rendering in value sets
-* fix bug generating copyright
+* Fix bug generating copyright
+* Work on CDA validation infrastructure
 
