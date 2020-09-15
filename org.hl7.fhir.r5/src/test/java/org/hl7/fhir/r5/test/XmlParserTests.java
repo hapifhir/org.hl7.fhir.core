@@ -1,7 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -15,6 +13,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.cache.ToolsVersion;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -59,7 +58,7 @@ public class XmlParserTests {
     Manager.compose(context, cda, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);  
 
     String cdaSerialised = baosXml.toString();
-    assertTrue(cdaSerialised.indexOf("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"")>0);
-    assertTrue(cdaSerialised.indexOf("xsi:type=\"CD\"")>0); 
+    Assertions.assertTrue(cdaSerialised.indexOf("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"")>0);
+    Assertions.assertTrue(cdaSerialised.indexOf("xsi:type=\"CD\"")>0);
   }
 } 

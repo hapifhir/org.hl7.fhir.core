@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,22 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes;
-import org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodesEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * Financial instrument which may be used to reimburse or pay for health care products and services. Includes both insurance and self-payment.
@@ -57,10 +56,10 @@ public class Coverage extends DomainResource {
     @Block()
     public static class ClassComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The type of classification for which an insurer-specific class label or number and optional name is provided, for example may be used to identify a class of coverage or employer group, Policy, Plan.
+         * The type of classification for which an insurer-specific class label or number and optional name is provided.  For example, type may be used to identify a class of coverage or employer group, policy, or plan.
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Type of class such as 'group' or 'plan'", formalDefinition="The type of classification for which an insurer-specific class label or number and optional name is provided, for example may be used to identify a class of coverage or employer group, Policy, Plan." )
+        @Description(shortDefinition="Type of class such as 'group' or 'plan'", formalDefinition="The type of classification for which an insurer-specific class label or number and optional name is provided.  For example, type may be used to identify a class of coverage or employer group, policy, or plan." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/coverage-class")
         protected CodeableConcept type;
 
@@ -97,7 +96,7 @@ public class Coverage extends DomainResource {
       }
 
         /**
-         * @return {@link #type} (The type of classification for which an insurer-specific class label or number and optional name is provided, for example may be used to identify a class of coverage or employer group, Policy, Plan.)
+         * @return {@link #type} (The type of classification for which an insurer-specific class label or number and optional name is provided.  For example, type may be used to identify a class of coverage or employer group, policy, or plan.)
          */
         public CodeableConcept getType() { 
           if (this.type == null)
@@ -113,7 +112,7 @@ public class Coverage extends DomainResource {
         }
 
         /**
-         * @param value {@link #type} (The type of classification for which an insurer-specific class label or number and optional name is provided, for example may be used to identify a class of coverage or employer group, Policy, Plan.)
+         * @param value {@link #type} (The type of classification for which an insurer-specific class label or number and optional name is provided.  For example, type may be used to identify a class of coverage or employer group, policy, or plan.)
          */
         public ClassComponent setType(CodeableConcept value) { 
           this.type = value;
@@ -216,7 +215,7 @@ public class Coverage extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("type", "CodeableConcept", "The type of classification for which an insurer-specific class label or number and optional name is provided, for example may be used to identify a class of coverage or employer group, Policy, Plan.", 0, 1, type));
+          children.add(new Property("type", "CodeableConcept", "The type of classification for which an insurer-specific class label or number and optional name is provided.  For example, type may be used to identify a class of coverage or employer group, policy, or plan.", 0, 1, type));
           children.add(new Property("value", "string", "The alphanumeric string value associated with the insurer issued label.", 0, 1, value));
           children.add(new Property("name", "string", "A short description for the class.", 0, 1, name));
         }
@@ -224,7 +223,7 @@ public class Coverage extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of classification for which an insurer-specific class label or number and optional name is provided, for example may be used to identify a class of coverage or employer group, Policy, Plan.", 0, 1, type);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of classification for which an insurer-specific class label or number and optional name is provided.  For example, type may be used to identify a class of coverage or employer group, policy, or plan.", 0, 1, type);
           case 111972721: /*value*/  return new Property("value", "string", "The alphanumeric string value associated with the insurer issued label.", 0, 1, value);
           case 3373707: /*name*/  return new Property("name", "string", "A short description for the class.", 0, 1, name);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -691,10 +690,10 @@ public class Coverage extends DomainResource {
         protected CodeableConcept type;
 
         /**
-         * The timeframe during when the exception is in force.
+         * The timeframe the exception is in force.
          */
         @Child(name = "period", type = {Period.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The effective period of the exception", formalDefinition="The timeframe during when the exception is in force." )
+        @Description(shortDefinition="The effective period of the exception", formalDefinition="The timeframe the exception is in force." )
         protected Period period;
 
         private static final long serialVersionUID = 523191991L;
@@ -739,7 +738,7 @@ public class Coverage extends DomainResource {
         }
 
         /**
-         * @return {@link #period} (The timeframe during when the exception is in force.)
+         * @return {@link #period} (The timeframe the exception is in force.)
          */
         public Period getPeriod() { 
           if (this.period == null)
@@ -755,7 +754,7 @@ public class Coverage extends DomainResource {
         }
 
         /**
-         * @param value {@link #period} (The timeframe during when the exception is in force.)
+         * @param value {@link #period} (The timeframe the exception is in force.)
          */
         public ExemptionComponent setPeriod(Period value) { 
           this.period = value;
@@ -765,14 +764,14 @@ public class Coverage extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "The code for the specific exception.", 0, 1, type));
-          children.add(new Property("period", "Period", "The timeframe during when the exception is in force.", 0, 1, period));
+          children.add(new Property("period", "Period", "The timeframe the exception is in force.", 0, 1, period));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The code for the specific exception.", 0, 1, type);
-          case -991726143: /*period*/  return new Property("period", "Period", "The timeframe during when the exception is in force.", 0, 1, period);
+          case -991726143: /*period*/  return new Property("period", "Period", "The timeframe the exception is in force.", 0, 1, period);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -2330,3 +2329,4 @@ public class Coverage extends DomainResource {
 
 
 }
+

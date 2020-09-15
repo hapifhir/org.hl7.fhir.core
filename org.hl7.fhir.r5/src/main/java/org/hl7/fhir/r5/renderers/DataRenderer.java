@@ -14,10 +14,16 @@ import org.hl7.fhir.r5.model.Annotation;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.BaseDateTimeType;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactPoint;
+import org.hl7.fhir.r5.model.DataRequirement;
+import org.hl7.fhir.r5.model.DataRequirement.DataRequirementCodeFilterComponent;
+import org.hl7.fhir.r5.model.DataRequirement.DataRequirementDateFilterComponent;
+import org.hl7.fhir.r5.model.DataRequirement.DataRequirementSortComponent;
+import org.hl7.fhir.r5.model.DataRequirement.SortDirection;
 import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.DateTimeType;
@@ -52,6 +58,7 @@ import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
@@ -778,6 +785,102 @@ public class DataRenderer extends Renderer {
     x.addText(!p.hasEnd() ? "(ongoing)" : p.getEndElement().toHumanDisplay());
   }
   
+  public void renderDataRequirement(XhtmlNode x, DataRequirement dr) {
+    XhtmlNode tbl = x.table("grid");
+    XhtmlNode tr = tbl.tr();    
+    XhtmlNode td = tr.td().colspan("2");
+    td.b().tx("Type");
+    td.tx(": ");
+    StructureDefinition sd = context.getWorker().fetchTypeDefinition(dr.getType().toCode());
+    if (sd != null && sd.hasUserData("path")) {
+      td.ah(sd.getUserString("path")).tx(dr.getType().toCode());
+    } else {
+      td.tx(dr.getType().toCode());
+    }
+    if (dr.hasProfile()) {
+      td.tx(" (");
+      boolean first = true;
+      for (CanonicalType p : dr.getProfile()) {
+        if (first) first = false; else td.tx(" | ");
+        sd = context.getWorker().fetchResource(StructureDefinition.class, p.getValue());
+        if (sd != null && sd.hasUserData("path")) {
+          td.ah(sd.getUserString("path")).tx(sd.present());
+        } else {
+            td.tx(p.asStringValue());
+        }
+      }
+      td.tx(")");
+    }
+    if (dr.hasSubject()) {
+      tr = tbl.tr();    
+      td = tr.td().colspan("2");
+      td.b().tx("Subject");
+      if (dr.hasSubjectReference()) {
+        renderReference(td,  dr.getSubjectReference());
+      } else {
+        renderCodeableConcept(td, dr.getSubjectCodeableConcept());
+      }
+    }
+    if (dr.hasCodeFilter() || dr.hasDateFilter()) {
+      tr = tbl.tr().backgroundColor("#efefef");    
+      tr.td().tx("Filter");
+      tr.td().tx("Value");
+    }
+    for (DataRequirementCodeFilterComponent cf : dr.getCodeFilter()) {
+      tr = tbl.tr();    
+      if (cf.hasPath()) {
+        tr.td().tx(cf.getPath());
+      } else {
+        tr.td().tx("Search on " +cf.getSearchParam());
+      }
+      if (cf.hasValueSet()) {
+        td = tr.td();
+        td.tx("In ValueSet ");
+        render(td, cf.getValueSetElement());
+      } else {
+        boolean first = true;
+        td = tr.td();
+        td.tx("One of these codes: ");
+        for (Coding c : cf.getCode()) {
+          if (first) first = false; else td.tx(", ");
+          render(td, c);
+        }
+      }
+    }
+    for (DataRequirementDateFilterComponent cf : dr.getDateFilter()) {
+      tr = tbl.tr();    
+      if (cf.hasPath()) {
+        tr.td().tx(cf.getPath());
+      } else {
+        tr.td().tx("Search on " +cf.getSearchParam());
+      }
+      render(tr.td(), cf.getValue());
+    }
+    if (dr.hasSort() || dr.hasLimit()) {
+      tr = tbl.tr();    
+      td = tr.td().colspan("2");
+      if (dr.hasLimit()) {
+        td.b().tx("Limit");
+        td.tx(": ");
+        td.tx(dr.getLimit());
+        if (dr.hasSort()) {
+          td.tx(", ");
+        }
+      }
+      if (dr.hasSort()) {
+        td.b().tx("Sort");
+        td.tx(": ");
+        boolean first = true;
+        for (DataRequirementSortComponent p : dr.getSort()) {
+          if (first) first = false; else td.tx(" | ");
+          td.tx(p.getDirection() == SortDirection.ASCENDING ? "+" : "-");
+          td.tx(p.getPath());
+        }
+      }
+    }
+  }
+  
+  
   private String displayTiming(Timing s) throws FHIRException {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (s.hasCode())
@@ -919,6 +1022,23 @@ public class DataRenderer extends Renderer {
   }
   
 
+  public XhtmlNode makeExceptionXhtml(Exception e, String function) {
+    XhtmlNode xn;
+    xn = new XhtmlNode(NodeType.Element, "div");
+    XhtmlNode p = xn.para();
+    p.b().tx("Exception "+function+": "+e.getMessage());
+    p.addComment(getStackTrace(e));
+    return xn;
+  }
 
+  private String getStackTrace(Exception e) {
+    StringBuilder b = new StringBuilder();
+    b.append("\r\n");
+    for (StackTraceElement t : e.getStackTrace()) {
+      b.append(t.getClassName()+"."+t.getMethodName()+" ("+t.getFileName()+":"+t.getLineNumber());
+      b.append("\r\n");
+    }
+    return b.toString();
+  }
 
 }

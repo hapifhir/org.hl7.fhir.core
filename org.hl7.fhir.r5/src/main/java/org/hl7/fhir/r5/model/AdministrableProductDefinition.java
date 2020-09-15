@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,20 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A pharmaceutical product described in terms of its composition and dose form.
@@ -1419,7 +1420,7 @@ public class AdministrableProductDefinition extends DomainResource {
     /**
      * The administrable dose form, after necessary reconstitution.
      */
-    @Child(name = "administrableDoseForm", type = {CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "administrableDoseForm", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="The administrable dose form, after necessary reconstitution", formalDefinition="The administrable dose form, after necessary reconstitution." )
     protected CodeableConcept administrableDoseForm;
 
@@ -1477,9 +1478,8 @@ public class AdministrableProductDefinition extends DomainResource {
   /**
    * Constructor
    */
-    public AdministrableProductDefinition(CodeableConcept administrableDoseForm, AdministrableProductDefinitionRouteOfAdministrationComponent routeOfAdministration) {
+    public AdministrableProductDefinition(AdministrableProductDefinitionRouteOfAdministrationComponent routeOfAdministration) {
       super();
-      this.setAdministrableDoseForm(administrableDoseForm);
       this.addRouteOfAdministration(routeOfAdministration);
     }
 
@@ -2169,6 +2169,32 @@ public class AdministrableProductDefinition extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>device</b>
+   * <p>
+   * Description: <b>Accompanying device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.device</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="device", path="AdministrableProductDefinition.device", description="Accompanying device", type="reference", target={DeviceDefinition.class } )
+  public static final String SP_DEVICE = "device";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>device</b>
+   * <p>
+   * Description: <b>Accompanying device</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.device</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam DEVICE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_DEVICE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AdministrableProductDefinition:device</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_DEVICE = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:device").toLocked();
+
+ /**
    * Search parameter: <b>dose-form</b>
    * <p>
    * Description: <b>The administrable dose form, after necessary reconstitution</b><br>
@@ -2207,6 +2233,58 @@ public class AdministrableProductDefinition extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>ingredient</b>
+   * <p>
+   * Description: <b>The ingredients of this administrable pharmaceutical product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.ingredient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="ingredient", path="AdministrableProductDefinition.ingredient", description="The ingredients of this administrable pharmaceutical product", type="reference", target={Ingredient.class } )
+  public static final String SP_INGREDIENT = "ingredient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
+   * <p>
+   * Description: <b>The ingredients of this administrable pharmaceutical product</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.ingredient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INGREDIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INGREDIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AdministrableProductDefinition:ingredient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_INGREDIENT = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:ingredient").toLocked();
+
+ /**
+   * Search parameter: <b>manufactured-item</b>
+   * <p>
+   * Description: <b>The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.producedFrom</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="manufactured-item", path="AdministrableProductDefinition.producedFrom", description="The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients", type="reference", target={ManufacturedItemDefinition.class } )
+  public static final String SP_MANUFACTURED_ITEM = "manufactured-item";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>manufactured-item</b>
+   * <p>
+   * Description: <b>The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AdministrableProductDefinition.producedFrom</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MANUFACTURED_ITEM = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MANUFACTURED_ITEM);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AdministrableProductDefinition:manufactured-item</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MANUFACTURED_ITEM = new ca.uhn.fhir.model.api.Include("AdministrableProductDefinition:manufactured-item").toLocked();
 
  /**
    * Search parameter: <b>route</b>
@@ -2276,3 +2354,4 @@ public class AdministrableProductDefinition extends DomainResource {
 
 
 }
+

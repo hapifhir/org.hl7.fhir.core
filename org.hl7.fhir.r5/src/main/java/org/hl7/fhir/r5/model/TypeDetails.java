@@ -32,6 +32,7 @@ package org.hl7.fhir.r5.model;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -57,6 +58,7 @@ public class TypeDetails {
   public static final String FP_Time = "http://hl7.org/fhirpath/Time";
   public static final String FP_SimpleTypeInfo = "http://hl7.org/fhirpath/SimpleTypeInfo";
   public static final String FP_ClassInfo = "http://hl7.org/fhirpath/ClassInfo";
+  public static final Set<String> FP_NUMBERS = new HashSet<String>(Arrays.asList(FP_Integer, FP_Decimal));
 
   public static class ProfiledType {
     private String uri;

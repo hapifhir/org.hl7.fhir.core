@@ -155,26 +155,24 @@ public class LDContextGenerator {
     if (type!=null && type.size() == 1) {
 
       context = type.get(0).getCode();
+      if (context != null) {
 
-      if (resourceUri != null) {
-        context = context.substring(context.lastIndexOf(".") + 1);
-        createNewContextObject(contextObject, contextObject, context,resourceUri);
-      }
-      else if (context.equals(CODE_TYPE)  &&
-              elementDefinition.getBase().getPath().equals(elementDefinition.getId())){
-        context = "string";
-        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
-      }
+        if (resourceUri != null) {
+          context = context.substring(context.lastIndexOf(".") + 1);
+          createNewContextObject(contextObject, contextObject, context, resourceUri);
+        } else if (context.equals(CODE_TYPE) &&
+          elementDefinition.getBase().getPath().equals(elementDefinition.getId())) {
+          context = "string";
+          createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
+        } else if (isBackboneElement(elementDefinition) || isElement(elementDefinition)) {
 
-      else if (isBackboneElement(elementDefinition) || isElement(elementDefinition)) {
-
-        context = idTrimmed + "." + contextObject;
-        createNewContextObject(contextObject,context, context, resourceUri);
-        addToBackboneList(context, elementDefinition);
-      }
-      else {
-        context = context.substring(context.lastIndexOf(".") + 1);
-        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context,resourceUri);
+          context = idTrimmed + "." + contextObject;
+          createNewContextObject(contextObject, context, context, resourceUri);
+          addToBackboneList(context, elementDefinition);
+        } else {
+          context = context.substring(context.lastIndexOf(".") + 1);
+          createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
+        }
       }
     }
     else if (type!=null && type.size() > 1) {
@@ -197,6 +195,7 @@ public class LDContextGenerator {
     boolean isElement = false;
 
     if (elementDefinition.getType().size() > 0
+            && elementDefinition.getType().get(0).getCode() != null
             && elementDefinition.getType().get(0).toString().equals("Element")) {
 
       isElement = true;
@@ -208,6 +207,7 @@ public class LDContextGenerator {
     boolean isBackbone = false;
 
     if (elementDefinition.getType().size() > 0
+            && elementDefinition.getType().get(0).getCode() != null
             && elementDefinition.getType().get(0).toString().equals("BackboneElement")) {
 
       isBackbone = true;

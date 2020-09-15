@@ -261,7 +261,7 @@ public class ClientUtils {
    * @param request
    */
   protected void configureFhirRequest(HttpRequest request, String format, List<Header> headers) {
-    request.addHeader("User-Agent", "Java FHIR Client for FHIR");
+    request.addHeader("User-Agent", "hapi-fhir-tooling-client");
 
     if (format != null) {		
       request.addHeader("Accept",format);
@@ -310,7 +310,7 @@ public class ClientUtils {
           } catch (InterruptedException e) {
           }
         } else {
-          if (tryCount > 1) {
+          if (tryCount > 4) {
             System.out.println("Giving up: "+ioe.getMessage()+" (R5 / "+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+" for "+message+")");
           }
           throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);

@@ -1,10 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
-import java.math.BigDecimal;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,22 +29,22 @@ import java.math.BigDecimal;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
+import java.math.*;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
-import org.hl7.fhir.r5.model.Enumerations.DaysOfWeek;
-import org.hl7.fhir.r5.model.Enumerations.DaysOfWeekEnumFactory;
-
-import ca.uhn.fhir.model.api.annotation.Block;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * Base StructureDefinition for Timing Type: Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.
@@ -106,59 +102,59 @@ public class Timing extends BackboneType implements ICompositeType {
          */
         PHS, 
         /**
-         * Description: Prior to beginning a regular period of extended sleep (this would exclude naps).  Note that this might occur at different times of day depending on a person's regular sleep schedule.
+         * 
          */
         HS, 
         /**
-         * Description: Upon waking up from a regular period of sleep, in order to start regular activities (this would exclude waking up from a nap or temporarily waking up during a period of sleep)\r\n\n                        \n                           Usage Notes: e.g.\r\n\n                        Take pulse rate on waking in management of thyrotoxicosis.\r\n\n                        Take BP on waking in management of hypertension\r\n\n                        Take basal body temperature on waking in establishing date of ovulation
+         * 
          */
         WAKE, 
         /**
-         * Description: meal (from lat. ante cibus)
+         * 
          */
         C, 
         /**
-         * Description: breakfast (from lat. cibus matutinus)
+         * 
          */
         CM, 
         /**
-         * Description: lunch (from lat. cibus diurnus)
+         * 
          */
         CD, 
         /**
-         * Description: dinner (from lat. cibus vespertinus)
+         * 
          */
         CV, 
         /**
-         * before meal (from lat. ante cibus)
+         * 
          */
         AC, 
         /**
-         * before breakfast (from lat. ante cibus matutinus)
+         * 
          */
         ACM, 
         /**
-         * before lunch (from lat. ante cibus diurnus)
+         * 
          */
         ACD, 
         /**
-         * before dinner (from lat. ante cibus vespertinus)
+         * 
          */
         ACV, 
         /**
-         * after meal (from lat. post cibus)
+         * 
          */
         PC, 
         /**
-         * after breakfast (from lat. post cibus matutinus)
+         * 
          */
         PCM, 
         /**
-         * after lunch (from lat. post cibus diurnus)
+         * 
          */
         PCD, 
         /**
-         * after dinner (from lat. post cibus vespertinus)
+         * 
          */
         PCV, 
         /**
@@ -301,20 +297,20 @@ public class Timing extends BackboneType implements ICompositeType {
             case EVE_LATE: return "Event occurs during the late evening. The exact time is unspecified and established by institution convention or patient interpretation.";
             case NIGHT: return "Event occurs during the night. The exact time is unspecified and established by institution convention or patient interpretation.";
             case PHS: return "Event occurs [offset] after subject goes to sleep. The exact time is unspecified and established by institution convention or patient interpretation.";
-            case HS: return "Description: Prior to beginning a regular period of extended sleep (this would exclude naps).  Note that this might occur at different times of day depending on a person's regular sleep schedule.";
-            case WAKE: return "Description: Upon waking up from a regular period of sleep, in order to start regular activities (this would exclude waking up from a nap or temporarily waking up during a period of sleep)\r\n\n                        \n                           Usage Notes: e.g.\r\n\n                        Take pulse rate on waking in management of thyrotoxicosis.\r\n\n                        Take BP on waking in management of hypertension\r\n\n                        Take basal body temperature on waking in establishing date of ovulation";
-            case C: return "Description: meal (from lat. ante cibus)";
-            case CM: return "Description: breakfast (from lat. cibus matutinus)";
-            case CD: return "Description: lunch (from lat. cibus diurnus)";
-            case CV: return "Description: dinner (from lat. cibus vespertinus)";
-            case AC: return "before meal (from lat. ante cibus)";
-            case ACM: return "before breakfast (from lat. ante cibus matutinus)";
-            case ACD: return "before lunch (from lat. ante cibus diurnus)";
-            case ACV: return "before dinner (from lat. ante cibus vespertinus)";
-            case PC: return "after meal (from lat. post cibus)";
-            case PCM: return "after breakfast (from lat. post cibus matutinus)";
-            case PCD: return "after lunch (from lat. post cibus diurnus)";
-            case PCV: return "after dinner (from lat. post cibus vespertinus)";
+            case HS: return "";
+            case WAKE: return "";
+            case C: return "";
+            case CM: return "";
+            case CD: return "";
+            case CV: return "";
+            case AC: return "";
+            case ACM: return "";
+            case ACD: return "";
+            case ACV: return "";
+            case PC: return "";
+            case PCM: return "";
+            case PCD: return "";
+            case PCV: return "";
             default: return "?";
           }
         }
@@ -2309,3 +2305,4 @@ public class Timing extends BackboneType implements ICompositeType {
 
 
 }
+

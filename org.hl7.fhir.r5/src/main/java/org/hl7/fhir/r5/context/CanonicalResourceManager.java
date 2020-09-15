@@ -212,6 +212,11 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public void see(CachedCanonicalResource<T> cr) {
+    // ignore UTG NUCC erroneous code system
+    if (cr.getPackageInfo() != null && cr.getPackageInfo().getId() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology") && "http://nucc.org/provider-taxonomy".equals(cr.getUrl())) {
+      return;
+    }
+    
     if (enforceUniqueId && map.containsKey(cr.getId())) {
       drop(cr.getId());      
     }

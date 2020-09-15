@@ -132,8 +132,6 @@ public interface IResourceValidator {
     OPTIONAL, REQUIRED, PROHIBITED
   }
   
-  
-
   /**
    * how much to check displays for coded elements 
    * @return
@@ -207,6 +205,8 @@ public interface IResourceValidator {
   public boolean isAllowExamples();
   public void setAllowExamples(boolean value) ;
  
+  public boolean isNoCheckAggregation();
+  public void setNoCheckAggregation(boolean value);
   /**
    * CrumbTrail - whether the validator creates hints to 
    * @return
@@ -214,6 +214,8 @@ public interface IResourceValidator {
   public boolean isCrumbTrails();
   public void setCrumbTrails(boolean crumbTrails);
 
+  public boolean isValidateValueSetCodesOnTxServer();
+  public void setValidateValueSetCodesOnTxServer(boolean value);
 
   /** 
    * Bundle validation rules allow for requesting particular entries in a bundle get validated against particular profiles
@@ -223,6 +225,7 @@ public interface IResourceValidator {
    * @return
    */
   public List<BundleValidationRule> getBundleValidationRules();
+  
   /**
    * Validate suite
    *  

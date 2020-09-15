@@ -3,30 +3,30 @@ package org.hl7.fhir.r5.conformance;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-
-  Redistribution and use in source and binary forms, with or without modification,
+  
+  Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
-
-   * Redistributions of source code must retain the above copyright notice, this
+    
+   * Redistributions of source code must retain the above copyright notice, this 
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice,
-     this list of conditions and the following disclaimer in the documentation
+   * Redistributions in binary form must reproduce the above copyright notice, 
+     this list of conditions and the following disclaimer in the documentation 
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to
-     endorse or promote products derived from this software without specific
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
      prior written permission.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
-
+  
  */
 
 
@@ -42,8 +42,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.jena.rdf.model.Resource;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DataType;
@@ -53,8 +51,6 @@ import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander;
-import org.hl7.fhir.r5.utils.RDFTypeMap;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.stringtemplate.v4.ST;
 
 public class ShExGenerator {
@@ -195,16 +191,6 @@ public class ShExGenerator {
   // A value set definition
   private static String VALUE_SET_DEFINITION = "# $comment$\n$vsuri$$val_list$\n";
 
-  // Static value for now.
-  private static String PRIMITIVE_TYPE_INTEGER64 =
-      "\n# Primitive Type integer64" +
-      "\n<integer> CLOSED {" +
-      "\n    fhir:Element.id @<string>?;             # xml:id (or equivalent in JSON)" +
-      "\n    fhir:Element.extension @<Extension>*;   # Additional content defined by" +
-      "\n                                            # implementations" +
-      "\n    fhir:value xsd:integer?;                # Primitive value for integer" +
-      "\n    fhir:index xsd:integer?                 # Relative position in a list" +
-      "\n}";
 
   /**
    * this makes internal metadata services available to the generator - retrieving structure definitions, and value set expansion etc
@@ -304,6 +290,7 @@ public class ShExGenerator {
       }
     }
 
+
     for (StructureDefinition sd : uniq_structures) {
       shapeDefinitions.append(genShapeDefinition(sd, true));
     }
@@ -317,9 +304,6 @@ public class ShExGenerator {
         shapeDefinitions.append(emitInnerTypes());
       }
     }
-
-    // Add the static string for the primitive type integer64
-    shapeDefinitions.append(PRIMITIVE_TYPE_INTEGER64);
 
     shapeDefinitions.append("\n#---------------------- Reference Types -------------------\n");
     for(String r: references) {
@@ -521,23 +505,7 @@ public class ShExGenerator {
     }
     else if (ed.getType().size() == 1) {
       // Single entry
-      String edVal = ed.toString();
-      String[] edStrings = edVal.split("\\.");
-
-      // get the primitive type
-      if (edStrings.length==2 && edStrings[1].equals("value") &&
-              (RDFTypeMap.xsd_type_for(edStrings[0], false) != null)){
-        Resource resource = RDFTypeMap.xsd_type_for(edStrings[0], false);
-
-        // Map anyURI to string for now
-        String resourceStr = resource.getLocalName().equals("anyURI") ? "string" : resource.getLocalName();
-        //System.out.println(resourceStr);
-        defn = "xsd:" + resourceStr;
-      }
-      else {
-        defn = genTypeRef(sd, ed, id, ed.getType().get(0));
-      }
-
+      defn = genTypeRef(sd, ed, id, ed.getType().get(0));
     } else if (ed.getContentReference() != null) {
       // Reference to another element
       String ref = ed.getContentReference();
@@ -657,13 +625,7 @@ public class ShExGenerator {
 
     } else if(typ.getWorkingCode().equals("xhtml")) {
       return tmplt(XHTML_TYPE_TEMPLATE).render();
-    }
-//    else if  (RDFTypeMap.xsd_type_for(typ.getWorkingCode(), false) != null) {
-//      String resourceUri = RDFTypeMap.xsd_type_for(typ.getWorkingCode(), false).getLocalName();
-//      datatypes.add(resourceUri);
-//      return simpleElement(sd, ed, resourceUri);
-//    }
-    else {
+    } else {
       datatypes.add(typ.getWorkingCode());
       return simpleElement(sd, ed, typ.getWorkingCode());
     }

@@ -201,21 +201,27 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     return null;
   }
 
-  protected XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay, boolean definitions, boolean comments, boolean version, boolean deprecated, List<PropertyComponent> properties) {
+  protected XhtmlNode addTableHeaderRowStandard(XhtmlNode t, boolean hasHierarchy, boolean hasDisplay, boolean definitions, boolean comments, boolean version, boolean deprecated, List<PropertyComponent> properties, List<String> langs, boolean doLangs) {
     XhtmlNode tr = t.tr();
-    if (hasHierarchy)
+    if (hasHierarchy) {
       tr.td().b().tx("Lvl");
+    }
     tr.td().attribute("style", "white-space:nowrap").b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Code", getContext().getLang()));
-    if (hasDisplay)
+    if (hasDisplay) {
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Display", getContext().getLang()));
-    if (definitions)
+    }
+    if (definitions) {
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Definition", getContext().getLang()));
-    if (deprecated)
+    }
+    if (deprecated) {
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Deprecated", getContext().getLang()));
-    if (comments)
+    }
+    if (comments) {
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Comments", getContext().getLang()));
-    if (version)
+    }
+    if (version) {
       tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", "Version", getContext().getLang()));
+    }
     if (properties != null) {
       for (PropertyComponent pc : properties) {
         String display = ToolingExtensions.getPresentation(pc, pc.getCodeElement());
@@ -226,6 +232,11 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
           }
         }
         tr.td().b().tx(getContext().getWorker().translator().translate("xhtml-gen-cs", display, getContext().getLang()));      
+      }
+    }
+    if (doLangs) {
+      for (String lang : langs) {
+        tr.td().b().addText(describeLang(lang));
       }
     }
     return tr;

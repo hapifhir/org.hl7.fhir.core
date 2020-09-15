@@ -1,8 +1,38 @@
 package org.hl7.fhir.r5.model;
 
 
+/*
+  Copyright (c) 2011+, HL7, Inc.
+  All rights reserved.
+  
+  Redistribution and use in source and binary forms, with or without modification, \
+  are permitted provided that the following conditions are met:
+  
+   * Redistributions of source code must retain the above copyright notice, this \
+     list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice, \
+     this list of conditions and the following disclaimer in the documentation \
+     and/or other materials provided with the distribution.
+   * Neither the name of HL7 nor the names of its contributors may be used to 
+     endorse or promote products derived from this software without specific 
+     prior written permission.
+  
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND \
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED \
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. \
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, \
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT \
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR \
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, \
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) \
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE \
+  POSSIBILITY OF SUCH DAMAGE.
+  */
+
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 
+import org.hl7.fhir.instance.model.api.*;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Enumerations {
@@ -28,19 +58,20 @@ public class Enumerations {
 //   DocumentReferenceStatus: The status of the document reference.[DocumentManifest, DocumentReference]
 //   DocumentRelationshipType: The type of relationship between documents.[Composition, DocumentReference]
 //   EventStatus: Codes identifying the lifecycle stage of an event.[ClinicalImpression, Communication, NutritionIntake, Procedure]
+//   EvidenceVariableHandling: The handling of the variable in statistical analysis for exposures or outcomes (E.g. Dichotomous, Continuous, Descriptive).[EvidenceVariable, Statistic]
 //   FHIRAllTypes: A list of all the concrete types defined in this version of the FHIR specification - Abstract Types, Data Types and Resource Types.[DataRequirement, OperationDefinition, ParameterDefinition]
 //   FHIRVersion: All published FHIR Versions.[CapabilityStatement, CapabilityStatement2, ImplementationGuide, StructureDefinition]
 //   FilterOperator: The kind of operation to perform as a part of a property based filter.[CodeSystem, ValueSet]
 //   FinancialResourceStatusCodes: This value set includes Status codes.[Claim, ClaimResponse, Coverage, CoverageEligibilityRequest, CoverageEligibilityResponse, EnrollmentRequest, EnrollmentResponse, PaymentNotice, PaymentReconciliation, VisionPrescription]
 //   InvoicePriceComponentType: Codes indicating the kind of the price component.[ChargeItemDefinition, Invoice]
-//   ListMode: The processing mode that applies to this list.[Composition, List]
+//   ListMode: The processing mode that applies to this list.[Composition, EvidenceReport, List]
 //   MeasureImprovementNotation: Observation values that indicate what change in a measurement value or score is indicative of an improvement in the measured item or scored issue.[Measure, MeasureReport]
 //   MimeTypes: This value set includes all possible codes from BCP-13 (http://tools.ietf.org/html/bcp13)[Attachment, Binary, CapabilityStatement, CapabilityStatement2, ElementDefinition, Endpoint, Signature, Subscription, TestScript]
 //   NoteType: The presentation types of notes.[ClaimResponse, ExplanationOfBenefit, PaymentReconciliation]
 //   ObservationStatus: Codes providing the status of an observation.[DetectedIssue, Observation, RiskAssessment]
 //   OperationParameterUse: Whether an operation parameter is an input or an output parameter.[OperationDefinition, ParameterDefinition]
 //   ParticipationStatus: The Participation status of an appointment.[Appointment, AppointmentResponse]
-//   PublicationStatus: The lifecycle status of an artifact.[ActivityDefinition, CanonicalResource, CapabilityStatement, CapabilityStatement2, ChargeItemDefinition, Citation, CodeSystem, CompartmentDefinition, ConceptMap, ConditionDefinition, EventDefinition, Evidence, EvidenceFocus, EvidenceVariable, ExampleScenario, GraphDefinition, ImplementationGuide, InsurancePlan, Library, Measure, MessageDefinition, NamingSystem, ObservationDefinition, OperationDefinition, PlanDefinition, Questionnaire, SearchParameter, SpecimenDefinition, StructureDefinition, StructureMap, SubscriptionTopic, TerminologyCapabilities, TestScript, ValueSet]
+//   PublicationStatus: The lifecycle status of an artifact.[ActivityDefinition, CanonicalResource, CapabilityStatement, CapabilityStatement2, ChargeItemDefinition, Citation, CodeSystem, CompartmentDefinition, ConceptMap, ConditionDefinition, EventDefinition, Evidence, EvidenceReport, EvidenceVariable, ExampleScenario, GraphDefinition, ImplementationGuide, InsurancePlan, Library, Measure, MessageDefinition, NamingSystem, ObservationDefinition, OperationDefinition, PlanDefinition, Questionnaire, SearchParameter, SpecimenDefinition, StructureDefinition, StructureMap, SubscriptionTopic, TerminologyCapabilities, TestScript, ValueSet]
 //   QuantityComparator: How the Quantity should be understood and represented.[Age, Count, Distance, Duration, Quantity]
 //   RequestIntent: Codes indicating the degree of authority/intentionality associated with a request.[ActivityDefinition, DeviceRequest, NutritionOrder, RequestGroup, ServiceRequest]
 //   RequestPriority: The clinical priority of a diagnostic order.[ActivityDefinition, Communication, CommunicationRequest, DeviceRequest, MedicationRequest, PlanDefinition, RequestGroup, ServiceRequest, SupplyRequest, Task]
@@ -1370,19 +1401,19 @@ public class Enumerations {
 
     public enum ClaimProcessingCodes {
         /**
-         * null
+         * The Claim/Pre-authorization/Pre-determination has been received but processing has not begun.
          */
         QUEUED, 
         /**
-         * The processing completed without errors.
+         * The processing has completed without errors
          */
         COMPLETE, 
         /**
-         * The processing identified errors.
+         * One or more errors have been detected in the Claim
          */
         ERROR, 
         /**
-         * No errors have been detected and some of the adjudication has been performed.
+         * No errors have been detected in the Claim and some of the adjudication has been performed.
          */
         PARTIAL, 
         /**
@@ -1422,10 +1453,10 @@ public class Enumerations {
         }
         public String getDefinition() {
           switch (this) {
-            case QUEUED: return "";
-            case COMPLETE: return "The processing completed without errors.";
-            case ERROR: return "The processing identified errors.";
-            case PARTIAL: return "No errors have been detected and some of the adjudication has been performed.";
+            case QUEUED: return "The Claim/Pre-authorization/Pre-determination has been received but processing has not begun.";
+            case COMPLETE: return "The processing has completed without errors";
+            case ERROR: return "One or more errors have been detected in the Claim";
+            case PARTIAL: return "No errors have been detected in the Claim and some of the adjudication has been performed.";
             default: return "?";
           }
         }
@@ -2059,19 +2090,19 @@ public class Enumerations {
          */
         UDILABELNAME, 
         /**
-         * User Friendly name.
+         * The 'user friendly name' typically is the name of the device on the package it came in or some combination of that name with the model number, serial number, or other attribute that makes the name easy to understand for the user of that device. It is often exposed in communicating devices transport protocols. It is provided to help users identify the device when reported in discovery operations.
          */
         USERFRIENDLYNAME, 
         /**
-         * Patient Reported name.
+         * A name as provided by a patient of the device, for example "knee implant", when documenting, e.g., self-reported device.
          */
         PATIENTREPORTEDNAME, 
         /**
-         * Manufacturer name.
+         * The formal name as provided by the manufacturer of the device.
          */
         MANUFACTURERNAME, 
         /**
-         * Model name.
+         * The name of the model. The manufacturer-name or user-friendly-name may include that as a component.
          */
         MODELNAME, 
         /**
@@ -2124,10 +2155,10 @@ public class Enumerations {
         public String getDefinition() {
           switch (this) {
             case UDILABELNAME: return "UDI Label name.";
-            case USERFRIENDLYNAME: return "User Friendly name.";
-            case PATIENTREPORTEDNAME: return "Patient Reported name.";
-            case MANUFACTURERNAME: return "Manufacturer name.";
-            case MODELNAME: return "Model name.";
+            case USERFRIENDLYNAME: return "The 'user friendly name' typically is the name of the device on the package it came in or some combination of that name with the model number, serial number, or other attribute that makes the name easy to understand for the user of that device. It is often exposed in communicating devices transport protocols. It is provided to help users identify the device when reported in discovery operations.";
+            case PATIENTREPORTEDNAME: return "A name as provided by a patient of the device, for example \"knee implant\", when documenting, e.g., self-reported device.";
+            case MANUFACTURERNAME: return "The formal name as provided by the manufacturer of the device.";
+            case MODELNAME: return "The name of the model. The manufacturer-name or user-friendly-name may include that as a component.";
             case OTHER: return "other.";
             default: return "?";
           }
@@ -2617,6 +2648,127 @@ public class Enumerations {
       }
     }
 
+    public enum EvidenceVariableHandling {
+        /**
+         * A continuous variable is one for which, within the limits the variable ranges, any value is possible (from STATO http://purl.obolibrary.org/obo/STATO_0000251).
+         */
+        CONTINUOUS, 
+        /**
+         * A dichotomous variable is a categorical variable which is defined to have only 2 categories or possible values (from STATO http://purl.obolibrary.org/obo/STATO_0000090).
+         */
+        DICHOTOMOUS, 
+        /**
+         * An ordinal variable is a categorical variable where the discrete possible values are ordered or correspond to an implicit ranking (from STATO http://purl.obolibrary.org/obo/STATO_0000228).
+         */
+        ORDINAL, 
+        /**
+         * A polychotomous variable is a categorical variable which is defined to have minimally 2 categories or possible values. (from STATO  http://purl.obolibrary.org/obo/STATO_0000087).  Suggestion to limit code use to situations when neither dichotomous nor ordinal variables apply.
+         */
+        POLYCHOTOMOUS, 
+        /**
+         * added to help the parsers
+         */
+        NULL;
+        public static EvidenceVariableHandling fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("continuous".equals(codeString))
+          return CONTINUOUS;
+        if ("dichotomous".equals(codeString))
+          return DICHOTOMOUS;
+        if ("ordinal".equals(codeString))
+          return ORDINAL;
+        if ("polychotomous".equals(codeString))
+          return POLYCHOTOMOUS;
+        throw new FHIRException("Unknown EvidenceVariableHandling code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case CONTINUOUS: return "continuous";
+            case DICHOTOMOUS: return "dichotomous";
+            case ORDINAL: return "ordinal";
+            case POLYCHOTOMOUS: return "polychotomous";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case CONTINUOUS: return "http://hl7.org/fhir/variable-handling";
+            case DICHOTOMOUS: return "http://hl7.org/fhir/variable-handling";
+            case ORDINAL: return "http://hl7.org/fhir/variable-handling";
+            case POLYCHOTOMOUS: return "http://hl7.org/fhir/variable-handling";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case CONTINUOUS: return "A continuous variable is one for which, within the limits the variable ranges, any value is possible (from STATO http://purl.obolibrary.org/obo/STATO_0000251).";
+            case DICHOTOMOUS: return "A dichotomous variable is a categorical variable which is defined to have only 2 categories or possible values (from STATO http://purl.obolibrary.org/obo/STATO_0000090).";
+            case ORDINAL: return "An ordinal variable is a categorical variable where the discrete possible values are ordered or correspond to an implicit ranking (from STATO http://purl.obolibrary.org/obo/STATO_0000228).";
+            case POLYCHOTOMOUS: return "A polychotomous variable is a categorical variable which is defined to have minimally 2 categories or possible values. (from STATO  http://purl.obolibrary.org/obo/STATO_0000087).  Suggestion to limit code use to situations when neither dichotomous nor ordinal variables apply.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case CONTINUOUS: return "continuous variable";
+            case DICHOTOMOUS: return "dichotomous variable";
+            case ORDINAL: return "ordinal variable";
+            case POLYCHOTOMOUS: return "polychotomous variable";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class EvidenceVariableHandlingEnumFactory implements EnumFactory<EvidenceVariableHandling> {
+    public EvidenceVariableHandling fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("continuous".equals(codeString))
+          return EvidenceVariableHandling.CONTINUOUS;
+        if ("dichotomous".equals(codeString))
+          return EvidenceVariableHandling.DICHOTOMOUS;
+        if ("ordinal".equals(codeString))
+          return EvidenceVariableHandling.ORDINAL;
+        if ("polychotomous".equals(codeString))
+          return EvidenceVariableHandling.POLYCHOTOMOUS;
+        throw new IllegalArgumentException("Unknown EvidenceVariableHandling code '"+codeString+"'");
+        }
+        public Enumeration<EvidenceVariableHandling> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<EvidenceVariableHandling>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("continuous".equals(codeString))
+          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.CONTINUOUS);
+        if ("dichotomous".equals(codeString))
+          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.DICHOTOMOUS);
+        if ("ordinal".equals(codeString))
+          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.ORDINAL);
+        if ("polychotomous".equals(codeString))
+          return new Enumeration<EvidenceVariableHandling>(this, EvidenceVariableHandling.POLYCHOTOMOUS);
+        throw new FHIRException("Unknown EvidenceVariableHandling code '"+codeString+"'");
+        }
+    public String toCode(EvidenceVariableHandling code) {
+      if (code == EvidenceVariableHandling.CONTINUOUS)
+        return "continuous";
+      if (code == EvidenceVariableHandling.DICHOTOMOUS)
+        return "dichotomous";
+      if (code == EvidenceVariableHandling.ORDINAL)
+        return "ordinal";
+      if (code == EvidenceVariableHandling.POLYCHOTOMOUS)
+        return "polychotomous";
+      return "?";
+      }
+    public String toSystem(EvidenceVariableHandling code) {
+      return code.getSystem();
+      }
+    }
+
     public enum FHIRAllTypes {
         /**
          * An address expressed using postal conventions (as opposed to GPS or other location definition formats).  This data type may be used to convey addresses for use in delivering mail as well as for visiting locations which might not be valid for mail delivery.  There are a variety of postal address formats defined around the world.
@@ -2802,10 +2954,6 @@ public class Enumerations {
          * A fact or piece of data from a  study of a large quantity of numerical data.  A mathematical or quantified characteristic of a group of observations.
          */
         STATISTIC, 
-        /**
-         * Chemical substances are a single substance type whose primary defining element is the molecular structure. Chemical substances shall be defined on the basis of their complete covalent molecular structure; the presence of a salt (counter-ion) and/or solvates (water, alcohols) is also captured. Purity, grade, physical form or particle size are not taken into account in the definition of a chemical substance or in the assignment of a Substance ID.
-         */
-        SUBSTANCEAMOUNT, 
         /**
          * Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.
          */
@@ -3124,9 +3272,9 @@ into another (possibly the same) biological entity.
          */
         EVIDENCE, 
         /**
-         * EvidenceFocus.
+         * The EvidenceReport.
          */
-        EVIDENCEFOCUS, 
+        EVIDENCEREPORT, 
         /**
          * The EvidenceVariable resource describes an element that knowledge (Evidence) is about.
          */
@@ -3228,7 +3376,7 @@ into another (possibly the same) biological entity.
          */
         MEASUREREPORT, 
         /**
-         * This resource is primarily used for the identification and definition of a medication for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.
+         * This resource is primarily used for the identification and definition of a medication, including ingredients, for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.
          */
         MEDICATION, 
         /**
@@ -3310,7 +3458,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         ORGANIZATIONAFFILIATION, 
         /**
-         * A medicinal product in a container or package.
+         * A medically related item or items, in a container or package.
          */
         PACKAGEDPRODUCTDEFINITION, 
         /**
@@ -3450,7 +3598,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         SUBSTANCENUCLEICACID, 
         /**
-         * Todo.
+         * Properties of a substance specific to it being a polymer.
          */
         SUBSTANCEPOLYMER, 
         /**
@@ -3608,8 +3756,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return SIMPLEQUANTITY;
         if ("Statistic".equals(codeString))
           return STATISTIC;
-        if ("SubstanceAmount".equals(codeString))
-          return SUBSTANCEAMOUNT;
         if ("Timing".equals(codeString))
           return TIMING;
         if ("TriggerDefinition".equals(codeString))
@@ -3768,8 +3914,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return EVENTDEFINITION;
         if ("Evidence".equals(codeString))
           return EVIDENCE;
-        if ("EvidenceFocus".equals(codeString))
-          return EVIDENCEFOCUS;
+        if ("EvidenceReport".equals(codeString))
+          return EVIDENCEREPORT;
         if ("EvidenceVariable".equals(codeString))
           return EVIDENCEVARIABLE;
         if ("ExampleScenario".equals(codeString))
@@ -4010,7 +4156,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SIGNATURE: return "Signature";
             case SIMPLEQUANTITY: return "SimpleQuantity";
             case STATISTIC: return "Statistic";
-            case SUBSTANCEAMOUNT: return "SubstanceAmount";
             case TIMING: return "Timing";
             case TRIGGERDEFINITION: return "TriggerDefinition";
             case USAGECONTEXT: return "UsageContext";
@@ -4090,7 +4235,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EPISODEOFCARE: return "EpisodeOfCare";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
-            case EVIDENCEFOCUS: return "EvidenceFocus";
+            case EVIDENCEREPORT: return "EvidenceReport";
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
@@ -4237,7 +4382,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SIGNATURE: return "http://hl7.org/fhir/data-types";
             case SIMPLEQUANTITY: return "http://hl7.org/fhir/data-types";
             case STATISTIC: return "http://hl7.org/fhir/data-types";
-            case SUBSTANCEAMOUNT: return "http://hl7.org/fhir/data-types";
             case TIMING: return "http://hl7.org/fhir/data-types";
             case TRIGGERDEFINITION: return "http://hl7.org/fhir/data-types";
             case USAGECONTEXT: return "http://hl7.org/fhir/data-types";
@@ -4317,7 +4461,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EPISODEOFCARE: return "http://hl7.org/fhir/resource-types";
             case EVENTDEFINITION: return "http://hl7.org/fhir/resource-types";
             case EVIDENCE: return "http://hl7.org/fhir/resource-types";
-            case EVIDENCEFOCUS: return "http://hl7.org/fhir/resource-types";
+            case EVIDENCEREPORT: return "http://hl7.org/fhir/resource-types";
             case EVIDENCEVARIABLE: return "http://hl7.org/fhir/resource-types";
             case EXAMPLESCENARIO: return "http://hl7.org/fhir/resource-types";
             case EXPLANATIONOFBENEFIT: return "http://hl7.org/fhir/resource-types";
@@ -4464,7 +4608,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SIGNATURE: return "A signature along with supporting context. The signature may be a digital signature that is cryptographic in nature, or some other signature acceptable to the domain. This other signature may be as simple as a graphical image representing a hand-written signature, or a signature ceremony Different signature approaches have different utilities.";
             case SIMPLEQUANTITY: return "";
             case STATISTIC: return "A fact or piece of data from a  study of a large quantity of numerical data.  A mathematical or quantified characteristic of a group of observations.";
-            case SUBSTANCEAMOUNT: return "Chemical substances are a single substance type whose primary defining element is the molecular structure. Chemical substances shall be defined on the basis of their complete covalent molecular structure; the presence of a salt (counter-ion) and/or solvates (water, alcohols) is also captured. Purity, grade, physical form or particle size are not taken into account in the definition of a chemical substance or in the assignment of a Substance ID.";
             case TIMING: return "Specifies an event that may occur multiple times. Timing schedules are used to record when things are planned, expected or requested to occur. The most common usage is in dosage instructions for medications. They are also used when planning care of various kinds, and may be used for reporting the schedule to which past regular activities were carried out.";
             case TRIGGERDEFINITION: return "A description of a triggering event. Triggering events can be named events, data events, or periodic, as determined by the type element.";
             case USAGECONTEXT: return "Specifies clinical/business/etc. metadata that can be used to retrieve, index and/or categorize an artifact. This metadata can either be specific to the applicable population (e.g., age category, DRG) or the specific context of care (e.g., venue, care setting, provider of care).";
@@ -4544,7 +4687,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EPISODEOFCARE: return "An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time.";
             case EVENTDEFINITION: return "The EventDefinition resource provides a reusable description of when a particular event can occur.";
             case EVIDENCE: return "This represents statistics, certainty, both the intended and actual population, and evidence variables.";
-            case EVIDENCEFOCUS: return "EvidenceFocus.";
+            case EVIDENCEREPORT: return "The EvidenceReport.";
             case EVIDENCEVARIABLE: return "The EvidenceVariable resource describes an element that knowledge (Evidence) is about.";
             case EXAMPLESCENARIO: return "Example of workflow instance.";
             case EXPLANATIONOFBENEFIT: return "This resource provides: the claim details; adjudication details from the processing of a Claim; and optionally account balance information, for informing the subscriber of the benefits provided.";
@@ -4570,7 +4713,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case MANUFACTUREDITEMDEFINITION: return "The definition and characteristics of a medicinal manufactured item, such as a tablet or capsule, as contained in a packaged medicinal product.";
             case MEASURE: return "The Measure resource provides the definition of a quality measure.";
             case MEASUREREPORT: return "The MeasureReport resource contains the results of the calculation of a measure; and optionally a reference to the resources involved in that calculation.";
-            case MEDICATION: return "This resource is primarily used for the identification and definition of a medication for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.";
+            case MEDICATION: return "This resource is primarily used for the identification and definition of a medication, including ingredients, for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.";
             case MEDICATIONADMINISTRATION: return "Describes the event of a patient consuming or otherwise being administered a medication.  This may be as simple as swallowing a tablet or it may be a long running infusion.  Related resources tie this event to the authorizing prescription, and the specific encounter between patient and health care practitioner.";
             case MEDICATIONDISPENSE: return "Indicates that a medication product is to be or has been dispensed for a named person/patient.  This includes a description of the medication product (supply) provided and the instructions for administering the medication.  The medication dispense is the result of a pharmacy system responding to a medication order.";
             case MEDICATIONKNOWLEDGE: return "Information about a medication that is used to support knowledge.";
@@ -4590,7 +4733,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case OPERATIONOUTCOME: return "A collection of error, warning, or information messages that result from a system action.";
             case ORGANIZATION: return "A formally or informally recognized grouping of people or organizations formed for the purpose of achieving some form of collective action.  Includes companies, institutions, corporations, departments, community groups, healthcare practice groups, payer/insurer, etc.";
             case ORGANIZATIONAFFILIATION: return "Defines an affiliation/assotiation/relationship between 2 distinct oganizations, that is not a part-of relationship/sub-division relationship.";
-            case PACKAGEDPRODUCTDEFINITION: return "A medicinal product in a container or package.";
+            case PACKAGEDPRODUCTDEFINITION: return "A medically related item or items, in a container or package.";
             case PARAMETERS: return "This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.";
             case PATIENT: return "Demographics and other administrative information about an individual or animal receiving care or other health-related services.";
             case PAYMENTNOTICE: return "This resource provides the status of the payment for goods and services rendered, and the request and response resource references.";
@@ -4625,7 +4768,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case SUBSTANCE: return "A homogeneous material with a definite composition.";
             case SUBSTANCEDEFINITION: return "The detailed description of a substance, typically at a level beyond what is used for prescribing.";
             case SUBSTANCENUCLEICACID: return "Nucleic acids are defined by three distinct elements: the base, sugar and linkage. Individual substance/moiety IDs will be created for each of these elements. The nucleotide sequence will be always entered in the 5’-3’ direction.";
-            case SUBSTANCEPOLYMER: return "Todo.";
+            case SUBSTANCEPOLYMER: return "Properties of a substance specific to it being a polymer.";
             case SUBSTANCEPROTEIN: return "A SubstanceProtein is defined as a single unit of a linear amino acid sequence, or a combination of subunits that are either covalently linked or have a defined invariant stoichiometric relationship. This includes all synthetic, recombinant and purified SubstanceProteins of defined sequence, whether the use is therapeutic or prophylactic. This set of elements will be used to describe albumins, coagulation factors, cytokines, growth factors, peptide/SubstanceProtein hormones, enzymes, toxins, toxoids, recombinant vaccines, and immunomodulators.";
             case SUBSTANCEREFERENCEINFORMATION: return "Todo.";
             case SUBSTANCESOURCEMATERIAL: return "Source material shall capture information on the taxonomic and anatomical origins as well as the fraction of a material that can result in or can be modified to form a substance. This set of data elements shall be used to define polymer substances isolated from biological matrices. Taxonomic and anatomical origins shall be described using a controlled vocabulary as required. This information is captured for naturally derived polymers ( . starch) and structurally diverse substances. For Organisms belonging to the Kingdom Plantae the Substance level defines the fresh material of a single species or infraspecies, the Herbal Drug and the Herbal preparation. For Herbal preparations, the fraction information will be captured at the Substance information level and additional information for herbal extracts will be captured at the Specified Substance Group 1 information level. See for further explanation the Substance Class: Structurally Diverse and the herbal annex.";
@@ -4691,7 +4834,6 @@ The primary difference between a medicationusage and a medicationadministration 
             case SIGNATURE: return "Signature";
             case SIMPLEQUANTITY: return "SimpleQuantity";
             case STATISTIC: return "Statistic";
-            case SUBSTANCEAMOUNT: return "SubstanceAmount";
             case TIMING: return "Timing";
             case TRIGGERDEFINITION: return "TriggerDefinition";
             case USAGECONTEXT: return "UsageContext";
@@ -4771,7 +4913,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EPISODEOFCARE: return "EpisodeOfCare";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
-            case EVIDENCEFOCUS: return "EvidenceFocus";
+            case EVIDENCEREPORT: return "EvidenceReport";
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
@@ -4969,8 +5111,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.SIMPLEQUANTITY;
         if ("Statistic".equals(codeString))
           return FHIRAllTypes.STATISTIC;
-        if ("SubstanceAmount".equals(codeString))
-          return FHIRAllTypes.SUBSTANCEAMOUNT;
         if ("Timing".equals(codeString))
           return FHIRAllTypes.TIMING;
         if ("TriggerDefinition".equals(codeString))
@@ -5129,8 +5269,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRAllTypes.EVENTDEFINITION;
         if ("Evidence".equals(codeString))
           return FHIRAllTypes.EVIDENCE;
-        if ("EvidenceFocus".equals(codeString))
-          return FHIRAllTypes.EVIDENCEFOCUS;
+        if ("EvidenceReport".equals(codeString))
+          return FHIRAllTypes.EVIDENCEREPORT;
         if ("EvidenceVariable".equals(codeString))
           return FHIRAllTypes.EVIDENCEVARIABLE;
         if ("ExampleScenario".equals(codeString))
@@ -5423,8 +5563,6 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SIMPLEQUANTITY);
         if ("Statistic".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.STATISTIC);
-        if ("SubstanceAmount".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.SUBSTANCEAMOUNT);
         if ("Timing".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.TIMING);
         if ("TriggerDefinition".equals(codeString))
@@ -5583,8 +5721,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVENTDEFINITION);
         if ("Evidence".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVIDENCE);
-        if ("EvidenceFocus".equals(codeString))
-          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVIDENCEFOCUS);
+        if ("EvidenceReport".equals(codeString))
+          return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVIDENCEREPORT);
         if ("EvidenceVariable".equals(codeString))
           return new Enumeration<FHIRAllTypes>(this, FHIRAllTypes.EVIDENCEVARIABLE);
         if ("ExampleScenario".equals(codeString))
@@ -5870,8 +6008,6 @@ The primary difference between a medicationusage and a medicationadministration 
         return "SimpleQuantity";
       if (code == FHIRAllTypes.STATISTIC)
         return "Statistic";
-      if (code == FHIRAllTypes.SUBSTANCEAMOUNT)
-        return "SubstanceAmount";
       if (code == FHIRAllTypes.TIMING)
         return "Timing";
       if (code == FHIRAllTypes.TRIGGERDEFINITION)
@@ -6030,8 +6166,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "EventDefinition";
       if (code == FHIRAllTypes.EVIDENCE)
         return "Evidence";
-      if (code == FHIRAllTypes.EVIDENCEFOCUS)
-        return "EvidenceFocus";
+      if (code == FHIRAllTypes.EVIDENCEREPORT)
+        return "EvidenceReport";
       if (code == FHIRAllTypes.EVIDENCEVARIABLE)
         return "EvidenceVariable";
       if (code == FHIRAllTypes.EXAMPLESCENARIO)
@@ -6335,6 +6471,10 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         _4_4_0, 
         /**
+         * R5 Preview #3.
+         */
+        _4_5_0, 
+        /**
          * added to help the parsers
          */
         NULL;
@@ -6393,6 +6533,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return _4_2_0;
         if ("4.4.0".equals(codeString))
           return _4_4_0;
+        if ("4.5.0".equals(codeString))
+          return _4_5_0;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public String toCode() {
@@ -6423,6 +6565,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_1_0: return "4.1.0";
             case _4_2_0: return "4.2.0";
             case _4_4_0: return "4.4.0";
+            case _4_5_0: return "4.5.0";
             default: return "?";
           }
         }
@@ -6454,6 +6597,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_1_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_2_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_4_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_5_0: return "http://hl7.org/fhir/FHIR-version";
             default: return "?";
           }
         }
@@ -6485,6 +6629,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_1_0: return "Interim Version.";
             case _4_2_0: return "R5 Preview #1.";
             case _4_4_0: return "R5 Preview #2.";
+            case _4_5_0: return "R5 Preview #3.";
             default: return "?";
           }
         }
@@ -6516,11 +6661,12 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_1_0: return "4.1.0";
             case _4_2_0: return "4.2.0";
             case _4_4_0: return "4.4.0";
+            case _4_5_0: return "4.5.0";
             default: return "?";
           }
         }
 // manual code from configuration.txt:
-        public String toCode(int len) {
+public String toCode(int len) {
           return toCode().substring(0, len);
         }
 
@@ -6581,8 +6727,7 @@ The primary difference between a medicationusage and a medicationadministration 
         @Override
         public String toString() {
           return toCode();
-        }        
-
+        }
 // end addition
     }
 
@@ -6643,6 +6788,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return FHIRVersion._4_2_0;
         if ("4.4.0".equals(codeString))
           return FHIRVersion._4_4_0;
+        if ("4.5.0".equals(codeString))
+          return FHIRVersion._4_5_0;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public Enumeration<FHIRVersion> fromType(Base code) throws FHIRException {
@@ -6705,6 +6852,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_2_0);
         if ("4.4.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
+        if ("4.5.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5_0);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -6760,6 +6909,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "4.2.0";
       if (code == FHIRVersion._4_4_0)
         return "4.4.0";
+      if (code == FHIRVersion._4_5_0)
+        return "4.5.0";
       return "?";
       }
     public String toSystem(FHIRVersion code) {
@@ -8949,9 +9100,9 @@ into another (possibly the same) biological entity.
          */
         EVIDENCE, 
         /**
-         * EvidenceFocus.
+         * The EvidenceReport.
          */
-        EVIDENCEFOCUS, 
+        EVIDENCEREPORT, 
         /**
          * The EvidenceVariable resource describes an element that knowledge (Evidence) is about.
          */
@@ -9053,7 +9204,7 @@ into another (possibly the same) biological entity.
          */
         MEASUREREPORT, 
         /**
-         * This resource is primarily used for the identification and definition of a medication for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.
+         * This resource is primarily used for the identification and definition of a medication, including ingredients, for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.
          */
         MEDICATION, 
         /**
@@ -9135,7 +9286,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         ORGANIZATIONAFFILIATION, 
         /**
-         * A medicinal product in a container or package.
+         * A medically related item or items, in a container or package.
          */
         PACKAGEDPRODUCTDEFINITION, 
         /**
@@ -9275,7 +9426,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         SUBSTANCENUCLEICACID, 
         /**
-         * Todo.
+         * Properties of a substance specific to it being a polymer.
          */
         SUBSTANCEPOLYMER, 
         /**
@@ -9443,8 +9594,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return EVENTDEFINITION;
         if ("Evidence".equals(codeString))
           return EVIDENCE;
-        if ("EvidenceFocus".equals(codeString))
-          return EVIDENCEFOCUS;
+        if ("EvidenceReport".equals(codeString))
+          return EVIDENCEREPORT;
         if ("EvidenceVariable".equals(codeString))
           return EVIDENCEVARIABLE;
         if ("ExampleScenario".equals(codeString))
@@ -9690,7 +9841,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EPISODEOFCARE: return "EpisodeOfCare";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
-            case EVIDENCEFOCUS: return "EvidenceFocus";
+            case EVIDENCEREPORT: return "EvidenceReport";
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
@@ -9844,7 +9995,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EPISODEOFCARE: return "http://hl7.org/fhir/resource-types";
             case EVENTDEFINITION: return "http://hl7.org/fhir/resource-types";
             case EVIDENCE: return "http://hl7.org/fhir/resource-types";
-            case EVIDENCEFOCUS: return "http://hl7.org/fhir/resource-types";
+            case EVIDENCEREPORT: return "http://hl7.org/fhir/resource-types";
             case EVIDENCEVARIABLE: return "http://hl7.org/fhir/resource-types";
             case EXAMPLESCENARIO: return "http://hl7.org/fhir/resource-types";
             case EXPLANATIONOFBENEFIT: return "http://hl7.org/fhir/resource-types";
@@ -9998,7 +10149,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EPISODEOFCARE: return "An association between a patient and an organization / healthcare provider(s) during which time encounters may occur. The managing organization assumes a level of responsibility for the patient during this time.";
             case EVENTDEFINITION: return "The EventDefinition resource provides a reusable description of when a particular event can occur.";
             case EVIDENCE: return "This represents statistics, certainty, both the intended and actual population, and evidence variables.";
-            case EVIDENCEFOCUS: return "EvidenceFocus.";
+            case EVIDENCEREPORT: return "The EvidenceReport.";
             case EVIDENCEVARIABLE: return "The EvidenceVariable resource describes an element that knowledge (Evidence) is about.";
             case EXAMPLESCENARIO: return "Example of workflow instance.";
             case EXPLANATIONOFBENEFIT: return "This resource provides: the claim details; adjudication details from the processing of a Claim; and optionally account balance information, for informing the subscriber of the benefits provided.";
@@ -10024,7 +10175,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case MANUFACTUREDITEMDEFINITION: return "The definition and characteristics of a medicinal manufactured item, such as a tablet or capsule, as contained in a packaged medicinal product.";
             case MEASURE: return "The Measure resource provides the definition of a quality measure.";
             case MEASUREREPORT: return "The MeasureReport resource contains the results of the calculation of a measure; and optionally a reference to the resources involved in that calculation.";
-            case MEDICATION: return "This resource is primarily used for the identification and definition of a medication for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.";
+            case MEDICATION: return "This resource is primarily used for the identification and definition of a medication, including ingredients, for the purposes of prescribing, dispensing, and administering a medication as well as for making statements about medication use.";
             case MEDICATIONADMINISTRATION: return "Describes the event of a patient consuming or otherwise being administered a medication.  This may be as simple as swallowing a tablet or it may be a long running infusion.  Related resources tie this event to the authorizing prescription, and the specific encounter between patient and health care practitioner.";
             case MEDICATIONDISPENSE: return "Indicates that a medication product is to be or has been dispensed for a named person/patient.  This includes a description of the medication product (supply) provided and the instructions for administering the medication.  The medication dispense is the result of a pharmacy system responding to a medication order.";
             case MEDICATIONKNOWLEDGE: return "Information about a medication that is used to support knowledge.";
@@ -10044,7 +10195,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case OPERATIONOUTCOME: return "A collection of error, warning, or information messages that result from a system action.";
             case ORGANIZATION: return "A formally or informally recognized grouping of people or organizations formed for the purpose of achieving some form of collective action.  Includes companies, institutions, corporations, departments, community groups, healthcare practice groups, payer/insurer, etc.";
             case ORGANIZATIONAFFILIATION: return "Defines an affiliation/assotiation/relationship between 2 distinct oganizations, that is not a part-of relationship/sub-division relationship.";
-            case PACKAGEDPRODUCTDEFINITION: return "A medicinal product in a container or package.";
+            case PACKAGEDPRODUCTDEFINITION: return "A medically related item or items, in a container or package.";
             case PARAMETERS: return "This resource is a non-persisted resource used to pass information into and back from an [operation](operations.html). It has no other use, and there is no RESTful endpoint associated with it.";
             case PATIENT: return "Demographics and other administrative information about an individual or animal receiving care or other health-related services.";
             case PAYMENTNOTICE: return "This resource provides the status of the payment for goods and services rendered, and the request and response resource references.";
@@ -10079,7 +10230,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case SUBSTANCE: return "A homogeneous material with a definite composition.";
             case SUBSTANCEDEFINITION: return "The detailed description of a substance, typically at a level beyond what is used for prescribing.";
             case SUBSTANCENUCLEICACID: return "Nucleic acids are defined by three distinct elements: the base, sugar and linkage. Individual substance/moiety IDs will be created for each of these elements. The nucleotide sequence will be always entered in the 5’-3’ direction.";
-            case SUBSTANCEPOLYMER: return "Todo.";
+            case SUBSTANCEPOLYMER: return "Properties of a substance specific to it being a polymer.";
             case SUBSTANCEPROTEIN: return "A SubstanceProtein is defined as a single unit of a linear amino acid sequence, or a combination of subunits that are either covalently linked or have a defined invariant stoichiometric relationship. This includes all synthetic, recombinant and purified SubstanceProteins of defined sequence, whether the use is therapeutic or prophylactic. This set of elements will be used to describe albumins, coagulation factors, cytokines, growth factors, peptide/SubstanceProtein hormones, enzymes, toxins, toxoids, recombinant vaccines, and immunomodulators.";
             case SUBSTANCEREFERENCEINFORMATION: return "Todo.";
             case SUBSTANCESOURCEMATERIAL: return "Source material shall capture information on the taxonomic and anatomical origins as well as the fraction of a material that can result in or can be modified to form a substance. This set of data elements shall be used to define polymer substances isolated from biological matrices. Taxonomic and anatomical origins shall be described using a controlled vocabulary as required. This information is captured for naturally derived polymers ( . starch) and structurally diverse substances. For Organisms belonging to the Kingdom Plantae the Substance level defines the fresh material of a single species or infraspecies, the Herbal Drug and the Herbal preparation. For Herbal preparations, the fraction information will be captured at the Substance information level and additional information for herbal extracts will be captured at the Specified Substance Group 1 information level. See for further explanation the Substance Class: Structurally Diverse and the herbal annex.";
@@ -10152,7 +10303,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case EPISODEOFCARE: return "EpisodeOfCare";
             case EVENTDEFINITION: return "EventDefinition";
             case EVIDENCE: return "Evidence";
-            case EVIDENCEFOCUS: return "EvidenceFocus";
+            case EVIDENCEREPORT: return "EvidenceReport";
             case EVIDENCEVARIABLE: return "EvidenceVariable";
             case EXAMPLESCENARIO: return "ExampleScenario";
             case EXPLANATIONOFBENEFIT: return "ExplanationOfBenefit";
@@ -10366,8 +10517,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return ResourceTypeEnum.EVENTDEFINITION;
         if ("Evidence".equals(codeString))
           return ResourceTypeEnum.EVIDENCE;
-        if ("EvidenceFocus".equals(codeString))
-          return ResourceTypeEnum.EVIDENCEFOCUS;
+        if ("EvidenceReport".equals(codeString))
+          return ResourceTypeEnum.EVIDENCEREPORT;
         if ("EvidenceVariable".equals(codeString))
           return ResourceTypeEnum.EVIDENCEVARIABLE;
         if ("ExampleScenario".equals(codeString))
@@ -10674,8 +10825,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVENTDEFINITION);
         if ("Evidence".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCE);
-        if ("EvidenceFocus".equals(codeString))
-          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCEFOCUS);
+        if ("EvidenceReport".equals(codeString))
+          return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCEREPORT);
         if ("EvidenceVariable".equals(codeString))
           return new Enumeration<ResourceTypeEnum>(this, ResourceTypeEnum.EVIDENCEVARIABLE);
         if ("ExampleScenario".equals(codeString))
@@ -10975,8 +11126,8 @@ The primary difference between a medicationusage and a medicationadministration 
         return "EventDefinition";
       if (code == ResourceTypeEnum.EVIDENCE)
         return "Evidence";
-      if (code == ResourceTypeEnum.EVIDENCEFOCUS)
-        return "EvidenceFocus";
+      if (code == ResourceTypeEnum.EVIDENCEREPORT)
+        return "EvidenceReport";
       if (code == ResourceTypeEnum.EVIDENCEVARIABLE)
         return "EvidenceVariable";
       if (code == ResourceTypeEnum.EXAMPLESCENARIO)
@@ -11985,3 +12136,4 @@ The primary difference between a medicationusage and a medicationadministration 
 
 
 }
+

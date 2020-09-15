@@ -100,6 +100,8 @@ public class Element extends Base {
 	private SpecialElement special;
 	private XhtmlNode xhtml; // if this is populated, then value will also hold the string representation
 	private String explicitType; // for xsi:type attribute
+	private Element parentForValidator;
+	private boolean hasParentForValidator;
 
 	public Element(String name) {
 		super();
@@ -911,5 +913,31 @@ public class Element extends Base {
     return false;
   }
 
+  /**
+   * this is set by the instance validator. There's no reason to maintain this when working with an element tree, and so it should be ignored outside the validator
+   */
+  public Element getParentForValidator() {
+    if (!hasParentForValidator) {
+      throw new Error("Parent not set");
+    }
+    return parentForValidator;
+  }
+
+  public void setParentForValidator(Element parentForValidator) {
+    this.parentForValidator = parentForValidator;
+    this.hasParentForValidator = true;
+  }
+  
+  public boolean hasParentForValidator() {
+    return hasParentForValidator;
+  }
+
+  public void clear() {
+    comments = null;
+    children.clear();;
+    property = null;
+    elementProperty = null;
+    xhtml = null;
+  }  
   
 }

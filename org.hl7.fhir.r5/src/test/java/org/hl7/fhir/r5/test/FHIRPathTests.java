@@ -127,15 +127,17 @@ public class FHIRPathTests {
     int ndx = 0;
     for (int i = 0; i < p.getChildNodes().getLength(); i++) {
       Node c = p.getChildNodes().item(i);
-      if (c == e)
+      if (c == e) {
         break;
-      else if (c instanceof Element)
+      } else if (c instanceof Element) {
         ndx++;
+      }
     }
-    if (Utilities.noString(s))
+    if (Utilities.noString(s)) {
       s = "?? - G " + p.getAttribute("name") + "[" + Integer.toString(ndx + 1) + "]";
-    else
+    } else {
       s = s + " - G " + p.getAttribute("name") + "[" + Integer.toString(ndx + 1) + "]";
+    }
     return s;
   }
 
@@ -145,7 +147,7 @@ public class FHIRPathTests {
   public void test(String name, Element test) throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
     // Setting timezone for this test. Grahame is in UTC+11, Travis is in GMT, and I'm here in Toronto, Canada with
     // all my time based tests failing locally...
-    TimeZone.setDefault(TimeZone.getTimeZone("UTC+1100"));
+     TimeZone.setDefault(TimeZone.getTimeZone("UTC+1100"));
 
     fp.setHostServices(new FHIRPathTestEvaluationServices());
     String input = test.getAttribute("inputfile");
@@ -157,9 +159,9 @@ public class FHIRPathTests {
 
     ExpressionNode node = fp.parse(expression);
     try {
-      if (Utilities.noString(input))
+      if (Utilities.noString(input)) {
         fp.check(null, null, node);
-      else {
+      } else {
         res = resources.get(input);
         if (res == null) {
           res = new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", input));
@@ -178,8 +180,11 @@ public class FHIRPathTests {
       outcome.clear();
       outcome.add(new BooleanType(ok));
     }
-    if (fp.hasLog())
+    System.out.println(name);
+    if (fp.hasLog()) {
+      System.out.println(name);
       System.out.println(fp.takeLog());
+    }
 
     List<Element> expected = new ArrayList<Element>();
     XMLUtil.getNamedChildren(test, "output", expected);
@@ -188,15 +193,17 @@ public class FHIRPathTests {
       for (int i = 0; i < Math.min(outcome.size(), expected.size()); i++) {
         String tn = outcome.get(i).fhirType();
         String s;
-        if (outcome.get(i) instanceof Quantity)
+        if (outcome.get(i) instanceof Quantity) {
           s = fp.convertToString(outcome.get(i));
-        else
+        } else {
           s = ((PrimitiveType) outcome.get(i)).asStringValue();
+        }
         boolean found = false;
         for (Element e : expected) {
           if ((Utilities.noString(e.getAttribute("type")) || e.getAttribute("type").equals(tn)) &&
-            (Utilities.noString(e.getTextContent()) || e.getTextContent().equals(s)))
+              (Utilities.noString(e.getTextContent()) || e.getTextContent().equals(s))) {
             found = true;
+          }
         }
         Assertions.assertTrue(found, String.format("Outcome %d: Value %s of type %s not expected for %s", i, s, tn, expression));
       }
@@ -214,6 +221,7 @@ public class FHIRPathTests {
           } else {
             Assertions.assertTrue(outcome.get(i) instanceof PrimitiveType, String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()));
             if (!(v.equals(((PrimitiveType) outcome.get(i)).asStringValue()))) {
+              System.out.println(name);
               System.out.println(String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));
             }
             Assertions.assertEquals(v, ((PrimitiveType) outcome.get(i)).asStringValue(), String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));

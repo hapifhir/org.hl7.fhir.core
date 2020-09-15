@@ -1,5 +1,9 @@
 package org.hl7.fhir.r5.model;
 
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -76,5 +80,68 @@ public class TimeType extends PrimitiveType<String> {
 	public String fhirType() {
 		return "time";
 	}
+
+  public int getHour() {
+    String v = getValue();
+    if (v.length() < 2) {
+      return 0;
+    }
+    v = v.substring(0, 2);
+    if (!Utilities.isInteger(v)) {
+      return 0;
+    }
+    return Integer.parseInt(v);
+  }
+
+  public int getMinute() {
+    String v = getValue();
+    if (v.length() < 5) {
+      return 0;
+    }
+    v = v.substring(3, 5);
+    if (!Utilities.isInteger(v)) {
+      return 0;
+    }
+    return Integer.parseInt(v);
+  }
+
+  public float getSecond() {
+    String v = getValue();
+    if (v.length() < 8) {
+      return 0;
+    }
+    v = v.substring(6);
+    if (!Utilities.isDecimal(v, false, true)) {
+      return 0;
+    }
+    return Float.parseFloat(v);
+  }
+
+  public TemporalPrecisionEnum getPrecision() {
+    String v = getValue();
+//    if (v.length() == 2) {
+//      return TemporalPrecisionEnum.HOUR;
+//    }
+    if (v.length() == 5) {
+      return TemporalPrecisionEnum.MINUTE;
+    }
+    if (v.length() == 8) {
+      return TemporalPrecisionEnum.SECOND;
+    }
+    if (v.length() > 9) {
+      return TemporalPrecisionEnum.MILLI;
+    }
+   
+    return null;
+  }
+
+  public void setPrecision(TemporalPrecisionEnum temp) {
+    if (temp == TemporalPrecisionEnum.MINUTE) {
+      setValue(getValue().substring(0, 5));
+    }
+    if (temp == TemporalPrecisionEnum.SECOND) {
+      setValue(getValue().substring(0, 8));
+    }
+  }
 
 }

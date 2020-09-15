@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,25 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Enumerations.SubscriptionSearchModifier;
-import org.hl7.fhir.r5.model.Enumerations.SubscriptionSearchModifierEnumFactory;
-import org.hl7.fhir.r5.model.Enumerations.SubscriptionState;
-import org.hl7.fhir.r5.model.Enumerations.SubscriptionStateEnumFactory;
 import org.hl7.fhir.utilities.Utilities;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.r5.model.Enumerations.*;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * The subscription resource describes a particular client's request to be notified about a SubscriptionTopic.
@@ -549,17 +545,9 @@ public class Subscription extends DomainResource {
     protected List<SubscriptionFilterByComponent> filterBy;
 
     /**
-     * A record of the last error that occurred when the server processed a notification.
-     */
-    @Child(name = "error", type = {CodeableConcept.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Latest error code or note", formalDefinition="A record of the last error that occurred when the server processed a notification." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-error")
-    protected List<CodeableConcept> error;
-
-    /**
      * The type of channel to send notifications on.
      */
-    @Child(name = "channelType", type = {Coding.class}, order=9, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "channelType", type = {Coding.class}, order=8, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Channel type for notifications", formalDefinition="The type of channel to send notifications on." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-channel-type")
     protected Coding channelType;
@@ -567,35 +555,35 @@ public class Subscription extends DomainResource {
     /**
      * The url that describes the actual end-point to send messages to.
      */
-    @Child(name = "endpoint", type = {UrlType.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "endpoint", type = {UrlType.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Where the channel points to", formalDefinition="The url that describes the actual end-point to send messages to." )
     protected UrlType endpoint;
 
     /**
      * Additional headers / information to send as part of the notification.
      */
-    @Child(name = "header", type = {StringType.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "header", type = {StringType.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Usage depends on the channel type", formalDefinition="Additional headers / information to send as part of the notification." )
     protected List<StringType> header;
 
     /**
      * If present,  a 'hearbeat" notification (keepalive) is sent via this channel with an the interval period equal to this elements integer value in seconds.    If not present, a heartbeat notification is not sent.
      */
-    @Child(name = "heartbeatPeriod", type = {UnsignedIntType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "heartbeatPeriod", type = {UnsignedIntType.class}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Interval in seconds to send 'heartbeat' notification", formalDefinition="If present,  a 'hearbeat\" notification (keepalive) is sent via this channel with an the interval period equal to this elements integer value in seconds.    If not present, a heartbeat notification is not sent." )
     protected UnsignedIntType heartbeatPeriod;
 
     /**
      * If present, the maximum amount of time a server will allow before failing a notification attempt.
      */
-    @Child(name = "timeout", type = {UnsignedIntType.class}, order=13, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "timeout", type = {UnsignedIntType.class}, order=12, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Timeout in seconds to attempt notification delivery", formalDefinition="If present, the maximum amount of time a server will allow before failing a notification attempt." )
     protected UnsignedIntType timeout;
 
     /**
      * The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types "text/plain" and "text/html" may also be used for Email subscriptions.
      */
-    @Child(name = "contentType", type = {CodeType.class}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "contentType", type = {CodeType.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="MIME type to send, or omit for no payload", formalDefinition="The mime type to send the payload in - either application/fhir+xml, or application/fhir+json. The MIME types \"text/plain\" and \"text/html\" may also be used for Email subscriptions." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/mimetypes")
     protected CodeType contentType;
@@ -603,12 +591,12 @@ public class Subscription extends DomainResource {
     /**
      * How much of the resource content to deliver in the notification payload. The choices are an empty payload, only the resource id, or the full resource content.
      */
-    @Child(name = "content", type = {CodeType.class}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "content", type = {CodeType.class}, order=14, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="empty | id-only | full-resource", formalDefinition="How much of the resource content to deliver in the notification payload. The choices are an empty payload, only the resource id, or the full resource content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/subscription-payload-content")
     protected Enumeration<SubscriptionPayloadContent> content;
 
-    private static final long serialVersionUID = -779068822L;
+    private static final long serialVersionUID = 753899441L;
 
   /**
    * Constructor
@@ -1003,59 +991,6 @@ public class Subscription extends DomainResource {
     }
 
     /**
-     * @return {@link #error} (A record of the last error that occurred when the server processed a notification.)
-     */
-    public List<CodeableConcept> getError() { 
-      if (this.error == null)
-        this.error = new ArrayList<CodeableConcept>();
-      return this.error;
-    }
-
-    /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
-     */
-    public Subscription setError(List<CodeableConcept> theError) { 
-      this.error = theError;
-      return this;
-    }
-
-    public boolean hasError() { 
-      if (this.error == null)
-        return false;
-      for (CodeableConcept item : this.error)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public CodeableConcept addError() { //3
-      CodeableConcept t = new CodeableConcept();
-      if (this.error == null)
-        this.error = new ArrayList<CodeableConcept>();
-      this.error.add(t);
-      return t;
-    }
-
-    public Subscription addError(CodeableConcept t) { //3
-      if (t == null)
-        return this;
-      if (this.error == null)
-        this.error = new ArrayList<CodeableConcept>();
-      this.error.add(t);
-      return this;
-    }
-
-    /**
-     * @return The first repetition of repeating field {@link #error}, creating it if it does not already exist {3}
-     */
-    public CodeableConcept getErrorFirstRep() { 
-      if (getError().isEmpty()) {
-        addError();
-      }
-      return getError().get(0);
-    }
-
-    /**
      * @return {@link #channelType} (The type of channel to send notifications on.)
      */
     public Coding getChannelType() { 
@@ -1387,7 +1322,6 @@ public class Subscription extends DomainResource {
         children.add(new Property("end", "instant", "The time for the server to turn the subscription off.", 0, 1, end));
         children.add(new Property("reason", "string", "A description of why this subscription is defined.", 0, 1, reason));
         children.add(new Property("filterBy", "", "The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions are met; otherwise it returns false.   (i.e., logical AND).", 0, java.lang.Integer.MAX_VALUE, filterBy));
-        children.add(new Property("error", "CodeableConcept", "A record of the last error that occurred when the server processed a notification.", 0, java.lang.Integer.MAX_VALUE, error));
         children.add(new Property("channelType", "Coding", "The type of channel to send notifications on.", 0, 1, channelType));
         children.add(new Property("endpoint", "url", "The url that describes the actual end-point to send messages to.", 0, 1, endpoint));
         children.add(new Property("header", "string", "Additional headers / information to send as part of the notification.", 0, java.lang.Integer.MAX_VALUE, header));
@@ -1408,7 +1342,6 @@ public class Subscription extends DomainResource {
         case 100571: /*end*/  return new Property("end", "instant", "The time for the server to turn the subscription off.", 0, 1, end);
         case -934964668: /*reason*/  return new Property("reason", "string", "A description of why this subscription is defined.", 0, 1, reason);
         case -721168913: /*filterBy*/  return new Property("filterBy", "", "The filter properties to be applied to narrow the subscription topic stream.  When multiple filters are applied, evaluates to true if all the conditions are met; otherwise it returns false.   (i.e., logical AND).", 0, java.lang.Integer.MAX_VALUE, filterBy);
-        case 96784904: /*error*/  return new Property("error", "CodeableConcept", "A record of the last error that occurred when the server processed a notification.", 0, java.lang.Integer.MAX_VALUE, error);
         case 274155229: /*channelType*/  return new Property("channelType", "Coding", "The type of channel to send notifications on.", 0, 1, channelType);
         case 1741102485: /*endpoint*/  return new Property("endpoint", "url", "The url that describes the actual end-point to send messages to.", 0, 1, endpoint);
         case -1221270899: /*header*/  return new Property("header", "string", "Additional headers / information to send as part of the notification.", 0, java.lang.Integer.MAX_VALUE, header);
@@ -1432,7 +1365,6 @@ public class Subscription extends DomainResource {
         case 100571: /*end*/ return this.end == null ? new Base[0] : new Base[] {this.end}; // InstantType
         case -934964668: /*reason*/ return this.reason == null ? new Base[0] : new Base[] {this.reason}; // StringType
         case -721168913: /*filterBy*/ return this.filterBy == null ? new Base[0] : this.filterBy.toArray(new Base[this.filterBy.size()]); // SubscriptionFilterByComponent
-        case 96784904: /*error*/ return this.error == null ? new Base[0] : this.error.toArray(new Base[this.error.size()]); // CodeableConcept
         case 274155229: /*channelType*/ return this.channelType == null ? new Base[0] : new Base[] {this.channelType}; // Coding
         case 1741102485: /*endpoint*/ return this.endpoint == null ? new Base[0] : new Base[] {this.endpoint}; // UrlType
         case -1221270899: /*header*/ return this.header == null ? new Base[0] : this.header.toArray(new Base[this.header.size()]); // StringType
@@ -1472,9 +1404,6 @@ public class Subscription extends DomainResource {
           return value;
         case -721168913: // filterBy
           this.getFilterBy().add((SubscriptionFilterByComponent) value); // SubscriptionFilterByComponent
-          return value;
-        case 96784904: // error
-          this.getError().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 274155229: // channelType
           this.channelType = TypeConvertor.castToCoding(value); // Coding
@@ -1522,8 +1451,6 @@ public class Subscription extends DomainResource {
           this.reason = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("filterBy")) {
           this.getFilterBy().add((SubscriptionFilterByComponent) value);
-        } else if (name.equals("error")) {
-          this.getError().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("channelType")) {
           this.channelType = TypeConvertor.castToCoding(value); // Coding
         } else if (name.equals("endpoint")) {
@@ -1555,7 +1482,6 @@ public class Subscription extends DomainResource {
         case 100571:  return getEndElement();
         case -934964668:  return getReasonElement();
         case -721168913:  return addFilterBy(); 
-        case 96784904:  return addError(); 
         case 274155229:  return getChannelType();
         case 1741102485:  return getEndpointElement();
         case -1221270899:  return addHeaderElement();
@@ -1579,7 +1505,6 @@ public class Subscription extends DomainResource {
         case 100571: /*end*/ return new String[] {"instant"};
         case -934964668: /*reason*/ return new String[] {"string"};
         case -721168913: /*filterBy*/ return new String[] {};
-        case 96784904: /*error*/ return new String[] {"CodeableConcept"};
         case 274155229: /*channelType*/ return new String[] {"Coding"};
         case 1741102485: /*endpoint*/ return new String[] {"url"};
         case -1221270899: /*header*/ return new String[] {"string"};
@@ -1618,9 +1543,6 @@ public class Subscription extends DomainResource {
         }
         else if (name.equals("filterBy")) {
           return addFilterBy();
-        }
-        else if (name.equals("error")) {
-          return addError();
         }
         else if (name.equals("channelType")) {
           this.channelType = new Coding();
@@ -1681,11 +1603,6 @@ public class Subscription extends DomainResource {
           for (SubscriptionFilterByComponent i : filterBy)
             dst.filterBy.add(i.copy());
         };
-        if (error != null) {
-          dst.error = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : error)
-            dst.error.add(i.copy());
-        };
         dst.channelType = channelType == null ? null : channelType.copy();
         dst.endpoint = endpoint == null ? null : endpoint.copy();
         if (header != null) {
@@ -1712,10 +1629,10 @@ public class Subscription extends DomainResource {
         Subscription o = (Subscription) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(name, o.name, true) && compareDeep(status, o.status, true)
            && compareDeep(topic, o.topic, true) && compareDeep(contact, o.contact, true) && compareDeep(end, o.end, true)
-           && compareDeep(reason, o.reason, true) && compareDeep(filterBy, o.filterBy, true) && compareDeep(error, o.error, true)
-           && compareDeep(channelType, o.channelType, true) && compareDeep(endpoint, o.endpoint, true) && compareDeep(header, o.header, true)
-           && compareDeep(heartbeatPeriod, o.heartbeatPeriod, true) && compareDeep(timeout, o.timeout, true)
-           && compareDeep(contentType, o.contentType, true) && compareDeep(content, o.content, true);
+           && compareDeep(reason, o.reason, true) && compareDeep(filterBy, o.filterBy, true) && compareDeep(channelType, o.channelType, true)
+           && compareDeep(endpoint, o.endpoint, true) && compareDeep(header, o.header, true) && compareDeep(heartbeatPeriod, o.heartbeatPeriod, true)
+           && compareDeep(timeout, o.timeout, true) && compareDeep(contentType, o.contentType, true) && compareDeep(content, o.content, true)
+          ;
       }
 
       @Override
@@ -1733,8 +1650,8 @@ public class Subscription extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, name, status
-          , topic, contact, end, reason, filterBy, error, channelType, endpoint, header
-          , heartbeatPeriod, timeout, contentType, content);
+          , topic, contact, end, reason, filterBy, channelType, endpoint, header, heartbeatPeriod
+          , timeout, contentType, content);
       }
 
   @Override
@@ -1844,3 +1761,4 @@ public class Subscription extends DomainResource {
 
 
 }
+

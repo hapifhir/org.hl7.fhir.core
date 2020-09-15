@@ -125,8 +125,9 @@ public class DiagnosticReportRenderer extends ResourceRenderer {
     }
 
     pw = getProperty(dr, "conclusion");
-    if (valued(pw))
+    if (valued(pw)) {
       render(x.para(), pw.value());
+    }
 
     pw = getProperty(dr, "conclusionCode");
     if (!valued(pw)) {

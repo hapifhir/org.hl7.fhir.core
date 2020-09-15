@@ -70,8 +70,8 @@ public class BaseDateTimeTypeTest {
     Assertions.assertNull(compareDateTimes("1974-12-25", "1974-12-25T12:34:00"));
     Assertions.assertNull(compareDateTimes("1974-12-25T12:34:00", "1974-12-25"));
     Assertions.assertNull(compareDateTimes("2012-04-15T10:00:00", "2012-04-15"));
-    Assertions.assertFalse(compareDateTimes("2012-04-15T15:00:00Z", "2012-04-15T10:00:00"));
-    Assertions.assertFalse(compareDateTimes("2012-04-15T10:00:00", "2012-04-15T15:00:00Z"));
+    Assertions.assertNull(compareDateTimes("2012-04-15T15:00:00Z", "2012-04-15T10:00:00"));
+    Assertions.assertNull(compareDateTimes("2012-04-15T10:00:00", "2012-04-15T15:00:00Z"));
     Assertions.assertTrue(compareDateTimes("1974-12-25", "1974-12-25"));
     Assertions.assertTrue(compareDateTimes("2012-04-15", "2012-04-15"));
     Assertions.assertTrue(compareDateTimes("2012-04-15T15:00:00+02:00", "2012-04-15T16:00:00+03:00"));
@@ -80,7 +80,7 @@ public class BaseDateTimeTypeTest {
     Assertions.assertTrue(compareDateTimes("2017-11-05T00:30:00.0-05:00", "2017-11-05T01:30:00.0-04:00"));
 
     Assertions.assertFalse(compareDateTimes("2016-12-02T13:00:00Z", "2016-11-02T10:00:00")); // no timezone, but cannot be the same time
-    Assertions.assertFalse(compareDateTimes("2016-12-02T13:00:00Z", "2016-12-02T10:00:00")); // no timezone, might be the same time
+    Assertions.assertNull(compareDateTimes("2016-12-02T13:00:00Z", "2016-12-02T10:00:00")); // no timezone, might be the same time
   }
 
   @Test
@@ -99,7 +99,6 @@ public class BaseDateTimeTypeTest {
 
 
   private Boolean compareDateTimes(String theLeft, String theRight) {
-    System.out.println("Compare " + theLeft + " to " + theRight);
     DateTimeType leftDt = new DateTimeType(theLeft);
     DateTimeType rightDt = new DateTimeType(theRight);
     return leftDt.equalsUsingFhirPathRules(rightDt);

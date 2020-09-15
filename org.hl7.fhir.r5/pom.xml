@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>org.hl7.fhir.core</artifactId>
-		<version>5.1.0</version>
+		<version>5.1.11-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>org.fhir</groupId>
 			<artifactId>ucum</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.3</version>
 			<optional>true</optional>
 		</dependency>
 
@@ -134,38 +134,29 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- JUNIT JUPITER (JUNIT5) -->
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.6.2</version>
-			<scope>test</scope>
-		</dependency>
+		<!-- JUnit Jupiter -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.6.2</version>
+			<version>${junit_jupiter_version}</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>${junit_jupiter_version}</version>
 			<scope>test</scope>
 		</dependency>
-
-<!--    <dependency>-->
-<!--        <groupId>com.atlassian.commonmark</groupId>-->
-<!--        <artifactId>commonmark</artifactId>-->
-<!--        <scope>test</scope>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--        <groupId>com.atlassian.commonmark</groupId>-->
-<!--        <artifactId>commonmark-ext-gfm-tables</artifactId>-->
-<!--        <scope>test</scope>-->
-<!--    </dependency>-->
-
+		<dependency>
+			<groupId>com.atlassian.commonmark</groupId>
+			<artifactId>commonmark</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.atlassian.commonmark</groupId>
+			<artifactId>commonmark-ext-gfm-tables</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

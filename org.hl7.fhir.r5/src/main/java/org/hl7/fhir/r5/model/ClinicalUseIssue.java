@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,19 +29,23 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Mon, May 11, 2020 09:58+1000 for FHIR vcurrent
+// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-
-import ca.uhn.fhir.model.api.annotation.Block;
-import ca.uhn.fhir.model.api.annotation.Child;
-import ca.uhn.fhir.model.api.annotation.Description;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
  * A single usage issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.
@@ -2243,10 +2245,10 @@ public class ClinicalUseIssue extends DomainResource {
     protected Enumeration<ClinicalUseIssueType> type;
 
     /**
-     * A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects Ability to Drive and Use Machines".
+     * A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects on Ability to Drive and Use Machines".
      */
     @Child(name = "category", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects Ability to Drive and Use Machines\"", formalDefinition="A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects Ability to Drive and Use Machines\"." )
+    @Description(shortDefinition="A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\"", formalDefinition="A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\"." )
     protected CodeableConcept category;
 
     /**
@@ -2257,17 +2259,17 @@ public class ClinicalUseIssue extends DomainResource {
     protected List<Reference> subject;
 
     /**
-     * General description.
+     * Whether this is a current issue or one that has been retired etc.
      */
     @Child(name = "status", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="General description", formalDefinition="General description." )
+    @Description(shortDefinition="Whether this is a current issue or one that has been retired etc", formalDefinition="Whether this is a current issue or one that has been retired etc." )
     protected CodeableConcept status;
 
     /**
-     * General description.
+     * General description of an effect (particularly for a general warning, rather than any of the more specific types such as indication) for when a distinct coded or textual description is not appropriate using  Indication.diseaseSymptomProcedure.text, Contraindication.diseaseSymptomProcedure.text etc. For example "May affect ability to drive".
      */
     @Child(name = "description", type = {MarkdownType.class}, order=5, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="General description", formalDefinition="General description." )
+    @Description(shortDefinition="General description of an effect (particularly for a general warning, rather than any of the more specific types such as indication) for when a distinct coded or textual description is not appropriate using  Indication.diseaseSymptomProcedure.text, Contraindication.diseaseSymptomProcedure.text etc. For example \"May affect ability to drive\"", formalDefinition="General description of an effect (particularly for a general warning, rather than any of the more specific types such as indication) for when a distinct coded or textual description is not appropriate using  Indication.diseaseSymptomProcedure.text, Contraindication.diseaseSymptomProcedure.text etc. For example \"May affect ability to drive\"." )
     protected MarkdownType description;
 
     /**
@@ -2421,7 +2423,7 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @return {@link #category} (A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects Ability to Drive and Use Machines".)
+     * @return {@link #category} (A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects on Ability to Drive and Use Machines".)
      */
     public CodeableConcept getCategory() { 
       if (this.category == null)
@@ -2437,7 +2439,7 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @param value {@link #category} (A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects Ability to Drive and Use Machines".)
+     * @param value {@link #category} (A categorisation of the issue, primarily for dividing warnings into subject heading areas such as "Pregnancy and Lactation", "Overdose", "Effects on Ability to Drive and Use Machines".)
      */
     public ClinicalUseIssue setCategory(CodeableConcept value) { 
       this.category = value;
@@ -2498,7 +2500,7 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (General description.)
+     * @return {@link #status} (Whether this is a current issue or one that has been retired etc.)
      */
     public CodeableConcept getStatus() { 
       if (this.status == null)
@@ -2514,7 +2516,7 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @param value {@link #status} (General description.)
+     * @param value {@link #status} (Whether this is a current issue or one that has been retired etc.)
      */
     public ClinicalUseIssue setStatus(CodeableConcept value) { 
       this.status = value;
@@ -2522,7 +2524,7 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @return {@link #description} (General description.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @return {@link #description} (General description of an effect (particularly for a general warning, rather than any of the more specific types such as indication) for when a distinct coded or textual description is not appropriate using  Indication.diseaseSymptomProcedure.text, Contraindication.diseaseSymptomProcedure.text etc. For example "May affect ability to drive".). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public MarkdownType getDescriptionElement() { 
       if (this.description == null)
@@ -2542,7 +2544,7 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @param value {@link #description} (General description.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
+     * @param value {@link #description} (General description of an effect (particularly for a general warning, rather than any of the more specific types such as indication) for when a distinct coded or textual description is not appropriate using  Indication.diseaseSymptomProcedure.text, Contraindication.diseaseSymptomProcedure.text etc. For example "May affect ability to drive".). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public ClinicalUseIssue setDescriptionElement(MarkdownType value) { 
       this.description = value;
@@ -2550,14 +2552,14 @@ public class ClinicalUseIssue extends DomainResource {
     }
 
     /**
-     * @return General description.
+     * @return General description of an effect (particularly for a general warning, rather than any of the more specific types such as indication) for when a distinct coded or textual description is not appropriate using  Indication.diseaseSymptomProcedure.text, Contraindication.diseaseSymptomProcedure.text etc. For example "May affect ability to drive".
      */
     public String getDescription() { 
       return this.description == null ? null : this.description.getValue();
     }
 
     /**
-     * @param value General description.
+     * @param value General description of an effect (particularly for a general warning, rather than any of the more specific types such as indication) for when a distinct coded or textual description is not appropriate using  Indication.diseaseSymptomProcedure.text, Contraindication.diseaseSymptomProcedure.text etc. For example "May affect ability to drive".
      */
     public ClinicalUseIssue setDescription(String value) { 
       if (value == null)
@@ -2723,10 +2725,10 @@ public class ClinicalUseIssue extends DomainResource {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Business identifier for this issue.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | warning.", 0, 1, type));
-        children.add(new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects Ability to Drive and Use Machines\".", 0, 1, category));
+        children.add(new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\".", 0, 1, category));
         children.add(new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance)", "The medication or procedure for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject));
-        children.add(new Property("status", "CodeableConcept", "General description.", 0, 1, status));
-        children.add(new Property("description", "markdown", "General description.", 0, 1, description));
+        children.add(new Property("status", "CodeableConcept", "Whether this is a current issue or one that has been retired etc.", 0, 1, status));
+        children.add(new Property("description", "markdown", "General description of an effect (particularly for a general warning, rather than any of the more specific types such as indication) for when a distinct coded or textual description is not appropriate using  Indication.diseaseSymptomProcedure.text, Contraindication.diseaseSymptomProcedure.text etc. For example \"May affect ability to drive\".", 0, 1, description));
         children.add(new Property("contraindication", "", "Specifics for when this is a contraindication.", 0, 1, contraindication));
         children.add(new Property("indication", "", "Specifics for when this is an indication.", 0, 1, indication));
         children.add(new Property("interaction", "", "Specifics for when this is an interaction.", 0, 1, interaction));
@@ -2739,10 +2741,10 @@ public class ClinicalUseIssue extends DomainResource {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Business identifier for this issue.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 3575610: /*type*/  return new Property("type", "code", "indication | contraindication | interaction | undesirable-effect | warning.", 0, 1, type);
-        case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects Ability to Drive and Use Machines\".", 0, 1, category);
+        case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A categorisation of the issue, primarily for dividing warnings into subject heading areas such as \"Pregnancy and Lactation\", \"Overdose\", \"Effects on Ability to Drive and Use Machines\".", 0, 1, category);
         case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition|Medication|ActivityDefinition|PlanDefinition|Device|DeviceDefinition|Substance)", "The medication or procedure for which this is an indication.", 0, java.lang.Integer.MAX_VALUE, subject);
-        case -892481550: /*status*/  return new Property("status", "CodeableConcept", "General description.", 0, 1, status);
-        case -1724546052: /*description*/  return new Property("description", "markdown", "General description.", 0, 1, description);
+        case -892481550: /*status*/  return new Property("status", "CodeableConcept", "Whether this is a current issue or one that has been retired etc.", 0, 1, status);
+        case -1724546052: /*description*/  return new Property("description", "markdown", "General description of an effect (particularly for a general warning, rather than any of the more specific types such as indication) for when a distinct coded or textual description is not appropriate using  Indication.diseaseSymptomProcedure.text, Contraindication.diseaseSymptomProcedure.text etc. For example \"May affect ability to drive\".", 0, 1, description);
         case 107135229: /*contraindication*/  return new Property("contraindication", "", "Specifics for when this is a contraindication.", 0, 1, contraindication);
         case -597168804: /*indication*/  return new Property("indication", "", "Specifics for when this is an indication.", 0, 1, indication);
         case 1844104722: /*interaction*/  return new Property("interaction", "", "Specifics for when this is an interaction.", 0, 1, interaction);
@@ -3178,3 +3180,4 @@ public class ClinicalUseIssue extends DomainResource {
 
 
 }
+

@@ -82,14 +82,9 @@ public abstract class CanonicalResourceComparer extends ResourceComparer {
 
     @Override
     protected String toTable() {
-      String s = null;
-      if (left != null && right != null && !left.getUrl().equals(right.getUrl())) {
-        s = "<td>"+left.getUrl()+"</td><td>"+right.getUrl()+"</td>";
-      } else if (left != null) {
-        s = "<td colspan=2>"+left.getUrl()+"</td>";        
-      } else {
-        s = "<td colspan=2>"+right.getUrl()+"</td>";        
-      }
+      String s = "";
+      s = s + refCell(left);
+      s = s + refCell(right);
       s = s + "<td><a href=\""+getId()+".html\">Comparison</a></td>";
       s = s + "<td>"+outcomeSummary()+"</td>";
       return "<tr style=\"background-color: "+color()+"\">"+s+"</tr>\r\n";

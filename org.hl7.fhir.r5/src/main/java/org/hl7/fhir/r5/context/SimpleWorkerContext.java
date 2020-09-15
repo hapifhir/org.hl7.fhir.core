@@ -63,6 +63,7 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Resource;
@@ -77,6 +78,7 @@ import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.BasePackageCacheManager;
@@ -100,7 +102,7 @@ import ca.uhn.fhir.parser.DataFormatException;
 
 public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerContext, ProfileKnowledgeProvider {
 
-  public class PackageResourceLoader extends CanonicalResourceProxy {
+  public static class PackageResourceLoader extends CanonicalResourceProxy {
 
     private String filename;
     private IContextResourceLoader loader;
@@ -293,7 +295,9 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         txLog = new HTMLClientLogger(log);
       }
       txClient.setLogger(txLog);
-      return txClient.getCapabilitiesStatementQuick().getSoftware().getVersion();
+      CapabilityStatement cps = txClient.getCapabilitiesStatementQuick();
+      setTxCaps(txClient.getTerminologyCapabilities());
+      return cps.getSoftware().getVersion();
     } catch (Exception e) {
       throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__, e.getMessage()), e);
     }
@@ -420,10 +424,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     if (progress) {
       System.out.println("Load Package "+pi.name()+"#"+pi.version());
     }
+    if (loadedPackages.contains(pi.id()+"#"+pi.version())) {
+      return 0;
+    }
     loadedPackages.add(pi.id()+"#"+pi.version());
 
     
-    if (types.length == 0 &&  loader != null) {
+    if ((types == null || types.length == 0) &&  loader != null) {
       types = loader.getTypes();
     }
     if (VersionUtilities.isR2Ver(pi.fhirVersion()) || !pi.canLazyLoad()) {
@@ -431,7 +438,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       if (types.length == 0) {
         types = new String[] { "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem" };
       }
-      for (String s : pi.listResources(loader.getTypes())) {
+      for (String s : pi.listResources(types)) {
         try {
           loadDefinitionItem(s, pi.load("package", s), loader, null, new PackageVersion(pi.id(), pi.version()));
           t++;
@@ -804,9 +811,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return loadedPackages.contains(id+"#"+ver);
   }
 
-
-
- 
-
-
+  public void setClock(TimeTracker tt) {
+    clock = tt;
+    
+  }
 }
