@@ -663,21 +663,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
     addLangaugesToRow(c, langs, tr);
-//    !
-//    for (Extension ext : c.getExtension()) {
-//      if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
-//        String lang = ToolingExtensions.readStringExtension(ext,  "lang");
-//        if (!Utilities.noString(lang) && !langs.contains(lang)) {
-//          langs.add(lang);
-//        }
-//      }
-//    }
-//    for (ConceptReferenceDesignationComponent d : c.getDesignation()) {
-//      String lang = d.getLanguage();
-//      if (!Utilities.noString(lang) && !langs.contains(lang)) {
-//        langs.add(lang);
-//      }
-//    }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
       addExpansionRowToTable(t, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs, doLangs);
     }
