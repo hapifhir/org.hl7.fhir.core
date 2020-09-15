@@ -528,6 +528,8 @@ public class I18nConstants {
   public static final String UNSUPPORTED_FIXED_PATTERN_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__ = "Unsupported_fixed_pattern_type_for_discriminator_for_slice__";
   public static final String UNSUPPORTED_FIXED_VALUE_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__ = "Unsupported_fixed_value_type_for_discriminator_for_slice__";
   public static final String UNSUPPORTED_IDENTIFIER_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_ = "Unsupported_Identifier_pattern__extensions_are_not_allowed__for_discriminator_for_slice_";
+  public static final String UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE = "UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE";
+  public static final String UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE = "UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE";
   public static final String UNSUPPORTED_VERSION_R1 = "Unsupported_version_R1";
   public static final String UNSUPPORTED_VERSION_R2 = "Unsupported_version_R2";
   public static final String UNSUPPORTED_VERSION_R2B = "Unsupported_version_R2B";

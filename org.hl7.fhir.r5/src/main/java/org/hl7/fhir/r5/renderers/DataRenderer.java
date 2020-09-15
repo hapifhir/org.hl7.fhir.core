@@ -1025,7 +1025,9 @@ public class DataRenderer extends Renderer {
   public XhtmlNode makeExceptionXhtml(Exception e, String function) {
     XhtmlNode xn;
     xn = new XhtmlNode(NodeType.Element, "div");
-    xn.para().b().tx("Exception "+function+": "+e.getMessage()).addComment(getStackTrace(e));
+    XhtmlNode p = xn.para();
+    p.b().tx("Exception "+function+": "+e.getMessage());
+    p.addComment(getStackTrace(e));
     return xn;
   }
 

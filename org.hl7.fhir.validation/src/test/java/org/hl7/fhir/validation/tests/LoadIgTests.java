@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import net.sf.saxon.expr.instruct.Message;
 
-public class TestLoadIg {
+public class LoadIgTests {
   
   @Test
   public void testPackage() {

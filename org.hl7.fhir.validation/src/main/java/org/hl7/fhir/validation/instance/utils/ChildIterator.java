@@ -96,6 +96,7 @@ public class ChildIterator {
         String n = name();
         String fn = "";
         if (element().getProperty().isChoice()) {
+          if (element().getProperty().getName().endsWith("[x]")) {
             String en = element().getProperty().getName();
             en = en.substring(0, en.length() - 3);
             String t = n.substring(en.length());
@@ -103,6 +104,9 @@ public class ChildIterator {
                 t = Utilities.uncapitalize(t);
             n = en;
             fn = ".ofType(" + t + ")";
+          } else {
+             // nothing to do? 
+          }
         }
         if (i > -1 || (element().getSpecial() == null && element().isList())) {
             sfx = "[" + Integer.toString(lastCount) + "]";

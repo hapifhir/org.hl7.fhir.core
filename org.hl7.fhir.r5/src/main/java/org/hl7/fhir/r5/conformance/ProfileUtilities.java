@@ -514,7 +514,6 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
     checkNotGenerating(base, "Base for generating a snapshot for the profile "+derived.getUrl());
     checkNotGenerating(derived, "Focus for generating a snapshot");
-    derived.setUserData("profileutils.snapshot.generating", true);
 
     if (!base.hasType()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.BASE_PROFILE__HAS_NO_TYPE, base.getUrl()));
@@ -532,6 +531,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (snapshotStack.contains(derived.getUrl())) {
       throw new DefinitionException(context.formatMessage(I18nConstants.CIRCULAR_SNAPSHOT_REFERENCES_DETECTED_CANNOT_GENERATE_SNAPSHOT_STACK__, snapshotStack.toString()));
     }
+    derived.setUserData("profileutils.snapshot.generating", true);
     snapshotStack.add(derived.getUrl());
 
     if (!Utilities.noString(webUrl) && !webUrl.endsWith("/"))
@@ -695,6 +695,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     } catch (Exception e) {
       // if we had an exception generating the snapshot, make sure we don't leave any half generated snapshot behind
       derived.setSnapshot(null);
+      derived.clearUserData("profileutils.snapshot.generating");
       throw e;
     }
     derived.clearUserData("profileutils.snapshot.generating");
@@ -786,7 +787,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         throw new FHIRException(context.formatMessage(I18nConstants.NO_PATH_VALUE_ON_ELEMENT_IN_DIFFERENTIAL_IN_, url));
       }
       if (!((first && type.equals(p)) || p.startsWith(type+"."))) {
-        throw new FHIRException(context.formatMessage(I18nConstants.ILLEGAL_PATH__IN_DIFFERENTIAL_IN__MUST_START_WITH_, p, url, type, (first ? " (o be '"+type+"')" : "")));
+        throw new FHIRException(context.formatMessage(I18nConstants.ILLEGAL_PATH__IN_DIFFERENTIAL_IN__MUST_START_WITH_, p, url, type, (first ? " (or be '"+type+"')" : "")));
       }
       if (p.contains(".")) {
         // Element names (the parts of a path delineated by the '.' character) SHALL NOT contain whitespace (i.e. Unicode characters marked as whitespace)
@@ -2884,7 +2885,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             StructureDefinition sd = context.fetchRawProfile(url);
             if (sd == null) {
               if (messages != null) {
-                messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, purl+"#"+derived.getPath(), "Connect check whether the target profile "+url+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
+                messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.BUSINESSRULE, purl+"#"+derived.getPath(), "Cannot check whether the target profile "+url+" is valid constraint on the base because it is not known", IssueSeverity.WARNING));
               }
               url = null;
               tgtOk = true; // suppress error message
@@ -6096,7 +6097,12 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (!c.hasExpression()) {
       return null;
     }
-    ExpressionNode expr = fpe.parse(c.getExpression());
+    ExpressionNode expr = null;
+    try {
+      expr = fpe.parse(c.getExpression());
+    } catch (Exception e) {
+      return null;
+    }
     if (expr.getKind() != Kind.Group || expr.getOpNext() == null || !(expr.getOperation() == Operation.Equals || expr.getOperation() == Operation.LessOrEqual)) {
       return null;      
     }

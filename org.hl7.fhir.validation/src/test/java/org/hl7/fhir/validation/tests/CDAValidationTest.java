@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public class CDAValidationTestCase {
+public class CDAValidationTest {
 
   private SimpleWorkerContext context;
 
