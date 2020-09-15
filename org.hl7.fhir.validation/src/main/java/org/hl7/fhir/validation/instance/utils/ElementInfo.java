@@ -111,11 +111,6 @@ public class ElementInfo {
         return path;
     }
 
-    public ElementInfo setPath(String path) {
-        this.path = path;
-        return this;
-    }
-
     public int col() {
     return element.col();
   }

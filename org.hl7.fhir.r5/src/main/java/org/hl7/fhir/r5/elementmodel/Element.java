@@ -930,6 +930,14 @@ public class Element extends Base {
   
   public boolean hasParentForValidator() {
     return hasParentForValidator;
+  }
+
+  public void clear() {
+    comments = null;
+    children.clear();;
+    property = null;
+    elementProperty = null;
+    xhtml = null;
   }  
   
 }
