@@ -9,6 +9,11 @@ public class ExpressionBuilder {
     mBuilder = new StringBuilder(initial);
   }
 
+  /**
+   * Works similar to the {@link StringBuilder} class, with the exception that it will detect leading '(', closing
+   * ')' characters, and will insert ' and ' keywords as required.
+   * @param s {@link String} to append.
+   */
   public ExpressionBuilder append(String s) {
     if (!firstCoding && (s.charAt(0) != ')')) {
       mBuilder.append(" and ");
@@ -24,10 +29,18 @@ public class ExpressionBuilder {
     return this;
   }
 
+  /**
+   * Ignores any current tracked expression state, and appends the passed in {@link String} as is.
+   * @param s {@link String} to append.
+   */
   public void forceAppend(String s) {
     mBuilder.append(s);
   }
 
+  /**
+   * Returns {@link Boolean#TRUE} if the next appended {@link String} will be treated as a first coding.
+   * @return
+   */
   public Boolean isFirstCoding() {
     return firstCoding;
   }
