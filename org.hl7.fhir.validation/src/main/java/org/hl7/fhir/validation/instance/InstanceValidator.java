@@ -3436,8 +3436,16 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       Identifier ii = (Identifier) pattern;
       expression.append(" and ");
       buildIdentifierExpression(ed, expression, discriminator, ii);
+    } else if (pattern instanceof HumanName) {
+      HumanName name = (HumanName) pattern;
+      expression.append(" and ");
+      buildHumanNameExpression(ed, expression, discriminator, name);
+    } else if (pattern instanceof Address) {
+      Address add = (Address) pattern;
+      expression.append(" and ");
+      buildAddressExpression(ed, expression, discriminator, add);
     } else {
-      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_FIXED_PATTERN_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__, discriminator, ed.getId(), pattern.getClass().getName()));
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_FIXED_PATTERN_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__, discriminator, ed.getId(), pattern.fhirType()));
     }
   }
 
@@ -3471,6 +3479,101 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       else
         expression.append(" and ");
       buildCodeableConceptExpression(ed, expression, TYPE, ii.getType());
+    }
+    if (first) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), ii.fhirType()));
+    }
+    expression.append(").exists()");
+  }
+
+  private void buildHumanNameExpression(ElementDefinition ed, StringBuilder expression, String discriminator, HumanName name) throws DefinitionException {
+    if (name.hasExtension())
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
+    boolean first = true;
+    expression.append(discriminator + ".where(");
+    if (name.hasUse()) {
+      first = false;
+      expression.append("use = '" + name.getUse().toCode() + "'");
+    }
+    if (name.hasText()) {
+      if (first)
+        first = false;
+      else
+        expression.append(" and ");
+      expression.append("text = '" + name.getText() + "'");
+    }
+    if (name.hasFamily()) {
+      if (first)
+        first = false;
+      else
+        expression.append(" and ");
+      expression.append("family = '" + name.getFamily() + "'");
+    }
+    if (name.hasGiven()) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), name.fhirType(), "given"));
+    }
+    if (name.hasPrefix()) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), name.fhirType(), "prefix"));
+    }
+    if (name.hasSuffix()) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), name.fhirType(), "suffix"));
+    }
+    if (name.hasPeriod()) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), name.fhirType(), "period"));
+    }
+    if (first) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), name.fhirType()));
+    }
+
+    expression.append(").exists()");
+  }
+
+  private void buildAddressExpression(ElementDefinition ed, StringBuilder expression, String discriminator, Address add) throws DefinitionException {
+    if (add.hasExtension()) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_, discriminator, ed.getId()));
+    }
+    boolean first = true;
+    expression.append(discriminator + ".where(");
+    if (add.hasUse()) {
+      first = false;
+      expression.append("use = '" + add.getUse().toCode() + "'");
+    }
+    if (add.hasType()) {
+      if (first) first = false; else expression.append(" and ");
+      expression.append("type = '" + add.getType().toCode() + "'");
+    }
+    if (add.hasText()) {
+      if (first) first = false; else expression.append(" and ");
+      expression.append("text = '" + add.getText() + "'");
+    }
+    if (add.hasCity()) {
+      if (first) first = false; else expression.append(" and ");
+      expression.append("city = '" + add.getCity() + "'");
+    }
+    if (add.hasDistrict()) {
+      if (first) first = false; else expression.append(" and ");
+      expression.append("district = '" + add.getDistrict() + "'");
+    }
+    if (add.hasState()) {
+      if (first) first = false; else expression.append(" and ");
+      expression.append("state = '" + add.getState() + "'");
+    }
+    if (add.hasPostalCode()) {
+      if (first) first = false; else expression.append(" and ");
+      expression.append("postalCode = '" + add.getPostalCode() + "'");
+    }
+    if (add.hasCountry()) {
+      if (first) first = false; else expression.append(" and ");
+      expression.append("country = '" + add.getCountry() + "'");
+    }       
+    if (add.hasLine()) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), add.fhirType(), "line"));
+    }
+    if (add.hasPeriod()) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), add.fhirType(), "period"));
+    }
+    if (first) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), add.fhirType()));
     }
     expression.append(").exists()");
   }
@@ -3510,6 +3613,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         else expression.append(" and ");
         expression.append("display = '" + c.getDisplay() + "'");
       }
+      if (first) {
+        throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), cc.fhirType()));
+      }
       expression.append(").exists()");
     }
   }
@@ -3538,6 +3644,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (first) first = false;
       else expression.append(" and ");
       expression.append("display = '" + c.getDisplay() + "'");
+    }
+    if (first) {
+      throw new DefinitionException(context.formatMessage(I18nConstants.UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE, discriminator, ed.getId(), c.fhirType()));
     }
     expression.append(").exists()");
   }
@@ -4137,7 +4246,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
             }
           }
-        } else if (type.equals("Resource")) {
+        } else if (type.equals("Resource") || isResource(type)) {
           validateContains(hostContext, errors, ei.getPath(), ei.definition, definition, resource, ei.getElement(), localStack, idStatusForEntry(element, ei)); // if
           elementValidated = true;
           // (str.matches(".*([.,/])work\\1$"))
@@ -4228,7 +4337,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
         if (!elementValidated) {
           if (ei.getElement().getSpecial() == SpecialElement.BUNDLE_ENTRY || ei.getElement().getSpecial() == SpecialElement.BUNDLE_OUTCOME || ei.getElement().getSpecial() == SpecialElement.PARAMETER)
-            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, ei.getElement(), ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
+            validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, ei.getElement(), ei.getElement(), type, localStack.resetIds(), thisIsCodeableConcept, checkDisplay, thisExtension);
           else
             validateElement(hostContext, errors, p, getElementByTail(p, tail), profile, ei.definition, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
         }
@@ -4240,6 +4349,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
+  }
+
+  private boolean isResource(String type) {
+    StructureDefinition sd = context.fetchTypeDefinition(type);
+    return sd != null && sd.getKind().equals(StructureDefinitionKind.RESOURCE);
   }
 
   private void trackUsage(StructureDefinition profile, ValidatorHostContext hostContext, Element element) {

@@ -70,7 +70,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 @RunWith(Parameterized.class)
-public class ValidationTestSuite implements IEvaluationContext, IValidatorResourceFetcher {
+public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher {
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
 
@@ -105,7 +105,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   private static Map<String, ValidationEngine> ve = new HashMap<>();
   private static ValidationEngine vCurr;
 
-  public ValidationTestSuite(String name, JsonObject content) {
+  public ValidationTests(String name, JsonObject content) {
     this.name = name;
     this.content = content;
   }
@@ -224,7 +224,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       else
         val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
       System.out.println(val.reportTimes());
-      checkOutcomes(errors, content, null);
+      checkOutcomes(errors, content, null, name);
     }
     if (content.has("profile")) {
       System.out.print("** Profile: ");
@@ -256,9 +256,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       else
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, asSdList(sd));
       System.out.println(val.reportTimes());
-      checkOutcomes(errorsProfile, profile, filename);
+      checkOutcomes(errorsProfile, profile, filename, name);
     }
     if (content.has("logical")) {
+      System.out.print("** Logical: ");
+
       JsonObject logical = content.getAsJsonObject("logical");
       if (logical.has("supporting")) {
         for (JsonElement e : logical.getAsJsonArray("supporting")) {
@@ -271,6 +273,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
           val.getContext().cacheResource(mr);
         }
       }
+      if (logical.has("packages")) {
+        for (JsonElement e : logical.getAsJsonArray("packages")) {
+          vCurr.loadIg(e.getAsString(), true);
+        }
+      }
       List<ValidationMessage> errorsLogical = new ArrayList<ValidationMessage>();
       Element le = val.validate(null, errorsLogical, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), (name.endsWith(".json")) ? FhirFormat.JSON : FhirFormat.XML);
       if (logical.has("expressions")) {
@@ -280,7 +287,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
           Assert.assertTrue(fp.evaluateToBoolean(null, le, le, le, fp.parse(exp)));
         }
       }
-      checkOutcomes(errorsLogical, logical, "logical");
+      checkOutcomes(errorsLogical, logical, "logical", name);
     }
   }
 
@@ -342,7 +349,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
   }
 
-  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile) {
+  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile, String name) {
     JsonObject java = focus.getAsJsonObject("java");
     int ec = 0;
     int wc = 0;

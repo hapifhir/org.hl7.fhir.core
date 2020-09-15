@@ -8,7 +8,7 @@ import org.hl7.fhir.dstu3.test.support.TestingUtilities;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.junit.jupiter.api.Test;
 
-class JsonParserTestCase {
+class JsonParserTest {
 
   @Test
   void testParseJsonNull() throws FHIRFormatError, IOException {
