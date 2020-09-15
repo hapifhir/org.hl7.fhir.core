@@ -7,7 +7,7 @@ import org.hl7.fhir.r5.conformance.LDContextGenerator;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.util.List;
@@ -20,14 +20,14 @@ public class LDContextGeneratorTests {
 
   String outputDir = System.getProperty("user.home") + java.io.File.separator + "LDContexts" + java.io.File.separator + "R5" + java.io.File.separator;
 
-  private void mkdirs() {
+  public void mkdirs() {
     File temp = new File(outputDir);
     if(temp.exists() == false) {
       temp.mkdirs();
     }
   }
 
-  private void doTest(String name) throws IOException, FHIRException {
+  public void doTest(String name) throws IOException, FHIRException {
 
     StructureDefinition sd = (StructureDefinition) TestingUtilities.context().
       fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, null));
@@ -52,7 +52,7 @@ public class LDContextGeneratorTests {
    * @throws IOException
    * @throws FHIRException
    */
-  private void doTestAll() throws IOException, FHIRException {
+  public void doTestAll() throws IOException, FHIRException {
 
     List<StructureDefinition> sds = TestingUtilities.context().allStructures();
     ConcurrentHashMap<String, String> renderedJson;
