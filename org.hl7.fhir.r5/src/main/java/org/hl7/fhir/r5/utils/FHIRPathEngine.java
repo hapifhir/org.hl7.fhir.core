@@ -105,6 +105,7 @@ import ca.uhn.fhir.util.ElementUtil;
  *
  */
 public class FHIRPathEngine {
+  
   private enum Equality { Null, True, False }
 
   private class FHIRConstant extends Base {
@@ -211,6 +212,7 @@ public class FHIRPathEngine {
   private ValidationOptions terminologyServiceOptions = new ValidationOptions();
   private ProfileUtilities profileUtilities;
   private String location; // for error messages
+  private boolean allowPolymorphicNames;
 
   // if the fhir path expressions are allowed to use constants beyond those defined in the specification
   // the application can implement them by providing a constant resolver 
@@ -372,10 +374,24 @@ public class FHIRPathEngine {
 	 * @throws FHIRException 
 	 */
   protected void getChildrenByName(Base item, String name, List<Base> result) throws FHIRException {
+    String tn = null;
+    if (isAllowPolymorphicNames()) {
+      // we'll look to see whether we hav a polymorphic name 
+      for (Property p : item.children()) {
+        if (p.getName().endsWith("[x]")) {
+          String n = p.getName().substring(0, p.getName().length()-3);
+          if (name.startsWith(n)) {
+            tn = name.substring(n.length());
+            name = n;
+            break;            
+          }
+        }
+      }
+    }
     Base[] list = item.listChildrenByName(name, false);
     if (list != null) {
       for (Base v : list) {
-        if (v != null) {
+        if (v != null && (tn == null || v.fhirType().equalsIgnoreCase(tn))) {
           result.add(v);
         }
       }
@@ -5166,7 +5182,7 @@ public class FHIRPathEngine {
         } else {
           path = sdi.getSnapshot().getElement().get(0).getPath()+tail+"."+name;
 
-          ElementDefinitionMatch ed = getElementDefinition(sdi, path, false);
+          ElementDefinitionMatch ed = getElementDefinition(sdi, path, isAllowPolymorphicNames());
           if (ed != null) {
             if (!Utilities.noString(ed.getFixedType()))
               result.addType(ed.getFixedType());
@@ -5556,5 +5572,14 @@ public class FHIRPathEngine {
   public IWorkerContext getWorker() {
     return worker;
   }
+
+  public boolean isAllowPolymorphicNames() {
+    return allowPolymorphicNames;
+  }
+
+  public void setAllowPolymorphicNames(boolean allowPolymorphicNames) {
+    this.allowPolymorphicNames = allowPolymorphicNames;
+  }
+  
   
 }
