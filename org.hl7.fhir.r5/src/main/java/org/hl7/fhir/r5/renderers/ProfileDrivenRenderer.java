@@ -106,13 +106,14 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     }
     try {
       StructureDefinition sd = r.getDefinition();
-      ElementDefinition ed = sd.getSnapshot().getElement().get(0);
-      if (sd.getType().equals("NamingSystem") && "icd10".equals(r.getId())) {
-        System.out.println("hah!");
+      if (sd == null) {
+        throw new FHIRException("Cannot find definition for "+r.fhirType());
+      } else {
+        ElementDefinition ed = sd.getSnapshot().getElement().get(0);
+        containedIds.clear();
+        hasExtensions = false;
+        generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), false, 0);
       }
-      containedIds.clear();
-      hasExtensions = false;
-      generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), false, 0);
     } catch (Exception e) {
       e.printStackTrace();
       x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
