@@ -3943,15 +3943,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void validateContains(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, ElementDefinition child, ElementDefinition context, Element resource, Element element, NodeStack stack, IdStatus idstatus) throws FHIRException {
     String resourceName = element.getType();
     TypeRefComponent trr = null;
+    CommaSeparatedStringBuilder bt = new CommaSeparatedStringBuilder();
     for (TypeRefComponent tr : child.getType()) {
-      if (tr.getCode().equals("Resource")) {
+      bt.append(tr.getCode());
+      if (tr.getCode().equals("Resource") || tr.getCode().equals(resourceName) ) {
         trr = tr;
         break;
       }
     }
     stack.qualifyPath(".ofType("+resourceName+")");
     if (trr == null) {
-      rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE, resourceName);
+      rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE, resourceName, bt.toString());
     } else if (isValidResourceType(resourceName, trr)) {
       // special case: resource wrapper is reset if we're crossing a bundle boundary, but not otherwise
       ValidatorHostContext hc = null;
@@ -4002,7 +4004,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean isValidResourceType(String type, TypeRefComponent def) {
-    if (!def.hasProfile()) {
+    if (!def.hasProfile() && def.getCode().equals("Resource")) {
+      return true;
+    }
+    if (def.getCode().equals(type)) {
       return true;
     }
     List<StructureDefinition> list = new ArrayList<>();
