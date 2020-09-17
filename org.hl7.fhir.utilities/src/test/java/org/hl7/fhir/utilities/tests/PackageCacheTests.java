@@ -37,4 +37,14 @@ public class PackageCacheTests {
     list = cache.listPackages();
     Assertions.assertFalse(list.isEmpty());
   }
+  
+  @Test
+  public void testPatchWildCard() throws IOException {
+    FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    cache.clear();    
+    Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.1.0").version(), "3.1.0");
+    Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.1.1").version(), "3.1.1");
+    Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.1.x").version(), "3.1.1");
+    Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.0.x").version(), "3.0.1");
+  }
 }
