@@ -3853,7 +3853,7 @@ public class FHIRPathEngine {
     } else {// (exp.getParameters().size() == 0) {
       boolean all = true;
       for (Base item : focus) {
-        Equality eq = asBool(item);
+        Equality eq = asBool(item, true);
         if (eq != Equality.True) {
           all = false;
           break;
@@ -4471,7 +4471,11 @@ public class FHIRPathEngine {
 	  } else { 
 	    boolean all = true;
 	    for (Base item : focus) {
-	      Equality v = asBool(item);
+	       if (!canConvertToBoolean(item)) {
+	          throw new FHIRException("Unable to convert '"+convertToString(item)+"' to a boolean");
+	        }
+
+	      Equality v = asBool(item, true);
         if (v != Equality.False) {
 	        all = false;
 	        break;
@@ -4501,7 +4505,11 @@ public class FHIRPathEngine {
 	  } else {
 	    boolean any = false;
 	    for (Base item : focus) {
-	      Equality v = asBool(item);
+	       if (!canConvertToBoolean(item)) {
+	          throw new FHIRException("Unable to convert '"+convertToString(item)+"' to a boolean");
+	        }
+
+	      Equality v = asBool(item, true);
         if (v == Equality.False) {
 	        any = true;
 	        break;
@@ -4531,8 +4539,11 @@ public class FHIRPathEngine {
 	  } else { 
 	    boolean all = true;
 	    for (Base item : focus) {
-	      Equality v = asBool(item);
-        if (v != Equality.True) {
+	      if (!canConvertToBoolean(item)) {
+	        throw new FHIRException("Unable to convert '"+convertToString(item)+"' to a boolean");
+	      }
+	      Equality v = asBool(item, true);
+	      if (v != Equality.True) {
 	        all = false;
 	        break;
 	      }
@@ -4561,7 +4572,11 @@ public class FHIRPathEngine {
 	  } else {
 	    boolean any = false;
       for (Base item : focus) {
-        Equality v = asBool(item);
+        if (!canConvertToBoolean(item)) {
+          throw new FHIRException("Unable to convert '"+convertToString(item)+"' to a boolean");
+        }
+
+        Equality v = asBool(item, true);
         if (v == Equality.True) {
 	          any = true;
 	          break;
@@ -4572,7 +4587,11 @@ public class FHIRPathEngine {
 	  return result;
 	}
 
-	private List<Base> funcTrace(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
+	private boolean canConvertToBoolean(Base item) {
+    return (item.isBooleanPrimitive);
+  }
+
+  private List<Base> funcTrace(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> nl = execute(context, focus, exp.getParameters().get(0), true);
     String name = nl.get(0).primitiveValue();
     if (exp.getParameters().size() == 2) {
@@ -5493,8 +5512,10 @@ public class FHIRPathEngine {
   private Equality asBool(List<Base> items) throws PathEngineException {
     if (items.size() == 0) {
       return Equality.Null;
+    } else if (items.size() == 1 && items.get(0).isBooleanPrimitive()) {
+      return asBool(items.get(0), true);
     } else if (items.size() == 1) {
-      return asBool(items.get(0));
+      return Equality.True; 
     } else {
       throw makeException(I18nConstants.FHIRPATH_UNABLE_BOOLEAN, convertToString(items));
     }
@@ -5528,7 +5549,7 @@ public class FHIRPathEngine {
     }
   }
 
-  private Equality asBool(Base item) {
+  private Equality asBool(Base item, boolean narrow) {
     if (item instanceof BooleanType) { 
       return boolToTriState(((BooleanType) item).booleanValue());
     } else if (item.isBooleanPrimitive()) {
@@ -5539,6 +5560,8 @@ public class FHIRPathEngine {
       } else { 
         return Equality.Null;
       }
+    } else if (narrow) {
+      return Equality.False;
     } else if (item instanceof IntegerType || Utilities.existsInList(item.fhirType(), "integer", "positiveint", "unsignedInt")) {
       return asBoolFromInt(item.primitiveValue());
     } else if (item instanceof DecimalType || Utilities.existsInList(item.fhirType(), "decimal")) {
