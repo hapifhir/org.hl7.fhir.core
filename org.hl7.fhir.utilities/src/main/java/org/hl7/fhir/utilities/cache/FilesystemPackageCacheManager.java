@@ -39,6 +39,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.cache.NpmPackage.NpmPackageFolder;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.slf4j.Logger;
@@ -283,7 +284,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   /**
-   * Load the identified package from the cache - it it exists
+   * Load the identified package from the cache - if it exists
    * <p>
    * This is for special purpose only (testing, control over speed of loading).
    * Generally, use the loadPackage method
@@ -307,10 +308,22 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         return p;
       }
     }
+    String foundPackage = null;
+    String foundVersion = null;
     for (String f : sorted(new File(cacheFolder).list())) {
       if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
         return loadPackageInfo(Utilities.path(cacheFolder, f));
       }
+      if (version!=null && version.endsWith(".x") && f.contains("#")) {
+        String[] parts = f.split("#");
+        if (parts[0].equals(id) && VersionUtilities.isMajMinOrLaterPatch((foundVersion!=null ? foundVersion : version),parts[1])) {
+          foundVersion = parts[1];
+          foundPackage = f;
+        }
+      }
+    }
+    if (foundPackage!=null) {
+      return loadPackageInfo(Utilities.path(cacheFolder, foundPackage));
     }
     if ("dev".equals(version))
       return loadPackageFromCacheOnly(id, "current");
