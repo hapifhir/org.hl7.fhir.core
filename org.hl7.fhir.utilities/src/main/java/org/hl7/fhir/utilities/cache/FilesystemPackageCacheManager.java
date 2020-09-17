@@ -311,14 +311,17 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     String foundPackage = null;
     String foundVersion = null;
     for (String f : sorted(new File(cacheFolder).list())) {
-      if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
-        return loadPackageInfo(Utilities.path(cacheFolder, f));
-      }
-      if (version!=null && version.endsWith(".x") && f.contains("#")) {
-        String[] parts = f.split("#");
-        if (parts[0].equals(id) && VersionUtilities.isMajMinOrLaterPatch((foundVersion!=null ? foundVersion : version),parts[1])) {
-          foundVersion = parts[1];
-          foundPackage = f;
+      File cf = new File(Utilities.path(cacheFolder, f));
+      if (cf.isDirectory()) {
+        if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
+          return loadPackageInfo(Utilities.path(cacheFolder, f));
+        }
+        if (version != null && version.endsWith(".x") && f.contains("#")) {
+          String[] parts = f.split("#");
+          if (parts[0].equals(id) && VersionUtilities.isMajMinOrLaterPatch((foundVersion!=null ? foundVersion : version),parts[1])) {
+            foundVersion = parts[1];
+            foundPackage = f;
+          }
         }
       }
     }
