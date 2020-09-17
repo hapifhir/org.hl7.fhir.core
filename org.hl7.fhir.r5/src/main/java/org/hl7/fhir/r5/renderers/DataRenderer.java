@@ -168,6 +168,10 @@ public class DataRenderer extends Renderer {
   }
 
   protected String describeLang(String lang) {
+    // special cases:
+    if ("fr-CA".equals(lang)) {
+      return "French (Canadian)"; // this one was omitted from the value set
+    }
     ValueSet v = getContext().getWorker().fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages");
     if (v != null) {
       ConceptReferenceComponent l = null;
@@ -176,8 +180,9 @@ public class DataRenderer extends Renderer {
           l = cc;
       }
       if (l == null) {
-        if (lang.contains("-"))
+        if (lang.contains("-")) {
           lang = lang.substring(0, lang.indexOf("-"));
+        }
         for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {
           if (cc.getCode().equals(lang) || cc.getCode().startsWith(lang+"-"))
             l = cc;
