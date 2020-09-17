@@ -4588,7 +4588,7 @@ public class FHIRPathEngine {
 	}
 
 	private boolean canConvertToBoolean(Base item) {
-    return (item.isBooleanPrimitive);
+    return (item.isBooleanPrimitive());
   }
 
   private List<Base> funcTrace(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
