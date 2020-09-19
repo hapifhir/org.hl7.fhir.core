@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-@Disabled
 public class FHIRPathTests {
 
   public class FHIRPathTestEvaluationServices implements IEvaluationContext {
@@ -135,7 +134,6 @@ public class FHIRPathTests {
   private Map<String, Resource> resources = new HashMap<String, Resource>();
 
 
-  @SuppressWarnings("deprecation")
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String name, Element test) throws FileNotFoundException, IOException, FHIRException, org.hl7.fhir.exceptions.FHIRException, UcumException {
