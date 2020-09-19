@@ -3,30 +3,30 @@ package org.hl7.fhir.r4.test.utils;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
-  Redistribution and use in source and binary forms, with or without modification, 
+
+  Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
+
+   * Redistributions of source code must retain the above copyright notice, this
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
-     endorse or promote products derived from this software without specific 
+   * Neither the name of HL7 nor the names of its contributors may be used to
+     endorse or promote products derived from this software without specific
      prior written permission.
-  
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
-  
+
  */
 
 
@@ -66,15 +66,15 @@ import com.google.gson.JsonSyntaxException;
 
 public class TestingUtilities {
   private static final boolean SHOW_DIFF = true;
-  
+
 	static public IWorkerContext fcontext;
-	
+
 	public static IWorkerContext context() {
 	  if (fcontext == null) {
 	    FilesystemPackageCacheManager pcm;
 	    try {
 	      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-	      fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.core", "4.0.0"));
+	      fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
 	      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.resourceNameToFile("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());
 	    } catch (Exception e) {
@@ -109,7 +109,7 @@ public class TestingUtilities {
       return s;
     return Utilities.path(home(), "publish");
   }
-  
+
   // diretory that contains all the US implementation guides
   public static String us() {
     if (fixedpath != null)
@@ -122,12 +122,12 @@ public class TestingUtilities {
       return s;
     throw new Error("FHIR US directory not configured");
   }
-  
+
   public static String checkXMLIsSame(InputStream f1, InputStream f2) throws Exception {
     String result = compareXml(f1, f2);
     return result;
   }
-  
+
   public static String checkXMLIsSame(String f1, String f2) throws Exception {
 		String result = compareXml(f1, f2);
 		if (result != null && SHOW_DIFF) {
@@ -138,7 +138,7 @@ public class TestingUtilities {
 	    ProcessBuilder builder = new ProcessBuilder(command);
 	    builder.directory(new CSFile("c:\\temp"));
 	    builder.start();
-			
+
 		}
 		return result;
 	}
@@ -152,9 +152,9 @@ public class TestingUtilities {
   }
 
 	private static String compareElements(String path, Element e1, Element e2) {
-		if (!e1.getNamespaceURI().equals(e2.getNamespaceURI())) 
+		if (!e1.getNamespaceURI().equals(e2.getNamespaceURI()))
 			return "Namespaces differ at "+path+": "+e1.getNamespaceURI()+"/"+e2.getNamespaceURI();
-		if (!e1.getLocalName().equals(e2.getLocalName())) 
+		if (!e1.getLocalName().equals(e2.getLocalName()))
 			return "Names differ at "+path+": "+e1.getLocalName()+"/"+e2.getLocalName();
 		path = path + "/"+e1.getLocalName();
 		String s = compareAttributes(path, e1.getAttributes(), e2.getAttributes());
@@ -169,9 +169,9 @@ public class TestingUtilities {
 		c1 = skipBlankText(c1);
 		c2 = skipBlankText(c2);
 		while (c1 != null && c2 != null) {
-			if (c1.getNodeType() != c2.getNodeType()) 
+			if (c1.getNodeType() != c2.getNodeType())
 				return "node type mismatch in children of "+path+": "+Integer.toString(e1.getNodeType())+"/"+Integer.toString(e2.getNodeType());
-			if (c1.getNodeType() == Node.TEXT_NODE) {    
+			if (c1.getNodeType() == Node.TEXT_NODE) {
 				if (!normalise(c1.getTextContent()).equals(normalise(c2.getTextContent())))
 					return "Text differs at "+path+": "+normalise(c1.getTextContent()) +"/"+ normalise(c2.getTextContent());
 			}
@@ -193,19 +193,19 @@ public class TestingUtilities {
 
 	private static Object normalise(String text) {
 		String result = text.trim().replace('\r', ' ').replace('\n', ' ').replace('\t', ' ');
-		while (result.contains("  ")) 
+		while (result.contains("  "))
 			result = result.replace("  ", " ");
 		return result;
 	}
 
 	private static String compareAttributes(String path, NamedNodeMap src, NamedNodeMap tgt) {
 	  for (int i = 0; i < src.getLength(); i++) {
-	  
+
 	    Node sa = src.item(i);
 	    String sn = sa.getNodeName();
 	    if (! (sn.equals("xmlns") || sn.startsWith("xmlns:"))) {
 	      Node ta = tgt.getNamedItem(sn);
-	      if (ta == null) 
+	      if (ta == null)
 	        return "Attributes differ at "+path+": missing attribute "+sn;
 	      if (!normalise(sa.getTextContent()).equals(normalise(ta.getTextContent()))) {
 	        byte[] b1 = unBase64(sa.getTextContent());
@@ -234,7 +234,7 @@ public class TestingUtilities {
 	}
 
 	private static Node skipBlankText(Node node) {
-	  while (node != null && (((node.getNodeType() == Node.TEXT_NODE) && Utilities.isWhitespace(node.getTextContent())) || (node.getNodeType() == Node.COMMENT_NODE))) 
+	  while (node != null && (((node.getNodeType() == Node.TEXT_NODE) && Utilities.isWhitespace(node.getTextContent())) || (node.getNodeType() == Node.COMMENT_NODE)))
 	    node = node.getNextSibling();
 	  return node;
 	}
@@ -251,7 +251,7 @@ public class TestingUtilities {
       factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
       factory.setXIncludeAware(false);
       factory.setExpandEntityReferences(false);
-        
+
     factory.setNamespaceAware(true);
       DocumentBuilder builder = factory.newDocumentBuilder();
       return builder.parse(fn);
@@ -264,7 +264,7 @@ public class TestingUtilities {
   public static String checkJsonSrcIsSame(String s1, String s2, boolean showDiff) throws JsonSyntaxException, FileNotFoundException, IOException {
     String result = compareJsonSrc(s1, s2);
     if (result != null && SHOW_DIFF && showDiff) {
-      String diff = null; 
+      String diff = null;
       if (System.getProperty("os.name").contains("Linux"))
         diff = Utilities.path("/", "usr", "bin", "meld");
       else {
@@ -275,7 +275,7 @@ public class TestingUtilities {
       }
       if (diff == null || diff.isEmpty())
     	  return result;
-      
+
       List<String> command = new ArrayList<String>();
       String f1 = Utilities.path("[tmp]", "input" + s1.hashCode() + ".json");
       String f2 = Utilities.path("[tmp]", "output" + s2.hashCode() + ".json");
@@ -290,7 +290,7 @@ public class TestingUtilities {
       ProcessBuilder builder = new ProcessBuilder(command);
       builder.directory(new CSFile(Utilities.path("[tmp]")));
       builder.start();
-      
+
     }
     return result;
   }
@@ -304,7 +304,7 @@ public class TestingUtilities {
 	    ProcessBuilder builder = new ProcessBuilder(command);
 	    builder.directory(new CSFile("c:\\temp"));
 	    builder.start();
-			
+
 		}
 		return result;
 	}
@@ -337,7 +337,7 @@ public class TestingUtilities {
 	  for (Map.Entry<String, JsonElement> en : o2.entrySet()) {
 	  	String n = en.getKey();
 	    if (!n.equals("fhir_comments")) {
-	      if (!o1.has(n)) 
+	      if (!o1.has(n))
 	        return "properties differ at "+path+": missing property "+n;
 	    }
 	  }
@@ -373,8 +373,8 @@ public class TestingUtilities {
 	  } else if (n1 instanceof JsonArray) {
 	  	JsonArray a1 = (JsonArray) n1;
 	  	JsonArray a2 = (JsonArray) n2;
-	  
-	    if (a1.size() != a2.size()) 
+
+	    if (a1.size() != a2.size())
 	      return "array properties differ at "+path+": count "+Integer.toString(a1.size())+"/"+Integer.toString(a2.size());
 	    for (int i = 0; i < a1.size(); i++) {
 	        String s = compareNodes(path+"["+Integer.toString(i)+"]", a1.get(i), a2.get(i));
@@ -383,7 +383,7 @@ public class TestingUtilities {
 	    }
 	  }
 	  else if (n1 instanceof JsonNull) {
-	  	
+
 	  } else
 	    return "unhandled property "+n1.getClass().getName();
 		return null;
@@ -402,7 +402,7 @@ public class TestingUtilities {
   public static String checkTextIsSame(String s1, String s2, boolean showDiff) throws JsonSyntaxException, FileNotFoundException, IOException {
     String result = compareText(s1, s2);
     if (result != null && SHOW_DIFF && showDiff) {
-      String diff = null; 
+      String diff = null;
       if (System.getProperty("os.name").contains("Linux"))
         diff = Utilities.path("/", "usr", "bin", "meld");
       else {
@@ -413,7 +413,7 @@ public class TestingUtilities {
       }
       if (diff == null || diff.isEmpty())
         return result;
-      
+
       List<String> command = new ArrayList<String>();
       String f1 = Utilities.path("[tmp]", "input" + s1.hashCode() + ".json");
       String f2 = Utilities.path("[tmp]", "output" + s2.hashCode() + ".json");
@@ -428,7 +428,7 @@ public class TestingUtilities {
       ProcessBuilder builder = new ProcessBuilder(command);
       builder.directory(new CSFile(Utilities.path("[tmp]")));
       builder.start();
-      
+
     }
     return result;
   }
