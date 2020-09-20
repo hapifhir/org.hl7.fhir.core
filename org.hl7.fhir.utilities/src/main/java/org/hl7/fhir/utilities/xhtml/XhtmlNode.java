@@ -38,9 +38,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.instance.model.api.IBaseXhtml;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
@@ -793,6 +797,21 @@ public class XhtmlNode implements IBaseXhtml {
 
   public boolean isPara() {
     return "p".equals(name);
+  }
+
+
+  public void markdown(String md, String source) throws IOException {
+   if (md != null) {
+      String s = new MarkDownProcessor(Dialect.COMMON_MARK).process(md, source);
+      XhtmlParser p = new XhtmlParser();
+      XhtmlNode m;
+      try {
+        m = p.parse("<div>"+s+"</div>", "div");
+      } catch (org.hl7.fhir.exceptions.FHIRFormatError e) {
+        throw new FHIRFormatError(e.getMessage(), e);
+      }
+      getChildNodes().addAll(m.getChildNodes());
+   }        
   }
 
 

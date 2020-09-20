@@ -392,6 +392,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof DataRequirement) {
       DataRequirement p = (DataRequirement) e;
       renderDataRequirement(x, p);
+    } else if (e instanceof PrimitiveType) {
+      x.tx(((PrimitiveType) e).primitiveValue());
     } else if (e instanceof ElementDefinition) {
       x.tx("todo-bundle");
     } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta)) {
