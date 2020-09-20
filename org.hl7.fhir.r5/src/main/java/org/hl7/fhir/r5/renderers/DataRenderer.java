@@ -689,9 +689,41 @@ public class DataRenderer extends Renderer {
   }
 
   protected void renderContactPoint(XhtmlNode x, ContactPoint contact) {
-    x.addText(displayContactPoint(contact));
+    if (contact != null) {
+      switch (contact.getSystem()) {
+      case EMAIL:
+        x.ah("mailto:"+contact.getValue()).tx(contact.getValue());
+        break;
+      case FAX:
+        x.addText(displayContactPoint(contact));
+        break;
+      case NULL:
+        x.addText(displayContactPoint(contact));
+        break;
+      case OTHER:
+        x.addText(displayContactPoint(contact));
+        break;
+      case PAGER:
+        x.addText(displayContactPoint(contact));
+        break;
+      case PHONE:
+        if (contact.hasValue() && contact.getValue().startsWith("+")) {
+          x.ah("tel:"+contact.getValue()).tx(contact.getValue());
+        } else {
+          x.addText(displayContactPoint(contact));
+        }
+        break;
+      case SMS:
+        x.addText(displayContactPoint(contact));
+        break;
+      case URL:
+        x.ah(contact.getValue()).tx(contact.getValue());
+        break;
+      default:
+        break;      
+      }
+    }
   }
-
 
   protected void addTelecom(XhtmlNode p, ContactPoint c) {
     if (c.getSystem() == ContactPointSystem.PHONE) {
