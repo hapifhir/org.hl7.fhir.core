@@ -90,6 +90,9 @@ public class XhtmlNode implements IBaseXhtml {
   private List<XhtmlNode> childNodes = new ArrayList<XhtmlNode>();
   private String content;
   private boolean notPretty;
+  private boolean inPara;
+  private boolean inLink;
+  
 
   public XhtmlNode() {
     super();
@@ -144,7 +147,7 @@ public class XhtmlNode implements IBaseXhtml {
     return this;
   }
 
-  public void validate(List<String> errors, String path, boolean inResource, boolean inPara) {
+  public void validate(List<String> errors, String path, boolean inResource, boolean inPara, boolean inLink) {
     if (nodeType == NodeType.Element || nodeType == NodeType.Document) {
       path = Utilities.noString(path) ? name : path+"/"+name;
       if (inResource) {
@@ -172,13 +175,19 @@ public class XhtmlNode implements IBaseXhtml {
       if (inPara && Utilities.existsInList(name, "div",  "blockquote", "table", "ol", "ul", "p")) {
         errors.add("Error at "+path+": Found "+name+" inside an html paragraph");
       }
+      if (inLink && Utilities.existsInList(name, "a")) {
+        errors.add("Error at "+path+": Found an <a> inside an <a> paragraph");
+      }
 
       if (childNodes != null) {
         if ("p".equals(name)) {
           inPara = true;
         }
+        if ("a".equals(name)) {
+          inLink = true;
+        }
         for (XhtmlNode child : childNodes) {
-          child.validate(errors, path, inResource, inPara);
+          child.validate(errors, path, inResource, inPara, inLink);
         }
       }
     }
@@ -191,8 +200,20 @@ public class XhtmlNode implements IBaseXhtml {
       throw new Error("Wrong node type - node is "+nodeType.toString()+" ('"+getName()+"/"+getContent()+"')");
     }
     
+//    if (inPara && name.equals("p")) {
+//      throw new FHIRException("nested Para");
+//    }
+//    if (inLink && name.equals("a")) {
+//      throw new FHIRException("Nested Link");
+//    }
     XhtmlNode node = new XhtmlNode(NodeType.Element);
     node.setName(name);
+    if (inPara || name.equals("p")) {
+      node.inPara = true;
+    }
+    if (inLink || name.equals("a")) {
+      node.inLink = true;
+    }
     childNodes.add(node);
     return node;
   }
@@ -203,6 +224,12 @@ public class XhtmlNode implements IBaseXhtml {
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
       throw new Error("Wrong node type. is "+nodeType.toString());
     XhtmlNode node = new XhtmlNode(NodeType.Element);
+    if (inPara || name.equals("p")) {
+      node.inPara = true;
+    }
+    if (inLink || name.equals("a")) {
+      node.inLink = true;
+    }
     node.setName(name);
     childNodes.add(index, node);
     return node;
