@@ -392,6 +392,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof DataRequirement) {
       DataRequirement p = (DataRequirement) e;
       renderDataRequirement(x, p);
+    } else if (e instanceof PrimitiveType) {
+      x.tx(((PrimitiveType) e).primitiveValue());
     } else if (e instanceof ElementDefinition) {
       x.tx("todo-bundle");
     } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta)) {
@@ -486,7 +488,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       renderAddress(x, (Address) e);
       return true;
     } else if (e instanceof ContactPoint) {
-      renderContactPoint(x, (ContactPoint) e);
+      if (allowLinks) {
+        renderContactPoint(x, (ContactPoint) e);
+      } else {
+        displayContactPoint(x, (ContactPoint) e);
+      }
       return true;
     } else if (e instanceof Timing) {
       renderTiming(x, (Timing) e);
@@ -528,7 +534,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       boolean first = true;
       for (ContactPoint c : cd.getTelecom()) {
         if (first) first = false; else x.tx(",");
-        renderContactPoint(x, c);
+        if (allowLinks) {      
+          renderContactPoint(x, c);
+        } else {
+          displayContactPoint(x, c);
+        }
       }
       return true;
     } else if (e instanceof Range) {
