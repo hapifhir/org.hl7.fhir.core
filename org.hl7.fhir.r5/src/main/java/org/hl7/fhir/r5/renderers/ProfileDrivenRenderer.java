@@ -488,7 +488,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       renderAddress(x, (Address) e);
       return true;
     } else if (e instanceof ContactPoint) {
-      displayContactPoint(x, (ContactPoint) e);
+      if (allowLinks) {
+        renderContactPoint(x, (ContactPoint) e);
+      } else {
+        displayContactPoint(x, (ContactPoint) e);
+      }
       return true;
     } else if (e instanceof Timing) {
       renderTiming(x, (Timing) e);
@@ -530,7 +534,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       boolean first = true;
       for (ContactPoint c : cd.getTelecom()) {
         if (first) first = false; else x.tx(",");
-        displayContactPoint(x, c);
+        if (allowLinks) {      
+          renderContactPoint(x, c);
+        } else {
+          displayContactPoint(x, c);
+        }
       }
       return true;
     } else if (e instanceof Range) {
