@@ -721,7 +721,7 @@ public class DataRenderer extends Renderer {
           break;
         case PHONE:
           if (contact.hasValue() && contact.getValue().startsWith("+")) {
-            x.ah("tel:"+contact.getValue()).tx(contact.getValue());
+            x.ah("tel:"+contact.getValue().replace(" ", "")).tx(contact.getValue());
           } else {
             x.addText(displayContactPoint(contact));
           }
