@@ -184,8 +184,18 @@ public class DataRenderer extends Renderer {
           lang = lang.substring(0, lang.indexOf("-"));
         }
         for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {
-          if (cc.getCode().equals(lang) || cc.getCode().startsWith(lang+"-"))
+          if (cc.getCode().equals(lang)) {
             l = cc;
+            break;
+          }
+        }
+        if (l == null) {
+          for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {
+            if (cc.getCode().startsWith(lang+"-")) {
+              l = cc;
+              break;
+            }
+          }
         }
       }
       if (l != null) {
@@ -690,37 +700,59 @@ public class DataRenderer extends Renderer {
 
   protected void renderContactPoint(XhtmlNode x, ContactPoint contact) {
     if (contact != null) {
-      switch (contact.getSystem()) {
-      case EMAIL:
-        x.ah("mailto:"+contact.getValue()).tx(contact.getValue());
-        break;
-      case FAX:
-        x.addText(displayContactPoint(contact));
-        break;
-      case NULL:
-        x.addText(displayContactPoint(contact));
-        break;
-      case OTHER:
-        x.addText(displayContactPoint(contact));
-        break;
-      case PAGER:
-        x.addText(displayContactPoint(contact));
-        break;
-      case PHONE:
-        if (contact.hasValue() && contact.getValue().startsWith("+")) {
-          x.ah("tel:"+contact.getValue()).tx(contact.getValue());
-        } else {
+      if (!contact.hasSystem()) {
+        x.addText(displayContactPoint(contact));        
+      } else {
+        switch (contact.getSystem()) {
+        case EMAIL:
+          x.ah("mailto:"+contact.getValue()).tx(contact.getValue());
+          break;
+        case FAX:
           x.addText(displayContactPoint(contact));
+          break;
+        case NULL:
+          x.addText(displayContactPoint(contact));
+          break;
+        case OTHER:
+          x.addText(displayContactPoint(contact));
+          break;
+        case PAGER:
+          x.addText(displayContactPoint(contact));
+          break;
+        case PHONE:
+          if (contact.hasValue() && contact.getValue().startsWith("+")) {
+            x.ah("tel:"+contact.getValue()).tx(contact.getValue());
+          } else {
+            x.addText(displayContactPoint(contact));
+          }
+          break;
+        case SMS:
+          x.addText(displayContactPoint(contact));
+          break;
+        case URL:
+          x.ah(contact.getValue()).tx(contact.getValue());
+          break;
+        default:
+          break;      
         }
-        break;
-      case SMS:
-        x.addText(displayContactPoint(contact));
-        break;
-      case URL:
-        x.ah(contact.getValue()).tx(contact.getValue());
-        break;
-      default:
-        break;      
+      }
+    }
+  }
+
+  protected void displayContactPoint(XhtmlNode p, ContactPoint c) {
+    if (c != null) {
+      if (c.getSystem() == ContactPointSystem.PHONE) {
+        p.tx("Phone: "+c.getValue());
+      } else if (c.getSystem() == ContactPointSystem.FAX) {
+        p.tx("Fax: "+c.getValue());
+      } else if (c.getSystem() == ContactPointSystem.EMAIL) {
+        p.tx(c.getValue());
+      } else if (c.getSystem() == ContactPointSystem.URL) {
+        if (c.getValue().length() > 30) {
+          p.addText(c.getValue().substring(0, 30)+"...");
+        } else {
+          p.addText(c.getValue());
+        }
       }
     }
   }
