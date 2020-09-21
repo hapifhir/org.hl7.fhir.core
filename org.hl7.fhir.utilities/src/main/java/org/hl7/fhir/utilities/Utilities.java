@@ -47,6 +47,8 @@ import java.math.RoundingMode;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -320,13 +322,13 @@ public class Utilities {
       destFile.createNewFile();
     }
 
-    FileChannel source = null;
-    FileChannel destination = null;
+    FileInputStream source = null;
+    FileOutputStream destination = null;
 
     try {
-      source = new FileInputStream(sourceFile).getChannel();
-      destination = new FileOutputStream(destFile).getChannel();
-      destination.transferFrom(source, 0, source.size());
+      source = new FileInputStream(sourceFile);
+      destination = new FileOutputStream(destFile);
+      destination.getChannel().transferFrom(source.getChannel(), 0, source.getChannel().size());
     } finally {
       if (source != null) {
         source.close();
@@ -398,8 +400,8 @@ public class Utilities {
                 clearDirectory(fh.getAbsolutePath());
               fh.delete();
             }
+            }
           }
-        }
       }
     }
   }

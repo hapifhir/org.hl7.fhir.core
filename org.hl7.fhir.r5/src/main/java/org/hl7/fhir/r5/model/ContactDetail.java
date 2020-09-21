@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseDatatypeElement;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -308,6 +309,32 @@ public class ContactDetail extends DataType implements ICompositeType {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, telecom);
       }
 
+      public ContactPoint getEmail() {
+        for (ContactPoint cp : getTelecom()) {
+          if (cp.getSystem() == ContactPointSystem.EMAIL) {
+            return cp;
+          }
+        }
+        return null;
+      }
+
+      public ContactPoint getPhone() {
+        for (ContactPoint cp : getTelecom()) {
+          if (cp.getSystem() == ContactPointSystem.PHONE) {
+            return cp;
+          }
+        }
+        return null;
+      }
+
+      public ContactPoint getUrl() {
+        for (ContactPoint cp : getTelecom()) {
+          if (cp.getSystem() == ContactPointSystem.URL) {
+            return cp;
+          }
+        }
+        return null;
+      }
 
 }
 

@@ -59,6 +59,9 @@ public class RendererFactory {
     if ("Encounter".equals(resourceName)) {
       return new EncounterRenderer(context);
     }
+    if ("Library".equals(resourceName)) {
+      return new LibraryRenderer(context);
+    }
     if ("List".equals(resourceName)) {
       return new ListRenderer(context);
     }
@@ -101,6 +104,9 @@ public class RendererFactory {
 
     if ("List".equals(resource.getName())) {
       return new ListRenderer(context);
+    }
+    if ("Library".equals(resource.getName())) {
+      return new LibraryRenderer(context);
     }
     if ("DiagnosticReport".equals(resource.getName())) {
       return new DiagnosticReportRenderer(context);
