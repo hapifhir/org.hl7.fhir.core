@@ -251,12 +251,12 @@ public class DataRenderer extends Renderer {
     } else {
       return "No display for "+b.fhirType();      
     }
-    
   }
   
   public String display(DataType type) {
-    if (type.isEmpty())
+    if (type == null || type.isEmpty()) {
       return "";
+    }
     
     if (type instanceof Coding) {
       return displayCoding((Coding) type);
@@ -354,7 +354,6 @@ public class DataRenderer extends Renderer {
     } else {
       x.tx("No display for "+type.fhirType());      
     }
-
   }
 
   private void renderReference(XhtmlNode x, Reference ref) {
@@ -368,15 +367,17 @@ public class DataRenderer extends Renderer {
   }
 
   public void renderDateTime(XhtmlNode x, Base e) {
-    if (e.hasPrimitiveValue())
+    if (e.hasPrimitiveValue()) {
       x.addText(((DateTimeType) e).toHumanDisplay());
+    }
   }
 
   protected void renderUri(XhtmlNode x, UriType uri) {
-    if (uri.getValue().startsWith("mailto:"))
+    if (uri.getValue().startsWith("mailto:")) {
       x.ah(uri.getValue()).addText(uri.getValue().substring(7));
-    else
+    } else {
       x.ah(uri.getValue()).addText(uri.getValue());
+    }
   }
   
   protected void renderUri(XhtmlNode x, UriType uri, String path, String id) {
@@ -781,7 +782,6 @@ public class DataRenderer extends Renderer {
       return "";
     }
   }
-
 
   protected String displayQuantity(Quantity q) {
     StringBuilder s = new StringBuilder();
