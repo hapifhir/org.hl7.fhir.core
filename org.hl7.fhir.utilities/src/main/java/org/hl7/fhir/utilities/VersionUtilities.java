@@ -181,6 +181,10 @@ public class VersionUtilities {
   public static String getMajMin(String version) {
     if (version == null)
       return null;
+    
+    if ("current".equals(version)) {
+      return CURRENT_VERSION;
+    }
 
     if (Utilities.charCount(version, '.') == 1) {
       String[] p = version.split("\\.");
