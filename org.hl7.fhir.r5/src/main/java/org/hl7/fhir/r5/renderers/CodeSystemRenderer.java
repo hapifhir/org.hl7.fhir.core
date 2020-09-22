@@ -416,15 +416,17 @@ public class CodeSystemRenderer extends TerminologyRenderer {
       for (PropertyComponent pc : properties) {
         td = tr.td();
         boolean first = true;
-        ConceptPropertyComponent pcv = CodeSystemUtilities.getProperty(c, pc.getCode());
-        if (pcv != null && pcv.hasValue()) {
-          if (first) first = false; else td.addText(", ");
-          if (pcv.hasValueCoding()) { 
-            td.addText(pcv.getValueCoding().getCode());
-          } else if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pcv.getValue().primitiveValue())) {
-            td.ah(pcv.getValue().primitiveValue()).tx(pcv.getValue().primitiveValue());
-          } else {
-            td.addText(pcv.getValue().primitiveValue());
+        List<ConceptPropertyComponent> pcvl = CodeSystemUtilities.getPropertyValues(c, pc.getCode());
+        for (ConceptPropertyComponent pcv : pcvl) {
+          if (pcv.hasValue()) {
+            if (first) first = false; else td.addText(", ");
+            if (pcv.hasValueCoding()) { 
+              td.addText(pcv.getValueCoding().getCode());
+            } else if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pcv.getValue().primitiveValue())) {
+              td.ah(pcv.getValue().primitiveValue()).tx(pcv.getValue().primitiveValue());
+            } else {
+              td.addText(pcv.getValue().primitiveValue());
+            }
           }
         }
       }

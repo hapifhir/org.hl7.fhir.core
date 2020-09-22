@@ -3812,7 +3812,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (element != null && element.getIsSummary()) {
       checkForNoChange(element.getIsSummaryElement(), gc.addStyledText(translate("sd.table", "This element is included in summaries"), "\u03A3", null, null, null, false));
     }
-    if (element != null && (!element.getConstraint().isEmpty() || !element.getCondition().isEmpty())) {
+    if (element != null && (hasNonBaseConstraints(element.getConstraint()) || hasNonBaseConditions(element.getCondition()))) {
       gc.addStyledText(translate("sd.table", "This element has or is affected by some invariants ("+listConstraintsAndConditions(element)+")"), "I", null, null, null, false);
     }
 
@@ -3860,7 +3860,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     return res;
   }
 
-  private Cell addCell(Row row, Cell cell) {
+
+    private Cell addCell(Row row, Cell cell) {
     row.getCells().add(cell);
     return (cell);
   }
@@ -3869,18 +3870,49 @@ public class ProfileUtilities extends TranslatingUtilities {
     return app == null ? src : src + app;
   }
 
+  private boolean hasNonBaseConditions(List<IdType> conditions) {
+    for (IdType c : conditions) {
+      if (!isBaseCondition(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  private boolean hasNonBaseConstraints(List<ElementDefinitionConstraintComponent> constraints) {
+    for (ElementDefinitionConstraintComponent c : constraints) {
+      if (!isBaseConstraint(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   private String listConstraintsAndConditions(ElementDefinition element) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (ElementDefinitionConstraintComponent con : element.getConstraint()) {
-      b.append(con.getKey());
+      if (!isBaseConstraint(con)) {
+        b.append(con.getKey());
+      }
     }
     for (IdType id : element.getCondition()) {
-      b.append(id.asStringValue());
+      if (!isBaseCondition(id)) {
+        b.append(id.asStringValue());
+      }
     }
     return b.toString();
   }
 
+  private boolean isBaseCondition(IdType c) {
+    String key = c.asStringValue();
+    return key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-");
+  }
+
+  private boolean isBaseConstraint(ElementDefinitionConstraintComponent con) {
+    String key = con.getKey();
+    return key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-");
+  }
 
   private void makeChoiceRows(List<Row> subRows, ElementDefinition element, HierarchicalTableGenerator gen, String corePath, String profileBaseFileName) {
     // create a child for each choice
