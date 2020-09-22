@@ -6,5 +6,8 @@
       "system": "https://fresenius.org/device",
       "value": "DEV000000000872"
     }
-  ]
+  ],
+  "udi": {
+    "name": "LC021691"
+  }
 }

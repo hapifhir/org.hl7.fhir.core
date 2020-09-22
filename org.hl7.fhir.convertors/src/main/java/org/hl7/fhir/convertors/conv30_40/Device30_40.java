@@ -2,8 +2,14 @@ package org.hl7.fhir.convertors.conv30_40;
 
 
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
+import org.hl7.fhir.dstu3.model.Device;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Patient;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -42,31 +48,45 @@ public class Device30_40 extends VersionConvertor_30_40 {
     org.hl7.fhir.r4.model.Device tgt = new org.hl7.fhir.r4.model.Device();
     copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+    if (src.hasUdi()) {
+      org.hl7.fhir.r4.model.Device.DeviceUdiCarrierComponent carrierComponent = tgt.getUdiCarrierFirstRep();
+      carrierComponent.setDeviceIdentifierElement(VersionConvertor_30_40.convertString(src.getUdi().getDeviceIdentifierElement()));
+      carrierComponent.setJurisdictionElement(VersionConvertor_30_40.convertUri(src.getUdi().getJurisdictionElement()));
+      carrierComponent.setCarrierHRFElement(VersionConvertor_30_40.convertString(src.getUdi().getCarrierHRFElement()));
+      carrierComponent.setCarrierAIDCElement(VersionConvertor_30_40.convertBase64Binary(src.getUdi().getCarrierAIDCElement()));
+      carrierComponent.setIssuerElement(VersionConvertor_30_40.convertUri(src.getUdi().getIssuerElement()));
+      carrierComponent.setEntryTypeElement(convertUDIEntryType(src.getUdi().getEntryTypeElement()));
+      tgt.setUdiCarrier(Collections.singletonList(carrierComponent));
+      org.hl7.fhir.r4.model.Device.DeviceDeviceNameComponent nameComponent = tgt.getDeviceNameFirstRep();
+      nameComponent.setNameElement(VersionConvertor_30_40.convertString(src.getUdi().getNameElement()));
+      nameComponent.setType(org.hl7.fhir.r4.model.Device.DeviceNameType.UDILABELNAME);
+    }
     if (src.hasStatus())
       tgt.setStatusElement(convertFHIRDeviceStatus(src.getStatusElement()));
+    if (src.hasType())
+      tgt.setType(convertCodeableConcept(src.getType()));
+    if (src.hasLotNumber())
+      tgt.setLotNumberElement(convertString(src.getLotNumberElement()));
     if (src.hasManufacturer())
       tgt.setManufacturerElement(convertString(src.getManufacturerElement()));
     if (src.hasManufactureDate())
       tgt.setManufactureDateElement(convertDateTime(src.getManufactureDateElement()));
     if (src.hasExpirationDate())
       tgt.setExpirationDateElement(convertDateTime(src.getExpirationDateElement()));
-    if (src.hasLotNumber())
-      tgt.setLotNumberElement(convertString(src.getLotNumberElement()));
+    if (src.hasModelElement())
+      tgt.setModelNumberElement(VersionConvertor_30_40.convertString(src.getModelElement()));
+    if (src.hasVersionElement())
+      tgt.setVersion(Collections.singletonList(tgt.getVersionFirstRep().setValueElement(VersionConvertor_30_40.convertString(src.getVersionElement()))));
     if (src.hasPatient())
       tgt.setPatient(convertReference(src.getPatient()));
     if (src.hasOwner())
       tgt.setOwner(convertReference(src.getOwner()));
-    if (src.hasOwnerTarget())
-      tgt.setOwnerTarget(Organization30_40.convertOrganization(src.getOwnerTarget()));
-    for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getContact()) tgt.addContact(convertContactPoint(t));
+    if (src.hasContact())
+      tgt.setContact(src.getContact().stream().map(VersionConvertor_30_40::convertContactPoint).collect(Collectors.toList()));
     if (src.hasLocation())
       tgt.setLocation(convertReference(src.getLocation()));
-    if (src.hasLocationTarget())
-      tgt.setLocationTarget(Location30_40.convertLocation(src.getLocationTarget()));
     if (src.hasUrl())
       tgt.setUrlElement(convertUri(src.getUrlElement()));
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSafety()) tgt.addSafety(convertCodeableConcept(t));
     return tgt;
@@ -78,31 +98,47 @@ public class Device30_40 extends VersionConvertor_30_40 {
     org.hl7.fhir.dstu3.model.Device tgt = new org.hl7.fhir.dstu3.model.Device();
     copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+    if (src.hasUdiCarrier()) {
+      Device.DeviceUdiComponent udi = tgt.getUdi();
+      udi.setDeviceIdentifierElement(VersionConvertor_30_40.convertString(src.getUdiCarrierFirstRep().getDeviceIdentifierElement()));
+      udi.setJurisdictionElement(VersionConvertor_30_40.convertUri(src.getUdiCarrierFirstRep().getJurisdictionElement()));
+      udi.setCarrierHRFElement(VersionConvertor_30_40.convertString(src.getUdiCarrierFirstRep().getCarrierHRFElement()));
+      udi.setCarrierAIDCElement(VersionConvertor_30_40.convertBase64Binary(src.getUdiCarrierFirstRep().getCarrierAIDCElement()));
+      udi.setIssuerElement(VersionConvertor_30_40.convertUri(src.getUdiCarrierFirstRep().getIssuerElement()));
+      udi.setEntryTypeElement(convertUDIEntryType(src.getUdiCarrierFirstRep().getEntryTypeElement()));
+      tgt.setUdi(udi);
+    }
     if (src.hasStatus())
       tgt.setStatusElement(convertFHIRDeviceStatus(src.getStatusElement()));
+    if (src.hasType())
+      tgt.setType(convertCodeableConcept(src.getType()));
+    if (src.hasLotNumber())
+      tgt.setLotNumberElement(convertString(src.getLotNumberElement()));
     if (src.hasManufacturer())
       tgt.setManufacturerElement(convertString(src.getManufacturerElement()));
     if (src.hasManufactureDate())
       tgt.setManufactureDateElement(convertDateTime(src.getManufactureDateElement()));
     if (src.hasExpirationDate())
       tgt.setExpirationDateElement(convertDateTime(src.getExpirationDateElement()));
-    if (src.hasLotNumber())
-      tgt.setLotNumberElement(convertString(src.getLotNumberElement()));
+    if (src.hasModelNumber())
+      tgt.setModel(src.getModelNumber());
+    if (src.hasVersion())
+      tgt.setVersionElement(VersionConvertor_30_40.convertString(src.getVersion().get(0).getValueElement()));
+    if (src.hasDeviceName())
+      tgt.setUdi(tgt.getUdi().setName(src.getDeviceName().get(0).getName()));
     if (src.hasPatient())
       tgt.setPatient(convertReference(src.getPatient()));
     if (src.hasOwner())
       tgt.setOwner(convertReference(src.getOwner()));
-    if (src.hasOwnerTarget())
-      tgt.setOwnerTarget(Organization30_40.convertOrganization(src.getOwnerTarget()));
-    for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact()) tgt.addContact(convertContactPoint(t));
+    if (src.hasContact())
+      tgt.setContact(src.getContact().stream().map(VersionConvertor_30_40::convertContactPoint).collect(Collectors.toList()));
     if (src.hasLocation())
       tgt.setLocation(convertReference(src.getLocation()));
-    if (src.hasLocationTarget())
-      tgt.setLocationTarget(Location30_40.convertLocation(src.getLocationTarget()));
+    for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact()) tgt.addContact(convertContactPoint(t));
+    if (src.hasLocation())
+      tgt.setLocation(VersionConvertor_30_40.convertReference(src.getLocation()));
     if (src.hasUrl())
       tgt.setUrlElement(convertUri(src.getUrlElement()));
-    if (src.hasType())
-      tgt.setType(convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSafety()) tgt.addSafety(convertCodeableConcept(t));
     return tgt;
