@@ -1,4 +1,5 @@
-package org.hl7.fhir.dstu3.model;
+IntelliJ IDEA
+  package org.hl7.fhir.dstu3.model;
 
 
 
@@ -6,47 +7,50 @@ package org.hl7.fhir.dstu3.model;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
-  Redistribution and use in source and binary forms, with or without modification, 
+
+  Redistribution and use in source and binary forms, with or without modification,
   are permitted provided that the following conditions are met:
-  
-   * Redistributions of source code must retain the above copyright notice, this 
+
+   * Redistributions of source code must retain the above copyright notice, this
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
-     this list of conditions and the following disclaimer in the documentation 
+   * Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
-     endorse or promote products derived from this software without specific 
+   * Neither the name of HL7 nor the names of its contributors may be used to
+     endorse or promote products derived from this software without specific
      prior written permission.
-  
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
-  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
-  
+
 */
 
 // Generated on Fri, Mar 16, 2018 15:21+1100 for FHIR v3.0.x
-
-import ca.uhn.fhir.model.api.annotation.*;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.utilities.Utilities;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
+import org.hl7.fhir.utilities.Utilities;
+
+import ca.uhn.fhir.model.api.annotation.Block;
+import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.Description;
+import ca.uhn.fhir.model.api.annotation.ResourceDef;
+import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
 /**
  * This resource identifies an instance or a type of a manufactured item that is used in the provision of healthcare without being substantially changed through that activity. The device may be a medical or non-medical device.  Medical devices include durable (reusable) medical equipment, implantable devices, as well as disposable equipment used for diagnostic, treatment, and research for healthcare and public health.  Non-medical devices may include items such as a machine, cellphone, computer, application, etc.
  */
-@ResourceDef(name = "Device", profile = "http://hl7.org/fhir/Profile/Device")
+@ResourceDef(name="Device", profile="http://hl7.org/fhir/Profile/Device")
 public class Device extends DomainResource {
 
   public enum UDIEntryType {
@@ -78,7 +82,6 @@ public class Device extends DomainResource {
      * added to help the parsers with the generic types
      */
     NULL;
-
     public static UDIEntryType fromCode(String codeString) throws FHIRException {
       if (codeString == null || "".equals(codeString))
         return null;
@@ -97,82 +100,50 @@ public class Device extends DomainResource {
       if (Configuration.isAcceptInvalidEnums())
         return null;
       else
-        throw new FHIRException("Unknown UDIEntryType code '" + codeString + "'");
+        throw new FHIRException("Unknown UDIEntryType code '"+codeString+"'");
     }
-
     public String toCode() {
       switch (this) {
-        case BARCODE:
-          return "barcode";
-        case RFID:
-          return "rfid";
-        case MANUAL:
-          return "manual";
-        case CARD:
-          return "card";
-        case SELFREPORTED:
-          return "self-reported";
-        case UNKNOWN:
-          return "unknown";
-        default:
-          return "?";
+        case BARCODE: return "barcode";
+        case RFID: return "rfid";
+        case MANUAL: return "manual";
+        case CARD: return "card";
+        case SELFREPORTED: return "self-reported";
+        case UNKNOWN: return "unknown";
+        default: return "?";
       }
     }
-
     public String getSystem() {
       switch (this) {
-        case BARCODE:
-          return "http://hl7.org/fhir/udi-entry-type";
-        case RFID:
-          return "http://hl7.org/fhir/udi-entry-type";
-        case MANUAL:
-          return "http://hl7.org/fhir/udi-entry-type";
-        case CARD:
-          return "http://hl7.org/fhir/udi-entry-type";
-        case SELFREPORTED:
-          return "http://hl7.org/fhir/udi-entry-type";
-        case UNKNOWN:
-          return "http://hl7.org/fhir/udi-entry-type";
-        default:
-          return "?";
+        case BARCODE: return "http://hl7.org/fhir/udi-entry-type";
+        case RFID: return "http://hl7.org/fhir/udi-entry-type";
+        case MANUAL: return "http://hl7.org/fhir/udi-entry-type";
+        case CARD: return "http://hl7.org/fhir/udi-entry-type";
+        case SELFREPORTED: return "http://hl7.org/fhir/udi-entry-type";
+        case UNKNOWN: return "http://hl7.org/fhir/udi-entry-type";
+        default: return "?";
       }
     }
-
     public String getDefinition() {
       switch (this) {
-        case BARCODE:
-          return "A Barcode scanner captured the data from the device label";
-        case RFID:
-          return "An RFID chip reader captured the data from the device label";
-        case MANUAL:
-          return "The data was read from the label by a person and manually entered. (e.g.  via a keyboard)";
-        case CARD:
-          return "The data originated from a patient's implant card and read by an operator.";
-        case SELFREPORTED:
-          return "The data originated from a patient source and not directly scanned or read from a label or card.";
-        case UNKNOWN:
-          return "The method of data capture has not been determined";
-        default:
-          return "?";
+        case BARCODE: return "A Barcode scanner captured the data from the device label";
+        case RFID: return "An RFID chip reader captured the data from the device label";
+        case MANUAL: return "The data was read from the label by a person and manually entered. (e.g.  via a keyboard)";
+        case CARD: return "The data originated from a patient's implant card and read by an operator.";
+        case SELFREPORTED: return "The data originated from a patient source and not directly scanned or read from a label or card.";
+        case UNKNOWN: return "The method of data capture has not been determined";
+        default: return "?";
       }
     }
-
     public String getDisplay() {
       switch (this) {
-        case BARCODE:
-          return "BarCode";
-        case RFID:
-          return "RFID";
-        case MANUAL:
-          return "Manual";
-        case CARD:
-          return "Card";
-        case SELFREPORTED:
-          return "Self Reported";
-        case UNKNOWN:
-          return "Unknown";
-        default:
-          return "?";
+        case BARCODE: return "BarCode";
+        case RFID: return "RFID";
+        case MANUAL: return "Manual";
+        case CARD: return "Card";
+        case SELFREPORTED: return "Self Reported";
+        case UNKNOWN: return "Unknown";
+        default: return "?";
       }
     }
   }
@@ -194,9 +165,8 @@ public class Device extends DomainResource {
         return UDIEntryType.SELFREPORTED;
       if ("unknown".equals(codeString))
         return UDIEntryType.UNKNOWN;
-      throw new IllegalArgumentException("Unknown UDIEntryType code '" + codeString + "'");
+      throw new IllegalArgumentException("Unknown UDIEntryType code '"+codeString+"'");
     }
-
     public Enumeration<UDIEntryType> fromType(Base code) throws FHIRException {
       if (code == null)
         return null;
@@ -217,9 +187,8 @@ public class Device extends DomainResource {
         return new Enumeration<UDIEntryType>(this, UDIEntryType.SELFREPORTED);
       if ("unknown".equals(codeString))
         return new Enumeration<UDIEntryType>(this, UDIEntryType.UNKNOWN);
-      throw new FHIRException("Unknown UDIEntryType code '" + codeString + "'");
+      throw new FHIRException("Unknown UDIEntryType code '"+codeString+"'");
     }
-
     public String toCode(UDIEntryType code) {
       if (code == UDIEntryType.BARCODE)
         return "barcode";
@@ -235,7 +204,6 @@ public class Device extends DomainResource {
         return "unknown";
       return "?";
     }
-
     public String toSystem(UDIEntryType code) {
       return code.getSystem();
     }
@@ -262,7 +230,6 @@ public class Device extends DomainResource {
      * added to help the parsers with the generic types
      */
     NULL;
-
     public static FHIRDeviceStatus fromCode(String codeString) throws FHIRException {
       if (codeString == null || "".equals(codeString))
         return null;
@@ -277,66 +244,42 @@ public class Device extends DomainResource {
       if (Configuration.isAcceptInvalidEnums())
         return null;
       else
-        throw new FHIRException("Unknown FHIRDeviceStatus code '" + codeString + "'");
+        throw new FHIRException("Unknown FHIRDeviceStatus code '"+codeString+"'");
     }
-
     public String toCode() {
       switch (this) {
-        case ACTIVE:
-          return "active";
-        case INACTIVE:
-          return "inactive";
-        case ENTEREDINERROR:
-          return "entered-in-error";
-        case UNKNOWN:
-          return "unknown";
-        default:
-          return "?";
+        case ACTIVE: return "active";
+        case INACTIVE: return "inactive";
+        case ENTEREDINERROR: return "entered-in-error";
+        case UNKNOWN: return "unknown";
+        default: return "?";
       }
     }
-
     public String getSystem() {
       switch (this) {
-        case ACTIVE:
-          return "http://hl7.org/fhir/device-status";
-        case INACTIVE:
-          return "http://hl7.org/fhir/device-status";
-        case ENTEREDINERROR:
-          return "http://hl7.org/fhir/device-status";
-        case UNKNOWN:
-          return "http://hl7.org/fhir/device-status";
-        default:
-          return "?";
+        case ACTIVE: return "http://hl7.org/fhir/device-status";
+        case INACTIVE: return "http://hl7.org/fhir/device-status";
+        case ENTEREDINERROR: return "http://hl7.org/fhir/device-status";
+        case UNKNOWN: return "http://hl7.org/fhir/device-status";
+        default: return "?";
       }
     }
-
     public String getDefinition() {
       switch (this) {
-        case ACTIVE:
-          return "The Device is available for use.  Note: This means for *implanted devices*  the device is implanted in the patient.";
-        case INACTIVE:
-          return "The Device is no longer available for use (e.g. lost, expired, damaged).  Note: This means for *implanted devices*  the device has been removed from the patient.";
-        case ENTEREDINERROR:
-          return "The Device was entered in error and voided.";
-        case UNKNOWN:
-          return "The status of the device has not been determined.";
-        default:
-          return "?";
+        case ACTIVE: return "The Device is available for use.  Note: This means for *implanted devices*  the device is implanted in the patient.";
+        case INACTIVE: return "The Device is no longer available for use (e.g. lost, expired, damaged).  Note: This means for *implanted devices*  the device has been removed from the patient.";
+        case ENTEREDINERROR: return "The Device was entered in error and voided.";
+        case UNKNOWN: return "The status of the device has not been determined.";
+        default: return "?";
       }
     }
-
     public String getDisplay() {
       switch (this) {
-        case ACTIVE:
-          return "Active";
-        case INACTIVE:
-          return "Inactive";
-        case ENTEREDINERROR:
-          return "Entered in Error";
-        case UNKNOWN:
-          return "Unknown";
-        default:
-          return "?";
+        case ACTIVE: return "Active";
+        case INACTIVE: return "Inactive";
+        case ENTEREDINERROR: return "Entered in Error";
+        case UNKNOWN: return "Unknown";
+        default: return "?";
       }
     }
   }
@@ -354,9 +297,8 @@ public class Device extends DomainResource {
         return FHIRDeviceStatus.ENTEREDINERROR;
       if ("unknown".equals(codeString))
         return FHIRDeviceStatus.UNKNOWN;
-      throw new IllegalArgumentException("Unknown FHIRDeviceStatus code '" + codeString + "'");
+      throw new IllegalArgumentException("Unknown FHIRDeviceStatus code '"+codeString+"'");
     }
-
     public Enumeration<FHIRDeviceStatus> fromType(Base code) throws FHIRException {
       if (code == null)
         return null;
@@ -373,9 +315,8 @@ public class Device extends DomainResource {
         return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.ENTEREDINERROR);
       if ("unknown".equals(codeString))
         return new Enumeration<FHIRDeviceStatus>(this, FHIRDeviceStatus.UNKNOWN);
-      throw new FHIRException("Unknown FHIRDeviceStatus code '" + codeString + "'");
+      throw new FHIRException("Unknown FHIRDeviceStatus code '"+codeString+"'");
     }
-
     public String toCode(FHIRDeviceStatus code) {
       if (code == FHIRDeviceStatus.ACTIVE)
         return "active";
@@ -387,7 +328,6 @@ public class Device extends DomainResource {
         return "unknown";
       return "?";
     }
-
     public String toSystem(FHIRDeviceStatus code) {
       return code.getSystem();
     }
@@ -398,59 +338,59 @@ public class Device extends DomainResource {
     /**
      * The device identifier (DI) is a mandatory, fixed portion of a UDI that identifies the labeler and the specific version or model of a device.
      */
-    @Child(name = "deviceIdentifier", type = {StringType.class}, order = 1, min = 0, max = 1, modifier = false, summary = true)
-    @Description(shortDefinition = "Mandatory fixed portion of UDI", formalDefinition = "The device identifier (DI) is a mandatory, fixed portion of a UDI that identifies the labeler and the specific version or model of a device.")
+    @Child(name = "deviceIdentifier", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Mandatory fixed portion of UDI", formalDefinition="The device identifier (DI) is a mandatory, fixed portion of a UDI that identifies the labeler and the specific version or model of a device." )
     protected StringType deviceIdentifier;
 
     /**
      * Name of device as used in labeling or catalog.
      */
-    @Child(name = "name", type = {StringType.class}, order = 2, min = 0, max = 1, modifier = false, summary = true)
-    @Description(shortDefinition = "Device Name as appears on UDI label", formalDefinition = "Name of device as used in labeling or catalog.")
+    @Child(name = "name", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Device Name as appears on UDI label", formalDefinition="Name of device as used in labeling or catalog." )
     protected StringType name;
 
     /**
      * The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace. with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.
      */
-    @Child(name = "jurisdiction", type = {UriType.class}, order = 3, min = 0, max = 1, modifier = false, summary = false)
-    @Description(shortDefinition = "Regional UDI authority", formalDefinition = "The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace. with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.")
+    @Child(name = "jurisdiction", type = {UriType.class}, order=3, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Regional UDI authority", formalDefinition="The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace. with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi." )
     protected UriType jurisdiction;
 
     /**
      * The full UDI carrier as the human readable form (HRF) representation of the barcode string as printed on the packaging of the device.
      */
-    @Child(name = "carrierHRF", type = {StringType.class}, order = 4, min = 0, max = 1, modifier = false, summary = true)
-    @Description(shortDefinition = "UDI Human Readable Barcode String", formalDefinition = "The full UDI carrier as the human readable form (HRF) representation of the barcode string as printed on the packaging of the device.")
+    @Child(name = "carrierHRF", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="UDI Human Readable Barcode String", formalDefinition="The full UDI carrier as the human readable form (HRF) representation of the barcode string as printed on the packaging of the device." )
     protected StringType carrierHRF;
 
     /**
      * The full UDI carrier of the Automatic Identification and Data Capture (AIDC) technology representation of the barcode string as printed on the packaging of the device - E.g a barcode or RFID.   Because of limitations on character sets in XML and the need to round-trip JSON data through XML, AIDC Formats *SHALL* be base64 encoded.
      */
-    @Child(name = "carrierAIDC", type = {Base64BinaryType.class}, order = 5, min = 0, max = 1, modifier = false, summary = true)
-    @Description(shortDefinition = "UDI Machine Readable Barcode String", formalDefinition = "The full UDI carrier of the Automatic Identification and Data Capture (AIDC) technology representation of the barcode string as printed on the packaging of the device - E.g a barcode or RFID.   Because of limitations on character sets in XML and the need to round-trip JSON data through XML, AIDC Formats *SHALL* be base64 encoded.")
+    @Child(name = "carrierAIDC", type = {Base64BinaryType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="UDI Machine Readable Barcode String", formalDefinition="The full UDI carrier of the Automatic Identification and Data Capture (AIDC) technology representation of the barcode string as printed on the packaging of the device - E.g a barcode or RFID.   Because of limitations on character sets in XML and the need to round-trip JSON data through XML, AIDC Formats *SHALL* be base64 encoded." )
     protected Base64BinaryType carrierAIDC;
 
     /**
      * Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :
-     * 1) GS1:
-     * http://hl7.org/fhir/NamingSystem/gs1-di,
-     * 2) HIBCC:
-     * http://hl7.org/fhir/NamingSystem/hibcc-dI,
-     * 3) ICCBBA for blood containers:
-     * http://hl7.org/fhir/NamingSystem/iccbba-blood-di,
-     * 4) ICCBA for other devices:
-     * http://hl7.org/fhir/NamingSystem/iccbba-other-di.
+     1) GS1:
+     http://hl7.org/fhir/NamingSystem/gs1-di,
+     2) HIBCC:
+     http://hl7.org/fhir/NamingSystem/hibcc-dI,
+     3) ICCBBA for blood containers:
+     http://hl7.org/fhir/NamingSystem/iccbba-blood-di,
+     4) ICCBA for other devices:
+     http://hl7.org/fhir/NamingSystem/iccbba-other-di.
      */
-    @Child(name = "issuer", type = {UriType.class}, order = 6, min = 0, max = 1, modifier = false, summary = false)
-    @Description(shortDefinition = "UDI Issuing Organization", formalDefinition = "Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :\n1) GS1: \nhttp://hl7.org/fhir/NamingSystem/gs1-di, \n2) HIBCC:\nhttp://hl7.org/fhir/NamingSystem/hibcc-dI, \n3) ICCBBA for blood containers:\nhttp://hl7.org/fhir/NamingSystem/iccbba-blood-di, \n4) ICCBA for other devices:\nhttp://hl7.org/fhir/NamingSystem/iccbba-other-di.")
+    @Child(name = "issuer", type = {UriType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="UDI Issuing Organization", formalDefinition="Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :\n1) GS1: \nhttp://hl7.org/fhir/NamingSystem/gs1-di, \n2) HIBCC:\nhttp://hl7.org/fhir/NamingSystem/hibcc-dI, \n3) ICCBBA for blood containers:\nhttp://hl7.org/fhir/NamingSystem/iccbba-blood-di, \n4) ICCBA for other devices:\nhttp://hl7.org/fhir/NamingSystem/iccbba-other-di." )
     protected UriType issuer;
 
     /**
      * A coded entry to indicate how the data was entered.
      */
-    @Child(name = "entryType", type = {CodeType.class}, order = 7, min = 0, max = 1, modifier = false, summary = false)
-    @Description(shortDefinition = "barcode | rfid | manual +", formalDefinition = "A coded entry to indicate how the data was entered.")
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/udi-entry-type")
+    @Child(name = "entryType", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="barcode | rfid | manual +", formalDefinition="A coded entry to indicate how the data was entered." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/udi-entry-type")
     protected Enumeration<UDIEntryType> entryType;
 
     private static final long serialVersionUID = -1105798343L;
@@ -709,14 +649,14 @@ public class Device extends DomainResource {
 
     /**
      * @return {@link #issuer} (Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :
-     * 1) GS1:
-     * http://hl7.org/fhir/NamingSystem/gs1-di,
-     * 2) HIBCC:
-     * http://hl7.org/fhir/NamingSystem/hibcc-dI,
-     * 3) ICCBBA for blood containers:
-     * http://hl7.org/fhir/NamingSystem/iccbba-blood-di,
-     * 4) ICCBA for other devices:
-     * http://hl7.org/fhir/NamingSystem/iccbba-other-di.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
+    1) GS1:
+    http://hl7.org/fhir/NamingSystem/gs1-di,
+    2) HIBCC:
+    http://hl7.org/fhir/NamingSystem/hibcc-dI,
+    3) ICCBBA for blood containers:
+    http://hl7.org/fhir/NamingSystem/iccbba-blood-di,
+    4) ICCBA for other devices:
+    http://hl7.org/fhir/NamingSystem/iccbba-other-di.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
      */
     public UriType getIssuerElement() {
       if (this.issuer == null)
@@ -737,14 +677,14 @@ public class Device extends DomainResource {
 
     /**
      * @param value {@link #issuer} (Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :
-     *              1) GS1:
-     *              http://hl7.org/fhir/NamingSystem/gs1-di,
-     *              2) HIBCC:
-     *              http://hl7.org/fhir/NamingSystem/hibcc-dI,
-     *              3) ICCBBA for blood containers:
-     *              http://hl7.org/fhir/NamingSystem/iccbba-blood-di,
-     *              4) ICCBA for other devices:
-     *              http://hl7.org/fhir/NamingSystem/iccbba-other-di.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
+    1) GS1:
+    http://hl7.org/fhir/NamingSystem/gs1-di,
+    2) HIBCC:
+    http://hl7.org/fhir/NamingSystem/hibcc-dI,
+    3) ICCBBA for blood containers:
+    http://hl7.org/fhir/NamingSystem/iccbba-blood-di,
+    4) ICCBA for other devices:
+    http://hl7.org/fhir/NamingSystem/iccbba-other-di.). This is the underlying object with id, value and extensions. The accessor "getIssuer" gives direct access to the value
      */
     public DeviceUdiComponent setIssuerElement(UriType value) {
       this.issuer = value;
@@ -753,14 +693,14 @@ public class Device extends DomainResource {
 
     /**
      * @return Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :
-     * 1) GS1:
-     * http://hl7.org/fhir/NamingSystem/gs1-di,
-     * 2) HIBCC:
-     * http://hl7.org/fhir/NamingSystem/hibcc-dI,
-     * 3) ICCBBA for blood containers:
-     * http://hl7.org/fhir/NamingSystem/iccbba-blood-di,
-     * 4) ICCBA for other devices:
-     * http://hl7.org/fhir/NamingSystem/iccbba-other-di.
+    1) GS1:
+    http://hl7.org/fhir/NamingSystem/gs1-di,
+    2) HIBCC:
+    http://hl7.org/fhir/NamingSystem/hibcc-dI,
+    3) ICCBBA for blood containers:
+    http://hl7.org/fhir/NamingSystem/iccbba-blood-di,
+    4) ICCBA for other devices:
+    http://hl7.org/fhir/NamingSystem/iccbba-other-di.
      */
     public String getIssuer() {
       return this.issuer == null ? null : this.issuer.getValue();
@@ -768,14 +708,14 @@ public class Device extends DomainResource {
 
     /**
      * @param value Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :
-     *              1) GS1:
-     *              http://hl7.org/fhir/NamingSystem/gs1-di,
-     *              2) HIBCC:
-     *              http://hl7.org/fhir/NamingSystem/hibcc-dI,
-     *              3) ICCBBA for blood containers:
-     *              http://hl7.org/fhir/NamingSystem/iccbba-blood-di,
-     *              4) ICCBA for other devices:
-     *              http://hl7.org/fhir/NamingSystem/iccbba-other-di.
+    1) GS1:
+    http://hl7.org/fhir/NamingSystem/gs1-di,
+    2) HIBCC:
+    http://hl7.org/fhir/NamingSystem/hibcc-dI,
+    3) ICCBBA for blood containers:
+    http://hl7.org/fhir/NamingSystem/iccbba-blood-di,
+    4) ICCBA for other devices:
+    http://hl7.org/fhir/NamingSystem/iccbba-other-di.
      */
     public DeviceUdiComponent setIssuer(String value) {
       if (Utilities.noString(value))
@@ -851,22 +791,14 @@ public class Device extends DomainResource {
     @Override
     public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
       switch (_hash) {
-        case 1322005407: /*deviceIdentifier*/
-          return new Property("deviceIdentifier", "string", "The device identifier (DI) is a mandatory, fixed portion of a UDI that identifies the labeler and the specific version or model of a device.", 0, 1, deviceIdentifier);
-        case 3373707: /*name*/
-          return new Property("name", "string", "Name of device as used in labeling or catalog.", 0, 1, name);
-        case -507075711: /*jurisdiction*/
-          return new Property("jurisdiction", "uri", "The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace. with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.", 0, 1, jurisdiction);
-        case 806499972: /*carrierHRF*/
-          return new Property("carrierHRF", "string", "The full UDI carrier as the human readable form (HRF) representation of the barcode string as printed on the packaging of the device.", 0, 1, carrierHRF);
-        case -768521825: /*carrierAIDC*/
-          return new Property("carrierAIDC", "base64Binary", "The full UDI carrier of the Automatic Identification and Data Capture (AIDC) technology representation of the barcode string as printed on the packaging of the device - E.g a barcode or RFID.   Because of limitations on character sets in XML and the need to round-trip JSON data through XML, AIDC Formats *SHALL* be base64 encoded.", 0, 1, carrierAIDC);
-        case -1179159879: /*issuer*/
-          return new Property("issuer", "uri", "Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :\n1) GS1: \nhttp://hl7.org/fhir/NamingSystem/gs1-di, \n2) HIBCC:\nhttp://hl7.org/fhir/NamingSystem/hibcc-dI, \n3) ICCBBA for blood containers:\nhttp://hl7.org/fhir/NamingSystem/iccbba-blood-di, \n4) ICCBA for other devices:\nhttp://hl7.org/fhir/NamingSystem/iccbba-other-di.", 0, 1, issuer);
-        case -479362356: /*entryType*/
-          return new Property("entryType", "code", "A coded entry to indicate how the data was entered.", 0, 1, entryType);
-        default:
-          return super.getNamedProperty(_hash, _name, _checkValid);
+        case 1322005407: /*deviceIdentifier*/  return new Property("deviceIdentifier", "string", "The device identifier (DI) is a mandatory, fixed portion of a UDI that identifies the labeler and the specific version or model of a device.", 0, 1, deviceIdentifier);
+        case 3373707: /*name*/  return new Property("name", "string", "Name of device as used in labeling or catalog.", 0, 1, name);
+        case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "uri", "The identity of the authoritative source for UDI generation within a  jurisdiction.  All UDIs are globally unique within a single namespace. with the appropriate repository uri as the system.  For example,  UDIs of devices managed in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.", 0, 1, jurisdiction);
+        case 806499972: /*carrierHRF*/  return new Property("carrierHRF", "string", "The full UDI carrier as the human readable form (HRF) representation of the barcode string as printed on the packaging of the device.", 0, 1, carrierHRF);
+        case -768521825: /*carrierAIDC*/  return new Property("carrierAIDC", "base64Binary", "The full UDI carrier of the Automatic Identification and Data Capture (AIDC) technology representation of the barcode string as printed on the packaging of the device - E.g a barcode or RFID.   Because of limitations on character sets in XML and the need to round-trip JSON data through XML, AIDC Formats *SHALL* be base64 encoded.", 0, 1, carrierAIDC);
+        case -1179159879: /*issuer*/  return new Property("issuer", "uri", "Organization that is charged with issuing UDIs for devices.  For example, the US FDA issuers include :\n1) GS1: \nhttp://hl7.org/fhir/NamingSystem/gs1-di, \n2) HIBCC:\nhttp://hl7.org/fhir/NamingSystem/hibcc-dI, \n3) ICCBBA for blood containers:\nhttp://hl7.org/fhir/NamingSystem/iccbba-blood-di, \n4) ICCBA for other devices:\nhttp://hl7.org/fhir/NamingSystem/iccbba-other-di.", 0, 1, issuer);
+        case -479362356: /*entryType*/  return new Property("entryType", "code", "A coded entry to indicate how the data was entered.", 0, 1, entryType);
+        default: return super.getNamedProperty(_hash, _name, _checkValid);
       }
 
     }
@@ -874,22 +806,14 @@ public class Device extends DomainResource {
     @Override
     public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
       switch (hash) {
-        case 1322005407: /*deviceIdentifier*/
-          return this.deviceIdentifier == null ? new Base[0] : new Base[]{this.deviceIdentifier}; // StringType
-        case 3373707: /*name*/
-          return this.name == null ? new Base[0] : new Base[]{this.name}; // StringType
-        case -507075711: /*jurisdiction*/
-          return this.jurisdiction == null ? new Base[0] : new Base[]{this.jurisdiction}; // UriType
-        case 806499972: /*carrierHRF*/
-          return this.carrierHRF == null ? new Base[0] : new Base[]{this.carrierHRF}; // StringType
-        case -768521825: /*carrierAIDC*/
-          return this.carrierAIDC == null ? new Base[0] : new Base[]{this.carrierAIDC}; // Base64BinaryType
-        case -1179159879: /*issuer*/
-          return this.issuer == null ? new Base[0] : new Base[]{this.issuer}; // UriType
-        case -479362356: /*entryType*/
-          return this.entryType == null ? new Base[0] : new Base[]{this.entryType}; // Enumeration<UDIEntryType>
-        default:
-          return super.getProperty(hash, name, checkValid);
+        case 1322005407: /*deviceIdentifier*/ return this.deviceIdentifier == null ? new Base[0] : new Base[] {this.deviceIdentifier}; // StringType
+        case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
+        case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : new Base[] {this.jurisdiction}; // UriType
+        case 806499972: /*carrierHRF*/ return this.carrierHRF == null ? new Base[0] : new Base[] {this.carrierHRF}; // StringType
+        case -768521825: /*carrierAIDC*/ return this.carrierAIDC == null ? new Base[0] : new Base[] {this.carrierAIDC}; // Base64BinaryType
+        case -1179159879: /*issuer*/ return this.issuer == null ? new Base[0] : new Base[] {this.issuer}; // UriType
+        case -479362356: /*entryType*/ return this.entryType == null ? new Base[0] : new Base[] {this.entryType}; // Enumeration<UDIEntryType>
+        default: return super.getProperty(hash, name, checkValid);
       }
 
     }
@@ -919,8 +843,7 @@ public class Device extends DomainResource {
           value = new UDIEntryTypeEnumFactory().fromType(castToCode(value));
           this.entryType = (Enumeration) value; // Enumeration<UDIEntryType>
           return value;
-        default:
-          return super.setProperty(hash, name, value);
+        default: return super.setProperty(hash, name, value);
       }
 
     }
@@ -950,22 +873,14 @@ public class Device extends DomainResource {
     @Override
     public Base makeProperty(int hash, String name) throws FHIRException {
       switch (hash) {
-        case 1322005407:
-          return getDeviceIdentifierElement();
-        case 3373707:
-          return getNameElement();
-        case -507075711:
-          return getJurisdictionElement();
-        case 806499972:
-          return getCarrierHRFElement();
-        case -768521825:
-          return getCarrierAIDCElement();
-        case -1179159879:
-          return getIssuerElement();
-        case -479362356:
-          return getEntryTypeElement();
-        default:
-          return super.makeProperty(hash, name);
+        case 1322005407:  return getDeviceIdentifierElement();
+        case 3373707:  return getNameElement();
+        case -507075711:  return getJurisdictionElement();
+        case 806499972:  return getCarrierHRFElement();
+        case -768521825:  return getCarrierAIDCElement();
+        case -1179159879:  return getIssuerElement();
+        case -479362356:  return getEntryTypeElement();
+        default: return super.makeProperty(hash, name);
       }
 
     }
@@ -973,22 +888,14 @@ public class Device extends DomainResource {
     @Override
     public String[] getTypesForProperty(int hash, String name) throws FHIRException {
       switch (hash) {
-        case 1322005407: /*deviceIdentifier*/
-          return new String[]{"string"};
-        case 3373707: /*name*/
-          return new String[]{"string"};
-        case -507075711: /*jurisdiction*/
-          return new String[]{"uri"};
-        case 806499972: /*carrierHRF*/
-          return new String[]{"string"};
-        case -768521825: /*carrierAIDC*/
-          return new String[]{"base64Binary"};
-        case -1179159879: /*issuer*/
-          return new String[]{"uri"};
-        case -479362356: /*entryType*/
-          return new String[]{"code"};
-        default:
-          return super.getTypesForProperty(hash, name);
+        case 1322005407: /*deviceIdentifier*/ return new String[] {"string"};
+        case 3373707: /*name*/ return new String[] {"string"};
+        case -507075711: /*jurisdiction*/ return new String[] {"uri"};
+        case 806499972: /*carrierHRF*/ return new String[] {"string"};
+        case -768521825: /*carrierAIDC*/ return new String[] {"base64Binary"};
+        case -1179159879: /*issuer*/ return new String[] {"uri"};
+        case -479362356: /*entryType*/ return new String[] {"code"};
+        default: return super.getTypesForProperty(hash, name);
       }
 
     }
@@ -997,19 +904,26 @@ public class Device extends DomainResource {
     public Base addChild(String name) throws FHIRException {
       if (name.equals("deviceIdentifier")) {
         throw new FHIRException("Cannot call addChild on a primitive type Device.deviceIdentifier");
-      } else if (name.equals("name")) {
+      }
+      else if (name.equals("name")) {
         throw new FHIRException("Cannot call addChild on a primitive type Device.name");
-      } else if (name.equals("jurisdiction")) {
+      }
+      else if (name.equals("jurisdiction")) {
         throw new FHIRException("Cannot call addChild on a primitive type Device.jurisdiction");
-      } else if (name.equals("carrierHRF")) {
+      }
+      else if (name.equals("carrierHRF")) {
         throw new FHIRException("Cannot call addChild on a primitive type Device.carrierHRF");
-      } else if (name.equals("carrierAIDC")) {
+      }
+      else if (name.equals("carrierAIDC")) {
         throw new FHIRException("Cannot call addChild on a primitive type Device.carrierAIDC");
-      } else if (name.equals("issuer")) {
+      }
+      else if (name.equals("issuer")) {
         throw new FHIRException("Cannot call addChild on a primitive type Device.issuer");
-      } else if (name.equals("entryType")) {
+      }
+      else if (name.equals("entryType")) {
         throw new FHIRException("Cannot call addChild on a primitive type Device.entryType");
-      } else
+      }
+      else
         return super.addChild(name);
     }
 
@@ -1067,80 +981,80 @@ public class Device extends DomainResource {
   /**
    * Unique instance identifiers assigned to a device by manufacturers other organizations or owners.
    */
-  @Child(name = "identifier", type = {Identifier.class}, order = 0, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = false)
-  @Description(shortDefinition = "Instance identifier", formalDefinition = "Unique instance identifiers assigned to a device by manufacturers other organizations or owners.")
+  @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+  @Description(shortDefinition="Instance identifier", formalDefinition="Unique instance identifiers assigned to a device by manufacturers other organizations or owners." )
   protected List<Identifier> identifier;
 
   /**
    * [Unique device identifier (UDI)](device.html#5.11.3.2.2) assigned to device label or package.
    */
-  @Child(name = "udi", type = {}, order = 1, min = 0, max = 1, modifier = false, summary = true)
-  @Description(shortDefinition = "Unique Device Identifier (UDI) Barcode string", formalDefinition = "[Unique device identifier (UDI)](device.html#5.11.3.2.2) assigned to device label or package.")
+  @Child(name = "udi", type = {}, order=1, min=0, max=1, modifier=false, summary=true)
+  @Description(shortDefinition="Unique Device Identifier (UDI) Barcode string", formalDefinition="[Unique device identifier (UDI)](device.html#5.11.3.2.2) assigned to device label or package." )
   protected DeviceUdiComponent udi;
 
   /**
    * Status of the Device availability.
    */
-  @Child(name = "status", type = {CodeType.class}, order = 2, min = 0, max = 1, modifier = true, summary = true)
-  @Description(shortDefinition = "active | inactive | entered-in-error | unknown", formalDefinition = "Status of the Device availability.")
-  @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/device-status")
+  @Child(name = "status", type = {CodeType.class}, order=2, min=0, max=1, modifier=true, summary=true)
+  @Description(shortDefinition="active | inactive | entered-in-error | unknown", formalDefinition="Status of the Device availability." )
+  @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-status")
   protected Enumeration<FHIRDeviceStatus> status;
 
   /**
    * Code or identifier to identify a kind of device.
    */
-  @Child(name = "type", type = {CodeableConcept.class}, order = 3, min = 0, max = 1, modifier = false, summary = false)
-  @Description(shortDefinition = "What kind of device this is", formalDefinition = "Code or identifier to identify a kind of device.")
-  @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/device-kind")
+  @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+  @Description(shortDefinition="What kind of device this is", formalDefinition="Code or identifier to identify a kind of device." )
+  @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-kind")
   protected CodeableConcept type;
 
   /**
    * Lot number assigned by the manufacturer.
    */
-  @Child(name = "lotNumber", type = {StringType.class}, order = 4, min = 0, max = 1, modifier = false, summary = false)
-  @Description(shortDefinition = "Lot number of manufacture", formalDefinition = "Lot number assigned by the manufacturer.")
+  @Child(name = "lotNumber", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+  @Description(shortDefinition="Lot number of manufacture", formalDefinition="Lot number assigned by the manufacturer." )
   protected StringType lotNumber;
 
   /**
    * A name of the manufacturer.
    */
-  @Child(name = "manufacturer", type = {StringType.class}, order = 5, min = 0, max = 1, modifier = false, summary = false)
-  @Description(shortDefinition = "Name of device manufacturer", formalDefinition = "A name of the manufacturer.")
+  @Child(name = "manufacturer", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+  @Description(shortDefinition="Name of device manufacturer", formalDefinition="A name of the manufacturer." )
   protected StringType manufacturer;
 
   /**
    * The date and time when the device was manufactured.
    */
-  @Child(name = "manufactureDate", type = {DateTimeType.class}, order = 6, min = 0, max = 1, modifier = false, summary = false)
-  @Description(shortDefinition = "Date when the device was made", formalDefinition = "The date and time when the device was manufactured.")
+  @Child(name = "manufactureDate", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+  @Description(shortDefinition="Date when the device was made", formalDefinition="The date and time when the device was manufactured." )
   protected DateTimeType manufactureDate;
 
   /**
    * The date and time beyond which this device is no longer valid or should not be used (if applicable).
    */
-  @Child(name = "expirationDate", type = {DateTimeType.class}, order = 7, min = 0, max = 1, modifier = false, summary = false)
-  @Description(shortDefinition = "Date and time of expiry of this device (if applicable)", formalDefinition = "The date and time beyond which this device is no longer valid or should not be used (if applicable).")
+  @Child(name = "expirationDate", type = {DateTimeType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+  @Description(shortDefinition="Date and time of expiry of this device (if applicable)", formalDefinition="The date and time beyond which this device is no longer valid or should not be used (if applicable)." )
   protected DateTimeType expirationDate;
 
   /**
    * The "model" is an identifier assigned by the manufacturer to identify the product by its type. This number is shared by the all devices sold as the same type.
    */
-  @Child(name = "model", type = {StringType.class}, order = 8, min = 0, max = 1, modifier = false, summary = false)
-  @Description(shortDefinition = "Model id assigned by the manufacturer", formalDefinition = "The \"model\" is an identifier assigned by the manufacturer to identify the product by its type. This number is shared by the all devices sold as the same type.")
+  @Child(name = "model", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+  @Description(shortDefinition="Model id assigned by the manufacturer", formalDefinition="The \"model\" is an identifier assigned by the manufacturer to identify the product by its type. This number is shared by the all devices sold as the same type." )
   protected StringType model;
 
   /**
    * The version of the device, if the device has multiple releases under the same model, or if the device is software or carries firmware.
    */
-  @Child(name = "version", type = {StringType.class}, order = 9, min = 0, max = 1, modifier = false, summary = false)
-  @Description(shortDefinition = "Version number (i.e. software)", formalDefinition = "The version of the device, if the device has multiple releases under the same model, or if the device is software or carries firmware.")
+  @Child(name = "version", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=false)
+  @Description(shortDefinition="Version number (i.e. software)", formalDefinition="The version of the device, if the device has multiple releases under the same model, or if the device is software or carries firmware." )
   protected StringType version;
 
   /**
    * Patient information, If the device is affixed to a person.
    */
-  @Child(name = "patient", type = {Patient.class}, order = 10, min = 0, max = 1, modifier = false, summary = false)
-  @Description(shortDefinition = "Patient to whom Device is affixed", formalDefinition = "Patient information, If the device is affixed to a person.")
+  @Child(name = "patient", type = {Patient.class}, order=10, min=0, max=1, modifier=false, summary=false)
+  @Description(shortDefinition="Patient to whom Device is affixed", formalDefinition="Patient information, If the device is affixed to a person." )
   protected Reference patient;
 
   /**
@@ -1151,8 +1065,8 @@ public class Device extends DomainResource {
   /**
    * An organization that is responsible for the provision and ongoing maintenance of the device.
    */
-  @Child(name = "owner", type = {Organization.class}, order = 11, min = 0, max = 1, modifier = false, summary = false)
-  @Description(shortDefinition = "Organization responsible for device", formalDefinition = "An organization that is responsible for the provision and ongoing maintenance of the device.")
+  @Child(name = "owner", type = {Organization.class}, order=11, min=0, max=1, modifier=false, summary=false)
+  @Description(shortDefinition="Organization responsible for device", formalDefinition="An organization that is responsible for the provision and ongoing maintenance of the device." )
   protected Reference owner;
 
   /**
@@ -1163,15 +1077,15 @@ public class Device extends DomainResource {
   /**
    * Contact details for an organization or a particular human that is responsible for the device.
    */
-  @Child(name = "contact", type = {ContactPoint.class}, order = 12, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = false)
-  @Description(shortDefinition = "Details for human/organization for support", formalDefinition = "Contact details for an organization or a particular human that is responsible for the device.")
+  @Child(name = "contact", type = {ContactPoint.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+  @Description(shortDefinition="Details for human/organization for support", formalDefinition="Contact details for an organization or a particular human that is responsible for the device." )
   protected List<ContactPoint> contact;
 
   /**
    * The place where the device can be found.
    */
-  @Child(name = "location", type = {Location.class}, order = 13, min = 0, max = 1, modifier = false, summary = false)
-  @Description(shortDefinition = "Where the resource is found", formalDefinition = "The place where the device can be found.")
+  @Child(name = "location", type = {Location.class}, order=13, min=0, max=1, modifier=false, summary=false)
+  @Description(shortDefinition="Where the resource is found", formalDefinition="The place where the device can be found." )
   protected Reference location;
 
   /**
@@ -1182,23 +1096,23 @@ public class Device extends DomainResource {
   /**
    * A network address on which the device may be contacted directly.
    */
-  @Child(name = "url", type = {UriType.class}, order = 14, min = 0, max = 1, modifier = false, summary = false)
-  @Description(shortDefinition = "Network address to contact device", formalDefinition = "A network address on which the device may be contacted directly.")
+  @Child(name = "url", type = {UriType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+  @Description(shortDefinition="Network address to contact device", formalDefinition="A network address on which the device may be contacted directly." )
   protected UriType url;
 
   /**
    * Descriptive information, usage information or implantation information that is not captured in an existing element.
    */
-  @Child(name = "note", type = {Annotation.class}, order = 15, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = false)
-  @Description(shortDefinition = "Device notes and comments", formalDefinition = "Descriptive information, usage information or implantation information that is not captured in an existing element.")
+  @Child(name = "note", type = {Annotation.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+  @Description(shortDefinition="Device notes and comments", formalDefinition="Descriptive information, usage information or implantation information that is not captured in an existing element." )
   protected List<Annotation> note;
 
   /**
    * Provides additional safety characteristics about a medical device.  For example devices containing latex.
    */
-  @Child(name = "safety", type = {CodeableConcept.class}, order = 16, min = 0, max = Child.MAX_UNLIMITED, modifier = false, summary = true)
-  @Description(shortDefinition = "Safety Characteristics of Device", formalDefinition = "Provides additional safety characteristics about a medical device.  For example devices containing latex.")
-  @ca.uhn.fhir.model.api.annotation.Binding(valueSet = "http://hl7.org/fhir/ValueSet/device-safety")
+  @Child(name = "safety", type = {CodeableConcept.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+  @Description(shortDefinition="Safety Characteristics of Device", formalDefinition="Provides additional safety characteristics about a medical device.  For example devices containing latex." )
+  @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-safety")
   protected List<CodeableConcept> safety;
 
   private static final long serialVersionUID = -1056263930L;
@@ -1282,7 +1196,7 @@ public class Device extends DomainResource {
   /**
    * @param value {@link #udi} ([Unique device identifier (UDI)](device.html#5.11.3.2.2) assigned to device label or package.)
    */
-  public Device setUdi(DeviceUdiComponent value) {
+  public Device setUdi(DeviceUdiComponent value)  {
     this.udi = value;
     return this;
   }
@@ -1355,7 +1269,7 @@ public class Device extends DomainResource {
   /**
    * @param value {@link #type} (Code or identifier to identify a kind of device.)
    */
-  public Device setType(CodeableConcept value) {
+  public Device setType(CodeableConcept value)  {
     this.type = value;
     return this;
   }
@@ -1673,13 +1587,9 @@ public class Device extends DomainResource {
   /**
    * @param value {@link #patient} (Patient information, If the device is affixed to a person.)
    */
-  public Device setPatient(Reference value) {
+  public Device setPatient(Reference value)  {
     this.patient = value;
     return this;
-  }
-
-  public boolean hasPatientTarget() {
-    return this.patientTarget != null && !this.patientTarget.isEmpty();
   }
 
   /**
@@ -1721,13 +1631,9 @@ public class Device extends DomainResource {
   /**
    * @param value {@link #owner} (An organization that is responsible for the provision and ongoing maintenance of the device.)
    */
-  public Device setOwner(Reference value) {
+  public Device setOwner(Reference value)  {
     this.owner = value;
     return this;
-  }
-
-  public boolean hasOwnerTarget() {
-    return this.ownerTarget != null && !this.ownerTarget.isEmpty();
   }
 
   /**
@@ -1822,13 +1728,9 @@ public class Device extends DomainResource {
   /**
    * @param value {@link #location} (The place where the device can be found.)
    */
-  public Device setLocation(Reference value) {
+  public Device setLocation(Reference value)  {
     this.location = value;
     return this;
-  }
-
-  public boolean hasLocationTarget() {
-    return this.locationTarget != null && !this.locationTarget.isEmpty();
   }
 
   /**
@@ -2030,42 +1932,24 @@ public class Device extends DomainResource {
   @Override
   public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
     switch (_hash) {
-      case -1618432855: /*identifier*/
-        return new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by manufacturers other organizations or owners.", 0, java.lang.Integer.MAX_VALUE, identifier);
-      case 115642: /*udi*/
-        return new Property("udi", "", "[Unique device identifier (UDI)](device.html#5.11.3.2.2) assigned to device label or package.", 0, 1, udi);
-      case -892481550: /*status*/
-        return new Property("status", "code", "Status of the Device availability.", 0, 1, status);
-      case 3575610: /*type*/
-        return new Property("type", "CodeableConcept", "Code or identifier to identify a kind of device.", 0, 1, type);
-      case 462547450: /*lotNumber*/
-        return new Property("lotNumber", "string", "Lot number assigned by the manufacturer.", 0, 1, lotNumber);
-      case -1969347631: /*manufacturer*/
-        return new Property("manufacturer", "string", "A name of the manufacturer.", 0, 1, manufacturer);
-      case 416714767: /*manufactureDate*/
-        return new Property("manufactureDate", "dateTime", "The date and time when the device was manufactured.", 0, 1, manufactureDate);
-      case -668811523: /*expirationDate*/
-        return new Property("expirationDate", "dateTime", "The date and time beyond which this device is no longer valid or should not be used (if applicable).", 0, 1, expirationDate);
-      case 104069929: /*model*/
-        return new Property("model", "string", "The \"model\" is an identifier assigned by the manufacturer to identify the product by its type. This number is shared by the all devices sold as the same type.", 0, 1, model);
-      case 351608024: /*version*/
-        return new Property("version", "string", "The version of the device, if the device has multiple releases under the same model, or if the device is software or carries firmware.", 0, 1, version);
-      case -791418107: /*patient*/
-        return new Property("patient", "Reference(Patient)", "Patient information, If the device is affixed to a person.", 0, 1, patient);
-      case 106164915: /*owner*/
-        return new Property("owner", "Reference(Organization)", "An organization that is responsible for the provision and ongoing maintenance of the device.", 0, 1, owner);
-      case 951526432: /*contact*/
-        return new Property("contact", "ContactPoint", "Contact details for an organization or a particular human that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, contact);
-      case 1901043637: /*location*/
-        return new Property("location", "Reference(Location)", "The place where the device can be found.", 0, 1, location);
-      case 116079: /*url*/
-        return new Property("url", "uri", "A network address on which the device may be contacted directly.", 0, 1, url);
-      case 3387378: /*note*/
-        return new Property("note", "Annotation", "Descriptive information, usage information or implantation information that is not captured in an existing element.", 0, java.lang.Integer.MAX_VALUE, note);
-      case -909893934: /*safety*/
-        return new Property("safety", "CodeableConcept", "Provides additional safety characteristics about a medical device.  For example devices containing latex.", 0, java.lang.Integer.MAX_VALUE, safety);
-      default:
-        return super.getNamedProperty(_hash, _name, _checkValid);
+      case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique instance identifiers assigned to a device by manufacturers other organizations or owners.", 0, java.lang.Integer.MAX_VALUE, identifier);
+      case 115642: /*udi*/  return new Property("udi", "", "[Unique device identifier (UDI)](device.html#5.11.3.2.2) assigned to device label or package.", 0, 1, udi);
+      case -892481550: /*status*/  return new Property("status", "code", "Status of the Device availability.", 0, 1, status);
+      case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Code or identifier to identify a kind of device.", 0, 1, type);
+      case 462547450: /*lotNumber*/  return new Property("lotNumber", "string", "Lot number assigned by the manufacturer.", 0, 1, lotNumber);
+      case -1969347631: /*manufacturer*/  return new Property("manufacturer", "string", "A name of the manufacturer.", 0, 1, manufacturer);
+      case 416714767: /*manufactureDate*/  return new Property("manufactureDate", "dateTime", "The date and time when the device was manufactured.", 0, 1, manufactureDate);
+      case -668811523: /*expirationDate*/  return new Property("expirationDate", "dateTime", "The date and time beyond which this device is no longer valid or should not be used (if applicable).", 0, 1, expirationDate);
+      case 104069929: /*model*/  return new Property("model", "string", "The \"model\" is an identifier assigned by the manufacturer to identify the product by its type. This number is shared by the all devices sold as the same type.", 0, 1, model);
+      case 351608024: /*version*/  return new Property("version", "string", "The version of the device, if the device has multiple releases under the same model, or if the device is software or carries firmware.", 0, 1, version);
+      case -791418107: /*patient*/  return new Property("patient", "Reference(Patient)", "Patient information, If the device is affixed to a person.", 0, 1, patient);
+      case 106164915: /*owner*/  return new Property("owner", "Reference(Organization)", "An organization that is responsible for the provision and ongoing maintenance of the device.", 0, 1, owner);
+      case 951526432: /*contact*/  return new Property("contact", "ContactPoint", "Contact details for an organization or a particular human that is responsible for the device.", 0, java.lang.Integer.MAX_VALUE, contact);
+      case 1901043637: /*location*/  return new Property("location", "Reference(Location)", "The place where the device can be found.", 0, 1, location);
+      case 116079: /*url*/  return new Property("url", "uri", "A network address on which the device may be contacted directly.", 0, 1, url);
+      case 3387378: /*note*/  return new Property("note", "Annotation", "Descriptive information, usage information or implantation information that is not captured in an existing element.", 0, java.lang.Integer.MAX_VALUE, note);
+      case -909893934: /*safety*/  return new Property("safety", "CodeableConcept", "Provides additional safety characteristics about a medical device.  For example devices containing latex.", 0, java.lang.Integer.MAX_VALUE, safety);
+      default: return super.getNamedProperty(_hash, _name, _checkValid);
     }
 
   }
@@ -2073,42 +1957,24 @@ public class Device extends DomainResource {
   @Override
   public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
     switch (hash) {
-      case -1618432855: /*identifier*/
-        return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-      case 115642: /*udi*/
-        return this.udi == null ? new Base[0] : new Base[]{this.udi}; // DeviceUdiComponent
-      case -892481550: /*status*/
-        return this.status == null ? new Base[0] : new Base[]{this.status}; // Enumeration<FHIRDeviceStatus>
-      case 3575610: /*type*/
-        return this.type == null ? new Base[0] : new Base[]{this.type}; // CodeableConcept
-      case 462547450: /*lotNumber*/
-        return this.lotNumber == null ? new Base[0] : new Base[]{this.lotNumber}; // StringType
-      case -1969347631: /*manufacturer*/
-        return this.manufacturer == null ? new Base[0] : new Base[]{this.manufacturer}; // StringType
-      case 416714767: /*manufactureDate*/
-        return this.manufactureDate == null ? new Base[0] : new Base[]{this.manufactureDate}; // DateTimeType
-      case -668811523: /*expirationDate*/
-        return this.expirationDate == null ? new Base[0] : new Base[]{this.expirationDate}; // DateTimeType
-      case 104069929: /*model*/
-        return this.model == null ? new Base[0] : new Base[]{this.model}; // StringType
-      case 351608024: /*version*/
-        return this.version == null ? new Base[0] : new Base[]{this.version}; // StringType
-      case -791418107: /*patient*/
-        return this.patient == null ? new Base[0] : new Base[]{this.patient}; // Reference
-      case 106164915: /*owner*/
-        return this.owner == null ? new Base[0] : new Base[]{this.owner}; // Reference
-      case 951526432: /*contact*/
-        return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactPoint
-      case 1901043637: /*location*/
-        return this.location == null ? new Base[0] : new Base[]{this.location}; // Reference
-      case 116079: /*url*/
-        return this.url == null ? new Base[0] : new Base[]{this.url}; // UriType
-      case 3387378: /*note*/
-        return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-      case -909893934: /*safety*/
-        return this.safety == null ? new Base[0] : this.safety.toArray(new Base[this.safety.size()]); // CodeableConcept
-      default:
-        return super.getProperty(hash, name, checkValid);
+      case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+      case 115642: /*udi*/ return this.udi == null ? new Base[0] : new Base[] {this.udi}; // DeviceUdiComponent
+      case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<FHIRDeviceStatus>
+      case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+      case 462547450: /*lotNumber*/ return this.lotNumber == null ? new Base[0] : new Base[] {this.lotNumber}; // StringType
+      case -1969347631: /*manufacturer*/ return this.manufacturer == null ? new Base[0] : new Base[] {this.manufacturer}; // StringType
+      case 416714767: /*manufactureDate*/ return this.manufactureDate == null ? new Base[0] : new Base[] {this.manufactureDate}; // DateTimeType
+      case -668811523: /*expirationDate*/ return this.expirationDate == null ? new Base[0] : new Base[] {this.expirationDate}; // DateTimeType
+      case 104069929: /*model*/ return this.model == null ? new Base[0] : new Base[] {this.model}; // StringType
+      case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
+      case -791418107: /*patient*/ return this.patient == null ? new Base[0] : new Base[] {this.patient}; // Reference
+      case 106164915: /*owner*/ return this.owner == null ? new Base[0] : new Base[] {this.owner}; // Reference
+      case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactPoint
+      case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // Reference
+      case 116079: /*url*/ return this.url == null ? new Base[0] : new Base[] {this.url}; // UriType
+      case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
+      case -909893934: /*safety*/ return this.safety == null ? new Base[0] : this.safety.toArray(new Base[this.safety.size()]); // CodeableConcept
+      default: return super.getProperty(hash, name, checkValid);
     }
 
   }
@@ -2168,8 +2034,7 @@ public class Device extends DomainResource {
       case -909893934: // safety
         this.getSafety().add(castToCodeableConcept(value)); // CodeableConcept
         return value;
-      default:
-        return super.setProperty(hash, name, value);
+      default: return super.setProperty(hash, name, value);
     }
 
   }
@@ -2219,42 +2084,24 @@ public class Device extends DomainResource {
   @Override
   public Base makeProperty(int hash, String name) throws FHIRException {
     switch (hash) {
-      case -1618432855:
-        return addIdentifier();
-      case 115642:
-        return getUdi();
-      case -892481550:
-        return getStatusElement();
-      case 3575610:
-        return getType();
-      case 462547450:
-        return getLotNumberElement();
-      case -1969347631:
-        return getManufacturerElement();
-      case 416714767:
-        return getManufactureDateElement();
-      case -668811523:
-        return getExpirationDateElement();
-      case 104069929:
-        return getModelElement();
-      case 351608024:
-        return getVersionElement();
-      case -791418107:
-        return getPatient();
-      case 106164915:
-        return getOwner();
-      case 951526432:
-        return addContact();
-      case 1901043637:
-        return getLocation();
-      case 116079:
-        return getUrlElement();
-      case 3387378:
-        return addNote();
-      case -909893934:
-        return addSafety();
-      default:
-        return super.makeProperty(hash, name);
+      case -1618432855:  return addIdentifier();
+      case 115642:  return getUdi();
+      case -892481550:  return getStatusElement();
+      case 3575610:  return getType();
+      case 462547450:  return getLotNumberElement();
+      case -1969347631:  return getManufacturerElement();
+      case 416714767:  return getManufactureDateElement();
+      case -668811523:  return getExpirationDateElement();
+      case 104069929:  return getModelElement();
+      case 351608024:  return getVersionElement();
+      case -791418107:  return getPatient();
+      case 106164915:  return getOwner();
+      case 951526432:  return addContact();
+      case 1901043637:  return getLocation();
+      case 116079:  return getUrlElement();
+      case 3387378:  return addNote();
+      case -909893934:  return addSafety();
+      default: return super.makeProperty(hash, name);
     }
 
   }
@@ -2262,42 +2109,24 @@ public class Device extends DomainResource {
   @Override
   public String[] getTypesForProperty(int hash, String name) throws FHIRException {
     switch (hash) {
-      case -1618432855: /*identifier*/
-        return new String[]{"Identifier"};
-      case 115642: /*udi*/
-        return new String[]{};
-      case -892481550: /*status*/
-        return new String[]{"code"};
-      case 3575610: /*type*/
-        return new String[]{"CodeableConcept"};
-      case 462547450: /*lotNumber*/
-        return new String[]{"string"};
-      case -1969347631: /*manufacturer*/
-        return new String[]{"string"};
-      case 416714767: /*manufactureDate*/
-        return new String[]{"dateTime"};
-      case -668811523: /*expirationDate*/
-        return new String[]{"dateTime"};
-      case 104069929: /*model*/
-        return new String[]{"string"};
-      case 351608024: /*version*/
-        return new String[]{"string"};
-      case -791418107: /*patient*/
-        return new String[]{"Reference"};
-      case 106164915: /*owner*/
-        return new String[]{"Reference"};
-      case 951526432: /*contact*/
-        return new String[]{"ContactPoint"};
-      case 1901043637: /*location*/
-        return new String[]{"Reference"};
-      case 116079: /*url*/
-        return new String[]{"uri"};
-      case 3387378: /*note*/
-        return new String[]{"Annotation"};
-      case -909893934: /*safety*/
-        return new String[]{"CodeableConcept"};
-      default:
-        return super.getTypesForProperty(hash, name);
+      case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+      case 115642: /*udi*/ return new String[] {};
+      case -892481550: /*status*/ return new String[] {"code"};
+      case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+      case 462547450: /*lotNumber*/ return new String[] {"string"};
+      case -1969347631: /*manufacturer*/ return new String[] {"string"};
+      case 416714767: /*manufactureDate*/ return new String[] {"dateTime"};
+      case -668811523: /*expirationDate*/ return new String[] {"dateTime"};
+      case 104069929: /*model*/ return new String[] {"string"};
+      case 351608024: /*version*/ return new String[] {"string"};
+      case -791418107: /*patient*/ return new String[] {"Reference"};
+      case 106164915: /*owner*/ return new String[] {"Reference"};
+      case 951526432: /*contact*/ return new String[] {"ContactPoint"};
+      case 1901043637: /*location*/ return new String[] {"Reference"};
+      case 116079: /*url*/ return new String[] {"uri"};
+      case 3387378: /*note*/ return new String[] {"Annotation"};
+      case -909893934: /*safety*/ return new String[] {"CodeableConcept"};
+      default: return super.getTypesForProperty(hash, name);
     }
 
   }
@@ -2306,44 +2135,61 @@ public class Device extends DomainResource {
   public Base addChild(String name) throws FHIRException {
     if (name.equals("identifier")) {
       return addIdentifier();
-    } else if (name.equals("udi")) {
+    }
+    else if (name.equals("udi")) {
       this.udi = new DeviceUdiComponent();
       return this.udi;
-    } else if (name.equals("status")) {
+    }
+    else if (name.equals("status")) {
       throw new FHIRException("Cannot call addChild on a primitive type Device.status");
-    } else if (name.equals("type")) {
+    }
+    else if (name.equals("type")) {
       this.type = new CodeableConcept();
       return this.type;
-    } else if (name.equals("lotNumber")) {
+    }
+    else if (name.equals("lotNumber")) {
       throw new FHIRException("Cannot call addChild on a primitive type Device.lotNumber");
-    } else if (name.equals("manufacturer")) {
+    }
+    else if (name.equals("manufacturer")) {
       throw new FHIRException("Cannot call addChild on a primitive type Device.manufacturer");
-    } else if (name.equals("manufactureDate")) {
+    }
+    else if (name.equals("manufactureDate")) {
       throw new FHIRException("Cannot call addChild on a primitive type Device.manufactureDate");
-    } else if (name.equals("expirationDate")) {
+    }
+    else if (name.equals("expirationDate")) {
       throw new FHIRException("Cannot call addChild on a primitive type Device.expirationDate");
-    } else if (name.equals("model")) {
+    }
+    else if (name.equals("model")) {
       throw new FHIRException("Cannot call addChild on a primitive type Device.model");
-    } else if (name.equals("version")) {
+    }
+    else if (name.equals("version")) {
       throw new FHIRException("Cannot call addChild on a primitive type Device.version");
-    } else if (name.equals("patient")) {
+    }
+    else if (name.equals("patient")) {
       this.patient = new Reference();
       return this.patient;
-    } else if (name.equals("owner")) {
+    }
+    else if (name.equals("owner")) {
       this.owner = new Reference();
       return this.owner;
-    } else if (name.equals("contact")) {
+    }
+    else if (name.equals("contact")) {
       return addContact();
-    } else if (name.equals("location")) {
+    }
+    else if (name.equals("location")) {
       this.location = new Reference();
       return this.location;
-    } else if (name.equals("url")) {
+    }
+    else if (name.equals("url")) {
       throw new FHIRException("Cannot call addChild on a primitive type Device.url");
-    } else if (name.equals("note")) {
+    }
+    else if (name.equals("note")) {
       return addNote();
-    } else if (name.equals("safety")) {
+    }
+    else if (name.equals("safety")) {
       return addSafety();
-    } else
+    }
+    else
       return super.addChild(name);
   }
 
@@ -2359,8 +2205,7 @@ public class Device extends DomainResource {
       dst.identifier = new ArrayList<Identifier>();
       for (Identifier i : identifier)
         dst.identifier.add(i.copy());
-    }
-    ;
+    };
     dst.udi = udi == null ? null : udi.copy();
     dst.status = status == null ? null : status.copy();
     dst.type = type == null ? null : type.copy();
@@ -2376,22 +2221,19 @@ public class Device extends DomainResource {
       dst.contact = new ArrayList<ContactPoint>();
       for (ContactPoint i : contact)
         dst.contact.add(i.copy());
-    }
-    ;
+    };
     dst.location = location == null ? null : location.copy();
     dst.url = url == null ? null : url.copy();
     if (note != null) {
       dst.note = new ArrayList<Annotation>();
       for (Annotation i : note)
         dst.note.add(i.copy());
-    }
-    ;
+    };
     if (safety != null) {
       dst.safety = new ArrayList<CodeableConcept>();
       for (CodeableConcept i : safety)
         dst.safety.add(i.copy());
-    }
-    ;
+    };
     return dst;
   }
 
@@ -2447,7 +2289,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.udi.deviceIdentifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "udi-di", path = "Device.udi.deviceIdentifier", description = "The udi Device Identifier (DI)", type = "string")
+  @SearchParamDefinition(name="udi-di", path="Device.udi.deviceIdentifier", description="The udi Device Identifier (DI)", type="string" )
   public static final String SP_UDI_DI = "udi-di";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>udi-di</b>
@@ -2467,7 +2309,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "identifier", path = "Device.identifier", description = "Instance id from manufacturer, owner, and others", type = "token")
+  @SearchParamDefinition(name="identifier", path="Device.identifier", description="Instance id from manufacturer, owner, and others", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
@@ -2487,7 +2329,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.udi.carrierHRF, Device.udi.carrierAIDC</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "udi-carrier", path = "Device.udi.carrierHRF | Device.udi.carrierAIDC", description = "UDI Barcode (RFID or other technology) string either in HRF format or AIDC format converted to base64 string.", type = "string")
+  @SearchParamDefinition(name="udi-carrier", path="Device.udi.carrierHRF | Device.udi.carrierAIDC", description="UDI Barcode (RFID or other technology) string either in HRF format or AIDC format converted to base64 string.", type="string" )
   public static final String SP_UDI_CARRIER = "udi-carrier";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>udi-carrier</b>
@@ -2507,7 +2349,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.udi.name, Device.type.text, Device.type.coding.display</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "device-name", path = "Device.udi.name | Device.type.text | Device.type.coding.display", description = "A server defined search that may match any of the string fields in the Device.udi.name  or Device.type.coding.display or  Device.type.text", type = "string")
+  @SearchParamDefinition(name="device-name", path="Device.udi.name | Device.type.text | Device.type.coding.display", description="A server defined search that may match any of the string fields in the Device.udi.name  or Device.type.coding.display or  Device.type.text", type="string" )
   public static final String SP_DEVICE_NAME = "device-name";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>device-name</b>
@@ -2527,7 +2369,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "patient", path = "Device.patient", description = "Patient information, if the resource is affixed to a person", type = "reference", target = {Patient.class})
+  @SearchParamDefinition(name="patient", path="Device.patient", description="Patient information, if the resource is affixed to a person", type="reference", target={Patient.class } )
   public static final String SP_PATIENT = "patient";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -2553,7 +2395,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.owner</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "organization", path = "Device.owner", description = "The organization responsible for the device", type = "reference", target = {Organization.class})
+  @SearchParamDefinition(name="organization", path="Device.owner", description="The organization responsible for the device", type="reference", target={Organization.class } )
   public static final String SP_ORGANIZATION = "organization";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>organization</b>
@@ -2579,7 +2421,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.model</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "model", path = "Device.model", description = "The model of the device", type = "string")
+  @SearchParamDefinition(name="model", path="Device.model", description="The model of the device", type="string" )
   public static final String SP_MODEL = "model";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>model</b>
@@ -2599,7 +2441,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.location</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "location", path = "Device.location", description = "A location, where the resource is found", type = "reference", target = {Location.class})
+  @SearchParamDefinition(name="location", path="Device.location", description="A location, where the resource is found", type="reference", target={Location.class } )
   public static final String SP_LOCATION = "location";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>location</b>
@@ -2625,7 +2467,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.type</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "type", path = "Device.type", description = "The type of the device", type = "token")
+  @SearchParamDefinition(name="type", path="Device.type", description="The type of the device", type="token" )
   public static final String SP_TYPE = "type";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>type</b>
@@ -2645,7 +2487,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.url</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "url", path = "Device.url", description = "Network address to contact device", type = "uri")
+  @SearchParamDefinition(name="url", path="Device.url", description="Network address to contact device", type="uri" )
   public static final String SP_URL = "url";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>url</b>
@@ -2665,7 +2507,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.manufacturer</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "manufacturer", path = "Device.manufacturer", description = "The manufacturer of the device", type = "string")
+  @SearchParamDefinition(name="manufacturer", path="Device.manufacturer", description="The manufacturer of the device", type="string" )
   public static final String SP_MANUFACTURER = "manufacturer";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>manufacturer</b>
@@ -2685,7 +2527,7 @@ public class Device extends DomainResource {
    * Path: <b>Device.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "status", path = "Device.status", description = "active | inactive | entered-in-error | unknown", type = "token")
+  @SearchParamDefinition(name="status", path="Device.status", description="active | inactive | entered-in-error | unknown", type="token" )
   public static final String SP_STATUS = "status";
   /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
