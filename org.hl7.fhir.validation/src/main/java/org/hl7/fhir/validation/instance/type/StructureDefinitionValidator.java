@@ -28,6 +28,7 @@ import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -95,6 +96,69 @@ public class StructureDefinitionValidator extends BaseValidator {
     } catch (FHIRException | IOException e) {
       rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
     }
+    List<Element> differentials = src.getChildrenByName("differential");
+    List<Element> snapshots = src.getChildrenByName("snapshot");
+    for (Element differential : differentials) {
+      validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0);
+    }
+    for (Element snapshot : snapshots) {
+      validateElementList(errors, snapshot, stack.push(snapshot, -1, null, null), true, true);
+    }
+  }
+
+  private void validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot) {
+    List<Element> elements = elementList.getChildrenByName("element");
+    int cc = 0;
+    for (Element element : elements) {
+      validateElementDefinition(errors, element, stack.push(element, cc, null, null), snapshot, hasSnapshot);
+      cc++;
+    }    
+  }
+
+  private void validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot) {
+    boolean typeMustSupport = false;
+    List<Element> types = element.getChildrenByName("type");
+    for (Element type : types) {
+      if (hasMustSupportExtension(type)) {
+        typeMustSupport = true;
+      }
+    }
+    if (typeMustSupport) {
+      if (snapshot) {
+        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_SNAPSHOT, element.getNamedChildValue("path"));
+      } else {
+        hint(errors, IssueType.EXCEPTION, stack.getLiteralPath(), hasSnapshot || "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_DIFF, element.getNamedChildValue("path"));        
+      }
+    }
+  }
+
+  private boolean hasMustSupportExtension(Element type) {
+    if ("true".equals(getExtensionValue(type, ToolingExtensions.EXT_MUST_SUPPORT))) {
+      return true;
+    }
+    List<Element> profiles = type.getChildrenByName("profile");
+    for (Element profile : profiles) {
+      if ("true".equals(getExtensionValue(profile, ToolingExtensions.EXT_MUST_SUPPORT))) {
+        return true;
+      }
+    }
+    profiles = type.getChildrenByName("targetProfile");
+    for (Element profile : profiles) {
+      if ("true".equals(getExtensionValue(profile, ToolingExtensions.EXT_MUST_SUPPORT))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private String getExtensionValue(Element element, String url) {
+    List<Element> extensions = element.getChildrenByName("extension");
+    for (Element extension : extensions) {
+      if (url.equals(extension.getNamedChildValue("url"))) {
+        return extension.getNamedChildValue("value");
+      }
+    }
+    return null;
   }
 
   private StructureDefinition loadAsSD(Element src) throws FHIRException, IOException {
