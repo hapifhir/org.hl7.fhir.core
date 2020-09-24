@@ -1,5 +1,4 @@
 Validator:
-* no changes with impact 
 * Add new validation for must-support on types / profiles / targets + improve Extension validation
 
 Other code changes:
