@@ -483,7 +483,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean isKnownExtension(String url) {
     // Added structuredefinition-expression and following extensions explicitly because they weren't defined in the version of the spec they need to be used with
-    if ((allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression") || url.equals(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION))
+    if ((allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression"))
       return true;
     for (String s : extensionDomains)
       if (url.startsWith(s))
@@ -1521,6 +1521,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (extensionUrl.equals(profile.getUrl())) {
           rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", hasExtensionSlice(profile, url), I18nConstants.EXTENSION_EXT_SUBEXTENSION_INVALID, url, profile.getUrl());
         }
+      } else if (SpecialExtensions.isKnownExtension(url)) {
+        ex = SpecialExtensions.getDefinition(url);
       } else if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowUnknownExtension(url), I18nConstants.EXTENSION_EXT_UNKNOWN_NOTHERE, url)) {
         hint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, isKnownExtension(url), I18nConstants.EXTENSION_EXT_UNKNOWN, url);
       }
@@ -1555,6 +1557,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return ex;
   }
+
 
   private boolean hasExtensionSlice(StructureDefinition profile, String sliceName) {
     for (ElementDefinition ed : profile.getSnapshot().getElement()) {
@@ -1933,7 +1936,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (fetcher != null) {
           boolean found;
           try {
-            found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || fetcher.resolveURL(appContext, path, url);
+            found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || fetcher.resolveURL(appContext, path, url) || 
+                SpecialExtensions.isKnownExtension(url);
           } catch (IOException e1) {
             found = false;
           }
