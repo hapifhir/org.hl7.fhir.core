@@ -8,4 +8,4 @@ Other code changes:
 * fix for use of "current" as version 
 * hack for past bad package URLs 
 * Add rendering for must support on types, profiles, targets
-* add <code> when rendering turtle to HTML
+* add code when rendering turtle to HTML
