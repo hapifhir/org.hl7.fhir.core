@@ -117,10 +117,12 @@ public class I18nConstants {
   public static final String EXTENSION_EXT_VERSION_NOCHANGE = "Extension_EXT_Version_NoChange";
   public static final String EXTENSION_PROF_TYPE = "Extension_PROF_Type";
   public static final String FHIRPATH_ALIAS_COLLECTION = "FHIRPATH_ALIAS_COLLECTION";
+  public static final String FHIRPATH_BAD_DATE = "FHIRPATH_BAD_DATE";
   public static final String FHIRPATH_CANNOT_USE = "FHIRPATH_CANNOT_USE";
   public static final String FHIRPATH_CANT_COMPARE = "FHIRPATH_CANT_COMPARE";
   public static final String FHIRPATH_CHECK_FAILED = "FHIRPATH_CHECK_FAILED";
   public static final String FHIRPATH_CODED_ONLY = "FHIRPATH_CODED_ONLY";
+  public static final String FHIRPATH_DECIMAL_ONLY = "FHIRPATH_DECIMAL_ONLY";
   public static final String FHIRPATH_DISCRIMINATOR_BAD_NAME = "FHIRPATH_DISCRIMINATOR_BAD_NAME";
   public static final String FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_CONST = "FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_CONST";
   public static final String FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_GROUP = "FHIRPATH_DISCRIMINATOR_BAD_SYNTAX_GROUP";
@@ -136,6 +138,7 @@ public class I18nConstants {
   public static final String FHIRPATH_DISCRIMINATOR_THIS_CANNOT_FIND = "FHIRPATH_DISCRIMINATOR_THIS_CANNOT_FIND";
   public static final String FHIRPATH_DISCRIMINATOR_TYPE_MULTIPLE = "FHIRPATH_DISCRIMINATOR_TYPE_MULTIPLE";
   public static final String FHIRPATH_DISCRIMINATOR_TYPE_NONE = "FHIRPATH_DISCRIMINATOR_TYPE_NONE";
+  public static final String FHIRPATH_FOCUS_PLURAL = "FHIRPATH_FOCUS_PLURAL";
   public static final String FHIRPATH_HO_HOST_SERVICES = "FHIRPATH_HO_HOST_SERVICES";
   public static final String FHIRPATH_LEFT_VALUE_PLURAL = "FHIRPATH_LEFT_VALUE_PLURAL";
   public static final String FHIRPATH_LEFT_VALUE_WRONG_TYPE = "FHIRPATH_LEFT_VALUE_WRONG_TYPE";
@@ -143,6 +146,7 @@ public class I18nConstants {
   public static final String FHIRPATH_NOT_IMPLEMENTED = "FHIRPATH_NOT_IMPLEMENTED";
   public static final String FHIRPATH_NO_COLLECTION = "FHIRPATH_NO_COLLECTION";
   public static final String FHIRPATH_NO_TYPE = "FHIRPATH_NO_TYPE";
+  public static final String FHIRPATH_NUMERICAL_ONLY = "FHIRPATH_NUMERICAL_ONLY";
   public static final String FHIRPATH_OP_INCOMPATIBLE = "FHIRPATH_OP_INCOMPATIBLE";
   public static final String FHIRPATH_ORDERED_ONLY = "FHIRPATH_ORDERED_ONLY";
   public static final String FHIRPATH_PARAM_WRONG = "FHIRPATH_PARAM_WRONG";
@@ -157,7 +161,7 @@ public class I18nConstants {
   public static final String FHIRPATH_UNKNOWN_CONSTANT = "FHIRPATH_UNKNOWN_CONSTANT";
   public static final String FHIRPATH_UNKNOWN_CONTEXT = "FHIRPATH_UNKNOWN_CONTEXT";
   public static final String FHIRPATH_UNKNOWN_CONTEXT_ELEMENT = "FHIRPATH_UNKNOWN_CONTEXT_ELEMENT";
-  public static final String FHIRPATH_UNKNOWN_NAME = "FHIRPATH_UNWKNOWN_NAME";
+  public static final String FHIRPATH_UNKNOWN_NAME = "FHIRPATH_UNKNOWN_NAME";
   public static final String FHIRPATH_WRONG_PARAM_TYPE = "FHIRPATH_WRONG_PARAM_TYPE";
   public static final String FIXED_TYPE_CHECKS_DT_ADDRESS_LINE = "Fixed_Type_Checks_DT_Address_Line";
   public static final String FIXED_TYPE_CHECKS_DT_NAME_FAMILY = "Fixed_Type_Checks_DT_Name_Family";
@@ -230,6 +234,7 @@ public class I18nConstants {
   public static final String NEEDS_A_SNAPSHOT = "needs_a_snapshot";
   public static final String NODE_TYPE__IS_NOT_ALLOWED = "Node_type__is_not_allowed";
   public static final String NONE_OF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "None_of_the_provided_codes_are_in_the_value_set_";
+  public static final String UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_ = "UNABLE_TO_CHECK_IF_THE_PROVIDED_CODES_ARE_IN_THE_VALUE_SET_";
   public static final String NOT_DONE_YET = "Not_done_yet";
   public static final String NOT_DONE_YET_CANT_FETCH_ = "not_done_yet_cant_fetch_";
   public static final String NOT_DONE_YET_VALIDATORHOSTSERVICESCHECKFUNCTION = "Not_done_yet_ValidatorHostServicescheckFunction";
@@ -326,6 +331,7 @@ public class I18nConstants {
   public static final String REFERENCE_REF_NOTFOUND_BUNDLE = "Reference_REF_NotFound_Bundle";
   public static final String REFERENCE_REF_NOTYPE = "Reference_REF_NoType";
   public static final String REFERENCE_REF_RESOURCETYPE = "Reference_REF_ResourceType";
+  public static final String REFERENCE_REF_SUSPICIOUS = "REFERENCE_REF_SUSPICIOUS";
   public static final String REFERENCE_REF_WRONGTARGET = "Reference_REF_WrongTarget";
   public static final String REFERENCE_TO__CANNOT_BE_RESOLVED = "reference_to__cannot_be_resolved";
   public static final String REFERENCE__REFERS_TO_A__NOT_A_VALUESET = "Reference__refers_to_a__not_a_ValueSet";
@@ -363,7 +369,8 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_CONFIRM_1 = "Terminology_TX_Confirm_1";
   public static final String TERMINOLOGY_TX_CONFIRM_2 = "Terminology_TX_Confirm_2";
   public static final String TERMINOLOGY_TX_CONFIRM_3 = "Terminology_TX_Confirm_3";
-  public static final String TERMINOLOGY_TX_CONFIRM_4 = "Terminology_TX_Confirm_4";
+  public static final String TERMINOLOGY_TX_CONFIRM_4a = "Terminology_TX_Confirm_4a";
+  public static final String TERMINOLOGY_TX_CONFIRM_4b = "Terminology_TX_Confirm_4b";
   public static final String TERMINOLOGY_TX_CONFIRM_5 = "Terminology_TX_Confirm_5";
   public static final String TERMINOLOGY_TX_CONFIRM_6 = "Terminology_TX_Confirm_6";
   public static final String TERMINOLOGY_TX_DISPLAY_WRONG = "Terminology_TX_Display_Wrong";
@@ -395,6 +402,8 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_SYSTEM_NO_CODE = "TERMINOLOGY_TX_SYSTEM_NO_CODE";
   public static final String TERMINOLOGY_TX_SYSTEM_RELATIVE = "Terminology_TX_System_Relative";
   public static final String TERMINOLOGY_TX_SYSTEM_UNKNOWN = "Terminology_TX_System_Unknown";
+  public static final String TERMINOLOGY_TX_SYSTEM_WRONG_BUILD = "TERMINOLOGY_TX_SYSTEM_WRONG_BUILD";
+  public static final String TERMINOLOGY_TX_SYSTEM_WRONG_HTML = "TERMINOLOGY_TX_SYSTEM_WRONG_HTML";
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET = "Terminology_TX_System_ValueSet";
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET2 = "Terminology_TX_System_ValueSet2";
   public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND = "Terminology_TX_ValueSet_NotFound";
@@ -457,6 +466,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX = "Type_Specific_Checks_DT_Primitive_Regex";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT = "Type_Specific_Checks_DT_Primitive_ValueExt";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS = "Type_Specific_Checks_DT_Primitive_WS";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS = "TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_LENGTH = "Type_Specific_Checks_DT_String_Length";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS = "Type_Specific_Checks_DT_String_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID = "Type_Specific_Checks_DT_Time_Valid";
@@ -518,6 +528,8 @@ public class I18nConstants {
   public static final String UNSUPPORTED_FIXED_PATTERN_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__ = "Unsupported_fixed_pattern_type_for_discriminator_for_slice__";
   public static final String UNSUPPORTED_FIXED_VALUE_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__ = "Unsupported_fixed_value_type_for_discriminator_for_slice__";
   public static final String UNSUPPORTED_IDENTIFIER_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_ = "Unsupported_Identifier_pattern__extensions_are_not_allowed__for_discriminator_for_slice_";
+  public static final String UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE = "UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE";
+  public static final String UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE = "UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE";
   public static final String UNSUPPORTED_VERSION_R1 = "Unsupported_version_R1";
   public static final String UNSUPPORTED_VERSION_R2 = "Unsupported_version_R2";
   public static final String UNSUPPORTED_VERSION_R2B = "Unsupported_version_R2B";
@@ -569,6 +581,7 @@ public class I18nConstants {
   public static final String XHTML_XHTML_ATTRIBUTE_ILLEGAL = "XHTML_XHTML_Attribute_Illegal";
   public static final String XHTML_XHTML_DOCTYPE_ILLEGAL = "XHTML_XHTML_DOCTYPE_ILLEGAL";
   public static final String XHTML_XHTML_ELEMENT_ILLEGAL = "XHTML_XHTML_Element_Illegal";
+  public static final String XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA = "XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA";
   public static final String XHTML_XHTML_NAME_INVALID = "XHTML_XHTML_Name_Invalid";
   public static final String XHTML_XHTML_NS_INVALID = "XHTML_XHTML_NS_InValid";
   public static final String XML_ATTR_VALUE_INVALID = "xml_attr_value_invalid";

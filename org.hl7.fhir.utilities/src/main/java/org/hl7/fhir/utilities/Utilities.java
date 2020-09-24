@@ -42,17 +42,22 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -1101,11 +1106,17 @@ public class Utilities {
       return true;
     if (Utilities.noString(l) || Utilities.noString(r))
       return false;
-    l = l.toLowerCase().trim();
-    r = r.toLowerCase().trim(); // not that this should make any difference
-    return l.startsWith(r) || r.startsWith(l);
+    if (!Utilities.isDecimal(l, true) || !Utilities.isDecimal(r, true))
+      return false;
+    BigDecimal dl = new BigDecimal(l);
+    BigDecimal dr = new BigDecimal(r);
+    if (dl.scale() < dr.scale()) {
+      dr = dr.setScale(dl.scale(), RoundingMode.HALF_UP);
+    } else if (dl.scale() > dr.scale()) {
+      dl = dl.setScale(dr.scale(), RoundingMode.HALF_UP);
+    }
+    return dl.equals(dr);
   }
-
 
   public static String getFileExtension(String fn) {
     return fn.contains(".") ? fn.substring(fn.lastIndexOf(".") + 1) : "";
@@ -1328,4 +1339,61 @@ public class Utilities {
     }
     return length + BT;
   }
+
+  public static List<byte[]> splitBytes(byte[] array, byte[] delimiter) {
+    List<byte[]> byteArrays = new LinkedList<byte[]>();
+    if (delimiter.length == 0)
+    {
+      return byteArrays;
+    }
+    int begin = 0;
+
+    outer: for (int i = 0; i < array.length - delimiter.length + 1; i++)
+    {
+      for (int j = 0; j < delimiter.length; j++)
+      {
+        if (array[i + j] != delimiter[j])
+        {
+          continue outer;
+        }
+      }
+
+      // If delimiter is at the beginning then there will not be any data.
+      if (begin < i)
+        byteArrays.add(Arrays.copyOfRange(array, begin, i));
+      begin = i + delimiter.length;
+    }
+
+    // delimiter at the very end with no data following?
+    if (begin != array.length)
+      byteArrays.add(Arrays.copyOfRange(array, begin, array.length));
+
+    return byteArrays;
+  }
+  
+  public static String presentDuration(long duration) {
+    duration = duration / 1000000;
+    String res = "";    // ;
+    long days       = TimeUnit.MILLISECONDS.toDays(duration);
+    long hours      = TimeUnit.MILLISECONDS.toHours(duration) -
+        TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(duration));
+    long minutes    = TimeUnit.MILLISECONDS.toMinutes(duration) -
+        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(duration));
+    long seconds    = TimeUnit.MILLISECONDS.toSeconds(duration) -
+        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration));
+    long millis     = TimeUnit.MILLISECONDS.toMillis(duration) -
+        TimeUnit.SECONDS.toMillis(TimeUnit.MILLISECONDS.toSeconds(duration));
+
+    if (days > 0)
+      res = String.format("%dd %02d:%02d:%02d.%04d", days, hours, minutes, seconds, millis);
+    else if (hours > 0)
+      res = String.format("%02d:%02d:%02d.%04d", hours, minutes, seconds, millis);
+    else //
+      res = String.format("%02d:%02d.%04d", minutes, seconds, millis);
+//    else
+//      res = String.format("%02d.%04d", seconds, millis);
+    return res;
+  }
+
+
 }

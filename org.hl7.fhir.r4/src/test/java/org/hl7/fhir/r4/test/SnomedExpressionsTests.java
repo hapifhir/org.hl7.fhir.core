@@ -2,9 +2,8 @@ package org.hl7.fhir.r4.test;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.utils.SnomedExpressions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.Assert.assertNotNull;
 
 public class SnomedExpressionsTests {
 
@@ -47,7 +46,7 @@ public class SnomedExpressionsTests {
   }
 
   private void p(String expression) throws FHIRException {
-    assertNotNull("must be present", SnomedExpressions.parse(expression));
+    Assertions.assertNotNull(SnomedExpressions.parse(expression), "must be present");
 
   }
 

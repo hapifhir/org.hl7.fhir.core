@@ -36,6 +36,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
+import org.hl7.fhir.r5.utils.IResourceValidator.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
 import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
@@ -69,7 +70,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 @RunWith(Parameterized.class)
-public class ValidationTestSuite implements IEvaluationContext, IValidatorResourceFetcher {
+public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher {
 
   public final static boolean PRINT_OUTPUT_TO_CONSOLE = true;
 
@@ -104,7 +105,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
   private static Map<String, ValidationEngine> ve = new HashMap<>();
   private static ValidationEngine vCurr;
 
-  public ValidationTestSuite(String name, JsonObject content) {
+  public ValidationTests(String name, JsonObject content) {
     this.name = name;
     this.content = content;
   }
@@ -130,7 +131,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     version = VersionUtilities.getMajMin(version);
     if (!ve.containsKey(version)) {
       if (version.startsWith("5.0"))
-        ve.put(version, new ValidationEngine("hl7.fhir.r5.core#4.4.0", DEF_TX, txLog, FhirPublication.R5, true, "4.4.0"));
+        ve.put(version, new ValidationEngine("hl7.fhir.r5.core#4.5.0", DEF_TX, txLog, FhirPublication.R5, true, "4.5.0"));
       else if (version.startsWith("3.0"))
         ve.put(version, new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, txLog, FhirPublication.STU3, true, "3.0.2"));
       else if (version.startsWith("4.0"))
@@ -204,6 +205,9 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     } else {
       val.setDebug(false);
     }
+    if (content.has("best-practice")) {
+      val.setBestPracticeWarningLevel(BestPracticeWarningLevel.valueOf(content.get("best-practice").getAsString()));
+    }
     if (content.has("examples")) {
       val.setAllowExamples(content.get("examples").getAsBoolean());
     } else {
@@ -212,14 +216,16 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     if (content.has("security-checks")) {
       val.setSecurityChecks(content.get("security-checks").getAsBoolean());
     }
-    val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
-    System.out.println(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
-    if (name.endsWith(".json"))
-      val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
-    else
-      val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
-    System.out.println(val.reportTimes());
-    checkOutcomes(errors, content, null);
+    if (content.has("logical")==false) {
+      val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
+      System.out.println(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
+      if (name.endsWith(".json"))
+        val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
+      else
+        val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
+      System.out.println(val.reportTimes());
+      checkOutcomes(errors, content, null, name);
+    }
     if (content.has("profile")) {
       System.out.print("** Profile: ");
       JsonObject profile = content.getAsJsonObject("profile");
@@ -250,9 +256,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
       else
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, asSdList(sd));
       System.out.println(val.reportTimes());
-      checkOutcomes(errorsProfile, profile, filename);
+      checkOutcomes(errorsProfile, profile, filename, name);
     }
     if (content.has("logical")) {
+      System.out.print("** Logical: ");
+
       JsonObject logical = content.getAsJsonObject("logical");
       if (logical.has("supporting")) {
         for (JsonElement e : logical.getAsJsonArray("supporting")) {
@@ -265,6 +273,11 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
           val.getContext().cacheResource(mr);
         }
       }
+      if (logical.has("packages")) {
+        for (JsonElement e : logical.getAsJsonArray("packages")) {
+          vCurr.loadIg(e.getAsString(), true);
+        }
+      }
       List<ValidationMessage> errorsLogical = new ArrayList<ValidationMessage>();
       Element le = val.validate(null, errorsLogical, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), (name.endsWith(".json")) ? FhirFormat.JSON : FhirFormat.XML);
       if (logical.has("expressions")) {
@@ -274,7 +287,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
           Assert.assertTrue(fp.evaluateToBoolean(null, le, le, le, fp.parse(exp)));
         }
       }
-      checkOutcomes(errorsLogical, logical, "logical");
+      checkOutcomes(errorsLogical, logical, "logical", name);
     }
   }
 
@@ -336,7 +349,7 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
   }
 
-  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile) {
+  private void checkOutcomes(List<ValidationMessage> errors, JsonObject focus, String profile, String name) {
     JsonObject java = focus.getAsJsonObject("java");
     int ec = 0;
     int wc = 0;
@@ -365,10 +378,12 @@ public class ValidationTestSuite implements IEvaluationContext, IValidatorResour
     }
     if (!TestingUtilities.context(version).isNoTerminologyServer() || !focus.has("tx-dependent")) {
       Assert.assertEquals("Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("errorCount").getAsInt()) + " errors, but found " + Integer.toString(ec) + ".", java.get("errorCount").getAsInt(), ec);
-      if (java.has("warningCount"))
+      if (java.has("warningCount")) {
         Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("warningCount").getAsInt()) + " warnings, but found " + Integer.toString(wc) + ".", java.get("warningCount").getAsInt(), wc);
-      if (java.has("infoCount"))
+      }
+      if (java.has("infoCount")) {
         Assert.assertEquals( "Test " + name + (profile == null ? "" : " profile: "+ profile) + ": Expected " + Integer.toString(java.get("infoCount").getAsInt()) + " hints, but found " + Integer.toString(hc) + ".", java.get("infoCount").getAsInt(), hc);
+      }
     }
     if (java.has("error-locations")) {
       JsonArray el = java.getAsJsonArray("error-locations");

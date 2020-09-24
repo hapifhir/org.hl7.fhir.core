@@ -60,11 +60,12 @@ public class CSVReader extends InputStreamReader {
 
   private String[] cols;
   private String[] cells;
+  private char delimiter = ',';
+  private boolean multiline;
   
 	public void readHeaders() throws IOException, FHIRException {
     cols = parseLine();  
 	}
-	
 
   public boolean line() throws IOException, FHIRException {
     if (ready()) {
@@ -90,7 +91,7 @@ public class CSVReader extends InputStreamReader {
     }
     if (index == -1)
       throw new FHIRException("no cell "+name);
-    String s = cells.length >= index ? cells[index] : null;
+    String s = cells.length > index ? cells[index] : null;
     if (Utilities.noString(s))
       return null;
     if (s.startsWith("\"") && s.endsWith("\"")) {
@@ -127,7 +128,7 @@ public class CSVReader extends InputStreamReader {
 
 	
 	/**
-	 * Split one line in a CSV file into its rows. Comma's appearing in double quoted strings will
+	 * Split one line in a CSV file into its cells. Comma's appearing in double quoted strings will
 	 * not be seen as a separator.
 	 * @return
 	 * @throws IOException 
@@ -139,7 +140,7 @@ public class CSVReader extends InputStreamReader {
 		StringBuilder b = new StringBuilder();
 		boolean inQuote = false;
 
-		while (ready() && (inQuote || (peek() != '\r' && peek() != '\n'))) {
+		while (more() && !finished(inQuote, res.size())) {
 			char c = peek();
 			next();
 			if (c == '"') {
@@ -150,7 +151,7 @@ public class CSVReader extends InputStreamReader {
 			    inQuote = !inQuote;
 				}
 			}
-			else if (!inQuote && c == ',') {
+			else if (!inQuote && c == delimiter ) {
 				res.add(b.toString().trim());
 				b = new StringBuilder();
 			}
@@ -165,10 +166,21 @@ public class CSVReader extends InputStreamReader {
 		String[] r = new String[] {};
 		r = res.toArray(r);
 		return r;
-		
 	}
 
-	private int state = 0;
+	private boolean more() throws IOException {
+    return state == 1 || ready();
+  }
+
+  private boolean finished(boolean inQuote, int size) throws FHIRException, IOException {
+	  if (multiline && cols != null) {
+	    return size == cols.length || (size == cols.length - 1 && !(inQuote || (peek() != '\r' && peek() != '\n')));
+	  } else {
+	    return !(inQuote || (peek() != '\r' && peek() != '\n'));
+	  }
+  }
+
+  private int state = 0;
 	private char pc;
 	
 	private char peek() throws FHIRException, IOException 
@@ -208,6 +220,22 @@ public class CSVReader extends InputStreamReader {
     if (Utilities.noString(cells[i-1]))
       return null;
     return cells[i-1];
+  }
+
+  public char getDelimiter() {
+    return delimiter;
+  }
+
+  public void setDelimiter(char delimiter) {
+    this.delimiter = delimiter;
+  }
+
+  public boolean isMultiline() {
+    return multiline;
+  }
+
+  public void setMultiline(boolean multiline) {
+    this.multiline = multiline;
   }
 
 

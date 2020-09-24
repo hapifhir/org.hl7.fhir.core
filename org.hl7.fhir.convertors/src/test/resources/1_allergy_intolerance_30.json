@@ -1,0 +1,48 @@
+{
+  "resourceType" : "AllergyIntolerance",
+  "id" : "TKebKfLXzu6Sp.LY-IpvpmQB",
+  "clinicalStatus" : "active",
+  "verificationStatus" : "confirmed",
+  "criticality" : "high",
+  "code" : {
+    "coding" : [
+      {
+        "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+        "code" : "892484",
+        "display" : "STRAWBERRY"
+      },
+      {
+        "system" : "http://fdasis.nlm.nih.gov",
+        "code" : "4J2TY8Y81V",
+        "display" : "STRAWBERRY"
+      }
+    ],
+    "text" : "STRAWBERRY"
+  },
+  "patient" : {
+    "reference" : "https://open-ic.epic.com/Argonaut/api/FHIR/DSTU2/Patient/Tbt3KuCY0B5PSrJvCu2j-PlK.aiHsu2xUjUM8bWpetXoB",
+    "display" : "Jason Argonaut"
+  },
+  "onsetDateTime" : "2014-03-07T00:00:00Z",
+  "assertedDate" : "2015-11-07T22:56:34",
+  "recorder" : {
+    "reference" : "https://open-ic.epic.com/Argonaut/api/FHIR/DSTU2/Practitioner/TItWfhjChtlo0pFh9nzctSQB",
+    "display" : "MOORE, NICK"
+  },
+  "reaction" : [
+    {
+      "extension" : [
+        {
+          "url" : "http://hl7.org/fhir/AllergyIntolerance-r2-certainty",
+          "valueString" : "confirmed"
+        }
+      ],
+      "manifestation" : [
+        {
+          "text" : "Anaphylaxis"
+        }
+      ],
+      "onset" : "2014-03-07T00:00:00Z"
+    }
+  ]
+}

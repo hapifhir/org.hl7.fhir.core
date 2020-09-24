@@ -43,8 +43,14 @@ public class MedicationRequest30_40 {
             tgt.setPriorPrescription(VersionConvertor_30_40.convertReference(src.getPriorPrescription()));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getDetectedIssue()) tgt.addDetectedIssue(VersionConvertor_30_40.convertReference(t));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getEventHistory()) tgt.addEventHistory(VersionConvertor_30_40.convertReference(t));
-        if (src.hasRequester() && src.getRequester().hasAgent()) {
-          tgt.setRequester(VersionConvertor_30_40.convertReference(src.getRequester().getAgent()));
+        if (src.hasRequester()) {
+          if (src.getRequester().hasAgent()) {
+            tgt.setRequester(VersionConvertor_30_40.convertReference(src.getRequester().getAgent()));
+          }
+          if (src.getRequester().hasOnBehalfOf()) {
+            tgt.addExtension("http://hl7.org/fhir/3.0/StructureDefinition/extension-MedicationRequest.requester.onBehalfOf",
+              VersionConvertor_30_40.convertReference(src.getRequester().getOnBehalfOf()));
+          }
         }
         return tgt;
     }

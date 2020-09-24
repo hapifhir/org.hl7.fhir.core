@@ -3072,6 +3072,8 @@ public class VersionConvertor_10_30 {
       return Appointment10_30.convertAppointment((org.hl7.fhir.dstu2.model.Appointment) src);
     if (src instanceof org.hl7.fhir.dstu2.model.AppointmentResponse)
       return AppointmentResponse10_30.convertAppointmentResponse((org.hl7.fhir.dstu2.model.AppointmentResponse) src);
+    if (src instanceof org.hl7.fhir.dstu2.model.AllergyIntolerance)
+      return AllergyIntolerance10_30.convertAllergyIntolerance((org.hl7.fhir.dstu2.model.AllergyIntolerance) src);
     if (src instanceof org.hl7.fhir.dstu2.model.AuditEvent)
       return AuditEvent10_30.convertAuditEvent((org.hl7.fhir.dstu2.model.AuditEvent) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Basic)
@@ -3150,6 +3152,8 @@ public class VersionConvertor_10_30 {
       return Medication10_30.convertMedication((org.hl7.fhir.dstu2.model.Medication) src);
     if (src instanceof org.hl7.fhir.dstu2.model.MedicationDispense)
       return MedicationDispense10_30.convertMedicationDispense((org.hl7.fhir.dstu2.model.MedicationDispense) src);
+    if (src instanceof org.hl7.fhir.dstu2.model.MedicationOrder)
+      return MedicationRequest10_30.convertMedicationOrder((org.hl7.fhir.dstu2.model.MedicationOrder)src);
     if (src instanceof org.hl7.fhir.dstu2.model.MedicationStatement)
       return MedicationStatement10_30.convertMedicationStatement((org.hl7.fhir.dstu2.model.MedicationStatement) src);
     if (src instanceof org.hl7.fhir.dstu2.model.MessageHeader)

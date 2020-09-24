@@ -1,0 +1,42 @@
+{
+  "resourceType" : "AllergyIntolerance",
+  "recordedDate" : "2015-08-25T02:11:36",
+  "status" : "confirmed",
+  "criticality" : "CRITL",
+  "id" : "TBwnNbrAqC0Qw5Ha7AFT-2AB",
+  "onset" : "2012-11-07T00:00:00Z",
+  "recorder" : {
+    "display" : "MOORE, NICK",
+    "reference" : "https://open-ic.epic.com/Argonaut/api/FHIR/DSTU2/Practitioner/TItWfhjChtlo0pFh9nzctSQB"
+  },
+  "patient" : {
+    "display" : "Jason Argonaut",
+    "reference" : "https://open-ic.epic.com/Argonaut/api/FHIR/DSTU2/Patient/Tbt3KuCY0B5PSrJvCu2j-PlK.aiHsu2xUjUM8bWpetXoB"
+  },
+  "substance" : {
+    "text" : "PENICILLIN G",
+    "coding" : [
+      {
+        "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+        "code" : "7980",
+        "display" : "PENICILLIN G"
+      },
+      {
+        "system" : "http://fdasis.nlm.nih.gov",
+        "code" : "Q42T66VG0C",
+        "display" : "PENICILLIN G"
+      }
+    ]
+  },
+  "reaction" : [
+    {
+      "certainty" : "confirmed",
+      "onset" : "2012-11-07T00:00:00Z",
+      "manifestation" : [
+        {
+          "text" : "Hives"
+        }
+      ]
+    }
+  ]
+}

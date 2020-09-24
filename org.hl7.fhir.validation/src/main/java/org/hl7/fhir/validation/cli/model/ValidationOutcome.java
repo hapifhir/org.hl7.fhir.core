@@ -1,7 +1,7 @@
 package org.hl7.fhir.validation.cli.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +11,14 @@ public class ValidationOutcome {
   @JsonProperty("fileInfo")
   private FileInfo fileInfo;
   @JsonProperty("issues")
-  private List<ValidationIssue> issues = new ArrayList<>();
+  private List<ValidationMessage> messages = new ArrayList<>();
 
-  public ValidationOutcome() {}
+  public ValidationOutcome() {
+  }
 
-  public ValidationOutcome(FileInfo fileInfo, List<ValidationIssue> issues) {
+  public ValidationOutcome(FileInfo fileInfo, List<ValidationMessage> issues) {
     this.fileInfo = fileInfo;
-    this.issues = issues;
+    this.messages = issues;
   }
 
   @JsonProperty("fileInfo")
@@ -32,20 +33,18 @@ public class ValidationOutcome {
   }
 
   @JsonProperty("issues")
-  public List<ValidationIssue> getIssues() {
-    return issues;
+  public List<ValidationMessage> getMessages() {
+    return messages;
   }
 
   @JsonProperty("issues")
-  public ValidationOutcome setIssues(List<ValidationIssue> issues) {
-    this.issues = issues;
+  public ValidationOutcome setMessages(List<ValidationMessage> issues) {
+    this.messages = issues;
     return this;
   }
 
-  public ValidationOutcome addIssue(OperationOutcome.OperationOutcomeIssueComponent outcome) {
-    String text = outcome.getDetails().getText();
-    text.replace("\'", "\"");
-    issues.add(new ValidationIssue(outcome.getSeverity().getDisplay(), outcome.getDetails().getText()));
+  public ValidationOutcome addMessage(ValidationMessage message) {
+    messages.add(message);
     return this;
   }
 

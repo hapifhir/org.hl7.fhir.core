@@ -65,7 +65,7 @@ public class MedicinalProductDefinition40_50 extends VersionConvertor_40_50 {
         }       
         if (src.hasPaediatricUseIndicator())
           tgt.setPaediatricUseIndicator(convertCodeableConcept(src.getPaediatricUseIndicator()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProductClassification()) tgt.addProductClassification(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProductClassification()) tgt.addClassification(convertCodeableConcept(t));
         for (org.hl7.fhir.r4.model.MarketingStatus t : src.getMarketingStatus()) tgt.addMarketingStatus(convertMarketingStatus(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getPharmaceuticalProduct()) tgt.addPharmaceuticalProduct(convertReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getPackagedMedicinalProduct()) tgt.addPackagedMedicinalProduct(convertReference(t));
@@ -101,10 +101,10 @@ public class MedicinalProductDefinition40_50 extends VersionConvertor_40_50 {
           }
         }
         for (org.hl7.fhir.r4.model.Identifier t : src.getCrossReference()) {
-          // cross-reference Identifier -> complex
-          org.hl7.fhir.r5.model.MedicinalProductDefinition.MedicinalProductDefinitionCrossReferenceComponent c = new org.hl7.fhir.r5.model.MedicinalProductDefinition.MedicinalProductDefinitionCrossReferenceComponent();
-          tgt.addCrossReference(c);
-          c.setProduct(convertIdentifier(t));
+          // cross-reference Identifier -> complex - todo
+//          org.hl7.fhir.r5.model.MedicinalProductDefinition.MedicinalProductDefinitionCrossReferenceComponent c = new org.hl7.fhir.r5.model.MedicinalProductDefinition.MedicinalProductDefinitionCrossReferenceComponent();
+//          tgt.addCrossReference(c);
+//          c.setProduct(convertIdentifier(t));
         }        
         for (org.hl7.fhir.r4.model.MedicinalProduct.MedicinalProductManufacturingBusinessOperationComponent srcMBO : src.getManufacturingBusinessOperation()) {
           org.hl7.fhir.r5.model.MedicinalProductDefinition.MedicinalProductDefinitionManufacturingBusinessOperationComponent tgtMBO = new org.hl7.fhir.r5.model.MedicinalProductDefinition.MedicinalProductDefinitionManufacturingBusinessOperationComponent();
@@ -174,7 +174,7 @@ public class MedicinalProductDefinition40_50 extends VersionConvertor_40_50 {
         }       
         if (src.hasPaediatricUseIndicator())
           tgt.setPaediatricUseIndicator(convertCodeableConcept(src.getPaediatricUseIndicator()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProductClassification()) tgt.addProductClassification(convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getClassification()) tgt.addProductClassification(convertCodeableConcept(t));
         for (org.hl7.fhir.r5.model.MarketingStatus t : src.getMarketingStatus()) tgt.addMarketingStatus(convertMarketingStatus(t));
         for (org.hl7.fhir.r5.model.Reference t : src.getPharmaceuticalProduct()) tgt.addPharmaceuticalProduct(convertReference(t));
         for (org.hl7.fhir.r5.model.Reference t : src.getPackagedMedicinalProduct()) tgt.addPackagedMedicinalProduct(convertReference(t));
@@ -215,13 +215,13 @@ public class MedicinalProductDefinition40_50 extends VersionConvertor_40_50 {
           }
         }
         for (org.hl7.fhir.r5.model.MedicinalProductDefinition.MedicinalProductDefinitionCrossReferenceComponent t : src.getCrossReference()) {
-          // cross-reference complex -> Identifier
-          if (t.hasProduct()) {
-            if (t.getProduct() instanceof org.hl7.fhir.r5.model.Identifier)
-              tgt.addCrossReference(convertIdentifier((org.hl7.fhir.r5.model.Identifier)t.getProduct()));
-            else
-              throw new FHIRException("Converting MedicinalProductDefinition.crossReference.productReference is not supported");
-          }
+          // cross-reference complex -> Identifier - todo
+//          if (t.hasProduct()) {
+//            if (t.getProduct() instanceof org.hl7.fhir.r5.model.Identifier)
+//              tgt.addCrossReference(convertIdentifier((org.hl7.fhir.r5.model.Identifier)t.getProduct()));
+//            else
+//              throw new FHIRException("Converting MedicinalProductDefinition.crossReference.productReference is not supported");
+//          }
           checkBase(t, "MedicinalProductDefinition.crossReference");
           if (t.hasType())
             throw new FHIRException("Converting MedicinalProductDefinition.crossReference.type is not supported");

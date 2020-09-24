@@ -372,8 +372,7 @@ public class StructureMap30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case NONE:
-                tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode.NONE);
-                break;
+                return null;
             case TYPES:
                 tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode.TYPES);
                 break;
@@ -388,14 +387,13 @@ public class StructureMap30_50 {
     }
 
     static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupTypeMode> convertStructureMapGroupTypeMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapGroupTypeMode> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupTypeMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupTypeModeEnumFactory());
+        if (src == null || src.isEmpty()) {
+          tgt.setValue(org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupTypeMode.NONE);
+          return tgt;
+        }
         VersionConvertor_30_50.copyElement(src, tgt);
         switch(src.getValue()) {
-            case NONE:
-                tgt.setValue(org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupTypeMode.NONE);
-                break;
             case TYPES:
                 tgt.setValue(org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupTypeMode.TYPES);
                 break;

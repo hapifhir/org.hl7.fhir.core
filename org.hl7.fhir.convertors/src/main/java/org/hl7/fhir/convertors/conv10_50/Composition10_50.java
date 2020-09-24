@@ -26,7 +26,7 @@ public class Composition10_50 {
             tgt.setStatusElement(convertCompositionStatus(src.getStatusElement()));
         try {
             if (src.hasConfidentiality())
-                tgt.setConfidentiality(org.hl7.fhir.r5.model.Composition.V3ConfidentialityClassification.fromCode(src.getConfidentiality()));
+                tgt.setConfidentiality(src.getConfidentiality());
         } catch (org.hl7.fhir.exceptions.FHIRException e) {
             throw new FHIRException(e);
         }
@@ -60,7 +60,7 @@ public class Composition10_50 {
             tgt.setTitleElement(VersionConvertor_10_50.convertString(src.getTitleElement()));
         if (src.hasStatus())
             tgt.setStatusElement(convertCompositionStatus(src.getStatusElement()));
-        tgt.setConfidentiality(src.getConfidentiality().toCode());
+        tgt.setConfidentiality(src.getConfidentiality());
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_10_50.convertReference(src.getSubject()));
         for (org.hl7.fhir.r5.model.Reference t : src.getAuthor()) tgt.addAuthor(VersionConvertor_10_50.convertReference(t));

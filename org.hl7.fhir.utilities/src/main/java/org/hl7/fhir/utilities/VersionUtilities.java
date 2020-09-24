@@ -55,8 +55,8 @@ public class VersionUtilities {
     }
   }
 
-  public static final String CURRENT_VERSION = "4.4";
-  public static final String CURRENT_FULL_VERSION = "4.4.0";
+  public static final String CURRENT_VERSION = "4.5";
+  public static final String CURRENT_FULL_VERSION = "4.5.0";
 
   public static String packageForVersion(String v) {
     if (isR2Ver(v)) {
@@ -75,6 +75,9 @@ public class VersionUtilities {
       return "hl7.fhir.r5.core";
     }
     if (v != null && v.startsWith(CURRENT_VERSION)) {
+      return "hl7.fhir.r5.core";
+    }
+    if ("4.4.0".equals(v)) {
       return "hl7.fhir.r5.core";
     }
     return null;
@@ -147,13 +150,25 @@ public class VersionUtilities {
   }
 
   public static boolean versionsCompatible(String v1, String v2) {
-    String mm1 = getMajMin(v1);
-    String mm2 = getMajMin(v2);
-    if (mm1 == null || mm2 == null) {
+    if (v1 == null || v2 == null) {
       return false;
-    } else {
-      return mm1.equals(mm2);
     }
+    String[] v1l = v1.split("\\|"); 
+    String[] v2l = v2.split("\\|");
+    for (String vs1 : v1l) {
+      for (String vs2 : v2l) {
+        String mm1 = getMajMin(vs1);
+        String mm2 = getMajMin(vs2);
+        if (mm1 == null || mm2 == null) {
+          return false;
+        } else {
+          if (mm1.equals(mm2)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   public static boolean isCorePackage(String s) {

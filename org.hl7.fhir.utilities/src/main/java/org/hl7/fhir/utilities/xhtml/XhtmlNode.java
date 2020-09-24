@@ -38,9 +38,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseXhtml;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.primitive.XhtmlDt;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -136,11 +140,53 @@ public class XhtmlNode implements IBaseXhtml {
     return this;
   }
 
+  public void validate(List<String> errors, String path, boolean inResource, boolean inPara) {
+    if (nodeType == NodeType.Element || nodeType == NodeType.Document) {
+      path = Utilities.noString(path) ? name : path+"/"+name;
+      if (inResource) {
+        if (!Utilities.existsInList(name, "p", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "a", "span", "b", "em", "i", "strong",
+            "small", "big", "tt", "small", "dfn", "q", "var", "abbr", "acronym", "cite", "blockquote", "hr", "address", "bdo", "kbd", "q", "sub", "sup",
+            "ul", "ol", "li", "dl", "dt", "dd", "pre", "table", "caption", "colgroup", "col", "thead", "tr", "tfoot", "tbody", "th", "td",
+            "code", "samp", "img", "map", "area")) {
+          errors.add("Error at "+path+": Found "+name+" in a resource");          
+        }      
+        for (String an : attributes.keySet()) {
+          boolean ok = an.startsWith("xmlns") || Utilities.existsInList(an,
+              "title", "style", "class", "ID", "lang", "xml:lang", "dir", "accesskey", "tabindex",
+              // tables
+              "span", "width", "align", "valign", "char", "charoff", "abbr", "axis", "headers", "scope", "rowspan", "colspan") ||
+              Utilities.existsInList(name + "." + an, "a.href", "a.name", "img.src", "img.border", "div.xmlns", "blockquote.cite", "q.cite",
+                  "a.charset", "a.type", "a.name", "a.href", "a.hreflang", "a.rel", "a.rev", "a.shape", "a.coords", "img.src",
+                  "img.alt", "img.longdesc", "img.height", "img.width", "img.usemap", "img.ismap", "map.name", "area.shape",
+                  "area.coords", "area.href", "area.nohref", "area.alt", "table.summary", "table.width", "table.border",
+                  "table.frame", "table.rules", "table.cellspacing", "table.cellpadding", "pre.space", "td.nowrap"
+                  );
+          if (!ok)
+            errors.add("Error at "+path+": Found attribute "+name+"."+an+" in a resource");          
+        }
+      }
+      if (inPara && Utilities.existsInList(name, "div",  "blockquote", "table", "ol", "ul", "p")) {
+        errors.add("Error at "+path+": Found "+name+" inside an html paragraph");
+      }
+
+      if (childNodes != null) {
+        if ("p".equals(name)) {
+          inPara = true;
+        }
+        for (XhtmlNode child : childNodes) {
+          child.validate(errors, path, inResource, inPara);
+        }
+      }
+    }
+  }
+  
   public XhtmlNode addTag(String name)
   {
 
-    if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
+    if (!(nodeType == NodeType.Element || nodeType == NodeType.Document))  {
       throw new Error("Wrong node type - node is "+nodeType.toString()+" ('"+getName()+"/"+getContent()+"')");
+    }
+    
     XhtmlNode node = new XhtmlNode(NodeType.Element);
     node.setName(name);
     childNodes.add(node);
@@ -187,7 +233,6 @@ public class XhtmlNode implements IBaseXhtml {
     childNodes.add(node);
     return node;
   }
-
   public XhtmlNode addText(String content)
   {
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document)) 
@@ -476,6 +521,13 @@ public class XhtmlNode implements IBaseXhtml {
     return addTag("h2");
   }
   
+  public XhtmlNode h(int level) {
+    if (level < 1 || level > 6) {
+      throw new FHIRException("Illegal Header level "+level);
+    }
+    return addTag("h"+Integer.toString(level));
+  }
+  
   public XhtmlNode h3() {
     return addTag("h3");
   }
@@ -730,6 +782,17 @@ public class XhtmlNode implements IBaseXhtml {
   public void clear() {
     getChildNodes().clear();
     
+  }
+
+
+  public XhtmlNode backgroundColor(String color) {
+    style("background-color: "+color);
+    return this;
+  }
+
+
+  public boolean isPara() {
+    return "p".equals(name);
   }
 
 
