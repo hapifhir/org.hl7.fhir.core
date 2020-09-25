@@ -11,6 +11,7 @@ pool:
 variables:
 - group: PGP_VAR_GROUP
 - group: SONATYPE_VAR_GROUP
+- group: GIT_VAR_GROUP
 
 steps:
   # We need a valid signing key. 
@@ -44,36 +45,16 @@ steps:
                                     https://maven.apache.org/xsd/settings-1.0.0.xsd">
         <servers>
           <server>
+            <id>github</id>
+            <username>$(GIT_USER_NAME)</username>
+            <password>$(GIT_PAT)</password>
+          </server>
+          <server>
             <id>ossrh</id>
             <username>$(SONATYPE_USER)</username>
             <password>$(SONATYPE_PASS)</password>
           </server>
-          <server>
-            <id>sonatype-nexus-snapshots</id>
-            <username>$(SONATYPE_USER)</username>
-            <password>$(SONATYPE_PASS)</password>
-          </server>
-          <server>
-            <id>sonatype-nexus-staging</id>
-            <username>$(SONATYPE_USER)</username>
-            <password>$(SONATYPE_PASS)</password>
-          </server>
-          <server>
-              <id>$(PGP_KEYNAME)</id>
-              <passphrase>$(PGP_PASSPHRASE)</passphrase>
-          </server>
         </servers>
-        <profiles>
-          <profile>
-            <id>release</id>
-            <activation>
-              <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-              <gpg.keyname>$(PGP_KEYNAME)</gpg.keyname>
-            </properties>
-          </profile>
-        </profiles>
       </settings>
       EOL
     displayName: 'Create .mvn/settings.xml'
@@ -85,5 +66,15 @@ steps:
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
       goals: deploy
-      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -Pdeploy'
+      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -DdeployToSonatype'
+      publishJUnitResults: false
+
+  # Deploy the SNAPSHOT artifact to GitHub packages.
+  # This is done for the master branch merges only.
+  - task: Maven@3
+    displayName: 'Deploy $(module) to Sonatype staging'
+    inputs:
+      mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
+      goals: deploy
+      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -Dmaven.test.skip -DdeployToGitHub'
       publishJUnitResults: false
