@@ -57,6 +57,14 @@
         </repository>
         <repository>
             <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-dnault-maven</id>
+            <name>bintray</name>
+            <url>https://dl.bintray.com/dnault/maven</url>
+        </repository>
+        <repository>
+            <snapshots>
                 <enabled>true</enabled>
             </snapshots>
             <id>central</id>
