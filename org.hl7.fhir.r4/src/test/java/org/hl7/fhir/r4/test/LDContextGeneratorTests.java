@@ -7,7 +7,7 @@ import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class LDContextGeneratorTests {
       TextFile.stringToFile(renderedJson.get(jsonName), outputDir + jsonName.replace(':', '-').toLowerCase() + ".context.jsonld", false);
     }
 
-   // TextFile.stringToFile(ldContextGenerator.generate(sd), outPath);
+   //TextFile.stringToFile(ldContextGenerator.generate(sd), outPath);
   }
 
   /**
