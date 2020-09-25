@@ -49,14 +49,6 @@
     <repositories>
         <repository>
             <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>github</id>
-            <name>GitHub hapifhir Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/hapifhir/org.hl7.fhir.core</url>
-        </repository>
-        <repository>
-            <snapshots>
                 <enabled>false</enabled>
             </snapshots>
             <id>bintray-dnault-maven</id>
