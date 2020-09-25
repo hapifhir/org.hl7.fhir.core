@@ -54,6 +54,10 @@ steps:
             <username>$(SONATYPE_USER)</username>
             <password>$(SONATYPE_PASS)</password>
           </server>
+          <server>
+            <id>$(PGP_KEYNAME)</id>
+            <passphrase>$(PGP_PASSPHRASE)</passphrase>
+          </server>
         </servers>
       </settings>
       EOL
