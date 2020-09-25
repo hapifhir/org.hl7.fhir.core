@@ -14,7 +14,7 @@
     HAPI FHIR.
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>0.1.18</version>
+    <version>5.1.14-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -46,7 +46,6 @@
         <module>org.hl7.fhir.report</module>
     </modules>
 
-
     <repositories>
         <repository>
             <snapshots>
@@ -65,31 +64,6 @@
             <url>http://repo1.maven.org/maven2</url>
         </repository>
     </repositories>
-
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <snapshots>-->
-<!--                <enabled>false</enabled>-->
-<!--            </snapshots>-->
-<!--            <id>bintray-dnault-maven</id>-->
-<!--            <name>bintray</name>-->
-<!--            <url>https://dl.bintray.com/dnault/maven</url>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>jitpack.io</id>-->
-<!--            <url>https://jitpack.io</url>-->
-<!--            <snapshots>-->
-<!--                <enabled>false</enabled>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>github-packages</id>-->
-<!--            <url>https://jitpack.io</url>-->
-<!--            <snapshots>-->
-<!--                <enabled>false</enabled>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
-<!--    </repositories>-->
 
     <dependencies>
         <!-- Use logback for tests -->
@@ -337,17 +311,6 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.sonatype.plugins</groupId>-->
-<!--                <artifactId>nexus-staging-maven-plugin</artifactId>-->
-<!--                <version>1.6.7</version>-->
-<!--                <extensions>true</extensions>-->
-<!--                <configuration>-->
-<!--                    <serverId>ossrh</serverId>-->
-<!--                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
-<!--                    <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -412,11 +375,22 @@
                 </snapshotRepository>
                 <repository>
                     <id>ossrh</id>
-                    <url>https://oss.sonatype.org/content/repositories/releases/</url>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
                 </repository>
             </distributionManagement>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
