@@ -180,6 +180,7 @@ public class ToolingExtensions {
   public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
   public static final String EXT_EXP_FRAGMENT = "http://hl7.org/fhir/tools/StructureDefinition/expansion-codesystem-fragment";
   public static final String EXT_EXP_TOOCOSTLY = "http://hl7.org/fhir/StructureDefinition/valueset-toocostly";
+  public static final String EXT_MUST_SUPPORT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support";
 
   // specific extension helpers
 
@@ -335,6 +336,8 @@ public class ToolingExtensions {
       return ((DecimalType) ex.getValue()).asStringValue();
     if ((ex.getValue() instanceof MarkdownType))
       return ((MarkdownType) ex.getValue()).getValue();
+    if ((ex.getValue() instanceof PrimitiveType))
+      return ((PrimitiveType) ex.getValue()).primitiveValue();
     if (!(ex.getValue() instanceof StringType))
       return null;
     return ((StringType) ex.getValue()).getValue();
