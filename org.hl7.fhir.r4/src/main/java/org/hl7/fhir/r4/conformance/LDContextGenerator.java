@@ -196,7 +196,21 @@ public class LDContextGenerator {
         createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
       }
     }
+    else {
+      String contextRef = elementDefinition.getContentReference();
+      if (contextRef != null) {
+        if (contextRef.startsWith("#")) {
+          contextRef = contextRef.substring(1);
+        }
+        context = contextRef.substring(contextRef.lastIndexOf(".") + 1);
+        contextObject = coPrefix.length() > 0 ?
+          coPrefix + toUpperCaseFirstCharacter(context) :
+          context;
+        createNewContextObject(contextObject, idTrimmed + "." + contextObject, contextRef.toLowerCase(), resourceUri);
+      }
+    }
   }
+
 
   private boolean isElement(ElementDefinition elementDefinition){
     boolean isElement = false;

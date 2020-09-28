@@ -186,7 +186,20 @@ public class LDContextGenerator {
           coPrefix + toUpperCaseFirstCharacter(context) :
           context;
 
-        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
+        createNewContextObject(contextObject, idTrimmed + "." + context, context, resourceUri);
+      }
+    }
+    else {
+      String contextRef = elementDefinition.getContentReference();
+      if (contextRef != null) {
+        if (contextRef.startsWith("#")) {
+          contextRef = contextRef.substring(1);
+        }
+        context = contextRef.substring(contextRef.lastIndexOf(".") + 1);
+        contextObject = coPrefix.length() > 0 ?
+          coPrefix + toUpperCaseFirstCharacter(context) :
+          context;
+        createNewContextObject(contextObject, idTrimmed + "." + contextObject, contextRef.toLowerCase(), resourceUri);
       }
     }
   }
@@ -194,7 +207,8 @@ public class LDContextGenerator {
   private boolean isElement(ElementDefinition elementDefinition){
     boolean isElement = false;
 
-    if (elementDefinition.getType().size() > 0
+    if (elementDefinition.getType() != null
+            && elementDefinition.getType().size() > 0
             && elementDefinition.getType().get(0).getCode() != null
             && elementDefinition.getType().get(0).toString().equals("Element")) {
 
@@ -206,7 +220,8 @@ public class LDContextGenerator {
   private boolean isBackboneElement(ElementDefinition elementDefinition){
     boolean isBackbone = false;
 
-    if (elementDefinition.getType().size() > 0
+    if (elementDefinition.getType() != null
+            && elementDefinition.getType().size() > 0
             && elementDefinition.getType().get(0).getCode() != null
             && elementDefinition.getType().get(0).toString().equals("BackboneElement")) {
 
