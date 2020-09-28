@@ -77,7 +77,7 @@ steps:
   # Deploy the SNAPSHOT artifact to sonatype nexus.
   # This is done for the master branch merges only.
   - task: Maven@3
-    displayName: 'Deploy $(module) to Sonatype staging'
+    displayName: 'Deploy to Sonatype staging'
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
       goals: deploy
@@ -87,7 +87,7 @@ steps:
   # Deploy the SNAPSHOT artifact to GitHub packages.
   # This is done for the master branch merges only.
   - task: Maven@3
-    displayName: 'Deploy $(module) to Sonatype staging'
+    displayName: 'Deploy to GitHub packages'
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
       goals: deploy
