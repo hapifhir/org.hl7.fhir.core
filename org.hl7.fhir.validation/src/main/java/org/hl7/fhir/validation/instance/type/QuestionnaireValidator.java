@@ -45,6 +45,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
+import org.hl7.fhir.validation.Validator.QuestionnaireMode;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
@@ -56,13 +57,15 @@ public class QuestionnaireValidator extends BaseValidator {
 
   private EnableWhenEvaluator myEnableWhenEvaluator;
   private FHIRPathEngine fpe;
+  private QuestionnaireMode questionnaireMode;
 
-  public QuestionnaireValidator(IWorkerContext context, EnableWhenEvaluator myEnableWhenEvaluator, FHIRPathEngine fpe, TimeTracker timeTracker) {
+  public QuestionnaireValidator(IWorkerContext context, EnableWhenEvaluator myEnableWhenEvaluator, FHIRPathEngine fpe, TimeTracker timeTracker, QuestionnaireMode questionnaireMode) {
     super(context);
     source = Source.InstanceValidator;
     this.myEnableWhenEvaluator = myEnableWhenEvaluator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
+    this.questionnaireMode = questionnaireMode;
   }
 
   public void validateQuestionannaire(List<ValidationMessage> errors, Element element, Element element2, NodeStack stack) {
@@ -164,6 +167,9 @@ public class QuestionnaireValidator extends BaseValidator {
   }
 
   public void validateQuestionannaireResponse(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack) throws FHIRException {
+    if (questionnaireMode == QuestionnaireMode.NONE) {
+      return;
+    }
     Element q = element.getNamedChild("questionnaire");
     String questionnaire = null;
     if (q != null) {
@@ -179,9 +185,15 @@ public class QuestionnaireValidator extends BaseValidator {
         questionnaire = q.getChildValue("reference");
       }
     }
-    if (hint(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, I18nConstants.QUESTIONNAIRE_QR_Q_NONE)) {
+    boolean ok = questionnaireMode == QuestionnaireMode.REQUIRED ?
+        rule(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, I18nConstants.QUESTIONNAIRE_QR_Q_NONE) :
+          hint(errors, IssueType.REQUIRED, element.line(), element.col(), stack.getLiteralPath(), questionnaire != null, I18nConstants.QUESTIONNAIRE_QR_Q_NONE);
+    if (ok) {
       Questionnaire qsrc = questionnaire.startsWith("#") ? loadQuestionnaire(element, questionnaire.substring(1)) : context.fetchResource(Questionnaire.class, questionnaire);
-      if (warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire)) {
+      ok = questionnaireMode == QuestionnaireMode.REQUIRED ?
+          rule(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire) :
+          warning(errors, IssueType.REQUIRED, q.line(), q.col(), stack.getLiteralPath(), qsrc != null, I18nConstants.QUESTIONNAIRE_QR_Q_NOTFOUND, questionnaire);
+      if (ok) {
         boolean inProgress = "in-progress".equals(element.getNamedChildValue("status"));
         validateQuestionannaireResponseItems(hostContext, qsrc, qsrc.getItem(), errors, element, stack, inProgress, element, new QStack(qsrc, element));
       }
