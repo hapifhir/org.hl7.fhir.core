@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.rmi.server.LoaderHandler;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -1771,6 +1772,12 @@ public class FHIRPathEngine {
         result.addType(TypeDetails.FP_Decimal);
       } else if (left.hasType(worker, "string", "id", "code", "uri") && right.hasType(worker, "string", "id", "code", "uri")) {
         result.addType(TypeDetails.FP_String);
+      } else if (left.hasType(worker, "date", "dateTime", "instant")) {
+        if (right.hasType(worker, "Quantity")) {
+          result.addType(left.getType());
+        } else {
+          throw new PathEngineException(String.format("Error in date arithmetic: Unable to add type {0} to {1}", right.getType(), left.getType()));
+        }
       }
       return result;
     case Minus:
@@ -1781,6 +1788,12 @@ public class FHIRPathEngine {
         result.addType(TypeDetails.FP_Decimal);
       } else if (left.hasType(worker, "Quantity") && right.hasType(worker, "Quantity")) {
         result.addType(TypeDetails.FP_Quantity);
+      } else if (left.hasType(worker, "date", "dateTime", "instant")) {
+        if (right.hasType(worker, "Quantity")) {
+          result.addType(left.getType());
+        } else {
+          throw new PathEngineException(String.format("Error in date arithmetic: Unable to subtract type {0} from {1}", right.getType(), left.getType()));
+        }
       }
       return result;
     case Div: 
@@ -2385,7 +2398,7 @@ public class FHIRPathEngine {
     if (right.size() > 1) {
       throw makeException(I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "+");
     }
-    if (!right.get(0).isPrimitive()) {
+    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
       throw makeException(I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "+", right.get(0).fhirType());
     }
 
@@ -2398,8 +2411,63 @@ public class FHIRPathEngine {
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) + Integer.parseInt(r.primitiveValue())));
     } else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) { 
       result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
+    } else if (l.isDateTime() && r.hasType("Quantity")) {
+      result.add(dateAdd((BaseDateTimeType) l, (Quantity) r, false));
     } else {
       throw makeException(I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "+", left.get(0).fhirType(), right.get(0).fhirType());
+    }
+    return result;
+  }
+
+  private BaseDateTimeType dateAdd(BaseDateTimeType d, Quantity q, boolean negate) {
+    BaseDateTimeType result = (BaseDateTimeType) d.copy();
+    
+    int value = negate ? 0 - q.getValue().intValue() : q.getValue().intValue();
+    switch (q.hasCode() ? q.getCode() : q.getUnit()) {
+    case "years": 
+    case "year": 
+      result.add(Calendar.YEAR, value);
+      break;
+    case "a":
+      throw new PathEngineException(String.format("Error in date arithmetic: attempt to add a definite quantity duration time unit %s", q.getCode()));
+    case "months": 
+    case "month": 
+      result.add(Calendar.MONTH, value);
+      break;
+    case "mo":
+      throw new PathEngineException(String.format("Error in date arithmetic: attempt to add a definite quantity duration time unit %s", q.getCode()));
+    case "weeks": 
+    case "week": 
+    case "wk":
+      result.add(Calendar.DAY_OF_MONTH, value * 7);
+      break;
+    case "days": 
+    case "day": 
+    case "d":
+      result.add(Calendar.DAY_OF_MONTH, value);
+      break;
+    case "hours": 
+    case "hour": 
+    case "h":
+      result.add(Calendar.HOUR, value);
+      break;
+    case "minutes": 
+    case "minute": 
+    case "min":
+      result.add(Calendar.MINUTE, value);
+      break;
+    case "seconds": 
+    case "second": 
+    case "s":
+      result.add(Calendar.SECOND, value);
+      break;
+    case "milliseconds": 
+    case "millisecond": 
+    case "ms": 
+      result.add(Calendar.MILLISECOND, value);
+      break;
+    default:
+      throw new PathEngineException(String.format("Error in date arithmetic: unrecognized time unit %s", q.getCode()));
     }
     return result;
   }
@@ -2589,7 +2657,7 @@ public class FHIRPathEngine {
     if (right.size() > 1) {
       throw makeException(I18nConstants.FHIRPATH_RIGHT_VALUE_PLURAL, "-");
     }
-    if (!right.get(0).isPrimitive() && !right.get(0).hasType("Quantity")) {
+    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) {
       throw makeException(I18nConstants.FHIRPATH_RIGHT_VALUE_WRONG_TYPE, "-", right.get(0).fhirType());
     }
 
@@ -2607,6 +2675,8 @@ public class FHIRPathEngine {
         Quantity qty = (Quantity) r;
         result.add(qty.copy().setValue(qty.getValue().abs()));
       }
+    } else if (l.isDateTime() && r.hasType("Quantity")) {
+      result.add(dateAdd((BaseDateTimeType) l, (Quantity) r, true));
     } else {
       throw makeException(I18nConstants.FHIRPATH_OP_INCOMPATIBLE, "-", left.get(0).fhirType(), right.get(0).fhirType());
     }

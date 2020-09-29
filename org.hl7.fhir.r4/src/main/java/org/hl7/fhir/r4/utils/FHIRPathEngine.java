@@ -1514,6 +1514,13 @@ public class FHIRPathEngine {
         result.addType(TypeDetails.FP_Decimal);
       else if (left.hasType(worker, "string", "id", "code", "uri") && right.hasType(worker, "string", "id", "code", "uri"))
         result.addType(TypeDetails.FP_String);
+      else if (left.hasType(worker, "date", "dateTime", "instant")) {
+        if (right.hasType(worker, "Quantity")) {
+          result.addType(left.getType());
+        } else {
+          throw new PathEngineException(String.format("Error in date arithmetic: Unable to add type {0} to {1}", right.getType(), left.getType()));
+        }
+      }
       return result;
     case Minus:
       result = new TypeDetails(CollectionStatus.SINGLETON);
@@ -1521,6 +1528,13 @@ public class FHIRPathEngine {
         result.addType(TypeDetails.FP_Integer);
       else if (left.hasType(worker, "integer", "decimal") && right.hasType(worker, "integer", "decimal"))
         result.addType(TypeDetails.FP_Decimal);
+      else if (left.hasType(worker, "date", "dateTime", "instant")) {
+        if (right.hasType(worker, "Quantity")) {
+          result.addType(left.getType());
+        } else {
+          throw new PathEngineException(String.format("Error in date arithmetic: Unable to subtract type {0} from {1}", right.getType(), left.getType()));
+        }
+      }
       return result;
     case Div: 
     case Mod: 
@@ -1965,7 +1979,7 @@ public class FHIRPathEngine {
       throw new PathEngineException(String.format("Error performing +: left operand has the wrong type (%s)", left.get(0).fhirType()));
     if (right.size() > 1)
       throw new PathEngineException("Error performing +: right operand has more than one value");
-    if (!right.get(0).isPrimitive())
+    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) 
       throw new PathEngineException(String.format("Error performing +: right operand has the wrong type (%s)", right.get(0).fhirType()));
 
     List<Base> result = new ArrayList<Base>();
@@ -1977,11 +1991,67 @@ public class FHIRPathEngine {
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) + Integer.parseInt(r.primitiveValue())));
     else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) 
       result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
+    else if (l.isDateTime() && r.hasType("Quantity")) 
+      result.add(dateAdd((BaseDateTimeType) l, (Quantity) r, false));
     else
       throw new PathEngineException(String.format("Error performing +: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()));
     return result;
   }
 
+  private BaseDateTimeType dateAdd(BaseDateTimeType d, Quantity q, boolean negate) {
+    BaseDateTimeType result = (BaseDateTimeType) d.copy();
+    
+    int value = negate ? 0 - q.getValue().intValue() : q.getValue().intValue();
+    switch (q.hasCode() ? q.getCode() : q.getUnit()) {
+    case "years": 
+    case "year": 
+      result.add(Calendar.YEAR, value);
+      break;
+    case "a":
+      throw new PathEngineException(String.format("Error in date arithmetic: attempt to add a definite quantity duration time unit %s", q.getCode()));
+    case "months": 
+    case "month": 
+      result.add(Calendar.MONTH, value);
+      break;
+    case "mo":
+      throw new PathEngineException(String.format("Error in date arithmetic: attempt to add a definite quantity duration time unit %s", q.getCode()));
+    case "weeks": 
+    case "week": 
+    case "wk":
+      result.add(Calendar.DAY_OF_MONTH, value * 7);
+      break;
+    case "days": 
+    case "day": 
+    case "d":
+      result.add(Calendar.DAY_OF_MONTH, value);
+      break;
+    case "hours": 
+    case "hour": 
+    case "h":
+      result.add(Calendar.HOUR, value);
+      break;
+    case "minutes": 
+    case "minute": 
+    case "min":
+      result.add(Calendar.MINUTE, value);
+      break;
+    case "seconds": 
+    case "second": 
+    case "s":
+      result.add(Calendar.SECOND, value);
+      break;
+    case "milliseconds": 
+    case "millisecond": 
+    case "ms": 
+      result.add(Calendar.MILLISECOND, value);
+      break;
+    default:
+      throw new PathEngineException(String.format("Error in date arithmetic: unrecognized time unit %s", q.getCode()));
+    }
+    return result;
+  }
+
+    
   private List<Base> opTimes(List<Base> left, List<Base> right) throws PathEngineException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
@@ -2148,7 +2218,7 @@ public class FHIRPathEngine {
       throw new PathEngineException(String.format("Error performing -: left operand has the wrong type (%s)", left.get(0).fhirType()));
     if (right.size() > 1)
       throw new PathEngineException("Error performing -: right operand has more than one value");
-    if (!right.get(0).isPrimitive())
+    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) 
       throw new PathEngineException(String.format("Error performing -: right operand has the wrong type (%s)", right.get(0).fhirType()));
 
     List<Base> result = new ArrayList<Base>();
@@ -2159,6 +2229,8 @@ public class FHIRPathEngine {
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) - Integer.parseInt(r.primitiveValue())));
     else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) 
       result.add(new DecimalType(new BigDecimal(l.primitiveValue()).subtract(new BigDecimal(r.primitiveValue()))));
+    else if (l.isDateTime() && r.hasType("Quantity")) 
+      result.add(dateAdd((BaseDateTimeType) l, (Quantity) r, true));
     else
       throw new PathEngineException(String.format("Error performing -: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()));
     return result;
