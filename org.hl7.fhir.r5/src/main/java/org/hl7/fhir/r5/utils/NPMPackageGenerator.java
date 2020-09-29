@@ -62,9 +62,9 @@ import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDependsOnCom
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.cache.NpmPackageIndexBuilder;
-import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
-import org.hl7.fhir.utilities.cache.ToolsVersion;
+import org.hl7.fhir.utilities.npm.NpmPackageIndexBuilder;
+import org.hl7.fhir.utilities.npm.ToolsVersion;
+import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
