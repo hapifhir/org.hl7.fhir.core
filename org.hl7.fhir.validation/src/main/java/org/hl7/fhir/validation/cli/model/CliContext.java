@@ -54,8 +54,9 @@ public class CliContext {
 
   @JsonProperty("igs")
   private List<String> igs = new ArrayList<String>();
-  @JsonProperty("questionnaires")
-  private List<String> questionnaires = new ArrayList<String>();
+  @JsonProperty("questionnaire")
+  private Validator.QuestionnaireMode questionnaireMode = Validator.QuestionnaireMode.CHECK;
+  
   @JsonProperty("profiles")
   private List<String> profiles = new ArrayList<String>();
   @JsonProperty("sources")
@@ -118,22 +119,14 @@ public class CliContext {
     return this;
   }
 
-  @JsonProperty("questionnaires")
-  public List<String> getQuestionnaires() {
-    return questionnaires;
+  @JsonProperty("questionnaire")
+  public Validator.QuestionnaireMode getQuestionnaireMode() {
+    return questionnaireMode;
   }
 
-  @JsonProperty("questionnaires")
-  public CliContext setQuestionnaires(List<String> questionnaires) {
-    this.questionnaires = questionnaires;
-    return this;
-  }
-
-  public CliContext addQuestionnaire(String questionnaire) {
-    if (this.questionnaires == null) {
-      this.questionnaires = new ArrayList<>();
-    }
-    this.questionnaires.add(questionnaire);
+  @JsonProperty("questionnaire")
+  public CliContext setQuestionnaireMode(Validator.QuestionnaireMode questionnaireMode) {
+    this.questionnaireMode = questionnaireMode;
     return this;
   }
 
@@ -482,7 +475,7 @@ public class CliContext {
       Objects.equals(snomedCT, that.snomedCT) &&
       Objects.equals(targetVer, that.targetVer) &&
       Objects.equals(igs, that.igs) &&
-      Objects.equals(questionnaires, that.questionnaires) &&
+      Objects.equals(questionnaireMode, that.questionnaireMode) &&
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(sources, that.sources) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
@@ -494,6 +487,6 @@ public class CliContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, map, output, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaires, profiles, sources, mode, locale, locations, crumbTrails, showTimes);
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, map, output, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes);
   }
 }

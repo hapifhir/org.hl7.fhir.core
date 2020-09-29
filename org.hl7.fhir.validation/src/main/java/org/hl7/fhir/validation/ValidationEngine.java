@@ -34,7 +34,13 @@ import org.hl7.fhir.r5.utils.*;
 import org.hl7.fhir.r5.utils.IResourceValidator.*;
 import org.hl7.fhir.r5.utils.StructureMapUtilities.ITransformerServices;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.PackageClient;
+import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
+import org.hl7.fhir.validation.Validator.QuestionnaireMode;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher.IPackageInstaller;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.utilities.IniFile;
@@ -42,11 +48,6 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.cache.NpmPackage;
-import org.hl7.fhir.utilities.cache.PackageClient;
-import org.hl7.fhir.utilities.cache.BasePackageCacheManager;
-import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.cache.ToolsVersion;
 import org.hl7.fhir.utilities.i18n.I18nBase;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -311,6 +312,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   private boolean showTimes;
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
   private Map<String, ValidationControl> validationControl = new HashMap<>();
+  private QuestionnaireMode questionnaireMode;
 
   private class AsteriskFilter implements FilenameFilter {
     String dir;
@@ -531,7 +533,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
         v = src.substring(src.indexOf("|")+1);
         src = src.substring(0, src.indexOf("|"));
       }
-      String pid = pcm.getPackageId(src);
+      String pid = explore ? pcm.getPackageId(src) : null;
       if (!Utilities.noString(pid))
         return fetchByPackage(pid+(v == null ? "" : "#"+v));
       else
@@ -563,7 +565,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     } else if ((src.matches(FilesystemPackageCacheManager.PACKAGE_REGEX) || src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX)) && !src.endsWith(".zip") && !src.endsWith(".tgz")) {
       return fetchByPackage(src);
     }
-    throw new FHIRException("Unable to find/resolve/read -ig "+src);
+    throw new FHIRException("Unable to find/resolve/read "+(explore ? "-ig " : "")+src);
   }
 
   private Map<String, byte[]> loadIgSourceForVersion(String src, boolean recursive, boolean explore, VersionSourceInformation versions) throws FHIRException, IOException {
@@ -705,7 +707,20 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), cnt);
       return res;
     }    
-    throw new FHIRException("Unable to find/resolve/read -ig "+src);
+    String fn = Utilities.path("[tmp]", "fetch-resource-error-content.bin");
+    TextFile.bytesToFile(cnt, fn);
+    System.out.println("Error Fetching "+src);
+    System.out.println("Some content was found, saved to "+fn);
+    System.out.println("1st 100 bytes = "+presentForDebugging(cnt));
+    throw new FHIRException("Unable to find/resolve/read "+(explore ? "-ig " : "")+src);
+  }
+
+  private String presentForDebugging(byte[] cnt) {
+    StringBuilder b = new StringBuilder();
+    for (int i = 0; i < Integer.min(cnt.length, 50); i++) {
+      b.append(Integer.toHexString(cnt[i]));
+    }
+    return b.toString();
   }
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException, IOException {
@@ -1142,7 +1157,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     }
   }
 
-  public void setQuestionnaires(List<String> questionnaires) {
+  public void setQuestionnaireMode(Validator.QuestionnaireMode questionnaireMode) {
+    this.questionnaireMode = questionnaireMode;
   }
 
   public void setNative(boolean doNative) {
@@ -1614,6 +1630,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.getImplementationGuides().addAll(igs);
     validator.getBundleValidationRules().addAll(bundleValidationRules);
     validator.getValidationControl().putAll(validationControl );
+    validator.setQuestionnaireMode(questionnaireMode);
     return validator;
   }
 
