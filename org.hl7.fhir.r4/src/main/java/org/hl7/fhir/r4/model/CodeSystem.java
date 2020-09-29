@@ -37,6 +37,7 @@ package org.hl7.fhir.r4.model;
 import java.util.*;
 
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponentSorter;
 import org.hl7.fhir.r4.model.Enumerations.*;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
@@ -5047,6 +5048,30 @@ public class CodeSystem extends MetadataResource {
         return pd;
     }
     return null;
+  }
+
+  public class ConceptDefinitionComponentSorter implements Comparator<ConceptDefinitionComponent> {
+    @Override
+    public int compare(ConceptDefinitionComponent l, ConceptDefinitionComponent r) {
+      return l.getCode().compareTo(r.getCode());
+    }
+  }
+  
+  public void sort() {
+    sort(getConcept(), new ConceptDefinitionComponentSorter());    
+  }
+
+  public void sort(List<ConceptDefinitionComponent> list, Comparator<ConceptDefinitionComponent> comp) {
+    Collections.sort(list, comp);
+    for (ConceptDefinitionComponent def : list) {
+      if (def.hasConcept()) {
+        sort (def.getConcept(), comp);
+      }
+    }
+  }
+  
+  public void sort(Comparator<ConceptDefinitionComponent> comp) {
+    sort(getConcept(), comp);
   }
 
 // end addition
