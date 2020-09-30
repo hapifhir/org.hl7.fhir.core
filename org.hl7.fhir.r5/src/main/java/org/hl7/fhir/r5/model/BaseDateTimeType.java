@@ -1006,4 +1006,9 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
       }
     }
 
+    @Override
+    public String fpValue() {
+      return "@"+primitiveValue();
+    }
+
 }

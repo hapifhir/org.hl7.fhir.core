@@ -56,28 +56,28 @@ public class ValueSetValidator extends BaseValidator {
       List<Element> composes = vs.getChildrenByName("compose");
       int cc = 0;
       for (Element compose : composes) {
-        validateValueSetCompose(errors, compose, stack.push(compose, cc, null, null), vs.getNamedChildValue("url"));
+        validateValueSetCompose(errors, compose, stack.push(compose, cc, null, null), vs.getNamedChildValue("url"), "retired".equals(vs.getNamedChildValue("url")));
         cc++;
       }
     }
   }
 
-  private void validateValueSetCompose(List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid) {
+  private void validateValueSetCompose(List<ValidationMessage> errors, Element compose, NodeStack stack, String vsid, boolean retired) {
     List<Element> includes = compose.getChildrenByName("include");
     int ci = 0;
     for (Element include : includes) {
-      validateValueSetInclude(errors, include, stack.push(include, ci, null, null), vsid);
+      validateValueSetInclude(errors, include, stack.push(include, ci, null, null), vsid, retired);
       ci++;
     }    
     List<Element> excludes = compose.getChildrenByName("exclude");
     int ce = 0;
     for (Element exclude : excludes) {
-      validateValueSetInclude(errors, exclude, stack.push(exclude, ce, null, null), vsid);
+      validateValueSetInclude(errors, exclude, stack.push(exclude, ce, null, null), vsid, retired);
       ce++;
     }    
   }
   
-  private void validateValueSetInclude(List<ValidationMessage> errors, Element include, NodeStack stack, String vsid) {
+  private void validateValueSetInclude(List<ValidationMessage> errors, Element include, NodeStack stack, String vsid, boolean retired) {
     String system = include.getChildValue("system");
     String version = include.getChildValue("version");
     List<Element> valuesets = include.getChildrenByName("valueSet");
@@ -125,9 +125,9 @@ public class ValueSetValidator extends BaseValidator {
         }
         for (VSCodingValidationRequest cv : batch) {
           if (version == null) {
-            warning(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode());
+            warningOrHint(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE, system, cv.getCoding().getCode());
           } else {
-            warning(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode());
+            warningOrHint(errors, IssueType.BUSINESSRULE, cv.getStack().getLiteralPath(), cv.getResult().isOk(), !retired, I18nConstants.VALUESET_INCLUDE_INVALID_CONCEPT_CODE_VER, system, version, cv.getCoding().getCode());
           }
         }
       }
