@@ -176,6 +176,7 @@ public class FHIRPathTests {
       node = fp.parse(expression);
       Assertions.assertTrue(fail != TestResultType.SYNTAX, String.format("Expected exception didn't occur parsing %s", expression));
     } catch (Exception e) {
+      System.out.println("Parsing Error: "+e.getMessage());
       Assertions.assertTrue(fail == TestResultType.SYNTAX, String.format("Unexpected exception parsing %s: " + e.getMessage(), expression));
     }
     
@@ -193,6 +194,7 @@ public class FHIRPathTests {
         }
         Assertions.assertTrue(fail != TestResultType.SEMANTICS, String.format("Expected exception didn't occur checking %s", expression));
       } catch (Exception e) {
+        System.out.println("Checking Error: "+e.getMessage());
         Assertions.assertTrue(fail == TestResultType.SEMANTICS, String.format("Unexpected exception checking %s: " + e.getMessage(), expression));
         node = null;
       }
@@ -203,6 +205,7 @@ public class FHIRPathTests {
         outcome = fp.evaluate(res, node);
         Assertions.assertTrue(fail == TestResultType.OK, String.format("Expected exception didn't occur executing %s", expression));
       } catch (Exception e) {
+        System.out.println("Execution Error: "+e.getMessage());
         Assertions.assertTrue(fail == TestResultType.EXECUTION, String.format("Unexpected exception executing %s: " + e.getMessage(), expression));
         node = null;
       }
@@ -254,11 +257,11 @@ public class FHIRPathTests {
               Assertions.assertTrue(outcome.get(i).equalsDeep(q), String.format("Outcome %d: Value should be %s but was %s", i, v, outcome.get(i).toString()));
             } else {
               Assertions.assertTrue(outcome.get(i) instanceof PrimitiveType, String.format("Outcome %d: Value should be a primitive type but was %s", i, outcome.get(i).fhirType()));
-              if (!(v.equals(((PrimitiveType) outcome.get(i)).asStringValue()))) {
+              if (!(v.equals(((PrimitiveType) outcome.get(i)).fpValue()))) {
                 System.out.println(name);
-                System.out.println(String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));
+                System.out.println(String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, ((PrimitiveType) outcome.get(i)).fpValue(), expression));
               }
-              Assertions.assertEquals(v, ((PrimitiveType) outcome.get(i)).asStringValue(), String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, outcome.get(i).toString(), expression));
+              Assertions.assertEquals(v, ((PrimitiveType) outcome.get(i)).fpValue(), String.format("Outcome %d: Value should be %s but was %s for expression %s", i, v, ((PrimitiveType) outcome.get(i)).fpValue(), expression));
             }
           }
         }
