@@ -1635,7 +1635,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
 
   public void setMapLog(String mapLog) throws FileNotFoundException {
-    this.mapLog = new PrintWriter(mapLog);
+    if (mapLog != null) {
+      this.mapLog = new PrintWriter(mapLog);
+    }
   }
 
   public void prepare() {

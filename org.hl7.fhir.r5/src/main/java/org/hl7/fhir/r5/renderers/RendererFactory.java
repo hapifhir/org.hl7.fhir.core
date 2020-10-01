@@ -78,6 +78,9 @@ public class RendererFactory {
     if ("Parameters".equals(resourceName)) {
       return new ParametersRenderer(context);
     }
+    if ("Bundle".equals(resourceName)) {
+      return new BundleRenderer(context);
+    }
     return new ProfileDrivenRenderer(context);    
   }
 
