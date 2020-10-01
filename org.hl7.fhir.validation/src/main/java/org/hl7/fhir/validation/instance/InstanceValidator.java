@@ -226,7 +226,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, String functionName, List<List<Base>> parameters) {
+    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
       throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESEXECUTEFUNCTION));
     }
 
