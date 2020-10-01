@@ -829,7 +829,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
           boolean hasDefinition = false;
           for (ConceptReferenceComponent c : inc.getConcept()) {
             hasComments = hasComments || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT);
-            hasDefinition = hasDefinition || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION);
+            ConceptDefinitionComponent cc = definitions.get(c.getCode()); 
+            hasDefinition = hasDefinition || ((cc != null && cc.hasDefinition()) || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION));
           }
           if (hasComments || hasDefinition)
             hasExtensions = true;
@@ -846,16 +847,19 @@ public class ValueSetRenderer extends TerminologyRenderer {
             else if (cc != null && !Utilities.noString(cc.getDisplay()))
               td.addText(cc.getDisplay());
 
-            if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
+            if (hasDefinition) {
               td = tr.td();
-              smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
-            } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
-              td = tr.td();
-              smartAddText(td, cc.getDefinition());
+              if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
+                smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
+              } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
+                smartAddText(td, cc.getDefinition());
+              }
             }
-
-            if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
-              smartAddText(tr.td(), "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
+            if (hasComments) {
+              td = tr.td();
+              if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
+                smartAddText(td, "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
+              }
             }
             if (doLangs) {
               addLangaugesToRow(c, langs, tr);
