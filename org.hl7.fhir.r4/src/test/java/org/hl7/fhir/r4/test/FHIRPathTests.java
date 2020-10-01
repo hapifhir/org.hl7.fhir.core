@@ -64,7 +64,7 @@ public class FHIRPathTests {
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, String functionName, List<List<Base>> parameters) {
+    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
       throw new NotImplementedException("Not done yet (FHIRPathTestEvaluationServices.executeFunction), when item is element");
     }
 

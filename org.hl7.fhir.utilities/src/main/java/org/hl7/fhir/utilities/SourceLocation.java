@@ -24,4 +24,23 @@ public class SourceLocation {
   public String toString() {
     return Integer.toString(line)+", "+Integer.toString(column);
   }
+  
+  public void newLine() {
+    setLine(getLine() + 1);
+    setColumn(1);
+  }
+  public boolean checkChar(char ch, boolean last13) {
+    if (ch == '\r') {
+      newLine();
+      return true;
+    } else if (ch == '\n') {
+      if (!last13) {
+        newLine();
+      }
+      return false;
+    } else {
+      setColumn(getColumn() + 1);
+      return false;
+    }
+  }
 }
