@@ -233,7 +233,7 @@ public class FHIRPathEngine {
      * @param parameters
      * @return
      */
-    public List<Base> executeFunction(Object appContext, String functionName, List<List<Base>> parameters);
+    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters);
     
     /**
      * Implementation of resolve() function. Passed a string, return matching resource, if one is known - else null
@@ -2858,7 +2858,7 @@ public class FHIRPathEngine {
       List<List<Base>> params = new ArrayList<List<Base>>();
       for (ExpressionNode p : exp.getParameters()) 
         params.add(execute(context, focus, p, true));
-      return hostServices.executeFunction(context.appInfo, exp.getName(), params);
+      return hostServices.executeFunction(context.appInfo, focus, exp.getName(), params);
     }
     default:
       throw new Error("not Implemented yet");
