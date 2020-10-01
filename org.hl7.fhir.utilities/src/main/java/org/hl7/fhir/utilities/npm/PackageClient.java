@@ -8,6 +8,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -223,4 +224,46 @@ public class PackageClient {
     }
   }
 
+  
+  public List<PackageInfo> listFromRegistry(String name, String canonical, String fhirVersion) throws IOException {
+    List<PackageInfo> result = new ArrayList<>();
+    JsonObject packages = JsonTrackingParser.fetchJson("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
+    for (JsonObject o : JSONUtil.objects(packages, "guides")) {
+      if (o.has("canonical")) {
+        String id = JSONUtil.str(o, "npm-name");
+        String pname = JSONUtil.str(o, "name");
+        String pcanonical = JSONUtil.str(o, "canonical");
+        String description = JSONUtil.str(o, "description");
+        boolean ok = true;
+        if (ok && !Utilities.noString(name)) {
+          ok = (pname != null && pname.contains(name)) || (description != null && description.contains(name)) || (id != null && id.contains(name)); 
+        }
+        if (ok && !Utilities.noString(canonical)) {
+          ok = pcanonical.contains(canonical); 
+        }
+        String version = null;
+        String fVersion = null;
+        String url = null;
+        
+        if (ok) {
+          // if we can find something...
+          for (JsonObject e : JSONUtil.objects(o, "editions")) {
+            if (fhirVersion == null || fhirVersion.equals(JSONUtil.str(e, "fhir-version"))) {
+              String v = JSONUtil.str(e, "ig-version");
+              if (version == null || VersionUtilities.isThisOrLater(version, v)) {
+                version = v;
+                fVersion = e.getAsJsonArray("fhir-version").get(0).getAsString();
+                url = JSONUtil.str(e, "url");
+              }
+            }
+          }
+        }
+        if (version != null) {  
+          result.add(new PackageInfo(id, version, fVersion, description, url, pcanonical));
+        }
+      }
+    }
+    return result;
+  }
+  
 }

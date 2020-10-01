@@ -102,6 +102,7 @@ public class NPMPackageGenerator {
   private JsonObject packageJ;
   private JsonObject packageManifest;
   private NpmPackageIndexBuilder indexer;
+  private String igVersion;
 
 
   public NPMPackageGenerator(String destFile, String canonical, String url, PackageType kind, ImplementationGuide ig, Date date, boolean notForPublication) throws FHIRException, IOException {
@@ -184,6 +185,7 @@ public class NPMPackageGenerator {
     JsonObject npm = new JsonObject();
     npm.addProperty("name", ig.getPackageId());
     npm.addProperty("version", ig.getVersion());
+    igVersion = ig.getVersion();
     npm.addProperty("tools-version", ToolsVersion.TOOLS_VERSION);
     npm.addProperty("type", kind.getCode());
     npm.addProperty("date", dt);
@@ -393,6 +395,10 @@ public class NPMPackageGenerator {
         }
       }
     }
+  }
+
+  public String version() {
+    return igVersion;
   }
 
 
