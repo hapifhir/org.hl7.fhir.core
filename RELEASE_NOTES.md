@@ -1,7 +1,10 @@
 Validator:
-* Add date addition/subtraction to FHIRPath 
+* Add date addition/subtraction to FHIRPath + add parsing comments
 * Fix questionnaire mode parameter support for validator
 * add extra debugging when valdiator can't fetch content to validate
 
 Other code changes:
 * rename org.hl7.fhir.utilities.cache to org.hl7.fhir.utilities.npm
+* report error locations for run time FHIRPath errors
+* add search on IG registry to PackageClient
+* add focus to FHIRPath function extensions
