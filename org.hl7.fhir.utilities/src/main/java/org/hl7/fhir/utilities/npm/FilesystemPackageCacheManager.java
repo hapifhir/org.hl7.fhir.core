@@ -911,33 +911,4 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return false;
   }
 
-
-
-
-//public List<String> getUrls() throws IOException {
-//  if (allUrls == null)
-//  {
-//    IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-//    allUrls = new ArrayList<>();
-//    for (String s : ini.getPropertyNames("urls"))
-//      allUrls.add(ini.getStringProperty("urls", s));
-//    try {
-//      URL url = new URL("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
-//      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//      connection.setRequestMethod("GET");
-//      InputStream json = connection.getInputStream();
-//      JsonObject packages = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
-//      JsonArray guides = packages.getAsJsonArray("guides");
-//      for (JsonElement g : guides) {
-//        JsonObject gi = (JsonObject) g;
-//        if (gi.has("canonical"))
-//          if (!allUrls.contains(gi.get("canonical").getAsString()))
-//            allUrls.add(gi.get("canonical").getAsString());
-//      }
-//    } catch (Exception e) {
-//      System.out.println("Listing known Implementation Guides failed: "+e.getMessage());
-//    }
-//  }
-//  return allUrls;    
-//}
 }
