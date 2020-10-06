@@ -2023,15 +2023,18 @@ public class VersionConvertor_10_40 {
         copyElement(src, tgt);
         if (src.hasBounds())
             tgt.setBounds(convertType(src.getBounds()));
-        tgt.setCount(src.getCount());
+        if (src.hasCount())
+            tgt.setCount(src.getCount());
         if (src.hasDurationElement())
             tgt.setDurationElement(convertDecimal(src.getDurationElement()));
         if (src.hasDurationMaxElement())
             tgt.setDurationMaxElement(convertDecimal(src.getDurationMaxElement()));
         if (src.hasDurationUnits())
             tgt.setDurationUnitElement(convertUnitsOfTime(src.getDurationUnitsElement()));
-        tgt.setFrequency(src.getFrequency());
-        tgt.setFrequencyMax(src.getFrequencyMax());
+        if (src.hasFrequency())
+            tgt.setFrequency(src.getFrequency());
+        if (src.hasFrequencyMax())
+            tgt.setFrequencyMax(src.getFrequencyMax());
         if (src.hasPeriodElement())
             tgt.setPeriodElement(convertDecimal(src.getPeriodElement()));
         if (src.hasPeriodMaxElement())
@@ -2051,15 +2054,18 @@ public class VersionConvertor_10_40 {
         copyElement(src, tgt);
         if (src.hasBounds())
             tgt.setBounds(convertType(src.getBounds()));
-        tgt.setCount(src.getCount());
+        if (src.hasCount())
+            tgt.setCount(src.getCount());
         if (src.hasDurationElement())
             tgt.setDurationElement(convertDecimal(src.getDurationElement()));
         if (src.hasDurationMaxElement())
             tgt.setDurationMaxElement(convertDecimal(src.getDurationMaxElement()));
         if (src.hasDurationUnit())
             tgt.setDurationUnitsElement(convertUnitsOfTime(src.getDurationUnitElement()));
-        tgt.setFrequency(src.getFrequency());
-        tgt.setFrequencyMax(src.getFrequencyMax());
+        if (src.hasFrequency())
+            tgt.setFrequency(src.getFrequency());
+        if (src.hasFrequencyMax())
+            tgt.setFrequencyMax(src.getFrequencyMax());
         if (src.hasPeriodElement())
             tgt.setPeriodElement(convertDecimal(src.getPeriodElement()));
         if (src.hasPeriodMaxElement())
