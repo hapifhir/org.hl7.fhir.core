@@ -354,6 +354,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   public ValidationEngine() throws IOException {
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     context = SimpleWorkerContext.fromNothing();
+    initContext(null);
   }
     
   public String setTerminologyServer(String src, String log, FhirPublication version) throws FHIRException, URISyntaxException {
@@ -436,6 +437,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       context = SimpleWorkerContext.fromDefinitions(source, loaderForVersion(), new PackageVersion(src));
       grabNatives(source, "http://hl7.org/fhir");
     }
+    initContext(tt);
+  }
+
+  public void initContext(TimeTracker tt) throws IOException, FileNotFoundException {
+    context.setCanNoTS(true);
     context.setCacheId(UUID.randomUUID().toString());
     context.setAllowLoadingDuplicates(true); // because of Forge
     context.setExpansionProfile(makeExpProfile());

@@ -478,6 +478,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE = "Type_Specific_Checks_DT_URL_Resolve";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT = "Type_Specific_Checks_DT_UUID_Strat";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_VAID = "Type_Specific_Checks_DT_UUID_Vaid";
+  public static final String UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER = "Unable_to_connect_to_terminology_server";
   public static final String UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__ = "Unable_to_connect_to_terminology_server_Use_parameter_tx_na_tun_run_without_using_terminology_services_to_validate_LOINC_SNOMED_ICDX_etc_Error__";
   public static final String UNABLE_TO_FIND_BASE_DEFINITION_FOR_LOGICAL_MODEL__FROM_ = "Unable_to_find_base_definition_for_logical_model__from_";
   public static final String UNABLE_TO_FIND_BASE__FOR_ = "Unable_to_find_base__for_";
