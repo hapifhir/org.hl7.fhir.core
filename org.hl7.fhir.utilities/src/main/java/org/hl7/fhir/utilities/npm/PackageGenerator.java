@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities.cache;
+package org.hl7.fhir.utilities.npm;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

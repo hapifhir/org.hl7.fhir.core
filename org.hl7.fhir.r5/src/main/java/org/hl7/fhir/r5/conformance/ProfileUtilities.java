@@ -3245,14 +3245,22 @@ public class ProfileUtilities extends TranslatingUtilities {
       tl = t;
       if (t.hasTarget()) {
         c.getPieces().add(gen.new Piece(corePath+"references.html", t.getWorkingCode(), null));
+        if (isMustSupportDirect(t) && e.getMustSupport()) {
+          c.addPiece(gen.new Piece(null, " ", null));
+          c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);
+        }
         c.getPieces().add(gen.new Piece(null, "(", null));
         boolean tfirst = true;
-        for (UriType u : t.getTargetProfile()) {
+        for (CanonicalType u : t.getTargetProfile()) {
           if (tfirst)
             tfirst = false;
           else
             c.addPiece(gen.new Piece(null, " | ", null));
           genTargetLink(gen, profileBaseFileName, corePath, c, t, u.getValue());
+          if (isMustSupport(u) && e.getMustSupport()) {
+            c.addPiece(gen.new Piece(null, " ", null));
+            c.addStyledText(translate("sd.table", "This target must be supported"), "S", "white", "red", null, false);
+          }
         }
         c.getPieces().add(gen.new Piece(null, ")", null));
         if (t.getAggregation().size() > 0) {
@@ -3289,6 +3297,10 @@ public class ProfileUtilities extends TranslatingUtilities {
             }
           } else
             c.addPiece(checkForNoChange(t, gen.new Piece((p.getValue().startsWith(corePath)? corePath: "")+ref, t.getWorkingCode(), null)));
+          if (isMustSupport(p) && e.getMustSupport()) {
+            c.addPiece(gen.new Piece(null, " ", null));
+            c.addStyledText(translate("sd.table", "This profile must be supported"), "S", "white", "red", null, false);
+          }
         }
       } else {
         String tc = t.getWorkingCode();
@@ -3301,8 +3313,13 @@ public class ProfileUtilities extends TranslatingUtilities {
           }
         } else if (pkp != null && pkp.hasLinkFor(tc)) {
           c.addPiece(checkForNoChange(t, gen.new Piece(pkp.getLinkFor(corePath, tc), tc, null)));
-        } else
+        } else {
           c.addPiece(checkForNoChange(t, gen.new Piece(null, tc, null)));
+        }
+        if (isMustSupportDirect(t) && e.getMustSupport()) {
+          c.addPiece(gen.new Piece(null, " ", null));
+          c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);
+        }
       }
     }
     return c;
@@ -3812,7 +3829,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (element != null && element.getIsSummary()) {
       checkForNoChange(element.getIsSummaryElement(), gc.addStyledText(translate("sd.table", "This element is included in summaries"), "\u03A3", null, null, null, false));
     }
-    if (element != null && (!element.getConstraint().isEmpty() || !element.getCondition().isEmpty())) {
+    if (element != null && (hasNonBaseConstraints(element.getConstraint()) || hasNonBaseConditions(element.getCondition()))) {
       gc.addStyledText(translate("sd.table", "This element has or is affected by some invariants ("+listConstraintsAndConditions(element)+")"), "I", null, null, null, false);
     }
 
@@ -3860,7 +3877,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     return res;
   }
 
-  private Cell addCell(Row row, Cell cell) {
+
+    private Cell addCell(Row row, Cell cell) {
     row.getCells().add(cell);
     return (cell);
   }
@@ -3869,18 +3887,49 @@ public class ProfileUtilities extends TranslatingUtilities {
     return app == null ? src : src + app;
   }
 
+  private boolean hasNonBaseConditions(List<IdType> conditions) {
+    for (IdType c : conditions) {
+      if (!isBaseCondition(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  private boolean hasNonBaseConstraints(List<ElementDefinitionConstraintComponent> constraints) {
+    for (ElementDefinitionConstraintComponent c : constraints) {
+      if (!isBaseConstraint(c)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   private String listConstraintsAndConditions(ElementDefinition element) {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     for (ElementDefinitionConstraintComponent con : element.getConstraint()) {
-      b.append(con.getKey());
+      if (!isBaseConstraint(con)) {
+        b.append(con.getKey());
+      }
     }
     for (IdType id : element.getCondition()) {
-      b.append(id.asStringValue());
+      if (!isBaseCondition(id)) {
+        b.append(id.asStringValue());
+      }
     }
     return b.toString();
   }
 
+  private boolean isBaseCondition(IdType c) {
+    String key = c.asStringValue();
+    return key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-");
+  }
+
+  private boolean isBaseConstraint(ElementDefinitionConstraintComponent con) {
+    String key = con.getKey();
+    return key.startsWith("ele-") || key.startsWith("res-") || key.startsWith("ext-") || key.startsWith("dom-") || key.startsWith("dr-");
+  }
 
   private void makeChoiceRows(List<Row> subRows, ElementDefinition element, HierarchicalTableGenerator gen, String corePath, String profileBaseFileName) {
     // create a child for each choice
@@ -3899,6 +3948,10 @@ public class ProfileUtilities extends TranslatingUtilities {
             c.getPieces().add(gen.new Piece(corePath+"datatypes.html#canonical", "canonical", null));
           else
             c.getPieces().add(gen.new Piece(corePath+"references.html#Reference", "Reference", null));
+          if (isMustSupportDirect(tr) && element.getMustSupport()) {
+            c.addPiece(gen.new Piece(null, " ", null));
+            c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);
+          }
           c.getPieces().add(gen.new Piece(null, "(", null));
         }
         boolean first = true;
@@ -3906,6 +3959,10 @@ public class ProfileUtilities extends TranslatingUtilities {
           if (!first)
             c.getPieces().add(gen.new Piece(null, " | ", null));
           genTargetLink(gen, profileBaseFileName, corePath, c, tr, rt.getValue());
+          if (isMustSupport(rt) && element.getMustSupport()) {
+            c.addPiece(gen.new Piece(null, " ", null));
+            c.addStyledText(translate("sd.table", "This target must be supported"), "S", "white", "red", null, false);
+          }
           first = false;
         }
         if (first)
@@ -3924,20 +3981,23 @@ public class ProfileUtilities extends TranslatingUtilities {
           choicerow.getCells().add(gen.new Cell());
           choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
           choicerow.setIcon("icon_primitive.png", HierarchicalTableGenerator.TEXT_ICON_PRIMITIVE);
-          choicerow.getCells().add(gen.new Cell(null, corePath+"datatypes.html#"+t, sd.getType(), null, null));
-          //      } else if (definitions.getConstraints().contthnsKey(t)) {
-          //        ProfiledType pt = definitions.getConstraints().get(t);
-          //        choicerow.getCells().add(gen.new Cell(null, null, e.getName().replace("[x]", Utilities.capitalize(pt.getBaseType())), definitions.getTypes().containsKey(t) ? definitions.getTypes().get(t).getDefinition() : null, null));
-          //        choicerow.getCells().add(gen.new Cell());
-          //        choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
-          //        choicerow.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
-          //        choicerow.getCells().add(gen.new Cell(null, definitions.getSrcFile(t)+".html#"+t.replace("*", "open"), t, null, null));
+          Cell c = gen.new Cell(null, corePath+"datatypes.html#"+t, sd.getType(), null, null);
+          choicerow.getCells().add(c);
+          if (isMustSupport(tr) && element.getMustSupport()) {
+            c.addPiece(gen.new Piece(null, " ", null));
+            c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);
+          }
         } else {
           choicerow.getCells().add(gen.new Cell(null, null, tail(element.getPath()).replace("[x]",  Utilities.capitalize(t)), sd.getDescription(), null));
           choicerow.getCells().add(gen.new Cell());
           choicerow.getCells().add(gen.new Cell(null, null, "", null, null));
           choicerow.setIcon("icon_datatype.gif", HierarchicalTableGenerator.TEXT_ICON_DATATYPE);
-          choicerow.getCells().add(gen.new Cell(null, pkp.getLinkFor(corePath, t), sd.getType(), null, null));
+          Cell c = gen.new Cell(null, pkp.getLinkFor(corePath, t), sd.getType(), null, null);
+          choicerow.getCells().add(c);
+          if (isMustSupport(tr) && element.getMustSupport()) {
+            c.addPiece(gen.new Piece(null, " ", null));
+            c.addStyledText(translate("sd.table", "This type must be supported"), "S", "white", "red", null, false);
+          }
         }
         if (tr.hasProfile()) {
           Cell typeCell = choicerow.getCells().get(3);
@@ -3950,6 +4010,10 @@ public class ProfileUtilities extends TranslatingUtilities {
               typeCell.addPiece(gen.new Piece(null, "?gen-e2?", null));
             else
               typeCell.addPiece(gen.new Piece(psd.getUserString("path"), psd.getName(), psd.present()));
+            if (isMustSupport(pt) && element.getMustSupport()) {
+              typeCell.addPiece(gen.new Piece(null, " ", null));
+              typeCell.addStyledText(translate("sd.table", "This profile must be supported"), "S", "white", "red", null, false);
+            }
             
           }
           typeCell.addPiece(gen.new Piece(null, ")", null));
@@ -6145,6 +6209,32 @@ public class ProfileUtilities extends TranslatingUtilities {
     return grp;
   }
 
+  public static boolean isMustSupportDirect(TypeRefComponent tr) {
+    return ("true".equals(ToolingExtensions.readStringExtension(tr, ToolingExtensions.EXT_MUST_SUPPORT)));
+  }
 
+  public static boolean isMustSupport(TypeRefComponent tr) {
+    if ("true".equals(ToolingExtensions.readStringExtension(tr, ToolingExtensions.EXT_MUST_SUPPORT))) {
+      return true;
+    }
+    if (isMustSupport(tr.getProfile())) {
+      return true;
+    }
+    return isMustSupport(tr.getTargetProfile());
+  }
+
+  public static boolean isMustSupport(List<CanonicalType> profiles) {
+    for (CanonicalType ct : profiles) {
+      if (isMustSupport(ct)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  public static boolean isMustSupport(CanonicalType profile) {
+    return "true".equals(ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_MUST_SUPPORT));
+  }
   
 }

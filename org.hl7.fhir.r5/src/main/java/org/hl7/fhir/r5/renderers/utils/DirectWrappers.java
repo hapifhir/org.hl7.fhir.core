@@ -267,6 +267,16 @@ public class DirectWrappers {
     public String fhirType() {
       return wrapped.fhirType();
     }
+    
+    @Override
+    public PropertyWrapper getChildByName(String name) {
+      Property p = wrapped.getChildByName(name);
+      if (p == null)
+        return null;
+      else
+        return new PropertyWrapperDirect(context, p);
+    }
+
   }
 
 }

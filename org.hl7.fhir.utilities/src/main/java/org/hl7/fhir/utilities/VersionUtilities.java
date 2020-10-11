@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.cache.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -181,6 +181,10 @@ public class VersionUtilities {
   public static String getMajMin(String version) {
     if (version == null)
       return null;
+    
+    if ("current".equals(version)) {
+      return CURRENT_VERSION;
+    }
 
     if (Utilities.charCount(version, '.') == 1) {
       String[] p = version.split("\\.");
@@ -193,6 +197,16 @@ public class VersionUtilities {
     }
   }
 
+  public static String getPatch(String version) {
+    if (version == null)
+      return null;
+    if (Utilities.charCount(version, '.') == 2) {
+      String[] p = version.split("\\.");
+      return p[2];  
+    }
+    return null;
+  }
+
   public static boolean isSemVer(String version) {
     if (Utilities.charCount(version, '.') != 2) {
       return false;
@@ -202,7 +216,7 @@ public class VersionUtilities {
   }
 
   /** 
-   * return true if the current vresion equals test, or later 
+   * return true if the current version equals test, or later 
    * 
    * so if a feature is defined in 4.0, if (VersionUtilities.isThisOrLater("4.0", version))...
    *  
@@ -213,8 +227,34 @@ public class VersionUtilities {
   public static boolean isThisOrLater(String test, String current) {
     String t = getMajMin(test);
     String c = getMajMin(current);
+    if (c.compareTo(t) == 0) {
+      return isMajMinOrLaterPatch(test, current);
+    }
     boolean ok = c.compareTo(t) >= 0;
     return ok;
+  }
+
+  /** 
+   * return true if the current version equals test for major and min, or later patch 
+   * 
+   * @param test
+   * @param current
+   * @return
+   */
+  public static boolean isMajMinOrLaterPatch(String test, String current) {
+    String t = getMajMin(test);
+    String c = getMajMin(current);
+    if (c != null && c.compareTo(t) == 0) {
+      String pt = getPatch(test);
+      String pc = getPatch(current);
+      if (pt==null || "x".equals(pt)) {
+        return true;
+      }
+      if (pc!=null) {
+        return pc.compareTo(pt) >= 0;
+      }
+    }
+    return false;
   }
 
   public static String incMajorVersion(String v) {

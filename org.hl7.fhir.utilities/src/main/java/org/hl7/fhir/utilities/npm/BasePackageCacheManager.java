@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities.cache;
+package org.hl7.fhir.utilities.npm;
 
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -68,6 +68,9 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
       try {
         if (Utilities.noString(version)) {
           version = packageClient.getLatestVersion(id);
+        }
+        if (version.endsWith(".x")) {
+          version = packageClient.getLatestVersion(id, version);
         }
         InputStream stream = packageClient.fetch(id, version);
         String url = packageClient.url(id, version);

@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities.cache;
+package org.hl7.fhir.utilities.npm;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -61,10 +61,10 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.cache.NpmPackage.PackageResourceInformationSorter;
-import org.hl7.fhir.utilities.cache.PackageGenerator.PackageType;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformationSorter;
+import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -814,7 +814,7 @@ public class NpmPackage {
 
   public String getWebLocation() {
     if (npm.has("url")) {
-      return npm.get("url").getAsString();
+      return PackageHacker.fixPackageUrl(npm.get("url").getAsString());
     } else {
       return JSONUtil.str(npm, "canonical");
     }

@@ -246,7 +246,16 @@ public class ElementWrappers {
     public String fhirType() {
       return wrapped.fhirType();
     }
-  }
+
+    @Override
+    public PropertyWrapper getChildByName(String name) {
+      for (PropertyWrapper p : children())
+        if (p.getName().equals(name))
+          return p;
+      return null;
+    }
+
+}
 
   public static class PropertyWrapperMetaElement extends RendererWrapperImpl implements PropertyWrapper {
 

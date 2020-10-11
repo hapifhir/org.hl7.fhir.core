@@ -91,6 +91,8 @@ public class Validator {
   public enum EngineMode {
     VALIDATION, TRANSFORM, NARRATIVE, SNAPSHOT, SCAN, CONVERT, FHIRPATH, VERSION
   }
+  
+  public enum QuestionnaireMode { NONE, CHECK, REQUIRED }
 
   private static CliContext cliContext;
 

@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities.cache;
+package org.hl7.fhir.utilities.npm;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +25,7 @@ import com.google.gson.JsonObject;
 public class PackageHacker {
 
   public static void main(String[] args) throws FileNotFoundException, IOException {
-    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\uv\\cdisc-lab\\package.tgz");
+    new PackageHacker().edit("M:\\web\\hl7.org\\fhir\\us\\carin-rtpbc\\package.tgz");
   }
 
   private void edit(String name) throws FileNotFoundException, IOException {
@@ -58,9 +58,9 @@ public class PackageHacker {
   private void change(JsonObject npm, Map<String, byte[]> content) throws FileNotFoundException, IOException {
     fixVersions(npm);
     npm.remove("url");
-    npm.addProperty("url", "http://hl7.org/fhir/uv/cdisc-lab/STU1");
-    npm.remove("name");
-    npm.addProperty("name", "hl7.fhir.uv.cdisc-lab");
+    npm.addProperty("url", "http://hl7.org/fhir/us/carin-rtpbc/STU1");
+//    npm.remove("name");
+//    npm.addProperty("name", "hl7.fhir.uv.smart-app-launch");
 //    npm.remove("canonical");
 //    npm.addProperty("canonical", "http://hl7.org/fhir/us/davinci-drug-formulary");
 ////    npm.remove("description");
@@ -70,7 +70,7 @@ public class PackageHacker {
 //    npm.remove("dependencies");
 //    JsonObject dep = new JsonObject();
 //    npm.add("dependencies", dep);
-//    dep.addProperty("hl7.fhir.r4.core", "4.0.1");
+//    dep.addProperty("hl7.fhir.r3.core", "3.0.1");
 //    dep.addProperty("hl7.fhir.r4.examples", "4.0.1");
 //    dep.addProperty("hl7.fhir.r4.expansions", "4.0.1");
 //    dep.addProperty("hl7.fhir.r4.elements", "4.0.1");
@@ -80,7 +80,7 @@ public class PackageHacker {
     npm.remove("fhirVersions");
     JsonArray a = new JsonArray();
     npm.add("fhirVersions", a);
-    a.add("4.5.0");
+    a.add("3.0.1");
   }
 
   private void setProperty(JsonObject npm, String name, String value) {

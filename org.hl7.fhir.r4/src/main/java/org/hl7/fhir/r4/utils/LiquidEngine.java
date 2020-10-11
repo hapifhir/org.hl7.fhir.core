@@ -405,11 +405,11 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   @Override
-  public List<Base> executeFunction(Object appContext, String functionName, List<List<Base>> parameters) {
+  public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
     if (externalHostServices == null)
       return null;
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
-    return externalHostServices.executeFunction(ctxt.externalContext, functionName, parameters);
+    return externalHostServices.executeFunction(ctxt.externalContext, focus, functionName, parameters);
   }
 
   @Override

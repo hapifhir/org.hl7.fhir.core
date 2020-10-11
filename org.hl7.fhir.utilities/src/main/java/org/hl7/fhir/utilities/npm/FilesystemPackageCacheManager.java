@@ -1,4 +1,4 @@
-package org.hl7.fhir.utilities.cache;
+package org.hl7.fhir.utilities.npm;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -39,8 +39,9 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.cache.NpmPackage.NpmPackageFolder;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -283,7 +284,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   /**
-   * Load the identified package from the cache - it it exists
+   * Load the identified package from the cache - if it exists
    * <p>
    * This is for special purpose only (testing, control over speed of loading).
    * Generally, use the loadPackage method
@@ -307,10 +308,25 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
         return p;
       }
     }
+    String foundPackage = null;
+    String foundVersion = null;
     for (String f : sorted(new File(cacheFolder).list())) {
-      if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
-        return loadPackageInfo(Utilities.path(cacheFolder, f));
+      File cf = new File(Utilities.path(cacheFolder, f));
+      if (cf.isDirectory()) {
+        if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
+          return loadPackageInfo(Utilities.path(cacheFolder, f));
+        }
+        if (version != null && version.endsWith(".x") && f.contains("#")) {
+          String[] parts = f.split("#");
+          if (parts[0].equals(id) && VersionUtilities.isMajMinOrLaterPatch((foundVersion!=null ? foundVersion : version),parts[1])) {
+            foundVersion = parts[1];
+            foundPackage = f;
+          }
+        }
       }
+    }
+    if (foundPackage!=null) {
+      return loadPackageInfo(Utilities.path(cacheFolder, foundPackage));
     }
     if ("dev".equals(version))
       return loadPackageFromCacheOnly(id, "current");
@@ -895,33 +911,4 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return false;
   }
 
-
-
-
-//public List<String> getUrls() throws IOException {
-//  if (allUrls == null)
-//  {
-//    IniFile ini = new IniFile(Utilities.path(cacheFolder, "packages.ini"));
-//    allUrls = new ArrayList<>();
-//    for (String s : ini.getPropertyNames("urls"))
-//      allUrls.add(ini.getStringProperty("urls", s));
-//    try {
-//      URL url = new URL("https://raw.githubusercontent.com/FHIR/ig-registry/master/fhir-ig-list.json?nocache=" + System.currentTimeMillis());
-//      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//      connection.setRequestMethod("GET");
-//      InputStream json = connection.getInputStream();
-//      JsonObject packages = (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
-//      JsonArray guides = packages.getAsJsonArray("guides");
-//      for (JsonElement g : guides) {
-//        JsonObject gi = (JsonObject) g;
-//        if (gi.has("canonical"))
-//          if (!allUrls.contains(gi.get("canonical").getAsString()))
-//            allUrls.add(gi.get("canonical").getAsString());
-//      }
-//    } catch (Exception e) {
-//      System.out.println("Listing known Implementation Guides failed: "+e.getMessage());
-//    }
-//  }
-//  return allUrls;    
-//}
 }
