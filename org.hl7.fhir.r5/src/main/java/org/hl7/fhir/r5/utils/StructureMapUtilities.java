@@ -202,7 +202,7 @@ public class StructureMapUtilities {
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, String functionName, List<List<Base>> parameters) {
+    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
       throw new Error("Not Implemented Yet");
     }
 
@@ -748,15 +748,12 @@ public class StructureMapUtilities {
 		FHIRLexer lexer = new FHIRLexer(text, srcName);
 		if (lexer.done())
 			throw lexer.error("Map Input cannot be empty");
-		lexer.skipComments();
 		lexer.token("map");
 		StructureMap result = new StructureMap();
 		result.setUrl(lexer.readConstant("url"));
 		lexer.token("=");
 		result.setName(lexer.readConstant("name"));
-		if (lexer.hasComment()) {
-	    result.setDescription(getMultiLineComments(lexer));
-		}
+    result.setDescription(lexer.getAllComments());
 		while (lexer.hasToken("conceptmap"))
 			parseConceptMap(result, lexer);
 
@@ -782,7 +779,6 @@ public class StructureMapUtilities {
 		map.setStatus(PublicationStatus.DRAFT); // todo: how to add this to the text format
 		result.getContained().add(map);
 		lexer.token("{");
-		lexer.skipComments();
 		//	  lexer.token("source");
 		//	  map.setSource(new UriType(lexer.readConstant("source")));
 		//	  lexer.token("target");
@@ -824,25 +820,11 @@ public class StructureMapUtilities {
 			tgt.setCode(lexer.take());
 			if (tgt.getCode().startsWith("\""))
 			  tgt.setCode(lexer.processConstant(tgt.getCode()));
-      if (lexer.hasComment())
-        tgt.setComment(lexer.take().substring(2).trim());
+       tgt.setComment(lexer.getFirstComment());
 		}
 		lexer.token("}");
 	}
 	
-	private String getMultiLineComments(FHIRLexer lexer) {
-	  String comment = null;
-    while (lexer.hasComment()) { 
-      String newComment = lexer.take().substring(2).trim();
-      if (comment == null) {
-        comment = newComment;
-      } else {
-        comment += "\r\n"+newComment;
-      }
-    }
-	  return comment;
-	}
-
 	private ConceptMapGroupComponent getGroup(ConceptMap map, String srcs, String tgts) {
 	  for (ConceptMapGroupComponent grp : map.getGroup()) {
 	    if (grp.getSource().equals(srcs)) 
@@ -895,9 +877,7 @@ public class StructureMapUtilities {
 		lexer.token("as");
 		st.setMode(StructureMapModelMode.fromCode(lexer.take()));
 		lexer.skipToken(";");
-    if (lexer.hasComment() && currentLine == lexer.getCurrentLocation().getLine()) {
-			st.setDocumentation(lexer.take().substring(2).trim());
-		}
+   	st.setDocumentation(lexer.getFirstComment());
 	}
 
 	private void parseImports(StructureMap result, FHIRLexer lexer) throws FHIRException {
@@ -905,19 +885,11 @@ public class StructureMapUtilities {
 		int currentLine = lexer.getCurrentLocation().getLine();
 		result.addImport(lexer.readConstant("url"));
 		lexer.skipToken(";");
-		if (lexer.hasComment() && currentLine == lexer.getCurrentLocation().getLine()) {
-			lexer.next();
-		}
+  	lexer.getFirstComment();
 	}
 
 	private void parseGroup(StructureMap result, FHIRLexer lexer) throws FHIRException {
-	  String comment = null;
-    if (lexer.hasComment()) {
-      comment = getMultiLineComments(lexer);
-      if (lexer.done()) {
-        return ;
-      }
-    }
+	  String comment = lexer.getAllComments();
 		lexer.token("group");
 		StructureMapGroupComponent group = result.addGroup();
 		if (comment != null) {
@@ -975,7 +947,6 @@ public class StructureMapUtilities {
         parseRule(result, group.getRule(), lexer, true);
       }
 		} else {
-	    lexer.skipComments();
 		  while (lexer.hasToken("input")) 
 		    parseInput(group, lexer, false);
 		  while (!lexer.hasToken("endgroup")) {
@@ -1003,11 +974,8 @@ public class StructureMapUtilities {
 		if (!newFmt) {
   		lexer.token("as");
 	  	input.setMode(StructureMapInputMode.fromCode(lexer.take()));
-		  if (lexer.hasComment()) {
-			  input.setDocumentation(lexer.take().substring(2).trim());
-	  	}
+  	  input.setDocumentation(lexer.getFirstComment());
 	  	lexer.skipToken(";");
-		  lexer.skipComments();
 		}
 	}
 
@@ -1018,12 +986,7 @@ public class StructureMapUtilities {
 		  lexer.token(":");
 		  lexer.token("for");
     } else {
-      if (lexer.hasComment()) {
-        rule.setDocumentation(this.getMultiLineComments(lexer));
-        if (lexer.hasToken("}")) {
-          return ; // catched a comment at the end
-        }
-      }
+      rule.setDocumentation(lexer.getFirstComment());
     }
     list.add(rule);
 		boolean done = false;
@@ -1062,8 +1025,9 @@ public class StructureMapUtilities {
 						lexer.next();
 				}
 			}
-		} else if (lexer.hasComment()) {
-			rule.setDocumentation(getMultiLineComments(lexer));
+		} 
+		if (!rule.hasDocumentation() && lexer.hasComments()) {
+		  rule.setDocumentation(lexer.getFirstComment());
 		}
 		if (isSimpleSyntax(rule)) {
 		  rule.getSourceFirstRep().setVariable(AUTO_VAR_NAME);

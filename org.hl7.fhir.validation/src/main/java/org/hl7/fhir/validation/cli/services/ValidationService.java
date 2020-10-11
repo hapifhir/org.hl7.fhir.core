@@ -203,7 +203,7 @@ public class ValidationService {
       validator.loadIg(src, cliContext.isRecursive());
     }
     System.out.print("  Get set... ");
-    validator.setQuestionnaires(cliContext.getQuestionnaires());
+    validator.setQuestionnaireMode(cliContext.getQuestionnaireMode());
     validator.setNative(cliContext.isDoNative());
     validator.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
     validator.setAnyExtensionsAllowed(cliContext.isAnyExtensionsAllowed());

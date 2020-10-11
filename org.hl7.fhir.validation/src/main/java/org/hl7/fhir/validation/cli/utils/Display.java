@@ -2,8 +2,8 @@ package org.hl7.fhir.validation.cli.utils;
 
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.cache.ToolsVersion;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 import java.io.IOException;
 

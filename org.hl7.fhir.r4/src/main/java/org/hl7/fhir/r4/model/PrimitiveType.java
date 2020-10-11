@@ -249,4 +249,7 @@ public abstract class PrimitiveType<T> extends Type implements IPrimitiveType<T>
     return StringUtils.isNotBlank(getValueAsString());
   }
 
+  public String fpValue() {
+    return primitiveValue();
+  }
 }

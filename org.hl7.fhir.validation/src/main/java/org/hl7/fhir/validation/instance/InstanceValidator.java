@@ -140,6 +140,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.Validator.QuestionnaireMode;
 import org.hl7.fhir.validation.instance.type.BundleValidator;
 import org.hl7.fhir.validation.instance.type.CodeSystemValidator;
 import org.hl7.fhir.validation.instance.type.MeasureValidator;
@@ -225,7 +226,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     @Override
-    public List<Base> executeFunction(Object appContext, String functionName, List<List<Base>> parameters) {
+    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters) {
       throw new Error(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESEXECUTEFUNCTION));
     }
 
@@ -375,6 +376,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean crumbTrails;
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
   private boolean validateValueSetCodesOnTxServer = true;
+  private QuestionnaireMode questionnaireMode;
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices) {
     super(theContext);
@@ -483,7 +485,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean isKnownExtension(String url) {
     // Added structuredefinition-expression and following extensions explicitly because they weren't defined in the version of the spec they need to be used with
-    if ((allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression") || url.equals(VersionConvertorConstants.IG_DEPENDSON_PACKAGE_EXTENSION))
+    if ((allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression"))
       return true;
     for (String s : extensionDomains)
       if (url.startsWith(s))
@@ -1521,6 +1523,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (extensionUrl.equals(profile.getUrl())) {
           rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", hasExtensionSlice(profile, url), I18nConstants.EXTENSION_EXT_SUBEXTENSION_INVALID, url, profile.getUrl());
         }
+      } else if (SpecialExtensions.isKnownExtension(url)) {
+        ex = SpecialExtensions.getDefinition(url);
       } else if (rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, allowUnknownExtension(url), I18nConstants.EXTENSION_EXT_UNKNOWN_NOTHERE, url)) {
         hint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, isKnownExtension(url), I18nConstants.EXTENSION_EXT_UNKNOWN, url);
       }
@@ -1555,6 +1559,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return ex;
   }
+
 
   private boolean hasExtensionSlice(StructureDefinition profile, String sliceName) {
     for (ElementDefinition ed : profile.getSnapshot().getElement()) {
@@ -1933,7 +1938,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (fetcher != null) {
           boolean found;
           try {
-            found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || fetcher.resolveURL(appContext, path, url);
+            found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || fetcher.resolveURL(appContext, path, url) || 
+                SpecialExtensions.isKnownExtension(url);
           } catch (IOException e1) {
             found = false;
           }
@@ -3840,9 +3846,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("Observation")) {
       validateObservation(errors, element, stack);
     } else if (element.getType().equals("Questionnaire")) {
-      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker).validateQuestionannaire(errors, element, element, stack);
+      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode).validateQuestionannaire(errors, element, element, stack);
     } else if (element.getType().equals("QuestionnaireResponse")) {
-      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker).validateQuestionannaireResponse(hostContext, errors, element, stack);
+      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode).validateQuestionannaireResponse(hostContext, errors, element, stack);
     } else if (element.getType().equals("Measure")) {
       new MeasureValidator(context, timeTracker).validateMeasure(hostContext, errors, element, stack);      
     } else if (element.getType().equals("MeasureReport")) {
@@ -3943,15 +3949,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void validateContains(ValidatorHostContext hostContext, List<ValidationMessage> errors, String path, ElementDefinition child, ElementDefinition context, Element resource, Element element, NodeStack stack, IdStatus idstatus) throws FHIRException {
     String resourceName = element.getType();
     TypeRefComponent trr = null;
+    CommaSeparatedStringBuilder bt = new CommaSeparatedStringBuilder();
     for (TypeRefComponent tr : child.getType()) {
-      if (tr.getCode().equals("Resource")) {
+      bt.append(tr.getCode());
+      if (tr.getCode().equals("Resource") || tr.getCode().equals(resourceName) ) {
         trr = tr;
         break;
       }
     }
     stack.qualifyPath(".ofType("+resourceName+")");
     if (trr == null) {
-      rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE, resourceName);
+      rule(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_BUNDLE_ENTRY_TYPE, resourceName, bt.toString());
     } else if (isValidResourceType(resourceName, trr)) {
       // special case: resource wrapper is reset if we're crossing a bundle boundary, but not otherwise
       ValidatorHostContext hc = null;
@@ -4002,7 +4010,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   private boolean isValidResourceType(String type, TypeRefComponent def) {
-    if (!def.hasProfile()) {
+    if (!def.hasProfile() && def.getCode().equals("Resource")) {
+      return true;
+    }
+    if (def.getCode().equals(type)) {
       return true;
     }
     List<StructureDefinition> list = new ArrayList<>();
@@ -5070,6 +5081,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       setParentsInner(child);
     }
     
+  }
+
+  public void setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
+    this.questionnaireMode = questionnaireMode;
+  }
+
+  public QuestionnaireMode getQuestionnaireMode() {
+    return questionnaireMode;
   }
 
 }

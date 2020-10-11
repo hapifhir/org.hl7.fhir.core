@@ -1,5 +1,8 @@
 package org.hl7.fhir.exceptions;
 
+import org.hl7.fhir.utilities.SourceLocation;
+import org.hl7.fhir.utilities.Utilities;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,20 +36,62 @@ package org.hl7.fhir.exceptions;
 
 public class PathEngineException extends FHIRException {
 
+  private static final long serialVersionUID = 31969342112856390L;
+  private SourceLocation location;
+  private String expression;
+  
 	public PathEngineException() {
 		super();
 	}
 
-	public PathEngineException(String message, Throwable cause) {
-		super(message, cause);
-	}
+  public PathEngineException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-	public PathEngineException(String message) {
-		super(message);
-	}
+  public PathEngineException(String message) {
+    super(message);
+  }
 
-	public PathEngineException(Throwable cause) {
+  public PathEngineException(String message, SourceLocation location, String expression, Throwable cause) {
+    super(message+rep(location, expression), cause);
+  }
+
+  public PathEngineException(String message, SourceLocation location, String expression) {
+    super(message+rep(location, expression));
+  }
+
+	private static String rep(SourceLocation loc, String expr) {
+	  if (loc != null) {
+	    if (loc.getLine() == 1) {
+	      return " (@char "+loc.getColumn()+")";
+	    } else { 
+	      return " (@line "+loc.getLine()+" char "+loc.getColumn()+")";
+	    }
+	  } else if (Utilities.noString(expr)) { // can happen in some contexts...
+	    return " (@~"+expr+")";
+	  } else {
+	    return "";
+	  }
+  }
+
+  public PathEngineException(Throwable cause) {
 		super(cause);
 	}
+
+  public String getExpression() {
+    return expression;
+  }
+
+  public void setExpression(String expression) {
+    this.expression = expression;
+  }
+
+  public SourceLocation getLocation() {
+    return location;
+  }
+
+  public void setLocation(SourceLocation location) {
+    this.location = location;
+  }
 
 }
