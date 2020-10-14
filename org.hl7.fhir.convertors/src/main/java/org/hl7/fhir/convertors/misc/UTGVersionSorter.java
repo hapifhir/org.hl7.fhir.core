@@ -3,23 +3,30 @@ package org.hl7.fhir.convertors.misc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.r5.model.Base;
+import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.Provenance;
+import org.hl7.fhir.r5.model.Provenance.ProvenanceAgentComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
@@ -27,6 +34,9 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
+
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 public class UTGVersionSorter {
@@ -42,14 +52,16 @@ public class UTGVersionSorter {
     private String fmm;
     private boolean normative;
     private String recommendation;
+    private String filename;
 
-    public CanonicalResourceAnalysis(CanonicalResource cr) {
+    public CanonicalResourceAnalysis(CanonicalResource cr, String filename) {
       this.resource = cr;
+      this.filename = filename;
     }
 
     public String summary() {
 //      return "Relevant: "+resource.getUrl()+" [r2: "+r2Ver+"/"+r2Fmm+"]"+" [r3: "+r3Ver+"/"+r3Fmm+"]"+" [r4: "+r4Ver+"/"+r4Fmm+"/"+r4Normative+"] ---> "+recommendation;
-      return resource.getUrl()+" ---> "+recommendation;
+      return resource.getUrl()+" ---> "+recommendation+"   in "+filename;
     }
 
     public void analyse(Map<String, CanonicalResource> r2l, Map<String, CanonicalResource> r3l, Map<String, CanonicalResource> r4l) {
@@ -112,7 +124,17 @@ public class UTGVersionSorter {
       return r;
     }
 
+    public String getId() {
+      return resource.getId();
+    }
+
+    public String fhirType() {
+      return resource.fhirType();
+    }
+
   }
+
+  private Date runTime = new Date();
 
   public static void main(String[] args) throws FileNotFoundException, FHIRException, IOException, ParseException, URISyntaxException {
     new UTGVersionSorter().execute("C:\\work\\org.hl7.fhir.igs\\UTG\\input\\sourceOfTruth");
@@ -132,11 +154,31 @@ public class UTGVersionSorter {
       cr.analyse(r2,r3,r4);
     }
     
+    Bundle b = (Bundle) new JsonParser().parse(new FileInputStream("C:\\work\\org.hl7.fhir.igs\\UTG\\input\\sourceOfTruth\\history\\utgrel1hx-1-0-6.json"));
+    
     System.out.println("Summary");
     for (CanonicalResourceAnalysis cr : list) {
       System.out.println(cr.summary());
+      Provenance p = new Provenance();
+      b.addEntry().setResource(p).setFullUrl("http://terminology.hl7.org/fhir/Provenance/fhir-1.0.51-"+cr.getId());
+      p.setId("hx-fhir-1.0.51-"+cr.getId());
+      p.addTarget().setReference(cr.fhirType()+"/"+cr.getId());
+      p.getOccurredPeriod().setEnd(runTime, TemporalPrecisionEnum.DAY);
+      p.setRecorded(runTime);
+      p.addReason().setText("Reset Version after migration to UTG").addCoding("http://terminology.hl7.org/CodeSystem/v3-ActReason","METAMGT", null);
+      p.getActivity().addCoding("http://terminology.hl7.org/CodeSystem/v3-DataOperation", "UPDATE", null);
+      ProvenanceAgentComponent pa = p.addAgent();
+      pa.getType().addCoding("http://terminology.hl7.org/CodeSystem/provenance-participant-type", "author", null);
+      pa.getWho().setDisplay("Grahame Grieve");
+      pa = p.addAgent();
+      pa.getType().addCoding("http://terminology.hl7.org/CodeSystem/provenance-participant-type", "custodian", null);
+      pa.getWho().setDisplay("Vocabulary WG");
+      CanonicalResource res = cr.resource;
+      res.setVersion(cr.recommendation);
+      new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(cr.filename), res);
     }
     System.out.println();
+    new JsonParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("C:\\work\\org.hl7.fhir.igs\\UTG\\input\\sourceOfTruth\\history\\utgrel1hx-1-0-6.json"), b);
     System.out.println("Done");
   }
 
@@ -193,8 +235,8 @@ public class UTGVersionSorter {
           if (r instanceof CanonicalResource) {
             CanonicalResource cr = (CanonicalResource) r;
             cr.setUserData("path", f.getAbsolutePath());
-            if (cr.hasVersion() && cr.getVersion().startsWith("4.")) {
-              list.add(new CanonicalResourceAnalysis(cr));
+            if (cr.hasVersion() && cr.getVersion().startsWith("4.") && !Utilities.existsInList(cr.getId(), "v3-DataOperation", "v3-KnowledgeSubjectObservationValue")) {
+              list.add(new CanonicalResourceAnalysis(cr, f.getAbsolutePath()));
             }
           }
         } catch (Exception e) {
