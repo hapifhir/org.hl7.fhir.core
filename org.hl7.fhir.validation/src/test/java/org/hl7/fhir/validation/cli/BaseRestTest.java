@@ -1,14 +1,15 @@
 package org.hl7.fhir.validation.cli;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
-import java.io.IOException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class BaseRestTest {
 

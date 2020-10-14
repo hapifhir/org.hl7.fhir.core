@@ -1,17 +1,8 @@
 package org.hl7.fhir.validation.cli;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.model.FhirPublication;
-import org.hl7.fhir.r5.model.OperationOutcome;
-import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.validation.ValidationEngine;
+import java.io.IOException;
+
 import org.hl7.fhir.validation.cli.model.CliContext;
-import org.hl7.fhir.validation.cli.model.FileInfo;
-import org.hl7.fhir.validation.cli.model.ValidationRequest;
-import org.hl7.fhir.validation.cli.model.ValidationResponse;
-import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,10 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.util.Arrays;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 class ValidatorGuiTest {
 

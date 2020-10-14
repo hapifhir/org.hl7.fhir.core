@@ -1,5 +1,8 @@
 package org.hl7.fhir.validation;
 
+import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
+import static org.apache.commons.lang3.StringUtils.left;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,18 +34,12 @@ package org.hl7.fhir.validation;
 
 
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.Properties;
 
 import org.hl7.fhir.r5.model.InstantType;
 import org.hl7.fhir.utilities.Utilities;
-
-import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
-import static org.apache.commons.lang3.StringUtils.left;
 
 /**
  * Used internally by HAPI to log the version of the HAPI FHIR framework

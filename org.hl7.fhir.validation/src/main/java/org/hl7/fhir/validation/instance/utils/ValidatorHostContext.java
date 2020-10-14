@@ -1,14 +1,12 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import org.hl7.fhir.r5.elementmodel.Element;
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
+
+import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 public class ValidatorHostContext {
 

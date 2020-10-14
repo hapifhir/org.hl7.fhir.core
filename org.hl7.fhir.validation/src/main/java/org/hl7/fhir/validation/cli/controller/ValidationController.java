@@ -1,13 +1,14 @@
 package org.hl7.fhir.validation.cli.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.javalin.http.Context;
-import io.javalin.http.Handler;
 import org.apache.http.HttpStatus;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.ValidationRequest;
 import org.hl7.fhir.validation.cli.model.ValidationResponse;
 import org.hl7.fhir.validation.cli.services.ValidationService;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.javalin.http.Context;
 
 public class ValidationController {
 
