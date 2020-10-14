@@ -36,6 +36,9 @@ public class RendererFactory {
     if ("OperationDefinition".equals(resourceName)) {
       return new OperationDefinitionRenderer(context);
     }
+    if ("SearchParameter".equals(resourceName)) {
+      return new SearchParameterRenderer(context);
+    }
     if ("CompartmentDefinition".equals(resourceName)) {
       return new CompartmentDefinitionRenderer(context);
     }

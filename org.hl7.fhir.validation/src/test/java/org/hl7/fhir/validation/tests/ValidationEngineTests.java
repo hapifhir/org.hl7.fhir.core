@@ -1,5 +1,8 @@
 package org.hl7.fhir.validation.tests;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.OperationOutcome;
@@ -10,9 +13,6 @@ import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ValidationEngineTests {
 

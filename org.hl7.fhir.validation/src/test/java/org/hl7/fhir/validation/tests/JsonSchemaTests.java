@@ -1,5 +1,8 @@
 package org.hl7.fhir.validation.tests;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
@@ -8,9 +11,6 @@ import org.json.JSONTokener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 
 public class JsonSchemaTests {

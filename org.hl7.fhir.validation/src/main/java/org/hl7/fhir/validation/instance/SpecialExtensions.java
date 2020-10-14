@@ -1,12 +1,9 @@
 package org.hl7.fhir.validation.instance;
 
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.Utilities;
 

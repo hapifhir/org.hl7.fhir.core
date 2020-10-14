@@ -8,8 +8,6 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.junit.Test;
 
-import net.sf.saxon.expr.instruct.Message;
-
 public class LoadIgTests {
   
   @Test

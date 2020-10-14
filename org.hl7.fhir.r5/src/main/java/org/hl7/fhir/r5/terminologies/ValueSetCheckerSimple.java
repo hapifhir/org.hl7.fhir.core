@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -514,6 +515,9 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
       if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
         return null;
+      }
+      if (res.getErrorClass() == TerminologyServiceErrorClass.NOSERVICE) {
+        throw new NoTerminologyServiceException();
       }
       return res.isOk();
     } else {

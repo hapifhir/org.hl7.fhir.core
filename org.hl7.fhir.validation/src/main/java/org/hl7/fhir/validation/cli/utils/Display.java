@@ -1,11 +1,11 @@
 package org.hl7.fhir.validation.cli.utils;
 
+import java.io.IOException;
+
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
-
-import java.io.IOException;
 
 /**
  * Class for displaying output to the cli user.

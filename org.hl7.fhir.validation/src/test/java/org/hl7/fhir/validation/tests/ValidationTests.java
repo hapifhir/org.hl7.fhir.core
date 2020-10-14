@@ -1,10 +1,19 @@
 package org.hl7.fhir.validation.tests;
 
-import com.google.common.base.Charsets;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
@@ -43,11 +52,11 @@ import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.instance.InstanceValidator;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,19 +64,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
+import com.google.common.base.Charsets;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 @RunWith(Parameterized.class)
 public class ValidationTests implements IEvaluationContext, IValidatorResourceFetcher {
@@ -100,7 +101,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private String version;
   private String name;
 
-   private static final String DEF_TX = "http://tx.fhir.org";
+  private static final String DEF_TX = "http://tx.fhir.org";
 //  private static final String DEF_TX = "http://local.fhir.org:960";
   private static Map<String, ValidationEngine> ve = new HashMap<>();
   private static ValidationEngine vCurr;
@@ -154,8 +155,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       return;
 
     String testCaseContent = TestingUtilities.loadTestResource("validator", name);
-
     InstanceValidator val = vCurr.getValidator();
+    val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
     val.setDebug(false);
     if (content.has("allowed-extension-domain"))
@@ -170,7 +171,13 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     val.setFetcher(this);
     if (content.has("packages")) {
       for (JsonElement e : content.getAsJsonArray("packages")) {
-        vCurr.loadIg(e.getAsString(), true);
+        String n = e.getAsString();
+        InputStream cnt = n.endsWith(".tgz") ? TestingUtilities.loadTestResourceStream("validator", n) : null;
+        if (cnt != null) {
+          vCurr.loadPackage(NpmPackage.fromPackage(cnt));
+        } else {
+          vCurr.loadIg(n, true);
+        }
       }
     }
     if (content.has("crumb-trail")) {

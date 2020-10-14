@@ -49,6 +49,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
@@ -910,6 +911,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
         return res;
       } catch (Exception e) {
+        if (e instanceof NoTerminologyServiceException) {
+          return new ValidationResult(IssueSeverity.ERROR, "No Terminology Service", TerminologyServiceErrorClass.NOSERVICE);
+        }
       }
     }
 

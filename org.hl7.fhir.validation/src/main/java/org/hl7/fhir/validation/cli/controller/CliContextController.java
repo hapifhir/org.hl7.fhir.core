@@ -1,11 +1,13 @@
 package org.hl7.fhir.validation.cli.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.javalin.http.Context;
 import org.apache.http.HttpStatus;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.jetbrains.annotations.NotNull;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.javalin.http.Context;
 
 public class CliContextController {
 
