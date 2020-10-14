@@ -184,6 +184,14 @@ public interface IResourceValidator {
   public boolean isShowMessagesFromReferences();
   public void setShowMessagesFromReferences(boolean value);
 
+  /** 
+   * this is used internally in the publishing stack to ensure that everything is water tight, but 
+   * this check is not necessary or appropriate at run time when the validator is hosted in HAPI
+   * @return
+   */
+  public boolean isWantCheckSnapshotUnchanged();
+  public void setWantCheckSnapshotUnchanged(boolean wantCheckSnapshotUnchanged);
+  
   //FIXME: don't need that, gets never used?
 //  public String getValidationLanguage();
 //  public void setValidationLanguage(String value);
