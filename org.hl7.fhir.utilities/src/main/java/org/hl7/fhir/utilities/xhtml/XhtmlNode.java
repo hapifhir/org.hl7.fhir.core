@@ -92,7 +92,7 @@ public class XhtmlNode implements IBaseXhtml {
   private boolean notPretty;
   private boolean inPara;
   private boolean inLink;
-  
+  private boolean seperated;  
 
   public XhtmlNode() {
     super();
@@ -840,6 +840,17 @@ public class XhtmlNode implements IBaseXhtml {
       getChildNodes().addAll(m.getChildNodes());
    }        
   }
+
+
+  public XhtmlNode sep(String separator) {
+    // if there's already text, add the separator
+    if (seperated) {
+      return this;
+    }
+    seperated = true;
+    return tx(separator);
+  }
+
 
 
   

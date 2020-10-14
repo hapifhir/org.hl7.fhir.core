@@ -1,7 +1,6 @@
 package org.hl7.fhir.validation.cli.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hl7.fhir.r5.elementmodel.Manager;
 
 public class FileInfo {
 

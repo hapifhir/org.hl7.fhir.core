@@ -1,5 +1,7 @@
 package org.hl7.fhir.validation.cli.controller;
 
+import java.io.IOException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -12,8 +14,6 @@ import org.hl7.fhir.validation.cli.model.CliContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 class HttpGetContextTest extends BaseRestTest {
 
