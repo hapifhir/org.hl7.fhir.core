@@ -399,7 +399,13 @@ public boolean hasCoding(String system, String code) {
     }
     return res;
   }  
+  
+  public void addCoding(String system, String code, String display) {
+    getCoding().add(new Coding(system, code, display));
+  }
+  
 // end addition
+
 
 }
 
