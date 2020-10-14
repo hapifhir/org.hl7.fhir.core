@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.i18n;
 
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+
 public class I18nConstants {
 
   
@@ -343,6 +345,9 @@ public class I18nConstants {
   public static final String SD_MUST_HAVE_DERIVATION = "SD_MUST_HAVE_DERIVATION";
   public static final String SD_NESTED_MUST_SUPPORT_DIFF = "SD_NESTED_MUST_SUPPORT_DIFF";
   public static final String SD_NESTED_MUST_SUPPORT_SNAPSHOT = "SD_NESTED_MUST_SUPPORT_SNAPSHOT";
+  public static final String SD_ED_TYPE_PROFILE_UNKNOWN = "SD_ED_TYPE_PROFILE_UNKNOWN";
+  public static final String SD_ED_TYPE_PROFILE_NOTYPE = "SD_ED_TYPE_PROFILE_NOTYPE";
+  public static final String SD_ED_TYPE_PROFILE_WRONG = "SD_ED_TYPE_PROFILE_WRONG";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
   public static final String SEARCHPARAMETER_NOTFOUND = "SEARCHPARAMETER_NOTFOUND";
@@ -410,6 +415,8 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET2 = "Terminology_TX_System_ValueSet2";
   public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND = "Terminology_TX_ValueSet_NotFound";
   public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND2 = "Terminology_TX_ValueSet_NotFound2";
+  public static final String TERMINOLOGY_TX_NOSVC_BOUND_REQ = "TERMINOLOGY_TX_NOSVC_BOUND_REQ";
+  public static final String TERMINOLOGY_TX_NOSVC_BOUND_EXT = "TERMINOLOGY_TX_NOSVC_BOUND_EXT";
   public static final String TEXT_SHOULD_NOT_BE_PRESENT = "Text_should_not_be_present";
   public static final String THE_BASE_SNAPSHOT_MARKS_A_SLICING_AS_CLOSED_BUT_THE_DIFFERENTIAL_TRIES_TO_EXTEND_IT_IN__AT__ = "The_base_snapshot_marks_a_slicing_as_closed_but_the_differential_tries_to_extend_it_in__at__";
   public static final String THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_ = "This_base_property_must_be_an_Array_not_a_";

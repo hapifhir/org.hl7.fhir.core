@@ -2,11 +2,7 @@ package org.hl7.fhir.validation;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 /*
@@ -85,7 +81,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
-import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 
 public class BaseValidator {

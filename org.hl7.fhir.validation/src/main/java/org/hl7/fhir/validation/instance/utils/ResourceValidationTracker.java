@@ -1,12 +1,12 @@
 package org.hl7.fhir.validation.instance.utils;
 
-import org.hl7.fhir.r5.model.StructureDefinition;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 
 /**
  * The validator keeps one of these classes for each resource it validates (e.g. when chasing references)

@@ -17,7 +17,6 @@ import org.hl7.fhir.utilities.VersionUtilities.VersionURLInfo;
 import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher.IPackageInstaller;
 
 public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
 

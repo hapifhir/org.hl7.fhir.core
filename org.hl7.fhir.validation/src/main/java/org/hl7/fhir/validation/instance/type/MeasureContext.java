@@ -1,19 +1,14 @@
 package org.hl7.fhir.validation.instance.type;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Attachment;
-import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupComponent;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.xml.sax.SAXException;
 
 public class MeasureContext {
 
