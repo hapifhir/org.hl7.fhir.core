@@ -148,6 +148,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private boolean ignoreProfileErrors;
   private boolean progress;
   private List<String> loadedPackages = new ArrayList<String>();
+  private boolean canNoTS;
 
   public SimpleWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     super();
@@ -299,7 +300,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       setTxCaps(txClient.getTerminologyCapabilities());
       return cps.getSoftware().getVersion();
     } catch (Exception e) {
-      throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__, e.getMessage()), e);
+      throw new FHIRException(formatMessage(canNoTS ? I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__ : I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER, e.getMessage()), e);
     }
   }
 
@@ -813,6 +814,15 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public void setClock(TimeTracker tt) {
     clock = tt;
-    
   }
+
+  public boolean isCanNoTS() {
+    return canNoTS;
+  }
+
+  public void setCanNoTS(boolean canNoTS) {
+    this.canNoTS = canNoTS;
+  }
+  
+  
 }

@@ -2323,6 +2323,9 @@ public class CompartmentDefinition extends CanonicalResource {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
+  public boolean supportsCopyright() {
+    return false;
+  }
 
 }
 

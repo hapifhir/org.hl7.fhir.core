@@ -1,11 +1,12 @@
 package org.hl7.fhir.validation.cli;
 
-import io.javalin.Javalin;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.controller.CliContextController;
-import org.hl7.fhir.validation.cli.controller.ValidationController;
 import org.hl7.fhir.validation.cli.controller.UIController;
+import org.hl7.fhir.validation.cli.controller.ValidationController;
 import org.hl7.fhir.validation.cli.model.CliContext;
+
+import io.javalin.Javalin;
 
 public class RestEndpoints {
 
