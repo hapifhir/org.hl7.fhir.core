@@ -1,15 +1,14 @@
 package org.hl7.fhir.validation.cli;
 
-import io.javalin.Javalin;
+import java.awt.Desktop;
+import java.net.URI;
+
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.utils.Common;
 
-import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import io.javalin.Javalin;
 
 public class ValidatorGui {
 

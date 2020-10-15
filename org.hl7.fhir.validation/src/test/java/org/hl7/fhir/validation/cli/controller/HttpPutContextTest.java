@@ -1,12 +1,12 @@
 package org.hl7.fhir.validation.cli.controller;
 
-import io.javalin.http.Context;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import io.javalin.http.Context;
 
 class HttpPutContextTest {
 

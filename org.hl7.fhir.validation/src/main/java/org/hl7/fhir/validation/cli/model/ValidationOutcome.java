@@ -1,10 +1,11 @@
 package org.hl7.fhir.validation.cli.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ValidationOutcome {
 

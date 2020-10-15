@@ -68,10 +68,12 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
 import org.hl7.fhir.validation.cli.ValidatorGui;
+import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
-import org.hl7.fhir.validation.cli.model.CliContext;
-import org.hl7.fhir.validation.cli.utils.*;
+import org.hl7.fhir.validation.cli.utils.Common;
+import org.hl7.fhir.validation.cli.utils.Display;
+import org.hl7.fhir.validation.cli.utils.Params;
 
 /**
  * A executable class that will validate one or more FHIR resources against

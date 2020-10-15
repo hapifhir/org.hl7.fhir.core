@@ -35,6 +35,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1095,6 +1096,10 @@ public class NpmPackage {
   public boolean isNotForPublication() {
     return JSONUtil.bool(npm, "notForPublication");
  }
+
+  public InputStream load(PackageResourceInformation p) throws FileNotFoundException {
+    return new FileInputStream(p.filename);
+  }
   
   
 }
