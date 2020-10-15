@@ -73,6 +73,10 @@ public class ValidationService {
   }
   
   public static void validateSources(CliContext cliContext, ValidationEngine validator) throws Exception {
+    System.out.println("\n\n\n***********************************************");
+    System.out.println(cliContext);
+    System.out.println("***********************************************\n\n\n");
+
     Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles());
     int ec = 0;
     System.out.println("Done. "+validator.getContext().clock().report());
