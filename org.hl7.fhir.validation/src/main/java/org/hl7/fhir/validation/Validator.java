@@ -62,14 +62,10 @@ import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
-import org.hl7.fhir.validation.cli.utils.Common;
-import org.hl7.fhir.validation.cli.utils.Display;
-import org.hl7.fhir.validation.cli.utils.EngineMode;
-import org.hl7.fhir.validation.cli.utils.Params;
+import org.hl7.fhir.validation.cli.utils.*;
 
 import java.io.File;
 
