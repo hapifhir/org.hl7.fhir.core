@@ -948,8 +948,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
   }
 
   private TimeZone getTimeZone(String offset) {
-    return timezoneCache.computeIfAbsent(offset, (offsetLocal) ->
-      TimeZone.getTimeZone("GMT" + offsetLocal));
+    return timezoneCache.computeIfAbsent(offset, TimeZone::getTimeZone);
   }
 
 }
