@@ -4,13 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonWriter;
+import org.apache.jena.rdf.model.Resource;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.RDFTypeMap;
 
-import org.apache.jena.rdf.model.Resource;
-
-import java.io.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,9 @@ public class LDContextGenerator {
   private static final String ARRAY_OF_X = "[x]";
   private static final String BACKBONE_ELEMENT= "BackboneElement";
   private static final String CODE_TYPE = "code";
+  private static final String RESOURCE = "Resource";
   private static final String DOMAIN_RESOURCE = "DomainResource";
+
 
   private static boolean LOCAL_DEBUG = false;
   private boolean isResourceRoot = false;
@@ -186,7 +190,7 @@ public class LDContextGenerator {
           coPrefix + toUpperCaseFirstCharacter(context) :
           context;
 
-        createNewContextObject(contextObject, idTrimmed + "." + context, context, resourceUri);
+        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
       }
     }
     else {
@@ -286,7 +290,7 @@ public class LDContextGenerator {
 
     if (paths.length > 0) {
       String defintionType =  paths[paths.length -1];
-      isResourceRoot = defintionType.equals(DOMAIN_RESOURCE);
+      isResourceRoot = defintionType.equals(RESOURCE) || defintionType.equals(DOMAIN_RESOURCE);
     }
 
     return isResourceRoot;

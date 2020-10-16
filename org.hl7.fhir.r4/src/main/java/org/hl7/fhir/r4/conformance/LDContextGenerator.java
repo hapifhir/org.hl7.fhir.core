@@ -29,7 +29,9 @@ public class LDContextGenerator {
   private static final String ARRAY_OF_X = "[x]";
   private static final String BACKBONE_ELEMENT= "BackboneElement";
   private static final String CODE_TYPE = "code";
+  private static final String RESOURCE = "Resource";
   private static final String DOMAIN_RESOURCE = "DomainResource";
+
 
   private static boolean LOCAL_DEBUG = false;
   private boolean isResourceRoot = false;
@@ -74,7 +76,6 @@ public class LDContextGenerator {
     isResourceRoot = isStructuredDefintionRoot(sd);
 
     elementDefinitions.forEach(elementDefinition -> {
-//      getNewContextObjects(elementDefinition, isBackboneElement(elementDefinition));
       getNewContextObjects(elementDefinition, false);
     });
 
@@ -115,7 +116,7 @@ public class LDContextGenerator {
 
     String coPrefix = "";
     String contextObject = elementDefinition.toString();
-    System.out.println("contextObject: " + contextObject );
+//    System.out.println("contextObject: " + contextObject );
 
     if (!isBBElement) {
       String[] coStrings = contextObject.split("\\.");
@@ -158,27 +159,26 @@ public class LDContextGenerator {
     if (type!=null && type.size() == 1) {
 
       context = type.get(0).getCode();
+      if (context != null) {
 
-      if (resourceUri != null) {
-        context = context.substring(context.lastIndexOf(".") + 1);
-        createNewContextObject(contextObject, contextObject, context,resourceUri);
-      }
-      else if (context != null && context.equals(CODE_TYPE)  &&
-              elementDefinition.getBase().getPath().equals(elementDefinition.getId())){
-        context = "string";
-        createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
-      }
-
-      else if (isBackboneElement(elementDefinition) || isElement(elementDefinition)) {
-
-        context = idTrimmed + "." + contextObject;
-        createNewContextObject(contextObject,context, context, resourceUri);
-        addToBackboneList(context, elementDefinition);
-      }
-      else {
-        if (context != null) {
+        if (resourceUri != null) {
           context = context.substring(context.lastIndexOf(".") + 1);
+          createNewContextObject(contextObject, contextObject, context,resourceUri);
+          } else if (context.equals(CODE_TYPE) &&
+                elementDefinition.getBase().getPath().equals(elementDefinition.getId())){
+          context = "string";
           createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
+        }
+
+        else if (isBackboneElement(elementDefinition) || isElement(elementDefinition)) {
+
+          context = idTrimmed + "." + contextObject;
+          createNewContextObject(contextObject,context, context, resourceUri);
+          addToBackboneList(context, elementDefinition);
+        }
+        else {
+            context = context.substring(context.lastIndexOf(".") + 1);
+            createNewContextObject(contextObject, idTrimmed + "." + contextObject, context, resourceUri);
         }
       }
     }
@@ -197,16 +197,16 @@ public class LDContextGenerator {
       }
     }
     else {
-      String contextRef = elementDefinition.getContentReference();
-      if (contextRef != null) {
-        if (contextRef.startsWith("#")) {
-          contextRef = contextRef.substring(1);
+      String contentReference = elementDefinition.getContentReference();
+      if (contentReference != null) {
+        if (contentReference.startsWith("#")) {
+          contentReference = contentReference.substring(1);
         }
-        context = contextRef.substring(contextRef.lastIndexOf(".") + 1);
-        contextObject = coPrefix.length() > 0 ?
-          coPrefix + toUpperCaseFirstCharacter(context) :
-          context;
-        createNewContextObject(contextObject, idTrimmed + "." + contextObject, contextRef.toLowerCase(), resourceUri);
+//        context = contextObject.substring(context.lastIndexOf(".") + 1);
+//        contextObject = coPrefix.length() > 0 ?
+//          coPrefix + toUpperCaseFirstCharacter(context) :
+//          context;
+        createNewContextObject(contextObject, idTrimmed + "." + contextObject, contentReference.toLowerCase(), resourceUri);
       }
     }
   }
@@ -215,7 +215,8 @@ public class LDContextGenerator {
   private boolean isElement(ElementDefinition elementDefinition){
     boolean isElement = false;
 
-    if (elementDefinition.getType().size() > 0
+    if (elementDefinition.getType() != null
+            && elementDefinition.getType().size() > 0
             && elementDefinition.getType().get(0).getCode() != null
             && elementDefinition.getType().get(0).getCode().equals("Element")) {
 
@@ -227,7 +228,8 @@ public class LDContextGenerator {
   private boolean isBackboneElement(ElementDefinition elementDefinition){
     boolean isBackbone = false;
 
-    if (elementDefinition.getType().size() > 0
+    if (elementDefinition.getType() != null
+            && elementDefinition.getType().size() > 0
             && elementDefinition.getType().get(0).getCode() != null
             && elementDefinition.getType().get(0).getCode().equals("BackboneElement")) {
 
@@ -292,7 +294,7 @@ public class LDContextGenerator {
 
     if (paths.length > 0) {
       String defintionType =  paths[paths.length -1];
-      isResourceRoot = defintionType.equals(DOMAIN_RESOURCE);
+      isResourceRoot = defintionType.equals(RESOURCE) || defintionType.equals(DOMAIN_RESOURCE);
     }
 
     return isResourceRoot;
