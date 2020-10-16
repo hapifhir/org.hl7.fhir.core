@@ -92,4 +92,12 @@ public class Common {
     return ve; 
   }
 
+  public static boolean isNetworkPath(String path) {
+    return path.startsWith("https:") || path.startsWith("http:");
+  }
+
+  public static boolean isWildcardPath(String name) {
+    return name.contains("*");
+  }
+
 }
