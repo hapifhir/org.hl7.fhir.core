@@ -58,22 +58,16 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-import java.io.File;
-import java.net.URI;
-
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
-import org.hl7.fhir.validation.cli.ValidatorGui;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
-import org.hl7.fhir.validation.cli.utils.Common;
-import org.hl7.fhir.validation.cli.utils.Display;
-import org.hl7.fhir.validation.cli.utils.Params;
+import org.hl7.fhir.validation.cli.utils.*;
+
+import java.io.File;
 
 /**
  * A executable class that will validate one or more FHIR resources against
@@ -84,125 +78,108 @@ import org.hl7.fhir.validation.cli.utils.Params;
  * if you want to host validation inside a process, skip this class, and look at
  * ValidationEngine
  * <p>
- * todo: find a gome for this:
+ * todo: find a home for this:
  *
  * @author Grahame
  */
 public class Validator {
 
-  public enum EngineMode {
-    VALIDATION, TRANSFORM, NARRATIVE, SNAPSHOT, SCAN, CONVERT, FHIRPATH, VERSION
-  }
-  
-  public enum QuestionnaireMode { NONE, CHECK, REQUIRED }
-
-  private static CliContext cliContext;
-
-  private static String getNamedParam(String[] args, String param) {
-    boolean found = false;
-    for (String a : args) {
-      if (found)
-        return a;
-      if (a.equals(param)) {
-        found = true;
-      }
-    }
-    return null;
-  }
-
-  private static String toMB(long maxMemory) {
-    return Long.toString(maxMemory / (1024 * 1024));
-  }
-
-  private static CliContext getCliContext() {
-    if (cliContext == null) {
-      cliContext = new CliContext();
-    }
-    return cliContext;
-  }
-
-  private static void goToWebPage(String url) {
-    try {
-
-      URI uri= new URI(url);
-
-      java.awt.Desktop.getDesktop().browse(uri);
-      System.out.println("Web page opened in browser");
-
-    } catch (Exception e) {
-
-      e.printStackTrace();
-    }
-  }
+  public static final String HTTP_PROXY_HOST = "http.proxyHost";
+  public static final String HTTP_PROXY_PORT = "http.proxyPort";
 
   public static void main(String[] args) throws Exception {
     TimeTracker tt = new TimeTracker();
-    TimeTracker.Session tts = tt.start("Loading"); 
+    TimeTracker.Session tts = tt.start("Loading");
 
-    System.out.println("FHIR Validation tool " + VersionUtil.getVersionString());
-    System.out.println("  Java:   " + System.getProperty("java.version") + " from " + System.getProperty("java.home") + " on " + System.getProperty("os.arch") + " (" + System.getProperty("sun.arch.data.model") + "bit). " + toMB(Runtime.getRuntime().maxMemory()) + "MB available");
-    String proxy = getNamedParam(args, Params.PROXY);
-    if (!Utilities.noString(proxy)) {
-      String[] p = proxy.split("\\:");
-      System.setProperty("http.proxyHost", p[0]);
-      System.setProperty("http.proxyPort", p[1]);
+    Display.displayVersion();
+    Display.displaySystemInfo();
+
+    if (Params.hasParam(args, Params.PROXY)) {
+      String[] p = Params.getParam(args, Params.PROXY).split("\\:");
+      System.setProperty(HTTP_PROXY_HOST, p[0]);
+      System.setProperty(HTTP_PROXY_PORT, p[1]);
     }
 
-    if (Params.hasParam(args, Params.GUI)) {
-      cliContext = Params.loadCliContext(args);
-      String v = Common.getVersion(args);
-      String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
-      ValidationEngine validationEngine = Common.getValidationEngine(v, definitions, cliContext.getTxLog(), null);
-      ValidatorGui.start(cliContext, validationEngine, true);
-    } else if (Params.hasParam(args, Params.TEST)) {
+    CliContext cliContext = Params.loadCliContext(args);
+
+    if (Params.hasParam(args, Params.TEST)) {
       Common.runValidationEngineTests();
-    } else if (args.length == 0 || Params.hasParam(args, Params.HELP) || Params.hasParam(args, "?") || Params.hasParam(args, "-?") || Params.hasParam(args, "/?")) {
+    } else if (shouldDisplayHelpToUser(args)) {
       Display.displayHelpDetails();
     } else if (Params.hasParam(args, Params.COMPARE)) {
-      Display.printCliArgumentsAndInfo(args);
-      String dest = Params.getParam(args, Params.DESTINATION);
-      if (dest == null)
-        System.out.println("no -dest parameter provided");
-      else if (!new File(dest).isDirectory())
-        System.out.println("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
-      else {
-        // first, prepare the context
-        cliContext = Params.loadCliContext(args);
-        if (cliContext.getSv() == null) {
-          cliContext.setSv(determineVersion(cliContext));
-        }
-        String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
-        String definitions = VersionUtilities.packageForVersion(v) + "#" + v;        
-        ValidationEngine validator = ValidationService.getValidator(cliContext, definitions, tt);
-        ComparisonService.doLeftRightComparison(args, dest, validator);
+      if (destinationDirectoryValid(Params.getParam(args, Params.DESTINATION))) {
+        doLeftRightComparison(args, cliContext, tt);
       }
     } else {
       Display.printCliArgumentsAndInfo(args);
-      cliContext = Params.loadCliContext(args);
+      doValidation(tt, tts, cliContext);
+    }
+  }
 
-      if (cliContext.getSv() == null) {
-        cliContext.setSv(determineVersion(cliContext));
-      }
+  private static boolean destinationDirectoryValid(String dest) {
+    if (dest == null) {
+      System.out.println("no -dest parameter provided");
+      return false;
+    } else if (!new File(dest).isDirectory()) {
+      System.out.println("Specified destination (-dest parameter) is not valid: \"" + dest + "\")");
+      return false;
+    } else {
+      System.out.println("Valid destination directory provided: \"" + dest + "\")");
+      return true;
+    }
+  }
 
-      System.out.println("Loading");
-      // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).  Version gets spit out a couple of lines later after we've loaded the context
-      String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
-      ValidationEngine validator = ValidationService.getValidator(cliContext, definitions, tt);
-      tts.end();
-      if (cliContext.getMode() == EngineMode.VERSION) {
+  private static boolean shouldDisplayHelpToUser(String[] args) {
+    return (args.length == 0
+      || Params.hasParam(args, Params.HELP)
+      || Params.hasParam(args, "?")
+      || Params.hasParam(args, "-?")
+      || Params.hasParam(args, "/?"));
+  }
 
-        ValidationService.transformVersion(cliContext, validator);
-      } else if (cliContext.getMode() == EngineMode.TRANSFORM) {
+  private static void doLeftRightComparison(String[] args, CliContext cliContext, TimeTracker tt) throws Exception {
+    Display.printCliArgumentsAndInfo(args);
+    if (cliContext.getSv() == null) {
+      cliContext.setSv(determineVersion(cliContext));
+    }
+    String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
+    String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
+    ValidationEngine validator = ValidationService.getValidator(cliContext, definitions, tt);
+    ComparisonService.doLeftRightComparison(args, Params.getParam(args, Params.DESTINATION), validator);
+  }
+
+  private static void doValidation(TimeTracker tt, TimeTracker.Session tts, CliContext cliContext) throws Exception {
+    if (cliContext.getSv() == null) {
+      cliContext.setSv(determineVersion(cliContext));
+    }
+    System.out.println("Loading");
+    // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).
+    // Version gets spit out a couple of lines later after we've loaded the context
+    String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
+    ValidationEngine validator = ValidationService.getValidator(cliContext, definitions, tt);
+    tts.end();
+    switch (cliContext.getMode()) {
+      case TRANSFORM:
         ValidationService.transform(cliContext, validator);
-      } else if (cliContext.getMode() == EngineMode.NARRATIVE) {
+        break;
+      case NARRATIVE:
         ValidationService.generateNarrative(cliContext, validator);
-      } else if (cliContext.getMode() == EngineMode.SNAPSHOT) {
+        break;
+      case SNAPSHOT:
         ValidationService.generateSnapshot(cliContext, validator);
-      } else if (cliContext.getMode() == EngineMode.CONVERT) {
+        break;
+      case CONVERT:
         ValidationService.convertSources(cliContext, validator);
-      } else if (cliContext.getMode() == EngineMode.FHIRPATH) {
+        break;
+      case FHIRPATH:
         ValidationService.evaluateFhirpath(cliContext, validator);
-      } else {      
+        break;
+      case VERSION:
+        ValidationService.transformVersion(cliContext, validator);
+        break;
+      case VALIDATION:
+      case SCAN:
+      default:
         for (String s : cliContext.getProfiles()) {
           if (!validator.getContext().hasResource(StructureDefinition.class, s) && !validator.getContext().hasResource(ImplementationGuide.class, s)) {
             System.out.println("  Fetch Profile from " + s);
@@ -215,10 +192,9 @@ public class Validator {
         } else {
           ValidationService.validateSources(cliContext, validator);
         }
-      }
-      System.out.println("Done. "+tt.report());
+        break;
     }
-
+    System.out.println("Done. " + tt.report());
   }
 
   public static String determineVersion(CliContext cliContext) throws Exception {
@@ -228,17 +204,17 @@ public class Validator {
     System.out.println("Scanning for versions (no -version parameter):");
     VersionSourceInformation versions = ValidationService.scanForVersions(cliContext);
     for (String s : versions.getReport()) {
-      System.out.println("  "+s);      
+      System.out.println("  " + s);
     }
     if (versions.isEmpty()) {
-      System.out.println("-> Using Default version '"+VersionUtilities.CURRENT_VERSION+"'");
+      System.out.println("-> Using Default version '" + VersionUtilities.CURRENT_VERSION + "'");
       return "current";
     }
     if (versions.size() == 1) {
-      System.out.println("-> use version "+versions.version());
-      return versions.version();      
+      System.out.println("-> use version " + versions.version());
+      return versions.version();
     }
-    throw new Exception("-> Multiple versions found. Specify a particular version using the -version parameter");    
+    throw new Exception("-> Multiple versions found. Specify a particular version using the -version parameter");
   }
-  
+
 }

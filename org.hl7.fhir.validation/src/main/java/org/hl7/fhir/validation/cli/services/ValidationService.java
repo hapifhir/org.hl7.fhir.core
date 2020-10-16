@@ -26,12 +26,8 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
-import org.hl7.fhir.validation.cli.model.CliContext;
-import org.hl7.fhir.validation.cli.model.FileInfo;
-import org.hl7.fhir.validation.cli.model.ValidationOutcome;
-import org.hl7.fhir.validation.cli.model.ValidationRequest;
-import org.hl7.fhir.validation.cli.model.ValidationResponse;
+import org.hl7.fhir.validation.cli.model.*;
+import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 
 public class ValidationService {
 
@@ -110,7 +106,7 @@ public class ValidationService {
       if (ig.getUrl().contains("/ImplementationGuide") && !ig.getUrl().equals("http://hl7.org/fhir/ImplementationGuide/fhir"))
         urls.add(ig.getUrl());
     }
-    List<ValidationEngine.ScanOutputItem> res = validator.validateScan(cliContext.getSources(), urls);
+    List<ScanOutputItem> res = validator.validateScan(cliContext.getSources(), urls);
     validator.genScanOutput(cliContext.getOutput(), res);
     System.out.println("Done. output in " + Utilities.path(cliContext.getOutput(), "scan.html"));
   }
