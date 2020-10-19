@@ -24,22 +24,22 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.model.*;
+import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 
 public class ValidationService {
 
-  /*
-   * TEMPORARY METHOD
-   */
-  public static void validateFileInfo(FileInfo f) {
-    System.out.println("success");
-  }
+  public static ValidationResponse validateSources(ValidationRequest request) throws Exception {
+    if (request.getCliContext().getSv() == null) {
+      request.getCliContext().setSv(ValidationService.determineVersion(request.getCliContext()));
+    }
+    String definitions = VersionUtilities.packageForVersion(request.getCliContext().getSv()) + "#" + VersionUtilities.getCurrentVersion(request.getCliContext().getSv());
+    ValidationEngine validator = ValidationService.getValidator(request.getCliContext(), definitions, new TimeTracker());
 
-
-  public static ValidationResponse validateSources(ValidationRequest request, ValidationEngine validator) throws Exception {
     if (request.getCliContext().getProfiles().size() > 0) {
       System.out.println("  .. validate " + request.listSourceFiles() + " against " + request.getCliContext().getProfiles().toString());
     } else {
@@ -279,5 +279,25 @@ public class ValidationService {
       loc = (line >= 0 && col >= 0 ? "line " + Integer.toString(line) + ", col" + Integer.toString(col) : "??");
     }
     return "  " + issue.getSeverity().getDisplay() + " @ " + loc + " : " + issue.getDetails().getText();
+  }
+
+  public static String determineVersion(CliContext cliContext) throws Exception {
+    if (cliContext.getMode() != EngineMode.VALIDATION) {
+      return "current";
+    }
+    System.out.println("Scanning for versions (no -version parameter):");
+    VersionSourceInformation versions = ValidationService.scanForVersions(cliContext);
+    for (String s : versions.getReport()) {
+      System.out.println("  " + s);
+    }
+    if (versions.isEmpty()) {
+      System.out.println("-> Using Default version '" + VersionUtilities.CURRENT_VERSION + "'");
+      return "current";
+    }
+    if (versions.size() == 1) {
+      System.out.println("-> use version " + versions.version());
+      return versions.version();
+    }
+    throw new Exception("-> Multiple versions found. Specify a particular version using the -version parameter");
   }
 }

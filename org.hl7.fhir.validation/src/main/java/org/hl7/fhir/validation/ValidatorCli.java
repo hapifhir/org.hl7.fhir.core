@@ -82,7 +82,7 @@ import java.io.File;
  *
  * @author Grahame
  */
-public class Validator {
+public class ValidatorCli {
 
   public static final String HTTP_PROXY_HOST = "http.proxyHost";
   public static final String HTTP_PROXY_PORT = "http.proxyPort";
@@ -140,7 +140,7 @@ public class Validator {
   private static void doLeftRightComparison(String[] args, CliContext cliContext, TimeTracker tt) throws Exception {
     Display.printCliArgumentsAndInfo(args);
     if (cliContext.getSv() == null) {
-      cliContext.setSv(determineVersion(cliContext));
+      cliContext.setSv(ValidationService.determineVersion(cliContext));
     }
     String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
@@ -150,7 +150,7 @@ public class Validator {
 
   private static void doValidation(TimeTracker tt, TimeTracker.Session tts, CliContext cliContext) throws Exception {
     if (cliContext.getSv() == null) {
-      cliContext.setSv(determineVersion(cliContext));
+      cliContext.setSv(ValidationService.determineVersion(cliContext));
     }
     System.out.println("Loading");
     // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).
@@ -196,25 +196,4 @@ public class Validator {
     }
     System.out.println("Done. " + tt.report());
   }
-
-  public static String determineVersion(CliContext cliContext) throws Exception {
-    if (cliContext.getMode() != EngineMode.VALIDATION) {
-      return "current";
-    }
-    System.out.println("Scanning for versions (no -version parameter):");
-    VersionSourceInformation versions = ValidationService.scanForVersions(cliContext);
-    for (String s : versions.getReport()) {
-      System.out.println("  " + s);
-    }
-    if (versions.isEmpty()) {
-      System.out.println("-> Using Default version '" + VersionUtilities.CURRENT_VERSION + "'");
-      return "current";
-    }
-    if (versions.size() == 1) {
-      System.out.println("-> use version " + versions.version());
-      return versions.version();
-    }
-    throw new Exception("-> Multiple versions found. Specify a particular version using the -version parameter");
-  }
-
 }

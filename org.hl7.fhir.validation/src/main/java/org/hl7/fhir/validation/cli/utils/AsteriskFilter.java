@@ -17,7 +17,7 @@ public class AsteriskFilter implements FilenameFilter {
     for (int i = 0; i < expression.length(); i++) {
       if (Character.isAlphabetic(expression.codePointAt(i)) || Character.isDigit(expression.codePointAt(i)))
         regex = regex + expression.charAt(i);
-      else if (expression.charAt(i)=='*')
+      else if (expression.charAt(i) == '*')
         regex = regex + ".*";
       else
         regex = regex + "\\" + expression.charAt(i);
