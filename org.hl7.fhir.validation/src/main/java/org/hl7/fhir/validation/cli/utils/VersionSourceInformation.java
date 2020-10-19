@@ -13,7 +13,7 @@ public class VersionSourceInformation {
 
   public void see(String version, String src) {
     version = VersionUtilities.getMajMin(version);
-    report.add(src+": "+version);
+    report.add(src + ": " + version);
     if (!versions.contains(version)) {
       versions.add(version);
       Collections.sort(versions);

@@ -1,19 +1,15 @@
 package org.hl7.fhir.validation.cli.utils;
 
+import org.apache.commons.io.FileUtils;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.ToolsVersion;
+
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.hl7.fhir.r5.model.Constants;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
-import org.hl7.fhir.validation.VersionUtil;
-
 /**
  * Class for displaying output to the cli user.
- *
+ * <p>
  * TODO - Clean this up for localization
  */
 public class Display {

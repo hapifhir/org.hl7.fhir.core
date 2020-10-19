@@ -1,12 +1,12 @@
 package org.hl7.fhir.validation.cli.utils;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.Locale;
-
 import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.model.CliContext;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.Locale;
 
 public class Params {
 
