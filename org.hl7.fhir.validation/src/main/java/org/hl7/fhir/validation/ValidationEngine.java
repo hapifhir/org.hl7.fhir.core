@@ -109,10 +109,7 @@ import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.cli.model.ScanOutputItem;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher.IPackageInstaller;
-import org.hl7.fhir.validation.cli.utils.AsteriskFilter;
-import org.hl7.fhir.validation.cli.utils.Common;
-import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
-import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
+import org.hl7.fhir.validation.cli.utils.*;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.xml.sax.SAXException;
 
@@ -400,35 +397,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     ep.addParameter("profile-url", "http://hl7.org/fhir/ExpansionProfile/dc8fd4bc-091a-424a-8a3b-6198ef146891"); // change this to blow the cache
     // all defaults....
     return ep;
-  }
-
-  private byte[] loadProfileSource(String src) throws FHIRException, FileNotFoundException, IOException {
-    if (Utilities.noString(src)) {
-      throw new FHIRException("Profile Source '" + src + "' could not be processed");
-    } else if (Common.isNetworkPath(src)) {
-      return loadProfileFromUrl(src);
-    } else if (new File(src).exists()) {
-      return loadProfileFromFile(src);
-    } else {
-      throw new FHIRException("Definitions Source '"+src+"' could not be processed");
-    }
-  }
-
-  private byte[] loadProfileFromUrl(String src) throws FHIRException {
-    try {
-      URL url = new URL(src+"?nocache=" + System.currentTimeMillis());
-      URLConnection c = url.openConnection();
-      return IOUtils.toByteArray(c.getInputStream());
-    } catch (Exception e) {
-      throw new FHIRException("Unable to find definitions at URL '"+src+"': "+e.getMessage(), e);
-  }
-    }
-
-  private byte[] loadProfileFromFile(String src) throws FileNotFoundException, IOException {
-    File f = new File(src);
-    if (f.isDirectory())
-      throw new IOException("You must provide a file name, not a directory name");
-    return TextFile.fileToBytes(src);
   }
 
   /** explore should be true if we're trying to load an -ig parameter, and false if we're loading source
@@ -907,7 +875,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (context.hasResource(ImplementationGuide.class, src))
       return;
 
-    byte[] source = loadProfileSource(src);
+    byte[] source = ProfileLoader.loadProfileSource(src);
     FhirFormat fmt = FormatUtilities.determineFormat(source);
     Resource r = FormatUtilities.makeParser(fmt).parse(source);
     context.cacheResource(r);
@@ -1196,10 +1164,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return res;
   }
 
-  private Resource resolve(Reference reference) {
-    return null;
-  }
-
   private String getGlobal(ImplementationGuide ig, String rt) {
     for (ImplementationGuideGlobalComponent igg : ig.getGlobal()) {
       if (rt.equals(igg.getType()))
@@ -1316,15 +1280,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return messagesToOutcome(messages);
   }
 
+
   public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
-      if (cntType == FhirFormat.JSON)
-        validateJsonSchema(location, messages);
-      if (cntType == FhirFormat.XML)
-        validateXmlSchema(location, messages);
-      if (cntType == FhirFormat.TURTLE)
-        validateSHEX(location, messages);
+      SchemaValidator.validateSchema(location, cntType, messages);
     }
     InstanceValidator validator = getValidator();
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
@@ -1337,12 +1297,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
-      if (cntType == FhirFormat.JSON)
-        validateJsonSchema(location, messages);
-      if (cntType == FhirFormat.XML)
-        validateXmlSchema(location, messages);
-      if (cntType == FhirFormat.TURTLE)
-        validateSHEX(location, messages);
+      SchemaValidator.validateSchema(location, cntType, messages);
     }
     InstanceValidator validator = getValidator();
     validator.setResourceIdRule(resourceIdRule);
@@ -1350,19 +1305,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.setCheckDisplay(displayOption);
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return messagesToOutcome(messages);
-  }
-
-
-  private void validateSHEX(String location, List<ValidationMessage> messages) {
-    messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.INFORMATIONAL, location, "SHEX Validation is not done yet", IssueSeverity.INFORMATION));
-  }
-
-  private void validateXmlSchema(String location, List<ValidationMessage> messages) throws FileNotFoundException, IOException, SAXException {
-    messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.INFORMATIONAL, location, "XML Schema Validation is not done yet", IssueSeverity.INFORMATION));
-  }
-
-  private void validateJsonSchema(String location, List<ValidationMessage> messages) {
-    messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.INFORMATIONAL, location, "JSON Schema Validation is not done yet", IssueSeverity.INFORMATION));
   }
 
   private List<ValidationMessage> filterMessages(List<ValidationMessage> messages) {

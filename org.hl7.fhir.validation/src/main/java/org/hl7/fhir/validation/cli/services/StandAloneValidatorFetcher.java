@@ -21,8 +21,8 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
 
   public interface IPackageInstaller {
-    public boolean packageExists(String id, String ver) throws IOException, FHIRException;
-    public void loadPackage(String id, String ver) throws IOException, FHIRException;
+    boolean packageExists(String id, String ver) throws IOException, FHIRException;
+    void loadPackage(String id, String ver) throws IOException, FHIRException;
   }
 
   private BasePackageCacheManager pcm;
