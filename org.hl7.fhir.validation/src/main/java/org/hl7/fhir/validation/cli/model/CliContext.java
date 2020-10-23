@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
-import org.hl7.fhir.validation.Validator;
+import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
+import org.hl7.fhir.validation.cli.utils.EngineMode;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -60,7 +61,7 @@ public class CliContext {
   @JsonProperty("igs")
   private List<String> igs = new ArrayList<String>();
   @JsonProperty("questionnaire")
-  private Validator.QuestionnaireMode questionnaireMode = Validator.QuestionnaireMode.CHECK;
+  private QuestionnaireMode questionnaireMode = QuestionnaireMode.CHECK;
   
   @JsonProperty("profiles")
   private List<String> profiles = new ArrayList<String>();
@@ -68,7 +69,7 @@ public class CliContext {
   private List<String> sources = new ArrayList<String>();
 
   @JsonProperty("mode")
-  private Validator.EngineMode mode = Validator.EngineMode.VALIDATION;
+  private EngineMode mode = EngineMode.VALIDATION;
 
   @JsonProperty("securityChecks")
   private boolean securityChecks = false;
@@ -125,12 +126,12 @@ public class CliContext {
   }
 
   @JsonProperty("questionnaire")
-  public Validator.QuestionnaireMode getQuestionnaireMode() {
+  public QuestionnaireMode getQuestionnaireMode() {
     return questionnaireMode;
   }
 
   @JsonProperty("questionnaire")
-  public CliContext setQuestionnaireMode(Validator.QuestionnaireMode questionnaireMode) {
+  public CliContext setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
     this.questionnaireMode = questionnaireMode;
     return this;
   }
@@ -230,12 +231,12 @@ public class CliContext {
   }
 
   @JsonProperty("mode")
-  public Validator.EngineMode getMode() {
+  public EngineMode getMode() {
     return mode;
   }
 
   @JsonProperty("mode")
-  public CliContext setMode(Validator.EngineMode mode) {
+  public CliContext setMode(EngineMode mode) {
     this.mode = mode;
     return this;
   }
@@ -493,5 +494,41 @@ public class CliContext {
   @Override
   public int hashCode() {
     return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, map, output, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes);
+  }
+
+  @Override
+  public String toString() {
+    return "CliContext{" +
+      "doNative=" + doNative +
+      ", anyExtensionsAllowed=" + anyExtensionsAllowed +
+      ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
+      ", recursive=" + recursive +
+      ", doDebug=" + doDebug +
+      ", assumeValidRestReferences=" + assumeValidRestReferences +
+      ", canDoNative=" + canDoNative +
+      ", noInternalCaching=" + noInternalCaching +
+      ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
+      ", map='" + map + '\'' +
+      ", output='" + output + '\'' +
+      ", txServer='" + txServer + '\'' +
+      ", sv='" + sv + '\'' +
+      ", txLog='" + txLog + '\'' +
+      ", mapLog='" + mapLog + '\'' +
+      ", lang='" + lang + '\'' +
+      ", fhirpath='" + fhirpath + '\'' +
+      ", snomedCT='" + snomedCT + '\'' +
+      ", targetVer='" + targetVer + '\'' +
+      ", igs=" + igs +
+      ", questionnaireMode=" + questionnaireMode +
+      ", profiles=" + profiles +
+      ", sources=" + sources +
+      ", mode=" + mode +
+      ", securityChecks=" + securityChecks +
+      ", crumbTrails=" + crumbTrails +
+      ", showTimes=" + showTimes +
+      ", locale='" + locale + '\'' +
+      ", locations=" + locations +
+      ", bundleValidationRules=" + bundleValidationRules +
+      '}';
   }
 }

@@ -1,17 +1,15 @@
 package org.hl7.fhir.validation.cli.utils;
 
+import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.validation.cli.model.CliContext;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.Locale;
 
-import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
-import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.validation.Validator;
-import org.hl7.fhir.validation.cli.model.CliContext;
-
 public class Params {
 
-  public static final String GUI = "-gui";
   public static final String VERSION = "-version";
   public static final String OUTPUT = "-output";
   public static final String PROXY = "-proxy";
@@ -74,9 +72,9 @@ public class Params {
    * @return {@link String} value for the provided param.
    */
   public static String getParam(String[] args, String param) {
-    for (int i = 0; i < args.length - 1; i++)
-      if (args[i].equals(param))
-        return args[i + 1];
+    for (int i = 0; i < args.length - 1; i++) {
+      if (args[i].equals(param)) return args[i + 1];
+    }
     return null;
   }
 
@@ -104,7 +102,7 @@ public class Params {
         } else {
           p = args[++i];
           cliContext.addProfile(p);
-        }        
+        }
       } else if (args[i].equals(BUNDLE)) {
         String p = null;
         String r = null;
@@ -124,7 +122,7 @@ public class Params {
           throw new Error("Specified -questionnaire without indicating questionnaire file");
         else {
           String q = args[++i];
-          cliContext.setQuestionnaireMode(Validator.QuestionnaireMode.valueOf(q));
+          cliContext.setQuestionnaireMode(QuestionnaireMode.valueOf(q));
         }
       } else if (args[i].equals(NATIVE)) {
         cliContext.setDoNative(true);
@@ -145,25 +143,25 @@ public class Params {
       } else if (args[i].equals(STRICT_EXTENSIONS)) {
         cliContext.setAnyExtensionsAllowed(false);
       } else if (args[i].equals(NO_INTERNAL_CACHING)) {
-        cliContext.setNoInternalCaching(true);        
+        cliContext.setNoInternalCaching(true);
       } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
-        cliContext.setNoExtensibleBindingMessages(true);        
+        cliContext.setNoExtensibleBindingMessages(true);
       } else if (args[i].equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
         cliContext.setHintAboutNonMustSupport(true);
       } else if (args[i].equals(TO_VERSION)) {
         cliContext.setTargetVer(args[++i]);
-        cliContext.setMode(Validator.EngineMode.VERSION);
+        cliContext.setMode(EngineMode.VERSION);
       } else if (args[i].equals(DO_NATIVE)) {
         cliContext.setCanDoNative(true);
       } else if (args[i].equals(NO_NATIVE)) {
         cliContext.setCanDoNative(false);
       } else if (args[i].equals(TRANSFORM)) {
         cliContext.setMap(args[++i]);
-        cliContext.setMode(Validator.EngineMode.TRANSFORM);
+        cliContext.setMode(EngineMode.TRANSFORM);
       } else if (args[i].equals(NARRATIVE)) {
-        cliContext.setMode(Validator.EngineMode.NARRATIVE);
+        cliContext.setMode(EngineMode.NARRATIVE);
       } else if (args[i].equals(SNAPSHOT)) {
-        cliContext.setMode(Validator.EngineMode.SNAPSHOT);
+        cliContext.setMode(EngineMode.SNAPSHOT);
       } else if (args[i].equals(SECURITY_CHECKS)) {
         cliContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {
@@ -171,7 +169,7 @@ public class Params {
       } else if (args[i].equals(SHOW_TIMES)) {
         cliContext.setShowTimes(true);
       } else if (args[i].equals(SCAN)) {
-        cliContext.setMode(Validator.EngineMode.SCAN);
+        cliContext.setMode(EngineMode.SCAN);
       } else if (args[i].equals(TERMINOLOGY)) {
         if (i + 1 == args.length)
           throw new Error("Specified -tx without indicating terminology server");
@@ -216,9 +214,9 @@ public class Params {
       } else if (args[i].startsWith(X)) {
         i++;
       } else if (args[i].equals(CONVERT)) {
-        cliContext.setMode(Validator.EngineMode.CONVERT);
+        cliContext.setMode(EngineMode.CONVERT);
       } else if (args[i].equals(FHIRPATH)) {
-        cliContext.setMode(Validator.EngineMode.FHIRPATH);
+        cliContext.setMode(EngineMode.FHIRPATH);
         if (cliContext.getFhirpath() == null)
           if (i + 1 == args.length)
             throw new Error("Specified -fhirpath without indicating a FHIRPath expression");
