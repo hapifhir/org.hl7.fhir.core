@@ -3054,9 +3054,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // work back through the parent list.
       // really, there should only be one level for this (contained resources cannot contain
       // contained resources), but we'll leave that to some other code to worry about
+      boolean wasContained = false;
       while (stack != null && stack.getElement() != null) {
         if (stack.getElement().getProperty().isResource()) {
           // ok, we'll try to find the contained reference
+          if (ref.equals("#") && stack.getElement().getSpecial() != SpecialElement.CONTAINED && wasContained) {
+            ResolvedReference rr = new ResolvedReference();
+            rr.setResource(stack.getElement());
+            rr.setFocus(stack.getElement());
+            rr.setExternal(false);
+            rr.setStack(stack.push(stack.getElement(), -1, stack.getElement().getProperty().getDefinition(), stack.getElement().getProperty().getDefinition()));
+            rr.getStack().qualifyPath(".ofType("+stack.getElement().fhirType()+")");
+            return rr;            
+          }
+          if (stack.getElement().getSpecial() == SpecialElement.CONTAINED) {
+            wasContained = true;
+          }
           IndexedElement res = getContainedById(stack.getElement(), ref.substring(1));
           if (res != null) {
             ResolvedReference rr = new ResolvedReference();
@@ -4186,7 +4199,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (checkDefn.getType().size() > 1) {
 
       String prefix = tail(checkDefn.getPath());
-      assert typesAreAllReference(checkDefn.getType()) || checkDefn.hasRepresentation(PropertyRepresentation.TYPEATTR) || prefix.endsWith("[x]") : prefix;
+      assert typesAreAllReference(checkDefn.getType()) || checkDefn.hasRepresentation(PropertyRepresentation.TYPEATTR) || prefix.endsWith("[x]") || isResourceAndTypes(checkDefn) : "Multiple Types allowed, but name is wrong @ "+checkDefn.getPath()+": "+checkDefn.typeSummaryVB();
 
       if (checkDefn.hasRepresentation(PropertyRepresentation.TYPEATTR))
         type = ei.getElement().getType();
@@ -4384,6 +4397,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           validateElement(hostContext, errors, profile, checkDefn, null, null, resource, ei.getElement(), type, localStack, thisIsCodeableConcept, checkDisplay, thisExtension);
       }
     }
+  }
+
+  private boolean isResourceAndTypes(ElementDefinition ed) {
+    if (!Utilities.existsInList(ed.getBase().getPath(), "Bundle.entry.resource", "Bundle.entry.response.outcome", "DomainResource.contained", "Parameters.parameter.resource", "Parameters.parameter.part.resource")) {
+      return false;
+    }
+    for (TypeRefComponent tr : ed.getType()) {
+      if (!isResource(tr.getCode())) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private boolean isResource(String type) {
@@ -4983,6 +5008,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if ("(component.empty() and related.empty()) implies (dataAbsentReason or value)".equals(expr))
       return "(component.empty() and related.empty()) implies (dataAbsentReason.exists() or value.exists())";
 
+    if ("reference.startsWith('#').not() or (reference.substring(1).trace('url') in %rootResource.contained.id.trace('ids'))".equals(expr)) {
+      return "(reference = '#') or reference.startsWith('#').not() or (reference.substring(1).trace('url') in %rootResource.contained.id.trace('ids'))";
+    }
+    if ("reference.startsWith('#').not() or (reference.substring(1).trace('url') in %resource.contained.id.trace('ids'))".equals(expr)) {
+      return "(reference = '#') or reference.startsWith('#').not() or (reference.substring(1).trace('url') in %resource.contained.id.trace('ids'))";
+    }
     if ("".equals(expr))
       return "";
     return expr;
