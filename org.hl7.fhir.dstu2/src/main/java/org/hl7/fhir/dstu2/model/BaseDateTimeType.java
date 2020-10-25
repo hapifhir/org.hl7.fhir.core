@@ -39,6 +39,7 @@ import org.hl7.fhir.utilities.DateTimeUtil;
 
 import java.text.ParseException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 import static ca.uhn.fhir.model.api.TemporalPrecisionEnum.*;
@@ -74,6 +75,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
 	private static final FastDateFormat ourHumanDateTimeFormat = FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM);
 	private static final FastDateFormat ourHumanDateFormat = FastDateFormat.getDateInstance(FastDateFormat.MEDIUM);
+  private static final Map<String, TimeZone> timezoneCache = new ConcurrentHashMap<>();
 
 	static {
 		ArrayList<FastDateFormat> formatters = new ArrayList<FastDateFormat>();
@@ -159,7 +161,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 				return ourYearFormat.format(theValue);
 			case MINUTE:
 				if (myTimeZoneZulu) {
-					GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+					GregorianCalendar cal = new GregorianCalendar(getTimeZone("GMT"));
 					cal.setTime(theValue);
 					return ourYearMonthDayTimeMinsFormat.format(cal) + "Z";
 				} else if (myTimeZone != null) {
@@ -171,7 +173,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 				}
 			case SECOND:
 				if (myTimeZoneZulu) {
-					GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+					GregorianCalendar cal = new GregorianCalendar(getTimeZone("GMT"));
 					cal.setTime(theValue);
 					return ourYearMonthDayTimeFormat.format(cal) + "Z";
 				} else if (myTimeZone != null) {
@@ -183,7 +185,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 				}
 			case MILLI:
 				if (myTimeZoneZulu) {
-					GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+					GregorianCalendar cal = new GregorianCalendar(getTimeZone("GMT"));
 					cal.setTime(theValue);
 					return ourYearMonthDayTimeMilliFormat.format(cal) + "Z";
 				} else if (myTimeZone != null) {
@@ -410,9 +412,9 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 		if (theValueString.endsWith("Z")) {
 			setTimeZoneZulu(true);
 		} else if (theValueString.indexOf("GMT", timeZoneStart) != -1) {
-			setTimeZone(TimeZone.getTimeZone(theValueString.substring(timeZoneStart)));
+			setTimeZone(getTimeZone(theValueString.substring(timeZoneStart)));
 		} else if (theValueString.indexOf('+', timeZoneStart) != -1 || theValueString.indexOf('-', timeZoneStart) != -1) {
-			setTimeZone(TimeZone.getTimeZone("GMT" + theValueString.substring(timeZoneStart)));
+			setTimeZone(getTimeZone("GMT" + theValueString.substring(timeZoneStart)));
 		}
 	}
 
@@ -528,9 +530,9 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 		int hours = offsetAbs / 60;
 
 		if (theZoneOffsetMinutes < 0) {
-			setTimeZone(TimeZone.getTimeZone("GMT-" + hours + ":" + mins));
+			setTimeZone(getTimeZone("GMT-" + hours + ":" + mins));
 		} else {
-			setTimeZone(TimeZone.getTimeZone("GMT+" + hours + ":" + mins));
+			setTimeZone(getTimeZone("GMT+" + hours + ":" + mins));
 		}
 	}
 
@@ -617,5 +619,9 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 			setValueAsString(b.toString());
 		}
 	}
+
+  private TimeZone getTimeZone(String offset) {
+    return timezoneCache.computeIfAbsent(offset, TimeZone::getTimeZone);
+  }
 
 }

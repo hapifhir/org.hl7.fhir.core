@@ -35,7 +35,9 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.concurrent.ConcurrentHashMap;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +54,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
   static final long NANOS_PER_MILLIS = 1000000L;
   static final long NANOS_PER_SECOND = 1000000000L;
+  private static final Map<String, TimeZone> timezoneCache = new ConcurrentHashMap<>();
 
   private static final FastDateFormat ourHumanDateFormat = FastDateFormat.getDateInstance(FastDateFormat.MEDIUM);
   private static final FastDateFormat ourHumanDateTimeFormat = FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM);
@@ -114,7 +117,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     } else {
       GregorianCalendar cal;
       if (myTimeZoneZulu) {
-        cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+        cal = new GregorianCalendar(getTimeZone("GMT"));
       } else if (myTimeZone != null) {
         cal = new GregorianCalendar(myTimeZone);
       } else {
@@ -209,7 +212,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
    */
   public TimeZone getTimeZone() {
     if (myTimeZoneZulu) {
-      return TimeZone.getTimeZone("GMT");
+      return getTimeZone("GMT");
     }
     return myTimeZone;
   }
@@ -414,7 +417,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
       parseInt(theWholeValue, theValue.substring(1, 3), 0, 23);
       parseInt(theWholeValue, theValue.substring(4, 6), 0, 59);
       myTimeZoneZulu = false;
-      myTimeZone = TimeZone.getTimeZone("GMT" + theValue);
+      myTimeZone = getTimeZone("GMT" + theValue);
     }
 
     return this;
@@ -748,6 +751,10 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 
       setValueAsString(b.toString());
     }
+  }
+
+  private TimeZone getTimeZone(String offset) {
+    return timezoneCache.computeIfAbsent(offset, TimeZone::getTimeZone);
   }
 
 }
