@@ -43,8 +43,8 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.validation.BaseValidator;
+import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
 import org.hl7.fhir.validation.TimeTracker;
-import org.hl7.fhir.validation.Validator.QuestionnaireMode;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator;
 import org.hl7.fhir.validation.instance.EnableWhenEvaluator.QStack;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
@@ -85,7 +85,6 @@ public class QuestionnaireValidator extends BaseValidator {
       validateQuestionannaireItem(errors, e, questionnaire, ns, np);
     }
   }
-
 
   private void validateQuestionnaireElement(List<ValidationMessage> errors, NodeStack ns, Element questionnaire, Element item, List<Element> parents) {
     // R4+
