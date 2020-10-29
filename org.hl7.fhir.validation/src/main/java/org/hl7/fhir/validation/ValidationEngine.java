@@ -114,6 +114,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
+import org.hl7.fhir.validation.ValidationEngine.ValidationRecord;
 import org.hl7.fhir.validation.cli.model.ScanOutputItem;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher.IPackageInstaller;
 import org.hl7.fhir.validation.cli.utils.*;
@@ -194,6 +195,50 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  */
 public class ValidationEngine implements IValidatorResourceFetcher, IPackageInstaller {
+
+  public class ValidationRecord {
+
+    private String location;
+    private List<ValidationMessage> messages;
+    int err = 0;
+    int warn = 0;
+    int info = 0;
+
+    public ValidationRecord(String location, List<ValidationMessage> messages) {
+      this.location = location;
+      this.messages = messages;
+      for (ValidationMessage vm : messages) {
+        if (vm.getLevel().equals(ValidationMessage.IssueSeverity.FATAL)||vm.getLevel().equals(ValidationMessage.IssueSeverity.ERROR))
+          err++;
+        else if (vm.getLevel().equals(ValidationMessage.IssueSeverity.WARNING))
+          warn++;
+        else if (!vm.isSignpost()) {
+          info++;
+        }
+      }
+    }
+
+    public String getLocation() {
+      return location;
+    }
+
+    public List<ValidationMessage> getMessages() {
+      return messages;
+    }
+
+    public int getErr() {
+      return err;
+    }
+
+    public int getWarn() {
+      return warn;
+    }
+
+    public int getInfo() {
+      return info;
+    }
+
+  }
 
   public class TransformSupportServices implements ITransformerServices {
 
@@ -1171,7 +1216,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   public OperationOutcome validate(String source, List<String> profiles) throws FHIRException, IOException {
     List<String> l = new ArrayList<String>();
     l.add(source);
-    return (OperationOutcome)validate(l, profiles);
+    return (OperationOutcome)validate(l, profiles, null);
   }
 
   public List<ScanOutputItem> validateScan(List<String> sources, Set<String> guides) throws FHIRException, IOException, EOperationOutcome {
@@ -1267,7 +1312,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     }
   }
 
-  public Resource validate(List<String> sources, List<String> profiles) throws FHIRException, IOException {
+  public Resource validate(List<String> sources, List<String> profiles, List<ValidationRecord> record) throws FHIRException, IOException {
     if (profiles.size() > 0) {
       System.out.println("  Profiles: "+profiles);
     }
@@ -1281,7 +1326,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       System.out.print("  Validate " + ref);
       Content cnt = loadContent(ref, "validate", false);
       try {
-        OperationOutcome outcome = validate(ref, cnt.focus, cnt.cntType, profiles);
+        OperationOutcome outcome = validate(ref, cnt.focus, cnt.cntType, profiles, record);
         ToolingExtensions.addStringExtension(outcome, ToolingExtensions.EXT_OO_FILE, ref);
         System.out.println(" " + context.clock().milestone());
         results.addEntry().setResource(outcome);
@@ -1355,7 +1400,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
 
 
-  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles) throws FHIRException, IOException, EOperationOutcome, SAXException {
+  public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationRecord> record) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     if (doNative) {
       SchemaValidator.validateSchema(location, cntType, messages);
@@ -1364,6 +1409,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     if (showTimes) {
       System.out.println(location+": "+validator.reportTimes());
+    }
+    if (record != null) {
+      record.add(new ValidationRecord(location, messages));
     }
     return messagesToOutcome(messages);
   }

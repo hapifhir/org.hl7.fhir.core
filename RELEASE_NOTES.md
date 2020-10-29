@@ -5,6 +5,7 @@ Validator Changes:
 * fix bug checking patterns (missed in some circumstances)
 * fix bug checking type of resources in bundles
 * improve messages around cardinality errors in profiles
+* add parameter -html-output for enhanced presentation of slicing information
 
 Other code changes:
 * Render binding description in profile tables if it doesn't contain paragraphs
