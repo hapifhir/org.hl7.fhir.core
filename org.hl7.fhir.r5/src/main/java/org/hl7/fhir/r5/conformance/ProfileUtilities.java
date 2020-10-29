@@ -111,6 +111,7 @@ import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
 import org.hl7.fhir.r5.utils.formats.XLSXWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -362,9 +363,28 @@ public class ProfileUtilities extends TranslatingUtilities {
 
 
   public List<ElementDefinition> getChildMap(StructureDefinition profile, ElementDefinition element) throws DefinitionException {
-    if (element.getContentReference()!=null) {
-      for (ElementDefinition e : profile.getSnapshot().getElement()) {
-        if (element.getContentReference().equals("#"+e.getId()))
+    if (element.getContentReference() != null) {
+      List<ElementDefinition> list = null;
+      String id = null;
+      if (element.getContentReference().startsWith("#")) {
+        // internal reference
+        id = element.getContentReference().substring(1);
+        list = profile.getSnapshot().getElement();
+      } else if (element.getContentReference().contains("#")) {
+        // external reference
+        String ref = element.getContentReference();
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, ref.substring(0, ref.indexOf("#")));
+        if (sd == null) {
+          throw new DefinitionException("unable to process contentReference '"+element.getContentReference()+"' on element '"+element.getId()+"'");
+        }
+        list = sd.getSnapshot().getElement();
+        id = ref.substring(ref.indexOf("#")+1);        
+      } else {
+        throw new DefinitionException("unable to process contentReference '"+element.getContentReference()+"' on element '"+element.getId()+"'");
+      }
+        
+      for (ElementDefinition e : list) {
+        if (id.equals(e.getId()))
           return getChildMap(profile, e);
       }
       throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_NAME_REFERENCE__AT_PATH_, element.getContentReference(), element.getPath()));
@@ -3155,6 +3175,10 @@ public class ProfileUtilities extends TranslatingUtilities {
         c.getPieces().add(checkForNoChange(ved.getBinding(), gen.new Piece(corePath+"terminologies.html#"+ved.getBinding().getStrength().toCode(), egt(ved.getBinding().getStrengthElement()), ved.getBinding().getStrength().getDefinition())));              
         c.getPieces().add(gen.new Piece(null, ")", null));
       }
+      if (ved.getBinding().hasDescription() && MarkDownProcessor.isSimpleMarkdown(ved.getBinding().getDescription())) {
+        c.getPieces().add(gen.new Piece(null, ": ", null));
+        c.addMarkdownNoPara(ved.getBinding().getDescription());
+      }
     }
     c.addPiece(gen.new Piece("br")).addPiece(gen.new Piece(null, describeExtensionContext(ed), null));
     r.getCells().add(c);
@@ -4282,6 +4306,10 @@ public class ProfileUtilities extends TranslatingUtilities {
               c.getPieces().add(checkForNoChange(binding, gen.new Piece(corePath+"extension-elementdefinition-minvalueset.html", translate("sd.table", "Min Binding")+": ", "Min Value Set Extension").addStyle("font-weight:bold")));             
               c.getPieces().add(checkForNoChange(binding, gen.new Piece(br.url == null ? null : Utilities.isAbsoluteUrl(br.url) || !pkp.prependLinks() ? br.url : corePath+br.url, br.display, null)));
             }
+            if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
+              c.getPieces().add(gen.new Piece(null, ": ", null));
+              c.addMarkdownNoPara(binding.getDescription());
+            }
           }
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {
             if (!inv.hasSource() || profile == null || inv.getSource().equals(profile.getUrl()) || allInvariants) {
@@ -4300,7 +4328,6 @@ public class ProfileUtilities extends TranslatingUtilities {
               // don't show this, this it's important: c.getPieces().add(gen.new Piece(null, "This repeating element has no defined order", null));
             }           
           }
-
           if (definition.hasFixed()) {
             if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
             c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, translate("sd.table", "Fixed Value")+": ", null).addStyle("font-weight:bold")));
@@ -4593,6 +4620,10 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (binding.hasStrength()) {
               c.getPieces().add(checkForNoChange(binding, gen.new Piece(null, " (", null)));
               c.getPieces().add(checkForNoChange(binding, gen.new Piece(corePath+"terminologies.html#"+binding.getStrength().toCode(), binding.getStrength().toCode(), binding.getStrength().getDefinition())));              c.getPieces().add(gen.new Piece(null, ")", null));
+            }
+            if (binding.hasDescription() && MarkDownProcessor.isSimpleMarkdown(binding.getDescription())) {
+              c.getPieces().add(gen.new Piece(null, ": ", null));
+              c.addMarkdownNoPara(binding.getDescription());
             }
           }
           for (ElementDefinitionConstraintComponent inv : definition.getConstraint()) {
@@ -5338,12 +5369,12 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (!checkFirst || !sd.hasDifferential() || hasMissingIds(sd.getDifferential().getElement())) {
       if (!sd.hasDifferential())
         sd.setDifferential(new StructureDefinitionDifferentialComponent());
-      generateIds(sd.getDifferential().getElement(), sd.getUrl());
+      generateIds(sd.getDifferential().getElement(), sd.getUrl(), sd.getType());
     }
     if (!checkFirst || !sd.hasSnapshot() || hasMissingIds(sd.getSnapshot().getElement())) {
       if (!sd.hasSnapshot())
         sd.setSnapshot(new StructureDefinitionSnapshotComponent());
-      generateIds(sd.getSnapshot().getElement(), sd.getUrl());
+      generateIds(sd.getSnapshot().getElement(), sd.getUrl(), sd.getType());
     }
   }
 
@@ -5388,11 +5419,10 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   }
 
-  private void generateIds(List<ElementDefinition> list, String name) throws DefinitionException  {
+  private void generateIds(List<ElementDefinition> list, String name, String type) throws DefinitionException  {
     if (list.isEmpty())
       return;
     
-    Map<String, String> idMap = new HashMap<String, String>();
     Map<String, String> idList = new HashMap<String, String>();
     
     SliceList sliceInfo = new SliceList();
@@ -5420,7 +5450,6 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
       String bs = b.toString();
-      idMap.put(ed.hasId() ? ed.getId() : ed.getPath(), bs);
       ed.setId(bs);
       if (idList.containsKey(bs)) {
         if (exception || messages == null) {
@@ -5429,11 +5458,9 @@ public class ProfileUtilities extends TranslatingUtilities {
           messages.add(new ValidationMessage(Source.ProfileValidator, ValidationMessage.IssueType.BUSINESSRULE, name+"."+bs, "Duplicate Element id "+bs, ValidationMessage.IssueSeverity.ERROR));
       }
       idList.put(bs, ed.getPath());
-      if (ed.hasContentReference()) {
-        String s = ed.getContentReference().substring(1);
-        if (idMap.containsKey(s))
-          ed.setContentReference("#"+idMap.get(s));
-        
+      if (ed.hasContentReference() && ed.getContentReference().startsWith("#")) {
+        String s = ed.getContentReference();
+        ed.setContentReference("http://hl7.org/fhir/StructureDefinition/"+type+s);
       }
     }  
     // second path - fix up any broken path based id references

@@ -12,6 +12,7 @@ public class Params {
 
   public static final String VERSION = "-version";
   public static final String OUTPUT = "-output";
+  public static final String HTML_OUTPUT = "-html-output";
   public static final String PROXY = "-proxy";
   public static final String PROFILE = "-profile";
   public static final String BUNDLE = "-bundle";
@@ -93,6 +94,11 @@ public class Params {
           throw new Error("Specified -output without indicating output file");
         else
           cliContext.setOutput(args[++i]);
+      } else if (args[i].equals(HTML_OUTPUT)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -html-output without indicating output file");
+        else
+          cliContext.setHtmlOutput(args[++i]);
       } else if (args[i].equals(PROXY)) {
         i++; // ignore next parameter
       } else if (args[i].equals(PROFILE)) {
