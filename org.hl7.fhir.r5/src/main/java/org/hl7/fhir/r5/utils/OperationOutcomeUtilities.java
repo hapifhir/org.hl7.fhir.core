@@ -46,6 +46,7 @@ public class OperationOutcomeUtilities {
 
   public static OperationOutcomeIssueComponent convertToIssue(ValidationMessage message, OperationOutcome op) {
     OperationOutcomeIssueComponent issue = new OperationOutcome.OperationOutcomeIssueComponent();
+    issue.setUserData("source.vm", message);   
     issue.setCode(convert(message.getType()));
     
     if (message.getLocation() != null) {

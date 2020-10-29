@@ -78,5 +78,10 @@ public class MarkDownProcessor {
     html = html.replace("<table>", "<table class=\"grid\">");
     return html;  
   }
+
+
+  public static boolean isSimpleMarkdown(String description) {
+    return !description.contains("\n");
+  }
   
 }

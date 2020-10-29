@@ -41,6 +41,8 @@ public class CliContext {
   private String map = null;
   @JsonProperty("output")
   private String output = null;
+  @JsonProperty("htmlOutput")
+  private String htmlOutput = null;
   @JsonProperty("txServer")
   private String txServer = "http://tx.fhir.org";
   @JsonProperty("sv")
@@ -249,6 +251,17 @@ public class CliContext {
   @JsonProperty("output")
   public CliContext setOutput(String output) {
     this.output = output;
+    return this;
+  }
+
+  @JsonProperty("output")
+  public String getHtmlOutput() {
+    return htmlOutput;
+  }
+
+  @JsonProperty("output")
+  public CliContext setHtmlOutput(String htmlOutput) {
+    this.htmlOutput = htmlOutput;
     return this;
   }
 
@@ -472,6 +485,7 @@ public class CliContext {
       noExtensibleBindingMessages == that.noExtensibleBindingMessages &&
       Objects.equals(map, that.map) &&
       Objects.equals(output, that.output) &&
+      Objects.equals(htmlOutput, that.htmlOutput) &&
       Objects.equals(txServer, that.txServer) &&
       Objects.equals(sv, that.sv) &&
       Objects.equals(txLog, that.txLog) &&
@@ -493,7 +507,7 @@ public class CliContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, map, output, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes);
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes);
   }
 
   @Override
@@ -510,6 +524,7 @@ public class CliContext {
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
       ", map='" + map + '\'' +
       ", output='" + output + '\'' +
+      ", htmlOutput='" + htmlOutput + '\'' +
       ", txServer='" + txServer + '\'' +
       ", sv='" + sv + '\'' +
       ", txLog='" + txLog + '\'' +

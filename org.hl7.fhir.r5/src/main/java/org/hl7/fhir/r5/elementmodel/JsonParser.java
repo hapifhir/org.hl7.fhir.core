@@ -208,6 +208,9 @@ public class JsonParser extends ParserBase {
 		JsonElement e = object.get(name);
 		if (property.isList() && (e instanceof JsonArray)) {
 			JsonArray arr = (JsonArray) e;
+			if (arr.size() == 0) {
+        logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ARRAY_CANNOT_BE_EMPTY), IssueSeverity.ERROR);			  
+			}
 			int c = 0;
 			for (JsonElement am : arr) {
 				parseChildComplexInstance(npath+"["+c+"]", object, element, property, name, am);
