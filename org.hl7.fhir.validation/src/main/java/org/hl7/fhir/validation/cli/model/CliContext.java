@@ -254,12 +254,12 @@ public class CliContext {
     return this;
   }
 
-  @JsonProperty("output")
+  @JsonProperty("htmlOutput")
   public String getHtmlOutput() {
     return htmlOutput;
   }
 
-  @JsonProperty("output")
+  @JsonProperty("htmlOutput")
   public CliContext setHtmlOutput(String htmlOutput) {
     this.htmlOutput = htmlOutput;
     return this;
