@@ -165,9 +165,23 @@ public class StructureDefinitionValidator extends BaseValidator {
       if (t == null) {
         rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
       } else {
-        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code);
+        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isInstanceOf(t, code), I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code);
       }
     }
+  }
+
+  private boolean isInstanceOf(String t, String code) {
+    StructureDefinition sd = context.fetchTypeDefinition(t);
+    while (sd != null) {
+      if (sd.getType().equals(code)) {
+        return true;
+      }
+      sd = sd.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()) : null;
+      if (sd != null && !sd.getAbstract()) {
+        sd = null;
+      }
+    }
+    return false;
   }
 
   private String determineBaseType(StructureDefinition sd) {
