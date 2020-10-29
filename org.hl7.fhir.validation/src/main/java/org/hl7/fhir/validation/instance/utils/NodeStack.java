@@ -187,5 +187,13 @@ public class NodeStack {
     return literalPath;
   }
 
+  public int depth() {
+    if (parent == null) {
+      return 0;
+    } else {
+      return parent.depth()+1;
+    }
+  }
+
 
 }
