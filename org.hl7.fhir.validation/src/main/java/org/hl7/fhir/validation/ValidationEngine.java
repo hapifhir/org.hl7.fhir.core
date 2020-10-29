@@ -29,6 +29,10 @@ import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
@@ -56,6 +60,7 @@ import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -98,9 +103,11 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
+import org.hl7.fhir.utilities.turtle.Turtle;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
@@ -111,6 +118,7 @@ import org.hl7.fhir.validation.cli.model.ScanOutputItem;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher.IPackageInstaller;
 import org.hl7.fhir.validation.cli.utils.*;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 
@@ -538,7 +546,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       throw new FHIRException("Unable to fetch content from "+src+" ("+errors.toString()+")");
 
     }
-    FhirFormat fmt = checkIsResource(cnt, src);
+    FhirFormat fmt = checkFormat(cnt, src);
     if (fmt != null) {
       Map<String, byte[]> res = new HashMap<String, byte[]>();
       res.put(Utilities.changeFileExt(src, "."+fmt.getExtension()), cnt);
@@ -809,31 +817,97 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     this.noInvariantChecks = value;
   }
 
+  private FhirFormat checkFormat(byte[] cnt, String filename) {
+    System.out.println("   ..Detect format for "+filename);
+    try {
+      JsonTrackingParser.parseJson(cnt);
+      return FhirFormat.JSON;
+    } catch (Exception e) {
+      if (debug) {
+        System.out.println("Not JSON: "+e.getMessage());
+      }
+    }
+    try {
+      parseXml(cnt);
+      return FhirFormat.XML;
+    } catch (Exception e) {
+      if (debug) {
+        System.out.println("Not XML: "+e.getMessage());
+      }
+    }
+    try {
+      new Turtle().parse(TextFile.bytesToString(cnt));
+      return FhirFormat.TURTLE;
+    } catch (Exception e) {
+      if (debug) {
+        System.out.println("Not Turtle: "+e.getMessage());
+      }
+    }
+    try {
+      new StructureMapUtilities(context, null, null).parse(TextFile.bytesToString(cnt), null);
+      return FhirFormat.TEXT;
+    } catch (Exception e) {
+      if (debug) {
+        System.out.println("Not Text: "+e.getMessage());
+      }
+    }
+    if (debug)
+      System.out.println("     .. not a resource: "+filename);
+    return null;
+  }
+
+
   private FhirFormat checkIsResource(byte[] cnt, String filename) {
     System.out.println("   ..Detect format for "+filename);
     try {
       Manager.parse(context, new ByteArrayInputStream(cnt), FhirFormat.JSON);
       return FhirFormat.JSON;
     } catch (Exception e) {
+      if (debug) {
+        System.out.println("Not JSON: "+e.getMessage());
+      }
     }
     try {
-      Manager.parse(context, new ByteArrayInputStream(cnt),FhirFormat.XML);
+      parseXml(cnt);
       return FhirFormat.XML;
     } catch (Exception e) {
+      if (debug) {
+        System.out.println("Not XML: "+e.getMessage());
+      }
     }
     try {
       Manager.parse(context, new ByteArrayInputStream(cnt),FhirFormat.TURTLE);
       return FhirFormat.TURTLE;
     } catch (Exception e) {
+      if (debug) {
+        System.out.println("Not Turtle: "+e.getMessage());
+      }
     }
     try {
       new StructureMapUtilities(context, null, null).parse(TextFile.bytesToString(cnt), null);
       return FhirFormat.TEXT;
     } catch (Exception e) {
+      if (debug) {
+        System.out.println("Not Text: "+e.getMessage());
+      }
     }
     if (debug)
       System.out.println("     .. not a resource: "+filename);
     return null;
+  }
+
+  private Document parseXml(byte[] cnt) throws ParserConfigurationException, SAXException, IOException {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    // xxe protection
+    factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+    factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+    factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+    factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+    factory.setXIncludeAware(false);
+    factory.setExpandEntityReferences(false);
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    return builder.parse(new ByteArrayInputStream(cnt));
   }
 
   private FhirFormat checkIsResource(String path) throws IOException {

@@ -90,7 +90,7 @@ public class ValidationEngineTests {
     }
     if (!org.hl7.fhir.validation.tests.utilities.TestUtilities.silent)
       System.out.println("Test102: Validate patient-example.xml in v1.0.2 version");
-    ValidationEngine ve = new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, "41.0.2");
+    ValidationEngine ve = new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, null, FhirPublication.DSTU2, "1.0.2");
     ve.setNoInvariantChecks(true);
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient102.xml"), null);
     if (!TestUtilities.silent)
