@@ -961,7 +961,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, codings.size() == fixed.getCoding().size(), I18nConstants.TERMINOLOGY_TX_CODING_COUNT, Integer.toString(fixed.getCoding().size()), Integer.toString(codings.size()))) {
         for (int i = 0; i < codings.size(); i++)
-          checkFixedValue(errors, path + ".coding", codings.get(i), fixed.getCoding().get(i), fixedSource, "coding", focus);
+          checkFixedValue(errors, path + ".coding", codings.get(i), fixed.getCoding().get(i), fixedSource, "coding", focus, false);
       }
     }
   }
@@ -1748,10 +1748,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return b.toString();
   }
 
-  private void checkFixedValue(List<ValidationMessage> errors, String path, Element focus, org.hl7.fhir.r5.model.Element fixed, String fixedSource, String propName, Element parent) {
-    checkFixedValue(errors, path, focus, fixed, fixedSource, propName, parent, false);
-  }
-
   @SuppressWarnings("rawtypes")
   private void checkFixedValue(List<ValidationMessage> errors, String path, Element focus, org.hl7.fhir.r5.model.Element fixed, String fixedSource, String propName, Element parent, boolean pattern) {
     if ((fixed == null || fixed.isEmpty()) && focus == null) {
@@ -1829,7 +1825,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         for (Extension e : fixed.getExtension()) {
           Element ex = getExtensionByUrl(extensions, e.getUrl());
           if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, ex != null, I18nConstants.EXTENSION_EXT_COUNT_NOTFOUND, e.getUrl())) {
-            checkFixedValue(errors, path, ex.getNamedChild("extension").getNamedChild("value"), e.getValue(), fixedSource, "extension.value", ex.getNamedChild("extension"));
+            checkFixedValue(errors, path, ex.getNamedChild("extension").getNamedChild("value"), e.getValue(), fixedSource, "extension.value", ex.getNamedChild("extension"), false);
           }
         }
       }
@@ -1842,25 +1838,33 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     checkFixedValue(errors, path + ".period", focus.getNamedChild("period"), fixed.getPeriod(), fixedSource, "period", focus, pattern);
 
     List<Element> parts = new ArrayList<Element>();
-    focus.getNamedChildren("family", parts);
-    if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() > 0 == fixed.hasFamily(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_FAMILY, (fixed.hasFamily() ? "1" : "0"), Integer.toString(parts.size()))) {
-      for (int i = 0; i < parts.size(); i++)
-        checkFixedValue(errors, path + ".family", parts.get(i), fixed.getFamilyElement(), fixedSource, "family", focus, pattern);
+    if (!pattern || fixed.hasFamily()) {
+      focus.getNamedChildren("family", parts);
+      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() > 0 == fixed.hasFamily(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_FAMILY, (fixed.hasFamily() ? "1" : "0"), Integer.toString(parts.size()))) {
+        for (int i = 0; i < parts.size(); i++)
+          checkFixedValue(errors, path + ".family", parts.get(i), fixed.getFamilyElement(), fixedSource, "family", focus, pattern);
+      }
     }
-    focus.getNamedChildren("given", parts);
-    if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getGiven().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_GIVEN, Integer.toString(fixed.getGiven().size()), Integer.toString(parts.size()))) {
-      for (int i = 0; i < parts.size(); i++)
-        checkFixedValue(errors, path + ".given", parts.get(i), fixed.getGiven().get(i), fixedSource, "given", focus, pattern);
+    if (!pattern || fixed.hasGiven()) {
+      focus.getNamedChildren("given", parts);
+      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getGiven().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_GIVEN, Integer.toString(fixed.getGiven().size()), Integer.toString(parts.size()))) {
+        for (int i = 0; i < parts.size(); i++)
+          checkFixedValue(errors, path + ".given", parts.get(i), fixed.getGiven().get(i), fixedSource, "given", focus, pattern);
+      }
     }
-    focus.getNamedChildren("prefix", parts);
-    if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getPrefix().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_PREFIX, Integer.toString(fixed.getPrefix().size()), Integer.toString(parts.size()))) {
-      for (int i = 0; i < parts.size(); i++)
-        checkFixedValue(errors, path + ".prefix", parts.get(i), fixed.getPrefix().get(i), fixedSource, "prefix", focus, pattern);
+    if (!pattern || fixed.hasPrefix()) {
+      focus.getNamedChildren("prefix", parts);
+      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getPrefix().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_PREFIX, Integer.toString(fixed.getPrefix().size()), Integer.toString(parts.size()))) {
+        for (int i = 0; i < parts.size(); i++)
+          checkFixedValue(errors, path + ".prefix", parts.get(i), fixed.getPrefix().get(i), fixedSource, "prefix", focus, pattern);
+      }
     }
-    focus.getNamedChildren("suffix", parts);
-    if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getSuffix().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_SUFFIX, Integer.toString(fixed.getSuffix().size()), Integer.toString(parts.size()))) {
-      for (int i = 0; i < parts.size(); i++)
-        checkFixedValue(errors, path + ".suffix", parts.get(i), fixed.getSuffix().get(i), fixedSource, "suffix", focus, pattern);
+    if (!pattern || fixed.hasSuffix()) {
+      focus.getNamedChildren("suffix", parts);
+      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, parts.size() == fixed.getSuffix().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_NAME_SUFFIX, Integer.toString(fixed.getSuffix().size()), Integer.toString(parts.size()))) {
+        for (int i = 0; i < parts.size(); i++)
+          checkFixedValue(errors, path + ".suffix", parts.get(i), fixed.getSuffix().get(i), fixedSource, "suffix", focus, pattern);
+      }
     }
   }
 
@@ -4082,8 +4086,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     
     // check type invariants
     checkInvariants(hostContext, errors, profile, definition, resource, element, stack, false);
-    if (definition.getFixed() != null)
-      checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), profile.getUrl(), definition.getSliceName(), null);
+    if (definition.getFixed() != null) {
+      checkFixedValue(errors, stack.getLiteralPath(), element, definition.getFixed(), profile.getUrl(), definition.getSliceName(), null, false);
+    } 
+    if (definition.getPattern() != null) {
+      checkFixedValue(errors, stack.getLiteralPath(), element, definition.getPattern(), profile.getUrl(), definition.getSliceName(), null, true);
+    } 
 
     // get the list of direct defined children, including slices
     List<ElementDefinition> childDefinitions = profileUtilities.getChildMap(profile, definition);
@@ -4149,13 +4157,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     Element resource, Element element, String actualType, NodeStack stack, boolean inCodeableConcept, boolean checkDisplayInContext, ElementInfo ei, String extensionUrl)
     throws FHIRException, DefinitionException {
 
+    if (debug && ei.definition != null && ei.slice != null) {
+      System.out.println(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against both "+ei.definition.getId()+" and "+ei.slice.getId());
+    }
     if (ei.definition != null) {
-      checkChildByDefinition(hostContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei,
-          extensionUrl, ei.definition, false);
+      if (debug) {
+        System.out.println(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against defn "+ei.definition.getId());
+      }
+      checkChildByDefinition(hostContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, ei.definition, false);
     }
     if (ei.slice != null) {
-      checkChildByDefinition(hostContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei,
-          extensionUrl, ei.slice, true);
+      if (debug) {
+        System.out.println(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against slice "+ei.slice.getId());
+      }
+      checkChildByDefinition(hostContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, ei.slice, true);
     }
   }
 
@@ -4201,9 +4216,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       String prefix = tail(checkDefn.getPath());
       assert typesAreAllReference(checkDefn.getType()) || checkDefn.hasRepresentation(PropertyRepresentation.TYPEATTR) || prefix.endsWith("[x]") || isResourceAndTypes(checkDefn) : "Multiple Types allowed, but name is wrong @ "+checkDefn.getPath()+": "+checkDefn.typeSummaryVB();
 
-      if (checkDefn.hasRepresentation(PropertyRepresentation.TYPEATTR))
+      if (checkDefn.hasRepresentation(PropertyRepresentation.TYPEATTR)) {
         type = ei.getElement().getType();
-      else {
+      } else if (ei.getElement().isResource()) {
+        type = ei.getElement().fhirType();            
+      } else {
         prefix = prefix.substring(0, prefix.length() - 3);
         for (TypeRefComponent t : checkDefn.getType())
           if ((prefix + Utilities.capitalize(t.getWorkingCode())).equals(ei.getName())) {
@@ -4264,7 +4281,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         checkPrimitive(hostContext, errors, ei.getPath(), type, checkDefn, ei.getElement(), profile, stack);
       } else {
         if (checkDefn.hasFixed()) {
-          checkFixedValue(errors, ei.getPath(), ei.getElement(), checkDefn.getFixed(), profile.getUrl(), checkDefn.getSliceName(), null);
+          checkFixedValue(errors, ei.getPath(), ei.getElement(), checkDefn.getFixed(), profile.getUrl(), checkDefn.getSliceName(), null, false);
         }
         if (checkDefn.hasPattern()) {
           checkFixedValue(errors, ei.getPath(), ei.getElement(), checkDefn.getPattern(), profile.getUrl(), checkDefn.getSliceName(), null, true);
@@ -4501,18 +4518,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
             }
           }
-        String location = "Profile " + profile.getUrl() + ", Element '" + stack.getLiteralPath() + "." + tail(ed.getPath()) + (ed.hasSliceName() ? "[" + ed.getSliceName() + (ed.hasLabel() ? " (" + ed.getLabel() + ")" : "") + "]" : "") + "'";
         if (ed.getMin() > 0) {
           if (problematicPaths.contains(ed.getPath()))
-            hint(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMIN, location, Integer.toString(ed.getMin()));
+            hint(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMIN, profile.getUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), Integer.toString(ed.getMin()));
           else
-            rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), I18nConstants.VALIDATION_VAL_PROFILE_MINIMUM, location, Integer.toString(ed.getMin()), Integer.toString(count));
+            rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), count >= ed.getMin(), I18nConstants.VALIDATION_VAL_PROFILE_MINIMUM, profile.getUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), Integer.toString(ed.getMin()), Integer.toString(count));
         }
         if (ed.hasMax() && !ed.getMax().equals("*")) {
           if (problematicPaths.contains(ed.getPath()))
-            hint(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count <= Integer.parseInt(ed.getMax()), I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMAX, location, ed.getMax());
-          else
-            rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), count <= Integer.parseInt(ed.getMax()), I18nConstants.VALIDATION_VAL_PROFILE_MAXIMUM, location, ed.getMax(), Integer.toString(count));
+            hint(errors, IssueType.NOTSUPPORTED, element.line(), element.col(), stack.getLiteralPath(), count <= Integer.parseInt(ed.getMax()), I18nConstants.VALIDATION_VAL_PROFILE_NOCHECKMAX, profile.getUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMax());
+          else if (count > Integer.parseInt(ed.getMax())) {
+            rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.VALIDATION_VAL_PROFILE_MAXIMUM, profile.getUrl(), ed.getPath(), ed.getId(), ed.getSliceName(),ed.getLabel(), stack.getLiteralPath(), ed.getMax(), Integer.toString(count));
+          }
         }
       }
     }
@@ -4888,7 +4905,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean valueMatchesCriteria(Element value, ElementDefinition criteria, StructureDefinition profile) throws FHIRException {
     if (criteria.hasFixed()) {
       List<ValidationMessage> msgs = new ArrayList<ValidationMessage>();
-      checkFixedValue(msgs, "{virtual}", value, criteria.getFixed(), profile.getUrl(), "value", null);
+      checkFixedValue(msgs, "{virtual}", value, criteria.getFixed(), profile.getUrl(), "value", null, false);
       return msgs.size() == 0;
     } else if (criteria.hasBinding() && criteria.getBinding().getStrength() == BindingStrength.REQUIRED && criteria.getBinding().hasValueSet()) {
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SLICE_MATCHING__SLICE_MATCHING_BY_VALUE_SET_NOT_DONE));
