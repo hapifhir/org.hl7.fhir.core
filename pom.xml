@@ -62,6 +62,13 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>github-releases</id>
+            <url>https://maven.pkg.github.com/FHIR/fhir-test-cases/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <dependencies>
