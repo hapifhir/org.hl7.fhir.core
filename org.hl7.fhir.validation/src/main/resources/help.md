@@ -1,0 +1,161 @@
+% VALIDATOR\_CLI(1) validator\_cli.jar 5.1.18+b7661db8
+% Grahame Grieve, James Agnew and the FHIR community
+% November 2020
+
+# NAME
+validator\_cli.jar - validate or transform FHIR resources or bundles
+
+# SYNOPSIS
+java -jar validator\_cli.jar [SOURCE] [OPTION]...
+
+# DESCRIPTION
+The validator compares a resource against the base definitions and any profiles
+declared in the resource (Resource.meta.profile) or specified on the command
+line.
+
+Schema and schematron checking is performed, depending on the FHIR version
+as followed:
+
+- XML and JSON Schema: FHIR versions 1.0, 1.4, 3.0, 4.0, 4.5
+- Turtle: FHIR versions 3.0, 4.0, 4.5
+
+# OPTIONS
+
+**SOURCE**
+: A file, URL, directory or pattern for resources to validate. At least one
+  source must be declared. If there is more than one source or if the source 
+  is other than a single file or URL and the output parameter is used, results
+  will be provided as a *Bundle*. Patterns are limited to a directory 
+  followed by a filename with an embedded asterisk.
+
+**-assumeValidRestReferences**
+: If present, assume that URLs that reference resources follow the RESTful
+  URI pattern and it is safe to infer the type from the URL.
+  Default: *disabled*
+
+**-convert**
+: Convert a resource or logical model. This parameter requires the parameters
+  **SOURCE** and **-output**. The parameter **-ig** may be used to provide
+  a logical model.
+  Default: *disabled*
+
+**-debug**
+: Produce additional information about the loading and validation process.
+  Default: *disabled*
+
+**-fhirpath [expression]**
+: Evaluate a FHIRPath expression on a resource or logical model. This requires
+  the parameter **SOURCE**. The parameter **-ig** may be used to provide a
+  logical model.
+
+**-hintAboutNonMustSupport**
+: If present, raise hints if the instance contains data elements that are not
+  marked as *mustSupport=true*. Useful to identify elements included that may
+  be ignored by recipients.
+  Default: *disabled*
+
+**-ig [package|file|folder|url]**
+: An implementation guide or profile definition to load. Can be 
+  the URL of an implementation guide or a package ([id]-[ver]) for
+  a built implementation guide or a local folder that contains a
+  set of conformance resources. This parameter can appear any number of times.
+  Default: *none*
+
+**-language: [lang]**
+: Specifies the language to use when validating coding displays (same value as
+  for xml:lang). This option is ignored if the resource specifies a language.
+  Default: *none*
+
+**-locale [locale]**
+: Specifies the locale or language of the validation result messages
+  (e.g.: de-DE).
+  Default: *en*
+
+**-narrative**
+: Generate narrative for a resource. This parameter requires the parameters
+  **-defn**, **-tx**, **SOURCE**, and **-output**. The parameters
+  **-ig** and **-profile** may be used.
+  Default: *disabled*
+
+**-native [true|false]**
+: Use XML schema (W3C XML Schema and schematron), JSON schema and RDP (ShEx)
+  for validation as well.
+  Default: *false*
+
+**-output [file]**
+: A filename for the results (*OperationOutcome*).
+  Default: *stdout*
+
+**-profile [url]**
+: The canonical URL to validate against (same as if it was specified in 
+  Resource.meta.profile). If no profile is specified, the resource is 
+  validated against the base specification. This parameter can appear any 
+  number of times. (Note: The profile and its dependencies have to be made 
+  available through one of the **-ig** parameters. Package dependencies will 
+  automatically be resolved.)
+  Default: *none*
+
+**-proxy [address]:[port]**
+: Specifies the proxy address and port to use.
+  Default: *disabled*
+
+**-questionnaire [file|url]**
+: The location of a questionnaire. If provided, then the validator will
+  validate any *QuestionnaireResponse* that claims to match the *Questionnaire*
+  against it. This parameter can appear any number of times.
+  Default: *none*
+
+**-recurse**
+: Look in subfolders when **-ig** refers to a folder.
+  Default: *disabled*
+
+**-sct [intl|us|uk|au|nl|ca|se|dk|es]**
+: Specify the edition of SNOMED CT to use. The default FHIR terminology
+  service only supports a subset. To add to this list or the default FHIR
+  terminology service ask on https://chat.fhir.org/#narrow/stream/179202-terminology.
+  Default: *disabled*
+
+**-security-checks**
+: If present, check that string content doesn't include any HTML-like tags that
+  might create problems downstream (though all external input must always be
+  sanitized by escaping for either HTML or SQL).
+  Default: *disabled*
+
+**-snapshot**
+: Generate a snapshot for a profile. This requires the parameters **-defn**,
+  **-tx**, **SOURCE**, and **-output**. The parameter **-ig** may be
+  used to provide necessary base profiles.
+  Default: *disabled*
+
+**-strictExtensions**
+: If present, treat extensions not defined within the specified FHIR version
+  and any referenced implementation guides or profiles as *error*.
+  Default: *information*
+
+**-transform [uri]**
+: Execute a transformation as described by a structure map given by its
+  URI the transformation starts with. Any other dependency maps have to be
+  loaded using **-ig** parameters to reference those maps. (Note: This
+  parameter uses the parameters **-defn**, **-tx**, **-ig** and **-output**.
+  Default: *disabled*
+
+**-tx [url]**
+: The base URL of a FHIR terminology service. To run without terminology
+  value, specify *n/a* as URL. This parameter can appear only once.
+  Default: *http://tx.fhir.org*
+
+**-txLog [file]**
+: Produce a log of the terminology server operations in [file].
+  Default: *disabled*
+
+**-version [1.0|1.0.2|1.4|1.4.0|3.0|3.0.2|4.0.1|4.5|4.5.0]**
+: The FHIR version to use. This can only appear once.
+  Default: *4.5*
+
+# BUGS
+
+https://github.com/hapifhir/org.hl7.fhir.core/issues
+
+# COPYRIGHT
+
+https://raw.githubusercontent.com/hapifhir/org.hl7.fhir.core/master/LICENSE.txt
