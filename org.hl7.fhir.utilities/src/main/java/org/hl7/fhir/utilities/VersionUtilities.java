@@ -3,6 +3,7 @@ package org.hl7.fhir.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
@@ -216,13 +217,17 @@ public class VersionUtilities {
   }
 
   /** 
-   * return true if the current version equals test, or later 
-   * 
-   * so if a feature is defined in 4.0, if (VersionUtilities.isThisOrLater("4.0", version))...
+   * return true if the current version equals test, or later,
+   * so if a feature is defined in 4.0, if (VersionUtilities.isThisOrLater("4.0", version))
+   * <p>
+   * This method tries to perform a numeric parse, so that <code>0.9</code> will be considered below <code>0.10</code>
+   * in accordance with SemVer. If either side contains a non-numeric character in a version string, a simple text
+   * compare will be done instead.
+   * </p>
    *  
-   * @param test
-   * @param current
-   * @return
+   * @param test The value to compare to
+   * @param current The value being compared
+   * @return Is {@literal current} later or equal to {@literal test}? For example, if <code>this = 0.5</code> and <code>current = 0.6</code> this method will return true
    */
   public static boolean isThisOrLater(String test, String current) {
     String t = getMajMin(test);
@@ -230,8 +235,29 @@ public class VersionUtilities {
     if (c.compareTo(t) == 0) {
       return isMajMinOrLaterPatch(test, current);
     }
-    boolean ok = c.compareTo(t) >= 0;
-    return ok;
+
+    String[] testParts = t.split("\\.");
+    String[] currentParts = c.split("\\.");
+
+    for (int i = 0; i < Math.max(testParts.length, currentParts.length); i++) {
+      if (i == testParts.length) {
+        return true;
+      } else if (i == currentParts.length) {
+        return false;
+      }
+      String testPart = testParts[i];
+      String currentPart = currentParts[i];
+      if (testPart.equals(currentPart)) {
+        continue;
+      }
+      if (StringUtils.isNumeric(testPart) && StringUtils.isNumeric(currentPart)) {
+        return Integer.parseInt(currentPart) - Integer.parseInt(testPart) > 0;
+      } else {
+        return currentPart.compareTo(testPart) >= 0;
+      }
+    }
+
+    return true;
   }
 
   /** 
