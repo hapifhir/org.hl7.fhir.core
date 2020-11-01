@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.npm.NpmPackage;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -250,14 +249,18 @@ public class VersionUtilities {
       if (testPart.equals(currentPart)) {
         continue;
       }
-      if (StringUtils.isNumeric(testPart) && StringUtils.isNumeric(currentPart)) {
-        return Integer.parseInt(currentPart) - Integer.parseInt(testPart) > 0;
-      } else {
-        return currentPart.compareTo(testPart) >= 0;
-      }
+      return compareVersionPart(testPart, currentPart);
     }
 
     return true;
+  }
+
+  private static boolean compareVersionPart(String theTestPart, String theCurrentPart) {
+    if (StringUtils.isNumeric(theTestPart) && StringUtils.isNumeric(theCurrentPart)) {
+      return Integer.parseInt(theCurrentPart) - Integer.parseInt(theTestPart) >= 0;
+    } else {
+      return theCurrentPart.compareTo(theTestPart) >= 0;
+    }
   }
 
   /** 
@@ -277,7 +280,7 @@ public class VersionUtilities {
         return true;
       }
       if (pc!=null) {
-        return pc.compareTo(pt) >= 0;
+        return compareVersionPart(pt, pc);
       }
     }
     return false;
