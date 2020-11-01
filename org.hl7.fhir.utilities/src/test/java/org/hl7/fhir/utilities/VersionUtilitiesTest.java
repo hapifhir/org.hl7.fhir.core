@@ -31,4 +31,18 @@ public class VersionUtilitiesTest {
   }
 
 
+  @Test
+  public void isMajMinOrLaterPatch_Simple() {
+    assertTrue(VersionUtilities.isMajMinOrLaterPatch("0.9.0", "0.9.0"));
+    assertTrue(VersionUtilities.isMajMinOrLaterPatch("0.9.0", "0.9.1"));
+    assertFalse(VersionUtilities.isThisOrLater("0.9.0", "0.8.1"));
+  }
+
+  @Test
+  public void isMajMinOrLaterPatch_VersionWithX() {
+    assertTrue(VersionUtilities.isMajMinOrLaterPatch("0.9.x", "0.9.0"));
+    assertTrue(VersionUtilities.isMajMinOrLaterPatch("0.9.x", "0.9.1"));
+    assertFalse(VersionUtilities.isThisOrLater("0.9.x", "0.8.1"));
+  }
+
 }
