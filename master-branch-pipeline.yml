@@ -58,6 +58,11 @@ steps:
             <id>$(PGP_KEYNAME)</id>
             <passphrase>$(PGP_PASSPHRASE)</passphrase>
           </server>
+          <server>
+            <id>github-releases</id>
+            <username>markiantorno</username>
+            <password>$(GIT_PACKAGE_PAT)</password>
+          </server>
         </servers>
         <profiles>
           <profile>
