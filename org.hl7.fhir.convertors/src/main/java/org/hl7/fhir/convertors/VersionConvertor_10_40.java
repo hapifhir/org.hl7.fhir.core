@@ -2479,8 +2479,6 @@ public class VersionConvertor_10_40 {
             return convertId((org.hl7.fhir.dstu2.model.IdType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.InstantType)
             return convertInstant((org.hl7.fhir.dstu2.model.InstantType) src);
-        if (src instanceof org.hl7.fhir.dstu2.model.IntegerType)
-            return convertInteger((org.hl7.fhir.dstu2.model.IntegerType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.MarkdownType)
             return convertMarkdown((org.hl7.fhir.dstu2.model.MarkdownType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.OidType)
@@ -2493,6 +2491,8 @@ public class VersionConvertor_10_40 {
             return convertTime((org.hl7.fhir.dstu2.model.TimeType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.UnsignedIntType)
             return convertUnsignedInt((org.hl7.fhir.dstu2.model.UnsignedIntType) src);
+        if (src instanceof org.hl7.fhir.dstu2.model.IntegerType)
+          return convertInteger((org.hl7.fhir.dstu2.model.IntegerType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.UriType)
             return convertUri((org.hl7.fhir.dstu2.model.UriType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.UuidType)
@@ -2569,8 +2569,6 @@ public class VersionConvertor_10_40 {
             return convertId((org.hl7.fhir.r4.model.IdType) src);
         if (src instanceof org.hl7.fhir.r4.model.InstantType)
             return convertInstant((org.hl7.fhir.r4.model.InstantType) src);
-        if (src instanceof org.hl7.fhir.r4.model.IntegerType)
-            return convertInteger((org.hl7.fhir.r4.model.IntegerType) src);
         if (src instanceof org.hl7.fhir.r4.model.MarkdownType)
             return convertMarkdown((org.hl7.fhir.r4.model.MarkdownType) src);
         if (src instanceof org.hl7.fhir.r4.model.OidType)
@@ -2583,6 +2581,8 @@ public class VersionConvertor_10_40 {
             return convertTime((org.hl7.fhir.r4.model.TimeType) src);
         if (src instanceof org.hl7.fhir.r4.model.UnsignedIntType)
             return convertUnsignedInt((org.hl7.fhir.r4.model.UnsignedIntType) src);
+        if (src instanceof org.hl7.fhir.r4.model.IntegerType)
+          return convertInteger((org.hl7.fhir.r4.model.IntegerType) src);
         if (src instanceof org.hl7.fhir.r4.model.UriType)
             return convertUri((org.hl7.fhir.r4.model.UriType) src);
         if (src instanceof org.hl7.fhir.r4.model.UuidType)
