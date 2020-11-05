@@ -3219,12 +3219,17 @@ public class ProfileUtilities extends TranslatingUtilities {
     Cell c = gen.new Cell();
     r.getCells().add(c);
     if (e.hasContentReference()) {
-      ElementDefinition ed = getElementByName(profile.getSnapshot().getElement(), e.getContentReference());
+      ElementInStructure ed = getElementByName(profile.getSnapshot().getElement(), e.getContentReference(), profile);
       if (ed == null)
         c.getPieces().add(gen.new Piece(null, translate("sd.table", "Unknown reference to %s", e.getContentReference()), null));
       else {
-        c.getPieces().add(gen.new Piece(null, translate("sd.table", "See ", ed.getPath()), null));
-        c.getPieces().add(gen.new Piece("#"+ed.getPath(), tail(ed.getPath()), ed.getPath()));
+        if (ed.getSource() == profile) {
+          c.getPieces().add(gen.new Piece(null, translate("sd.table", "See ", ed.getElement().getPath()), null));
+          c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), tail(ed.getElement().getPath()), ed.getElement().getPath()));
+        } else {
+          c.getPieces().add(gen.new Piece(null, translate("sd.table", "See ", ed.getElement().getPath()), null));
+          c.getPieces().add(gen.new Piece(ed.getSource().getUserString("path")+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getType()+")", ed.getElement().getPath()));
+        }
       }
       return c;
     }
@@ -3409,16 +3414,46 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private ElementDefinition getElementByName(List<ElementDefinition> elements, String contentReference) {
+  private class ElementInStructure {
+
+    private StructureDefinition source;
+    private ElementDefinition element;
+
+    public ElementInStructure(StructureDefinition source, ElementDefinition ed) {
+      this.source = source;
+      this.element = ed;
+    }
+
+    public StructureDefinition getSource() {
+      return source;
+    }
+
+    public ElementDefinition getElement() {
+      return element;
+    }
+    
+  }
+  private ElementInStructure getElementByName(List<ElementDefinition> elements, String contentReference, StructureDefinition source) {
+    if (contentReference.contains("#")) {
+      String url = contentReference.substring(0, contentReference.indexOf("#"));
+      contentReference = contentReference.substring(contentReference.indexOf("#"));
+      if (!url.equals(source.getUrl())) {
+        source = context.fetchResource(StructureDefinition.class, url);
+        if (source == null) {
+          throw new FHIRException("Unable to resolve StructureDefinition "+url+" resolving content reference "+contentReference);
+        }
+        elements = source.getSnapshot().getElement();
+      }
+    } 
     for (ElementDefinition ed : elements) {
       if (("#"+ed.getPath()).equals(contentReference)) {
-        return ed;
+        return new ElementInStructure(source, ed);
       }
       if (("#"+ed.getId()).equals(contentReference)) {
-        return ed;
+        return new ElementInStructure(source, ed);
       }
     }
-    throw new Error("getElementByName: can't find "+contentReference+"in "+elements.toString());
+    throw new Error("getElementByName: can't find "+contentReference+" in "+elements.toString()+" from "+source.getUrl());
 //    return null;
   }
 
@@ -4575,11 +4610,16 @@ public class ProfileUtilities extends TranslatingUtilities {
 
     if (used) {
       if (definition.hasContentReference()) {
-        ElementDefinition ed = getElementByName(profile.getSnapshot().getElement(), definition.getContentReference());
+        ElementInStructure ed = getElementByName(profile.getSnapshot().getElement(), definition.getContentReference(), profile);
         if (ed == null)
           c.getPieces().add(gen.new Piece(null, "Unknown reference to "+definition.getContentReference(), null));
-        else
-          c.getPieces().add(gen.new Piece("#"+ed.getPath(), "See "+ed.getPath(), null));
+        else {
+          if (ed.getSource() == profile) {
+            c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), "See "+ed.getElement().getPath(), null));
+          } else {
+            c.getPieces().add(gen.new Piece(ed.getSource().getUserData("path")+"#"+ed.getElement().getPath(), "See "+ed.getSource().getType()+"."+ed.getElement().getPath(), null));
+          }          
+        }
       }
       if (definition.getPath().endsWith("url") && definition.hasFixed()) {
         c.getPieces().add(checkForNoChange(definition.getFixed(), gen.new Piece(null, "\""+buildJson(definition.getFixed())+"\"", null).addStyle("color: darkgreen")));
