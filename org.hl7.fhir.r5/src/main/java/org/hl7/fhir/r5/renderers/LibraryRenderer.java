@@ -401,7 +401,7 @@ public class LibraryRenderer extends ResourceRenderer {
           p.code().tx(att.getContentType()+lang(att));
         }
         String prismCode = determinePrismCode(att);
-        if (prismCode != null) {
+        if (prismCode != null && !tooBig(txt)) {
           x.pre().code().setAttribute("class", "language-"+prismCode).tx(txt);
         } else {
           x.pre().code().tx(txt);
@@ -418,6 +418,10 @@ public class LibraryRenderer extends ResourceRenderer {
         p.tx(", size = "+Utilities.describeSize(att.getData().length)+")");
       }
     }    
+  }
+
+  private boolean tooBig(String txt) {
+    return txt.length() > 16384;
   }
 
   private String imgExtension(String contentType) {
