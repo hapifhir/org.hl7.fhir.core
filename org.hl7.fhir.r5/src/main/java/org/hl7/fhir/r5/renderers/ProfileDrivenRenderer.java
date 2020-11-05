@@ -651,7 +651,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             child = p.getElementDefinition();
           }
           if (child != null) {
-            generateElementByProfile(res, profile, allElements, x, path, showCodeDetails, indent, p, child);
+            if (!child.getBase().hasPath() || !child.getBase().getPath().startsWith("Resource.")) {
+              generateElementByProfile(res, profile, allElements, x, path, showCodeDetails, indent, p, child);
+            }
           }
         }
       }
@@ -721,7 +723,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 XhtmlNode para = x.para();
                 para.b().addText(p.getStructure().present());
                 para.tx(": ");
-                renderLeaf(res, v, child, x, para, false, showCodeDetails, displayHints, path, indent);
+                renderLeaf(res, vv, child, x, para, false, showCodeDetails, displayHints, path, indent);
               } else if (ev.hasValues()) {
                 XhtmlNode bq = x.addTag("blockquote");                
                 bq.para().b().addText(isExtension(p) ? p.getStructure().present() : p.getName());
