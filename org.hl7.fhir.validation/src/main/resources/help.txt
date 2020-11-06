@@ -1,4 +1,4 @@
-VALIDATOR_CLI(1)                                              VALIDATOR_CLI(1)
+VALIDATOR_CLI(1)          HL7 FHIR Java CLI Validator         VALIDATOR_CLI(1)
 
 NAME
        validator_cli.jar - validate or transform FHIR resources or bundles
@@ -147,10 +147,9 @@ BUGS
        https://github.com/hapifhir/org.hl7.fhir.core/issues
 
 COPYRIGHT
-       https://raw.githubusercontent.com/hapifhir/org.hl7.fhir.core/master/LI‐
-       CENSE.txt
+       https://github.com/hapifhir/org.hl7.fhir.core/blob/master/LICENSE.txt
 
 AUTHORS
-       Grahame Grieve, James Agnew and the FHIR community.
+       Grahame Grieve; James Agnew; FHIR community.
 
-validator_cli.jar 5.1.18+b7661db8November 2020                VALIDATOR_CLI(1)
+5.1.18+b7661d                      11/07/20                   VALIDATOR_CLI(1)

@@ -1,6 +1,8 @@
-% VALIDATOR\_CLI(1) validator\_cli.jar 5.1.18+b7661db8
-% Grahame Grieve, James Agnew and the FHIR community
-% November 2020
+% VALIDATOR\_CLI(1) 5.1.18+b7661d | HL7 FHIR Java CLI Validator
+% Grahame Grieve
+  James Agnew
+  FHIR community
+% $date$
 
 # NAME
 validator\_cli.jar - validate or transform FHIR resources or bundles
@@ -158,4 +160,4 @@ https://github.com/hapifhir/org.hl7.fhir.core/issues
 
 # COPYRIGHT
 
-https://raw.githubusercontent.com/hapifhir/org.hl7.fhir.core/master/LICENSE.txt
+https://github.com/hapifhir/org.hl7.fhir.core/blob/master/LICENSE.txt
