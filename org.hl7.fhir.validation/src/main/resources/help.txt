@@ -62,9 +62,11 @@ OPTIONS
               (same value as for xml:lang).  This option is ignored if the re‐
               source specifies a language.  Default: none
 
-       -locale [locale]
+       -locale <code>
               Specifies  the  locale or language of the validation result mes‐
-              sages (e.g.: de-DE).  Default: en
+              sages, e.g. de to display validation result messages  in  german
+              language.   Note:  Locales can only be used if translations have
+              been provided. Default: en
 
        -narrative
               Generate narrative for a resource.  This parameter requires  the

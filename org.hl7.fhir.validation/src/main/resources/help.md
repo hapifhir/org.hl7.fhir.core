@@ -68,9 +68,10 @@ as followed:
   for xml:lang). This option is ignored if the resource specifies a language.
   Default: *none*
 
-**-locale [locale]**
-: Specifies the locale or language of the validation result messages
-  (e.g.: de-DE).
+**-locale \<code>**
+: Specifies the locale or language of the validation result messages, e.g. de
+  to display validation result messages in german language. *Note: Locales can
+  only be used if translations have been provided.*
   Default: *en*
 
 **-narrative**
