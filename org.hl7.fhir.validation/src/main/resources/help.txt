@@ -90,11 +90,14 @@ OPTIONS
        -proxy [address]:[port]
               Specifies the proxy address and port to use.  Default: disabled
 
-       -questionnaire [file|url]
-              The  location of a questionnaire.  If provided, then the valida‐
-              tor will validate any QuestionnaireResponse that claims to match
-              the  Questionnaire  against  it.   This parameter can appear any
-              number of times.  Default: none
+       -questionnaire <NONE|CHECK|REQUIRED>
+              Validate any QuestionnaireResponse resource against its matching
+              Questionnaire resource referenced by the canonical URL in  Ques‐
+              tionnaireResponse.questionnaire.   Possible  arguments are: NONE
+              (do not validate), CHECK (validate iff matching questionnaire is
+              provided)  and  REQUIRED  (validate  and  report  an error if no
+              matching questionnaire is provided).  Note: Arguments  for  this
+              parameter must be provided case sensitive. Default: NONE
 
        -recurse
               Look in subfolders when -ig refers to a folder.   Default:  dis‐
