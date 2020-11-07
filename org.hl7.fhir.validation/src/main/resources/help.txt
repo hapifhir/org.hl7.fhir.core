@@ -142,9 +142,15 @@ OPTIONS
               Produce a log of the terminology server  operations  in  [file].
               Default: disabled
 
-       -version [1.0|1.0.2|1.4|1.4.0|3.0|3.0.2|4.0.1|4.5|4.5.0]
-              The  FHIR  version to use.  This can only appear once.  Default:
-              4.5
+       -version <1.0|1.0.2|1.4|1.4.0|3.0|3.0.2|4.0.1|4.5|4.5.0>
+              Validate resources against the passed version of the  base  FHIR
+              specification.   It  is recommended to set the version parameter
+              at first.  Before validation starts a check for  required  pack‐
+              ages  matching  the version is performed.  Missing packages will
+              be downloaded and installed to the FHIR  package  cache.   Note:
+              Alternatively the version could be set by using the -defn or -ig
+              parameter to maintain backwards compatibility. Default:  current
+              build version (3 or 5 letter version string)
 
 BUGS
        https://github.com/hapifhir/org.hl7.fhir.core/issues
