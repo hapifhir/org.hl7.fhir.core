@@ -11,15 +11,14 @@ validator\_cli.jar - validate or transform HL7 FHIR resources or bundles
 java -jar validator\_cli.jar [SOURCE]... [OPTION]...
 
 # DESCRIPTION
-The validator compares a resource against the base definitions and any profiles
-declared in the resource (Resource.meta.profile) or specified on the command
-line.
 
-Schema and schematron checking is performed, depending on the FHIR version
-as followed:
+The HL7 FHIR validator CLI compares one or more resources against the base
+definitions and any profiles declared in a resource (Resource.meta.profile)
+or specified on the command line.
 
-- XML and JSON Schema: FHIR versions 1.0, 1.4, 3.0, 4.0, 4.5
-- Turtle: FHIR versions 3.0, 4.0, 4.5
+To run the validator the latest version of the Java Runtime Environment must 
+be installed. The latest validator CLI release could be downloaded from Github
+(https://git.io/Jkf9i).
 
 # OPTIONS
 
