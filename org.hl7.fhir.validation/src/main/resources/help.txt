@@ -165,11 +165,49 @@ EXAMPLES
        validator_cli.jar ./patient.xml -output ./results.xml
               Write validation result messages to the a file.
 
+   VALIDATION AGAINST IMPLEMENTATION GUIDE
+       validator_cli.jar ./patient.xml -ig hl7.fhir.us.core
+              Validate resource against the current version of an  implementa‐
+              tion guide package.
+
+       validator_cli.jar ./patient.xml -ig hl7.fhir.us.core#1.0.1
+              Validate  resource  against a specific version of an implementa‐
+              tion guide package.
+
+       validator_cli.jar ./patient.xml -ig http://hl7.org/fhir/us/core
+              Validate resource against the current version of an  implementa‐
+              tion guide (resource) loaded from the canonical URL.
+
+       validator_cli.jar ./patient.xml -ig http://hl7.org/fhir/us/core|1.0.1
+              Validate  resource  against a specific version of an implementa‐
+              tion guide (resource) loaded from the canonical URL.
+
+       validator_cli.jar ./patient.xml -ig ./profile.xml
+              Validate resource against  an  implementation  guide  (resource)
+              file.
+
+       validator_cli.jar ./patient.xml -ig ./profiles/
+              Validate  resource  against  any implementation guide (resource)
+              file found in the profiles directory.
+
+       validator_cli.jar ./patient.xml -ig ./profiles/*.json
+              Validate  resource  against  any   implementation   guide   (re‐
+              source)JSON file found in the profiles directory.
+
+       validator_cli.jar ./patient.xml -ig ./profiles.tgz
+              Validate  resource  against  any  implementaion guide (resource)
+              file found in the gzipped tarball profiles archive.
+
 BUGS
        https://github.com/hapifhir/org.hl7.fhir.core/issues
 
 COPYRIGHT
        https://github.com/hapifhir/org.hl7.fhir.core/blob/master/LICENSE.txt
+
+SEE ALSO
+       For more information regarding the validation process and the validator
+       CLI itself, please see the official HL7 FHIR implementers documentation
+       (https://confluence.hl7.org/display/FHIR/Implementers).
 
 AUTHORS
        Grahame Grieve; James Agnew; FHIR community.

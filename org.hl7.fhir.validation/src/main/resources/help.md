@@ -188,3 +188,8 @@ https://github.com/hapifhir/org.hl7.fhir.core/issues
 # COPYRIGHT
 
 https://github.com/hapifhir/org.hl7.fhir.core/blob/master/LICENSE.txt
+
+# SEE ALSO
+
+For more information regarding the validation process and the validator CLI
+itself, please see the official [HL7 FHIR implementers documentation](https://confluence.hl7.org/display/FHIR/Implementers).
