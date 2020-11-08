@@ -5,10 +5,10 @@
 % $date$
 
 # NAME
-validator\_cli.jar - validate or transform FHIR resources or bundles
+validator\_cli.jar - validate or transform HL7 FHIR resources or bundles
 
 # SYNOPSIS
-java -jar validator\_cli.jar [SOURCE] [OPTION]...
+java -jar validator\_cli.jar [SOURCE]... [OPTION]...
 
 # DESCRIPTION
 The validator compares a resource against the base definitions and any profiles

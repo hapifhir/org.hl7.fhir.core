@@ -1,10 +1,10 @@
 VALIDATOR_CLI(1)          HL7 FHIR Java CLI Validator         VALIDATOR_CLI(1)
 
 NAME
-       validator_cli.jar - validate or transform FHIR resources or bundles
+       validator_cli.jar - validate or transform HL7 FHIR resources or bundles
 
 SYNOPSIS
-       java -jar validator_cli.jar [SOURCE] [OPTION]...
+       java -jar validator_cli.jar [SOURCE]... [OPTION]...
 
 DESCRIPTION
        The  validator compares a resource against the base definitions and any
