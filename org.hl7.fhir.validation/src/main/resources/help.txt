@@ -77,8 +77,12 @@ OPTIONS
               Use XML schema (W3C XML Schema and schematron), JSON schema  and
               RDP (ShEx) for validation as well.  Default: false
 
-       -output [file]
-              A filename for the results (OperationOutcome).  Default: stdout
+       -output <file>
+              Write the validation result messages to a XML  formatted  output
+              file  (instead to stdout) as OperationOutcome resource or Bundle
+              of multiple OperationOutcome resources, one for  each  validated
+              FHIR  resource.   If no output file has been given, an error oc‐
+              curs.  Default: -
 
        -profile [url]
               The  canonical URL to validate against (same as if it was speci‐
@@ -154,6 +158,16 @@ OPTIONS
               parameter to maintain backwards compatibility. Default:  current
               build version (3 or 5 letter version string)
 
+EXAMPLES
+       Note: The validator CLI in general is executed in the Java Runtime  En‐
+       vironment  and  packaged as executable jar file. To improve readability
+       the java -jar command (prefix) always has been omitted for the examples
+       presented.
+
+   OUTPUT FORMATS
+       validator_cli.jar ./patient.xml -output ./results.xml
+              Write validation result messages to the a file.
+
 BUGS
        https://github.com/hapifhir/org.hl7.fhir.core/issues
 
@@ -163,4 +177,4 @@ COPYRIGHT
 AUTHORS
        Grahame Grieve; James Agnew; FHIR community.
 
-5.1.18+b7661d                      11/07/20                   VALIDATOR_CLI(1)
+5.1.18+b7661d                      11/08/20                   VALIDATOR_CLI(1)

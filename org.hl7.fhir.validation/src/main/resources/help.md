@@ -85,9 +85,12 @@ as followed:
   for validation as well.
   Default: *false*
 
-**-output [file]**
-: A filename for the results (*OperationOutcome*).
-  Default: *stdout*
+**-output \<file>**
+: Write the validation result messages to a XML formatted output file (instead
+  to *stdout*) as *OperationOutcome* resource or *Bundle* of multiple
+  *OperationOutcome* resources, one for each validated FHIR resource. If no
+  output file has been given, an error occurs.
+  Default: -
 
 **-profile [url]**
 : The canonical URL to validate against (same as if it was specified in 
@@ -162,6 +165,22 @@ as followed:
   *Note: Alternatively the version could be set by using the **-defn** or 
   **-ig** parameter to maintain backwards compatibility.*
   Default: *current build version* (3 or 5 letter version string)
+
+# EXAMPLES
+
+*Note: The validator CLI in general is executed in the Java Runtime Environment
+and packaged as executable jar file. To improve readability the **java -jar**
+command (prefix) always has been omitted for the examples presented.*
+
+## OUTPUT FORMATS
+
+**validator\_cli.jar ./patient.xml -output ./results.xml**
+: Write validation result messages to the a file.
+
+Validate patient resource and write result messages to the a file:
+```
+java -jar validator_cli.jar ./patient.xml -output ./results.xml
+```
 
 # BUGS
 
