@@ -55,12 +55,19 @@ be installed. The latest validator CLI release could be downloaded from Github
   be ignored by recipients.
   Default: *disabled*
 
-**-ig [package|file|folder|url]**
-: An implementation guide or profile definition to load. Can be 
-  the URL of an implementation guide or a package ([id]-[ver]) for
-  a built implementation guide or a local folder that contains a
-  set of conformance resources. This parameter can appear any number of times.
-  Default: *none*
+**-ig <package|file|directory|url|archive>**
+: Validate resources against an implementation guide. To validate against
+  multiple implementation guides at once, each implementation guide must be
+  provided using a separate **-ig** parameter. If the packages required for
+  validation are not already installed to the FHIR package cache, they will
+  be downloaded and installed. Implementation guides could be provided in
+  various ways, such as a package (w/o version literal), an canonical URL
+  or from local filesystem. For examples, see EXAMPLES section.
+  *Note: To validate against the current build version of the implementation
+  guide, use 'current' as version literal. To validate against a custom build
+  implementation guide, use 'dev' as version literal.*
+  *Note: If the **-version** parameter is provided, the underlying FHIR
+  version of a package must match.*
 
 **-language: [lang]**
 : Specifies the language to use when validating coding displays (same value as
@@ -176,10 +183,38 @@ command (prefix) always has been omitted for the examples presented.*
 **validator\_cli.jar ./patient.xml -output ./results.xml**
 : Write validation result messages to the a file.
 
-Validate patient resource and write result messages to the a file:
-```
-java -jar validator_cli.jar ./patient.xml -output ./results.xml
-```
+## VALIDATION AGAINST IMPLEMENTATION GUIDE
+
+**validator\_cli.jar ./patient.xml -ig hl7.fhir.us.core**
+: Validate resource against the *current version* of an implementation guide
+  package.
+
+**validator\_cli.jar ./patient.xml -ig hl7.fhir.us.core\#1.0.1**
+: Validate resource against a *specific version* of an implementation guide
+  package.
+
+**validator\_cli.jar ./patient.xml -ig http://hl7.org/fhir/us/core**
+: Validate resource against the *current version* of an implementation guide
+  (resource) loaded from the canonical URL.
+
+**validator\_cli.jar ./patient.xml -ig http://hl7.org/fhir/us/core\|1.0.1**
+: Validate resource against a *specific version* of an implementation guide
+  (resource) loaded from the canonical URL.
+
+**validator\_cli.jar ./patient.xml -ig ./profile.xml**
+: Validate resource against an implementation guide (resource) file.
+
+**validator\_cli.jar ./patient.xml -ig ./profiles/**
+: Validate resource against any implementation guide (resource) file found
+  in the profiles directory.
+
+**validator\_cli.jar ./patient.xml -ig ./profiles/\*.json**
+: Validate resource against any implementation guide (resource) JSON file
+  found in the profiles directory.
+
+**validator\_cli.jar ./patient.xml -ig ./profiles.tgz**
+: Validate resource against any implementaion guide (resource) file found
+  in the gzipped tarball profiles archive.
 
 # BUGS
 
