@@ -2419,8 +2419,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     String ref = reference.getReference();
     if (Utilities.noString(ref)) {
-      if (Utilities.noString(reference.getIdentifier().getSystem()) && Utilities.noString(reference.getIdentifier().getValue())) {
-        warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, !Utilities.noString(element.getNamedChildValue("display")), I18nConstants.REFERENCE_REF_NODISPLAY);
+      if (!path.contains("element.pattern")) { // this business rule doesn't apply to patterns
+        if (Utilities.noString(reference.getIdentifier().getSystem()) && Utilities.noString(reference.getIdentifier().getValue())) {
+          warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, !Utilities.noString(element.getNamedChildValue("display")), I18nConstants.REFERENCE_REF_NODISPLAY);
+        }
       }
       return;
     } else if (Utilities.existsInList(ref, "http://tools.ietf.org/html/bcp47")) {
