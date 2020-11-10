@@ -229,8 +229,14 @@ public class VersionUtilities {
    * @return Is {@literal current} later or equal to {@literal test}? For example, if <code>this = 0.5</code> and <code>current = 0.6</code> this method will return true
    */
   public static boolean isThisOrLater(String test, String current) {
+    if (test == null || current == null) {
+      return false;
+    }
     String t = getMajMin(test);
     String c = getMajMin(current);
+    if (t == null || c == null) {
+      return false;
+    }
     if (c.compareTo(t) == 0) {
       return isMajMinOrLaterPatch(test, current);
     }

@@ -824,7 +824,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       if (p == null || p.getValues().size() == 0 || p.getValues().get(0) == null)
         td.tx(" ");
       else {
-        renderLeaf(res, p.getValues().get(0), e, td, td, false, showCodeDetails, displayHints, path, indent);
+        for (BaseWrapper vv : p.getValues()) {
+          td.sep(", ");
+          renderLeaf(res, vv, e, td, td, false, showCodeDetails, displayHints, path, indent);
+        }
       }
     }
   }
