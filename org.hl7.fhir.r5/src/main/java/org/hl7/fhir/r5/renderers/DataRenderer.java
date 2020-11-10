@@ -392,12 +392,17 @@ public class DataRenderer extends Renderer {
       } else if (!getContext().isCanonicalUrlsAsLinks())
         url = null;
     }
-    if (url == null)
+    if (url == null) {
       x.b().tx(uri.getValue());
-    else if (uri.getValue().startsWith("mailto:"))
+    } else if (uri.getValue().startsWith("mailto:")) {
       x.ah(uri.getValue()).addText(uri.getValue().substring(7));
-    else
-      x.ah(uri.getValue()).addText(uri.getValue());
+    } else {
+      if (uri.getValue().contains("|")) {
+        x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
+      } else {
+        x.ah(uri.getValue()).addText(uri.getValue());        
+      }
+    }
   }
 
   protected void renderAnnotation(XhtmlNode x, Annotation annot) {
