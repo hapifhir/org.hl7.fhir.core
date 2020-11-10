@@ -465,6 +465,7 @@ public class SnapShotGenerationTests {
     fp.setHostServices(context);
     messages = new ArrayList<ValidationMessage>();
 
+    System.out.println("---- "+id+" -----------------------------------------");
     if (test.isFail()) {
       boolean failed = true;
       try {
