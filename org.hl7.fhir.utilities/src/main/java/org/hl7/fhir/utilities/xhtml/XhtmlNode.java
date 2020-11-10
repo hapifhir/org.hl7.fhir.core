@@ -843,11 +843,11 @@ public class XhtmlNode implements IBaseXhtml {
 
 
   public XhtmlNode sep(String separator) {
-    // if there's already text, add the separator
-    if (seperated) {
+    // if there's already text, add the separator. otherwise, we'll add it next time
+    if (!seperated) {
+      seperated = true;
       return this;
     }
-    seperated = true;
     return tx(separator);
   }
 
