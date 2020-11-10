@@ -27,6 +27,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.ValidationEngine.ValidationRecord;
 import org.hl7.fhir.validation.cli.model.*;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
@@ -69,7 +70,9 @@ public class ValidationService {
   }
   
   public static void validateSources(CliContext cliContext, ValidationEngine validator) throws Exception {
-    Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles());
+    long start = System.currentTimeMillis();
+    List<ValidationRecord> records = new ArrayList<>();
+    Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles(), records);
     int ec = 0;
     System.out.println("Done. "+validator.getContext().clock().report());
     System.out.println();
@@ -91,6 +94,11 @@ public class ValidationService {
       FileOutputStream s = new FileOutputStream(cliContext.getOutput());
       x.compose(s, r);
       s.close();
+    }
+    if (cliContext.getHtmlOutput() != null) {
+      String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis()-start);
+      TextFile.stringToFile(html, cliContext.getHtmlOutput());
+      System.out.println("HTML Summary in "+cliContext.getHtmlOutput());
     }
     System.exit(ec > 0 ? 1 : 0);
   }
@@ -288,10 +296,12 @@ public class ValidationService {
     System.out.println("Scanning for versions (no -version parameter):");
     VersionSourceInformation versions = ValidationService.scanForVersions(cliContext);
     for (String s : versions.getReport()) {
-      System.out.println("  " + s);
+      if (!s.equals("(nothing found)")) {
+        System.out.println("  " + s);
+      }
     }
     if (versions.isEmpty()) {
-      System.out.println("-> Using Default version '" + VersionUtilities.CURRENT_VERSION + "'");
+      System.out.println("  No Version Info found: Using Default version '" + VersionUtilities.CURRENT_VERSION + "'");
       return "current";
     }
     if (versions.size() == 1) {

@@ -351,6 +351,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       System.out.println();
       System.out.print("  Installing: ");
     }
+    
     if (npm.name() == null || id == null || !id.equals(npm.name())) {
       if (!id.equals("hl7.fhir.r5.core")) {// temporary work around
         throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());

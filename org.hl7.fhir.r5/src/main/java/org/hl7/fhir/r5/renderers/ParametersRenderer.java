@@ -119,8 +119,13 @@ public class ParametersRenderer extends ResourceRenderer {
       if (p.hasValue()) {
         render(tr.td(), p.getValue());
       } else if (p.hasResource()) {
-        ResourceRenderer rr = RendererFactory.factory(p.getResource(), context);
-        rr.render(tr.td(), p.getResource());
+        Resource r = p.getResource();
+        td = tr.td();
+        XhtmlNode para = td.para();
+        para.tx(r.fhirType()+"/"+r.getId());
+        para.an(r.fhirType()+"_"+r.getId()).tx(" ");
+        ResourceRenderer rr = RendererFactory.factory(r, context);
+        rr.render(td, r);
       } else if (p.hasPart()) {
         tr.td();
         params(tbl, p.getPart(), 1);
