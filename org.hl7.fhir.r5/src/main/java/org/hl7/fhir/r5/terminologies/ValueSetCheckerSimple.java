@@ -523,14 +523,13 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
     } else {
       if (vsi.hasFilter()) {
         boolean ok = true;
-        for (ConceptSetFilterComponent f : vsi.getFilter())
+        for (ConceptSetFilterComponent f : vsi.getFilter()) {
           if (!codeInFilter(cs, system, f, code)) {
             ok = false;
             break;
           }
-        if (ok) {
-          return true;
         }
+        return ok;
       }
 
       List<ConceptDefinitionComponent> list = cs.getConcept();
