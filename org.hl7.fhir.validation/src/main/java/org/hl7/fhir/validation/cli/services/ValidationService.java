@@ -209,6 +209,7 @@ public class ValidationService {
     FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
     ValidationEngine validator = new ValidationEngine(definitions, ver, cliContext.getSv(), tt);
     System.out.println(" - "+validator.getContext().countAllCaches()+" resources ("+tt.milestone()+")");
+    validator.loadIg("hl7.terminology", false); 
     System.out.print("  Terminology server " + cliContext.getTxServer());
     String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver); 
     System.out.println(" - Version "+txver+" ("+tt.milestone()+")");

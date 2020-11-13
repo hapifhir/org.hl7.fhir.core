@@ -25,7 +25,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
     void loadPackage(String id, String ver) throws IOException, FHIRException;
   }
 
-  private BasePackageCacheManager pcm;
+  private FilesystemPackageCacheManager pcm;
   private IWorkerContext context;
   private IPackageInstaller installer;
   
@@ -51,19 +51,37 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
     if (!Utilities.isAbsoluteUrl(url)) {
       return false;
     }
-    // if we've got to here, it's a reference to a FHIR URL. We're going to try to resolve it on the fly 
     
-    // first possibility: it's a reference to a version specific URL http://hl7.org/fhir/X.X/...
-    VersionURLInfo vu = VersionUtilities.parseVersionUrl(url);
-    if (vu != null) {
-      NpmPackage pi = pcm.loadPackage(VersionUtilities.packageForVersion(vu.getVersion()), VersionUtilities.getCurrentVersion(vu.getVersion()));
-      return pi.hasCanonical(vu.getUrl());
+    // if we've got to here, it's a reference to a FHIR URL. We're going to try to resolve it on the fly
+    String pid = null;
+    String ver = null;
+    String base = findBaseUrl(url);
+    if (base == null) {
+      return false;
+    }
+    
+    if (base.equals("http://terminology.hl7.org")) {
+      pid = "hl7.terminology"; 
+    } else if (url.startsWith("http://hl7.org/fhir")) {
+      pid = pcm.getPackageId(base);
+    } else { 
+      pid = pcm.findCanonicalInLocalCache(base);
+    }
+    ver = url.contains("|") ? url.substring(url.indexOf("|")+1) : null;
+    if (pid == null) {
+      return false;
+    }
+    
+    if (url.startsWith("http://hl7.org/fhir")) {
+      // first possibility: it's a reference to a version specific URL http://hl7.org/fhir/X.X/...
+      VersionURLInfo vu = VersionUtilities.parseVersionUrl(url);
+      if (vu != null) {
+        NpmPackage pi = pcm.loadPackage(VersionUtilities.packageForVersion(vu.getVersion()), VersionUtilities.getCurrentVersion(vu.getVersion()));
+        return pi.hasCanonical(vu.getUrl());
+      }
     }
 
     // ok maybe it's a reference to a package we know
-    String base = findBaseUrl(url);
-    String pid = pcm.getPackageId(base);
-    String ver = url.contains("|") ? url.substring(url.indexOf("|")+1) : null;
     if (pid != null) {
       if (installer.packageExists(pid, ver)) {
         installer.loadPackage(pid, ver);
@@ -72,13 +90,8 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
       }
     }
     
-    if (!url.startsWith("http://hl7.org/fhir")) {
-      return true; // we don't bother with those in the standalone validator - we assume they are valid 
-    }
-    
-    // we assume it's invalid at this point 
-    return false;
-
+ // we don't bother with urls outside fhir space in the standalone validator - we assume they are valid
+    return !url.startsWith("http://hl7.org/fhir");
   }
 
   private String findBaseUrl(String url) {
