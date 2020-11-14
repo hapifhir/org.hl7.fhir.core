@@ -41,6 +41,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
+import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -352,7 +353,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       System.out.print("  Installing: ");
     }
     
-    if (npm.name() == null || id == null || !id.equals(npm.name())) {
+    if (npm.name() == null || id == null || !id.equalsIgnoreCase(npm.name())) {
       if (!id.equals("hl7.fhir.r5.core")) {// temporary work around
         throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());
       }
@@ -549,7 +550,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   @Override
   public String getPackageId(String canonicalUrl) throws IOException {
-    String retVal = super.getPackageId(canonicalUrl);
+    String retVal = findCanonicalInLocalCache(canonicalUrl);
+    
+    retVal = super.getPackageId(canonicalUrl);
 
     if (retVal == null) {
       retVal = getPackageIdFromBuildList(canonicalUrl);
@@ -558,6 +561,21 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     return retVal;
   }
 
+
+  public String findCanonicalInLocalCache(String canonicalUrl) {
+    try {
+      for (String pf : listPackages()) {
+        if (new File(Utilities.path(cacheFolder, pf, "package", "package.json")).exists()) {
+          JsonObject npm = JsonTrackingParser.parseJsonFile(Utilities.path(cacheFolder, pf, "package", "package.json"));
+          if (canonicalUrl.equals(JSONUtil.str(npm, "canonical"))) {
+            return JSONUtil.str(npm, "name");
+          }
+        }
+      }
+    } catch (IOException e) {
+    }
+    return null;
+  }
 
   // ========================= Package Mgmt API =======================================================================
 
