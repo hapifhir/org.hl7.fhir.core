@@ -82,7 +82,7 @@ public class ResourceRequest<T extends Resource> {
 	}
 	
 	public boolean isSuccessfulRequest() {
-		return successfulStatuses.contains(httpStatus) && !errorStatuses.contains(httpStatus) && httpStatus > 0;
+		return this.httpStatus / 100 == 2;
 	}
 	
 	public boolean isUnsuccessfulRequest() {

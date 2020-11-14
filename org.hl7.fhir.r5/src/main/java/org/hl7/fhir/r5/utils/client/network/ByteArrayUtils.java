@@ -11,7 +11,7 @@ import java.io.ByteArrayOutputStream;
 
 public class ByteArrayUtils {
 
-  public <T extends Resource> byte[] getResourceAsByteArray(T resource, boolean pretty, boolean isJson) {
+  public static <T extends Resource> byte[] resourceToByteArray(T resource, boolean pretty, boolean isJson) {
     ByteArrayOutputStream baos = null;
     byte[] byteArray = null;
     try {
