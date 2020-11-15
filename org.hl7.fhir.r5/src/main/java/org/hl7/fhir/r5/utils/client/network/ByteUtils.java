@@ -21,7 +21,7 @@ public class ByteUtils {
     try {
       baos = new ByteArrayOutputStream();
       IParser parser = null;
-      if(isJson) {
+      if (isJson) {
         parser = new JsonParser();
       } else {
         parser = new XmlParser();
@@ -29,12 +29,12 @@ public class ByteUtils {
       parser.setOutputStyle(pretty ? IParser.OutputStyle.PRETTY : IParser.OutputStyle.NORMAL);
       parser.compose(baos, resource);
       baos.close();
-      byteArray =  baos.toByteArray();
+      byteArray = baos.toByteArray();
       baos.close();
     } catch (Exception e) {
-      try{
+      try {
         baos.close();
-      }catch(Exception ex) {
+      } catch (Exception ex) {
         throw new EFhirClientException("Error closing output stream", ex);
       }
       throw new EFhirClientException("Error converting output stream to byte array", e);
@@ -48,12 +48,12 @@ public class ByteUtils {
     for (String name : parameters.keySet()) {
       w.write("--");
       w.write(boundary);
-      w.write("\r\nContent-Disposition: form-data; name=\""+name+"\"\r\n\r\n");
-      w.write(parameters.get(name)+"\r\n");
+      w.write("\r\nContent-Disposition: form-data; name=\"" + name + "\"\r\n\r\n");
+      w.write(parameters.get(name) + "\r\n");
     }
     w.write("--");
     w.write(boundary);
-    w.write("\r\nContent-Disposition: form-data; name=\""+resourceName+"\"\r\n\r\n");
+    w.write("\r\nContent-Disposition: form-data; name=\"" + resourceName + "\"\r\n\r\n");
     w.close();
     JsonParser json = new JsonParser();
     json.setOutputStyle(IParser.OutputStyle.NORMAL);
@@ -66,36 +66,4 @@ public class ByteUtils {
     w.close();
     return b.toByteArray();
   }
-
-  /**
-   * @deprecated I cannot find any use within the libraries for this method. This will be removed in a future release,
-   * unless a case is made.
-   */
-  public static byte[] getFeedAsByteArray(Bundle feed, boolean pretty, boolean isJson) {
-    ByteArrayOutputStream baos = null;
-    byte[] byteArray = null;
-    try {
-      baos = new ByteArrayOutputStream();
-      IParser parser = null;
-      if(isJson) {
-        parser = new JsonParser();
-      } else {
-        parser = new XmlParser();
-      }
-      parser.setOutputStyle(pretty ? IParser.OutputStyle.PRETTY : IParser.OutputStyle.NORMAL);
-      parser.compose(baos, feed);
-      baos.close();
-      byteArray =  baos.toByteArray();
-      baos.close();
-    } catch (Exception e) {
-      try{
-        baos.close();
-      }catch(Exception ex) {
-        throw new EFhirClientException("Error closing output stream", ex);
-      }
-      throw new EFhirClientException("Error converting output stream to byte array", e);
-    }
-    return byteArray;
-  }
-
 }

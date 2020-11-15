@@ -4,8 +4,6 @@ import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
@@ -25,26 +23,13 @@ import java.util.concurrent.TimeUnit;
 
 public class Client {
 
-  private static boolean debugging = false;
-  private static long DEFAULT_TIMEOUT = 5000;
   public static final String DEFAULT_CHARSET = "UTF-8";
-
-  //  private HttpHost proxy;
-//  private Proxy proxy = null;
+  private static final long DEFAULT_TIMEOUT = 5000;
   private String username;
   private String password;
   private ToolingClientLogger logger;
   private int retryCount;
   private long timeout = DEFAULT_TIMEOUT;
-
-
-//  public HttpHost getProxy() {
-//    return proxy;
-//  }
-//
-//  public void setProxy(HttpHost proxy) {
-//    this.proxy = proxy;
-//  }
 
   public String getUsername() {
     return username;
@@ -78,12 +63,12 @@ public class Client {
     this.retryCount = retryCount;
   }
 
-  public void setTimeout(long timeout) {
-    this.timeout = timeout;
-  }
-
   public long getTimeout() {
     return timeout;
+  }
+
+  public void setTimeout(long timeout) {
+    this.timeout = timeout;
   }
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri,
@@ -197,12 +182,13 @@ public class Client {
   }
 
   protected <T extends Resource> Bundle executeBundleRequest(Request.Builder request,
-                                                               String resourceFormat,
-                                                               Headers headers,
-                                                               String message,
-                                                               int retryCount,
-                                                               long timeout) {
+                                                             String resourceFormat,
+                                                             Headers headers,
+                                                             String message,
+                                                             int retryCount,
+                                                             long timeout) {
     return new FhirRequestBuilder(request)
+      .withLogger(logger)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
       .withMessage(message)
@@ -218,6 +204,7 @@ public class Client {
                                                                        int retryCount,
                                                                        long timeout) {
     return new FhirRequestBuilder(request)
+      .withLogger(logger)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
       .withMessage(message)
@@ -237,10 +224,10 @@ public class Client {
       dateTime = serverConnection.getHeaderField("Last-Modified");
       SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", new Locale("en", "US"));
       Date lastModifiedTimestamp = format.parse(dateTime);
-      Calendar calendar=Calendar.getInstance();
+      Calendar calendar = Calendar.getInstance();
       calendar.setTime(lastModifiedTimestamp);
       return calendar;
-    } catch(ParseException pe) {
+    } catch (ParseException pe) {
       throw new EFhirClientException("Error parsing Last-Modified response header " + dateTime, pe);
     }
   }

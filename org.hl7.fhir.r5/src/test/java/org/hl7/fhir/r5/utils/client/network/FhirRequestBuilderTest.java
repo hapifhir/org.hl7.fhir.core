@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.utils.client.network;
 
 import okhttp3.Headers;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.junit.jupiter.api.Assertions;
@@ -102,5 +103,45 @@ class FhirRequestBuilderTest {
     outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
     outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
     Assertions.assertFalse(FhirRequestBuilder.hasError(outcome), "Error check triggered unexpectedly.");
+  }
+
+  @Test
+  @DisplayName("Test that getLocationHeader returns header for 'location'.")
+  void getLocationHeaderWhenOnlyLocationIsSet() {
+    final String expectedLocationHeader = "location_header_value";
+    Headers headers = new Headers.Builder()
+      .add(FhirRequestBuilder.LOCATION_HEADER, expectedLocationHeader)
+      .build();
+    Assertions.assertEquals(expectedLocationHeader, FhirRequestBuilder.getLocationHeader(headers));
+  }
+
+  @Test
+  @DisplayName("Test that getLocationHeader returns header for 'content-location'.")
+  void getLocationHeaderWhenOnlyContentLocationIsSet() {
+    final String expectedContentLocationHeader = "content_location_header_value";
+    Headers headers = new Headers.Builder()
+      .add(FhirRequestBuilder.CONTENT_LOCATION_HEADER, expectedContentLocationHeader)
+      .build();
+    Assertions.assertEquals(expectedContentLocationHeader, FhirRequestBuilder.getLocationHeader(headers));
+  }
+
+  @Test
+  @DisplayName("Test that getLocationHeader returns 'location' header when both 'location' and 'content-location' are set.")
+  void getLocationHeaderWhenLocationAndContentLocationAreSet() {
+    final String expectedLocationHeader = "location_header_value";
+    final String expectedContentLocationHeader = "content_location_header_value";
+    Headers headers = new Headers.Builder()
+      .add(FhirRequestBuilder.LOCATION_HEADER, expectedLocationHeader)
+      .add(FhirRequestBuilder.CONTENT_LOCATION_HEADER, expectedContentLocationHeader)
+      .build();
+    Assertions.assertEquals(expectedLocationHeader, FhirRequestBuilder.getLocationHeader(headers));
+  }
+
+  @Test
+  @DisplayName("Test that getLocationHeader returns null when no location available.")
+  void getLocationHeaderWhenNoLocationSet() {
+    Headers headers = new Headers.Builder()
+      .build();
+    Assertions.assertNull(FhirRequestBuilder.getLocationHeader(headers));
   }
 }

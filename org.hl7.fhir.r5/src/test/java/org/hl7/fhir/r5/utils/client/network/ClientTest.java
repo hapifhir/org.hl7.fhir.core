@@ -35,7 +35,7 @@ class ClientTest {
     .addAddress(address)
     .setGender(Enumerations.AdministrativeGender.MALE);
 
-  @BeforeAll
+  @BeforeEach
   void setup() {
     setupMockServer();
     client = new Client();
