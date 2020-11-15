@@ -2,17 +2,20 @@ package org.hl7.fhir.r5.utils.client.network;
 
 import okhttp3.Headers;
 import okhttp3.Request;
+import org.hl7.fhir.r5.model.OperationOutcome;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 class FhirRequestBuilderTest {
 
-
   @Test
+  @DisplayName("Test default headers are added correctly.")
   void addDefaultHeaders() {
     Request.Builder request = new Request.Builder().url("http://www.google.com");
     FhirRequestBuilder.addDefaultHeaders(request);
@@ -28,6 +31,7 @@ class FhirRequestBuilderTest {
   }
 
   @Test
+  @DisplayName("Test resource format headers are added correctly.")
   void addResourceFormatHeaders() {
     String testFormat = "yaml";
     Request.Builder request = new Request.Builder().url("http://www.google.com");
@@ -44,6 +48,7 @@ class FhirRequestBuilderTest {
   }
 
   @Test
+  @DisplayName("Test a list of provided headers are added correctly.")
   void addHeaders() {
     String headerName1 = "headerName1";
     String headerValue1 = "headerValue1";
@@ -65,5 +70,37 @@ class FhirRequestBuilderTest {
     Assertions.assertNotNull(headersMap.get(headerName2), headerName2 + " header null.");
     Assertions.assertEquals(headerValue2, headersMap.get(headerName2).get(0),
       headerName2 + " header not populated with expected value " + headerValue2 + ".");
+  }
+
+    @Test
+    @DisplayName("Test that FATAL issue severity triggers error.")
+    void hasErrorTestFatal() {
+      OperationOutcome outcome = new OperationOutcome();
+      outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
+      outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
+      outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
+      outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.FATAL));
+      Assertions.assertTrue(FhirRequestBuilder.hasError(outcome), "Error check not triggered for FATAL issue severity.");
+    }
+
+  @Test
+  @DisplayName("Test that ERROR issue severity triggers error.")
+  void hasErrorTestError() {
+    OperationOutcome outcome = new OperationOutcome();
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.ERROR));
+    Assertions.assertTrue(FhirRequestBuilder.hasError(outcome), "Error check not triggered for ERROR issue severity.");
+  }
+
+  @Test
+  @DisplayName("Test that no FATAL or ERROR issue severity does not trigger error.")
+  void hasErrorTestNoErrors() {
+    OperationOutcome outcome = new OperationOutcome();
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.INFORMATION));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.NULL));
+    outcome.addIssue(new OperationOutcome.OperationOutcomeIssueComponent().setSeverity(OperationOutcome.IssueSeverity.WARNING));
+    Assertions.assertFalse(FhirRequestBuilder.hasError(outcome), "Error check triggered unexpectedly.");
   }
 }

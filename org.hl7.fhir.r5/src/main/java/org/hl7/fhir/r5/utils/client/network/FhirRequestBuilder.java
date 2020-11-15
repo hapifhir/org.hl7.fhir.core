@@ -15,20 +15,21 @@ import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
-import java.io.File;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class FhirRequestBuilder {
 
+  public static final String HTTP_PROXY_USER = "http.proxyUser";
+  public static final String HTTP_PROXY_PASS = "http.proxyPassword";
+  public static final String HEADER_PROXY_AUTH = "Proxy-Authorization";
   protected static final String DEFAULT_CHARSET = "UTF-8";
-  protected static final String JAVA_TEMP_DIR = "java.io.tmpdir";
 
   private final Request.Builder httpRequest;
   private String resourceFormat = null;
-  private byte[] payload = null;
   private Headers headers = null;
   private String message = null;
   private int retryCount = 1;
@@ -58,6 +59,8 @@ public class FhirRequestBuilder {
    * to any configuration, such as proxy settings, timeout, caches, etc, we can do a per-call configuration through
    * the {@link OkHttpClient#newBuilder()} method. That will return a builder that shares the same connection pool,
    * dispatcher, and configuration with the original client.
+   * </p>
+   * The {@link OkHttpClient} uses the proxy auth properties set in the current system properties.
    *
    * @return {@link OkHttpClient} instance
    */
@@ -65,11 +68,20 @@ public class FhirRequestBuilder {
     if (okHttpClient == null) {
       okHttpClient = new OkHttpClient();
     }
+
+    Authenticator proxyAuthenticator = (route, response) -> {
+      String credential = Credentials.basic(System.getProperty(HTTP_PROXY_USER), System.getProperty(HTTP_PROXY_PASS));
+      return response.request().newBuilder()
+        .header(HEADER_PROXY_AUTH, credential)
+        .build();
+    };
+
     return okHttpClient.newBuilder()
       .addInterceptor(new RetryInterceptor(retryCount))
       .connectTimeout(timeout, timeoutUnit)
       .writeTimeout(timeout, timeoutUnit)
       .readTimeout(timeout, timeoutUnit)
+      .proxyAuthenticator(proxyAuthenticator)
       .build();
   }
 
@@ -79,11 +91,6 @@ public class FhirRequestBuilder {
 
   public FhirRequestBuilder withResourceFormat(String resourceFormat) {
     this.resourceFormat = resourceFormat;
-    return this;
-  }
-
-  public FhirRequestBuilder withPayload(byte[] payload) {
-    this.payload = payload;
     return this;
   }
 
@@ -119,7 +126,6 @@ public class FhirRequestBuilder {
 
   public <T extends Resource> ResourceRequest<T> execute() {
     formatHeaders(httpRequest, resourceFormat, null);
-    setAuth(httpRequest);
 
     try {
       Response response = getHttpClient().newCall(httpRequest.build()).execute();
@@ -134,7 +140,6 @@ public class FhirRequestBuilder {
 
   public Bundle executeAsBatch() {
     formatHeaders(httpRequest, resourceFormat, null);
-    setAuth(httpRequest);
 
     try {
       Response response = getHttpClient().newCall(httpRequest.build()).execute();
@@ -145,25 +150,6 @@ public class FhirRequestBuilder {
 
     return null;
   }
-
-//  public <T> CompletableFuture<HttpResponse<T>> tryResend(HttpClient client,
-//                                                          HttpRequest request,
-//                                                          HttpResponse.BodyHandler<T> handler,
-//                                                          int count,
-//                                                          HttpResponse<T> resp,
-//                                                          String message) {
-//    if (isSuccessful(resp)) {
-//      return CompletableFuture.completedFuture(resp);
-//    } else if (count >= retryCount) {
-//      System.out.println("Retry count exceeded, (R5 / for " + message + ")");
-//      throw new EFhirClientException("Error sending HTTP Post/Put Payload, retries exceeded...");
-//    } else {
-//      return client.sendAsync(request, handler)
-//        .thenComposeAsync(r -> tryResend(client, request, handler, count + 1, r, message));
-//    }
-//    return null;
-//  }
-
 
   /**
    * Adds necessary default headers, formatting headers, and any passed in {@link Headers} to the passed in
@@ -280,6 +266,14 @@ public class FhirRequestBuilder {
     return feed;
   }
 
+  /**
+   * Returns the appropriate parser based on the format type passed in. Defaults to XML parser if a blank format is
+   * provided...because reasons.
+   *
+   * Currently supports only "json" and "xml" formats.
+   * @param format One of "json" or "xml".
+   * @return {@link JsonParser} or {@link XmlParser}
+   */
   protected IParser getParser(String format) {
     if (StringUtils.isBlank(format)) {
       format = ResourceFormat.RESOURCE_XML.getHeader();
@@ -293,11 +287,26 @@ public class FhirRequestBuilder {
     }
   }
 
-  private boolean hasError(OperationOutcome oo) {
-    return (oo.getIssue().stream().anyMatch(issue -> issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR || issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL));
+  /**
+   * Returns true if any of the {@link org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent} within the
+   * provided {@link OperationOutcome} have an {@link org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity} of
+   * {@link org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity#ERROR} or
+   * {@link org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity#FATAL}
+   * @param oo {@link OperationOutcome} to evaluate.
+   * @return {@link Boolean#TRUE} if an error exists.
+   */
+  protected static boolean hasError(OperationOutcome oo) {
+    return (oo.getIssue().stream()
+      .anyMatch(issue -> issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR
+        || issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL));
   }
 
-  private void log(Response response) throws IOException {
+  /**
+   * Logs the given {@link Response}, using the current {@link ToolingClientLogger}. If the current
+   * {@link FhirRequestBuilder#logger} is null, no action is taken.
+   * @param response {@link Response} to log.
+   */
+  protected void log(Response response) {
     if (logger != null) {
       Iterator<Pair<String, String>> iterator = response.headers().iterator();
       List<String> headerList = new ArrayList<>(Collections.emptyList());
@@ -306,7 +315,14 @@ public class FhirRequestBuilder {
         headerList.add(pair.getFirst() + ":" + pair.getSecond());
         iterator.next();
       }
-      logger.logResponse(Integer.toString(response.code()), headerList, response.body().bytes());
+      try {
+        logger.logResponse(Integer.toString(response.code()), headerList, response.body().bytes());
+      } catch (Exception e) {
+        System.out.println("Error parsing response body passed in to logger ->\n" + e.getLocalizedMessage());
+      }
+    } else {
+      System.out.println("Call to log HTTP response with null ToolingClientLogger set... are you forgetting to " +
+        "initialize your logger?");
     }
   }
 
@@ -320,30 +336,4 @@ public class FhirRequestBuilder {
       return null;
     }
   }
-
-  private void setAuth(Request.Builder requestBuilder) {
-// TODO
-//    if (password != null) {
-//      try {
-//        byte[] b = Base64.encodeBase64((username+":"+password).getBytes("ASCII"));
-//        String b64 = new String(b, StandardCharsets.US_ASCII);
-//        httpget.setHeader("Authorization", "Basic " + b64);
-//      } catch (UnsupportedEncodingException e) {
-//      }
-//    }
-//  }
-  }
-
-//  public HttpClient getClient() {
-
-//    httpclient = new DefaultHttpClient();
-//    HttpParams params = httpclient.getParams();
-//    HttpConnectionParams.setConnectionTimeout(params, TIMEOUT_CONNECT);
-//    HttpConnectionParams.setSoTimeout(params, timeout);
-//    HttpConnectionParams.setSoKeepalive(params, true);
-//    if(proxy != null) {
-//      httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-//    }
-//  }
-
 }

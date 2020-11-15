@@ -29,11 +29,10 @@ package org.hl7.fhir.r5.utils.client;
   
 */
 
-import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
-import org.hl7.fhir.r5.utils.client.network.ByteArrayUtils;
+import org.hl7.fhir.r5.utils.client.network.ByteUtils;
 import org.hl7.fhir.r5.utils.client.network.Client;
 import org.hl7.fhir.r5.utils.client.network.ResourceRequest;
 import org.hl7.fhir.utilities.ToolingClientLogger;
@@ -43,7 +42,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -91,7 +89,7 @@ public class FHIRToolingClient {
   private int maxResultSetSize = -1;//_count
   private CapabilityStatement capabilities;
 
-  private ClientUtils utils = new ClientUtils();
+  //private ClientUtils utils = new ClientUtils();
 
   //TODO temp
   private Client client = new Client();
@@ -105,8 +103,8 @@ public class FHIRToolingClient {
 
   public FHIRToolingClient(String baseServiceUrl, String username, String password) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
-    utils.setUsername(username);
-    utils.setPassword(password);
+//    utils.setUsername(username);
+//    utils.setPassword(password);
     detectProxy();
     initialize(baseServiceUrl);
 
@@ -116,7 +114,7 @@ public class FHIRToolingClient {
   }
 
   public void configureProxy(String proxyHost, int proxyPort) {
-    utils.setProxy(new HttpHost(proxyHost, proxyPort));
+//    utils.setProxy(new HttpHost(proxyHost, proxyPort));
 
 //    client.setProxy(new HttpHost(proxyHost, proxyPort));
   }
@@ -272,7 +270,7 @@ public class FHIRToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resource.getClass(), resource.getId()),
-        ByteArrayUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(),
+        ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(),
         "Update " + resource.fhirType() + "/" + resource.getId(), TIMEOUT_OPERATION);
       result.addErrorStatus(410);//gone
       result.addErrorStatus(404);//unknown
@@ -302,7 +300,7 @@ public class FHIRToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<T> result = null;
     try {
       result = client.issuePutRequest(resourceAddress.resolveGetUriFromResourceClassAndId(resourceClass, id),
-        ByteArrayUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())),
+        ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())),
         getPreferredResourceFormat(),"Update " + resource.fhirType() + "/" + id, TIMEOUT_OPERATION);
       result.addErrorStatus(410);//gone
       result.addErrorStatus(404);//unknown
@@ -341,7 +339,7 @@ public class FHIRToolingClient {
             ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
       org.hl7.fhir.r5.utils.client.network.ResourceRequest<T> result;
       if (complex) {
-        result = client.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps), ByteArrayUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(),
+        result = client.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps), ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(),
           "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
 //        result = utils.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps), utils.getResourceAsByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(),
 //          "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
@@ -372,7 +370,7 @@ public class FHIRToolingClient {
   public Bundle transaction(Bundle batch) {
     Bundle transactionResult = null;
     try {
-      transactionResult = client.postBatchRequest(resourceAddress.getBaseServiceUri(), ByteArrayUtils.resourceToByteArray(batch, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), "transaction", TIMEOUT_NORMAL + batch.getEntry().size());
+      transactionResult = client.postBatchRequest(resourceAddress.getBaseServiceUri(), ByteUtils.resourceToByteArray(batch, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), "transaction", TIMEOUT_NORMAL + batch.getEntry().size());
 //      transactionResult = utils.postBatchRequest(resourceAddress.getBaseServiceUri(), utils.getFeedAsByteArray(batch, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), "transaction", TIMEOUT_NORMAL + batch.getEntry().size());
     } catch (Exception e) {
       handleException("An error occurred trying to process this transaction request", e);
@@ -384,7 +382,7 @@ public class FHIRToolingClient {
   public <T extends Resource> OperationOutcome validate(Class<T> resourceClass, T resource, String id) {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<T> result = null;
     try {
-      result = client.issuePostRequest(resourceAddress.resolveValidateUri(resourceClass, id), ByteArrayUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), "POST " + resourceClass.getName() + (id != null ? "/" + id : "") + "/$validate", TIMEOUT_OPERATION_LONG);
+      result = client.issuePostRequest(resourceAddress.resolveValidateUri(resourceClass, id), ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), "POST " + resourceClass.getName() + (id != null ? "/" + id : "") + "/$validate", TIMEOUT_OPERATION_LONG);
       result.addErrorStatus(400);//gone
       result.addErrorStatus(422);//Unprocessable Entity
       result.addSuccessStatus(200);//OK
@@ -442,7 +440,7 @@ public class FHIRToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
-        ByteArrayUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), null, "ValueSet/$expand?url=" + source.getUrl(), TIMEOUT_OPERATION_EXPAND);
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), null, "ValueSet/$expand?url=" + source.getUrl(), TIMEOUT_OPERATION_EXPAND);
 
 //    ResourceRequest<Resource> result = utils.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand"),
 //      utils.getResourceAsByteArray(p, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), headers, "ValueSet/$expand?url=" + source.getUrl(), TIMEOUT_OPERATION_EXPAND);
@@ -491,7 +489,7 @@ public class FHIRToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", params),
-        ByteArrayUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), null, "ValueSet/$expand?url=" + source.getUrl(), TIMEOUT_OPERATION_EXPAND);
+        ByteUtils.resourceToByteArray(p, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), null, "ValueSet/$expand?url=" + source.getUrl(), TIMEOUT_OPERATION_EXPAND);
 
 //    ResourceRequest<Resource> result = utils.issuePostRequest(resourceAddress.resolveOperationUri(ValueSet.class, "expand", params),
 //      utils.getResourceAsByteArray(p, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), headers, "ValueSet/$expand?url=" + source.getUrl(), TIMEOUT_OPERATION_EXPAND);
@@ -520,7 +518,7 @@ public class FHIRToolingClient {
     ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
-        ByteArrayUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), null, "Closure?name=" + name, TIMEOUT_NORMAL);
+        ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), null, "Closure?name=" + name, TIMEOUT_NORMAL);
 
 //    ResourceRequest<Resource> result = utils.issuePostRequest(resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
 //      utils.getResourceAsByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), headers, "Closure?name=" + name, TIMEOUT_NORMAL);
@@ -546,7 +544,7 @@ public class FHIRToolingClient {
     org.hl7.fhir.r5.utils.client.network.ResourceRequest<Resource> result = null;
     try {
       result = client.issuePostRequest(resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
-        ByteArrayUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), null, "UpdateClosure?name=" + name, TIMEOUT_OPERATION);
+        ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), null, "UpdateClosure?name=" + name, TIMEOUT_OPERATION);
 
 //    ResourceRequest<Resource> result = utils.issuePostRequest(resourceAddress.resolveOperationUri(null, "closure", new HashMap<String, String>()),
 //      utils.getResourceAsByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), headers, "UpdateClosure?name=" + name, TIMEOUT_OPERATION);
@@ -565,29 +563,29 @@ public class FHIRToolingClient {
     return result == null ? null : (ConceptMap) result.getPayload();
   }
 
-  public int getTimeout() {
-    return utils.getTimeout();
+  public long getTimeout() {
+    return client.getTimeout();
   }
 
-  public void setTimeout(int timeout) {
-    utils.setTimeout(timeout);
+  public void setTimeout(long timeout) {
+    client.setTimeout(timeout);
   }
-
-  public String getUsername() {
-    return utils.getUsername();
-  }
-
-  public void setUsername(String username) {
-    utils.setUsername(username);
-  }
-
-  public String getPassword() {
-    return utils.getPassword();
-  }
-
-  public void setPassword(String password) {
-    utils.setPassword(password);
-  }
+//
+//  public String getUsername() {
+//    return utils.getUsername();
+//  }
+//
+//  public void setUsername(String username) {
+//    utils.setUsername(username);
+//  }
+//
+//  public String getPassword() {
+//    return utils.getPassword();
+//  }
+//
+//  public void setPassword(String password) {
+//    utils.setPassword(password);
+//  }
 
   public ToolingClientLogger getLogger() {
     return client.getLogger();

@@ -4,13 +4,23 @@ import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URLConnection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Client {
@@ -25,6 +35,7 @@ public class Client {
   private String password;
   private ToolingClientLogger logger;
   private int retryCount;
+  private long timeout = DEFAULT_TIMEOUT;
 
 
 //  public HttpHost getProxy() {
@@ -67,6 +78,14 @@ public class Client {
     this.retryCount = retryCount;
   }
 
+  public void setTimeout(long timeout) {
+    this.timeout = timeout;
+  }
+
+  public long getTimeout() {
+    return timeout;
+  }
+
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri,
                                                                      String resourceFormat,
                                                                      String message,
@@ -92,7 +111,7 @@ public class Client {
                                                                  byte[] payload,
                                                                  String resourceFormat,
                                                                  String message,
-                                                                 int timeout) throws MalformedURLException {
+                                                                 long timeout) throws MalformedURLException {
     return issuePutRequest(resourceUri, payload, resourceFormat, null, message, timeout);
   }
 
@@ -101,7 +120,7 @@ public class Client {
                                                                  String resourceFormat,
                                                                  Headers headers,
                                                                  String message,
-                                                                 int timeout) throws MalformedURLException {
+                                                                 long timeout) throws MalformedURLException {
     if (payload == null) throw new EFhirClientException("PUT requests require a non-null payload");
     RequestBody body = RequestBody.create(payload);
     Request.Builder request = new Request.Builder()
@@ -115,7 +134,7 @@ public class Client {
                                                                   byte[] payload,
                                                                   String resourceFormat,
                                                                   String message,
-                                                                  int timeout) throws MalformedURLException {
+                                                                  long timeout) throws MalformedURLException {
     return issuePostRequest(resourceUri, payload, resourceFormat, null, message, timeout);
   }
 
@@ -124,7 +143,7 @@ public class Client {
                                                                   String resourceFormat,
                                                                   Headers headers,
                                                                   String message,
-                                                                  int timeout) throws MalformedURLException {
+                                                                  long timeout) throws MalformedURLException {
     if (payload == null) throw new EFhirClientException("POST requests require a non-null payload");
     RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);
     Request.Builder request = new Request.Builder()
@@ -138,14 +157,29 @@ public class Client {
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL())
       .delete();
-    return executeFhirRequest(request, null, null, null, retryCount, DEFAULT_TIMEOUT).isSuccessfulRequest();
+    return executeFhirRequest(request, null, null, null, retryCount, timeout).isSuccessfulRequest();
   }
 
   public Bundle issueGetFeedRequest(URI resourceUri, String resourceFormat) throws MalformedURLException {
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL());
 
-    return executeBundleRequest(request, resourceFormat, null, null, retryCount, DEFAULT_TIMEOUT);
+    return executeBundleRequest(request, resourceFormat, null, null, retryCount, timeout);
+  }
+
+  public Bundle issuePostFeedRequest(URI resourceUri,
+                                     Map<String, String> parameters,
+                                     String resourceName,
+                                     Resource resource,
+                                     String resourceFormat) throws IOException {
+    String boundary = "----WebKitFormBoundarykbMUo6H8QaUnYtRy";
+    byte[] payload = ByteUtils.encodeFormSubmission(parameters, resourceName, resource, boundary);
+    RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);
+    Request.Builder request = new Request.Builder()
+      .url(resourceUri.toURL())
+      .post(body);
+
+    return executeBundleRequest(request, resourceFormat, null, null, retryCount, timeout);
   }
 
   public Bundle postBatchRequest(URI resourceUri,
@@ -190,5 +224,24 @@ public class Client {
       .withHeaders(headers == null ? new Headers.Builder().build() : headers)
       .withTimeout(timeout, TimeUnit.MILLISECONDS)
       .execute();
+  }
+
+  /**
+   * @deprecated It does not appear as though this method is actually being used. Will be removed in a future release
+   * unless a case is made to keep it.
+   */
+  @Deprecated
+  public Calendar getLastModifiedResponseHeaderAsCalendarObject(URLConnection serverConnection) {
+    String dateTime = null;
+    try {
+      dateTime = serverConnection.getHeaderField("Last-Modified");
+      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", new Locale("en", "US"));
+      Date lastModifiedTimestamp = format.parse(dateTime);
+      Calendar calendar=Calendar.getInstance();
+      calendar.setTime(lastModifiedTimestamp);
+      return calendar;
+    } catch(ParseException pe) {
+      throw new EFhirClientException("Error parsing Last-Modified response header " + dateTime, pe);
+    }
   }
 }
