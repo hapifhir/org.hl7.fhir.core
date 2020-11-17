@@ -106,13 +106,14 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     }
     try {
       StructureDefinition sd = r.getDefinition();
-      ElementDefinition ed = sd.getSnapshot().getElement().get(0);
-      if (sd.getType().equals("NamingSystem") && "icd10".equals(r.getId())) {
-        System.out.println("hah!");
+      if (sd == null) {
+        throw new FHIRException("Cannot find definition for "+r.fhirType());
+      } else {
+        ElementDefinition ed = sd.getSnapshot().getElement().get(0);
+        containedIds.clear();
+        hasExtensions = false;
+        generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), false, 0);
       }
-      containedIds.clear();
-      hasExtensions = false;
-      generateByProfile(r, sd, r.root(), sd.getSnapshot().getElement(), ed, context.getProfileUtilities().getChildList(sd, ed), x, r.fhirType(), false, 0);
     } catch (Exception e) {
       e.printStackTrace();
       x.para().b().style("color: maroon").tx("Exception generating Narrative: "+e.getMessage());
@@ -391,6 +392,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     } else if (e instanceof DataRequirement) {
       DataRequirement p = (DataRequirement) e;
       renderDataRequirement(x, p);
+    } else if (e instanceof PrimitiveType) {
+      x.tx(((PrimitiveType) e).primitiveValue());
     } else if (e instanceof ElementDefinition) {
       x.tx("todo-bundle");
     } else if (e != null && !(e instanceof Attachment) && !(e instanceof Narrative) && !(e instanceof Meta)) {
@@ -485,7 +488,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       renderAddress(x, (Address) e);
       return true;
     } else if (e instanceof ContactPoint) {
-      renderContactPoint(x, (ContactPoint) e);
+      if (allowLinks) {
+        renderContactPoint(x, (ContactPoint) e);
+      } else {
+        displayContactPoint(x, (ContactPoint) e);
+      }
       return true;
     } else if (e instanceof Timing) {
       renderTiming(x, (Timing) e);
@@ -527,7 +534,11 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       boolean first = true;
       for (ContactPoint c : cd.getTelecom()) {
         if (first) first = false; else x.tx(",");
-        renderContactPoint(x, c);
+        if (allowLinks) {      
+          renderContactPoint(x, c);
+        } else {
+          displayContactPoint(x, c);
+        }
       }
       return true;
     } else if (e instanceof Range) {
@@ -640,7 +651,9 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
             child = p.getElementDefinition();
           }
           if (child != null) {
-            generateElementByProfile(res, profile, allElements, x, path, showCodeDetails, indent, p, child);
+            if (!child.getBase().hasPath() || !child.getBase().getPath().startsWith("Resource.")) {
+              generateElementByProfile(res, profile, allElements, x, path, showCodeDetails, indent, p, child);
+            }
           }
         }
       }
@@ -710,7 +723,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
                 XhtmlNode para = x.para();
                 para.b().addText(p.getStructure().present());
                 para.tx(": ");
-                renderLeaf(res, v, child, x, para, false, showCodeDetails, displayHints, path, indent);
+                renderLeaf(res, vv, child, x, para, false, showCodeDetails, displayHints, path, indent);
               } else if (ev.hasValues()) {
                 XhtmlNode bq = x.addTag("blockquote");                
                 bq.para().b().addText(isExtension(p) ? p.getStructure().present() : p.getName());
@@ -811,7 +824,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       if (p == null || p.getValues().size() == 0 || p.getValues().get(0) == null)
         td.tx(" ");
       else {
-        renderLeaf(res, p.getValues().get(0), e, td, td, false, showCodeDetails, displayHints, path, indent);
+        for (BaseWrapper vv : p.getValues()) {
+          td.sep(", ");
+          renderLeaf(res, vv, e, td, td, false, showCodeDetails, displayHints, path, indent);
+        }
       }
     }
   }

@@ -50,8 +50,8 @@ import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.cache.ToolsVersion;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -74,7 +74,7 @@ public class TestingUtilities {
 	    FilesystemPackageCacheManager pcm;
 	    try {
 	      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-	      fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.core", "4.0.0"));
+	      fcontext = SimpleWorkerContext.fromPackage(pcm.loadPackage("hl7.fhir.r4.core", "4.0.1"));
 	      fcontext.setUcumService(new UcumEssenceService(TestingUtilities.resourceNameToFile("ucum", "ucum-essence.xml")));
 	      fcontext.setExpansionProfile(new Parameters());
 	    } catch (Exception e) {

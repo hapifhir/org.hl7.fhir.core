@@ -3,8 +3,8 @@ package org.hl7.fhir.validation.tests;
 import java.io.File;
 
 import org.hl7.fhir.r4.test.utils.TestingUtilities;
-import org.hl7.fhir.validation.Validator;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.validation.ValidatorCli;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ public class TransformationTests {
     String output = Utilities.path("[tmp]", "cda-bundle.txt");
     String log = Utilities.path("[tmp]", "transform-log.txt");
     
-    Validator.main(new String[] {input, "-transform", "http://hl7.org/fhir/cda/mapping/ccdaDocumentToFhir", "-ig", "hl7.fhir.cda", "-ig", mappings, "-output", output, "-log", log});
+    ValidatorCli.main(new String[] {input, "-transform", "http://hl7.org/fhir/cda/mapping/ccdaDocumentToFhir", "-ig", "hl7.fhir.cda", "-ig", mappings, "-output", output, "-log", log});
     checkFile(output);
     checkFile(log);
   }

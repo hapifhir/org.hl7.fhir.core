@@ -2023,15 +2023,18 @@ public class VersionConvertor_10_40 {
         copyElement(src, tgt);
         if (src.hasBounds())
             tgt.setBounds(convertType(src.getBounds()));
-        tgt.setCount(src.getCount());
+        if (src.hasCount())
+            tgt.setCount(src.getCount());
         if (src.hasDurationElement())
             tgt.setDurationElement(convertDecimal(src.getDurationElement()));
         if (src.hasDurationMaxElement())
             tgt.setDurationMaxElement(convertDecimal(src.getDurationMaxElement()));
         if (src.hasDurationUnits())
             tgt.setDurationUnitElement(convertUnitsOfTime(src.getDurationUnitsElement()));
-        tgt.setFrequency(src.getFrequency());
-        tgt.setFrequencyMax(src.getFrequencyMax());
+        if (src.hasFrequency())
+            tgt.setFrequency(src.getFrequency());
+        if (src.hasFrequencyMax())
+            tgt.setFrequencyMax(src.getFrequencyMax());
         if (src.hasPeriodElement())
             tgt.setPeriodElement(convertDecimal(src.getPeriodElement()));
         if (src.hasPeriodMaxElement())
@@ -2051,15 +2054,18 @@ public class VersionConvertor_10_40 {
         copyElement(src, tgt);
         if (src.hasBounds())
             tgt.setBounds(convertType(src.getBounds()));
-        tgt.setCount(src.getCount());
+        if (src.hasCount())
+            tgt.setCount(src.getCount());
         if (src.hasDurationElement())
             tgt.setDurationElement(convertDecimal(src.getDurationElement()));
         if (src.hasDurationMaxElement())
             tgt.setDurationMaxElement(convertDecimal(src.getDurationMaxElement()));
         if (src.hasDurationUnit())
             tgt.setDurationUnitsElement(convertUnitsOfTime(src.getDurationUnitElement()));
-        tgt.setFrequency(src.getFrequency());
-        tgt.setFrequencyMax(src.getFrequencyMax());
+        if (src.hasFrequency())
+            tgt.setFrequency(src.getFrequency());
+        if (src.hasFrequencyMax())
+            tgt.setFrequencyMax(src.getFrequencyMax());
         if (src.hasPeriodElement())
             tgt.setPeriodElement(convertDecimal(src.getPeriodElement()));
         if (src.hasPeriodMaxElement())
@@ -2473,8 +2479,6 @@ public class VersionConvertor_10_40 {
             return convertId((org.hl7.fhir.dstu2.model.IdType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.InstantType)
             return convertInstant((org.hl7.fhir.dstu2.model.InstantType) src);
-        if (src instanceof org.hl7.fhir.dstu2.model.IntegerType)
-            return convertInteger((org.hl7.fhir.dstu2.model.IntegerType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.MarkdownType)
             return convertMarkdown((org.hl7.fhir.dstu2.model.MarkdownType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.OidType)
@@ -2487,6 +2491,8 @@ public class VersionConvertor_10_40 {
             return convertTime((org.hl7.fhir.dstu2.model.TimeType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.UnsignedIntType)
             return convertUnsignedInt((org.hl7.fhir.dstu2.model.UnsignedIntType) src);
+        if (src instanceof org.hl7.fhir.dstu2.model.IntegerType)
+          return convertInteger((org.hl7.fhir.dstu2.model.IntegerType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.UriType)
             return convertUri((org.hl7.fhir.dstu2.model.UriType) src);
         if (src instanceof org.hl7.fhir.dstu2.model.UuidType)
@@ -2563,8 +2569,6 @@ public class VersionConvertor_10_40 {
             return convertId((org.hl7.fhir.r4.model.IdType) src);
         if (src instanceof org.hl7.fhir.r4.model.InstantType)
             return convertInstant((org.hl7.fhir.r4.model.InstantType) src);
-        if (src instanceof org.hl7.fhir.r4.model.IntegerType)
-            return convertInteger((org.hl7.fhir.r4.model.IntegerType) src);
         if (src instanceof org.hl7.fhir.r4.model.MarkdownType)
             return convertMarkdown((org.hl7.fhir.r4.model.MarkdownType) src);
         if (src instanceof org.hl7.fhir.r4.model.OidType)
@@ -2577,6 +2581,8 @@ public class VersionConvertor_10_40 {
             return convertTime((org.hl7.fhir.r4.model.TimeType) src);
         if (src instanceof org.hl7.fhir.r4.model.UnsignedIntType)
             return convertUnsignedInt((org.hl7.fhir.r4.model.UnsignedIntType) src);
+        if (src instanceof org.hl7.fhir.r4.model.IntegerType)
+          return convertInteger((org.hl7.fhir.r4.model.IntegerType) src);
         if (src instanceof org.hl7.fhir.r4.model.UriType)
             return convertUri((org.hl7.fhir.r4.model.UriType) src);
         if (src instanceof org.hl7.fhir.r4.model.UuidType)

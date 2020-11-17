@@ -67,8 +67,8 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.TranslationServices;
-import org.hl7.fhir.utilities.cache.BasePackageCacheManager;
-import org.hl7.fhir.utilities.cache.NpmPackage;
+import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 

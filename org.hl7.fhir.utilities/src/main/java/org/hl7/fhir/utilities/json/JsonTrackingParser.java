@@ -36,6 +36,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Map;
 import java.util.Stack;
 
@@ -670,6 +672,13 @@ public class JsonTrackingParser {
   public static String write(JsonObject json) {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     return gson.toJson(json);    
+  }
+
+  public static JsonObject fetchJson(String source) throws IOException {
+    URL url = new URL(source+"?nocache=" + System.currentTimeMillis());
+    HttpURLConnection c = (HttpURLConnection) url.openConnection();
+    c.setInstanceFollowRedirects(true);
+    return parseJson(c.getInputStream());
   }
   
 	

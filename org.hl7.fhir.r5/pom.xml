@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>org.hl7.fhir.core</artifactId>
-		<version>5.1.11-SNAPSHOT</version>
+		<version>5.1.23-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -102,6 +102,20 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-core -->
+		<dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-core</artifactId>
+            <version>3.1.0</version>
+			<optional>true</optional>
+			<exclusions>
+				<exclusion>
+					<groupId>xml-apis</groupId>
+					<artifactId>xml-apis</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -154,6 +168,11 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M4</version>
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
@@ -163,6 +182,15 @@
 				</excludes>
 			</resource>
 		</resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M4</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 	</build>
 
 </project>

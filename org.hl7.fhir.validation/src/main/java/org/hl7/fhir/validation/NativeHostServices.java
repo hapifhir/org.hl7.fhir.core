@@ -34,7 +34,11 @@ package org.hl7.fhir.validation;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.hl7.fhir.convertors.*;
+import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
+import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /**
