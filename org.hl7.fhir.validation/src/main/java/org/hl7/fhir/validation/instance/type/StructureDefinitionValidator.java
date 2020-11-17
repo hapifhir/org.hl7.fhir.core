@@ -3,18 +3,15 @@ package org.hl7.fhir.validation.instance.type;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -22,13 +19,10 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ExpressionNode;
-import org.hl7.fhir.r5.model.ExpressionNode.Kind;
-import org.hl7.fhir.r5.model.ExpressionNode.Operation;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
-import org.hl7.fhir.r5.model.SearchParameter;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
-import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -36,7 +30,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
-import org.hl7.fhir.validation.instance.type.StructureDefinitionValidator.FhirPathSorter;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class StructureDefinitionValidator extends BaseValidator {
@@ -51,16 +44,18 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private FHIRPathEngine fpe;
+  private boolean wantCheckSnapshotUnchanged;
 
-  public StructureDefinitionValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe) {
+  public StructureDefinitionValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged) {
     super(context);
     source = Source.InstanceValidator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
+    this.wantCheckSnapshotUnchanged = wantCheckSnapshotUnchanged;
   }
   
   public void validateStructureDefinition(List<ValidationMessage> errors, Element src, NodeStack stack)  {
-    StructureDefinition sd;
+    StructureDefinition sd = null;
     try {
       sd = loadAsSD(src);
       List<ElementDefinition> snapshot = sd.getSnapshot().getElement();
@@ -84,7 +79,7 @@ public class StructureDefinitionValidator extends BaseValidator {
                 errors.add(msg);
               }
             }
-            if (!snapshot.isEmpty()) {
+            if (!snapshot.isEmpty() && wantCheckSnapshotUnchanged) {
               int was = snapshot.size();
               int is = sd.getSnapshot().getElement().size();
               rule(errors, IssueType.NOTFOUND, stack.getLiteralPath(), was == is, I18nConstants.SNAPSHOT_EXISTING_PROBLEM, was, is);
@@ -95,6 +90,134 @@ public class StructureDefinitionValidator extends BaseValidator {
     } catch (FHIRException | IOException e) {
       rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.ERROR_GENERATING_SNAPSHOT, e.getMessage());
     }
+    List<Element> differentials = src.getChildrenByName("differential");
+    List<Element> snapshots = src.getChildrenByName("snapshot");
+    for (Element differential : differentials) {
+      validateElementList(errors, differential, stack.push(differential, -1, null, null), false, snapshots.size() > 0, sd);
+    }
+    for (Element snapshot : snapshots) {
+      validateElementList(errors, snapshot, stack.push(snapshot, -1, null, null), true, true, sd);
+    }
+  }
+
+  private void validateElementList(List<ValidationMessage> errors, Element elementList, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd) {
+    List<Element> elements = elementList.getChildrenByName("element");
+    int cc = 0;
+    for (Element element : elements) {
+      validateElementDefinition(errors, element, stack.push(element, cc, null, null), snapshot, hasSnapshot, sd);
+      cc++;
+    }    
+  }
+
+  private void validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd) {
+    boolean typeMustSupport = false;
+    List<Element> types = element.getChildrenByName("type");
+    for (Element type : types) {
+      if (hasMustSupportExtension(type)) {
+        typeMustSupport = true;
+      }
+      // check the stated profile - must be a constraint on the type 
+      if (snapshot || sd != null) {
+        validateElementType(errors, type, stack.push(type, -1, null, null), sd, element.getChildValue("path"));
+      }
+    }
+    if (typeMustSupport) {
+      if (snapshot) {
+        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_SNAPSHOT, element.getNamedChildValue("path"));
+      } else {
+        hint(errors, IssueType.EXCEPTION, stack.getLiteralPath(), hasSnapshot || "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_DIFF, element.getNamedChildValue("path"));        
+      }
+    }
+  }
+
+  private void validateElementType(List<ValidationMessage> errors, Element type, NodeStack stack, StructureDefinition sd, String path) {
+    String code = type.getNamedChildValue("code");
+    if (code == null && path != null) {
+      code = getTypeCodeFromSD(sd, path);
+    }
+    if (code != null) {
+      List<Element> profiles = type.getChildrenByName("profile");
+      for (Element profile : profiles) {
+        validateTypeProfile(errors, profile, code, stack.push(type, -1, null, null));
+      }
+    }
+  }
+
+  private String getTypeCodeFromSD(StructureDefinition sd, String path) {
+    ElementDefinition ed = null;
+    for (ElementDefinition t : sd.getSnapshot().getElement()) {
+      if (t.hasPath() && t.getPath().equals(path)) {
+        if (ed == null) {
+          ed = t;
+        } else {
+          return null; // more than one match, we don't know which is which
+        }
+      }
+    }
+    return ed != null && ed.getType().size() == 1 ? ed.getTypeFirstRep().getCode() : null;
+  }
+
+  private void validateTypeProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack) {
+    String p = profile.primitiveValue();
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
+    if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
+      String t = determineBaseType(sd);
+      if (t == null) {
+        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
+      } else {
+        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isInstanceOf(t, code), I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code);
+      }
+    }
+  }
+
+  private boolean isInstanceOf(String t, String code) {
+    StructureDefinition sd = context.fetchTypeDefinition(t);
+    while (sd != null) {
+      if (sd.getType().equals(code)) {
+        return true;
+      }
+      sd = sd.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()) : null;
+      if (sd != null && !sd.getAbstract()) {
+        sd = null;
+      }
+    }
+    return false;
+  }
+
+  private String determineBaseType(StructureDefinition sd) {
+    while (sd != null && !sd.hasType() && sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
+      sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
+    }
+    return sd == null ? null : sd.getType();
+  }
+
+  private boolean hasMustSupportExtension(Element type) {
+    if ("true".equals(getExtensionValue(type, ToolingExtensions.EXT_MUST_SUPPORT))) {
+      return true;
+    }
+    List<Element> profiles = type.getChildrenByName("profile");
+    for (Element profile : profiles) {
+      if ("true".equals(getExtensionValue(profile, ToolingExtensions.EXT_MUST_SUPPORT))) {
+        return true;
+      }
+    }
+    profiles = type.getChildrenByName("targetProfile");
+    for (Element profile : profiles) {
+      if ("true".equals(getExtensionValue(profile, ToolingExtensions.EXT_MUST_SUPPORT))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private String getExtensionValue(Element element, String url) {
+    List<Element> extensions = element.getChildrenByName("extension");
+    for (Element extension : extensions) {
+      if (url.equals(extension.getNamedChildValue("url"))) {
+        return extension.getNamedChildValue("value");
+      }
+    }
+    return null;
   }
 
   private StructureDefinition loadAsSD(Element src) throws FHIRException, IOException {

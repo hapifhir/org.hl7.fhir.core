@@ -81,11 +81,11 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.cache.BasePackageCacheManager;
-import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.cache.NpmPackage;
-import org.hl7.fhir.utilities.cache.NpmPackage.PackageResourceInformation;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
@@ -148,6 +148,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private boolean ignoreProfileErrors;
   private boolean progress;
   private List<String> loadedPackages = new ArrayList<String>();
+  private boolean canNoTS;
 
   public SimpleWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     super();
@@ -299,7 +300,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       setTxCaps(txClient.getTerminologyCapabilities());
       return cps.getSoftware().getVersion();
     } catch (Exception e) {
-      throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__, e.getMessage()), e);
+      throw new FHIRException(formatMessage(canNoTS ? I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__ : I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER, e.getMessage()), e);
     }
   }
 
@@ -813,6 +814,15 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public void setClock(TimeTracker tt) {
     clock = tt;
-    
   }
+
+  public boolean isCanNoTS() {
+    return canNoTS;
+  }
+
+  public void setCanNoTS(boolean canNoTS) {
+    this.canNoTS = canNoTS;
+  }
+  
+  
 }

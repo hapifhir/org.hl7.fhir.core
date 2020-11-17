@@ -442,7 +442,8 @@ public abstract class CanonicalResource extends DomainResource {
     /**
      * @param value A copyright statement relating to the canonical resource and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the canonical resource.
      */
-    public abstract CanonicalResource setCopyright(String value); 
+    public abstract CanonicalResource setCopyright(String value);
+    
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
       }

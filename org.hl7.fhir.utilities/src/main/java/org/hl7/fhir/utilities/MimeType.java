@@ -90,4 +90,49 @@ public class MimeType {
     return source;
   }
 
+  public static String getExtension(String mimeType) {
+    MimeType mt = new MimeType(mimeType);    
+    return mt.getExtension();
+  }
+
+  public String getExtension() {
+    switch (base) {
+    case "text/html" : return "html";
+    case "text/xml" : return "xml";
+    case "application/xml" : return "xml";
+    case "text/markdown" : return "md";
+    case "application/js" : return "js";
+    case "application/css" : return "css";
+    case "text/x-csrc" : return "c";
+    case "text/x-csharp" : return "cs";
+    case "text/x-c++src" : return "c";
+    case "application/graphql" : return "graphql";
+    case "application/x-java" : return "java";
+    case "application/json" : return "json";
+    case "text/json" : return "json";
+    case "application/liquid" : return "liquid";
+    case "text/x-pascal" : return "pas";
+    case "text/x-python" : return "py";
+    case "text/x-rsrc" : return "r";
+    case "text/x-ruby" : return "ruby";
+    case "text/x-sas" : return "sas";
+    case "text/x-sql" : return "sql";
+    case "application/typescript" : return "ts";
+    case "text/cql": return "cql";
+    case "image/png": return "png";
+    case "image/gif": return "gif";
+    case "image/jpeg": return "jpg";
+    }
+    if (base.contains("xml+") || base.contains("+xml")) {
+      return "xml";
+    }
+    if (base.contains("json+") || base.contains("+json")) {
+      return "json";
+    }
+    if (base.contains("turtle+") || base.contains("+turtle")) {
+      return "ttl";
+    }
+    return null;
+  }
+
 }

@@ -19,6 +19,7 @@ import org.hl7.fhir.r4.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r4.model.TypeDetails.ProfiledType;
 import org.hl7.fhir.r4.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r4.utils.FHIRPathEngine.IEvaluationContext.FunctionDetails;
+import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.TerminologyServiceOptions;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -232,7 +233,7 @@ public class FHIRPathEngine {
      * @param parameters
      * @return
      */
-    public List<Base> executeFunction(Object appContext, String functionName, List<List<Base>> parameters);
+    public List<Base> executeFunction(Object appContext, List<Base> focus, String functionName, List<List<Base>> parameters);
     
     /**
      * Implementation of resolve() function. Passed a string, return matching resource, if one is known - else null
@@ -414,10 +415,10 @@ public class FHIRPathEngine {
       }
 	  StructureDefinition sd = worker.fetchResource(StructureDefinition.class, ctxt);
 	  if (sd == null) 
-	    throw new PathEngineException("Unknown context "+context);
-	  ElementDefinitionMatch ed = getElementDefinition(sd, context, true);
+	    throw new PathEngineException("Unknown context "+context, expr.getStart(), expr.toString());
+	  ElementDefinitionMatch ed = getElementDefinition(sd, context, true, expr);
 	  if (ed == null) 
-	    throw new PathEngineException("Unknown context element "+context);
+	    throw new PathEngineException("Unknown context element "+context, expr.getStart(), expr.toString());
 	  if (ed.fixedType != null) 
 	    types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
 	  else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) 
@@ -438,9 +439,9 @@ public class FHIRPathEngine {
     if (!context.contains(".")) {
       types = new TypeDetails(CollectionStatus.SINGLETON, sd.getUrl());
     } else {
-      ElementDefinitionMatch ed = getElementDefinition(sd, context, true);
+      ElementDefinitionMatch ed = getElementDefinition(sd, context, true, expr);
       if (ed == null) 
-        throw new PathEngineException("Unknown context element "+context);
+        throw new PathEngineException("Unknown context element "+context, expr.getStart(), expr.toString());
       if (ed.fixedType != null) 
         types = new TypeDetails(CollectionStatus.SINGLETON, ed.fixedType);
       else if (ed.getDefinition().getType().isEmpty() || isAbstractType(ed.getDefinition().getType())) 
@@ -1161,7 +1162,7 @@ public class FHIRPathEngine {
       work.addAll(work2);
       break;
     case Constant:
-      Base b = resolveConstant(context, exp.getConstant(), false);
+      Base b = resolveConstant(context, exp.getConstant(), false, exp);
       if (b != null)
         work.add(b);
       break;
@@ -1177,15 +1178,15 @@ public class FHIRPathEngine {
       ExpressionNode next = exp.getOpNext();
       ExpressionNode last = exp;
       while (next != null) {
-        List<Base> work2 = preOperate(work, last.getOperation());
+        List<Base> work2 = preOperate(work, last.getOperation(), exp);
         if (work2 != null)
           work = work2;
         else if (last.getOperation() == Operation.Is || last.getOperation() == Operation.As) {
           work2 = executeTypeName(context, focus, next, false);
-          work = operate(context, work, last.getOperation(), work2);
+          work = operate(context, work, last.getOperation(), work2, last);
         } else {
           work2 = execute(context, focus, next, true);
-          work = operate(context, work, last.getOperation(), work2);
+          work = operate(context, work, last.getOperation(), work2, last);
 //          System.out.println("Result of {'"+last.toString()+" "+last.getOperation().toCode()+" "+next.toString()+"'}: "+focus.toString());
         }
         last = next;
@@ -1206,7 +1207,7 @@ public class FHIRPathEngine {
   }
 
 
-  private List<Base> preOperate(List<Base> left, Operation operation) throws PathEngineException {
+  private List<Base> preOperate(List<Base> left, Operation operation, ExpressionNode expr) throws PathEngineException {
     if (left.size() == 0)
       return null;
     switch (operation) {
@@ -1215,7 +1216,7 @@ public class FHIRPathEngine {
     case Or:
       return isBoolean(left, true) ? makeBoolean(true) : null;
     case Implies:
-      Equality v = asBool(left); 
+      Equality v = asBool(left, expr); 
       return v == Equality.False ? makeBoolean(true) : null;
     default: 
       return null;
@@ -1246,13 +1247,13 @@ public class FHIRPathEngine {
       else if (atEntry && exp.getName().equals("$total"))
         result.update(anything(CollectionStatus.UNORDERED));
       else if (atEntry && focus == null)
-        result.update(executeContextType(context, exp.getName()));
+        result.update(executeContextType(context, exp.getName(), exp));
       else {
         for (String s : focus.getTypes()) {
           result.update(executeType(s, exp, atEntry));
         }
         if (result.hasNoTypes()) 
-          throw new PathEngineException("The name "+exp.getName()+" is not valid for any of the possible types: "+focus.describe());
+          throw new PathEngineException("The name "+exp.getName()+" is not valid for any of the possible types: "+focus.describe(), exp.getStart(), exp.toString());
       }
       break;
     case Function:
@@ -1262,7 +1263,7 @@ public class FHIRPathEngine {
       result.addType("integer");
       break;
     case Constant:
-      result.update(resolveConstantType(context, exp.getConstant()));
+      result.update(resolveConstantType(context, exp.getConstant(), exp));
       break;
     case Group:
       result.update(executeType(context, focus, exp.getGroup(), atEntry));
@@ -1282,7 +1283,7 @@ public class FHIRPathEngine {
           work = executeTypeName(context, focus, next, atEntry);
         else
           work = executeType(context, focus, next, atEntry);
-        result = operateTypes(result, last.getOperation(), work);
+        result = operateTypes(result, last.getOperation(), work, exp);
         last = next;
         next = next.getOpNext();
       }
@@ -1291,16 +1292,16 @@ public class FHIRPathEngine {
     return result;
   }
 
-  private Base resolveConstant(ExecutionContext context, Base constant, boolean beforeContext) throws PathEngineException {
+  private Base resolveConstant(ExecutionContext context, Base constant, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
     if (!(constant instanceof FHIRConstant))
       return constant;
     FHIRConstant c = (FHIRConstant) constant;
     if (c.getValue().startsWith("%")) {
-      return resolveConstant(context, c.getValue(), beforeContext);
+      return resolveConstant(context, c.getValue(), beforeContext, expr);
     } else if (c.getValue().startsWith("@")) {
       return processDateConstant(context.appInfo, c.getValue().substring(1));
     } else 
-      throw new PathEngineException("Invaild FHIR Constant "+c.getValue());
+      throw new PathEngineException("Invaild FHIR Constant "+c.getValue(), expr.getStart(), expr.toString());
   }
 
   private Base processDateConstant(Object appInfo, String value) throws PathEngineException {
@@ -1322,7 +1323,7 @@ public class FHIRPathEngine {
   }
 
 
-  private Base resolveConstant(ExecutionContext context, String s, boolean beforeContext) throws PathEngineException {
+  private Base resolveConstant(ExecutionContext context, String s, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
     if (s.equals("%sct"))
       return new StringType("http://snomed.info/sct").noExtensions();
     else if (s.equals("%loinc"))
@@ -1331,11 +1332,11 @@ public class FHIRPathEngine {
       return new StringType("http://unitsofmeasure.org").noExtensions();
     else if (s.equals("%resource")) {
       if (context.focusResource == null)
-        throw new PathEngineException("Cannot use %resource in this context");
+        throw new PathEngineException("Cannot use %resource in this context", expr.getStart(), expr.toString());
       return context.focusResource;
     } else if (s.equals("%rootResource")) {
       if (context.rootResource == null)
-        throw new PathEngineException("Cannot use %rootResource in this context");
+        throw new PathEngineException("Cannot use %rootResource in this context", expr.getStart(), expr.toString());
       return context.rootResource;
     } else if (s.equals("%context")) {
       return context.context;
@@ -1348,7 +1349,7 @@ public class FHIRPathEngine {
     else if (s.startsWith("%`ext-"))
       return new StringType("http://hl7.org/fhir/StructureDefinition/"+s.substring(6, s.length()-1)).noExtensions();
     else if (hostServices == null)
-      throw new PathEngineException("Unknown fixed constant '"+s+"'");
+      throw new PathEngineException("Unknown fixed constant '"+s+"'", expr.getStart(), expr.toString());
     else
       return hostServices.resolveConstant(context.appInfo, s.substring(1), beforeContext);
   }
@@ -1408,39 +1409,39 @@ public class FHIRPathEngine {
   }
 
 
-  private List<Base> operate(ExecutionContext context, List<Base> left, Operation operation, List<Base> right) throws FHIRException {
+  private List<Base> operate(ExecutionContext context, List<Base> left, Operation operation, List<Base> right, ExpressionNode expr) throws FHIRException {
     switch (operation) {
     case Equals: return opEquals(left, right);
-    case Equivalent: return opEquivalent(left, right);
-    case NotEquals: return opNotEquals(left, right);
-    case NotEquivalent: return opNotEquivalent(left, right);
-    case LessThan: return opLessThan(left, right);
-    case Greater: return opGreater(left, right);
-    case LessOrEqual: return opLessOrEqual(left, right);
-    case GreaterOrEqual: return opGreaterOrEqual(left, right);
-    case Union: return opUnion(left, right);
-    case In: return opIn(left, right);
-    case MemberOf: return opMemberOf(context, left, right);
-    case Contains: return opContains(left, right);
-    case Or:  return opOr(left, right);
-    case And:  return opAnd(left, right);
-    case Xor: return opXor(left, right);
-    case Implies: return opImplies(left, right);
-    case Plus: return opPlus(left, right);
-    case Times: return opTimes(left, right);
-    case Minus: return opMinus(left, right);
-    case Concatenate: return opConcatenate(left, right);
-    case DivideBy: return opDivideBy(left, right);
-    case Div: return opDiv(left, right);
-    case Mod: return opMod(left, right);
-    case Is: return opIs(left, right);
-    case As: return opAs(left, right);
+    case Equivalent: return opEquivalent(left, right, expr);
+    case NotEquals: return opNotEquals(left, right, expr);
+    case NotEquivalent: return opNotEquivalent(left, right, expr);
+    case LessThan: return opLessThan(left, right, expr);
+    case Greater: return opGreater(left, right, expr);
+    case LessOrEqual: return opLessOrEqual(left, right, expr);
+    case GreaterOrEqual: return opGreaterOrEqual(left, right, expr);
+    case Union: return opUnion(left, right, expr);
+    case In: return opIn(left, right, expr);
+    case MemberOf: return opMemberOf(context, left, right, expr);
+    case Contains: return opContains(left, right, expr);
+    case Or:  return opOr(left, right, expr);
+    case And:  return opAnd(left, right, expr);
+    case Xor: return opXor(left, right, expr);
+    case Implies: return opImplies(left, right, expr);
+    case Plus: return opPlus(left, right, expr);
+    case Times: return opTimes(left, right, expr);
+    case Minus: return opMinus(left, right, expr);
+    case Concatenate: return opConcatenate(left, right, expr);
+    case DivideBy: return opDivideBy(left, right, expr);
+    case Div: return opDiv(left, right, expr);
+    case Mod: return opMod(left, right, expr);
+    case Is: return opIs(left, right, expr);
+    case As: return opAs(left, right, expr);
     default: 
       throw new Error("Not Done Yet: "+operation.toCode());
     }
   }
 
-  private List<Base> opAs(List<Base> left, List<Base> right) {
+  private List<Base> opAs(List<Base> left, List<Base> right, ExpressionNode expr) {
     List<Base> result = new ArrayList<>();
     if (right.size() != 1)
       return result;
@@ -1455,7 +1456,7 @@ public class FHIRPathEngine {
   }
 
 
-  private List<Base> opIs(List<Base> left, List<Base> right) {
+  private List<Base> opIs(List<Base> left, List<Base> right, ExpressionNode expr) {
     List<Base> result = new ArrayList<Base>();
     if (left.size() != 1 || right.size() != 1) 
       result.add(new BooleanType(false).noExtensions());
@@ -1472,7 +1473,7 @@ public class FHIRPathEngine {
   }
 
 
-  private TypeDetails operateTypes(TypeDetails left, Operation operation, TypeDetails right) {
+  private TypeDetails operateTypes(TypeDetails left, Operation operation, TypeDetails right, ExpressionNode expr) {
     switch (operation) {
     case Equals: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Equivalent: return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
@@ -1514,6 +1515,13 @@ public class FHIRPathEngine {
         result.addType(TypeDetails.FP_Decimal);
       else if (left.hasType(worker, "string", "id", "code", "uri") && right.hasType(worker, "string", "id", "code", "uri"))
         result.addType(TypeDetails.FP_String);
+      else if (left.hasType(worker, "date", "dateTime", "instant")) {
+        if (right.hasType(worker, "Quantity")) {
+          result.addType(left.getType());
+        } else {
+          throw new PathEngineException(String.format("Error in date arithmetic: Unable to add type {0} to {1}", right.getType(), left.getType()), expr.getStart(), expr.toString());
+        }
+      }
       return result;
     case Minus:
       result = new TypeDetails(CollectionStatus.SINGLETON);
@@ -1521,6 +1529,13 @@ public class FHIRPathEngine {
         result.addType(TypeDetails.FP_Integer);
       else if (left.hasType(worker, "integer", "decimal") && right.hasType(worker, "integer", "decimal"))
         result.addType(TypeDetails.FP_Decimal);
+      else if (left.hasType(worker, "date", "dateTime", "instant")) {
+        if (right.hasType(worker, "Quantity")) {
+          result.addType(left.getType());
+        } else {
+          throw new PathEngineException(String.format("Error in date arithmetic: Unable to subtract type {0} from {1}", right.getType(), left.getType()));
+        }
+      }
       return result;
     case Div: 
     case Mod: 
@@ -1565,7 +1580,7 @@ public class FHIRPathEngine {
       return makeBoolean(res);
   }
 
-  private List<Base> opNotEquals(List<Base> left, List<Base> right) {
+  private List<Base> opNotEquals(List<Base> left, List<Base> right, ExpressionNode expr) {
     if (!legacyMode && (left.size() == 0 || right.size() == 0))
       return new ArrayList<Base>();
 
@@ -1634,9 +1649,9 @@ public class FHIRPathEngine {
   }
 
 
-  private boolean doEquivalent(Base left, Base right) throws PathEngineException {
+  private boolean doEquivalent(Base left, Base right, ExpressionNode expr) throws PathEngineException {
     if (left instanceof Quantity && right instanceof Quantity)
-      return qtyEquivalent((Quantity) left, (Quantity) right);
+      return qtyEquivalent((Quantity) left, (Quantity) right, expr);
     if (left.hasType("integer") && right.hasType("integer"))
       return doEquals(left, right);
     if (left.hasType("boolean") && right.hasType("boolean"))
@@ -1648,7 +1663,7 @@ public class FHIRPathEngine {
     if (left.hasType(FHIR_TYPES_STRING) && right.hasType(FHIR_TYPES_STRING))
       return Utilities.equivalent(convertToString(left), convertToString(right));
 
-    throw new PathEngineException(String.format("Unable to determine equivalence between %s and %s", left.fhirType(), right.fhirType()));
+    throw new PathEngineException(String.format("Unable to determine equivalence between %s and %s", left.fhirType(), right.fhirType()), expr.getStart(), expr.toString());
   }
 
   private boolean qtyEqual(Quantity left, Quantity right) {
@@ -1689,19 +1704,19 @@ public class FHIRPathEngine {
   }
 
 
-  private boolean qtyEquivalent(Quantity left, Quantity right) throws PathEngineException {
+  private boolean qtyEquivalent(Quantity left, Quantity right, ExpressionNode expr) throws PathEngineException {
     if (worker.getUcumService() != null) {
       DecimalType dl = qtyToCanonical(left);
       DecimalType dr = qtyToCanonical(right);
       if (dl != null && dr != null) 
-        return doEquivalent(dl,  dr);
+        return doEquivalent(dl,  dr, expr);
     }
     return left.equals(right);
   }
 
 
 
-  private List<Base> opEquivalent(List<Base> left, List<Base> right) throws PathEngineException {
+  private List<Base> opEquivalent(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() != right.size())
       return makeBoolean(false);
 
@@ -1709,7 +1724,7 @@ public class FHIRPathEngine {
     for (int i = 0; i < left.size(); i++) {
       boolean found = false;
       for (int j = 0; j < right.size(); j++) {
-        if (doEquivalent(left.get(i), right.get(j))) {
+        if (doEquivalent(left.get(i), right.get(j), expr)) {
           found = true;
           break;
         }
@@ -1722,7 +1737,7 @@ public class FHIRPathEngine {
     return makeBoolean(res);
   }
 
-  private List<Base> opNotEquivalent(List<Base> left, List<Base> right) throws PathEngineException {
+  private List<Base> opNotEquivalent(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() != right.size())
       return makeBoolean(true);
 
@@ -1730,7 +1745,7 @@ public class FHIRPathEngine {
     for (int i = 0; i < left.size(); i++) {
       boolean found = false;
       for (int j = 0; j < right.size(); j++) {
-        if (doEquivalent(left.get(i), right.get(j))) {
+        if (doEquivalent(left.get(i), right.get(j), expr)) {
           found = true;
           break;
         }
@@ -1745,7 +1760,7 @@ public class FHIRPathEngine {
 
   private final static String[] FHIR_TYPES_STRING = new String[] {"string", "uri", "code", "oid", "id", "uuid", "sid", "markdown", "base64Binary", "canonical", "url"};
 
-	private List<Base> opLessThan(List<Base> left, List<Base> right) throws FHIRException {
+	private List<Base> opLessThan(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
     
@@ -1761,12 +1776,12 @@ public class FHIRPathEngine {
       else if ((l.hasType("time")) && (r.hasType("time"))) 
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) < 0);
       else
-        throw new PathEngineException("Unable to compare values of type "+l.fhirType()+" and "+r.fhirType());
+        throw new PathEngineException("Unable to compare values of type "+l.fhirType()+" and "+r.fhirType(), expr.getStart(), expr.toString());
     } else if (left.size() == 1 && right.size() == 1 && left.get(0).fhirType().equals("Quantity") && right.get(0).fhirType().equals("Quantity") ) {
       List<Base> lUnit = left.get(0).listChildrenByName("code");
       List<Base> rUnit = right.get(0).listChildrenByName("code");
       if (Base.compareDeep(lUnit, rUnit, true)) {
-        return opLessThan(left.get(0).listChildrenByName("value"), right.get(0).listChildrenByName("value"));
+        return opLessThan(left.get(0).listChildrenByName("value"), right.get(0).listChildrenByName("value"), expr);
       } else {
         if (worker.getUcumService() == null)
           return makeBoolean(false);
@@ -1775,14 +1790,14 @@ public class FHIRPathEngine {
           dl.add(qtyToCanonical((Quantity) left.get(0)));
           List<Base> dr = new ArrayList<Base>();
           dr.add(qtyToCanonical((Quantity) right.get(0)));
-          return opLessThan(dl, dr);
+          return opLessThan(dl, dr, expr);
         }
       }
     }
     return new ArrayList<Base>();
   }
 
-	private List<Base> opGreater(List<Base> left, List<Base> right) throws FHIRException {
+	private List<Base> opGreater(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
@@ -1797,12 +1812,12 @@ public class FHIRPathEngine {
       else if ((l.hasType("time")) && (r.hasType("time"))) 
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) > 0);
       else
-        throw new PathEngineException("Unable to compare values of type "+l.fhirType()+" and "+r.fhirType());
+        throw new PathEngineException("Unable to compare values of type "+l.fhirType()+" and "+r.fhirType(), expr.getStart(), expr.toString());
     } else if (left.size() == 1 && right.size() == 1 && left.get(0).fhirType().equals("Quantity") && right.get(0).fhirType().equals("Quantity") ) {
       List<Base> lUnit = left.get(0).listChildrenByName("unit");
       List<Base> rUnit = right.get(0).listChildrenByName("unit");
       if (Base.compareDeep(lUnit, rUnit, true)) {
-        return opGreater(left.get(0).listChildrenByName("value"), right.get(0).listChildrenByName("value"));
+        return opGreater(left.get(0).listChildrenByName("value"), right.get(0).listChildrenByName("value"), expr);
       } else {
         if (worker.getUcumService() == null)
           return makeBoolean(false);
@@ -1811,14 +1826,14 @@ public class FHIRPathEngine {
           dl.add(qtyToCanonical((Quantity) left.get(0)));
           List<Base> dr = new ArrayList<Base>();
           dr.add(qtyToCanonical((Quantity) right.get(0)));
-          return opGreater(dl, dr);
+          return opGreater(dl, dr, expr);
         }
       }
     }
     return new ArrayList<Base>();
   }
 
-	private List<Base> opLessOrEqual(List<Base> left, List<Base> right) throws FHIRException {
+	private List<Base> opLessOrEqual(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
@@ -1833,14 +1848,14 @@ public class FHIRPathEngine {
       else if ((l.hasType("time")) && (r.hasType("time"))) 
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) <= 0);
       else
-        throw new PathEngineException("Unable to compare values of type "+l.fhirType()+" and "+r.fhirType());
+        throw new PathEngineException("Unable to compare values of type "+l.fhirType()+" and "+r.fhirType(), expr.getStart(), expr.toString());
     } else if (left.size() == 1 && right.size() == 1 && left.get(0).fhirType().equals("Quantity") && right.get(0).fhirType().equals("Quantity") ) {
       List<Base> lUnits = left.get(0).listChildrenByName("unit");
       String lunit = lUnits.size() == 1 ? lUnits.get(0).primitiveValue() : null;
       List<Base> rUnits = right.get(0).listChildrenByName("unit");
       String runit = rUnits.size() == 1 ? rUnits.get(0).primitiveValue() : null;
       if ((lunit == null && runit == null) || lunit.equals(runit)) {
-        return opLessOrEqual(left.get(0).listChildrenByName("value"), right.get(0).listChildrenByName("value"));
+        return opLessOrEqual(left.get(0).listChildrenByName("value"), right.get(0).listChildrenByName("value"), expr);
       } else {
         if (worker.getUcumService() == null)
           return makeBoolean(false);
@@ -1849,14 +1864,14 @@ public class FHIRPathEngine {
           dl.add(qtyToCanonical((Quantity) left.get(0)));
           List<Base> dr = new ArrayList<Base>();
           dr.add(qtyToCanonical((Quantity) right.get(0)));
-          return opLessOrEqual(dl, dr);
+          return opLessOrEqual(dl, dr, expr);
         }
       }
     }
     return new ArrayList<Base>();
   }
 
-	private List<Base> opGreaterOrEqual(List<Base> left, List<Base> right) throws FHIRException {
+	private List<Base> opGreaterOrEqual(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
     if (left.size() == 1 && right.size() == 1 && left.get(0).isPrimitive() && right.get(0).isPrimitive()) {
@@ -1871,12 +1886,12 @@ public class FHIRPathEngine {
       else if ((l.hasType("time")) && (r.hasType("time"))) 
         return makeBoolean(l.primitiveValue().compareTo(r.primitiveValue()) >= 0);
       else
-        throw new PathEngineException("Unable to compare values of type "+l.fhirType()+" and "+r.fhirType());
+        throw new PathEngineException("Unable to compare values of type "+l.fhirType()+" and "+r.fhirType(), expr.getStart(), expr.toString());
     } else if (left.size() == 1 && right.size() == 1 && left.get(0).fhirType().equals("Quantity") && right.get(0).fhirType().equals("Quantity") ) {
       List<Base> lUnit = left.get(0).listChildrenByName("unit");
       List<Base> rUnit = right.get(0).listChildrenByName("unit");
       if (Base.compareDeep(lUnit, rUnit, true)) {
-        return opGreaterOrEqual(left.get(0).listChildrenByName("value"), right.get(0).listChildrenByName("value"));
+        return opGreaterOrEqual(left.get(0).listChildrenByName("value"), right.get(0).listChildrenByName("value"), expr);
       } else {
         if (worker.getUcumService() == null)
           return makeBoolean(false);
@@ -1885,14 +1900,14 @@ public class FHIRPathEngine {
           dl.add(qtyToCanonical((Quantity) left.get(0)));
           List<Base> dr = new ArrayList<Base>();
           dr.add(qtyToCanonical((Quantity) right.get(0)));
-          return opGreaterOrEqual(dl, dr);
+          return opGreaterOrEqual(dl, dr, expr);
         }
       }
     }
     return new ArrayList<Base>();
   }
 
-	private List<Base> opMemberOf(ExecutionContext context, List<Base> left, List<Base> right) throws FHIRException {
+	private List<Base> opMemberOf(ExecutionContext context, List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
 	  boolean ans = false;
 	  ValueSet vs = hostServices != null ? hostServices.resolveValueSet(context.appInfo, right.get(0).primitiveValue()) : worker.fetchResource(ValueSet.class, right.get(0).primitiveValue());
 	  if (vs != null) {
@@ -1912,7 +1927,7 @@ public class FHIRPathEngine {
 	  return makeBoolean(ans);
 	}
 
-  private List<Base> opIn(List<Base> left, List<Base> right) throws FHIRException {
+  private List<Base> opIn(List<Base> left, List<Base> right, ExpressionNode expr) throws FHIRException {
     if (left.size() == 0) 
       return new ArrayList<Base>();
     if (right.size() == 0) 
@@ -1935,7 +1950,7 @@ public class FHIRPathEngine {
     return makeBoolean(ans);
   }
 
-  private List<Base> opContains(List<Base> left, List<Base> right) {
+  private List<Base> opContains(List<Base> left, List<Base> right, ExpressionNode expr) {
     if (left.size() == 0 || right.size() == 0) 
      return new ArrayList<Base>();
     boolean ans = true;
@@ -1956,17 +1971,17 @@ public class FHIRPathEngine {
     return makeBoolean(ans);
   }
 
-  private List<Base> opPlus(List<Base> left, List<Base> right) throws PathEngineException {
+  private List<Base> opPlus(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
     if (left.size() > 1)
-      throw new PathEngineException("Error performing +: left operand has more than one value");
+      throw new PathEngineException("Error performing +: left operand has more than one value", expr.getStart(), expr.toString());
     if (!left.get(0).isPrimitive())
-      throw new PathEngineException(String.format("Error performing +: left operand has the wrong type (%s)", left.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing +: left operand has the wrong type (%s)", left.get(0).fhirType()), expr.getStart(), expr.toString());
     if (right.size() > 1)
-      throw new PathEngineException("Error performing +: right operand has more than one value");
-    if (!right.get(0).isPrimitive())
-      throw new PathEngineException(String.format("Error performing +: right operand has the wrong type (%s)", right.get(0).fhirType()));
+      throw new PathEngineException("Error performing +: right operand has more than one value", expr.getStart(), expr.toString());
+    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) 
+      throw new PathEngineException(String.format("Error performing +: right operand has the wrong type (%s)", right.get(0).fhirType()), expr.getStart(), expr.toString());
 
     List<Base> result = new ArrayList<Base>();
     Base l = left.get(0);
@@ -1977,22 +1992,78 @@ public class FHIRPathEngine {
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) + Integer.parseInt(r.primitiveValue())));
     else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) 
       result.add(new DecimalType(new BigDecimal(l.primitiveValue()).add(new BigDecimal(r.primitiveValue()))));
+    else if (l.isDateTime() && r.hasType("Quantity")) 
+      result.add(dateAdd((BaseDateTimeType) l, (Quantity) r, false, expr));
     else
-      throw new PathEngineException(String.format("Error performing +: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing +: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()), expr.getStart(), expr.toString());
     return result;
   }
 
-  private List<Base> opTimes(List<Base> left, List<Base> right) throws PathEngineException {
+  private BaseDateTimeType dateAdd(BaseDateTimeType d, Quantity q, boolean negate, ExpressionNode expr) {
+    BaseDateTimeType result = (BaseDateTimeType) d.copy();
+    
+    int value = negate ? 0 - q.getValue().intValue() : q.getValue().intValue();
+    switch (q.hasCode() ? q.getCode() : q.getUnit()) {
+    case "years": 
+    case "year": 
+      result.add(Calendar.YEAR, value);
+      break;
+    case "a":
+      throw new PathEngineException(String.format("Error in date arithmetic: attempt to add a definite quantity duration time unit %s", q.getCode()), expr.getStart(), expr.toString());
+    case "months": 
+    case "month": 
+      result.add(Calendar.MONTH, value);
+      break;
+    case "mo":
+      throw new PathEngineException(String.format("Error in date arithmetic: attempt to add a definite quantity duration time unit %s", q.getCode()), expr.getStart(), expr.toString());
+    case "weeks": 
+    case "week": 
+    case "wk":
+      result.add(Calendar.DAY_OF_MONTH, value * 7);
+      break;
+    case "days": 
+    case "day": 
+    case "d":
+      result.add(Calendar.DAY_OF_MONTH, value);
+      break;
+    case "hours": 
+    case "hour": 
+    case "h":
+      result.add(Calendar.HOUR, value);
+      break;
+    case "minutes": 
+    case "minute": 
+    case "min":
+      result.add(Calendar.MINUTE, value);
+      break;
+    case "seconds": 
+    case "second": 
+    case "s":
+      result.add(Calendar.SECOND, value);
+      break;
+    case "milliseconds": 
+    case "millisecond": 
+    case "ms": 
+      result.add(Calendar.MILLISECOND, value);
+      break;
+    default:
+      throw new PathEngineException(String.format("Error in date arithmetic: unrecognized time unit %s", q.getCode()), expr.getStart(), expr.toString());
+    }
+    return result;
+  }
+
+    
+  private List<Base> opTimes(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
     if (left.size() > 1)
-      throw new PathEngineException("Error performing *: left operand has more than one value");
+      throw new PathEngineException("Error performing *: left operand has more than one value", expr.getStart(), expr.toString());
     if (!left.get(0).isPrimitive() && !(left.get(0) instanceof Quantity))
-      throw new PathEngineException(String.format("Error performing +: left operand has the wrong type (%s)", left.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing +: left operand has the wrong type (%s)", left.get(0).fhirType()), expr.getStart(), expr.toString());
     if (right.size() > 1)
-      throw new PathEngineException("Error performing *: right operand has more than one value");
+      throw new PathEngineException("Error performing *: right operand has more than one value", expr.getStart(), expr.toString());
     if (!right.get(0).isPrimitive() && !(right.get(0) instanceof Quantity))
-      throw new PathEngineException(String.format("Error performing *: right operand has the wrong type (%s)", right.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing *: right operand has the wrong type (%s)", right.get(0).fhirType()), expr.getStart(), expr.toString());
 
     List<Base> result = new ArrayList<Base>();
     Base l = left.get(0);
@@ -2010,23 +2081,23 @@ public class FHIRPathEngine {
         p = worker.getUcumService().multiply(pl, pr);
         result.add(pairToQty(p));
       } catch (UcumException e) {
-        throw new PathEngineException(e.getMessage(), e);
+        throw new PathEngineException(e.getMessage(), expr.getOpStart(), expr.toString(), e);
       }
     } else
-      throw new PathEngineException(String.format("Error performing *: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing *: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()), expr.getStart(), expr.toString());
     return result;
   }
 
 
-  private List<Base> opConcatenate(List<Base> left, List<Base> right) throws PathEngineException {
+  private List<Base> opConcatenate(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() > 1)
-      throw new PathEngineException("Error performing &: left operand has more than one value");
+      throw new PathEngineException("Error performing &: left operand has more than one value", expr.getStart(), expr.toString());
     if (left.size() > 0 && !left.get(0).hasType(FHIR_TYPES_STRING))
-      throw new PathEngineException(String.format("Error performing &: left operand has the wrong type (%s)", left.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing &: left operand has the wrong type (%s)", left.get(0).fhirType()), expr.getStart(), expr.toString());
     if (right.size() > 1)
-      throw new PathEngineException("Error performing &: right operand has more than one value");
+      throw new PathEngineException("Error performing &: right operand has more than one value", expr.getStart(), expr.toString());
     if (right.size() > 0 && !right.get(0).hasType(FHIR_TYPES_STRING))
-      throw new PathEngineException(String.format("Error performing &: right operand has the wrong type (%s)", right.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing &: right operand has the wrong type (%s)", right.get(0).fhirType()), expr.getStart(), expr.toString());
 
     List<Base> result = new ArrayList<Base>();
     String l = left.size() == 0 ? "" : left.get(0).primitiveValue();
@@ -2035,7 +2106,7 @@ public class FHIRPathEngine {
     return result;
   }
 
-  private List<Base> opUnion(List<Base> left, List<Base> right) {
+  private List<Base> opUnion(List<Base> left, List<Base> right, ExpressionNode expr) {
     List<Base> result = new ArrayList<Base>();
     for (Base item : left) {
       if (!doContains(result, item))
@@ -2058,9 +2129,9 @@ public class FHIRPathEngine {
   }
 
 
-  private List<Base> opAnd(List<Base> left, List<Base> right) throws PathEngineException {
-    Equality l = asBool(left);
-    Equality r = asBool(right);
+  private List<Base> opAnd(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
+    Equality l = asBool(left, expr);
+    Equality r = asBool(right, expr);
     switch (l) {
     case False: return makeBoolean(false);
     case Null:
@@ -2082,9 +2153,9 @@ public class FHIRPathEngine {
     return list.size() == 1 && list.get(0) instanceof BooleanType && ((BooleanType) list.get(0)).booleanValue() == b;
   }
 
-  private List<Base> opOr(List<Base> left, List<Base> right) throws PathEngineException {
-    Equality l = asBool(left);
-    Equality r = asBool(right);
+  private List<Base> opOr(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
+    Equality l = asBool(left, expr);
+    Equality r = asBool(right, expr);
     switch (l) {
     case True: return makeBoolean(true);
     case Null:
@@ -2102,9 +2173,9 @@ public class FHIRPathEngine {
     return makeNull();
   }
 
-  private List<Base> opXor(List<Base> left, List<Base> right) throws PathEngineException {
-    Equality l = asBool(left);
-    Equality r = asBool(right);
+  private List<Base> opXor(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
+    Equality l = asBool(left, expr);
+    Equality r = asBool(right, expr);
     switch (l) {
     case True: 
       switch (r) {
@@ -2124,13 +2195,13 @@ public class FHIRPathEngine {
     return makeNull();
   }
 
-  private List<Base> opImplies(List<Base> left, List<Base> right) throws PathEngineException {
-    Equality eq = asBool(left);
+  private List<Base> opImplies(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
+    Equality eq = asBool(left, expr);
     if (eq == Equality.False) 
       return makeBoolean(true);
     else if (right.size() == 0)
       return makeNull();
-    else switch (asBool(right)) {
+    else switch (asBool(right, expr)) {
     case False: return eq == Equality.Null ? makeNull() : makeBoolean(false);
     case Null: return makeNull();
     case True: return makeBoolean(true);
@@ -2139,17 +2210,17 @@ public class FHIRPathEngine {
   }
 
 
-  private List<Base> opMinus(List<Base> left, List<Base> right) throws PathEngineException {
+  private List<Base> opMinus(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
     if (left.size() > 1)
-      throw new PathEngineException("Error performing -: left operand has more than one value");
+      throw new PathEngineException("Error performing -: left operand has more than one value", expr.getStart(), expr.toString());
     if (!left.get(0).isPrimitive())
-      throw new PathEngineException(String.format("Error performing -: left operand has the wrong type (%s)", left.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing -: left operand has the wrong type (%s)", left.get(0).fhirType()), expr.getStart(), expr.toString());
     if (right.size() > 1)
-      throw new PathEngineException("Error performing -: right operand has more than one value");
-    if (!right.get(0).isPrimitive())
-      throw new PathEngineException(String.format("Error performing -: right operand has the wrong type (%s)", right.get(0).fhirType()));
+      throw new PathEngineException("Error performing -: right operand has more than one value", expr.getStart(), expr.toString());
+    if (!right.get(0).isPrimitive() &&  !((left.get(0).isDateTime() || "0".equals(left.get(0).primitiveValue()) || left.get(0).hasType("Quantity")) && right.get(0).hasType("Quantity"))) 
+      throw new PathEngineException(String.format("Error performing -: right operand has the wrong type (%s)", right.get(0).fhirType()), expr.getStart(), expr.toString());
 
     List<Base> result = new ArrayList<Base>();
     Base l = left.get(0);
@@ -2159,22 +2230,24 @@ public class FHIRPathEngine {
       result.add(new IntegerType(Integer.parseInt(l.primitiveValue()) - Integer.parseInt(r.primitiveValue())));
     else if (l.hasType("decimal", "integer") && r.hasType("decimal", "integer")) 
       result.add(new DecimalType(new BigDecimal(l.primitiveValue()).subtract(new BigDecimal(r.primitiveValue()))));
+    else if (l.isDateTime() && r.hasType("Quantity")) 
+      result.add(dateAdd((BaseDateTimeType) l, (Quantity) r, true, expr));
     else
-      throw new PathEngineException(String.format("Error performing -: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing -: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()), expr.getStart(), expr.toString());
     return result;
   }
 
-  private List<Base> opDivideBy(List<Base> left, List<Base> right) throws PathEngineException {
+  private List<Base> opDivideBy(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
     if (left.size() > 1)
-      throw new PathEngineException("Error performing /: left operand has more than one value");
+      throw new PathEngineException("Error performing /: left operand has more than one value", expr.getStart(), expr.toString());
     if (!left.get(0).isPrimitive() && !(left.get(0) instanceof Quantity))
-      throw new PathEngineException(String.format("Error performing -: left operand has the wrong type (%s)", left.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing -: left operand has the wrong type (%s)", left.get(0).fhirType()), expr.getStart(), expr.toString());
     if (right.size() > 1)
       throw new PathEngineException("Error performing /: right operand has more than one value");
     if (!right.get(0).isPrimitive() && !(right.get(0) instanceof Quantity))
-      throw new PathEngineException(String.format("Error performing /: right operand has the wrong type (%s)", right.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing /: right operand has the wrong type (%s)", right.get(0).fhirType()), expr.getStart(), expr.toString());
 
     List<Base> result = new ArrayList<Base>();
     Base l = left.get(0);
@@ -2197,24 +2270,24 @@ public class FHIRPathEngine {
         p = worker.getUcumService().multiply(pl, pr);
         result.add(pairToQty(p));
       } catch (UcumException e) {
-        throw new PathEngineException(e.getMessage(), e);
+        throw new PathEngineException(e.getMessage(), expr.getOpStart(), expr.toString(), e);
       }
     } else
-      throw new PathEngineException(String.format("Error performing /: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing /: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()), expr.getStart(), expr.toString());
     return result;
   }
 
-  private List<Base> opDiv(List<Base> left, List<Base> right) throws PathEngineException {
+  private List<Base> opDiv(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
     if (left.size() > 1)
-      throw new PathEngineException("Error performing div: left operand has more than one value");
+      throw new PathEngineException("Error performing div: left operand has more than one value", expr.getStart(), expr.toString());
     if (!left.get(0).isPrimitive() && !(left.get(0) instanceof Quantity))
-      throw new PathEngineException(String.format("Error performing div: left operand has the wrong type (%s)", left.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing div: left operand has the wrong type (%s)", left.get(0).fhirType()), expr.getStart(), expr.toString());
     if (right.size() > 1)
-      throw new PathEngineException("Error performing div: right operand has more than one value");
+      throw new PathEngineException("Error performing div: right operand has more than one value", expr.getStart(), expr.toString());
     if (!right.get(0).isPrimitive() && !(right.get(0) instanceof Quantity))
-      throw new PathEngineException(String.format("Error performing div: right operand has the wrong type (%s)", right.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing div: right operand has the wrong type (%s)", right.get(0).fhirType()), expr.getStart(), expr.toString());
 
     List<Base> result = new ArrayList<Base>();
     Base l = left.get(0);
@@ -2233,21 +2306,21 @@ public class FHIRPathEngine {
       }
     }
     else
-      throw new PathEngineException(String.format("Error performing div: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing div: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()), expr.getStart(), expr.toString());
     return result;
   }
 
-  private List<Base> opMod(List<Base> left, List<Base> right) throws PathEngineException {
+  private List<Base> opMod(List<Base> left, List<Base> right, ExpressionNode expr) throws PathEngineException {
     if (left.size() == 0 || right.size() == 0) 
       return new ArrayList<Base>();
     if (left.size() > 1)
-      throw new PathEngineException("Error performing mod: left operand has more than one value");
+      throw new PathEngineException("Error performing mod: left operand has more than one value", expr.getStart(), expr.toString());
     if (!left.get(0).isPrimitive())
-      throw new PathEngineException(String.format("Error performing mod: left operand has the wrong type (%s)", left.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing mod: left operand has the wrong type (%s)", left.get(0).fhirType()), expr.getStart(), expr.toString());
     if (right.size() > 1)
-      throw new PathEngineException("Error performing mod: right operand has more than one value");
+      throw new PathEngineException("Error performing mod: right operand has more than one value", expr.getStart(), expr.toString());
     if (!right.get(0).isPrimitive())
-      throw new PathEngineException(String.format("Error performing mod: right operand has the wrong type (%s)", right.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing mod: right operand has the wrong type (%s)", right.get(0).fhirType()), expr.getStart(), expr.toString());
 
     List<Base> result = new ArrayList<Base>();
     Base l = left.get(0);
@@ -2266,12 +2339,12 @@ public class FHIRPathEngine {
       }
     }
     else
-      throw new PathEngineException(String.format("Error performing mod: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()));
+      throw new PathEngineException(String.format("Error performing mod: left and right operand have incompatible or illegal types (%s, %s)", left.get(0).fhirType(), right.get(0).fhirType()), expr.getStart(), expr.toString());
     return result;
   }
 
 
-  private TypeDetails resolveConstantType(ExecutionTypeContext context, Base constant) throws PathEngineException {
+  private TypeDetails resolveConstantType(ExecutionTypeContext context, Base constant, ExpressionNode expr) throws PathEngineException {
     if (constant instanceof BooleanType) 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     else if (constant instanceof IntegerType)
@@ -2281,12 +2354,12 @@ public class FHIRPathEngine {
     else if (constant instanceof Quantity)
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Quantity);
     else if (constant instanceof FHIRConstant)
-      return resolveConstantType(context, ((FHIRConstant) constant).getValue());
+      return resolveConstantType(context, ((FHIRConstant) constant).getValue(), expr);
     else
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
   }
 
-  private TypeDetails resolveConstantType(ExecutionTypeContext context, String s) throws PathEngineException {
+  private TypeDetails resolveConstantType(ExecutionTypeContext context, String s, ExpressionNode expr) throws PathEngineException {
     if (s.startsWith("@")) {
       if (s.startsWith("@T"))
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Time);
@@ -2300,11 +2373,11 @@ public class FHIRPathEngine {
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     else if (s.equals("%resource")) {
       if (context.resource == null)
-        throw new PathEngineException("%resource cannot be used in this context");
+        throw new PathEngineException("%resource cannot be used in this context", expr.getStart(), expr.toString());
       return new TypeDetails(CollectionStatus.SINGLETON, context.resource);
     } else if (s.equals("%rootResource")) {
       if (context.resource == null)
-    	throw new PathEngineException("%rootResource cannot be used in this context");
+    	throw new PathEngineException("%rootResource cannot be used in this context", expr.getStart(), expr.toString());
       return new TypeDetails(CollectionStatus.SINGLETON, context.resource);
     } else if (s.equals("%context")) {
       return context.context;
@@ -2319,7 +2392,7 @@ public class FHIRPathEngine {
     else if (s.startsWith("%`ext-"))
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     else if (hostServices == null)
-      throw new PathEngineException("Unknown fixed constant type for '"+s+"'");
+      throw new PathEngineException("Unknown fixed constant type for '"+s+"'", expr.getStart(), expr.toString());
     else
       return hostServices.resolveConstantType(context.appInfo, s);
   }
@@ -2350,9 +2423,9 @@ public class FHIRPathEngine {
     return result;
   }	
 
-  private TypeDetails executeContextType(ExecutionTypeContext context, String name) throws PathEngineException, DefinitionException {
+  private TypeDetails executeContextType(ExecutionTypeContext context, String name, ExpressionNode expr) throws PathEngineException, DefinitionException {
     if (hostServices == null)
-      throw new PathEngineException("Unable to resolve context reference since no host services are provided");
+      throw new PathEngineException("Unable to resolve context reference since no host services are provided", expr.getStart(), expr.toString());
     return hostServices.resolveConstantType(context.appInfo, name);
   }
   
@@ -2360,7 +2433,7 @@ public class FHIRPathEngine {
     if (atEntry && Character.isUpperCase(exp.getName().charAt(0)) && hashTail(type).equals(exp.getName())) // special case for start up
       return new TypeDetails(CollectionStatus.SINGLETON, type);
     TypeDetails result = new TypeDetails(null);
-    getChildTypesByName(type, exp.getName(), result);
+    getChildTypesByName(type, exp.getName(), result, exp);
     return result;
   }
 
@@ -2390,11 +2463,11 @@ public class FHIRPathEngine {
     case Exists : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case SubsetOf : {
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, focus); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, focus); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
     case SupersetOf : {
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, focus); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, focus); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
     case IsDistinct : 
@@ -2414,16 +2487,16 @@ public class FHIRPathEngine {
     case Aggregate : 
       return anything(focus.getCollectionStatus());
     case Item : {
-      checkOrdered(focus, "item");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
+      checkOrdered(focus, "item", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
       return focus; 
     }
     case As : {
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, exp.getParameters().get(0).getName());
     }
     case OfType : { 
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, exp.getParameters().get(0).getName());
     }
     case Type : { 
@@ -2441,31 +2514,31 @@ public class FHIRPathEngine {
         return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_ClassInfo);
     }
     case Is : {
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
     case Single :
       return focus.toSingleton();
     case First : {
-      checkOrdered(focus, "first");
+      checkOrdered(focus, "first", exp);
       return focus.toSingleton();
     }
     case Last : {
-      checkOrdered(focus, "last");
+      checkOrdered(focus, "last", exp);
       return focus.toSingleton();
     }
     case Tail : {
-      checkOrdered(focus, "tail");
+      checkOrdered(focus, "tail", exp);
       return focus;
     }
     case Skip : {
-      checkOrdered(focus, "skip");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
+      checkOrdered(focus, "skip", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
       return focus;
     }
     case Take : {
-      checkOrdered(focus, "take");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
+      checkOrdered(focus, "take", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
       return focus;
     }
     case Union : {
@@ -2488,76 +2561,76 @@ public class FHIRPathEngine {
       return types;
     }
     case Lower : {
-      checkContextString(focus, "lower");
+      checkContextString(focus, "lower", exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String); 
     }
     case Upper : {
-      checkContextString(focus, "upper");
+      checkContextString(focus, "upper", exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String); 
     }
     case ToChars : {
-      checkContextString(focus, "toChars");
+      checkContextString(focus, "toChars", exp);
       return new TypeDetails(CollectionStatus.ORDERED, TypeDetails.FP_String); 
     }
     case IndexOf : {
-      checkContextString(focus, "indexOf");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkContextString(focus, "indexOf", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer); 
     }
     case Substring : {
-      checkContextString(focus, "subString");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
+      checkContextString(focus, "subString", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String); 
     }
     case StartsWith : {
-      checkContextString(focus, "startsWith");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkContextString(focus, "startsWith", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
     case EndsWith : {
-      checkContextString(focus, "endsWith");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkContextString(focus, "endsWith", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
     case Matches : {
-      checkContextString(focus, "matches");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkContextString(focus, "matches", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean); 
     }
     case ReplaceMatches : {
-      checkContextString(focus, "replaceMatches");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkContextString(focus, "replaceMatches", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String); 
     }
     case Contains : {
-      checkContextString(focus, "contains");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkContextString(focus, "contains", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     }
     case Replace : {
-      checkContextString(focus, "replace");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, "string"), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkContextString(focus, "replace", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, "string"), new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     }
     case Length : { 
-      checkContextPrimitive(focus, "length", false);
+      checkContextPrimitive(focus, "length", false, exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);
     }
     case Children : 
-      return childTypes(focus, "*");
+      return childTypes(focus, "*", exp);
     case Descendants : 
-      return childTypes(focus, "**");
+      return childTypes(focus, "**", exp);
     case MemberOf : {
-      checkContextCoded(focus, "memberOf");
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkContextCoded(focus, "memberOf", exp);
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     }
     case Trace : {
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return focus; 
     }
     case Check : {
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return focus; 
     }
     case Today : 
@@ -2565,11 +2638,11 @@ public class FHIRPathEngine {
     case Now : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);
     case Resolve : {
-      checkContextReference(focus, "resolve");
+      checkContextReference(focus, "resolve", exp);
       return new TypeDetails(CollectionStatus.SINGLETON, "DomainResource"); 
     }
     case Extension : {
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, "Extension"); 
     }
     case AnyTrue: 
@@ -2585,42 +2658,42 @@ public class FHIRPathEngine {
     case HtmlChecks : 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     case Alias : 
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return anything(CollectionStatus.SINGLETON); 
     case AliasAs : 
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return focus; 
     case ToInteger : {
-      checkContextPrimitive(focus, "toInteger", true);
+      checkContextPrimitive(focus, "toInteger", true, exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Integer);
     }
     case ToDecimal : {
-      checkContextPrimitive(focus, "toDecimal", true);
+      checkContextPrimitive(focus, "toDecimal", true, exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Decimal);
     }
     case ToString : {
-      checkContextPrimitive(focus, "toString", true);
+      checkContextPrimitive(focus, "toString", true, exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String);
     }
     case ToQuantity : {
-      checkContextPrimitive(focus, "toQuantity", true);
+      checkContextPrimitive(focus, "toQuantity", true, exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Quantity);
     }
     case ToBoolean : {
-      checkContextPrimitive(focus, "toBoolean", false);
+      checkContextPrimitive(focus, "toBoolean", false, exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     }
     case ToDateTime : {
-      checkContextPrimitive(focus, "toBoolean", false);
+      checkContextPrimitive(focus, "toBoolean", false, exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_DateTime);
     }
     case ToTime : {
-      checkContextPrimitive(focus, "toBoolean", false);
+      checkContextPrimitive(focus, "toBoolean", false, exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Time);
     }
     case ConvertsToString : 
     case ConvertsToQuantity :{
-      checkContextPrimitive(focus, exp.getFunction().toCode(), true);
+      checkContextPrimitive(focus, exp.getFunction().toCode(), true, exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     } 
     case ConvertsToInteger : 
@@ -2628,11 +2701,11 @@ public class FHIRPathEngine {
     case ConvertsToDateTime : 
     case ConvertsToTime : 
     case ConvertsToBoolean : {
-      checkContextPrimitive(focus, exp.getFunction().toCode(), false);
+      checkContextPrimitive(focus, exp.getFunction().toCode(), false, exp);
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);
     }
     case ConformsTo: {
-      checkParamTypes(exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
+      checkParamTypes(exp, exp.getFunction().toCode(), paramTypes, new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_String)); 
       return new TypeDetails(CollectionStatus.SINGLETON, TypeDetails.FP_Boolean);       
     }
     case Custom : {
@@ -2645,7 +2718,7 @@ public class FHIRPathEngine {
   }
 
 
-  private void checkParamTypes(String funcName, List<TypeDetails> paramTypes, TypeDetails... typeSet) throws PathEngineException {
+  private void checkParamTypes(ExpressionNode expr, String funcName, List<TypeDetails> paramTypes, TypeDetails... typeSet) throws PathEngineException {
     int i = 0;
     for (TypeDetails pt : typeSet) {
       if (i == paramTypes.size())
@@ -2654,47 +2727,47 @@ public class FHIRPathEngine {
       i++;
       for (String a : actual.getTypes()) {
         if (!pt.hasType(worker, a))
-          throw new PathEngineException("The parameter type '"+a+"' is not legal for "+funcName+" parameter "+Integer.toString(i)+". expecting "+pt.toString()); 
+          throw new PathEngineException("The parameter type '"+a+"' is not legal for "+funcName+" parameter "+Integer.toString(i)+". expecting "+pt.toString(), expr.getStart(), expr.toString()); 
       }
     }
   }
 
-  private void checkOrdered(TypeDetails focus, String name) throws PathEngineException {
+  private void checkOrdered(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
     if (focus.getCollectionStatus() == CollectionStatus.UNORDERED)
-      throw new PathEngineException("The function '"+name+"'() can only be used on ordered collections"); 
+      throw new PathEngineException("The function '"+name+"'() can only be used on ordered collections", expr.getStart(), expr.toString()); 
   }
 
-  private void checkContextReference(TypeDetails focus, String name) throws PathEngineException {
+  private void checkContextReference(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
     if (!focus.hasType(worker, "string") && !focus.hasType(worker, "uri") && !focus.hasType(worker, "Reference") && !focus.hasType(worker, "canonical"))
-      throw new PathEngineException("The function '"+name+"'() can only be used on string, uri, canonical, Reference"); 
+      throw new PathEngineException("The function '"+name+"'() can only be used on string, uri, canonical, Reference", expr.getStart(), expr.toString()); 
   }
 
 
-  private void checkContextCoded(TypeDetails focus, String name) throws PathEngineException {
+  private void checkContextCoded(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
     if (!focus.hasType(worker, "string") && !focus.hasType(worker, "code") && !focus.hasType(worker, "uri") && !focus.hasType(worker, "Coding") && !focus.hasType(worker, "CodeableConcept"))
-      throw new PathEngineException("The function '"+name+"'() can only be used on string, code, uri, Coding, CodeableConcept");     
+      throw new PathEngineException("The function '"+name+"'() can only be used on string, code, uri, Coding, CodeableConcept", expr.getStart(), expr.toString());     
   }
 
 
-  private void checkContextString(TypeDetails focus, String name) throws PathEngineException {
+  private void checkContextString(TypeDetails focus, String name, ExpressionNode expr) throws PathEngineException {
     if (!focus.hasType(worker, "string") && !focus.hasType(worker, "code") && !focus.hasType(worker, "uri") && !focus.hasType(worker, "canonical") && !focus.hasType(worker, "id"))
-      throw new PathEngineException("The function '"+name+"'() can only be used on string, uri, code, id, but found "+focus.describe()); 
+      throw new PathEngineException("The function '"+name+"'() can only be used on string, uri, code, id, but found "+focus.describe(), expr.getStart(), expr.toString()); 
   }
 
 
-  private void checkContextPrimitive(TypeDetails focus, String name, boolean canQty) throws PathEngineException {
+  private void checkContextPrimitive(TypeDetails focus, String name, boolean canQty, ExpressionNode expr) throws PathEngineException {
     if (canQty) {
        if (!focus.hasType(primitiveTypes) && !focus.hasType("Quantity"))
-        throw new PathEngineException("The function '"+name+"'() can only be used on a Quantity or on "+primitiveTypes.toString()); 
+        throw new PathEngineException("The function '"+name+"'() can only be used on a Quantity or on "+primitiveTypes.toString(), expr.getStart(), expr.toString()); 
     } else if (!focus.hasType(primitiveTypes))
-      throw new PathEngineException("The function '"+name+"'() can only be used on "+primitiveTypes.toString()); 
+      throw new PathEngineException("The function '"+name+"'() can only be used on "+primitiveTypes.toString(), expr.getStart(), expr.toString()); 
   }
 
 
-  private TypeDetails childTypes(TypeDetails focus, String mask) throws PathEngineException, DefinitionException {
+  private TypeDetails childTypes(TypeDetails focus, String mask, ExpressionNode expr) throws PathEngineException, DefinitionException {
     TypeDetails result = new TypeDetails(CollectionStatus.UNORDERED);
     for (String f : focus.getTypes()) 
-      getChildTypesByName(f, mask, result);
+      getChildTypesByName(f, mask, result, expr);
     return result;
   }
 
@@ -2785,7 +2858,7 @@ public class FHIRPathEngine {
       List<List<Base>> params = new ArrayList<List<Base>>();
       for (ExpressionNode p : exp.getParameters()) 
         params.add(execute(context, focus, p, true));
-      return hostServices.executeFunction(context.appInfo, exp.getName(), params);
+      return hostServices.executeFunction(context.appInfo, focus, exp.getName(), params);
     }
     default:
       throw new Error("not Implemented yet");
@@ -2823,7 +2896,7 @@ public class FHIRPathEngine {
       for (Base item : focus) {
         pc.clear();
         pc.add(item);
-        Equality eq = asBool(execute(changeThis(context, item), pc, exp.getParameters().get(0), true));
+        Equality eq = asBool(execute(changeThis(context, item), pc, exp.getParameters().get(0), true), exp);
         if (eq != Equality.True) {
           all = false;
           break;
@@ -2918,15 +2991,15 @@ public class FHIRPathEngine {
           result.add(new StringType(n));
         }
         else {
-          throw new PathEngineException(String.format("funcReplace() : checking for 2 arguments (pattern, substitution) but found %d items", exp.getParameters().size()));
+          throw new PathEngineException(String.format("funcReplace() : checking for 2 arguments (pattern, substitution) but found %d items", exp.getParameters().size()), exp.getStart(), exp.toString());
         }
       }
       else {
-        throw new PathEngineException(String.format("funcReplace() : checking for 1 string item but found empty item"));
+        throw new PathEngineException(String.format("funcReplace() : checking for 1 string item but found empty item"), exp.getStart(), exp.toString());
       }
     }
     else {
-      throw new PathEngineException(String.format("funcReplace() : checking for 1 string item but found %d items", focus.size()));
+      throw new PathEngineException(String.format("funcReplace() : checking for 1 string item but found %d items", focus.size()), exp.getStart(), exp.toString());
     }
     return result;
   }
@@ -3043,7 +3116,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcIif(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> n1 = execute(context, focus, exp.getParameters().get(0), true);
-    Equality v = asBool(n1);
+    Equality v = asBool(n1, exp);
 
     if (v == Equality.True)
       return execute(context, focus, exp.getParameters().get(1), true);
@@ -3115,7 +3188,7 @@ public class FHIRPathEngine {
   private List<Base> funcSingle(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws PathEngineException {
     if (focus.size() == 1)
       return focus;
-    throw new PathEngineException(String.format("Single() : checking for 1 item but found %d items", focus.size()));
+    throw new PathEngineException(String.format("Single() : checking for 1 item but found %d items", focus.size()), exp.getStart(), exp.toString());
   }
 
 
@@ -3127,10 +3200,10 @@ public class FHIRPathEngine {
     
     ExpressionNode texp = exp.getParameters().get(0);
     if (texp.getKind() != Kind.Name)
-      throw new PathEngineException("Unsupported Expression type for Parameter on Is");
+      throw new PathEngineException("Unsupported Expression type for Parameter on Is", exp.getStart(), exp.toString());
     if (texp.getInner() != null) {
       if (texp.getInner().getKind() != Kind.Name)
-        throw new PathEngineException("Unsupported Expression type for Parameter on Is");
+        throw new PathEngineException("Unsupported Expression type for Parameter on Is", exp.getStart(), exp.toString());
       ns = texp.getName();
       n = texp.getInner().getName();
     } else if (Utilities.existsInList(texp.getName(), "Boolean", "Integer", "Decimal", "String", "DateTime", "Time", "SimpleTypeInfo", "ClassInfo")) {
@@ -3375,7 +3448,7 @@ public class FHIRPathEngine {
 	      pc.clear();
 	      pc.add(item);
 	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      Equality v = asBool(res);
+	      Equality v = asBool(res, exp);
 	      if (v != Equality.False) {
 	        all = false;
 	        break;
@@ -3405,7 +3478,7 @@ public class FHIRPathEngine {
 	      pc.clear();
 	      pc.add(item);
 	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      Equality v = asBool(res);
+	      Equality v = asBool(res, exp);
         if (v == Equality.False) {
 	        any = true;
 	        break;
@@ -3435,7 +3508,7 @@ public class FHIRPathEngine {
 	      pc.clear();
 	      pc.add(item);
 	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      Equality v = asBool(res);
+	      Equality v = asBool(res, exp);
         if (v != Equality.True) {
 	        all = false;
 	        break;
@@ -3465,7 +3538,7 @@ public class FHIRPathEngine {
 	      pc.clear();
 	      pc.add(item);
 	      List<Base> res = execute(context, pc, exp.getParameters().get(0), true);
-	      Equality v = asBool(res);
+	      Equality v = asBool(res, exp);
         if (v == Equality.True) {
 	        any = true;
 	        break;
@@ -3889,7 +3962,7 @@ public class FHIRPathEngine {
     for (Base item : focus) {
       pc.clear();
       pc.add(item);
-      Equality v = asBool(execute(changeThis(context, item), pc, exp.getParameters().get(0), true));
+      Equality v = asBool(execute(changeThis(context, item), pc, exp.getParameters().get(0), true), exp);
       if (v == Equality.True)
         result.add(item);
     }
@@ -3924,7 +3997,7 @@ public class FHIRPathEngine {
 
   private List<Base> funcNot(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws PathEngineException {
     List<Base> result = new ArrayList<Base>();  
-    Equality v = asBool(focus);
+    Equality v = asBool(focus, exp);
     if (v != Equality.Null)
       result.add(new BooleanType(v != Equality.True));
     return result;
@@ -3947,9 +4020,9 @@ public class FHIRPathEngine {
 
   }
 
-  private void getChildTypesByName(String type, String name, TypeDetails result) throws PathEngineException, DefinitionException {
+  private void getChildTypesByName(String type, String name, TypeDetails result, ExpressionNode expr) throws PathEngineException, DefinitionException {
     if (Utilities.noString(type))
-      throw new PathEngineException("No type provided in BuildToolPathEvaluator.getChildTypesByName");
+      throw new PathEngineException("No type provided in BuildToolPathEvaluator.getChildTypesByName", expr.getStart(), expr.toString());
     if (type.equals("http://hl7.org/fhir/StructureDefinition/xhtml"))
       return;
     if (type.startsWith(Constants.NS_SYSTEM_TYPE))
@@ -3973,7 +4046,7 @@ public class FHIRPathEngine {
     List<StructureDefinition> sdl = new ArrayList<StructureDefinition>();
     ElementDefinitionMatch m = null;
     if (type.contains("#"))
-      m = getElementDefinition(sd, type.substring(type.indexOf("#")+1), false);
+      m = getElementDefinition(sd, type.substring(type.indexOf("#")+1), false, expr);
     if (m != null && hasDataType(m.definition)) {
       if (m.fixedType != null)
       {
@@ -4012,11 +4085,11 @@ public class FHIRPathEngine {
                 if (t.getCode().equals("Resource")) {
                   for (String rn : worker.getResourceNames()) {
                     if (!result.hasType(worker, rn)) {
-                      getChildTypesByName(result.addType(rn), "**", result);
+                      getChildTypesByName(result.addType(rn), "**", result, expr);
                     }                  
                   }
                 } else if (!result.hasType(worker, tn)) {
-                  getChildTypesByName(result.addType(tn), "**", result);
+                  getChildTypesByName(result.addType(tn), "**", result, expr);
                 }
               }
             }
@@ -4039,7 +4112,7 @@ public class FHIRPathEngine {
       } else {
         path = sdi.getSnapshot().getElement().get(0).getPath()+tail+"."+name;
 
-        ElementDefinitionMatch ed = getElementDefinition(sdi, path, false);
+        ElementDefinitionMatch ed = getElementDefinition(sdi, path, false, expr);
         if (ed != null) {
           if (!Utilities.noString(ed.getFixedType()))
             result.addType(ed.getFixedType());
@@ -4088,7 +4161,7 @@ public class FHIRPathEngine {
   }
 
 
-  private ElementDefinitionMatch getElementDefinition(StructureDefinition sd, String path, boolean allowTypedName) throws PathEngineException {
+  private ElementDefinitionMatch getElementDefinition(StructureDefinition sd, String path, boolean allowTypedName, ExpressionNode expr) throws PathEngineException {
     for (ElementDefinition ed : sd.getSnapshot().getElement()) {
       if (ed.getPath().equals(path)) {
         if (ed.hasContentReference()) {
@@ -4108,15 +4181,15 @@ public class FHIRPathEngine {
       if (ed.getPath().contains(".") && path.startsWith(ed.getPath()+".") && (ed.getType().size() > 0) && !isAbstractType(ed.getType())) { 
         // now we walk into the type.
         if (ed.getType().size() > 1)  // if there's more than one type, the test above would fail this
-          throw new PathEngineException("Internal typing issue....");
+          throw new PathEngineException("Internal typing issue....", expr.getStart(), expr.toString());
         StructureDefinition nsd = worker.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(ed.getType().get(0).getCode(), worker.getOverrideVersionNs()));
   	    if (nsd == null) 
-  	      throw new PathEngineException("Unknown type "+ed.getType().get(0).getCode());
-        return getElementDefinition(nsd, nsd.getId()+path.substring(ed.getPath().length()), allowTypedName);
+  	      throw new PathEngineException("Unknown type "+ed.getType().get(0).getCode(), expr.getStart(), expr.toString());
+        return getElementDefinition(nsd, nsd.getId()+path.substring(ed.getPath().length()), allowTypedName, expr);
       }
       if (ed.hasContentReference() && path.startsWith(ed.getPath()+".")) {
         ElementDefinitionMatch m = getElementDefinitionById(sd, ed.getContentReference());
-        return getElementDefinition(sd, m.definition.getPath()+path.substring(ed.getPath().length()), allowTypedName);
+        return getElementDefinition(sd, m.definition.getPath()+path.substring(ed.getPath().length()), allowTypedName, expr);
       }
     }
     return null;
@@ -4291,13 +4364,13 @@ public class FHIRPathEngine {
     return path.substring(path.lastIndexOf(".") + 1);
   }
 
-  private Equality asBool(List<Base> items) throws PathEngineException {
+  private Equality asBool(List<Base> items, ExpressionNode expr) throws PathEngineException {
     if (items.size() == 0)
       return Equality.Null;
     else if (items.size() == 1)
       return asBool(items.get(0));
     else
-      throw new PathEngineException("Unable to evaluate as a boolean: "+convertToString(items));
+      throw new PathEngineException("Unable to evaluate as a boolean: "+convertToString(items), expr.getStart(), expr.toString());
   }
   
   private Equality asBoolFromInt(String s) {

@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities;
 
+import java.util.List;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -74,6 +76,13 @@ public class CommaSeparatedStringBuilder {
   public void appendIfNotNull(String s) {
    if (!Utilities.noString(s))
      append(s);
+    
+  }
+
+  public void addAll(List<String> list) {
+    for (String s : list) {
+      append(s);
+    }
     
   }
 }

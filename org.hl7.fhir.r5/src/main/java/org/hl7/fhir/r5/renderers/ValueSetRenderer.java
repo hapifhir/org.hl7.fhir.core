@@ -234,6 +234,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     }
     if (doDefinition) {
       tr.td().b().tx("Definition");
+      doLangs = false;
     } else {
       // if we're not doing definitions and we don't have too many languages, we'll do them in line
       if (langs.size() < MAX_LANGS_IN_LINE) {
@@ -260,9 +261,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
       x.para().b().tx("Additional Language Displays");
       t = x.table( "codes");
       tr = t.tr();
-      tdDisp.b().tx("Code");
+      tr.td().b().tx("Code");
       for (String lang : langs) {
-        tdDisp.b().addText(describeLang(lang));
+        tr.td().b().addText(describeLang(lang));
       }
       for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
         addLanguageRow(c, t, langs);
@@ -482,7 +483,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if ("1.0m".equals(v))  return "Jul 1999";
     if ("1.0l".equals(v))  return "Jan 1998";
     if ("1.0ja".equals(v)) return "Oct 1997";
-
     return null;
   }
 
@@ -662,7 +662,9 @@ public class ValueSetRenderer extends TerminologyRenderer {
           td.i().tx("("+mapping.comp.getComment()+")");
       }
     }
-    addLangaugesToRow(c, langs, tr);
+    if (doLangs) {
+      addLangaugesToRow(c, langs, tr);
+    }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
       addExpansionRowToTable(t, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs, doLangs);
     }
@@ -827,7 +829,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
           boolean hasDefinition = false;
           for (ConceptReferenceComponent c : inc.getConcept()) {
             hasComments = hasComments || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT);
-            hasDefinition = hasDefinition || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION);
+            ConceptDefinitionComponent cc = definitions.get(c.getCode()); 
+            hasDefinition = hasDefinition || ((cc != null && cc.hasDefinition()) || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION));
           }
           if (hasComments || hasDefinition)
             hasExtensions = true;
@@ -844,16 +847,19 @@ public class ValueSetRenderer extends TerminologyRenderer {
             else if (cc != null && !Utilities.noString(cc.getDisplay()))
               td.addText(cc.getDisplay());
 
-            if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
+            if (hasDefinition) {
               td = tr.td();
-              smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
-            } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
-              td = tr.td();
-              smartAddText(td, cc.getDefinition());
+              if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
+                smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
+              } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
+                smartAddText(td, cc.getDefinition());
+              }
             }
-
-            if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
-              smartAddText(tr.td(), "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
+            if (hasComments) {
+              td = tr.td();
+              if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
+                smartAddText(td, "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
+              }
             }
             if (doLangs) {
               addLangaugesToRow(c, langs, tr);

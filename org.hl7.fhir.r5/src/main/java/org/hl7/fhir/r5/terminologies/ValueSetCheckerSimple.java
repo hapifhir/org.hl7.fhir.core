@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -164,6 +165,9 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
           throw new FHIRException("Unable to evaluate based on empty code system");
         }
         res = validateCode(code, cs);
+      } else if (cs == null && valueset.hasExpansion() && inExpansion) {
+        // we just take the value set as face value then
+        res = new ValidationResult(IssueSeverity.INFORMATION, null);
       } else {
         // well, we didn't find a code system - try the expansion? 
         // disabled waiting for discussion
@@ -512,18 +516,20 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
         return null;
       }
+      if (res.getErrorClass() == TerminologyServiceErrorClass.NOSERVICE) {
+        throw new NoTerminologyServiceException();
+      }
       return res.isOk();
     } else {
       if (vsi.hasFilter()) {
         boolean ok = true;
-        for (ConceptSetFilterComponent f : vsi.getFilter())
+        for (ConceptSetFilterComponent f : vsi.getFilter()) {
           if (!codeInFilter(cs, system, f, code)) {
             ok = false;
             break;
           }
-        if (ok) {
-          return true;
         }
+        return ok;
       }
 
       List<ConceptDefinitionComponent> list = cs.getConcept();

@@ -1,11 +1,17 @@
 package org.hl7.fhir.validation.cli.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
-import org.hl7.fhir.validation.Validator;
+import org.hl7.fhir.validation.cli.utils.QuestionnaireMode;
+import org.hl7.fhir.validation.cli.utils.EngineMode;
 
-import java.util.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A POJO for storing the flags/values for the CLI validator.
@@ -35,6 +41,8 @@ public class CliContext {
   private String map = null;
   @JsonProperty("output")
   private String output = null;
+  @JsonProperty("htmlOutput")
+  private String htmlOutput = null;
   @JsonProperty("txServer")
   private String txServer = "http://tx.fhir.org";
   @JsonProperty("sv")
@@ -54,15 +62,16 @@ public class CliContext {
 
   @JsonProperty("igs")
   private List<String> igs = new ArrayList<String>();
-  @JsonProperty("questionnaires")
-  private List<String> questionnaires = new ArrayList<String>();
+  @JsonProperty("questionnaire")
+  private QuestionnaireMode questionnaireMode = QuestionnaireMode.CHECK;
+  
   @JsonProperty("profiles")
   private List<String> profiles = new ArrayList<String>();
   @JsonProperty("sources")
   private List<String> sources = new ArrayList<String>();
 
   @JsonProperty("mode")
-  private Validator.EngineMode mode = Validator.EngineMode.VALIDATION;
+  private EngineMode mode = EngineMode.VALIDATION;
 
   @JsonProperty("securityChecks")
   private boolean securityChecks = false;
@@ -118,22 +127,14 @@ public class CliContext {
     return this;
   }
 
-  @JsonProperty("questionnaires")
-  public List<String> getQuestionnaires() {
-    return questionnaires;
+  @JsonProperty("questionnaire")
+  public QuestionnaireMode getQuestionnaireMode() {
+    return questionnaireMode;
   }
 
-  @JsonProperty("questionnaires")
-  public CliContext setQuestionnaires(List<String> questionnaires) {
-    this.questionnaires = questionnaires;
-    return this;
-  }
-
-  public CliContext addQuestionnaire(String questionnaire) {
-    if (this.questionnaires == null) {
-      this.questionnaires = new ArrayList<>();
-    }
-    this.questionnaires.add(questionnaire);
+  @JsonProperty("questionnaire")
+  public CliContext setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
+    this.questionnaireMode = questionnaireMode;
     return this;
   }
 
@@ -232,12 +233,12 @@ public class CliContext {
   }
 
   @JsonProperty("mode")
-  public Validator.EngineMode getMode() {
+  public EngineMode getMode() {
     return mode;
   }
 
   @JsonProperty("mode")
-  public CliContext setMode(Validator.EngineMode mode) {
+  public CliContext setMode(EngineMode mode) {
     this.mode = mode;
     return this;
   }
@@ -250,6 +251,17 @@ public class CliContext {
   @JsonProperty("output")
   public CliContext setOutput(String output) {
     this.output = output;
+    return this;
+  }
+
+  @JsonProperty("htmlOutput")
+  public String getHtmlOutput() {
+    return htmlOutput;
+  }
+
+  @JsonProperty("htmlOutput")
+  public CliContext setHtmlOutput(String htmlOutput) {
+    this.htmlOutput = htmlOutput;
     return this;
   }
 
@@ -473,6 +485,7 @@ public class CliContext {
       noExtensibleBindingMessages == that.noExtensibleBindingMessages &&
       Objects.equals(map, that.map) &&
       Objects.equals(output, that.output) &&
+      Objects.equals(htmlOutput, that.htmlOutput) &&
       Objects.equals(txServer, that.txServer) &&
       Objects.equals(sv, that.sv) &&
       Objects.equals(txLog, that.txLog) &&
@@ -482,7 +495,7 @@ public class CliContext {
       Objects.equals(snomedCT, that.snomedCT) &&
       Objects.equals(targetVer, that.targetVer) &&
       Objects.equals(igs, that.igs) &&
-      Objects.equals(questionnaires, that.questionnaires) &&
+      Objects.equals(questionnaireMode, that.questionnaireMode) &&
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(sources, that.sources) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
@@ -494,6 +507,43 @@ public class CliContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, map, output, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaires, profiles, sources, mode, locale, locations, crumbTrails, showTimes);
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes);
+  }
+
+  @Override
+  public String toString() {
+    return "CliContext{" +
+      "doNative=" + doNative +
+      ", anyExtensionsAllowed=" + anyExtensionsAllowed +
+      ", hintAboutNonMustSupport=" + hintAboutNonMustSupport +
+      ", recursive=" + recursive +
+      ", doDebug=" + doDebug +
+      ", assumeValidRestReferences=" + assumeValidRestReferences +
+      ", canDoNative=" + canDoNative +
+      ", noInternalCaching=" + noInternalCaching +
+      ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
+      ", map='" + map + '\'' +
+      ", output='" + output + '\'' +
+      ", htmlOutput='" + htmlOutput + '\'' +
+      ", txServer='" + txServer + '\'' +
+      ", sv='" + sv + '\'' +
+      ", txLog='" + txLog + '\'' +
+      ", mapLog='" + mapLog + '\'' +
+      ", lang='" + lang + '\'' +
+      ", fhirpath='" + fhirpath + '\'' +
+      ", snomedCT='" + snomedCT + '\'' +
+      ", targetVer='" + targetVer + '\'' +
+      ", igs=" + igs +
+      ", questionnaireMode=" + questionnaireMode +
+      ", profiles=" + profiles +
+      ", sources=" + sources +
+      ", mode=" + mode +
+      ", securityChecks=" + securityChecks +
+      ", crumbTrails=" + crumbTrails +
+      ", showTimes=" + showTimes +
+      ", locale='" + locale + '\'' +
+      ", locations=" + locations +
+      ", bundleValidationRules=" + bundleValidationRules +
+      '}';
   }
 }

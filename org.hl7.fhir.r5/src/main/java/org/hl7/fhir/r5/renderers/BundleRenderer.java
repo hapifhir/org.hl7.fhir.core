@@ -43,7 +43,9 @@ public class BundleRenderer extends ResourceRenderer {
 
   @Override
   public boolean render(XhtmlNode x, Resource r) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
-    return render(x, (Bundle) r);
+    XhtmlNode n = render((Bundle) r);
+    x.addChildren(n.getChildNodes());
+    return false;
   }
 
   @Override
