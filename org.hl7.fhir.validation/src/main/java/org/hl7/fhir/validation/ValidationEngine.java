@@ -1007,7 +1007,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
 
   public void loadIg(String src, boolean recursive) throws IOException, FHIRException {
-    NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) ? pcm.loadPackage(src, null) : null;
+    NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !new File(src).exists() ? pcm.loadPackage(src, null) : null;
     if (npm != null) {
       for (String s : npm.dependencies()) {
         if (!context.getLoadedPackages().contains(s)) {

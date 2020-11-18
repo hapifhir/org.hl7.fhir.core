@@ -523,7 +523,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id + ".tgz"), "current");
     } else {
-      throw new FHIRException("The package '" + id + "' has not entry on the current build server");
+      throw new FHIRException("The package '" + id + "' has no entry on the current build server");
     }
   }
 

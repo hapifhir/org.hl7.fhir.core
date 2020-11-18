@@ -812,6 +812,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return loadedPackages.contains(id+"#"+ver);
   }
 
+  public boolean hasPackage(String idAndver) {
+    return loadedPackages.contains(idAndver);
+  }
+
   public void setClock(TimeTracker tt) {
     clock = tt;
   }
