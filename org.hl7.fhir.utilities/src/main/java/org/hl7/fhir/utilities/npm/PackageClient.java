@@ -252,7 +252,11 @@ public class PackageClient {
               String v = JSONUtil.str(e, "ig-version");
               if (version == null || VersionUtilities.isThisOrLater(version, v)) {
                 version = v;
-                fVersion = e.getAsJsonArray("fhir-version").get(0).getAsString();
+                if (e.get("fhir-version").isJsonPrimitive()) {
+                  fVersion = e.getAsJsonPrimitive("fhir-version").getAsString();
+                } else {
+                  fVersion = e.getAsJsonArray("fhir-version").get(0).getAsString();
+                }
                 url = JSONUtil.str(e, "url");
               }
             }
