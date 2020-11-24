@@ -1678,7 +1678,7 @@ public class VersionConvertor_10_30 {
     if (src.hasPeriodElement()) tgt.setPeriodElement(convertDecimal(src.getPeriodElement()));
     if (src.hasPeriodMaxElement()) tgt.setPeriodMaxElement(convertDecimal(src.getPeriodMaxElement()));
     if (src.hasPeriodUnits()) tgt.setPeriodUnitElement(convertUnitsOfTime(src.getPeriodUnitsElement()));
-    tgt.setWhen(Collections.singletonList(convertEventTiming(src.getWhenElement())));
+    if (src.hasWhen()) tgt.setWhen(Collections.singletonList(convertEventTiming(src.getWhenElement())));
     return tgt;
   }
 

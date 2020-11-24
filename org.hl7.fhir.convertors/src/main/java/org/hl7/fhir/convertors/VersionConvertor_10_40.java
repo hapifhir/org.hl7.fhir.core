@@ -1779,9 +1779,7 @@ public class VersionConvertor_10_40 {
     if (src.hasPeriodElement()) tgt.setPeriodElement(convertDecimal(src.getPeriodElement()));
     if (src.hasPeriodMaxElement()) tgt.setPeriodMaxElement(convertDecimal(src.getPeriodMaxElement()));
     if (src.hasPeriodUnits()) tgt.setPeriodUnitElement(convertUnitsOfTime(src.getPeriodUnitsElement()));
-    if (src.hasWhen()) {
-      tgt.setWhen(Collections.singletonList(convertEventTiming(src.getWhenElement())));
-    }
+    if (src.hasWhen()) tgt.setWhen(Collections.singletonList(convertEventTiming(src.getWhenElement())));
     return tgt;
   }
 
@@ -1799,9 +1797,7 @@ public class VersionConvertor_10_40 {
     if (src.hasPeriodElement()) tgt.setPeriodElement(convertDecimal(src.getPeriodElement()));
     if (src.hasPeriodMaxElement()) tgt.setPeriodMaxElement(convertDecimal(src.getPeriodMaxElement()));
     if (src.hasPeriodUnit()) tgt.setPeriodUnitsElement(convertUnitsOfTime(src.getPeriodUnitElement()));
-    if (src.hasWhen()) {
-      tgt.setWhenElement(convertEventTiming(src.getWhen().get(0)));
-    }
+    if (src.hasWhen()) tgt.setWhenElement(convertEventTiming(src.getWhen().get(0)));
     return tgt;
   }
 
