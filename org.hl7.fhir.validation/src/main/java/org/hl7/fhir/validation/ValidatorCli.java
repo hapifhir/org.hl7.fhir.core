@@ -68,6 +68,11 @@ import org.hl7.fhir.validation.cli.services.ValidationService;
 import org.hl7.fhir.validation.cli.utils.*;
 
 import java.io.File;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Base64;
 
 /**
  * A executable class that will validate one or more FHIR resources against
@@ -86,6 +91,11 @@ public class ValidatorCli {
 
   public static final String HTTP_PROXY_HOST = "http.proxyHost";
   public static final String HTTP_PROXY_PORT = "http.proxyPort";
+  public static final String HTTP_PROXY_USER = "http.proxyUser";
+  public static final String HTTP_PROXY_PASS = "http.proxyPassword";
+  public static final String JAVA_DISABLED_TUNNELING_SCHEMES = "jdk.http.auth.tunneling.disabledSchemes";
+  public static final String JAVA_DISABLED_PROXY_SCHEMES = "jdk.http.auth.proxying.disabledSchemes";
+  public static final String JAVA_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
   public static void main(String[] args) throws Exception {
     TimeTracker tt = new TimeTracker();
@@ -95,9 +105,43 @@ public class ValidatorCli {
     Display.displaySystemInfo();
 
     if (Params.hasParam(args, Params.PROXY)) {
-      String[] p = Params.getParam(args, Params.PROXY).split("\\:");
+      assert Params.getParam(args, Params.PROXY) != null : "PROXY arg passed in was NULL";
+      String[] p = Params.getParam(args, Params.PROXY).split(":");
       System.setProperty(HTTP_PROXY_HOST, p[0]);
       System.setProperty(HTTP_PROXY_PORT, p[1]);
+    }
+
+    if (Params.hasParam(args, Params.PROXY_AUTH)) {
+      assert Params.getParam(args, Params.PROXY) != null : "Cannot set PROXY_AUTH without setting PROXY...";
+      assert Params.getParam(args, Params.PROXY_AUTH) != null : "PROXY_AUTH arg passed in was NULL...";
+      String[] p = Params.getParam(args, Params.PROXY_AUTH).split(":");
+      String authUser = p[0];
+      String authPass = p[1];
+
+      /*
+       * For authentication, use java.net.Authenticator to set proxy's configuration and set the system properties
+       * http.proxyUser and http.proxyPassword
+       */
+      Authenticator.setDefault(
+        new Authenticator() {
+          @Override
+          public PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(authUser, authPass.toCharArray());
+          }
+        }
+      );
+
+      System.setProperty(HTTP_PROXY_USER, authUser);
+      System.setProperty(HTTP_PROXY_PASS, authPass);
+      System.setProperty(JAVA_USE_SYSTEM_PROXIES, "true");
+
+      /*
+       * For Java 1.8 and higher you must set
+       * -Djdk.http.auth.tunneling.disabledSchemes=
+       * to make proxies with Basic Authorization working with https along with Authenticator
+       */
+      System.setProperty(JAVA_DISABLED_TUNNELING_SCHEMES, "");
+      System.setProperty(JAVA_DISABLED_PROXY_SCHEMES, "");
     }
 
     CliContext cliContext = Params.loadCliContext(args);
