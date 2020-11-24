@@ -2053,7 +2053,7 @@ public class VersionConvertor_40_50 {
     if (src.hasPeriodMax()) tgt.setPeriodMaxElement(convertDecimal(src.getPeriodMaxElement()));
     if (src.hasPeriodUnit()) tgt.setPeriodUnitElement(convertUnitsOfTime(src.getPeriodUnitElement()));
     tgt.setDayOfWeek(src.getDayOfWeek().stream().map(VersionConvertor_40_50::convertDayOfWeek).collect(Collectors.toList()));
-    tgt.setWhen(src.getWhen().stream().map(VersionConvertor_40_50::convertEventTiming).collect(Collectors.toList()));
+    if (src.hasWhen()) tgt.setWhen(src.getWhen().stream().map(VersionConvertor_40_50::convertEventTiming).collect(Collectors.toList()));
     for (org.hl7.fhir.r4.model.TimeType t : src.getTimeOfDay()) tgt.getTimeOfDay().add(convertTime(t));
     if (src.hasOffset()) tgt.setOffsetElement(convertUnsignedInt(src.getOffsetElement()));
     return tgt;
@@ -2075,7 +2075,7 @@ public class VersionConvertor_40_50 {
     if (src.hasPeriodMax()) tgt.setPeriodMaxElement(convertDecimal(src.getPeriodMaxElement()));
     if (src.hasPeriodUnit()) tgt.setPeriodUnitElement(convertUnitsOfTime(src.getPeriodUnitElement()));
     tgt.setDayOfWeek(src.getDayOfWeek().stream().map(VersionConvertor_40_50::convertDayOfWeek).collect(Collectors.toList()));
-    tgt.setWhen(src.getWhen().stream().map(VersionConvertor_40_50::convertEventTiming).collect(Collectors.toList()));
+    if (src.hasWhen()) tgt.setWhen(src.getWhen().stream().map(VersionConvertor_40_50::convertEventTiming).collect(Collectors.toList()));
     for (org.hl7.fhir.r5.model.TimeType t : src.getTimeOfDay()) tgt.getTimeOfDay().add(convertTime(t));
     if (src.hasOffset()) tgt.setOffsetElement(convertUnsignedInt(src.getOffsetElement()));
     return tgt;

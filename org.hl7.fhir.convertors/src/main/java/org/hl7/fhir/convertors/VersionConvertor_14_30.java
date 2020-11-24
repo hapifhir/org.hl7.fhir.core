@@ -1889,9 +1889,7 @@ public class VersionConvertor_14_30 {
     if (src.hasPeriod()) tgt.setPeriodElement(convertDecimal(src.getPeriodElement()));
     if (src.hasPeriodMax()) tgt.setPeriodMaxElement(convertDecimal(src.getPeriodMaxElement()));
     if (src.hasPeriodUnit()) tgt.setPeriodUnitElement(convertUnitsOfTime(src.getPeriodUnitElement()));
-    if (src.hasWhen()) {
-      tgt.setWhen(Collections.singletonList(convertEventTiming(src.getWhenElement())));
-    }
+    if (src.hasWhen()) tgt.setWhen(Collections.singletonList(convertEventTiming(src.getWhenElement())));
     if (src.hasOffset()) tgt.setOffsetElement(convertUnsignedInt(src.getOffsetElement()));
     return tgt;
   }
@@ -1911,9 +1909,7 @@ public class VersionConvertor_14_30 {
     if (src.hasPeriod()) tgt.setPeriodElement(convertDecimal(src.getPeriodElement()));
     if (src.hasPeriodMax()) tgt.setPeriodMaxElement(convertDecimal(src.getPeriodMaxElement()));
     if (src.hasPeriodUnit()) tgt.setPeriodUnitElement(convertUnitsOfTime(src.getPeriodUnitElement()));
-    if (src.hasWhen()) {
-      tgt.setWhenElement(convertEventTiming(src.getWhen().get(0)));
-    }
+    if (src.hasWhen()) tgt.setWhenElement(convertEventTiming(src.getWhen().get(0)));
     if (src.hasOffset()) tgt.setOffsetElement(convertUnsignedInt(src.getOffsetElement()));
     return tgt;
   }
