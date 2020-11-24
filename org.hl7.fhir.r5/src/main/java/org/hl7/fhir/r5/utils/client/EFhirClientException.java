@@ -99,7 +99,6 @@ public class EFhirClientException extends RuntimeException {
 	 * A default message of "One or more server side errors have occurred during this operation. Refer to e.getServerErrors() for additional details."
 	 * will be returned to users.
 	 * 
-	 * @param message
 	 * @param serverError
 	 */
 	public EFhirClientException(OperationOutcome serverError) {
