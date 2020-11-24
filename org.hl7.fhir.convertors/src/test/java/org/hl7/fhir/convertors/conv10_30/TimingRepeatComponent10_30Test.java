@@ -18,7 +18,7 @@ public class TimingRepeatComponent10_30Test {
 
     Assertions.assertEquals(SET_COUNT, tgt.getCount(), "Count field not preserved through version conversion.");
     Assertions.assertFalse(tgt.hasWhen(), "hasWhen() should return false for this conversion.");
-    Assertions.assertTrue(tgt.getWhen().isEmpty(), "When no when time is provided, getWhen() should return an empty list.");
+    Assertions.assertTrue(tgt.getWhen().isEmpty(), "When no _when time_ is provided, getWhen() should return an empty list.");
   }
 
 }
