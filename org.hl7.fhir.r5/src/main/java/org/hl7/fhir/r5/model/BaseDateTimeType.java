@@ -899,16 +899,12 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
       lowRight = lowRight - (14 * DateUtils.MILLIS_PER_HOUR);
       highRight = highRight + (14 * DateUtils.MILLIS_PER_HOUR);
     }
-    System.out.print("["+((lowLeft / 1000) - 130000000)+"-"+((highLeft / 1000)  - 130000000)+"] vs ["+((lowRight / 1000) - 130000000)+"-"+((highRight / 1000) - 130000000)+"] = ");
     if (highRight < lowLeft) {
-      System.out.println("false");
       return false;
     }
     if (highLeft < lowRight) {
-      System.out.println("false");
       return false;
     }
-    System.out.println("true");
     return true;
   }
 
@@ -998,6 +994,14 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
         return 0;
       } else if (left.getPrecision() == TemporalPrecisionEnum.MINUTE || right.getPrecision() == TemporalPrecisionEnum.MINUTE) {
         return def;
+      }
+
+      if (left.getSecond() < right.getSecond()) {
+        return -1;
+      } else if (left.getSecond() > right.getSecond()) {
+        return 1;
+      } else if (left.getPrecision() == TemporalPrecisionEnum.SECOND && right.getPrecision() == TemporalPrecisionEnum.SECOND) {
+        return 0;
       }
 
       if (left.getSecondsMilli() < right.getSecondsMilli()) {
