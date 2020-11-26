@@ -399,4 +399,14 @@ public class BundleRenderer extends ResourceRenderer {
     return "??";
   }
 
+  public boolean canRender(Bundle b) {
+    for (BundleEntryComponent be : b.getEntry()) {
+      ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
+      if (!rr.canRender(be.getResource())) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }
