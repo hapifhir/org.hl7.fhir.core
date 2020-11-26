@@ -74,7 +74,7 @@ public class Client {
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri,
                                                                      String resourceFormat,
                                                                      String message,
-                                                                     long timeout) throws MalformedURLException {
+                                                                     long timeout) throws IOException {
     Request.Builder request = new Request.Builder()
       .method("OPTIONS", null)
       .url(optionsUri.toURL());
@@ -85,7 +85,7 @@ public class Client {
   public <T extends Resource> ResourceRequest<T> issueGetResourceRequest(URI resourceUri,
                                                                          String resourceFormat,
                                                                          String message,
-                                                                         long timeout) throws MalformedURLException {
+                                                                         long timeout) throws IOException {
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL());
 
@@ -96,7 +96,7 @@ public class Client {
                                                                  byte[] payload,
                                                                  String resourceFormat,
                                                                  String message,
-                                                                 long timeout) throws MalformedURLException {
+                                                                 long timeout) throws IOException {
     return issuePutRequest(resourceUri, payload, resourceFormat, null, message, timeout);
   }
 
@@ -105,7 +105,7 @@ public class Client {
                                                                  String resourceFormat,
                                                                  Headers headers,
                                                                  String message,
-                                                                 long timeout) throws MalformedURLException {
+                                                                 long timeout) throws IOException {
     if (payload == null) throw new EFhirClientException("PUT requests require a non-null payload");
     RequestBody body = RequestBody.create(payload);
     Request.Builder request = new Request.Builder()
@@ -119,7 +119,7 @@ public class Client {
                                                                   byte[] payload,
                                                                   String resourceFormat,
                                                                   String message,
-                                                                  long timeout) throws MalformedURLException {
+                                                                  long timeout) throws IOException {
     return issuePostRequest(resourceUri, payload, resourceFormat, null, message, timeout);
   }
 
@@ -128,7 +128,7 @@ public class Client {
                                                                   String resourceFormat,
                                                                   Headers headers,
                                                                   String message,
-                                                                  long timeout) throws MalformedURLException {
+                                                                  long timeout) throws IOException {
     if (payload == null) throw new EFhirClientException("POST requests require a non-null payload");
     RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);
     Request.Builder request = new Request.Builder()
@@ -138,14 +138,14 @@ public class Client {
     return executeFhirRequest(request, resourceFormat, headers, message, retryCount, timeout);
   }
 
-  public boolean issueDeleteRequest(URI resourceUri) throws MalformedURLException {
+  public boolean issueDeleteRequest(URI resourceUri) throws IOException {
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL())
       .delete();
     return executeFhirRequest(request, null, null, null, retryCount, timeout).isSuccessfulRequest();
   }
 
-  public Bundle issueGetFeedRequest(URI resourceUri, String resourceFormat) throws MalformedURLException {
+  public Bundle issueGetFeedRequest(URI resourceUri, String resourceFormat) throws IOException {
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL());
 
@@ -171,7 +171,7 @@ public class Client {
                                  byte[] payload,
                                  String resourceFormat,
                                  String message,
-                                 int timeout) throws MalformedURLException {
+                                 int timeout) throws IOException {
     if (payload == null) throw new EFhirClientException("POST requests require a non-null payload");
     RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);
     Request.Builder request = new Request.Builder()
@@ -186,7 +186,7 @@ public class Client {
                                                              Headers headers,
                                                              String message,
                                                              int retryCount,
-                                                             long timeout) {
+                                                             long timeout) throws IOException {
     return new FhirRequestBuilder(request)
       .withLogger(logger)
       .withResourceFormat(resourceFormat)
@@ -202,7 +202,7 @@ public class Client {
                                                                        Headers headers,
                                                                        String message,
                                                                        int retryCount,
-                                                                       long timeout) {
+                                                                       long timeout) throws IOException {
     return new FhirRequestBuilder(request)
       .withLogger(logger)
       .withResourceFormat(resourceFormat)
