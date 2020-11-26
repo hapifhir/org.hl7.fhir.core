@@ -52,6 +52,7 @@ import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
@@ -81,8 +82,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     Map<String, JsonObject> examples = new HashMap<String, JsonObject>();
     manifest = (JsonObject) new com.google.gson.JsonParser().parse(contents);
-    for (Entry<String, JsonElement> e : manifest.getAsJsonObject("test-cases").entrySet()) {
-      examples.put(e.getKey(), e.getValue().getAsJsonObject());
+    for (JsonElement e : manifest.getAsJsonArray("test-cases")) {
+      JsonObject o = (JsonObject) e;
+      examples.put(JSONUtil.str(o, "name"), o);
     }
 
     List<String> names = new ArrayList<String>(examples.size());
@@ -154,7 +156,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
 
-    String testCaseContent = TestingUtilities.loadTestResource("validator", name);
+    String testCaseContent = TestingUtilities.loadTestResource("validator", JSONUtil.str(content, "file"));
     InstanceValidator val = vCurr.getValidator();
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
@@ -226,7 +228,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("logical")==false) {
       val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
       System.out.println(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
-      if (name.endsWith(".json"))
+      if (JSONUtil.str(content, "file").endsWith(".json"))
         val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
       else
         val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
@@ -258,7 +260,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       val.getContext().cacheResource(sd);
       val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
-      if (name.endsWith(".json"))
+      if (JSONUtil.str(content, "file").endsWith(".json"))
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON, asSdList(sd));
       else
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, asSdList(sd));
