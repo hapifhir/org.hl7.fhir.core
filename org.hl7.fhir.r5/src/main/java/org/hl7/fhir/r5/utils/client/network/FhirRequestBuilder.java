@@ -1,9 +1,7 @@
 package org.hl7.fhir.r5.utils.client.network;
 
-import kotlin.Pair;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -16,7 +14,10 @@ import org.hl7.fhir.r5.utils.client.ResourceFormat;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class FhirRequestBuilder {
@@ -201,31 +202,17 @@ public class FhirRequestBuilder {
     return httpRequest.build();
   }
 
-  public <T extends Resource> ResourceRequest<T> execute() {
+  public <T extends Resource> ResourceRequest<T> execute() throws IOException {
     formatHeaders(httpRequest, resourceFormat, null);
-
-    try {
-      Response response = getHttpClient().newCall(httpRequest.build()).execute();
-      T resource = unmarshalReference(response, resourceFormat);
-      return new ResourceRequest<T>(resource, response.code(), getLocationHeader(response.headers()));
-    } catch (IOException e) {
-      e.printStackTrace();
-      throw new FHIRException(e);
-    }
-
+    Response response = getHttpClient().newCall(httpRequest.build()).execute();
+    T resource = unmarshalReference(response, resourceFormat);
+    return new ResourceRequest<T>(resource, response.code(), getLocationHeader(response.headers()));
   }
 
-  public Bundle executeAsBatch() {
+  public Bundle executeAsBatch() throws IOException {
     formatHeaders(httpRequest, resourceFormat, null);
-
-    try {
-      Response response = getHttpClient().newCall(httpRequest.build()).execute();
-      return unmarshalFeed(response, resourceFormat);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    return null;
+    Response response = getHttpClient().newCall(httpRequest.build()).execute();
+    return unmarshalFeed(response, resourceFormat);
   }
 
   /**
@@ -317,9 +304,9 @@ public class FhirRequestBuilder {
    * Logs the given {@link Response}, using the current {@link ToolingClientLogger}. If the current
    * {@link FhirRequestBuilder#logger} is null, no action is taken.
    *
-   * @param responseCode HTTP response code
+   * @param responseCode    HTTP response code
    * @param responseHeaders {@link Headers} from response
-   * @param responseBody Byte array response
+   * @param responseBody    Byte array response
    */
   protected void log(int responseCode, Headers responseHeaders, byte[] responseBody) {
     if (logger != null) {
