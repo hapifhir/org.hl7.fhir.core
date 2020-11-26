@@ -3,6 +3,7 @@ package org.hl7.fhir.r5.utils.client.network;
 import kotlin.Pair;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -209,9 +210,9 @@ public class FhirRequestBuilder {
       return new ResourceRequest<T>(resource, response.code(), getLocationHeader(response.headers()));
     } catch (IOException e) {
       e.printStackTrace();
+      throw new FHIRException(e);
     }
 
-    return null;
   }
 
   public Bundle executeAsBatch() {

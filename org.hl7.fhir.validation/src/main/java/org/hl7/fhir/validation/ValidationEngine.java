@@ -68,6 +68,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -1906,6 +1907,17 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   public void setLocale(Locale locale) {
     this.locale = locale;
   }
+
+  @Override
+  public CanonicalResource fetchCanonicalResource(String url) throws URISyntaxException {
+    return fetcher != null ? fetcher.fetchCanonicalResource(url) : null;
+  }
+
+  @Override
+  public boolean fetchesCanonicalResource(String url) {
+    return fetcher != null ? fetcher.fetchesCanonicalResource(url) : false;
+  }
+
 
   public void handleOutput(Resource r, String output, String version) throws FHIRException, IOException {
     if (output.startsWith("http://") || output.startsWith("http://")) {
