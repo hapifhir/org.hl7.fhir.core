@@ -156,16 +156,17 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
 
-    if (content.has("fetcher") && "standalone".equals(JSONUtil.str(content, "fetcher"))) {
-      vCurr.setFetcher(new StandAloneValidatorFetcher(vCurr.getPcm(), vCurr.getContext(), vCurr));
-    } else {
-      vCurr.setFetcher(this);
-    }
     String testCaseContent = TestingUtilities.loadTestResource("validator", JSONUtil.str(content, "file"));
     InstanceValidator val = vCurr.getValidator();
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
     val.setDebug(false);
+    if (content.has("fetcher") && "standalone".equals(JSONUtil.str(content, "fetcher"))) {
+      val.setFetcher(vCurr);
+      vCurr.setFetcher(new StandAloneValidatorFetcher(vCurr.getPcm(), vCurr.getContext(), vCurr));
+    } else {
+      val.setFetcher(this);
+    }
     if (content.has("allowed-extension-domain"))
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
     if (content.has("allowed-extension-domains"))
