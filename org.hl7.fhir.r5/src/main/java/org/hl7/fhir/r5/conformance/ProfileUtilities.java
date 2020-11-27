@@ -5647,7 +5647,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       String bs = b.toString();
       if (ed.hasId()) {
-        replacedIds.put(ed.getId(), bs);
+        replacedIds.put(ed.getId(), ed.getPath());
       }
       ed.setId(bs);
       if (idList.containsKey(bs)) {
