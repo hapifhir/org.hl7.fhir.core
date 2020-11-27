@@ -135,7 +135,11 @@ public class XVerExtensionManager {
         if (hasTargets(tr.getCode()) ) {
           s = s.substring(t.length()+1);
           for (String p : s.substring(0, s.length()-1).split("\\|")) {
-            tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+p);
+            if ("Any".equals(p)) {
+              tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
+            } else {
+              tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+p);              
+            }
           }
         }
       } else {

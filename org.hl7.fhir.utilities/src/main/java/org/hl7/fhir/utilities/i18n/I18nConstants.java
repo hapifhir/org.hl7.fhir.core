@@ -572,6 +572,8 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_THIS_VERSION_OK = "VALIDATION_VAL_PROFILE_THIS_VERSION_OK";
   public static final String VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER = "VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER";
   public static final String VALIDATION_VAL_PROFILE_UNKNOWN = "Validation_VAL_Profile_Unknown";
+  public static final String VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY = "VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY";
+  public static final String VALIDATION_VAL_PROFILE_UNKNOWN_ERROR = "VALIDATION_VAL_PROFILE_UNKNOWN_ERROR";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE = "Validation_VAL_Profile_WrongType";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE2 = "Validation_VAL_Profile_WrongType2";
   public static final String VALIDATION_VAL_UNKNOWN_PROFILE = "Validation_VAL_Unknown_Profile";

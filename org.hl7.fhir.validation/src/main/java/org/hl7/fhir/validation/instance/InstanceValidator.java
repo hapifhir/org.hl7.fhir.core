@@ -2446,25 +2446,26 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     if (pol.checkExists()) {
       if (we == null) {
-        if (fetcher == null) {
-          if (!refType.equals("contained"))
+        if (!refType.equals("contained")) {
+          if (fetcher == null) {
             throw new FHIRException(context.formatMessage(I18nConstants.RESOURCE_RESOLUTION_SERVICES_NOT_PROVIDED));
-        } else {
-          Element ext = null;
-          if (fetchCache.containsKey(ref)) {
-            ext = fetchCache.get(ref);
           } else {
-            try {
-              ext = fetcher.fetch(hostContext.getAppContext(), ref);
-            } catch (IOException e) {
-              throw new FHIRException(e);
+            Element ext = null;
+            if (fetchCache.containsKey(ref)) {
+              ext = fetchCache.get(ref);
+            } else {
+              try {
+                ext = fetcher.fetch(hostContext.getAppContext(), ref);
+              } catch (IOException e) {
+                throw new FHIRException(e);
+              }
+              if (ext != null) {
+                setParents(ext);
+                fetchCache.put(ref, ext);
+              }
             }
-            if (ext != null) {
-              setParents(ext);
-              fetchCache.put(ref, ext);
-            }
+            we = ext == null ? null : makeExternalRef(ext, path);
           }
-          we = ext == null ? null : makeExternalRef(ext, path);
         }
       }
       rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, (allowExamples && (ref.contains("example.org") || ref.contains("acme.com"))) || (we != null || pol == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS), I18nConstants.REFERENCE_REF_CANTRESOLVE, ref);
@@ -3760,10 +3761,29 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               StructureDefinition sdt = context.fetchResource(StructureDefinition.class, vu.getUrl());
               rule(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER, sdt == null ? "null" : sdt.getType());                            
             }
-          } else if (warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", sd != null, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN, profile.primitiveValue())) {
-            signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_META, sd.getUrl());
-            stack.resetIds();
-            startInner(hostContext, errors, resource, element, sd, stack, false);
+          } else {
+            if (sd == null) {
+              // we'll try fetching it directly from it's source, but this is likely to fail later even if the resolution succeeds
+              if (fetcher == null) {
+                warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN, profile.primitiveValue());
+              } else if (!fetcher.fetchesCanonicalResource(profile.primitiveValue())) {
+                warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY, profile.primitiveValue());                
+              } else {
+                try {
+                  sd = (StructureDefinition) fetcher.fetchCanonicalResource(profile.primitiveValue());
+                } catch (Exception e) {
+                  warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());                
+                }
+                if (sd != null) {
+                  context.cacheResource(sd);
+                }
+              }
+            }
+            if (sd != null) {
+              signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_META, sd.getUrl());
+              stack.resetIds();
+              startInner(hostContext, errors, resource, element, sd, stack, false);
+            }
           }
         }
         i++;

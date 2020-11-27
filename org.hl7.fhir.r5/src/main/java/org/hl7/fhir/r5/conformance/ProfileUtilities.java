@@ -4141,11 +4141,13 @@ public class ProfileUtilities extends TranslatingUtilities {
               first = false;
             }
           }
-          if (first)
+          if (first) {
             c.getPieces().add(gen.new Piece(null, "Any", null));
+          }
 
-          if (ADD_REFERENCE_TO_TABLE) 
+          if (ADD_REFERENCE_TO_TABLE) { 
             c.getPieces().add(gen.new Piece(null, ")", null));
+          }
 
         } else {
           StructureDefinition sd = context.fetchTypeDefinition(t);
@@ -5617,6 +5619,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       return;
     
     Map<String, String> idList = new HashMap<String, String>();
+    Map<String, String> replacedIds = new HashMap<String, String>();
     
     SliceList sliceInfo = new SliceList();
     // first pass, update the element ids
@@ -5643,6 +5646,9 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
       String bs = b.toString();
+      if (ed.hasId()) {
+        replacedIds.put(ed.getId(), ed.getPath());
+      }
       ed.setId(bs);
       if (idList.containsKey(bs)) {
         if (exception || messages == null) {
@@ -5653,7 +5659,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       idList.put(bs, ed.getPath());
       if (ed.hasContentReference() && ed.getContentReference().startsWith("#")) {
         String s = ed.getContentReference();
-        ed.setContentReference("http://hl7.org/fhir/StructureDefinition/"+type+s);
+        if (replacedIds.containsKey(s.substring(1))) {
+          ed.setContentReference("http://hl7.org/fhir/StructureDefinition/"+type+"#"+replacedIds.get(s.substring(1)));
+        } else {
+          ed.setContentReference("http://hl7.org/fhir/StructureDefinition/"+type+s);
+        }
       }
     }  
     // second path - fix up any broken path based id references

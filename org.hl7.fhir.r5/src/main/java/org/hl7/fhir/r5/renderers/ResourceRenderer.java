@@ -366,4 +366,8 @@ public abstract class ResourceRenderer extends DataRenderer {
      return fullUrl.replace(":", "-");
    }
 
+  public boolean canRender(Resource resource) {
+    return true;
+  }
+
 }
