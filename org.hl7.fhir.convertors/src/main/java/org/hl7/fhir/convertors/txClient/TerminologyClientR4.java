@@ -34,17 +34,21 @@ package org.hl7.fhir.convertors.txClient;
 import java.net.URISyntaxException;
 import java.util.Map;
 
+import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.conv40_50.TerminologyCapabilities40_50;
+import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
 import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.TerminologyCapabilities;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.utilities.ToolingClientLogger;
+import org.hl7.fhir.utilities.Utilities;
 
 public class TerminologyClientR4 implements TerminologyClient {
 
@@ -122,6 +126,28 @@ public class TerminologyClientR4 implements TerminologyClient {
   @Override
   public Bundle validateBatch(Bundle batch) {
     return (Bundle) VersionConvertor_40_50.convertResource(client.transaction((org.hl7.fhir.r4.model.Bundle) VersionConvertor_40_50.convertResource(batch)));
+  }
+
+  @Override
+  public CanonicalResource read(String type, String id) {
+    Class<Resource> t;
+    try {
+      t = (Class<Resource>) Class.forName("org.hl7.fhir.r4.model."+type);// todo: do we have to deal with any resource renaming? Use cases are limited...
+    } catch (ClassNotFoundException e) {
+      throw new FHIRException("Unable to fetch resources of type "+type+" in R2");
+    } 
+    org.hl7.fhir.r4.model.Resource r4 = client.read(t, id);
+    if (r4 == null) {
+      throw new FHIRException("Unable to fetch resource "+Utilities.pathURL(getAddress(), type, id));
+    }
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_40_50.convertResource(r4);
+    if (r5 != null) {
+      throw new FHIRException("Unable to convert resource "+Utilities.pathURL(getAddress(), type, id)+" to R5 (internal representation)");
+    }
+    if (!(r5 instanceof CanonicalResource)) {
+      throw new FHIRException("Unable to convert resource "+Utilities.pathURL(getAddress(), type, id)+" to R5 canonical resource (internal representation)");
+    }
+    return (CanonicalResource) r5;
   }
 
 }

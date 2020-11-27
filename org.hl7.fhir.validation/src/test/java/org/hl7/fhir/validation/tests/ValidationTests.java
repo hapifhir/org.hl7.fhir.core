@@ -57,6 +57,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -147,7 +148,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         throw new Exception("unknown version " + version);
     }
     vCurr = ve.get(version);
-    vCurr.setFetcher(this);
     if (TestingUtilities.fcontexts == null) {
       TestingUtilities.fcontexts = new HashMap<>();
     }
@@ -161,6 +161,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
     val.setDebug(false);
+    if (content.has("fetcher") && "standalone".equals(JSONUtil.str(content, "fetcher"))) {
+      val.setFetcher(vCurr);
+      vCurr.setFetcher(new StandAloneValidatorFetcher(vCurr.getPcm(), vCurr.getContext(), vCurr));
+    } else {
+      val.setFetcher(this);
+    }
     if (content.has("allowed-extension-domain"))
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
     if (content.has("allowed-extension-domains"))
@@ -170,7 +176,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       val.setValidationLanguage(content.get("language").getAsString());
     else
       val.setValidationLanguage(null);
-    val.setFetcher(this);
     if (content.has("packages")) {
       for (JsonElement e : content.getAsJsonArray("packages")) {
         String n = e.getAsString();
@@ -525,5 +530,15 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     URL url = new URL(source);
     URLConnection c = url.openConnection();
     return TextFile.streamToBytes(c.getInputStream());
+  }
+
+  @Override
+  public CanonicalResource fetchCanonicalResource(String url) {
+    return null;
+  }
+
+  @Override
+  public boolean fetchesCanonicalResource(String url) {
+    return false;
   }
 }

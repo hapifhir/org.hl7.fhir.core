@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.utils.client;
 
+import org.hl7.fhir.exceptions.FHIRException;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -152,7 +154,7 @@ public class FHIRToolingClient {
       capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
         getPreferredResourceFormat(), "CapabilitiesStatement-Quick", TIMEOUT_NORMAL).getReference();
     } catch (Exception e) {
-      handleException("An error has occurred while trying to fetch the server's conformance statement", e);
+      handleException("An error fetching the server's capability statement: "+e.getMessage(), e);
     }
     return capabilities;
   }
@@ -166,7 +168,7 @@ public class FHIRToolingClient {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
     } catch (Exception e) {
-      handleException("An error has occurred while trying to read this resource", e);
+      throw new FHIRException(e);
     }
     return result.getPayload();
   }
