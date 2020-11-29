@@ -624,6 +624,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       loadFromBuildServer();
     } catch (Exception e) {
       System.out.println("Error connecting to build server - running without build (" + e.getMessage() + ")");
+      e.printStackTrace();
     }
     return false;
   }
