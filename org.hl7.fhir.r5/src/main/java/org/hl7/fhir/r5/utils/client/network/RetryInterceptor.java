@@ -39,7 +39,7 @@ public class RetryInterceptor implements Interceptor {
             + "> from url -> " + chain.request().url() + ".");
           response.close();
         }
-        System.out.println(chain.request().method() + " attempt <" + (retryCounter + 1) + "> to url -> " + chain.request().url());
+        // System.out.println(chain.request().method() + " attempt <" + (retryCounter + 1) + "> to url -> " + chain.request().url());
         response = chain.proceed(request);
       } catch (IOException e) {
         try {

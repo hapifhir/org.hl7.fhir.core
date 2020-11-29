@@ -319,9 +319,10 @@ public class FhirRequestBuilder {
       } catch (Exception e) {
         System.out.println("Error parsing response body passed in to logger ->\n" + e.getLocalizedMessage());
       }
-    } else {
-      System.out.println("Call to log HTTP response with null ToolingClientLogger set... are you forgetting to " +
-        "initialize your logger?");
     }
+//    else { // TODO fix logs
+//      System.out.println("Call to log HTTP response with null ToolingClientLogger set... are you forgetting to " +
+//        "initialize your logger?");
+//    }
   }
 }

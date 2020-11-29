@@ -238,8 +238,6 @@ public class Params {
         cliContext.addSource(args[i]);
       }
     }
-    if (cliContext.getSources().isEmpty())
-      throw new Exception("Must provide at least one source file");
     return cliContext;
   }
 
