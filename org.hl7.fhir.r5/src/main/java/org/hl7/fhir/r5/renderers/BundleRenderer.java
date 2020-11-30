@@ -401,9 +401,11 @@ public class BundleRenderer extends ResourceRenderer {
 
   public boolean canRender(Bundle b) {
     for (BundleEntryComponent be : b.getEntry()) {
-      ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
-      if (!rr.canRender(be.getResource())) {
-        return false;
+      if (be.hasResource()) {          
+        ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
+        if (!rr.canRender(be.getResource())) {
+          return false;
+        }
       }
     }
     return true;
