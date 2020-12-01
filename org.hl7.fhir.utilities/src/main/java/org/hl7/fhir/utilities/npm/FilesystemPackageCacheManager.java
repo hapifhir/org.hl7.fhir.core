@@ -221,6 +221,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       return retVal;
     }
 
+    retVal = super.loadFromPackageServer(id, VersionUtilities.getMajMin(version)+".x");
+    if (retVal != null) {
+      return retVal;
+    }
+
     // ok, well, we'll try the old way
     return fetchTheOldWay(id, version);
   }
