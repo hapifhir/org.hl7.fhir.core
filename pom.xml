@@ -11,7 +11,7 @@
     <!--
     Note: Version of this project and the version of HAPI FHIR are not locked to
     each other. It is fine to bump the point version of this POM without affecting
-    HAPI FHIR.
+    HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
     <version>5.2.5-SNAPSHOT</version>
