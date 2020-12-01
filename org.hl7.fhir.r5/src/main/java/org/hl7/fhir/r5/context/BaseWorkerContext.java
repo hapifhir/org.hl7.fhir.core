@@ -597,10 +597,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     Parameters p = expParameters.copy(); 
     p.setParameter("includeDefinition", false);
     p.setParameter("excludeNested", !hierarchical);
-    if (isTxCaching && cacheId != null) {
+        
+    boolean cached = addDependentResources(p, vs);
+    if (cached) {
       p.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
     }
-    addDependentResources(p, vs);
+    ;
     
     if (noTerminologyServer) {
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
@@ -672,10 +674,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     
     // if that failed, we try to expand on the server
-    if (isTxCaching && cacheId != null) {
+    if (addDependentResources(p, vs)) {
       p.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
     }
-    addDependentResources(p, vs);
+    
     if (noTerminologyServer) {
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE, allErrors);
     }
@@ -808,6 +810,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         BundleEntryComponent r = resp.getEntry().get(i);
         if (r.getResource() instanceof Parameters) {
           t.setResult(processValidationResult((Parameters) r.getResource()));
+          if (txCache != null) {
+            txCache.cacheValidation(t.getCacheToken(), t.getResult(), TerminologyCache.PERMANENT);
+          }
         } else {
           t.setResult(new ValidationResult(IssueSeverity.ERROR, getResponseText(r.getResource())).setTxLink(txLog == null ? null : txLog.getLastId()));          
         }
@@ -939,9 +944,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private ValidationResult validateOnServer(ValueSet vs, Parameters pin) throws FHIRException {
-    if (isTxCaching && cacheId != null) {
-      pin.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
-    }
+    boolean cache = false;
     if (vs != null) {
       if (isTxCaching && cacheId != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+"|"+vs.getVersion()));        
@@ -949,7 +952,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         pin.addParameter().setName("valueSet").setResource(vs);
         cached.add(vs.getUrl()+"|"+vs.getVersion());
       }
+      cache = true;
       addDependentResources(pin, vs);
+    }
+    if (cache) {
+      pin.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
     }
     for (ParametersParameterComponent pp : pin.getParameter()) {
       if (pp.getName().equals("profile")) {
@@ -975,22 +982,26 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return processValidationResult(pOut);
   }
 
-  private void addDependentResources(Parameters pin, ValueSet vs) {
+  private boolean addDependentResources(Parameters pin, ValueSet vs) {
+    boolean cache = false;
     for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-      addDependentResources(pin, inc);
+      cache = addDependentResources(pin, inc) || cache;
     }
     for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
-      addDependentResources(pin, inc);
+      cache = addDependentResources(pin, inc) || cache;
     }
+    return cache;
   }
 
-  private void addDependentResources(Parameters pin, ConceptSetComponent inc) {
+  private boolean addDependentResources(Parameters pin, ConceptSetComponent inc) {
+    boolean cache = false;
     for (CanonicalType c : inc.getValueSet()) {
       ValueSet vs = fetchResource(ValueSet.class, c.getValue());
       if (vs != null) {
         if (isTxCaching && cacheId == null || !cached.contains(vs.getVUrl())) {
           pin.addParameter().setName("tx-resource").setResource(vs);
           cached.add(vs.getVUrl());
+          cache = true;
         }
         addDependentResources(pin, vs);
       }
@@ -1000,9 +1011,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (isTxCaching && cacheId == null || !cached.contains(cs.getVUrl())) {
         pin.addParameter().setName("tx-resource").setResource(cs);
         cached.add(cs.getVUrl());
+        cache = true;
       }
       // todo: supplements
-    }   
+    }
+    return cache;
   }
 
   public ValidationResult processValidationResult(Parameters pOut) {
