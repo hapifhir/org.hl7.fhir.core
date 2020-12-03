@@ -368,7 +368,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private EnableWhenEvaluator myEnableWhenEvaluator = new EnableWhenEvaluator();
   private String executionId;
-  private XVerExtensionManager xverManager;
   private IValidationProfileUsageTracker tracker;
   private ValidatorHostServices validatorServices;
   private boolean assumeValidRestReferences;
@@ -380,8 +379,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean validateValueSetCodesOnTxServer = true;
   private QuestionnaireMode questionnaireMode;
 
-  public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices) {
-    super(theContext);
+  public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices, XVerExtensionManager xverManager) {
+    super(theContext, xverManager);
     this.externalHostServices = hostServices;
     this.profileUtilities = new ProfileUtilities(theContext, null, null);
     fpe = new FHIRPathEngine(context);
@@ -1504,30 +1503,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     StructureDefinition ex = Utilities.isAbsoluteUrl(url) ? context.fetchResource(StructureDefinition.class, url) : null;
     timeTracker.sd(t);
     if (ex == null) {
-      if (xverManager == null) {
-        xverManager = new XVerExtensionManager(context);
-      }
-      if (xverManager.matchingUrl(url)) {
-        switch (xverManager.status(url)) {
-          case BadVersion:
-            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALID, url, xverManager.getVersion(url));
-            break;
-          case Unknown:
-            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALIDID, url, xverManager.getElementId(url));
-            break;
-          case Invalid:
-            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_NOCHANGE, url, xverManager.getElementId(url));
-            break;
-          case Valid:
-            ex = xverManager.makeDefinition(url);
-            context.generateSnapshot(ex);
-            context.cacheResource(ex);
-            break;
-          default:
-            rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
-            break;
-        }
-      } else if (extensionUrl != null && !isAbsolute(url)) {
+      ex = getXverExt(errors, path, element, url);
+    }
+    if (ex == null) {
+      if (extensionUrl != null && !isAbsolute(url)) {
         if (extensionUrl.equals(profile.getUrl())) {
           rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", hasExtensionSlice(profile, url), I18nConstants.EXTENSION_EXT_SUBEXTENSION_INVALID, url, profile.getUrl());
         }
@@ -1568,6 +1547,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return ex;
   }
 
+ 
 
   private boolean hasExtensionSlice(StructureDefinition profile, String sliceName) {
     for (ElementDefinition ed : profile.getSnapshot().getElement()) {
@@ -1951,7 +1931,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           boolean found;
           try {
             found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || fetcher.resolveURL(appContext, path, url) || 
-                SpecialExtensions.isKnownExtension(url);
+                SpecialExtensions.isKnownExtension(url) || isXverUrl(url);
           } catch (IOException e1) {
             found = false;
           }
@@ -3889,27 +3869,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   public void checkSpecials(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element element, NodeStack stack, boolean checkSpecials) {
     // specific known special validations
     if (element.getType().equals(BUNDLE)) {
-      new BundleValidator(context, serverBase, this).validateBundle(errors, element, stack, checkSpecials, hostContext);
+      new BundleValidator(context, serverBase, this, xverManager).validateBundle(errors, element, stack, checkSpecials, hostContext);
     } else if (element.getType().equals("Observation")) {
       validateObservation(errors, element, stack);
     } else if (element.getType().equals("Questionnaire")) {
-      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode).validateQuestionannaire(errors, element, element, stack);
+      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager).validateQuestionannaire(errors, element, element, stack);
     } else if (element.getType().equals("QuestionnaireResponse")) {
-      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode).validateQuestionannaireResponse(hostContext, errors, element, stack);
+      new QuestionnaireValidator(context, myEnableWhenEvaluator, fpe, timeTracker, questionnaireMode, xverManager).validateQuestionannaireResponse(hostContext, errors, element, stack);
     } else if (element.getType().equals("Measure")) {
-      new MeasureValidator(context, timeTracker).validateMeasure(hostContext, errors, element, stack);      
+      new MeasureValidator(context, timeTracker, xverManager).validateMeasure(hostContext, errors, element, stack);      
     } else if (element.getType().equals("MeasureReport")) {
-      new MeasureValidator(context, timeTracker).validateMeasureReport(hostContext, errors, element, stack);
+      new MeasureValidator(context, timeTracker, xverManager).validateMeasureReport(hostContext, errors, element, stack);
     } else if (element.getType().equals("CapabilityStatement")) {
       validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
-      new CodeSystemValidator(context, timeTracker).validateCodeSystem(errors, element, stack);
+      new CodeSystemValidator(context, timeTracker, xverManager).validateCodeSystem(errors, element, stack);
     } else if (element.getType().equals("SearchParameter")) {
-      new SearchParameterValidator(context, timeTracker, fpe).validateSearchParameter(errors, element, stack);
+      new SearchParameterValidator(context, timeTracker, fpe, xverManager).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {
-      new StructureDefinitionValidator(context, timeTracker, fpe, wantCheckSnapshotUnchanged).validateStructureDefinition(errors, element, stack);
+      new StructureDefinitionValidator(context, timeTracker, fpe, wantCheckSnapshotUnchanged, xverManager).validateStructureDefinition(errors, element, stack);
     } else if (element.getType().equals("ValueSet")) {
-      new ValueSetValidator(context, timeTracker, this).validateValueSet(errors, element, stack);
+      new ValueSetValidator(context, timeTracker, this, xverManager).validateValueSet(errors, element, stack);
     }
   }
 
