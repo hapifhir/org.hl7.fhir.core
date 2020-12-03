@@ -1564,7 +1564,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
 
   public InstanceValidator getValidator() {
-    InstanceValidator validator = new InstanceValidator(context, null);
+    InstanceValidator validator = new InstanceValidator(context, null, null);
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.setNoInvariantChecks(isNoInvariantChecks());
