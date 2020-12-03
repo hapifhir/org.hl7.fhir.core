@@ -10,3 +10,6 @@ Other code changes:
 * improve error messages when rendering bundles that are documents that aren't properly formed
 * Process Markdown when rendering CapabilityStatement.rest.documentation
 * Fix rendering of CanonicalResource.url
+
+Quality of Life Improvements:
+* fixed deployment issue where validator.cli and report packages were sometimes published during deployment
