@@ -261,28 +261,28 @@ public class FHIRToolingClient {
     String ps = "";
     try {
       if (!complex)
-        for (ParametersParameterComponent p : params.getParameter())
-          if (p.getValue() instanceof PrimitiveType)
-            ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
-      ResourceRequest<T> result;
-      if (complex) {
-        result = client.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps), ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(),
+      for (ParametersParameterComponent p : params.getParameter())
+        if (p.getValue() instanceof PrimitiveType)
+          ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
+    ResourceRequest<T> result;
+    if (complex) {
+      result = client.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps), ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(),
           "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
-      } else {
-        result = client.issueGetResourceRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps), getPreferredResourceFormat(), "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
-      }
-      if (result.isUnsuccessfulRequest()) {
-        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
-      }
-      if (result.getPayload() instanceof Parameters) {
-        return (Parameters) result.getPayload();
-      } else {
-        Parameters p_out = new Parameters();
-        p_out.addParameter().setName("return").setResource(result.getPayload());
-        return p_out;
-      }
+    } else {
+      result = client.issueGetResourceRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps), getPreferredResourceFormat(), "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
+    }
+    if (result.isUnsuccessfulRequest()) {
+      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+    }
+    if (result.getPayload() instanceof Parameters) {
+      return (Parameters) result.getPayload();
+    } else {
+      Parameters p_out = new Parameters();
+      p_out.addParameter().setName("return").setResource(result.getPayload());
+      return p_out;
+    }
     } catch (Exception e) {
-      handleException("Error performing operation '" + name + "' with parameters " + ps, e);
+  	  handleException("Error performing operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);  		
     }
     return null;
   }
