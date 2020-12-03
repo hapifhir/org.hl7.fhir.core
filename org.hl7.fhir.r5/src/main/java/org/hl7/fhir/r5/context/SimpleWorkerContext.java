@@ -246,10 +246,14 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	}
 
 	 public static SimpleWorkerContext fromClassPath(String name) throws IOException, FHIRException {
-	   InputStream s = SimpleWorkerContext.class.getResourceAsStream("/"+name);
-	    SimpleWorkerContext res = new SimpleWorkerContext();
+	    return fromClassPath(name, false);
+	  }
+	 public static SimpleWorkerContext fromClassPath(String name, boolean allowDuplicates) throws IOException, FHIRException {
+	   InputStream s = SimpleWorkerContext.class.getResourceAsStream("/" + name);
+     SimpleWorkerContext res = new SimpleWorkerContext();
+     res.setAllowLoadingDuplicates(allowDuplicates);
 	   res.loadFromStream(s, null);
-	    return res;
+     return res;
 	  }
 
   public static SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader, PackageVersion pi) throws FileNotFoundException, IOException, FHIRException  {
@@ -834,5 +838,5 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
    return xverManager;
   }
   
- 
 }
+
