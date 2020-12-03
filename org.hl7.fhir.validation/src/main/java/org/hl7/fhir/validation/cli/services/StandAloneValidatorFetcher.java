@@ -42,12 +42,12 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
 
   @Override
   public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
-    throw new Error("Not done yet");
+    throw new FHIRException("The URL '"+url+"' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
   }
 
   @Override
   public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
-    throw new Error("Not done yet");
+    return ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
   }
 
   @Override
@@ -115,12 +115,12 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
 
   @Override
   public byte[] fetchRaw(String url) throws MalformedURLException, IOException {
-    throw new Error("Not done yet");
+    throw new FHIRException("The URL '"+url+"' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
   }
 
   @Override
   public void setLocale(Locale locale) {
-    throw new Error("Not done yet");
+    // nothing
   }
 
   @Override
@@ -132,7 +132,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
       c = TerminologyClientFactory.makeClient(root, context.getVersion());
       return c.read(p[p.length-2], p[p.length-1]);
     } else {
-      throw new FHIRException("Not done yet");
+      throw new FHIRException("The URL '"+url+"' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
     }
   }
 
