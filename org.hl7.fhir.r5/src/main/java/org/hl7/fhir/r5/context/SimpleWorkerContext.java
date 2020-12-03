@@ -139,7 +139,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   public interface IValidatorFactory {
-//    IResourceValidator makeValidator(IWorkerContext ctxt) throws FHIRException;
+    IResourceValidator makeValidator(IWorkerContext ctxt) throws FHIRException;
     IResourceValidator makeValidator(IWorkerContext ctxts, XVerExtensionManager xverManager) throws FHIRException;
   }
 
@@ -251,14 +251,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	   res.loadFromStream(s, null);
 	    return res;
 	  }
-
-//	public static SimpleWorkerContext fromDefinitions(Map<String, byte[]> source) throws IOException, FHIRException {
-//		SimpleWorkerContext res = new SimpleWorkerContext();
-//		for (String name : source.keySet()) {
-//		  res.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name)), null, null);
-//		}
-//		return res;
-//	}
 
   public static SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader, PackageVersion pi) throws FileNotFoundException, IOException, FHIRException  {
     SimpleWorkerContext res = new SimpleWorkerContext();

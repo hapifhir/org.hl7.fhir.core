@@ -57,6 +57,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -219,10 +220,14 @@ public class DataRenderer extends Renderer {
   private boolean isCanonical(String path) {
     if (!path.endsWith(".url")) 
       return false;
-    StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(path.substring(0, path.length()-4));
+    String t = path.substring(0, path.length()-4);
+    StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(t);
     if (sd == null)
       return false;
-    if (Utilities.existsInList(path.substring(0, path.length()-4), 
+    if (Utilities.existsInList(t, VersionUtilities.getCanonicalResourceNames(getContext().getWorker().getVersion()))) {
+      return true;
+    }
+    if (Utilities.existsInList(t, 
         "ActivityDefinition", "CapabilityStatement", "CapabilityStatement2", "ChargeItemDefinition", "Citation", "CodeSystem",
         "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable",
         "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition"
