@@ -2,6 +2,7 @@ Validator:
 * Fix support for cross version extensions across the entire valdation rule set
 * Improve security warnings about rogue HTML tags
 * fix error messages on unknown URLs (not longer say 'not done yet')
+* fix validation of profiles and target profiles in all versions (before R3 different rules)
 
 Other code changes:
 * fix error message suppression on tooling client
