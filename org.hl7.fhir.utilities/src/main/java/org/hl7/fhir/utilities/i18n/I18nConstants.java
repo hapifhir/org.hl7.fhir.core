@@ -350,6 +350,7 @@ public class I18nConstants {
   public static final String SD_ED_TYPE_PROFILE_UNKNOWN = "SD_ED_TYPE_PROFILE_UNKNOWN";
   public static final String SD_ED_TYPE_PROFILE_NOTYPE = "SD_ED_TYPE_PROFILE_NOTYPE";
   public static final String SD_ED_TYPE_PROFILE_WRONG = "SD_ED_TYPE_PROFILE_WRONG";
+  public static final String SD_ED_TYPE_NO_TARGET_PROFILE = "SD_ED_TYPE_NO_TARGET_PROFILE";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
   public static final String SEARCHPARAMETER_NOTFOUND = "SEARCHPARAMETER_NOTFOUND";
