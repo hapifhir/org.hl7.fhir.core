@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -31,8 +32,8 @@ public class BundleValidator extends BaseValidator{
   private String serverBase;
   private InstanceValidator validator;
 
-  public BundleValidator(IWorkerContext context, String serverBase, InstanceValidator validator) {
-    super(context);
+  public BundleValidator(IWorkerContext context, String serverBase, InstanceValidator validator, XVerExtensionManager xverManager) {
+    super(context, xverManager);
     this.serverBase = serverBase;
     this.validator = validator;
   }

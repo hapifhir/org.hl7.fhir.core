@@ -35,6 +35,7 @@ import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.TimeType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -58,8 +59,8 @@ public class QuestionnaireValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private QuestionnaireMode questionnaireMode;
 
-  public QuestionnaireValidator(IWorkerContext context, EnableWhenEvaluator myEnableWhenEvaluator, FHIRPathEngine fpe, TimeTracker timeTracker, QuestionnaireMode questionnaireMode) {
-    super(context);
+  public QuestionnaireValidator(IWorkerContext context, EnableWhenEvaluator myEnableWhenEvaluator, FHIRPathEngine fpe, TimeTracker timeTracker, QuestionnaireMode questionnaireMode, XVerExtensionManager xverManager) {
+    super(context, xverManager);
     source = Source.InstanceValidator;
     this.myEnableWhenEvaluator = myEnableWhenEvaluator;
     this.fpe = fpe;

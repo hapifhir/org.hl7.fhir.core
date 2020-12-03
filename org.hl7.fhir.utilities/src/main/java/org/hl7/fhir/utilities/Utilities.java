@@ -778,7 +778,7 @@ public class Utilities {
 
 
   public static String encodeUri(String v) {
-    return v.replace(" ", "%20").replace("?", "%3F").replace("=", "%3D");
+    return v.replace(" ", "%20").replace("?", "%3F").replace("=", "%3D").replace("|", "%7C");
   }
 
 

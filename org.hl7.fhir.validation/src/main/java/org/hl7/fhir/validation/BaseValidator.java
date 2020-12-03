@@ -73,8 +73,11 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -118,7 +121,18 @@ public class BaseValidator {
   protected Source source;
   protected IWorkerContext context;
   protected TimeTracker timeTracker = new TimeTracker();
-  
+  protected XVerExtensionManager xverManager;
+
+    public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
+    super();
+    this.context = context;
+    this.xverManager = xverManager;
+    if (this.xverManager == null) {
+      this.xverManager = new XVerExtensionManager(context);
+    }
+
+  }
+
   /**
    * Use to control what validation the validator performs. 
    * Using this, you can turn particular kinds of validation on and off 
@@ -129,11 +143,7 @@ public class BaseValidator {
    */
   private Map<String, ValidationControl> validationControl = new HashMap<>();
 
-  public BaseValidator(IWorkerContext context){
-    this.context = context;
-  }
-
-  /**
+    /**
    * Test a rule and add a {@link IssueSeverity#FATAL} validation message if the validation fails
    * 
    * @param thePass
@@ -873,5 +883,74 @@ public class BaseValidator {
     return validationControl;
   }
 
+  public XVerExtensionStatus xverStatus(String url) {
+    return xverManager.status(url);
+  }
 
+  public boolean isXverUrl(String url) {
+    return xverManager.matchingUrl(url);    
+  }
+  
+  public StructureDefinition xverDefn(String url) {
+    return xverManager.makeDefinition(url);
+  }
+  
+  public String xverVersion(String url) {
+    return xverManager.getVersion(url);
+  }
+
+  public String xverElementId(String url) {
+    return xverManager.getElementId(url);
+  }
+
+  public StructureDefinition getXverExt(StructureDefinition profile, List<ValidationMessage> errors, String url) {
+    if (isXverUrl(url)) {
+      switch (xverStatus(url)) {
+        case BadVersion:
+          rule(errors, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INVALID, url, xverVersion(url));
+          return null;
+        case Unknown:
+          rule(errors, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INVALIDID, url, xverElementId(url));
+          return null;
+        case Invalid:
+          rule(errors, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_NOCHANGE, url, xverElementId(url));
+          return null;
+        case Valid:
+          StructureDefinition defn = xverDefn(url);
+          context.generateSnapshot(defn);
+          context.cacheResource(defn);
+          return defn;
+        default:
+          rule(errors, IssueType.INVALID, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
+          return null;
+      }
+    } else {
+      return null;      
+    }
+  }
+  
+  public StructureDefinition getXverExt(List<ValidationMessage> errors, String path, Element element, String url) {
+    if (isXverUrl(url)) {
+      switch (xverStatus(url)) {
+      case BadVersion:
+        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALID, url, xverVersion(url));
+        break;
+      case Unknown:
+        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALIDID, url, xverElementId(url));
+        break;
+      case Invalid:
+        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_NOCHANGE, url, xverElementId(url));
+        break;
+      case Valid:
+        StructureDefinition ex = xverDefn(url);
+        context.generateSnapshot(ex);
+        context.cacheResource(ex);
+        return ex;
+      default:
+        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
+        break;
+      }
+    }
+    return null;
+  }
 }

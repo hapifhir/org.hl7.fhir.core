@@ -36,12 +36,18 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.IValidatorFactory;
 import org.hl7.fhir.r5.utils.IResourceValidator;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 
 public class InstanceValidatorFactory implements IValidatorFactory {
 
   @Override
+  public IResourceValidator makeValidator(IWorkerContext ctxt, XVerExtensionManager xverManager) throws FHIRException {
+    return new InstanceValidator(ctxt, null, xverManager);
+  }
+
+  @Override
   public IResourceValidator makeValidator(IWorkerContext ctxt) throws FHIRException {
-    return new InstanceValidator(ctxt, null);
+    return new InstanceValidator(ctxt, null, null);
   }
 
 }

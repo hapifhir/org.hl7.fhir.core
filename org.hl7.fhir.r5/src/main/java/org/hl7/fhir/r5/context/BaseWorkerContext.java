@@ -193,6 +193,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   private boolean allowLoadingDuplicates;
 
   protected TerminologyClient txClient;
+  private Set<String> codeSystemsUsed = new HashSet<>();
   protected ToolingClientLogger txLog;
   private TerminologyCapabilities txcaps;
   private boolean canRunWithoutTerminology;
@@ -602,7 +603,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (cached) {
       p.addParameter().setName("cache-id").setValue(new StringType(cacheId));              
     }
-    ;
+    for (ConceptSetComponent incl : vs.getCompose().getInclude()) {
+      codeSystemsUsed.add(incl.getSystem());
+    }
+    for (ConceptSetComponent incl : vs.getCompose().getExclude()) {
+      codeSystemsUsed.add(incl.getSystem());
+    }
     
     if (noTerminologyServer) {
       return new ValueSetExpansionOutcome(formatMessage(I18nConstants.ERROR_EXPANDING_VALUESET_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE);
@@ -641,6 +647,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (!vs.hasUrl()) {
       throw new Error(formatMessage(I18nConstants.NO_VALUE_SET_IN_URL));
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+      codeSystemsUsed.add(inc.getSystem());
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
+      codeSystemsUsed.add(inc.getSystem());
     }
 
     CacheToken cacheToken = txCache.generateExpandToken(vs, heirarchical);
@@ -738,6 +750,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 3rd pass: hit the server
     for (CodingValidationRequest t : codes) {
       t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs) : null);
+      codeSystemsUsed.add(t.getCoding().getSystem());
       if (txCache != null) { 
         t.setResult(txCache.getValidation(t.getCacheToken()));
       }
@@ -833,6 +846,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       options = ValidationOptions.defaults();
     }
     
+    codeSystemsUsed.add(code.getSystem());
     CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
     ValidationResult res = null;
     if (txCache != null) {
@@ -907,6 +921,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (res != null) {
       return res;
     }
+    for (Coding c : code.getCoding()) {
+      codeSystemsUsed.add(c.getSystem());
+    }
 
     if (options.isUseClient()) {
       // ok, first we try to validate locally
@@ -945,6 +962,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   private ValidationResult validateOnServer(ValueSet vs, Parameters pin) throws FHIRException {
     boolean cache = false;
+    if (vs != null) {
+      for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+        codeSystemsUsed.add(inc.getSystem());
+      }
+      for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
+        codeSystemsUsed.add(inc.getSystem());
+      }
+    }
     if (vs != null) {
       if (isTxCaching && cacheId != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+"|"+vs.getVersion()));        
@@ -1945,5 +1970,22 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         guides.size() + capstmts.size() + searchParameters.size() + questionnaires.size() + operations.size() + plans.size() + systems.size();
   }
 
+  public Set<String> getCodeSystemsUsed() {
+    return codeSystemsUsed ;
+  }
+ 
+  public String getSpecUrl() {
+    String v = getVersion();
+    switch (VersionUtilities.getMajMin(v)) {
+    case "1.0" : return "http://hl7.org/fhir/DSTU1";
+    case "1.4" : return "http://hl7.org/fhir/DSTU2";
+    case "3.0" : return "http://hl7.org/fhir/STU3";
+    case "4.0" : return "http://hl7.org/fhir/R4";
+    case "4.5" : return "http://build.fhir.org";
+    case "5.0" : return "http://build.fhir.org";
+    default:
+      return "http://hl7.org/fhir";
+    }
+  }
 
 }
