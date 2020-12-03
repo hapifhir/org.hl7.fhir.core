@@ -76,6 +76,7 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.IResourceValidator;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
@@ -138,7 +139,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   public interface IValidatorFactory {
-    IResourceValidator makeValidator(IWorkerContext ctxts) throws FHIRException;
+//    IResourceValidator makeValidator(IWorkerContext ctxt) throws FHIRException;
+    IResourceValidator makeValidator(IWorkerContext ctxts, XVerExtensionManager xverManager) throws FHIRException;
   }
 
 	private Questionnaire questionnaire;
@@ -149,6 +151,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private boolean progress;
   private List<String> loadedPackages = new ArrayList<String>();
   private boolean canNoTS;
+  private XVerExtensionManager xverManager;
 
   public SimpleWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     super();
@@ -539,7 +542,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	public IResourceValidator newValidator() throws FHIRException {
 	  if (validatorFactory == null)
 	    throw new Error(formatMessage(I18nConstants.NO_VALIDATOR_CONFIGURED));
-	  return validatorFactory.makeValidator(this);
+	  return validatorFactory.makeValidator(this, xverManager);
 	}
 
 
@@ -770,6 +773,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       ProfileUtilities pu = new ProfileUtilities(this, msgs, this);
       pu.setAutoFixSliceNames(true);
       pu.setThrowException(false);
+      if (xverManager == null) {
+        xverManager = new XVerExtensionManager(this);
+      }
+      pu.setXver(xverManager);
       if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
         pu.sortDifferential(sd, p, p.getUrl(), errors, true);
       }
@@ -827,6 +834,13 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   public void setCanNoTS(boolean canNoTS) {
     this.canNoTS = canNoTS;
   }
+
+  public XVerExtensionManager getXVer() {
+    if (xverManager == null) {
+      xverManager = new XVerExtensionManager(this);
+    }
+   return xverManager;
+  }
   
-  
+ 
 }

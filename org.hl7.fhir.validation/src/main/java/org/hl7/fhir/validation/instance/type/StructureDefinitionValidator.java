@@ -23,6 +23,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -46,8 +47,8 @@ public class StructureDefinitionValidator extends BaseValidator {
   private FHIRPathEngine fpe;
   private boolean wantCheckSnapshotUnchanged;
 
-  public StructureDefinitionValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged) {
-    super(context);
+  public StructureDefinitionValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, boolean wantCheckSnapshotUnchanged, XVerExtensionManager xverManager) {
+    super(context, xverManager);
     source = Source.InstanceValidator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
@@ -66,6 +67,7 @@ public class StructureDefinitionValidator extends BaseValidator {
           if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
             List<ValidationMessage> msgs = new ArrayList<>();
             ProfileUtilities pu = new ProfileUtilities(context, msgs, null);
+            pu.setXver(xverManager);
             pu.generateSnapshot(base, sd, sd.getUrl(), "http://hl7.org/fhir", sd.getName());
             if (msgs.size() > 0) {
               for (ValidationMessage msg : msgs) {
@@ -160,6 +162,9 @@ public class StructureDefinitionValidator extends BaseValidator {
   private void validateTypeProfile(List<ValidationMessage> errors, Element profile, String code, NodeStack stack) {
     String p = profile.primitiveValue();
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, p);
+    if (sd == null ) {
+      sd = getXverExt(errors, stack.getLiteralPath(), profile, p);
+    }
     if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
       String t = determineBaseType(sd);
       if (t == null) {
