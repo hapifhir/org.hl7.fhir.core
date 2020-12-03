@@ -222,8 +222,11 @@ public class DataRenderer extends Renderer {
     StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(path.substring(0, path.length()-4));
     if (sd == null)
       return false;
-    if (Utilities.existsInList(path.substring(0, path.length()-4), "CapabilityStatement", "StructureDefinition", "ImplementationGuide", "SearchParameter", "MessageDefinition", "OperationDefinition", "CompartmentDefinition", "StructureMap", "GraphDefinition", 
-        "ExampleScenario", "CodeSystem", "ValueSet", "ConceptMap", "NamingSystem", "TerminologyCapabilities"))
+    if (Utilities.existsInList(path.substring(0, path.length()-4), 
+        "ActivityDefinition", "CapabilityStatement", "CapabilityStatement2", "ChargeItemDefinition", "Citation", "CodeSystem",
+        "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable",
+        "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition"
+        ))
       return true;
     return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
   }
@@ -381,26 +384,20 @@ public class DataRenderer extends Renderer {
   }
   
   protected void renderUri(XhtmlNode x, UriType uri, String path, String id) {
-    String url = uri.getValue();
     if (isCanonical(path)) {
-      CanonicalResource mr = getContext().getWorker().fetchResource(null, url);
-      if (mr != null) {
-        if (path.startsWith(mr.fhirType()+".") && mr.getId().equals(id)) {
-          url = null; // don't link to self whatever
-        } else if (mr.hasUserData("path"))
-          url = mr.getUserString("path");
-      } else if (!getContext().isCanonicalUrlsAsLinks())
-        url = null;
-    }
-    if (url == null) {
-      x.b().tx(uri.getValue());
-    } else if (uri.getValue().startsWith("mailto:")) {
-      x.ah(uri.getValue()).addText(uri.getValue().substring(7));
+      x.code().tx(uri.getValue());
     } else {
-      if (uri.getValue().contains("|")) {
-        x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
+      String url = uri.getValue();
+      if (url == null) {
+        x.b().tx(uri.getValue());
+      } else if (uri.getValue().startsWith("mailto:")) {
+        x.ah(uri.getValue()).addText(uri.getValue().substring(7));
       } else {
-        x.ah(uri.getValue()).addText(uri.getValue());        
+        if (uri.getValue().contains("|")) {
+          x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
+        } else {
+          x.ah(uri.getValue()).addText(uri.getValue());        
+        }
       }
     }
   }
