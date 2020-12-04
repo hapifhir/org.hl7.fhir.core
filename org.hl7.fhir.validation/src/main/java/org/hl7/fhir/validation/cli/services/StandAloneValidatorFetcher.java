@@ -175,65 +175,6 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
     return mappingsUris.contains(url);
   }
 
-  private boolean isMappingUri(String url) {
-    if (mappingsUris.isEmpty()) {
-      JsonObject json;
-      try {
-        json = JsonTrackingParser.fetchJson("http://hl7.org/fhir/mappingspaces.json");
-        for (JsonObject ms : JSONUtil.objects(json, "spaces")) {
-          mappingsUris.add(JSONUtil.str(ms, "url"));       
-        }
-      } catch (IOException e) {
-        // frozen R4 list
-        mappingsUris.add("http://hl7.org/fhir/fivews");
-        mappingsUris.add("http://hl7.org/fhir/workflow");
-        mappingsUris.add("http://hl7.org/fhir/interface");
-        mappingsUris.add("http://hl7.org/v2");
-        mappingsUris.add("http://loinc.org");
-        mappingsUris.add("http://snomed.org/attributebinding");
-        mappingsUris.add("http://snomed.info/conceptdomain");
-        mappingsUris.add("http://hl7.org/v3/cda");
-        mappingsUris.add("http://hl7.org/v3");
-        mappingsUris.add("http://nema.org/dicom");
-        mappingsUris.add("http://w3.org/vcard");
-        mappingsUris.add("http://ihe.net/xds");
-        mappingsUris.add("http://www.w3.org/ns/prov");
-        mappingsUris.add("http://ietf.org/rfc/2445");
-        mappingsUris.add("http://www.omg.org/spec/ServD/1.0/");
-        mappingsUris.add("http://metadata-standards.org/11179/");
-        mappingsUris.add("http://ihe.net/data-element-exchange");
-        mappingsUris.add("http://openehr.org");
-        mappingsUris.add("http://siframework.org/ihe-sdc-profile");
-        mappingsUris.add("http://siframework.org/cqf");
-        mappingsUris.add("http://www.cdisc.org/define-xml");
-        mappingsUris.add("http://www.cda-adc.ca/en/services/cdanet/");
-        mappingsUris.add("http://www.pharmacists.ca/");
-        mappingsUris.add("http://www.healthit.gov/quality-data-model");
-        mappingsUris.add("http://hl7.org/orim");
-        mappingsUris.add("http://hl7.org/fhir/w5");
-        mappingsUris.add("http://hl7.org/fhir/logical");
-        mappingsUris.add("http://hl7.org/fhir/auditevent");
-        mappingsUris.add("http://hl7.org/fhir/provenance");
-        mappingsUris.add("http://hl7.org/qidam");
-        mappingsUris.add("http://cap.org/ecc");
-        mappingsUris.add("http://fda.gov/UDI");
-        mappingsUris.add("http://hl7.org/fhir/object-implementation");
-        mappingsUris.add("http://github.com/MDMI/ReferentIndexContent");
-        mappingsUris.add("http://ncpdp.org/SCRIPT10_6");
-        mappingsUris.add("http://clinicaltrials.gov");
-        mappingsUris.add("http://hl7.org/fhir/rr");
-        mappingsUris.add("http://www.hl7.org/v3/PORX_RM020070UV");
-        mappingsUris.add("https://bridgmodel.nci.nih.gov");
-        mappingsUris.add("http://hl7.org/fhir/composition");
-        mappingsUris.add("http://hl7.org/fhir/documentreference");
-        mappingsUris.add("https://en.wikipedia.org/wiki/Identification_of_medicinal_products");
-        mappingsUris.add("urn:iso:std:iso:11073:10201");
-        mappingsUris.add("urn:iso:std:iso:11073:10207");
-      }
-    }
-    return mappingsUris.contains(url);
-  }
-
   private String findBaseUrl(String url) {
     String[] p = url.split("\\/");
     for (int i = 1; i< p.length; i++) {
