@@ -78,7 +78,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
     String ver = null;
     String base = findBaseUrl(url);
     if (base == null) {
-      return false;
+      return !url.startsWith("http://hl7.org/fhir");
     }
     
     if (base.equals("http://terminology.hl7.org")) {
@@ -89,7 +89,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
       pid = pcm.findCanonicalInLocalCache(base);
     }
     ver = url.contains("|") ? url.substring(url.indexOf("|")+1) : null;
-    if (pid == null) {
+    if (pid == null && Utilities.startsWithInList(url, "http://hl7.org/fhir", "http://terminology.hl7.org")) {
       return false;
     }
     
