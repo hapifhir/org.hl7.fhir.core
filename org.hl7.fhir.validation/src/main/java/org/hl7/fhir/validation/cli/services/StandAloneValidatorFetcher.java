@@ -78,7 +78,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
     String ver = null;
     String base = findBaseUrl(url);
     if (base == null) {
-      return !url.startsWith("http://hl7.org/fhir");
+      return !url.startsWith("http://hl7.org/fhir") && !type.equals("canonical");
     }
     
     if (base.equals("http://terminology.hl7.org")) {
@@ -113,7 +113,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
     
 
  // we don't bother with urls outside fhir space in the standalone validator - we assume they are valid
-    return !url.startsWith("http://hl7.org/fhir");
+    return !url.startsWith("http://hl7.org/fhir") && !type.equals("canonical");
   }
 
   private boolean isMappingUri(String url) {
