@@ -63,7 +63,7 @@ public class BundleRenderer extends ResourceRenderer {
     List<BaseWrapper> entries = b.children("entry");
     if ("document".equals(b.get("type").primitiveValue())) {
       if (entries.isEmpty() || (entries.get(0).has("resource") && "Composition".equals(entries.get(0).get("resource").fhirType())))
-        throw new FHIRException("Invalid document - first entry is not a Composition");
+        throw new FHIRException("Invalid document '"+b.getId()+"' - first entry is not a Composition ('"+entries.get(0).get("resource").fhirType()+"')");
       return renderDocument(x, b, entries);
     } else if ("collection".equals(b.get("type").primitiveValue()) && allEntriesAreHistoryProvenance(entries)) {
       // nothing
@@ -397,6 +397,18 @@ public class BundleRenderer extends ResourceRenderer {
 
   public String display(Bundle bundle) throws UnsupportedEncodingException, IOException {
     return "??";
+  }
+
+  public boolean canRender(Bundle b) {
+    for (BundleEntryComponent be : b.getEntry()) {
+      if (be.hasResource()) {          
+        ResourceRenderer rr = RendererFactory.factory(be.getResource(), context);
+        if (!rr.canRender(be.getResource())) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
 }

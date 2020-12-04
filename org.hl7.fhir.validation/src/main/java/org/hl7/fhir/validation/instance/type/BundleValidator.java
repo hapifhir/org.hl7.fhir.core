@@ -13,6 +13,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -31,8 +32,8 @@ public class BundleValidator extends BaseValidator{
   private String serverBase;
   private InstanceValidator validator;
 
-  public BundleValidator(IWorkerContext context, String serverBase, InstanceValidator validator) {
-    super(context);
+  public BundleValidator(IWorkerContext context, String serverBase, InstanceValidator validator, XVerExtensionManager xverManager) {
+    super(context, xverManager);
     this.serverBase = serverBase;
     this.validator = validator;
   }
@@ -42,7 +43,7 @@ public class BundleValidator extends BaseValidator{
     bundle.getNamedChildren(ENTRY, entries);
     String type = bundle.getNamedChildValue(TYPE);
     type = StringUtils.defaultString(type);
-
+    
     if (entries.size() == 0) {
       rule(errors, IssueType.INVALID, stack.getLiteralPath(), !(type.equals(DOCUMENT) || type.equals(MESSAGE)), I18nConstants.BUNDLE_BUNDLE_ENTRY_NOFIRST);
     } else {
@@ -79,6 +80,8 @@ public class BundleValidator extends BaseValidator{
     int count = 0;
     Map<String, Integer> counter = new HashMap<>(); 
 
+    boolean fullUrlOptional = Utilities.existsInList(type, "transaction", "transaction-response", "batch", "batch-response");
+    
     for (Element entry : entries) {
       NodeStack estack = stack.push(entry, count, null, null);
       String fullUrl = entry.getNamedChildValue(FULL_URL);
@@ -90,6 +93,9 @@ public class BundleValidator extends BaseValidator{
         rule(errors, IssueType.INVALID, entry.line(), entry.col(), stack.addToLiteralPath(ENTRY, PATH_ARG), !url.equals(fullUrl) || serverBase == null || (url.equals(Utilities.pathURL(serverBase, entry.getNamedChild(RESOURCE).fhirType(), id))), I18nConstants.BUNDLE_BUNDLE_ENTRY_CANONICAL, url, fullUrl);
       }
 
+      if (!VersionUtilities.isR2Ver(context.getVersion())) {
+        rule(errors, IssueType.INVALID, entry.line(), entry.col(), estack.getLiteralPath(), fullUrlOptional || fullUrl != null, I18nConstants.BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED);
+      }
       // check bundle profile requests
       if (entry.hasChild(RESOURCE)) {
         String rtype = entry.getNamedChild(RESOURCE).fhirType();

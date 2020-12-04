@@ -455,4 +455,12 @@ public class VersionUtilities {
     return res;
   }
 
+  public static String getVersionForPackage(String pid) {
+    if (pid.startsWith("hl7.fhir.r")) {
+      String[] p = pid.split("\\.");
+      return versionFromCode(p[2]);
+    }
+    return null;
+  }
+
 }

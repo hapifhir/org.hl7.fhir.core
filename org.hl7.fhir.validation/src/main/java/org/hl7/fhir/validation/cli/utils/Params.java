@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.utils;
 
+import org.apache.http.auth.AUTH;
 import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.model.CliContext;
@@ -14,6 +15,7 @@ public class Params {
   public static final String OUTPUT = "-output";
   public static final String HTML_OUTPUT = "-html-output";
   public static final String PROXY = "-proxy";
+  public static final String PROXY_AUTH = "-auth";
   public static final String PROFILE = "-profile";
   public static final String BUNDLE = "-bundle";
   public static final String QUESTIONNAIRE = "-questionnaire";
@@ -101,6 +103,8 @@ public class Params {
           cliContext.setHtmlOutput(args[++i]);
       } else if (args[i].equals(PROXY)) {
         i++; // ignore next parameter
+      } else if (args[i].equals(PROXY_AUTH)) {
+        i++;
       } else if (args[i].equals(PROFILE)) {
         String p = null;
         if (i + 1 == args.length) {
@@ -234,8 +238,6 @@ public class Params {
         cliContext.addSource(args[i]);
       }
     }
-    if (cliContext.getSources().isEmpty())
-      throw new Exception("Must provide at least one source file");
     return cliContext;
   }
 

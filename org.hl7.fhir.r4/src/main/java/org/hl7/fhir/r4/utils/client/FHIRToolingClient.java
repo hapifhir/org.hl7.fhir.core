@@ -507,7 +507,7 @@ public class FHIRToolingClient {
   			return p_out;
   		}
   		} catch (Exception e) {
-  			handleException("Error performing operation '"+name+"' with parameters " + ps, e);  		
+  			handleException("Error performing operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);  		
   		}
   		return null;
   }
