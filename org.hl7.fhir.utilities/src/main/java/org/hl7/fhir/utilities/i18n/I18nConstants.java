@@ -350,6 +350,7 @@ public class I18nConstants {
   public static final String SD_ED_TYPE_PROFILE_UNKNOWN = "SD_ED_TYPE_PROFILE_UNKNOWN";
   public static final String SD_ED_TYPE_PROFILE_NOTYPE = "SD_ED_TYPE_PROFILE_NOTYPE";
   public static final String SD_ED_TYPE_PROFILE_WRONG = "SD_ED_TYPE_PROFILE_WRONG";
+  public static final String SD_ED_TYPE_PROFILE_WRONG_TARGET = "SD_ED_TYPE_PROFILE_WRONG_TARGET";
   public static final String SD_ED_TYPE_NO_TARGET_PROFILE = "SD_ED_TYPE_NO_TARGET_PROFILE";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
@@ -593,6 +594,11 @@ public class I18nConstants {
   public static final String XHTML_URL_EMPTY = "XHTML_URL_EMPTY";
   public static final String XHTML_URL_INVALID = "XHTML_URL_INVALID";
   public static final String XHTML_URL_INVALID_CHARS = "XHTML_URL_INVALID_CHARS";
+  public static final String XHTML_URL_DATA_NO_DATA = "XHTML_URL_DATA_NO_DATA"; 
+  public static final String XHTML_URL_DATA_DATA_INVALID_COMMA = "XHTML_URL_DATA_DATA_INVALID_COMMA"; 
+  public static final String XHTML_URL_DATA_DATA_INVALID = "XHTML_URL_DATA_DATA_INVALID"; 
+  public static final String XHTML_URL_DATA_MIMETYPE = "XHTML_URL_DATA_MIMETYPE";  
+
   public static final String XHTML_XHTML_ATTRIBUTE_ILLEGAL = "XHTML_XHTML_Attribute_Illegal";
   public static final String XHTML_XHTML_DOCTYPE_ILLEGAL = "XHTML_XHTML_DOCTYPE_ILLEGAL";
   public static final String XHTML_XHTML_ELEMENT_ILLEGAL = "XHTML_XHTML_Element_Illegal";
