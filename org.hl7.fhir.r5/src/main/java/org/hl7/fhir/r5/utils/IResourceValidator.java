@@ -109,7 +109,7 @@ public interface IResourceValidator {
 
     Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException;
     ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url);
-    boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException;
+    boolean resolveURL(Object appContext, String path, String url, String type) throws IOException, FHIRException;
 
     byte[] fetchRaw(String url) throws MalformedURLException, IOException; // for attachment checking
     

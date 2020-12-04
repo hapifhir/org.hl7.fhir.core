@@ -104,6 +104,7 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
@@ -114,6 +115,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
+import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.ValidationEngine.ValidationRecord;
 import org.hl7.fhir.validation.cli.model.ScanOutputItem;
@@ -122,6 +124,9 @@ import org.hl7.fhir.validation.cli.utils.*;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import org.xmlpull.v1.builder.XmlDocument;
+
+import com.google.gson.JsonObject;
 
 
 /*
@@ -1310,6 +1315,22 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       if (s.contains("http://hl7.org/fhir/1.4")) {
         versions.see("1.4", "Profile in "+ref);
       }
+      try {
+        if (s.startsWith("{")) {
+          JsonObject json = JsonTrackingParser.parse(s,  null);
+          if (json.has("fhirVersion")) {
+            versions.see(VersionUtilities.getMajMin(JSONUtil.str(json, "fhirVersion")), "fhirVersion in "+ref);
+          }
+        } else {
+          Document doc  = parseXml(cnt.focus);
+          String v = XMLUtil.getNamedChildValue(doc.getDocumentElement(), "fhirVersion");
+          if (v != null) {
+            versions.see(VersionUtilities.getMajMin(v), "fhirVersion in "+ref);
+          }
+        }
+      } catch (Exception e) {
+        // nothing
+      }
     }
   }
 
@@ -1883,7 +1904,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
 
   @Override
-  public boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException {
+  public boolean resolveURL(Object appContext, String path, String url, String type) throws IOException, FHIRException {
     if (!url.startsWith("http://") && !url.startsWith("https://")) { // ignore these 
       return true;
     }
@@ -1898,7 +1919,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
        return true;
      }
     if (fetcher != null) {
-      return fetcher.resolveURL(appContext, path, url);
+      return fetcher.resolveURL(appContext, path, url, type);
     };
     return false;
   }

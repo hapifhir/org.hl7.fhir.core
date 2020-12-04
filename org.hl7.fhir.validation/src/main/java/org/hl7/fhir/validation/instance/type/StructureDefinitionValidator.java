@@ -223,7 +223,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (t == null) {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd.getKind() == StructureDefinitionKind.RESOURCE, I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd.getKind() == StructureDefinitionKind.RESOURCE, I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Resource");
         }
       }
     } else if (code.equals("canonical")) {
@@ -232,7 +232,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (t == null) {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t), I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource");
         }
       }
     } else {

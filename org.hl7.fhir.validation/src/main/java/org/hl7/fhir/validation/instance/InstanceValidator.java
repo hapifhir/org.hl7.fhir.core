@@ -1927,11 +1927,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         // for now, no validation. Need to think about authority.
       } else {
         // now, do we check the URI target?
-        if (fetcher != null) {
+        if (fetcher != null && !type.equals("uuid")) {
           boolean found;
           try {
-            found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || fetcher.resolveURL(appContext, path, url) || 
-                SpecialExtensions.isKnownExtension(url) || isXverUrl(url);
+            found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || 
+                SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || fetcher.resolveURL(appContext, path, url, type);
           } catch (IOException e1) {
             found = false;
           }
@@ -2228,17 +2228,44 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return context.formatMessage(I18nConstants.XHTML_URL_EMPTY);
     }
 
-    Set<Character> invalidChars = new HashSet<>();
-    for (char ch : value.toCharArray()) {
-      if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*' ))) {
-        invalidChars.add(ch);
+    if (value.startsWith("data:")) {
+      String[] p = value.substring(5).split("\\,");
+      if (p.length < 2) {
+        return context.formatMessage(I18nConstants.XHTML_URL_DATA_NO_DATA, value);        
+      } else if (p.length > 2) {
+        return context.formatMessage(I18nConstants.XHTML_URL_DATA_DATA_INVALID_COMMA, value);                
+      } else if (!p[0].endsWith(";base64") || !isValidBase64(p[1])) {
+        return context.formatMessage(I18nConstants.XHTML_URL_DATA_DATA_INVALID, value);                        
+      } else {
+        if (p[0].startsWith(" ")) {
+          p[0] = p[0].trim(); 
+        }
+        String mMsg = checkValidMimeType(p[0].substring(0, p[0].lastIndexOf(";")));
+        if (mMsg != null) {
+          return context.formatMessage(I18nConstants.XHTML_URL_DATA_MIMETYPE, value, mMsg);                  
+        }
       }
-    }
-    if (invalidChars.isEmpty()) {
       return null;
     } else {
-      return  context.formatMessage(I18nConstants.XHTML_URL_INVALID_CHARS, invalidChars.toString());
+      Set<Character> invalidChars = new HashSet<>();
+      for (char ch : value.toCharArray()) {
+        if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*' ))) {
+          invalidChars.add(ch);
+        }
+      }
+      if (invalidChars.isEmpty()) {
+        return null;
+      } else {
+        return context.formatMessage(I18nConstants.XHTML_URL_INVALID_CHARS, invalidChars.toString());
+      }
     }
+  }
+
+  private String checkValidMimeType(String mt) {
+    if (!mt.matches("^(\\w+|\\*)\\/(\\w+|\\*)((;\\s*(\\w+)=\\s*(\\S+))?)$")) {
+      return "Mime type invalid";
+    }
+    return null;
   }
 
   private void checkInnerNS(List<ValidationMessage> errors, Element e, String path, List<XhtmlNode> list) {
