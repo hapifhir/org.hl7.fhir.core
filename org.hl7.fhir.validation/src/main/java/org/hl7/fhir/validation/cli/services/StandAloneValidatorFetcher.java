@@ -2,13 +2,17 @@ package org.hl7.fhir.validation.cli.services;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.Locale;
 
+import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
@@ -38,12 +42,12 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
 
   @Override
   public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
-    throw new Error("Not done yet");
+    throw new FHIRException("The URL '"+url+"' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
   }
 
   @Override
   public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
-    throw new Error("Not done yet");
+    return ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
   }
 
   @Override
@@ -111,12 +115,40 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
 
   @Override
   public byte[] fetchRaw(String url) throws MalformedURLException, IOException {
-    throw new Error("Not done yet");
+    throw new FHIRException("The URL '"+url+"' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
   }
 
   @Override
   public void setLocale(Locale locale) {
-    throw new Error("Not done yet");
+    // nothing
+  }
+
+  @Override
+  public CanonicalResource fetchCanonicalResource(String url) throws URISyntaxException {
+    String[] p = url.split("\\/");
+    String root = getRoot(p, url);
+    if (root != null) {
+      TerminologyClient c;
+      c = TerminologyClientFactory.makeClient(root, context.getVersion());
+      return c.read(p[p.length-2], p[p.length-1]);
+    } else {
+      throw new FHIRException("The URL '"+url+"' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
+    }
+  }
+
+  private String getRoot(String[] p, String url) {
+    if (p.length > 3 && Utilities.isValidId(p[p.length-1]) && context.getResourceNames().contains(p[p.length-2])) {
+      url = url.substring(0, url.lastIndexOf("/"));
+      return url.substring(0, url.lastIndexOf("/"));
+    } else {
+      return null;
+    }
+    
+  }
+
+  @Override
+  public boolean fetchesCanonicalResource(String url) {
+    return true;
   }
 
 }

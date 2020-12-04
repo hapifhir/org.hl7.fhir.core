@@ -1,6 +1,8 @@
 package org.hl7.fhir.utilities.tests;
 
+import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
+import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -87,5 +89,10 @@ public class XhtmlNodeTest {
     ByteArrayOutputStream bout = new ByteArrayOutputStream();
     ObjectOutputStream oout = new ObjectOutputStream(bout);
     oout.writeObject(node);
+  }
+  
+  @Test
+  public void testParseBadChars() throws FHIRFormatError, IOException {
+    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "bad-chars.html"), "div");
   }
 }

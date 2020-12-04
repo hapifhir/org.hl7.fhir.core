@@ -68,6 +68,7 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.DomainResource;
@@ -1007,7 +1008,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
 
   public void loadIg(String src, boolean recursive) throws IOException, FHIRException {
-    NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) ? pcm.loadPackage(src, null) : null;
+    NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !new File(src).exists() ? pcm.loadPackage(src, null) : null;
     if (npm != null) {
       for (String s : npm.dependencies()) {
         if (!context.getLoadedPackages().contains(s)) {
@@ -1563,7 +1564,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
 
   public InstanceValidator getValidator() {
-    InstanceValidator validator = new InstanceValidator(context, null);
+    InstanceValidator validator = new InstanceValidator(context, null, null);
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.setNoInvariantChecks(isNoInvariantChecks());
@@ -1906,6 +1907,17 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   public void setLocale(Locale locale) {
     this.locale = locale;
   }
+
+  @Override
+  public CanonicalResource fetchCanonicalResource(String url) throws URISyntaxException {
+    return fetcher != null ? fetcher.fetchCanonicalResource(url) : null;
+  }
+
+  @Override
+  public boolean fetchesCanonicalResource(String url) {
+    return fetcher != null ? fetcher.fetchesCanonicalResource(url) : false;
+  }
+
 
   public void handleOutput(Resource r, String output, String version) throws FHIRException, IOException {
     if (output.startsWith("http://") || output.startsWith("http://")) {

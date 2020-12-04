@@ -27,6 +27,7 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_NOFIRST = "Bundle_BUNDLE_Entry_NoFirst";
   public static final String BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE = "Bundle_BUNDLE_Entry_NoFirstResource";
   public static final String BUNDLE_BUNDLE_ENTRY_NOFULLURL = "Bundle_BUNDLE_Entry_NoFullUrl";
+  public static final String BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED = "BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED";
   public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE = "Bundle_BUNDLE_Entry_NoProfile";
   public static final String BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES = "BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND = "Bundle_BUNDLE_Entry_NotFound";
@@ -349,6 +350,7 @@ public class I18nConstants {
   public static final String SD_ED_TYPE_PROFILE_UNKNOWN = "SD_ED_TYPE_PROFILE_UNKNOWN";
   public static final String SD_ED_TYPE_PROFILE_NOTYPE = "SD_ED_TYPE_PROFILE_NOTYPE";
   public static final String SD_ED_TYPE_PROFILE_WRONG = "SD_ED_TYPE_PROFILE_WRONG";
+  public static final String SD_ED_TYPE_NO_TARGET_PROFILE = "SD_ED_TYPE_NO_TARGET_PROFILE";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
   public static final String SEARCHPARAMETER_NOTFOUND = "SEARCHPARAMETER_NOTFOUND";
@@ -572,6 +574,8 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_THIS_VERSION_OK = "VALIDATION_VAL_PROFILE_THIS_VERSION_OK";
   public static final String VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER = "VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER";
   public static final String VALIDATION_VAL_PROFILE_UNKNOWN = "Validation_VAL_Profile_Unknown";
+  public static final String VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY = "VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY";
+  public static final String VALIDATION_VAL_PROFILE_UNKNOWN_ERROR = "VALIDATION_VAL_PROFILE_UNKNOWN_ERROR";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE = "Validation_VAL_Profile_WrongType";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE2 = "Validation_VAL_Profile_WrongType2";
   public static final String VALIDATION_VAL_UNKNOWN_PROFILE = "Validation_VAL_Unknown_Profile";
