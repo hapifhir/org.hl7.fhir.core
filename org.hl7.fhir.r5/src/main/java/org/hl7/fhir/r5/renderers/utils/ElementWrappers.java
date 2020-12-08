@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.ElementDefinitionResolution;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -83,7 +85,15 @@ public class ElementWrappers {
             element.getNamedChildrenWithWildcard(name, elements);
           else
             element.getNamedChildren(name, elements);
-          list.add(new PropertyWrapperMetaElement(context, structure, child, elements));
+          if (child.hasContentReference()) {
+            ElementDefinitionResolution nchild = context.getProfileUtilities().resolveContentRef(structure, child);
+            if (nchild == null) {
+              throw new DefinitionException("Unable to resolve content reference "+child.getContentReference());
+            }
+            list.add(new PropertyWrapperMetaElement(context, nchild.getSource(), nchild.getElement(), elements));
+          } else {
+            list.add(new PropertyWrapperMetaElement(context, structure, child, elements));
+          }
         }
       }
       return list;
@@ -285,8 +295,9 @@ public class ElementWrappers {
     public List<BaseWrapper> getValues() {
       if (list == null) {
         list = new ArrayList<BaseWrapper>();
-        for (Element e : values)
-          list.add(new BaseWrapperMetaElement(context, e, e.fhirType(), structure, definition));
+        for (Element e : values) {
+           list.add(new BaseWrapperMetaElement(context, e, e.fhirType(), structure, definition));
+        }
       }
       return list;
     }
