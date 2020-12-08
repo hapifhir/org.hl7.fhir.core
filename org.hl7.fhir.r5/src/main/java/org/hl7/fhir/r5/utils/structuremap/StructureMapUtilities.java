@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.utils.structuredmap;
+package org.hl7.fhir.r5.utils.structuremap;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -66,7 +66,6 @@ import org.hl7.fhir.r5.utils.FHIRLexer;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.r5.utils.structuredmap.*;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.utils.structuredmap;
+package org.hl7.fhir.r5.utils.structuremap;
 
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;

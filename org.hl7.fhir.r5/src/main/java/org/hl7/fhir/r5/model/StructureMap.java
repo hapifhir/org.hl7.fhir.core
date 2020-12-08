@@ -44,7 +44,7 @@ import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
-import org.hl7.fhir.r5.utils.structuredmap.StructureMapUtilities;
+import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 /**
  * A Map of relationships between 2 structures that can be used to transform data.
  */

@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.utils.structuredmap;
+package org.hl7.fhir.r5.utils.structuremap;
 
 public class StringPair {
   private String var;

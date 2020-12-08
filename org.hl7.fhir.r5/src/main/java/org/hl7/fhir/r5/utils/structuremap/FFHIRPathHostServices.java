@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.utils.structuredmap;
+package org.hl7.fhir.r5.utils.structuremap;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.hl7.fhir.exceptions.FHIRException;
