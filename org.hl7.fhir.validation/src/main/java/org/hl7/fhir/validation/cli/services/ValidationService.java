@@ -27,7 +27,7 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.ValidationEngine.ValidationRecord;
+import org.hl7.fhir.validation.ValidationRecord;
 import org.hl7.fhir.validation.cli.model.*;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
