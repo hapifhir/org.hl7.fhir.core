@@ -81,8 +81,12 @@ public class ValidationService {
       if (r instanceof Bundle)
         for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry())
           ec = ec + displayOperationOutcome((OperationOutcome) e.getResource(), ((Bundle) r).getEntry().size() > 1) + ec;
-      else
+      else if (r == null) {
+        ec = ec + 1;
+        System.out.println("No output from validation - nothing to validate");
+      } else {
         ec = displayOperationOutcome((OperationOutcome) r, false);
+      }
     } else {
       IParser x;
       if (cliContext.getOutput() != null && cliContext.getOutput().endsWith(".json")) {
