@@ -75,7 +75,11 @@ public class ParametersRenderer extends ResourceRenderer {
       for (int i = 0; i < indent; i++) {
         td.tx(XhtmlNode.NBSP);        
       }
-      td.tx(p.get("name").primitiveValue());
+      if (p.has("name")) {
+        td.tx(p.get("name").primitiveValue());
+      } else {
+        td.tx("???");
+      }
       if (p.has("value")) {
         renderBase(tr.td(), p.get("value"));
       } else if (p.has("resource")) {
