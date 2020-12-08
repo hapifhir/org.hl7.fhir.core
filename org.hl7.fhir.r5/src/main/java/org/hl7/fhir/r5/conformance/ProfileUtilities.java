@@ -6485,5 +6485,9 @@ public class ProfileUtilities extends TranslatingUtilities {
   public static boolean isMustSupport(CanonicalType profile) {
     return "true".equals(ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_MUST_SUPPORT));
   }
+
+  public ElementDefinitionResolution resolveContentRef(StructureDefinition structure, ElementDefinition element) {
+    return getElementById(structure, structure.getSnapshot().getElement(), element.getContentReference());
+  }
   
 }

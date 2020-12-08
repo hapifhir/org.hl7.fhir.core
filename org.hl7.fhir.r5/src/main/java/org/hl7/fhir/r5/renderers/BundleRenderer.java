@@ -119,7 +119,7 @@ public class BundleRenderer extends ResourceRenderer {
     // * The subject resource Narrative
     // * The Composition resource Narrative
     // * The section.text Narratives
-    ResourceWrapper comp = (ResourceWrapper) entries.get(0).getChildByName("resource").getValues().get(0);
+    ResourceWrapper comp = (ResourceWrapper) entries.get(0).getChildByName("resource").getAsResource();
     ResourceWrapper subject = resolveReference(entries, comp.get("subject"));
     if (subject != null) {
       if (subject.hasNarrative()) {
@@ -175,7 +175,7 @@ public class BundleRenderer extends ResourceRenderer {
           if (entry.has("fullUrl")) {
             String fu = entry.get("fullUrl").primitiveValue();
             if (ref.equals(fu)) {
-              return (ResourceWrapper) entry.getChildByName("resource").getValues().get(0);
+              return (ResourceWrapper) entry.getChildByName("resource").getAsResource();
             }
           }
         }
