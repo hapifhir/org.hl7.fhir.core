@@ -85,15 +85,7 @@ public class ElementWrappers {
             element.getNamedChildrenWithWildcard(name, elements);
           else
             element.getNamedChildren(name, elements);
-          if (child.hasContentReference()) {
-            ElementDefinitionResolution nchild = context.getProfileUtilities().resolveContentRef(structure, child);
-            if (nchild == null) {
-              throw new DefinitionException("Unable to resolve content reference "+child.getContentReference());
-            }
-            list.add(new PropertyWrapperMetaElement(context, nchild.getSource(), nchild.getElement(), elements));
-          } else {
-            list.add(new PropertyWrapperMetaElement(context, structure, child, elements));
-          }
+          list.add(new PropertyWrapperMetaElement(context, structure, child, elements));
         }
       }
       return list;

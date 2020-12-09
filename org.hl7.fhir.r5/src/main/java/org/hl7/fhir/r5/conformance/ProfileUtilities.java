@@ -488,6 +488,13 @@ public class ProfileUtilities extends TranslatingUtilities {
             return getChildList(profile, e.getContentReference()+"."+path.substring(p.length()+1), null, diff);
           } else if (e.getContentReference().startsWith("#")) {
             return getChildList(profile, e.getContentReference().substring(1), null, diff);            
+          } else if (e.getContentReference().contains("#")) {
+            String url = e.getContentReference().substring(0, e.getContentReference().indexOf("#"));
+            StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+            if (sd == null) {
+              throw new DefinitionException("Unable to find Structure "+url);
+            }
+            return getChildList(sd, e.getContentReference().substring(e.getContentReference().indexOf("#")+1), null, diff);            
           } else {
             return getChildList(profile, e.getContentReference(), null, diff);
           }
