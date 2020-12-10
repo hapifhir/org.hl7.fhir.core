@@ -149,7 +149,7 @@ public class FHIRLexer {
   }
 
   public FHIRLexerException error(String msg, String location) {
-    return new FHIRLexerException("Error in "+name+" at "+location+": "+msg);
+    return new FHIRLexerException("Error @"+location+": "+msg);
   }
 
   public void next() throws FHIRLexerException {
