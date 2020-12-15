@@ -772,7 +772,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return true;
       if (s.isOk()) {
         if (s.getMessage() != null)
-          throw new Error("Internal error: ok, but has error message '"+s.getMessage()+"'");
+          txWarning(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, I18nConstants.TERMINOLOGY_PASSTHROUGH_TX_MESSAGE, s.getMessage(), system, code);
         return true;
       }
       if (s.getErrorClass() != null && s.getErrorClass().isInfrastructure())
