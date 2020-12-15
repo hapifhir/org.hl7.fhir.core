@@ -772,7 +772,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return true;
       if (s.isOk()) {
         if (s.getMessage() != null)
-          txWarning(errors, s.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, s == null, I18nConstants.INTERNAL_ERROR, s.getMessage());
+          throw new Error("Internal error: ok, but has error message '"+s.getMessage()+"'");
         return true;
       }
       if (s.getErrorClass() != null && s.getErrorClass().isInfrastructure())
@@ -2861,7 +2861,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     ElementDefinition ed = null;
-    ExpressionNode expr = fpe.parse(fixExpr(discriminator, null));
+    String fp = fixExpr(discriminator, null);
+    ExpressionNode expr = null;
+    try {
+      expr = fpe.parse(fp);
+    } catch (Exception e) {
+      throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR_BAD_PATH, e.getMessage(), fp), e);
+    }
     long t2 = System.nanoTime();
     ed = fpe.evaluateDefinition(expr, profile, element);
     timeTracker.sd(t2);
@@ -2886,7 +2892,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           if (element == null)
             throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_ELEMENT__IN_PROFILE_, id, p));
         }
-        expr = fpe.parse(fixExpr(discriminator, null));
+        expr = fpe.parse(fp);
         t2 = System.nanoTime();
         ed = fpe.evaluateDefinition(expr, profile, element);
         timeTracker.sd(t2);
@@ -4694,7 +4700,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             ei.additionalSlice = true;
           }
         } catch (FHIRException e) {
-          rule(errors, IssueType.PROCESSING, ei.line(), ei.col(), ei.getPath(), false,  I18nConstants.INTERNAL_ERROR, e.getMessage());
+          rule(errors, IssueType.PROCESSING, ei.line(), ei.col(), ei.getPath(), false,  I18nConstants.SLICING_CANNOT_BE_EVALUATED, e.getMessage());
           unsupportedSlicing = true;
           childUnsupportedSlicing = true;
         }
