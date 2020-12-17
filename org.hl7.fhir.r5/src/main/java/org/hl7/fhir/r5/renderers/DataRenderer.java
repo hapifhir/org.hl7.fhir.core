@@ -400,8 +400,10 @@ public class DataRenderer extends Renderer {
       } else {
         if (uri.getValue().contains("|")) {
           x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
-        } else {
+        } else if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("ftp:")) {
           x.ah(uri.getValue()).addText(uri.getValue());        
+        } else {
+          x.code().addText(uri.getValue());        
         }
       }
     }
