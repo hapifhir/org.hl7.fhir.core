@@ -174,7 +174,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bindableType(typeCodes) != null, I18nConstants.SD_ED_BIND_NO_BINDABLE, path, typeCodes.toString());
     if (binding.hasChild("valueSet")) {
       Element valueSet = binding.getNamedChild("valueSet");
-      String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("refernece");
+      String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference");
       if (warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
         Resource vs = context.fetchResource(Resource.class, ref);
         if (warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs != null, I18nConstants.SD_ED_BIND_UNKNOWN_VS, path, ref)) {
@@ -300,10 +300,11 @@ public class StructureDefinitionValidator extends BaseValidator {
         return true;
       }
       sd = sd.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()) : null;
-      if (sd != null && !sd.getAbstract()) {
+      if (!(VersionUtilities.isR2Ver(context.getVersion()) || VersionUtilities.isR2BVer(context.getVersion())) && sd != null && !sd.getAbstract()) {
         sd = null;
       }
     }
+    
     return false;
   }
 
