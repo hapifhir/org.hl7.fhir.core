@@ -48,7 +48,7 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_NO_VS_NOTCOMPLETE = "CODESYSTEM_CS_NO_VS_NOTCOMPLETE";
   public static final String CODESYSTEM_CS_VS_INCLUDEDETAILS = "CodeSystem_CS_VS_IncludeDetails";
   public static final String CODESYSTEM_CS_VS_INVALID = "CodeSystem_CS_VS_Invalid";
-  public static final String CODESYSTEM_CS_VS_MISMATCH = "CodeSystem_CS_VS_MisMatch";
+  public static final String CODESYSTEM_CS_VS_EXP_MISMATCH = "CODESYSTEM_CS_VS_EXP_MISMATCH";
   public static final String CODESYSTEM_CS_VS_WRONGSYSTEM = "CodeSystem_CS_VS_WrongSystem";
   public static final String CODE_FOUND_IN_EXPANSION_HOWEVER_ = "Code_found_in_expansion_however_";
   public static final String CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE = "Coding_has_no_system__cannot_validate";
