@@ -493,6 +493,8 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_UUID = "Type_Specific_Checks_DT_URI_UUID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_WS = "Type_Specific_Checks_DT_URI_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE = "Type_Specific_Checks_DT_URL_Resolve";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT = "Type_Specific_Checks_DT_UUID_Strat";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_VAID = "Type_Specific_Checks_DT_UUID_Vaid";
   public static final String UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER = "Unable_to_connect_to_terminology_server";

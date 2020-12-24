@@ -1710,7 +1710,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (resource != null) {
       return ReferenceValidationPolicy.CHECK_VALID;
     }
-    if (!url.startsWith("http://hl7.org/fhir")) {
+    if (!(url.contains("hl7.org") || url.contains("fhir.org"))) {
       return ReferenceValidationPolicy.IGNORE;
     } else if (fetcher != null) {
       return fetcher.validationPolicy(appContext, path, url);
@@ -1748,6 +1748,14 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
 
   @Override
   public CanonicalResource fetchCanonicalResource(String url) throws URISyntaxException {
+    Resource res = context.fetchResource(Resource.class, url);
+    if (res != null) {
+      if (res instanceof CanonicalResource) {
+        return (CanonicalResource) res;
+      } else {
+        return null;
+      }     
+    }
     return fetcher != null ? fetcher.fetchCanonicalResource(url) : null;
   }
 
