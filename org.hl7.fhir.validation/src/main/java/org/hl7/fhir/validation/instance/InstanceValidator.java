@@ -691,6 +691,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     fetchCache.clear();
     fetchCache.put(element.fhirType() + "/" + element.getIdBase(), element);
     resourceTracker.clear();
+    trackedMessages.clear();
+    messagesToRemove.clear();
     executionId = UUID.randomUUID().toString();
     baseOnly = profiles.isEmpty();
     setParents(element);
@@ -706,6 +708,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (hintAboutNonMustSupport) {
       checkElementUsage(errors, element, new NodeStack(context, element, validationLanguage));
     }
+    errors.removeAll(messagesToRemove);
     timeTracker.overall(t);
   }
 
@@ -990,6 +993,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 // Check whether the codes are appropriate for the type of binding we have
                 boolean bindingsOk = true;
                 if (binding.getStrength() != BindingStrength.EXAMPLE) {
+                  if (binding.getStrength() == BindingStrength.REQUIRED) {
+                    removeTrackedMessagesForLocation(errors, element, path);
+                  }
                   boolean atLeastOneSystemIsSupported = false;
                   for (Coding nextCoding : cc.getCoding()) {
                     String nextSystem = nextCoding.getSystem();
@@ -1018,7 +1024,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                           if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), cc, stack);
                           else if (!noExtensibleWarnings)
-                            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_2, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
+                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_2, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
                             txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_3, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
@@ -1031,7 +1037,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                           if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), cc, stack);
                           if (!noExtensibleWarnings)
-                            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_2, describeReference(binding.getValueSet()), valueset.getUrl(), ccSummary(cc));
+                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_2, describeReference(binding.getValueSet()), valueset.getUrl(), ccSummary(cc));
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
                             txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_3, describeReference(binding.getValueSet()), valueset.getUrl(), ccSummary(cc));
@@ -1080,6 +1086,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return res;
   }
 
+
   private boolean checkTerminologyCodeableConcept(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, NodeStack stack, StructureDefinition logical) {
     boolean res = true;
     if (!noTerminologyChecks && theElementCntext != null && theElementCntext.hasBinding()) {
@@ -1105,6 +1112,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 // Check whether the codes are appropriate for the type of binding we have
                 boolean bindingsOk = true;
                 if (binding.getStrength() != BindingStrength.EXAMPLE) {
+                  if (binding.getStrength() == BindingStrength.REQUIRED) {
+                    removeTrackedMessagesForLocation(errors, element, path);
+                  }
+
                   boolean atLeastOneSystemIsSupported = false;
                   for (Coding nextCoding : cc.getCoding()) {
                     String nextSystem = nextCoding.getSystem();
@@ -1127,7 +1138,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                           if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), cc, stack);
                           else if (!noExtensibleWarnings)
-                            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_2, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
+                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_2, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
                             txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_3, describeReference(binding.getValueSet()), vr.getErrorClass().toString());
@@ -1140,7 +1151,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                           if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), cc, stack);
                           if (!noExtensibleWarnings)
-                            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_2, describeReference(binding.getValueSet()), valueset.getUrl(), ccSummary(cc));
+                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_2, describeReference(binding.getValueSet()), valueset.getUrl(), ccSummary(cc));
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
                             txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_3, describeReference(binding.getValueSet()), valueset.getUrl(), ccSummary(cc));
@@ -1212,6 +1223,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     if (binding.getStrength() != BindingStrength.EXAMPLE) {
                       vr = checkCodeOnServer(stack, valueset, c, true);
                     }
+                    if (binding.getStrength() == BindingStrength.REQUIRED) {
+                      removeTrackedMessagesForLocation(errors, element, path);
+                    }
+
                     timeTracker.tx(t);
                     if (vr != null && !vr.isOk()) {
                       if (vr.IsNoService())
@@ -1223,7 +1238,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                           if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c, stack);
                           else if (!noExtensibleWarnings)
-                            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(binding.getValueSet(), valueset));
+                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(binding.getValueSet(), valueset));
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
                             txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_6, describeReference(binding.getValueSet(), valueset));
@@ -1432,6 +1447,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       vr = checkCodeOnServer(stack, valueset, c, true);
                     }
                     timeTracker.tx(t);
+                    if (binding.getStrength() == BindingStrength.REQUIRED) {
+                      removeTrackedMessagesForLocation(errors, element, path);
+                    }
+
                     if (vr != null && !vr.isOk()) {
                       if (vr.IsNoService())
                         txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
@@ -1442,7 +1461,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                           if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
                             checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c, stack);
                           else if (!noExtensibleWarnings)
-                            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(binding.getValueSet(), valueset));
+                            txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_5, describeReference(binding.getValueSet(), valueset));
                         } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                           if (baseOnly) {
                             txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CONFIRM_6, describeReference(binding.getValueSet(), valueset));
@@ -1453,8 +1472,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
                         if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
                           checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), c, stack);
-                        else
-                          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_13, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), c.getSystem()+"#"+c.getCode());
+                        else if (!noExtensibleWarnings) {
+                          txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_13, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), c.getSystem()+"#"+c.getCode());
+                        }
                       } else if (binding.getStrength() == BindingStrength.PREFERRED) {
                         if (baseOnly) {
                           txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_14, describeReference(binding.getValueSet(), valueset), getErrorMessage(vr.getMessage()), theSystem+"#"+theCode);
@@ -1935,7 +1955,40 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           } catch (IOException e1) {
             found = false;
           }
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
+          if (!found) {
+            if (type.equals("canonical")) {
+              ReferenceValidationPolicy rp = fetcher.validationPolicy(appContext, path, url);
+              if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
+                rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
+              } else {
+                hint(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
+              }
+            } else {
+              if (url.contains("hl7.org") || url.contains("fhir.org")) {
+                rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
+              } else {
+                warning(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
+              }
+            }
+          } else {
+            if (type.equals("canonical")) {
+              ReferenceValidationPolicy rp = fetcher.validationPolicy(appContext, path, url);
+              if (rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE || rp == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS || rp == ReferenceValidationPolicy.CHECK_VALID) {
+                try {
+                  Resource r = fetcher.fetchCanonicalResource(url);
+                  if (r == null) {
+                    rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);                    
+                  } else if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, isCorrectCanonicalType(r, context), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE, url, r.fhirType(), listExpectedCanonicalTypes(context))) {
+                    if (rp == ReferenceValidationPolicy.CHECK_VALID) {
+                      // todo....
+                    }
+                  }
+                } catch (Exception ex) {
+                  // won't happen 
+                }
+              }
+            }            
+          }
         }
       }
     }
@@ -2081,6 +2134,41 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     // for nothing to check
+  }
+
+  private List<String> listExpectedCanonicalTypes(ElementDefinition context) {
+    List<String> res = new ArrayList<>();
+    TypeRefComponent tr = context.getType("canonical");
+    if (tr != null) {
+      for (CanonicalType p : tr.getTargetProfile()) {
+        String url = p.getValue();
+        if (url != null && url.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+          res.add(url.substring("http://hl7.org/fhir/StructureDefinition/".length()));
+        }
+      }
+    }
+    return res;
+  }
+
+  private boolean isCorrectCanonicalType(Resource r, ElementDefinition context) {
+    TypeRefComponent tr = context.getType("canonical");
+    if (tr != null) {
+      for (CanonicalType p : tr.getTargetProfile()) {
+        if (isCorrectCanonicalType(r, p)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  private boolean isCorrectCanonicalType(Resource r, CanonicalType p) {
+    String url = p.getValue();
+    if (url != null && url.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
+      url = url.substring("http://hl7.org/fhir/StructureDefinition/".length());
+      return Utilities.existsInList(url, "Resource", "CanonicalResource") || url.equals(r.fhirType());
+    }
+    return false;
   }
 
   private boolean isCanonicalURLElement(Element e) {
@@ -2301,6 +2389,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           vr = checkCodeOnServer(stack, vs, value, options);
         }
         timeTracker.tx(t);
+        if (binding.getStrength() == BindingStrength.REQUIRED) {
+          removeTrackedMessagesForLocation(errors, element, path);
+        }
         if (vr != null && !vr.isOk()) {
           if (vr.IsNoService())
             txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_15, value);
@@ -2310,7 +2401,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
               checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), value, stack);
             else if (!noExtensibleWarnings)
-              txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_17, value, describeReference(binding.getValueSet()), vs.getUrl(), getErrorMessage(vr.getMessage()));
+              txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_17, value, describeReference(binding.getValueSet()), vs.getUrl(), getErrorMessage(vr.getMessage()));
           } else if (binding.getStrength() == BindingStrength.PREFERRED) {
             if (baseOnly) {
               txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_18, value, describeReference(binding.getValueSet()), vs.getUrl(), getErrorMessage(vr.getMessage()));
