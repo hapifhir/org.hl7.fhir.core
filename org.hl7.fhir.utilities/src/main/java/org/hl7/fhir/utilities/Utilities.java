@@ -639,7 +639,7 @@ public class Utilities {
       return false;
     }
     File tmp = new File("c:\\temp");
-    return tmp.exists() && tmp.isDirectory();
+    return tmp.exists() && tmp.isDirectory() && tmp.canWrite();
   }
 
   public static String pathURL(String... args) {
