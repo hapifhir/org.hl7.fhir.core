@@ -559,8 +559,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public String getPackageId(String canonicalUrl) throws IOException {
     String retVal = findCanonicalInLocalCache(canonicalUrl);
     
-    retVal = super.getPackageId(canonicalUrl);
-
+    if(retVal == null) {
+      retVal = super.getPackageId(canonicalUrl);
+    }
+    
     if (retVal == null) {
       retVal = getPackageIdFromBuildList(canonicalUrl);
     }
