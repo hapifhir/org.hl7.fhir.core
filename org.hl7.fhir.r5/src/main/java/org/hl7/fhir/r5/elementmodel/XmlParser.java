@@ -188,7 +188,7 @@ public class XmlParser extends ParserBase {
     String name = element.getLocalName();
     String path = "/"+pathPrefix(ns)+name;
     
-    StructureDefinition sd = getDefinition(line(element), col(element), (ns == null ? "default" : ns), name);
+    StructureDefinition sd = getDefinition(line(element), col(element), (ns == null ? "noNamespace" : ns), name);
     if (sd == null)
       return null;
 
@@ -242,7 +242,7 @@ public class XmlParser extends ParserBase {
       String ns = prop.getXmlNamespace();
       String elementNs = element.getNamespaceURI();
       if (elementNs == null) {
-        elementNs = "default";
+        elementNs = "noNamespace";
       }
       if (!elementNs.equals(ns))
         logError(line(element), col(element), path, IssueType.INVALID, context.formatMessage(I18nConstants.WRONG_NAMESPACE__EXPECTED_, ns), IssueSeverity.ERROR);
@@ -544,7 +544,7 @@ public class XmlParser extends ParserBase {
     xml.setPretty(style == OutputStyle.PRETTY);
     xml.start();
     String ns = e.getProperty().getXmlNamespace();
-    if (ns!=null && !"default".equals(ns)) {
+    if (ns!=null && !"noNamespace".equals(ns)) {
       xml.setDefaultNamespace(ns);
     }
     if (hasTypeAttr(e))
