@@ -23,6 +23,7 @@
         <junit_jupiter_version>5.6.2</junit_jupiter_version>
         <maven_surefire_version>3.0.0-M4</maven_surefire_version>
         <jacoco_version>0.8.5</jacoco_version>
+        <info_cqframework_version>1.5.1</info_cqframework_version>
     </properties>
 
     <name>HL7 Core Artifacts</name>
