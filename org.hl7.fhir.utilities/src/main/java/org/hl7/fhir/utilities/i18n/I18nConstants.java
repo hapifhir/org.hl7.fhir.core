@@ -27,6 +27,7 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_NOFIRST = "Bundle_BUNDLE_Entry_NoFirst";
   public static final String BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE = "Bundle_BUNDLE_Entry_NoFirstResource";
   public static final String BUNDLE_BUNDLE_ENTRY_NOFULLURL = "Bundle_BUNDLE_Entry_NoFullUrl";
+  public static final String BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED = "BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED";
   public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE = "Bundle_BUNDLE_Entry_NoProfile";
   public static final String BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES = "BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND = "Bundle_BUNDLE_Entry_NotFound";
@@ -47,7 +48,7 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_NO_VS_NOTCOMPLETE = "CODESYSTEM_CS_NO_VS_NOTCOMPLETE";
   public static final String CODESYSTEM_CS_VS_INCLUDEDETAILS = "CodeSystem_CS_VS_IncludeDetails";
   public static final String CODESYSTEM_CS_VS_INVALID = "CodeSystem_CS_VS_Invalid";
-  public static final String CODESYSTEM_CS_VS_MISMATCH = "CodeSystem_CS_VS_MisMatch";
+  public static final String CODESYSTEM_CS_VS_EXP_MISMATCH = "CODESYSTEM_CS_VS_EXP_MISMATCH";
   public static final String CODESYSTEM_CS_VS_WRONGSYSTEM = "CodeSystem_CS_VS_WrongSystem";
   public static final String CODE_FOUND_IN_EXPANSION_HOWEVER_ = "Code_found_in_expansion_however_";
   public static final String CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE = "Coding_has_no_system__cannot_validate";
@@ -66,6 +67,7 @@ public class I18nConstants {
   public static final String DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0 = "Discriminator__is_based_on_element_existence_but_slice__neither_sets_min1_or_max0";
   public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES_ = "Discriminator__is_based_on_type_but_slice__in__has_multiple_types_";
   public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES = "Discriminator__is_based_on_type_but_slice__in__has_no_types";
+  public static final String DISCRIMINATOR_BAD_PATH = "DISCRIMINATOR_BAD_PATH";
   public static final String DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF_ = "Display_Name_for__should_be_one_of__instead_of_";
   public static final String DOCUMENT = "documentmsg";
   public static final String DOCUMENT_DATE_REQUIRED = "Bundle_Document_Date_Missing";
@@ -76,6 +78,7 @@ public class I18nConstants {
   public static final String ELEMENT_ID__NULL__ON_ = "element_id__null__on_";
   public static final String ELEMENT_MUST_HAVE_SOME_CONTENT = "Element_must_have_some_content";
   public static final String ELEMENT__NULL_ = "element__null_";
+  public static final String SLICING_CANNOT_BE_EVALUATED = "SLICING_CANNOT_BE_EVALUATED";
   public static final String ERROR_AT_PATH__IN__TYPE_SLICING_WITH_SLICINGDISCRIMINATORCOUNT__1 = "Error_at_path__in__Type_slicing_with_slicingdiscriminatorcount__1";
   public static final String ERROR_AT_PATH__IN__TYPE_SLICING_WITH_SLICINGDISCRIMINATORPATH__THIS = "Error_at_path__in__Type_slicing_with_slicingdiscriminatorpath__this";
   public static final String ERROR_AT_PATH__IN__TYPE_SLICING_WITH_SLICINGDISCRIMINATORTYPE__TYPE = "Error_at_path__in__Type_slicing_with_slicingdiscriminatortype__type";
@@ -179,7 +182,6 @@ public class I18nConstants {
   public static final String ILLEGAL_PATH__IN_DIFFERENTIAL_IN__NAME_PORTION_EXCEEDS_64_CHARS_IN_LENGTH = "Illegal_path__in_differential_in__name_portion_exceeds_64_chars_in_length";
   public static final String ILLEGAL_PATH__IN_DIFFERENTIAL_IN__NAME_PORTION_MISING_ = "Illegal_path__in_differential_in__name_portion_mising_";
   public static final String ILLEGAL_PATH__IN_DIFFERENTIAL_IN__NO_UNICODE_WHITESPACE = "Illegal_path__in_differential_in__no_unicode_whitespace";
-  public static final String INTERNAL_ERROR = "Internal_error";
   public static final String INTERNAL_ERROR___TYPE_NOT_KNOWN_ = "Internal_error___type_not_known_";
   public static final String INTERNAL_INT_BAD_TYPE = "Internal_INT_Bad_Type";
   public static final String INTERNAL_RECURSION_DETECTION_FIND_LOOP_PATH_RECURSION____CHECK_PATHS_ARE_VALID_FOR_PATH_ = "Internal_recursion_detection_find_loop_path_recursion____check_paths_are_valid_for_path_";
@@ -349,6 +351,13 @@ public class I18nConstants {
   public static final String SD_ED_TYPE_PROFILE_UNKNOWN = "SD_ED_TYPE_PROFILE_UNKNOWN";
   public static final String SD_ED_TYPE_PROFILE_NOTYPE = "SD_ED_TYPE_PROFILE_NOTYPE";
   public static final String SD_ED_TYPE_PROFILE_WRONG = "SD_ED_TYPE_PROFILE_WRONG";
+  public static final String SD_ED_TYPE_PROFILE_WRONG_TARGET = "SD_ED_TYPE_PROFILE_WRONG_TARGET";
+  public static final String SD_ED_TYPE_NO_TARGET_PROFILE = "SD_ED_TYPE_NO_TARGET_PROFILE";
+  public static final String SD_ED_SHOULD_BIND = "SD_ED_SHOULD_BIND";
+  public static final String SD_ED_SHOULD_BIND_WITH_VS = "SD_ED_SHOULD_BIND_WITH_VS";
+  public static final String SD_ED_BIND_UNKNOWN_VS = "SD_ED_BIND_UNKNOWN_VS";
+  public static final String SD_ED_BIND_NOT_VS = "SD_ED_BIND_NOT_VS";
+  public static final String SD_ED_BIND_NO_BINDABLE = "SD_ED_BIND_NO_BINDABLE";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
   public static final String SEARCHPARAMETER_NOTFOUND = "SEARCHPARAMETER_NOTFOUND";
@@ -484,6 +493,8 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_UUID = "Type_Specific_Checks_DT_URI_UUID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_WS = "Type_Specific_Checks_DT_URI_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE = "Type_Specific_Checks_DT_URL_Resolve";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT = "Type_Specific_Checks_DT_UUID_Strat";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_VAID = "Type_Specific_Checks_DT_UUID_Vaid";
   public static final String UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER = "Unable_to_connect_to_terminology_server";
@@ -572,6 +583,8 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_THIS_VERSION_OK = "VALIDATION_VAL_PROFILE_THIS_VERSION_OK";
   public static final String VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER = "VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER";
   public static final String VALIDATION_VAL_PROFILE_UNKNOWN = "Validation_VAL_Profile_Unknown";
+  public static final String VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY = "VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY";
+  public static final String VALIDATION_VAL_PROFILE_UNKNOWN_ERROR = "VALIDATION_VAL_PROFILE_UNKNOWN_ERROR";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE = "Validation_VAL_Profile_WrongType";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE2 = "Validation_VAL_Profile_WrongType2";
   public static final String VALIDATION_VAL_UNKNOWN_PROFILE = "Validation_VAL_Unknown_Profile";
@@ -589,6 +602,11 @@ public class I18nConstants {
   public static final String XHTML_URL_EMPTY = "XHTML_URL_EMPTY";
   public static final String XHTML_URL_INVALID = "XHTML_URL_INVALID";
   public static final String XHTML_URL_INVALID_CHARS = "XHTML_URL_INVALID_CHARS";
+  public static final String XHTML_URL_DATA_NO_DATA = "XHTML_URL_DATA_NO_DATA"; 
+  public static final String XHTML_URL_DATA_DATA_INVALID_COMMA = "XHTML_URL_DATA_DATA_INVALID_COMMA"; 
+  public static final String XHTML_URL_DATA_DATA_INVALID = "XHTML_URL_DATA_DATA_INVALID"; 
+  public static final String XHTML_URL_DATA_MIMETYPE = "XHTML_URL_DATA_MIMETYPE";  
+
   public static final String XHTML_XHTML_ATTRIBUTE_ILLEGAL = "XHTML_XHTML_Attribute_Illegal";
   public static final String XHTML_XHTML_DOCTYPE_ILLEGAL = "XHTML_XHTML_DOCTYPE_ILLEGAL";
   public static final String XHTML_XHTML_ELEMENT_ILLEGAL = "XHTML_XHTML_Element_Illegal";

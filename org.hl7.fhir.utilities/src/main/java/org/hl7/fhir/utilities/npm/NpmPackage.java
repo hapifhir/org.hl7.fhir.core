@@ -1087,6 +1087,12 @@ public class NpmPackage {
         return false;
       }
     }
+    if (Utilities.existsInList(name(), "fhir.test.data.r2", "fhir.test.data.r3", "fhir.test.data.r4", "fhir.tx.support.r2", "fhir.tx.support.r3", "fhir.tx.support.r4", "us.nlm.vsac")) {
+      return true;
+    }
+    if (JSONUtil.bool(npm, "lazy-load")) {
+      return true;
+    }
     if (!hasFile("other", "spec.internals")) {
       return false;
     }

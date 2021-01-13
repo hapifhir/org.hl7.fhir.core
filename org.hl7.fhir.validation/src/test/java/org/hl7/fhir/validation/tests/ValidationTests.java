@@ -52,10 +52,12 @@ import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -81,8 +83,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     Map<String, JsonObject> examples = new HashMap<String, JsonObject>();
     manifest = (JsonObject) new com.google.gson.JsonParser().parse(contents);
-    for (Entry<String, JsonElement> e : manifest.getAsJsonObject("test-cases").entrySet()) {
-      examples.put(e.getKey(), e.getValue().getAsJsonObject());
+    for (JsonElement e : manifest.getAsJsonArray("test-cases")) {
+      JsonObject o = (JsonObject) e;
+      examples.put(JSONUtil.str(o, "name"), o);
     }
 
     List<String> names = new ArrayList<String>(examples.size());
@@ -145,7 +148,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         throw new Exception("unknown version " + version);
     }
     vCurr = ve.get(version);
-    vCurr.setFetcher(this);
     if (TestingUtilities.fcontexts == null) {
       TestingUtilities.fcontexts = new HashMap<>();
     }
@@ -154,11 +156,17 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
 
-    String testCaseContent = TestingUtilities.loadTestResource("validator", name);
+    String testCaseContent = TestingUtilities.loadTestResource("validator", JSONUtil.str(content, "file"));
     InstanceValidator val = vCurr.getValidator();
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
     val.setDebug(false);
+    if (content.has("fetcher") && "standalone".equals(JSONUtil.str(content, "fetcher"))) {
+      val.setFetcher(vCurr);
+      vCurr.setFetcher(new StandAloneValidatorFetcher(vCurr.getPcm(), vCurr.getContext(), vCurr));
+    } else {
+      val.setFetcher(this);
+    }
     if (content.has("allowed-extension-domain"))
       val.getExtensionDomains().add(content.get("allowed-extension-domain").getAsString());
     if (content.has("allowed-extension-domains"))
@@ -168,7 +176,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       val.setValidationLanguage(content.get("language").getAsString());
     else
       val.setValidationLanguage(null);
-    val.setFetcher(this);
     if (content.has("packages")) {
       for (JsonElement e : content.getAsJsonArray("packages")) {
         String n = e.getAsString();
@@ -226,7 +233,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("logical")==false) {
       val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
       System.out.println(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
-      if (name.endsWith(".json"))
+      if (JSONUtil.str(content, "file").endsWith(".json"))
         val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
       else
         val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
@@ -258,7 +265,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       val.getContext().cacheResource(sd);
       val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
-      if (name.endsWith(".json"))
+      if (JSONUtil.str(content, "file").endsWith(".json"))
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON, asSdList(sd));
       else
         val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, asSdList(sd));
@@ -483,7 +490,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException {
+  public boolean resolveURL(Object appContext, String path, String url, String type) throws IOException, FHIRException {
     return !url.contains("example.org") && !url.startsWith("http://hl7.org/fhir/invalid");
   }
 
@@ -523,5 +530,15 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     URL url = new URL(source);
     URLConnection c = url.openConnection();
     return TextFile.streamToBytes(c.getInputStream());
+  }
+
+  @Override
+  public CanonicalResource fetchCanonicalResource(String url) {
+    return null;
+  }
+
+  @Override
+  public boolean fetchesCanonicalResource(String url) {
+    return false;
   }
 }

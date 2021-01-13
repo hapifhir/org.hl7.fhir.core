@@ -224,6 +224,11 @@ public interface IWorkerContext {
    */
   public String getVersion();
   
+  /**
+   * return the link to the base of the specification for the loaded version e.g. http://hl7.org/fhir/R4
+   */
+  public String getSpecUrl();
+  
   // get the UCUM service (might not be available)
   public UcumService getUcumService();
   
@@ -710,7 +715,7 @@ public interface IWorkerContext {
   public ILoggingService getLogger();
 
   public boolean isNoTerminologyServer();
-
+  public Set<String> getCodeSystemsUsed();
   public TranslationServices translator();
   public List<StructureMap> listTransforms();
   public StructureMap getTransform(String url);

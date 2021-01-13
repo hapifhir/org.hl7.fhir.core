@@ -939,5 +939,8 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return path.substring(path.lastIndexOf(".")+1);
   }
 
+  public boolean canRender(Resource resource) {
+    return context.getWorker().getResourceNames().contains(resource.fhirType());
+  }
 
 }

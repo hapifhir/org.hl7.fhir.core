@@ -488,6 +488,13 @@ public class ProfileUtilities extends TranslatingUtilities {
             return getChildList(profile, e.getContentReference()+"."+path.substring(p.length()+1), null, diff);
           } else if (e.getContentReference().startsWith("#")) {
             return getChildList(profile, e.getContentReference().substring(1), null, diff);            
+          } else if (e.getContentReference().contains("#")) {
+            String url = e.getContentReference().substring(0, e.getContentReference().indexOf("#"));
+            StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+            if (sd == null) {
+              throw new DefinitionException("Unable to find Structure "+url);
+            }
+            return getChildList(sd, e.getContentReference().substring(e.getContentReference().indexOf("#")+1), null, diff);            
           } else {
             return getChildList(profile, e.getContentReference(), null, diff);
           }
@@ -3306,7 +3313,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), tail(ed.getElement().getPath()), ed.getElement().getPath()));
         } else {
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "See ", ed.getElement().getPath()), null));
-          c.getPieces().add(gen.new Piece(ed.getSource().getUserString("path")+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getType()+")", ed.getElement().getPath()));
+          c.getPieces().add(gen.new Piece(corePath+ed.getSource().getUserString("path")+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getType()+")", ed.getElement().getPath()));
         }
       }
       return c;
@@ -4141,11 +4148,13 @@ public class ProfileUtilities extends TranslatingUtilities {
               first = false;
             }
           }
-          if (first)
+          if (first) {
             c.getPieces().add(gen.new Piece(null, "Any", null));
+          }
 
-          if (ADD_REFERENCE_TO_TABLE) 
+          if (ADD_REFERENCE_TO_TABLE) { 
             c.getPieces().add(gen.new Piece(null, ")", null));
+          }
 
         } else {
           StructureDefinition sd = context.fetchTypeDefinition(t);
@@ -5617,6 +5626,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       return;
     
     Map<String, String> idList = new HashMap<String, String>();
+    Map<String, String> replacedIds = new HashMap<String, String>();
     
     SliceList sliceInfo = new SliceList();
     // first pass, update the element ids
@@ -5643,6 +5653,9 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
       String bs = b.toString();
+      if (ed.hasId()) {
+        replacedIds.put(ed.getId(), ed.getPath());
+      }
       ed.setId(bs);
       if (idList.containsKey(bs)) {
         if (exception || messages == null) {
@@ -5653,7 +5666,11 @@ public class ProfileUtilities extends TranslatingUtilities {
       idList.put(bs, ed.getPath());
       if (ed.hasContentReference() && ed.getContentReference().startsWith("#")) {
         String s = ed.getContentReference();
-        ed.setContentReference("http://hl7.org/fhir/StructureDefinition/"+type+s);
+        if (replacedIds.containsKey(s.substring(1))) {
+          ed.setContentReference("http://hl7.org/fhir/StructureDefinition/"+type+"#"+replacedIds.get(s.substring(1)));
+        } else {
+          ed.setContentReference("http://hl7.org/fhir/StructureDefinition/"+type+s);
+        }
       }
     }  
     // second path - fix up any broken path based id references
@@ -6474,6 +6491,10 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public static boolean isMustSupport(CanonicalType profile) {
     return "true".equals(ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_MUST_SUPPORT));
+  }
+
+  public ElementDefinitionResolution resolveContentRef(StructureDefinition structure, ElementDefinition element) {
+    return getElementById(structure, structure.getSnapshot().getElement(), element.getContentReference());
   }
   
 }

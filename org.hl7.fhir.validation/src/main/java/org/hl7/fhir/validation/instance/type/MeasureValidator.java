@@ -26,6 +26,7 @@ import org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.renderers.DataRenderer;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -40,8 +41,8 @@ import org.w3c.dom.Document;
 
 public class MeasureValidator extends BaseValidator {
 
-  public MeasureValidator(IWorkerContext context, TimeTracker timeTracker) {
-    super(context);
+  public MeasureValidator(IWorkerContext context, TimeTracker timeTracker, XVerExtensionManager xverManager) {
+    super(context, xverManager);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
   }

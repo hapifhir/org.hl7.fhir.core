@@ -364,6 +364,7 @@ public class VersionUtilities {
       res.add("TestScript");
     }
     if (isR3Ver(version)) {
+      res.add("CodeSystem");
       res.add("CapabilityStatement");
       res.add("StructureDefinition");
       res.add("ImplementationGuide");
@@ -388,6 +389,7 @@ public class VersionUtilities {
     }
     if (isR4Ver(version)) {
 
+      res.add("CodeSystem");
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
       res.add("ChargeItemDefinition");
@@ -419,7 +421,7 @@ public class VersionUtilities {
       res.add("ValueSet");
     }
 
-    if (isR5Ver(version)) {
+    if (isR5Ver(version) || "current".equals(version)) {
 
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
@@ -453,6 +455,14 @@ public class VersionUtilities {
 
     }
     return res;
+  }
+
+  public static String getVersionForPackage(String pid) {
+    if (pid.startsWith("hl7.fhir.r")) {
+      String[] p = pid.split("\\.");
+      return versionFromCode(p[2]);
+    }
+    return null;
   }
 
 }

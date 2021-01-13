@@ -639,7 +639,7 @@ public class Utilities {
       return false;
     }
     File tmp = new File("c:\\temp");
-    return tmp.exists() && tmp.isDirectory();
+    return tmp.exists() && tmp.isDirectory() && tmp.canWrite();
   }
 
   public static String pathURL(String... args) {
@@ -778,7 +778,7 @@ public class Utilities {
 
 
   public static String encodeUri(String v) {
-    return v.replace(" ", "%20").replace("?", "%3F").replace("=", "%3D");
+    return v.replace(" ", "%20").replace("?", "%3F").replace("=", "%3D").replace("|", "%7C");
   }
 
 
@@ -1090,7 +1090,8 @@ public class Utilities {
 
 
   public static boolean isAbsoluteUrl(String ref) {
-    return ref != null && (ref.startsWith("http:") || ref.startsWith("https:") || ref.startsWith("urn:uuid:") || ref.startsWith("urn:oid:"));
+    return ref != null && (ref.startsWith("http:") || ref.startsWith("https:") || ref.startsWith("urn:uuid:") || ref.startsWith("urn:oid:") || 
+        Utilities.startsWithInList(ref, "urn:iso:", "urn:iso-iec:", "urn:iso-cie:", "urn:iso-astm:", "urn:iso-ieee:", "urn:iec:")); // rfc5141
   }
 
 

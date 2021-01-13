@@ -36,6 +36,7 @@ import java.net.URISyntaxException;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 
 public class TerminologyClientFactory {
 
@@ -49,6 +50,20 @@ public class TerminologyClientFactory {
     case R4: return new TerminologyClientR5(checkEndsWith("/r4", url));
     case R5: return new TerminologyClientR5(checkEndsWith("/r4", url)); // r4 for now, since the terminology is currently the same
     case STU3: return new TerminologyClientR3(checkEndsWith("/r3", url));
+    default: throw new Error("The version "+v.toString()+" is not currently supported");
+    }
+  }
+  
+  public static TerminologyClient makeClient(String url, String v) throws URISyntaxException {
+    if (v == null)
+      return new TerminologyClientR5(checkEndsWith("/r4", url));
+    v = VersionUtilities.getMajMin(v);
+    switch (v) {
+    case "1.0": return new TerminologyClientR2(checkEndsWith("/r2", url));
+    case "1.4": return new TerminologyClientR3(checkEndsWith("/r3", url)); // r3 is the least worst match 
+    case "3.0": return new TerminologyClientR3(checkEndsWith("/r3", url));
+    case "4.0": return new TerminologyClientR4(checkEndsWith("/r4", url));
+    case "4.5": return new TerminologyClientR5(checkEndsWith("/r4", url)); // r4 for now, since the terminology is currently the same
     default: throw new Error("The version "+v.toString()+" is not currently supported");
     }
   }

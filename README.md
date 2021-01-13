@@ -6,7 +6,7 @@
 
 ### CI/CD
 
-All intergration and delivery done on Azure pipelines. Azure project can be viewed [here][Link-AzureProject].
+All integration and delivery done on Azure pipelines. Azure project can be viewed [here][Link-AzureProject].
 
 ### Current Versions 
 | Project | Current Release | Latest SNAPSHOT |

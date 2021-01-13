@@ -11,6 +11,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
@@ -42,8 +43,8 @@ public class ValueSetValidator extends BaseValidator {
 
   private InstanceValidator parent;
 
-  public ValueSetValidator(IWorkerContext context, TimeTracker timeTracker, InstanceValidator parent) {
-    super(context);
+  public ValueSetValidator(IWorkerContext context, TimeTracker timeTracker, InstanceValidator parent, XVerExtensionManager xverManager) {
+    super(context, xverManager);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
     this.parent = parent;

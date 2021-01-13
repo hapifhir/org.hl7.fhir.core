@@ -1,11 +1,13 @@
 package org.hl7.fhir.validation.cli.utils;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Class for displaying output to the cli user.
@@ -32,9 +34,9 @@ public class Display {
    */
   public static void displayHelpDetails() {
     ClassLoader classLoader = Display.class.getClassLoader();
-    File file = new File(classLoader.getResource("help.txt").getFile());
+    InputStream help = classLoader.getResourceAsStream("help.txt");
     try {
-      String data = FileUtils.readFileToString(file, "UTF-8");
+      String data = IOUtils.toString(help, "UTF-8");
       System.out.println(data);
     } catch (IOException e) {
       e.printStackTrace();

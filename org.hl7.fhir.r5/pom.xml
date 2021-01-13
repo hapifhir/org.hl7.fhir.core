@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>ca.uhn.hapi.fhir</groupId>
 		<artifactId>org.hl7.fhir.core</artifactId>
-		<version>5.1.23-SNAPSHOT</version>
+		<version>5.2.15-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -101,6 +101,11 @@
 			<artifactId>httpclient</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>4.9.0</version>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.jena/jena-core -->
 		<dependency>
@@ -133,6 +138,13 @@
 			<version>${validator_test_case_version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>mockwebserver</artifactId>
+			<version>4.9.0</version>
+			<scope>test</scope>
+		</dependency>
+
 
 		<!-- JUnit Jupiter -->
 		<dependency>

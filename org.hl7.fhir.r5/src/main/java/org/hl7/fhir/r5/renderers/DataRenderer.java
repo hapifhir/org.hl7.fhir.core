@@ -57,6 +57,7 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
@@ -219,11 +220,18 @@ public class DataRenderer extends Renderer {
   private boolean isCanonical(String path) {
     if (!path.endsWith(".url")) 
       return false;
-    StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(path.substring(0, path.length()-4));
+    String t = path.substring(0, path.length()-4);
+    StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(t);
     if (sd == null)
       return false;
-    if (Utilities.existsInList(path.substring(0, path.length()-4), "CapabilityStatement", "StructureDefinition", "ImplementationGuide", "SearchParameter", "MessageDefinition", "OperationDefinition", "CompartmentDefinition", "StructureMap", "GraphDefinition", 
-        "ExampleScenario", "CodeSystem", "ValueSet", "ConceptMap", "NamingSystem", "TerminologyCapabilities"))
+    if (Utilities.existsInList(t, VersionUtilities.getCanonicalResourceNames(getContext().getWorker().getVersion()))) {
+      return true;
+    }
+    if (Utilities.existsInList(t, 
+        "ActivityDefinition", "CapabilityStatement", "CapabilityStatement2", "ChargeItemDefinition", "Citation", "CodeSystem",
+        "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable",
+        "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition"
+        ))
       return true;
     return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
   }
@@ -381,26 +389,22 @@ public class DataRenderer extends Renderer {
   }
   
   protected void renderUri(XhtmlNode x, UriType uri, String path, String id) {
-    String url = uri.getValue();
     if (isCanonical(path)) {
-      CanonicalResource mr = getContext().getWorker().fetchResource(null, url);
-      if (mr != null) {
-        if (path.startsWith(mr.fhirType()+".") && mr.getId().equals(id)) {
-          url = null; // don't link to self whatever
-        } else if (mr.hasUserData("path"))
-          url = mr.getUserString("path");
-      } else if (!getContext().isCanonicalUrlsAsLinks())
-        url = null;
-    }
-    if (url == null) {
-      x.b().tx(uri.getValue());
-    } else if (uri.getValue().startsWith("mailto:")) {
-      x.ah(uri.getValue()).addText(uri.getValue().substring(7));
+      x.code().tx(uri.getValue());
     } else {
-      if (uri.getValue().contains("|")) {
-        x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
+      String url = uri.getValue();
+      if (url == null) {
+        x.b().tx(uri.getValue());
+      } else if (uri.getValue().startsWith("mailto:")) {
+        x.ah(uri.getValue()).addText(uri.getValue().substring(7));
       } else {
-        x.ah(uri.getValue()).addText(uri.getValue());        
+        if (uri.getValue().contains("|")) {
+          x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
+        } else if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("ftp:")) {
+          x.ah(uri.getValue()).addText(uri.getValue());        
+        } else {
+          x.code().addText(uri.getValue());        
+        }
       }
     }
   }

@@ -46,6 +46,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage.NpmPackageFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -57,6 +58,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -215,6 +217,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   protected InputStreamWithSrc loadFromPackageServer(String id, String version) {
     InputStreamWithSrc retVal = super.loadFromPackageServer(id, version);
+    if (retVal != null) {
+      return retVal;
+    }
+
+    retVal = super.loadFromPackageServer(id, VersionUtilities.getMajMin(version)+".x");
     if (retVal != null) {
       return retVal;
     }
@@ -523,7 +530,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id + ".tgz"), "current");
     } else {
-      throw new FHIRException("The package '" + id + "' has not entry on the current build server");
+      throw new FHIRException("The package '" + id + "' has no entry on the current build server");
     }
   }
 
@@ -624,13 +631,16 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       loadFromBuildServer();
     } catch (Exception e) {
       System.out.println("Error connecting to build server - running without build (" + e.getMessage() + ")");
+      e.printStackTrace();
     }
     return false;
   }
 
   private void loadFromBuildServer() throws IOException {
     URL url = new URL("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
-    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    SSLCertTruster.trustAllHosts();
+    HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+    connection.setHostnameVerifier(SSLCertTruster.DO_NOT_VERIFY);
     connection.setRequestMethod("GET");
     InputStream json = connection.getInputStream();
     buildInfo = (JsonArray) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
@@ -655,16 +665,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     buildLoaded = true; // whether it succeeds or not
   }
 
-  //  private String buildPath(String url) {
-//    for (JsonElement e : buildInfo) {
-//      JsonObject j = (JsonObject) e;
-//      if (j.has("url") && (url.equals(j.get("url").getAsString()) || j.get("url").getAsString().startsWith(url+"/ImplementationGuide"))) {
-//        return "https://build.fhir.org/ig/"+j.get("repo").getAsString();
-//      }
-//    }
-//    return null;
-//  }
-//
   private String getRepo(String path) {
     String[] p = path.split("\\/");
     return p[0] + "/" + p[1];
