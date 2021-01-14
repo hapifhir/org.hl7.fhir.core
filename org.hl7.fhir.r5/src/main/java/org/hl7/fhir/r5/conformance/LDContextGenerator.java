@@ -31,6 +31,7 @@ public class LDContextGenerator {
   private static final String CODE_TYPE = "code";
   private static final String RESOURCE = "Resource";
   private static final String DOMAIN_RESOURCE = "DomainResource";
+  private static final String CANONICAL_RESOURCE = "CanonicalResource";
 
 
   private static boolean LOCAL_DEBUG = false;
@@ -194,16 +195,16 @@ public class LDContextGenerator {
       }
     }
     else {
-      String contextRef = elementDefinition.getContentReference();
-      if (contextRef != null) {
-        if (contextRef.startsWith("#")) {
-          contextRef = contextRef.substring(1);
+      String contentReference = elementDefinition.getContentReference();
+      if (contentReference != null) {
+        if (contentReference.startsWith("#")) {
+          contentReference = contentReference.substring(1);
         }
-        context = contextRef.substring(contextRef.lastIndexOf(".") + 1);
-        contextObject = coPrefix.length() > 0 ?
-          coPrefix + toUpperCaseFirstCharacter(context) :
-          context;
-        createNewContextObject(contextObject, idTrimmed + "." + contextObject, contextRef.toLowerCase(), resourceUri);
+//        context = contextObject.substring(context.lastIndexOf(".") + 1);
+//        contextObject = coPrefix.length() > 0 ?
+//          coPrefix + toUpperCaseFirstCharacter(context) :
+//          context;
+        createNewContextObject(contextObject, idTrimmed + "." + contextObject, contentReference.toLowerCase(), resourceUri);
       }
     }
   }
@@ -214,7 +215,7 @@ public class LDContextGenerator {
     if (elementDefinition.getType() != null
             && elementDefinition.getType().size() > 0
             && elementDefinition.getType().get(0).getCode() != null
-            && elementDefinition.getType().get(0).toString().equals("Element")) {
+            && elementDefinition.getType().get(0).getCode().equals("Element")) {
 
       isElement = true;
     }
@@ -227,7 +228,7 @@ public class LDContextGenerator {
     if (elementDefinition.getType() != null
             && elementDefinition.getType().size() > 0
             && elementDefinition.getType().get(0).getCode() != null
-            && elementDefinition.getType().get(0).toString().equals("BackboneElement")) {
+            && elementDefinition.getType().get(0).getCode().equals("BackboneElement")) {
 
       isBackbone = true;
     }
@@ -282,7 +283,7 @@ public class LDContextGenerator {
     boolean isResourceRoot = false;
     String baseDef = sd.getBaseDefinition();
 
-    if (baseDef == null){
+    if (baseDef == null) {
       return isResourceRoot;
     }
 
@@ -290,7 +291,7 @@ public class LDContextGenerator {
 
     if (paths.length > 0) {
       String defintionType =  paths[paths.length -1];
-      isResourceRoot = defintionType.equals(RESOURCE) || defintionType.equals(DOMAIN_RESOURCE);
+      isResourceRoot = defintionType.equals(RESOURCE) || defintionType.equals(DOMAIN_RESOURCE) || defintionType.equals(CANONICAL_RESOURCE);
     }
 
     return isResourceRoot;

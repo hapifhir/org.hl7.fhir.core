@@ -33,6 +33,7 @@ public class LDContextGenerator {
   private static final String DOMAIN_RESOURCE = "DomainResource";
 
 
+
   private static boolean LOCAL_DEBUG = false;
   private boolean isResourceRoot = false;
   private List<LdContext> ldContextList;
