@@ -240,16 +240,18 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
       pieces.add(piece);
       return this;
     }
-    
+
     public Cell addMarkdown(String md) {
-      try {
-        Parser parser = Parser.builder().build();
-        Node document = parser.parse(md);
-        HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
-        String html = renderer.render(document);  
-        pieces.addAll(htmlToParagraphPieces(html, null));
-      } catch (Exception e) {
-        e.printStackTrace();
+      if (!Utilities.noString(md)) {
+        try {
+          Parser parser = Parser.builder().build();
+          Node document = parser.parse(md);
+          HtmlRenderer renderer = HtmlRenderer.builder().escapeHtml(true).build();
+          String html = renderer.render(document);  
+          pieces.addAll(htmlToParagraphPieces(html, null));
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
       return this;
     }

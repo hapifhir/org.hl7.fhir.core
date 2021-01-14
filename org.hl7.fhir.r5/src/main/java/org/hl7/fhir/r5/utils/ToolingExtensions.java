@@ -181,7 +181,9 @@ public class ToolingExtensions {
   public static final String EXT_EXP_FRAGMENT = "http://hl7.org/fhir/tools/StructureDefinition/expansion-codesystem-fragment";
   public static final String EXT_EXP_TOOCOSTLY = "http://hl7.org/fhir/StructureDefinition/valueset-toocostly";
   public static final String EXT_MUST_SUPPORT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support";
-
+  public static final String EXT_TRANSLATABLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable";
+  public static final String EXT_PATTERN = "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern";
+  
   // specific extension helpers
 
   public static Extension makeIssueSource(Source source) {
