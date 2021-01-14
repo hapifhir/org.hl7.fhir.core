@@ -57,6 +57,16 @@ public class ValueSetUtilities {
     return vs;
   }
 
+  public static boolean makeVSShareable(ValueSet vs) {
+    if (!vs.hasMeta())
+      vs.setMeta(new Meta());
+    for (UriType t : vs.getMeta().getProfile()) 
+      if (t.getValue().equals("http://hl7.org/fhir/StructureDefinition/shareablevalueset"))
+        return false;
+    vs.getMeta().getProfile().add(new CanonicalType("http://hl7.org/fhir/StructureDefinition/shareablevalueset"));
+    return true;
+  }
+
   public static void checkShareable(ValueSet vs) {
     if (!vs.hasMeta())
       throw new Error("ValueSet "+vs.getUrl()+" is not shareable");
