@@ -149,7 +149,7 @@ public class TestingUtilities extends BaseTestingUtilities {
   public static String checkXMLIsSame(String f1, String f2) throws Exception {
     String result = compareXml(f1, f2);
     if (result != null && SHOW_DIFF) {
-      String diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
+      String diff = Utilities.path(System.getenv("ProgramFiles"), "WinMerge", "WinMergeU.exe");
       List<String> command = new ArrayList<String>();
       command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
 
