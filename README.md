@@ -113,7 +113,7 @@ compile group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r5', version: '(l
 ```
 
 ### Maintenance
-This project is maintained by [Grahame Grieve][Link-grahameGithub] and [James Agnew][Link-jamesGithub] on behalf of the FHIR community.
+This project is maintained by [Grahame Grieve][Link-grahameGithub], [Grahame Grieve][Link-markGithub] and [James Agnew][Link-jamesGithub] on behalf of the FHIR community.
 
 [Link-AzureProject]: https://dev.azure.com/fhir-pipelines/fhir-core-library
 [Link-BuildPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_build/latest?definitionId=29&branchName=master
@@ -134,6 +134,7 @@ This project is maintained by [Grahame Grieve][Link-grahameGithub] and [James Ag
 [Link-validationSonatypeRelease]: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation&v=LATEST "Sonatype Release"
 [Link-grahameGithub]: https://github.com/grahamegrieve
 [Link-jamesGithub]: https://github.com/jamesagnew
+[Link-markGithub]: https://github.com/markiantorno
 [Link-Publishing]: https://github.com/FHIR/fhir-test-cases/wiki/Publishing-Binaries
 [Link-PublishingRelease]: https://github.com/FHIR/fhir-test-cases/wiki/Detailed-Release-Instructions
 
