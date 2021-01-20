@@ -209,13 +209,13 @@ public class TurtleParser extends ParserBase {
             // todo: check type
             n.setValue(value);
           } else
-            logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_A_, e.getClass().getName()), IssueSeverity.ERROR);
+            logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
         }
       } else 
         parseChildren(src, npath, child, n, false);
 
     } else 
-      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_A_, e.getClass().getName()), IssueSeverity.ERROR);
+      logError(object.getLine(), object.getCol(), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_, "a "+e.getClass().getName()), IssueSeverity.ERROR);
   }
 
 
