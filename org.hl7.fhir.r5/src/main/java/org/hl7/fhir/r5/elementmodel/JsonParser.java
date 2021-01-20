@@ -165,7 +165,6 @@ public class JsonParser extends ParserBase {
 		Set<String> processed = new HashSet<String>();
 		if (hasResourceType)
 			processed.add("resourceType");
-		processed.add("fhir_comments");
 
 		// note that we do not trouble ourselves to maintain the wire format order here - we don't even know what it was anyway
 		// first pass: process the properties
@@ -218,7 +217,7 @@ public class JsonParser extends ParserBase {
 			}
 		} else {
 		  if (property.isList()) {
-	      logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describeType(e)), IssueSeverity.ERROR);
+	      logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describeType(e), name, path), IssueSeverity.ERROR);
 		  }
 			parseChildComplexInstance(npath, object, element, property, name, e);
 		}
@@ -247,7 +246,7 @@ public class JsonParser extends ParserBase {
 			else
 				parseChildren(npath, child, n, false);
 		} else
-			logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e)), IssueSeverity.ERROR);
+			logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e), name, npath), IssueSeverity.ERROR);
 	}
 
 	private String describe(JsonElement e) {
@@ -273,11 +272,11 @@ public class JsonParser extends ParserBase {
 			if (property.isList()) {
 			  boolean ok = true;
 			  if (!(main == null || main instanceof JsonArray)) {
-					logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_, describe(main)), IssueSeverity.ERROR);
+					logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(main), name, path), IssueSeverity.ERROR);
 	        ok = false;
 			  }
         if (!(fork == null || fork instanceof JsonArray)) {
-					logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_, describe(main)), IssueSeverity.ERROR);
+					logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(main), name, path), IssueSeverity.ERROR);
           ok = false;
         }
         if (ok) {
@@ -307,9 +306,9 @@ public class JsonParser extends ParserBase {
 	    JsonElement main, JsonElement fork) throws FHIRException {
 			if (main != null && !(main instanceof JsonPrimitive))
 				logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(
-          I18nConstants.THIS_PROPERTY_MUST_BE_AN_SIMPLE_VALUE_NOT_, describe(main)), IssueSeverity.ERROR);
+          I18nConstants.THIS_PROPERTY_MUST_BE_AN_SIMPLE_VALUE_NOT_, describe(main), name, npath), IssueSeverity.ERROR);
 			else if (fork != null && !(fork instanceof JsonObject))
-				logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(fork)), IssueSeverity.ERROR);
+				logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(fork), name, npath), IssueSeverity.ERROR);
 			else {
 				Element n = new Element(name, property).markLocation(line(main != null ? main : fork), col(main != null ? main : fork));
 				element.getChildren().add(n);
