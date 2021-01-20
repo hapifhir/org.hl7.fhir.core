@@ -5,6 +5,17 @@
 | [![Build Status][Badge-BuildPipeline]][Link-BuildPipeline] |
 
 This is the core object handling code, with utilities (including validator), for the FHIR specification. 
+included in this repo: 
+
+* org.fhir.fhir.utilities: Shared code used by all the other projects - including the internationalization code
+* org.fhir.fhir.r5: Object models and utilities for R5 candidate (will change regularly as new R5 candidates are released)
+* org.fhir.fhir.r4: Object models and utilities for R4
+* org.fhir.fhir.dstu3: Object models and utilities for STU3
+* org.fhir.fhir.dstu2: Object models and utilities for STU2
+* org.fhir.fhir.dstu2016may: Object models and utilities for an early STU3 candidate used by some implementers
+* org.fhir.fhir.convertors: Code to convert between versions, and other version indepedence code - uses all the above projects
+* org.fhir.fhir.validation: The FHIR Java validator
+* org.fhir.fhir.validation.cli: Holder project for releasing the FHIR validator as as single fat jar (will be removed in the future)
 
 ### CI/CD
 
