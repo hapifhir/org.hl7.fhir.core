@@ -80,6 +80,7 @@ public class FHIRToolingClient {
 
   private static final int TIMEOUT_NORMAL = 1500;
   private static final int TIMEOUT_OPERATION = 30000;
+  private static final int TIMEOUT_ENTRY = 500;
   private static final int TIMEOUT_OPERATION_LONG = 60000;
   private static final int TIMEOUT_OPERATION_EXPAND = 120000;
 
@@ -132,7 +133,7 @@ public class FHIRToolingClient {
       capabilities = (TerminologyCapabilities) client.issueGetResourceRequest(resourceAddress.resolveMetadataTxCaps(),
         getPreferredResourceFormat(), "TerminologyCapabilities", TIMEOUT_NORMAL).getReference();
     } catch (Exception e) {
-      handleException("An error has occurred while trying to fetch the server's terminology capabilities", e);
+      throw new FHIRException("Error fetching the server's terminology capabilities", e);
     }
     return capabilities;
   }
@@ -143,7 +144,7 @@ public class FHIRToolingClient {
       conformance = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(false),
         getPreferredResourceFormat(), "CapabilitiesStatement", TIMEOUT_NORMAL).getReference();
     } catch (Exception e) {
-      handleException("An error has occurred while trying to fetch the server's conformance statement", e);
+      throw new FHIRException("Error fetching the server's conformance statement", e);
     }
     return conformance;
   }
@@ -154,7 +155,7 @@ public class FHIRToolingClient {
       capabilities = (CapabilityStatement) client.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true),
         getPreferredResourceFormat(), "CapabilitiesStatement-Quick", TIMEOUT_NORMAL).getReference();
     } catch (Exception e) {
-      handleException("An error fetching the server's capability statement: "+e.getMessage(), e);
+      throw new FHIRException("Error fetching the server's capability statement: "+e.getMessage(), e);
     }
     return capabilities;
   }
@@ -182,7 +183,7 @@ public class FHIRToolingClient {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
     } catch (Exception e) {
-      handleException("An error has occurred while trying to read this version of the resource", e);
+      throw new FHIRException("Error trying to read this version of the resource", e);
     }
     return result.getPayload();
   }
@@ -291,7 +292,7 @@ public class FHIRToolingClient {
   public Bundle transaction(Bundle batch) {
     Bundle transactionResult = null;
     try {
-      transactionResult = client.postBatchRequest(resourceAddress.getBaseServiceUri(), ByteUtils.resourceToByteArray(batch, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), "transaction", TIMEOUT_NORMAL + batch.getEntry().size());
+      transactionResult = client.postBatchRequest(resourceAddress.getBaseServiceUri(), ByteUtils.resourceToByteArray(batch, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), "transaction", TIMEOUT_OPERATION + (TIMEOUT_ENTRY * batch.getEntry().size()));
     } catch (Exception e) {
       handleException("An error occurred trying to process this transaction request", e);
     }

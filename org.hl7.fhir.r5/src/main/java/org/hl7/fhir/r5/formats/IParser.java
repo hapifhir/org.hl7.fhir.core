@@ -4,6 +4,7 @@ package org.hl7.fhir.r5.formats;
 
 
 
+import java.io.FileInputStream;
 import java.io.IOException;
 
 /*
@@ -43,6 +44,7 @@ import java.io.UnsupportedEncodingException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.SearchParameter;
 import org.xmlpull.v1.XmlPullParserException;
 
 
@@ -112,6 +114,8 @@ public interface IParser {
  * @throws IOException 
    */
   public Resource parse(InputStream input) throws IOException, FHIRFormatError;
+
+  public Resource parseAndClose(InputStream input) throws IOException, FHIRFormatError;
 
   /**
    * parse content that is known to be a resource  
