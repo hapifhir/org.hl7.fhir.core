@@ -4,6 +4,8 @@
 | :---: |
 | [![Build Status][Badge-BuildPipeline]][Link-BuildPipeline] |
 
+This is the core object handling code, with utilities (including validator), for the FHIR specification. 
+
 ### CI/CD
 
 All integration and delivery done on Azure pipelines. Azure project can be viewed [here][Link-AzureProject].
