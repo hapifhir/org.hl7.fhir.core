@@ -138,6 +138,13 @@
             <version>${info_cqframework_version}</version>
         </dependency>
 
+        <!-- OkHttpDependency -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.0</version>
+        </dependency>
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.hl7.fhir.testcases</groupId>
