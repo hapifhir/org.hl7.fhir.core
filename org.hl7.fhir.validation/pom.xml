@@ -143,6 +143,7 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>4.9.0</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- Test Dependencies -->
