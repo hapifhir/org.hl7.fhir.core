@@ -1,7 +1,5 @@
 package org.hl7.fhir.utilities.i18n;
 
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-
 public class I18nConstants {
 
   
@@ -78,6 +76,7 @@ public class I18nConstants {
   public static final String ELEMENT_ID__NULL__ON_ = "element_id__null__on_";
   public static final String ELEMENT_MUST_HAVE_SOME_CONTENT = "Element_must_have_some_content";
   public static final String ELEMENT__NULL_ = "element__null_";
+  public static final String PATTERN_CHECK_STRING = "PATTERN_CHECK_STRING";
   public static final String SLICING_CANNOT_BE_EVALUATED = "SLICING_CANNOT_BE_EVALUATED";
   public static final String ERROR_AT_PATH__IN__TYPE_SLICING_WITH_SLICINGDISCRIMINATORCOUNT__1 = "Error_at_path__in__Type_slicing_with_slicingdiscriminatorcount__1";
   public static final String ERROR_AT_PATH__IN__TYPE_SLICING_WITH_SLICINGDISCRIMINATORPATH__THIS = "Error_at_path__in__Type_slicing_with_slicingdiscriminatorpath__this";

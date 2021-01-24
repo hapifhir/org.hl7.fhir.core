@@ -33,6 +33,8 @@ package org.hl7.fhir.validation.instance;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
@@ -163,9 +164,6 @@ import org.hl7.fhir.validation.instance.utils.ResolvedReference;
 import org.hl7.fhir.validation.instance.utils.ResourceValidationTracker;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.w3c.dom.Document;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 
 /**
@@ -736,7 +734,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return v1 == null ? Utilities.noString(v1) : v1.equals(v2);
   }
 
-  private void checkAddress(List<ValidationMessage> errors, String path, Element focus, Address fixed, String fixedSource, boolean pattern) {
+  private void checkAddress(List<ValidationMessage> errors, String path, Element focus,
+    Address fixed, String fixedSource, boolean pattern) {
     checkFixedValue(errors, path + ".use", focus.getNamedChild("use"), fixed.getUseElement(), fixedSource, "use", focus, pattern);
     checkFixedValue(errors, path + ".text", focus.getNamedChild("text"), fixed.getTextElement(), fixedSource, "text", focus, pattern);
     checkFixedValue(errors, path + ".city", focus.getNamedChild("city"), fixed.getCityElement(), fixedSource, "city", focus, pattern);
@@ -746,11 +745,46 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     List<Element> lines = new ArrayList<Element>();
     focus.getNamedChildren("line", lines);
-    if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, lines.size() == fixed.getLine().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_ADDRESS_LINE, Integer.toString(fixed.getLine().size()), Integer.toString(lines.size()))) {
-      for (int i = 0; i < lines.size(); i++)
-        checkFixedValue(errors, path + ".coding", lines.get(i), fixed.getLine().get(i), fixedSource, "coding", focus, pattern);
+    boolean lineSizeCheck;
+    if (pattern) {
+      lineSizeCheck = lines.size() >= fixed.getLine().size();
+      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, lineSizeCheck, I18nConstants.FIXED_TYPE_CHECKS_DT_ADDRESS_LINE, Integer.toString(fixed.getLine().size()),
+        Integer.toString(lines.size()))) {
+        for (int i = 0; i < fixed.getLine().size(); i++) {
+          StringType fixedLine = fixed.getLine().get(i);
+          boolean found = false;
+          List<ValidationMessage> allErrorsFixed = new ArrayList<>();
+          List<ValidationMessage> errorsFixed = null;
+          for (int j = 0; j < lines.size() && !found; ++j) {
+            errorsFixed = new ArrayList<>();
+            checkFixedValue(errorsFixed, path + ".line", lines.get(j), fixedLine, fixedSource, "line", focus, pattern);
+            if (!hasErrors(errorsFixed)) {
+              found = true;
+            } else {
+              errorsFixed
+                .stream()
+                .filter(t -> t.getLevel().ordinal() >= IssueSeverity.ERROR.ordinal())
+                .forEach(t -> allErrorsFixed.add(t));
+            }
+          }
+          if (!found) {
+            rule(errorsFixed, IssueType.VALUE, focus.line(), focus.col(), path, false,
+              I18nConstants.PATTERN_CHECK_STRING,
+              fixedLine.getValue(), fixedSource, allErrorsFixed);
+          }
+        }
+      }
+    } else if (!pattern) {
+      lineSizeCheck = lines.size() == fixed.getLine().size();
+      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, lineSizeCheck, I18nConstants.FIXED_TYPE_CHECKS_DT_ADDRESS_LINE,
+        Integer.toString(fixed.getLine().size()), Integer.toString(lines.size()))) {
+        for (int i = 0; i < lines.size(); i++) {
+          checkFixedValue(errors, path + ".line", lines.get(i), fixed.getLine().get(i), fixedSource, "line", focus, pattern);
+        }
+      }
     }
   }
+
 
   private void checkAttachment(List<ValidationMessage> errors, String path, Element focus, Attachment fixed, String fixedSource, boolean pattern) {
     checkFixedValue(errors, path + ".contentType", focus.getNamedChild("contentType"), fixed.getContentTypeElement(), fixedSource, "contentType", focus, pattern);
