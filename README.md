@@ -126,7 +126,7 @@ compile group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r5', version: '(l
 ```
 
 ### Maintenance
-This project is maintained by [Grahame Grieve][Link-grahameGithub], [Grahame Grieve][Link-markGithub] and [James Agnew][Link-jamesGithub] on behalf of the FHIR community.
+This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew][Link-jamesGithub] and [Mark Iantorno][Link-markGithub] on behalf of the FHIR community.
 
 [Link-AzureProject]: https://dev.azure.com/fhir-pipelines/fhir-core-library
 [Link-BuildPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_build/latest?definitionId=29&branchName=master
