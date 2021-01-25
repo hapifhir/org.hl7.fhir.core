@@ -13,7 +13,6 @@
     <packaging>jar</packaging>
 
     <dependencies>
-
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.validation</artifactId>
@@ -50,9 +49,12 @@
             <groupId>xpp3</groupId>
             <artifactId>xpp3_xpath</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.0</version>
+      </dependency>
     </dependencies>
-
     <build>
         <plugins>
 
