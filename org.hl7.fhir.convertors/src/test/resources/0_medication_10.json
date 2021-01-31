@@ -1,6 +1,6 @@
 {
   "resourceType": "Medication",
-  "id": "TmWNU.sAEd1I0RKS7JK.ECwB",
+  "id": "FOBAfoba",
   "code": {
     "coding": [
       {
@@ -11,16 +11,14 @@
     ],
     "text": "CIPROFLOXACIN 500 MG TABLET"
   },
-  "product": {
-    "form": {
-      "coding": [
-        {
-          "system": "urn:oid:1.2.840.114350.1.13.331.2.7.4.698288.310",
-          "code": "81",
-          "display": "Tablet"
-        }
-      ],
-      "text": "Tablet"
-    }
+  "form": {
+    "coding": [
+      {
+        "system": "urn:oid:1.2.840.114350.1.13.331.2.7.4.698288.310",
+        "code": "81",
+        "display": "Tablet"
+      }
+    ],
+    "text": "Tablet"
   }
 }
