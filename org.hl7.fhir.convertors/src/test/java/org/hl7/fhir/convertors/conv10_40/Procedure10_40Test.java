@@ -12,8 +12,8 @@ import java.io.InputStream;
 
 public class Procedure10_40Test {
     @Test
-    @DisplayName("Test 10_40 MedicationRequest conversion")
-    public void testMedicationRequestConversion() throws IOException {
+    @DisplayName("Test 10_40 Procedure conversion")
+    public void testProcedureConversion() throws IOException {
         InputStream dstu2_input = this.getClass().getResourceAsStream("/0_procedure_10.json");
         InputStream r4_exepected_input = this.getClass().getResourceAsStream("/0_procedure_40.json");
 
