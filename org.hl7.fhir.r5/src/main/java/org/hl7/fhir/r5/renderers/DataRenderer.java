@@ -57,7 +57,9 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
+import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
 
@@ -167,6 +169,10 @@ public class DataRenderer extends Renderer {
   }
 
   protected String describeLang(String lang) {
+    // special cases:
+    if ("fr-CA".equals(lang)) {
+      return "French (Canadian)"; // this one was omitted from the value set
+    }
     ValueSet v = getContext().getWorker().fetchResource(ValueSet.class, "http://hl7.org/fhir/ValueSet/languages");
     if (v != null) {
       ConceptReferenceComponent l = null;
@@ -175,11 +181,22 @@ public class DataRenderer extends Renderer {
           l = cc;
       }
       if (l == null) {
-        if (lang.contains("-"))
+        if (lang.contains("-")) {
           lang = lang.substring(0, lang.indexOf("-"));
+        }
         for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {
-          if (cc.getCode().equals(lang) || cc.getCode().startsWith(lang+"-"))
+          if (cc.getCode().equals(lang)) {
             l = cc;
+            break;
+          }
+        }
+        if (l == null) {
+          for (ConceptReferenceComponent cc : v.getCompose().getIncludeFirstRep().getConcept()) {
+            if (cc.getCode().startsWith(lang+"-")) {
+              l = cc;
+              break;
+            }
+          }
         }
       }
       if (l != null) {
@@ -203,11 +220,18 @@ public class DataRenderer extends Renderer {
   private boolean isCanonical(String path) {
     if (!path.endsWith(".url")) 
       return false;
-    StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(path.substring(0, path.length()-4));
+    String t = path.substring(0, path.length()-4);
+    StructureDefinition sd = getContext().getWorker().fetchTypeDefinition(t);
     if (sd == null)
       return false;
-    if (Utilities.existsInList(path.substring(0, path.length()-4), "CapabilityStatement", "StructureDefinition", "ImplementationGuide", "SearchParameter", "MessageDefinition", "OperationDefinition", "CompartmentDefinition", "StructureMap", "GraphDefinition", 
-        "ExampleScenario", "CodeSystem", "ValueSet", "ConceptMap", "NamingSystem", "TerminologyCapabilities"))
+    if (Utilities.existsInList(t, VersionUtilities.getCanonicalResourceNames(getContext().getWorker().getVersion()))) {
+      return true;
+    }
+    if (Utilities.existsInList(t, 
+        "ActivityDefinition", "CapabilityStatement", "CapabilityStatement2", "ChargeItemDefinition", "Citation", "CodeSystem",
+        "CompartmentDefinition", "ConceptMap", "ConditionDefinition", "EventDefinition", "Evidence", "EvidenceReport", "EvidenceVariable",
+        "ExampleScenario", "GraphDefinition", "ImplementationGuide", "Library", "Measure", "MessageDefinition", "NamingSystem", "PlanDefinition"
+        ))
       return true;
     return sd.getBaseDefinitionElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-codegen-super");
   }
@@ -235,12 +259,12 @@ public class DataRenderer extends Renderer {
     } else {
       return "No display for "+b.fhirType();      
     }
-    
   }
   
   public String display(DataType type) {
-    if (type.isEmpty())
+    if (type == null || type.isEmpty()) {
       return "";
+    }
     
     if (type instanceof Coding) {
       return displayCoding((Coding) type);
@@ -338,7 +362,6 @@ public class DataRenderer extends Renderer {
     } else {
       x.tx("No display for "+type.fhirType());      
     }
-
   }
 
   private void renderReference(XhtmlNode x, Reference ref) {
@@ -352,35 +375,38 @@ public class DataRenderer extends Renderer {
   }
 
   public void renderDateTime(XhtmlNode x, Base e) {
-    if (e.hasPrimitiveValue())
+    if (e.hasPrimitiveValue()) {
       x.addText(((DateTimeType) e).toHumanDisplay());
+    }
   }
 
   protected void renderUri(XhtmlNode x, UriType uri) {
-    if (uri.getValue().startsWith("mailto:"))
+    if (uri.getValue().startsWith("mailto:")) {
       x.ah(uri.getValue()).addText(uri.getValue().substring(7));
-    else
+    } else {
       x.ah(uri.getValue()).addText(uri.getValue());
+    }
   }
   
   protected void renderUri(XhtmlNode x, UriType uri, String path, String id) {
-    String url = uri.getValue();
     if (isCanonical(path)) {
-      CanonicalResource mr = getContext().getWorker().fetchResource(null, url);
-      if (mr != null) {
-        if (path.startsWith(mr.fhirType()+".") && mr.getId().equals(id)) {
-          url = null; // don't link to self whatever
-        } else if (mr.hasUserData("path"))
-          url = mr.getUserString("path");
-      } else if (!getContext().isCanonicalUrlsAsLinks())
-        url = null;
+      x.code().tx(uri.getValue());
+    } else {
+      String url = uri.getValue();
+      if (url == null) {
+        x.b().tx(uri.getValue());
+      } else if (uri.getValue().startsWith("mailto:")) {
+        x.ah(uri.getValue()).addText(uri.getValue().substring(7));
+      } else {
+        if (uri.getValue().contains("|")) {
+          x.ah(uri.getValue().substring(0, uri.getValue().indexOf("|"))).addText(uri.getValue());
+        } else if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("ftp:")) {
+          x.ah(uri.getValue()).addText(uri.getValue());        
+        } else {
+          x.code().addText(uri.getValue());        
+        }
+      }
     }
-    if (url == null)
-      x.b().tx(uri.getValue());
-    else if (uri.getValue().startsWith("mailto:"))
-      x.ah(uri.getValue()).addText(uri.getValue().substring(7));
-    else
-      x.ah(uri.getValue()).addText(uri.getValue());
   }
 
   protected void renderAnnotation(XhtmlNode x, Annotation annot) {
@@ -683,9 +709,63 @@ public class DataRenderer extends Renderer {
   }
 
   protected void renderContactPoint(XhtmlNode x, ContactPoint contact) {
-    x.addText(displayContactPoint(contact));
+    if (contact != null) {
+      if (!contact.hasSystem()) {
+        x.addText(displayContactPoint(contact));        
+      } else {
+        switch (contact.getSystem()) {
+        case EMAIL:
+          x.ah("mailto:"+contact.getValue()).tx(contact.getValue());
+          break;
+        case FAX:
+          x.addText(displayContactPoint(contact));
+          break;
+        case NULL:
+          x.addText(displayContactPoint(contact));
+          break;
+        case OTHER:
+          x.addText(displayContactPoint(contact));
+          break;
+        case PAGER:
+          x.addText(displayContactPoint(contact));
+          break;
+        case PHONE:
+          if (contact.hasValue() && contact.getValue().startsWith("+")) {
+            x.ah("tel:"+contact.getValue().replace(" ", "")).tx(contact.getValue());
+          } else {
+            x.addText(displayContactPoint(contact));
+          }
+          break;
+        case SMS:
+          x.addText(displayContactPoint(contact));
+          break;
+        case URL:
+          x.ah(contact.getValue()).tx(contact.getValue());
+          break;
+        default:
+          break;      
+        }
+      }
+    }
   }
 
+  protected void displayContactPoint(XhtmlNode p, ContactPoint c) {
+    if (c != null) {
+      if (c.getSystem() == ContactPointSystem.PHONE) {
+        p.tx("Phone: "+c.getValue());
+      } else if (c.getSystem() == ContactPointSystem.FAX) {
+        p.tx("Fax: "+c.getValue());
+      } else if (c.getSystem() == ContactPointSystem.EMAIL) {
+        p.tx(c.getValue());
+      } else if (c.getSystem() == ContactPointSystem.URL) {
+        if (c.getValue().length() > 30) {
+          p.addText(c.getValue().substring(0, 30)+"...");
+        } else {
+          p.addText(c.getValue());
+        }
+      }
+    }
+  }
 
   protected void addTelecom(XhtmlNode p, ContactPoint c) {
     if (c.getSystem() == ContactPointSystem.PHONE) {
@@ -711,7 +791,6 @@ public class DataRenderer extends Renderer {
       return "";
     }
   }
-
 
   protected String displayQuantity(Quantity q) {
     StringBuilder s = new StringBuilder();
@@ -1021,6 +1100,23 @@ public class DataRenderer extends Renderer {
   }
   
 
+  public XhtmlNode makeExceptionXhtml(Exception e, String function) {
+    XhtmlNode xn;
+    xn = new XhtmlNode(NodeType.Element, "div");
+    XhtmlNode p = xn.para();
+    p.b().tx("Exception "+function+": "+e.getMessage());
+    p.addComment(getStackTrace(e));
+    return xn;
+  }
 
+  private String getStackTrace(Exception e) {
+    StringBuilder b = new StringBuilder();
+    b.append("\r\n");
+    for (StackTraceElement t : e.getStackTrace()) {
+      b.append(t.getClassName()+"."+t.getMethodName()+" ("+t.getFileName()+":"+t.getLineNumber());
+      b.append("\r\n");
+    }
+    return b.toString();
+  }
 
 }

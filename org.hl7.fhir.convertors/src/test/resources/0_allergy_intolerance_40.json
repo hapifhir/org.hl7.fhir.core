@@ -1,5 +1,6 @@
 {
   "resourceType" : "AllergyIntolerance",
+  "id" : "TBwnNbrAqC0Qw5Ha7AFT-2AB",
   "clinicalStatus" : {
     "coding" : [
       {

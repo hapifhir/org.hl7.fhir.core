@@ -33,6 +33,7 @@ package org.hl7.fhir.r5.model;
 
 
 import org.hl7.fhir.instance.model.api.*;
+import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Enumerations {
@@ -6478,6 +6479,9 @@ The primary difference between a medicationusage and a medicationadministration 
          * added to help the parsers
          */
         NULL;
+      
+      public static final FHIRVersion R4B = FHIRVersion._4_0_1; 
+
         public static FHIRVersion fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;

@@ -40,7 +40,9 @@ import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintCompon
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.validation.BaseValidator;
@@ -50,8 +52,8 @@ public class ProfileValidator extends BaseValidator {
   private boolean checkAggregation = false;
   private boolean checkMustSupport = false;
 
-  public ProfileValidator(IWorkerContext context) {
-    super(context);
+  public ProfileValidator(IWorkerContext context, XVerExtensionManager xverManager) {
+    super(context, xverManager);
   }
 
   public boolean isCheckAggregation() {
@@ -138,7 +140,12 @@ public class ProfileValidator extends BaseValidator {
     if (!ec.getType().isEmpty() && "Extension".equals(ec.getType().get(0).getWorkingCode()) && ec.getType().get(0).hasProfile()) {
       String url = ec.getType().get(0).getProfile().get(0).getValue();
       StructureDefinition defn = context.fetchResource(StructureDefinition.class, url);
+      if (defn == null) {
+        defn = getXverExt(profile, errors, url);
+      }
       rule(errors, IssueType.BUSINESSRULE, profile.getId(), defn != null, "Unable to find Extension '"+url+"' referenced at "+profile.getUrl()+" "+kind+" "+ec.getPath()+" ("+ec.getSliceName()+")");
     }
   }
+
+ 
 }

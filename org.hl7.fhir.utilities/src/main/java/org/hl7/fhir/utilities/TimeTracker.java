@@ -67,7 +67,6 @@ public class TimeTracker {
     c.count++;
     c.length = c.length + System.nanoTime() - session.start;
   }
-
   
   public String report() {
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();

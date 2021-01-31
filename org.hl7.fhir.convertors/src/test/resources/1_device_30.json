@@ -1,0 +1,13 @@
+{
+  "resourceType": "Device",
+  "id": "DEV000000000873",
+  "identifier": [
+    {
+      "system": "https://fresenius.org/device",
+      "value": "DEV000000000873"
+    }
+  ],
+  "udi": {
+    "name": "LC020678"
+  }
+}

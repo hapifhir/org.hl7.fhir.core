@@ -67,8 +67,8 @@ import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.TranslationServices;
-import org.hl7.fhir.utilities.cache.BasePackageCacheManager;
-import org.hl7.fhir.utilities.cache.NpmPackage;
+import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 
@@ -223,6 +223,11 @@ public interface IWorkerContext {
    * @return
    */
   public String getVersion();
+  
+  /**
+   * return the link to the base of the specification for the loaded version e.g. http://hl7.org/fhir/R4
+   */
+  public String getSpecUrl();
   
   // get the UCUM service (might not be available)
   public UcumService getUcumService();
@@ -710,7 +715,7 @@ public interface IWorkerContext {
   public ILoggingService getLogger();
 
   public boolean isNoTerminologyServer();
-
+  public Set<String> getCodeSystemsUsed();
   public TranslationServices translator();
   public List<StructureMap> listTransforms();
   public StructureMap getTransform(String url);

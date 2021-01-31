@@ -1,8 +1,5 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.model.Base;
@@ -10,18 +7,21 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetComponent;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.StructureMapUtilities;
-import org.hl7.fhir.r5.utils.StructureMapUtilities.ITransformerServices;
-import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.cache.ToolsVersion;
-import org.junit.jupiter.api.BeforeAll;
+import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
+import org.hl7.fhir.r5.utils.structuremap.ITransformerServices;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.List;
 
 public class StructureMapUtilitiesTest implements ITransformerServices {
 
   static private SimpleWorkerContext context;
-  
+
   @BeforeAll
   static public void setUp() throws Exception {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
@@ -37,10 +37,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     // StructureMap/ActivityDefinition3to4: StructureMap.group[3].rule[2].name error id value '"expression"' is not valid
     Assertions.assertEquals("expression", structureMap.getGroup().get(2).getRule().get(1).getName());
   }
-  
 
-  
-  
   private void assertSerializeDeserialize(StructureMap structureMap) {
     Assertions.assertEquals("syntax", structureMap.getName());
     Assertions.assertEquals("Title of this map\r\nAuthor", structureMap.getDescription());
@@ -54,7 +51,7 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
     Assertions.assertEquals("Groups\r\nrule for patient group", structureMap.getGroup().get(0).getDocumentation());
     Assertions.assertEquals("Comment to rule", structureMap.getGroup().get(0).getRule().get(0).getDocumentation());
     Assertions.assertEquals("Copy identifier short syntax", structureMap.getGroup().get(0).getRule().get(1).getDocumentation());
-    
+
     StructureMapGroupRuleTargetComponent target = structureMap.getGroup().get(0).getRule().get(2).getTarget().get(1);
     Assertions.assertEquals("'urn:uuid:' + r.lower()", target.getParameter().get(0).toString());
   }
@@ -67,13 +64,13 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
 
     StructureMap structureMap = scu.parse(fileMap, "Syntax");
     assertSerializeDeserialize(structureMap);
-        
+
     String renderedMap = StructureMapUtilities.render(structureMap);
     StructureMap map = scu.parse(renderedMap, "Syntax");
     System.out.println(map);
     assertSerializeDeserialize(map);
   }
-  
+
   @Override
   public void log(String message) {
   }
@@ -102,5 +99,4 @@ public class StructureMapUtilitiesTest implements ITransformerServices {
   public List<Base> performSearch(Object appContext, String url) throws FHIRException {
     return null;
   }
-
 }

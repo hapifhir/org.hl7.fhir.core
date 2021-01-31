@@ -126,7 +126,7 @@ public class Resolver {
         if (containerElement != null) {
           for (org.hl7.fhir.r5.elementmodel.Element p : containerElement.getChildren("parameter")) {
             org.hl7.fhir.r5.elementmodel.Element res = p.getNamedChild("resource");
-            if (value.equals(res.fhirType()+"/"+res.getChildValue("id")))
+            if (res != null && value.equals(res.fhirType()+"/"+res.getChildValue("id")))
               return p;
           }
         }

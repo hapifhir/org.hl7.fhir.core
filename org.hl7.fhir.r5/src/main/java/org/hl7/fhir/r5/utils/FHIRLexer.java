@@ -1,5 +1,10 @@
 package org.hl7.fhir.r5.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringJoiner;
+
+import org.apache.poi.xssf.model.Comments;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -34,7 +39,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 
 import org.hl7.fhir.r5.model.ExpressionNode;
-import org.hl7.fhir.r5.model.ExpressionNode.SourceLocation;
+import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 
 // shared lexer for concrete syntaxes 
@@ -65,6 +71,7 @@ public class FHIRLexer {
   private int cursor;
   private int currentStart;
   private String current;
+  private List<String> comments = new ArrayList<>();
   private SourceLocation currentLocation;
   private SourceLocation currentStartLocation;
   private int id;
@@ -142,27 +149,12 @@ public class FHIRLexer {
   }
 
   public FHIRLexerException error(String msg, String location) {
-    return new FHIRLexerException("Error in "+name+" at "+location+": "+msg);
+    return new FHIRLexerException("Error @"+location+": "+msg);
   }
 
   public void next() throws FHIRLexerException {
+    skipWhitespaceAndComments();
     current = null;
-    boolean last13 = false;
-    while (cursor < source.length() && Character.isWhitespace(source.charAt(cursor))) {
-      if (source.charAt(cursor) == '\r') {
-        currentLocation.setLine(currentLocation.getLine() + 1);
-        currentLocation.setColumn(1);
-        last13 = true;
-      } else if (!last13 && (source.charAt(cursor) == '\n')) {
-        currentLocation.setLine(currentLocation.getLine() + 1);
-        currentLocation.setColumn(1);
-        last13 = false;
-      } else {
-        last13 = false;
-        currentLocation.setColumn(currentLocation.getColumn() + 1);
-      }
-      cursor++;
-    }
     currentStart = cursor;
     currentStartLocation = currentLocation;
     if (cursor < source.length()) {
@@ -208,9 +200,8 @@ public class FHIRLexer {
       } else if (ch == '/') {
         cursor++;
         if (cursor < source.length() && (source.charAt(cursor) == '/')) {
-          cursor++;
-          while (cursor < source.length() && !((source.charAt(cursor) == '\r') || source.charAt(cursor) == '\n')) 
-            cursor++;
+          // this is en error - should already have been skipped
+          error("This shoudn't happen?");
         }
         current = source.substring(currentStart, cursor);
       } else if (ch == '$') {
@@ -296,7 +287,38 @@ public class FHIRLexer {
     }
   }
 
-
+  private void skipWhitespaceAndComments() {
+    comments.clear();
+    boolean last13 = false;
+    boolean done = false;
+    while (cursor < source.length() && !done) {
+      if (cursor < source.length() -1 && "//".equals(source.substring(cursor, cursor+2))) {
+        int start = cursor+2;
+        while (cursor < source.length() && !((source.charAt(cursor) == '\r') || source.charAt(cursor) == '\n')) { 
+          cursor++;        
+        }
+        comments.add(source.substring(start, cursor).trim());
+      } else if (cursor < source.length() - 1 && "/*".equals(source.substring(cursor, cursor+2))) {
+        int start = cursor+2;
+        while (cursor < source.length() - 1 && !"*/".equals(source.substring(cursor, cursor+2))) { 
+          last13 = currentLocation.checkChar(source.charAt(cursor), last13);
+          cursor++;        
+        }
+        if (cursor >= source.length() -1) {
+          error("Unfinished comment");
+        } else {
+          comments.add(source.substring(start, cursor).trim());
+          cursor = cursor + 2;
+        }
+      } else if (Character.isWhitespace(source.charAt(cursor))) {
+        last13 = currentLocation.checkChar(source.charAt(cursor), last13);
+        cursor++;
+      } else {
+        done = true;
+      }
+    }
+  }
+  
   private boolean isDateChar(char ch,int start) {
     int eot = source.charAt(start+1) == 'T' ? 10 : 20;
     
@@ -321,9 +343,31 @@ public class FHIRLexer {
     this.current = current;
   }
 
-  public boolean hasComment() {
-    return !done() && current.startsWith("//");
+  public boolean hasComments() {
+    return comments.size() > 0;
   }
+
+  public List<String> getComments() {
+    return comments;
+  }
+
+  public String getAllComments() {
+    CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder("\r\n");
+    b.addAll(comments);
+    comments.clear();
+    return b.toString();
+  }
+
+  public String getFirstComment() {
+    if (hasComments()) {
+      String s = comments.get(0);
+      comments.remove(0);
+      return s;      
+    } else {
+      return null;
+    }
+  }
+
   public boolean hasToken(String kw) {
     return !done() && kw.equals(current);
   }
@@ -472,10 +516,6 @@ public class FHIRLexer {
     return b.toString();
   }
   
-  void skipComments() throws FHIRLexerException {
-    while (!done() && hasComment())
-      next();
-  }
   public int getCurrentStart() {
     return currentStart;
   }

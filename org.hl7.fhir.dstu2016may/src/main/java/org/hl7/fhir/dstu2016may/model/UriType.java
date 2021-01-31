@@ -153,6 +153,9 @@ public class UriType extends PrimitiveType<String> {
 		if (getValue() == null || other.getValue() == null) {
 			return false;
 		}
+		if (getValue().equals(other.getValue())) {
+			return true;
+		}
 
 		String normalize = normalize(getValue());
 		String normalize2 = normalize(other.getValue());

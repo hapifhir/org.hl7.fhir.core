@@ -34,6 +34,7 @@ package org.hl7.fhir.r5.model;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
@@ -137,4 +138,5 @@ public class CodeType extends StringType implements Comparable<CodeType>, ICodin
   public boolean supportsDisplay() {
     return false;
   }
+
 }

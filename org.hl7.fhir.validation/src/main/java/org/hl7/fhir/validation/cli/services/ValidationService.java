@@ -1,21 +1,5 @@
 package org.hl7.fhir.validation.cli.services;
 
-import org.hl7.fhir.r5.context.TerminologyCache;
-import org.hl7.fhir.r5.elementmodel.Manager;
-import org.hl7.fhir.r5.formats.IParser;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r5.utils.ToolingExtensions;
-import org.hl7.fhir.utilities.TextFile;
-import org.hl7.fhir.utilities.TimeTracker;
-import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.validation.ValidationMessage;
-import org.hl7.fhir.validation.ValidationEngine;
-import org.hl7.fhir.validation.ValidationEngine.VersionSourceInformation;
-import org.hl7.fhir.validation.cli.model.*;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -23,17 +7,40 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hl7.fhir.r5.context.TerminologyCache;
+import org.hl7.fhir.r5.elementmodel.Manager;
+import org.hl7.fhir.r5.formats.IParser;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.FhirPublication;
+import org.hl7.fhir.r5.model.ImplementationGuide;
+import org.hl7.fhir.r5.model.OperationOutcome;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
+import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.TextFile;
+import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.validation.ValidationEngine;
+import org.hl7.fhir.validation.ValidationRecord;
+import org.hl7.fhir.validation.cli.model.*;
+import org.hl7.fhir.validation.cli.utils.EngineMode;
+import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
+
 public class ValidationService {
 
-  /*
-   * TEMPORARY METHOD
-   */
-  public static void validateFileInfo(FileInfo f) {
-    System.out.println("success");
-  }
+  public static ValidationResponse validateSources(ValidationRequest request) throws Exception {
+    if (request.getCliContext().getSv() == null) {
+      request.getCliContext().setSv(ValidationService.determineVersion(request.getCliContext()));
+    }
+    String definitions = VersionUtilities.packageForVersion(request.getCliContext().getSv()) + "#" + VersionUtilities.getCurrentVersion(request.getCliContext().getSv());
+    ValidationEngine validator = ValidationService.getValidator(request.getCliContext(), definitions, new TimeTracker());
 
-
-  public static ValidationResponse validateSources(ValidationRequest request, ValidationEngine validator) throws Exception {
     if (request.getCliContext().getProfiles().size() > 0) {
       System.out.println("  .. validate " + request.listSourceFiles() + " against " + request.getCliContext().getProfiles().toString());
     } else {
@@ -63,7 +70,9 @@ public class ValidationService {
   }
   
   public static void validateSources(CliContext cliContext, ValidationEngine validator) throws Exception {
-    Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles());
+    long start = System.currentTimeMillis();
+    List<ValidationRecord> records = new ArrayList<>();
+    Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles(), records);
     int ec = 0;
     System.out.println("Done. "+validator.getContext().clock().report());
     System.out.println();
@@ -72,8 +81,12 @@ public class ValidationService {
       if (r instanceof Bundle)
         for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry())
           ec = ec + displayOperationOutcome((OperationOutcome) e.getResource(), ((Bundle) r).getEntry().size() > 1) + ec;
-      else
+      else if (r == null) {
+        ec = ec + 1;
+        System.out.println("No output from validation - nothing to validate");
+      } else {
         ec = displayOperationOutcome((OperationOutcome) r, false);
+      }
     } else {
       IParser x;
       if (cliContext.getOutput() != null && cliContext.getOutput().endsWith(".json")) {
@@ -85,6 +98,11 @@ public class ValidationService {
       FileOutputStream s = new FileOutputStream(cliContext.getOutput());
       x.compose(s, r);
       s.close();
+    }
+    if (cliContext.getHtmlOutput() != null) {
+      String html = new HTMLOutputGenerator(records).generate(System.currentTimeMillis()-start);
+      TextFile.stringToFile(html, cliContext.getHtmlOutput());
+      System.out.println("HTML Summary in "+cliContext.getHtmlOutput());
     }
     System.exit(ec > 0 ? 1 : 0);
   }
@@ -100,7 +118,7 @@ public class ValidationService {
       if (ig.getUrl().contains("/ImplementationGuide") && !ig.getUrl().equals("http://hl7.org/fhir/ImplementationGuide/fhir"))
         urls.add(ig.getUrl());
     }
-    List<ValidationEngine.ScanOutputItem> res = validator.validateScan(cliContext.getSources(), urls);
+    List<ScanOutputItem> res = validator.validateScan(cliContext.getSources(), urls);
     validator.genScanOutput(cliContext.getOutput(), res);
     System.out.println("Done. output in " + Utilities.path(cliContext.getOutput(), "scan.html"));
   }
@@ -195,6 +213,7 @@ public class ValidationService {
     FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
     ValidationEngine validator = new ValidationEngine(definitions, ver, cliContext.getSv(), tt);
     System.out.println(" - "+validator.getContext().countAllCaches()+" resources ("+tt.milestone()+")");
+    validator.loadIg("hl7.terminology", false); 
     System.out.print("  Terminology server " + cliContext.getTxServer());
     String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver); 
     System.out.println(" - Version "+txver+" ("+tt.milestone()+")");
@@ -203,7 +222,7 @@ public class ValidationService {
       validator.loadIg(src, cliContext.isRecursive());
     }
     System.out.print("  Get set... ");
-    validator.setQuestionnaires(cliContext.getQuestionnaires());
+    validator.setQuestionnaireMode(cliContext.getQuestionnaireMode());
     validator.setNative(cliContext.isDoNative());
     validator.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
     validator.setAnyExtensionsAllowed(cliContext.isAnyExtensionsAllowed());
@@ -273,5 +292,27 @@ public class ValidationService {
       loc = (line >= 0 && col >= 0 ? "line " + Integer.toString(line) + ", col" + Integer.toString(col) : "??");
     }
     return "  " + issue.getSeverity().getDisplay() + " @ " + loc + " : " + issue.getDetails().getText();
+  }
+
+  public static String determineVersion(CliContext cliContext) throws Exception {
+    if (cliContext.getMode() != EngineMode.VALIDATION) {
+      return "current";
+    }
+    System.out.println("Scanning for versions (no -version parameter):");
+    VersionSourceInformation versions = ValidationService.scanForVersions(cliContext);
+    for (String s : versions.getReport()) {
+      if (!s.equals("(nothing found)")) {
+        System.out.println("  " + s);
+      }
+    }
+    if (versions.isEmpty()) {
+      System.out.println("  No Version Info found: Using Default version '" + VersionUtilities.CURRENT_VERSION + "'");
+      return "current";
+    }
+    if (versions.size() == 1) {
+      System.out.println("-> use version " + versions.version());
+      return versions.version();
+    }
+    throw new Exception("-> Multiple versions found. Specify a particular version using the -version parameter");
   }
 }

@@ -6,9 +6,7 @@ public class TimeTracker {
   private long sdTime = 0;
   private long loadTime = 0;
   private long fpeTime = 0;
-  
-  
-  
+
   public long getOverall() {
     return overall;
   }
@@ -51,7 +49,5 @@ public class TimeTracker {
     sdTime = 0;
     loadTime = 0;
     fpeTime = 0;
-    
   }
-
 }

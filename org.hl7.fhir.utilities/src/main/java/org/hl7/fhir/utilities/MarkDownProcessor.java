@@ -56,6 +56,12 @@ public class MarkDownProcessor {
 
 
   public String process(String source, String context) {
+    if (source == null) {
+      return null;
+    }
+    if ("".equals(source)) {
+      return "";
+    }
     switch (dialect) {
     case DARING_FIREBALL : return Processor.process(source); 
     case COMMON_MARK : return processCommonMark(source); 
@@ -71,6 +77,11 @@ public class MarkDownProcessor {
     String html = renderer.render(document);
     html = html.replace("<table>", "<table class=\"grid\">");
     return html;  
+  }
+
+
+  public static boolean isSimpleMarkdown(String description) {
+    return !description.contains("\n");
   }
   
 }
