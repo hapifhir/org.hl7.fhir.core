@@ -4779,5 +4779,11 @@ public class OperationDefinition extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
 
+
+//Manual code (from Configuration.txt)t:
+  public boolean supportsCopyright() {
+    return false;
+  }
+  // end
 }
 

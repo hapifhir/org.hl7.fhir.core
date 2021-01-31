@@ -104,6 +104,8 @@ public class ProfileUtilitiesTests {
           f.setComment(null);
           b.setDefinition(null);
           f.setDefinition(null);
+          b.setContentReference(null);
+          f.setContentReference(null);
           ok = Base.compareDeep(b, f, true);
         }
       }

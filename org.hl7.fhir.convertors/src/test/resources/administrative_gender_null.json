@@ -1,0 +1,94 @@
+{
+  "resourceType": "Patient",
+  "id": "12743884",
+  "meta": {
+    "versionId": "0",
+    "lastUpdated": "2020-09-15T06:35:01.000Z"
+  },
+  "text": {
+    "status": "generated",
+    "div": "<div><p><b>Patient</b></p><p><b>Name</b>: Dawg, Joel</p><p><b>DOB</b>: Nov 11, 1991</p><p><b>Status</b>: Active</p></div>"
+  },
+  "identifier": [
+    {
+      "use": "usual",
+      "type": {
+        "coding": [
+          {
+            "system": "http://hl7.org/fhir/v2/0203",
+            "code": "MR",
+            "display": "Medical record number",
+            "userSelected": false
+          }
+        ],
+        "text": "MRN"
+      },
+      "system": "urn:oid:2.16.840.1.113883.6.1000",
+      "value": "7690",
+      "_value": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/rendered-value",
+            "valueString": "00000007690"
+          }
+        ]
+      },
+      "period": {
+        "start": "2020-09-15T06:35:01.000Z"
+      }
+    },
+    {
+      "use": "usual",
+      "type": {
+        "text": "Military Id"
+      },
+      "system": "urn:oid:2.16.840.1.113883.3.42.10001.100001.12",
+      "value": "10050007740",
+      "_value": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/rendered-value",
+            "valueString": "10050007740"
+          }
+        ]
+      },
+      "period": {
+        "start": "2020-09-15T06:35:01.000Z"
+      }
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "text": "Dawg, Joel",
+      "family": [
+        "Dawg"
+      ],
+      "given": [
+        "Joel"
+      ]
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "3075557575",
+      "use": "home"
+    },
+    {
+      "system": "email",
+      "value": "amitabhp@mindfiresolutions.com",
+      "use": "work"
+    }
+  ],
+  "_gender": {
+    "extension": [
+      {
+        "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+        "valueCode": "unknown"
+      }
+    ]
+  },
+  "birthDate": "1991-11-11"
+}

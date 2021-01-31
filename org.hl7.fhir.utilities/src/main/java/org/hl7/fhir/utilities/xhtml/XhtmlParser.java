@@ -55,6 +55,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 public class XhtmlParser {
   public static final String XHTML_NS = "http://www.w3.org/1999/xhtml";
+  private static final char END_OF_CHARS = (char) -1;
 
   public class NSMap {
     private Map<String, String> nslist = new HashMap<String, String>();
@@ -515,7 +516,7 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
   private void parseElementInner(XhtmlNode node, List<XhtmlNode> parents, NSMap nsm, boolean escaping) throws FHIRFormatError, IOException 
   {
     StringBuilder s = new StringBuilder();
-    while (peekChar() != '\0' && !parents.contains(unwindPoint) && !(node == unwindPoint))
+    while (peekChar() != END_OF_CHARS && !parents.contains(unwindPoint) && !(node == unwindPoint))
     {
       if (peekChar() == '<')
       {
@@ -536,8 +537,9 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
             return;
           else
           {
-            if (mustBeWellFormed)
+            if (mustBeWellFormed) {
               throw new FHIRFormatError("Malformed XHTML: Found \"</"+n.getName()+">\" expecting \"</"+node.getName()+">\""+descLoc());
+            }
             for (int i = parents.size() - 1; i >= 0; i--)
             {
               if (parents.get(i).getName().equals(n))
@@ -605,7 +607,7 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
   {
     while (Character.isWhitespace(peekChar()))
       readChar();
-    while (peekChar() != '>' && peekChar() != '/' && peekChar() != '\0')
+    while (peekChar() != '>' && peekChar() != '/' && peekChar() != END_OF_CHARS)
     {
       String name = readName();
       if (name.length() == 0)
@@ -629,7 +631,7 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
         if (peekChar() == '"' || peekChar() == '\'')
           node.getAttributes().put(name, parseAttributeValue(readChar()));
         else
-          node.getAttributes().put(name, parseAttributeValue('\0'));
+          node.getAttributes().put(name, parseAttributeValue(END_OF_CHARS));
       }
       while (Character.isWhitespace(peekChar()))
         readChar();
@@ -639,7 +641,7 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
   private String parseAttributeValue(char term) throws IOException, FHIRFormatError 
   {
     StringBuilder b = new StringBuilder();
-    while (peekChar() != '\0' && peekChar() != '>' && (term != '\0' || peekChar() != '/') && peekChar() != term)
+    while (peekChar() != END_OF_CHARS && peekChar() != '>' && (term != END_OF_CHARS || peekChar() != '/') && peekChar() != term)
     {
       if (peekChar() == '&')
       {
@@ -703,15 +705,15 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
     if (cache.length() > 0)
       return cache.charAt(0);
     else if (!rdr.ready())
-      return '\0';
+      return END_OF_CHARS;
     else
     {
-      char c = (char)rdr.read();
-      if (c == (char)-1)
-      {
+      int i = rdr.read();
+      if (i == -1)       {
         cache = "";
-        return '\0';
+        return END_OF_CHARS;
       }
+      char c = (char) i;
       cache =  Character.toString(c);
       return c;
     }
@@ -726,7 +728,7 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
       cache = cache.length() == 1 ? "" : cache.substring(1);
     }
     else if (!rdr.ready())
-      c = '\0';
+      c = END_OF_CHARS;
     else
       c = (char)rdr.read();
     if (c == '\r' || c == '\n') {
@@ -743,9 +745,9 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
   private String readToTagEnd() throws IOException, FHIRFormatError 
   {
     StringBuilder s = new StringBuilder();
-    while (peekChar() != '>' && peekChar() != '\0')
+    while (peekChar() != '>' && peekChar() != END_OF_CHARS)
       s.append(readChar());
-    if (peekChar() != '\0')
+    if (peekChar() != END_OF_CHARS)
     {
       readChar();
       skipWhiteSpace();
@@ -764,7 +766,7 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
       if (c == '>') {
         done = true;
         readChar();
-      } else if (c != '\0')
+      } else if (c != END_OF_CHARS)
         s.append(readChar());
       else if (mustBeWellFormed)
         throw new FHIRFormatError("Unexpected termination of html source"+descLoc());
@@ -813,12 +815,12 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
       } else if (c == '[' && s.toString().startsWith("DOCTYPE ")) {
         doctypeEntities = true;
         s.append(readChar());
-      } else if (c != '\0')
+      } else if (c != END_OF_CHARS)
         s.append(readChar());
       else if (mustBeWellFormed)
         throw new FHIRFormatError("Unexpected termination of html source"+descLoc());
     }
-    if (peekChar() != '\0')
+    if (peekChar() != END_OF_CHARS)
     {
       readChar();
       skipWhiteSpace();

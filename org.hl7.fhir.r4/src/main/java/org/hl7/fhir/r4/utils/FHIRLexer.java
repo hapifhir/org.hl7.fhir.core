@@ -34,7 +34,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 
 
 import org.hl7.fhir.r4.model.ExpressionNode;
-import org.hl7.fhir.r4.model.ExpressionNode.SourceLocation;
+import org.hl7.fhir.utilities.SourceLocation;
 import org.hl7.fhir.utilities.Utilities;
 
 // shared lexer for concrete syntaxes 
@@ -146,23 +146,8 @@ public class FHIRLexer {
   }
 
   public void next() throws FHIRLexerException {
+    skipWhitespaceAndComments();
     current = null;
-    boolean last13 = false;
-    while (cursor < source.length() && Character.isWhitespace(source.charAt(cursor))) {
-      if (source.charAt(cursor) == '\r') {
-        currentLocation.setLine(currentLocation.getLine() + 1);
-        currentLocation.setColumn(1);
-        last13 = true;
-      } else if (!last13 && (source.charAt(cursor) == '\n')) {
-        currentLocation.setLine(currentLocation.getLine() + 1);
-        currentLocation.setColumn(1);
-        last13 = false;
-      } else {
-        last13 = false;
-        currentLocation.setColumn(currentLocation.getColumn() + 1);
-      }
-      cursor++;
-    }
     currentStart = cursor;
     currentStartLocation = currentLocation;
     if (cursor < source.length()) {
@@ -208,9 +193,8 @@ public class FHIRLexer {
       } else if (ch == '/') {
         cursor++;
         if (cursor < source.length() && (source.charAt(cursor) == '/')) {
-          cursor++;
-          while (cursor < source.length() && !((source.charAt(cursor) == '\r') || source.charAt(cursor) == '\n')) 
-            cursor++;
+          // this is en error - should already have been skipped
+          error("This shoudn't happen?");
         }
         current = source.substring(currentStart, cursor);
       } else if (ch == '$') {
@@ -297,6 +281,33 @@ public class FHIRLexer {
   }
 
 
+  private void skipWhitespaceAndComments() {
+    boolean last13 = false;
+    boolean done = false;
+    while (cursor < source.length() && !done) {
+      if (cursor < source.length() -1 && "//".equals(source.substring(cursor, cursor+2))) {
+        while (cursor < source.length() && !((source.charAt(cursor) == '\r') || source.charAt(cursor) == '\n')) 
+          cursor++;        
+      } else if (cursor < source.length() - 1 && "/*".equals(source.substring(cursor, cursor+2))) {
+        while (cursor < source.length() - 1 && !"*/".equals(source.substring(cursor, cursor+2))) { 
+          last13 = currentLocation.checkChar(source.charAt(cursor), last13);
+          cursor++;        
+        }
+        if (cursor >= source.length() -1) {
+          error("Unfinished comment");
+        } else {
+          cursor = cursor + 2;
+        }
+      } else if (Character.isWhitespace(source.charAt(cursor))) {
+        last13 = currentLocation.checkChar(source.charAt(cursor), last13);
+        cursor++;
+      } else {
+        done = true;
+      }
+    }
+  }
+
+  
   private boolean isDateChar(char ch,int start) {
     int eot = source.charAt(start+1) == 'T' ? 10 : 20;
     

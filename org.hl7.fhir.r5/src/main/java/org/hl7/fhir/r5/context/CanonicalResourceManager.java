@@ -220,6 +220,7 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     if (enforceUniqueId && map.containsKey(cr.getId())) {
       drop(cr.getId());      
     }
+    
     // special case logic for UTG support prior to version 5
     if (cr.getPackageInfo() != null && cr.getPackageInfo().getId().startsWith("hl7.terminology")) {
       List<CachedCanonicalResource<T>> toDrop = new ArrayList<>();

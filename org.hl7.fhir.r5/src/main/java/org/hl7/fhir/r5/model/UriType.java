@@ -124,7 +124,7 @@ public class UriType extends PrimitiveType<String> {
 	/**
 	 * Creates a new OidType instance which uses the given OID as the content (and prepends "urn:oid:" to the OID string
 	 * in the value of the newly created OidType, per the FHIR specification).
-	 * 
+	 *
 	 * @param theOid
 	 *            The OID to use (<code>null</code> is acceptable and will result in a UriDt instance with a
 	 *            <code>null</code> value)
@@ -155,6 +155,9 @@ public class UriType extends PrimitiveType<String> {
 		if (getValue() == null || other.getValue() == null) {
 			return false;
 		}
+		if (getValue().equals(other.getValue())) {
+			return true;
+		}
 
 		String normalize = normalize(getValue());
 		String normalize2 = normalize(other.getValue());
@@ -162,7 +165,7 @@ public class UriType extends PrimitiveType<String> {
    }
 
 		public String fhirType() {
-			return "uri";			
+			return "uri";
 		}
 
 }

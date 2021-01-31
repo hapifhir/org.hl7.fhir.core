@@ -384,12 +384,12 @@ public class Turtle {
 
   public String asHtml() throws Exception {
     StringBuilder b = new StringBuilder();
-    b.append("<pre class=\"rdf\">\r\n");
+    b.append("<pre class=\"rdf\"><code class=\"language-turtle\">\r\n");
     commitPrefixes(b);
     for (Section s : sections) {
       commitSection(b, s);
     }
-    b.append("</pre>\r\n");
+    b.append("</code></pre>\r\n");
     b.append("\r\n");
     return b.toString();
   }

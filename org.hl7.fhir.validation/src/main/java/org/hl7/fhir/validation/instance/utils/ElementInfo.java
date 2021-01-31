@@ -1,10 +1,10 @@
 package org.hl7.fhir.validation.instance.utils;
 
+import java.util.List;
+
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
-
-import java.util.List;
 
 public class ElementInfo {
 
@@ -109,11 +109,6 @@ public class ElementInfo {
 
     public String getPath() {
         return path;
-    }
-
-    public ElementInfo setPath(String path) {
-        this.path = path;
-        return this;
     }
 
     public int col() {

@@ -1,5 +1,7 @@
 package org.hl7.fhir.utilities.i18n;
 
+import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
+
 public class I18nConstants {
 
   
@@ -10,6 +12,7 @@ public class I18nConstants {
   public static final String ALL_OBSERVATIONS_SHOULD_HAVE_A_PERFORMER = "All_observations_should_have_a_performer";
   public static final String ALL_OBSERVATIONS_SHOULD_HAVE_A_SUBJECT = "All_observations_should_have_a_subject";
   public static final String ALL_OK = "ALL_OK";
+  public static final String ARRAY_CANNOT_BE_EMPTY = "ARRAY_CANNOT_BE_EMPTY";
   public static final String ATTEMPT_TO_A_SLICE_AN_ELEMENT_THAT_DOES_NOT_REPEAT__FROM__IN_ = "Attempt_to_a_slice_an_element_that_does_not_repeat__from__in_";
   public static final String ATTEMPT_TO_REPLACE_ELEMENT_NAME_FOR_A_NONCHOICE_TYPE = "Attempt_to_replace_element_name_for_a_nonchoice_type";
   public static final String ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED = "Attempt_to_use_a_snapshot_on_profile__as__before_it_is_generated";
@@ -24,6 +27,7 @@ public class I18nConstants {
   public static final String BUNDLE_BUNDLE_ENTRY_NOFIRST = "Bundle_BUNDLE_Entry_NoFirst";
   public static final String BUNDLE_BUNDLE_ENTRY_NOFIRSTRESOURCE = "Bundle_BUNDLE_Entry_NoFirstResource";
   public static final String BUNDLE_BUNDLE_ENTRY_NOFULLURL = "Bundle_BUNDLE_Entry_NoFullUrl";
+  public static final String BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED = "BUNDLE_BUNDLE_ENTRY_FULLURL_REQUIRED";
   public static final String BUNDLE_BUNDLE_ENTRY_NOPROFILE = "Bundle_BUNDLE_Entry_NoProfile";
   public static final String BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES = "BUNDLE_BUNDLE_ENTRY_MULTIPLE_PROFILES";
   public static final String BUNDLE_BUNDLE_ENTRY_NOTFOUND = "Bundle_BUNDLE_Entry_NotFound";
@@ -44,7 +48,7 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_NO_VS_NOTCOMPLETE = "CODESYSTEM_CS_NO_VS_NOTCOMPLETE";
   public static final String CODESYSTEM_CS_VS_INCLUDEDETAILS = "CodeSystem_CS_VS_IncludeDetails";
   public static final String CODESYSTEM_CS_VS_INVALID = "CodeSystem_CS_VS_Invalid";
-  public static final String CODESYSTEM_CS_VS_MISMATCH = "CodeSystem_CS_VS_MisMatch";
+  public static final String CODESYSTEM_CS_VS_EXP_MISMATCH = "CODESYSTEM_CS_VS_EXP_MISMATCH";
   public static final String CODESYSTEM_CS_VS_WRONGSYSTEM = "CodeSystem_CS_VS_WrongSystem";
   public static final String CODE_FOUND_IN_EXPANSION_HOWEVER_ = "Code_found_in_expansion_however_";
   public static final String CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE = "Coding_has_no_system__cannot_validate";
@@ -63,6 +67,7 @@ public class I18nConstants {
   public static final String DISCRIMINATOR__IS_BASED_ON_ELEMENT_EXISTENCE_BUT_SLICE__NEITHER_SETS_MIN1_OR_MAX0 = "Discriminator__is_based_on_element_existence_but_slice__neither_sets_min1_or_max0";
   public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_MULTIPLE_TYPES_ = "Discriminator__is_based_on_type_but_slice__in__has_multiple_types_";
   public static final String DISCRIMINATOR__IS_BASED_ON_TYPE_BUT_SLICE__IN__HAS_NO_TYPES = "Discriminator__is_based_on_type_but_slice__in__has_no_types";
+  public static final String DISCRIMINATOR_BAD_PATH = "DISCRIMINATOR_BAD_PATH";
   public static final String DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF_ = "Display_Name_for__should_be_one_of__instead_of_";
   public static final String DOCUMENT = "documentmsg";
   public static final String DOCUMENT_DATE_REQUIRED = "Bundle_Document_Date_Missing";
@@ -73,6 +78,7 @@ public class I18nConstants {
   public static final String ELEMENT_ID__NULL__ON_ = "element_id__null__on_";
   public static final String ELEMENT_MUST_HAVE_SOME_CONTENT = "Element_must_have_some_content";
   public static final String ELEMENT__NULL_ = "element__null_";
+  public static final String SLICING_CANNOT_BE_EVALUATED = "SLICING_CANNOT_BE_EVALUATED";
   public static final String ERROR_AT_PATH__IN__TYPE_SLICING_WITH_SLICINGDISCRIMINATORCOUNT__1 = "Error_at_path__in__Type_slicing_with_slicingdiscriminatorcount__1";
   public static final String ERROR_AT_PATH__IN__TYPE_SLICING_WITH_SLICINGDISCRIMINATORPATH__THIS = "Error_at_path__in__Type_slicing_with_slicingdiscriminatorpath__this";
   public static final String ERROR_AT_PATH__IN__TYPE_SLICING_WITH_SLICINGDISCRIMINATORTYPE__TYPE = "Error_at_path__in__Type_slicing_with_slicingdiscriminatortype__type";
@@ -161,7 +167,7 @@ public class I18nConstants {
   public static final String FHIRPATH_UNKNOWN_CONSTANT = "FHIRPATH_UNKNOWN_CONSTANT";
   public static final String FHIRPATH_UNKNOWN_CONTEXT = "FHIRPATH_UNKNOWN_CONTEXT";
   public static final String FHIRPATH_UNKNOWN_CONTEXT_ELEMENT = "FHIRPATH_UNKNOWN_CONTEXT_ELEMENT";
-  public static final String FHIRPATH_UNKNOWN_NAME = "FHIRPATH_UNWKNOWN_NAME";
+  public static final String FHIRPATH_UNKNOWN_NAME = "FHIRPATH_UNKNOWN_NAME";
   public static final String FHIRPATH_WRONG_PARAM_TYPE = "FHIRPATH_WRONG_PARAM_TYPE";
   public static final String FIXED_TYPE_CHECKS_DT_ADDRESS_LINE = "Fixed_Type_Checks_DT_Address_Line";
   public static final String FIXED_TYPE_CHECKS_DT_NAME_FAMILY = "Fixed_Type_Checks_DT_Name_Family";
@@ -176,7 +182,6 @@ public class I18nConstants {
   public static final String ILLEGAL_PATH__IN_DIFFERENTIAL_IN__NAME_PORTION_EXCEEDS_64_CHARS_IN_LENGTH = "Illegal_path__in_differential_in__name_portion_exceeds_64_chars_in_length";
   public static final String ILLEGAL_PATH__IN_DIFFERENTIAL_IN__NAME_PORTION_MISING_ = "Illegal_path__in_differential_in__name_portion_mising_";
   public static final String ILLEGAL_PATH__IN_DIFFERENTIAL_IN__NO_UNICODE_WHITESPACE = "Illegal_path__in_differential_in__no_unicode_whitespace";
-  public static final String INTERNAL_ERROR = "Internal_error";
   public static final String INTERNAL_ERROR___TYPE_NOT_KNOWN_ = "Internal_error___type_not_known_";
   public static final String INTERNAL_INT_BAD_TYPE = "Internal_INT_Bad_Type";
   public static final String INTERNAL_RECURSION_DETECTION_FIND_LOOP_PATH_RECURSION____CHECK_PATHS_ARE_VALID_FOR_PATH_ = "Internal_recursion_detection_find_loop_path_recursion____check_paths_are_valid_for_path_";
@@ -341,6 +346,18 @@ public class I18nConstants {
   public static final String RESOURCE_TYPE_MISMATCH_FOR___ = "Resource_type_mismatch_for___";
   public static final String SAME_ID_ON_MULTIPLE_ELEMENTS__IN_ = "Same_id_on_multiple_elements__in_";
   public static final String SD_MUST_HAVE_DERIVATION = "SD_MUST_HAVE_DERIVATION";
+  public static final String SD_NESTED_MUST_SUPPORT_DIFF = "SD_NESTED_MUST_SUPPORT_DIFF";
+  public static final String SD_NESTED_MUST_SUPPORT_SNAPSHOT = "SD_NESTED_MUST_SUPPORT_SNAPSHOT";
+  public static final String SD_ED_TYPE_PROFILE_UNKNOWN = "SD_ED_TYPE_PROFILE_UNKNOWN";
+  public static final String SD_ED_TYPE_PROFILE_NOTYPE = "SD_ED_TYPE_PROFILE_NOTYPE";
+  public static final String SD_ED_TYPE_PROFILE_WRONG = "SD_ED_TYPE_PROFILE_WRONG";
+  public static final String SD_ED_TYPE_PROFILE_WRONG_TARGET = "SD_ED_TYPE_PROFILE_WRONG_TARGET";
+  public static final String SD_ED_TYPE_NO_TARGET_PROFILE = "SD_ED_TYPE_NO_TARGET_PROFILE";
+  public static final String SD_ED_SHOULD_BIND = "SD_ED_SHOULD_BIND";
+  public static final String SD_ED_SHOULD_BIND_WITH_VS = "SD_ED_SHOULD_BIND_WITH_VS";
+  public static final String SD_ED_BIND_UNKNOWN_VS = "SD_ED_BIND_UNKNOWN_VS";
+  public static final String SD_ED_BIND_NOT_VS = "SD_ED_BIND_NOT_VS";
+  public static final String SD_ED_BIND_NO_BINDABLE = "SD_ED_BIND_NO_BINDABLE";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
   public static final String SEARCHPARAMETER_NOTFOUND = "SEARCHPARAMETER_NOTFOUND";
@@ -408,19 +425,20 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_SYSTEM_VALUESET2 = "Terminology_TX_System_ValueSet2";
   public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND = "Terminology_TX_ValueSet_NotFound";
   public static final String TERMINOLOGY_TX_VALUESET_NOTFOUND2 = "Terminology_TX_ValueSet_NotFound2";
+  public static final String TERMINOLOGY_TX_NOSVC_BOUND_REQ = "TERMINOLOGY_TX_NOSVC_BOUND_REQ";
+  public static final String TERMINOLOGY_TX_NOSVC_BOUND_EXT = "TERMINOLOGY_TX_NOSVC_BOUND_EXT";
   public static final String TEXT_SHOULD_NOT_BE_PRESENT = "Text_should_not_be_present";
   public static final String THE_BASE_SNAPSHOT_MARKS_A_SLICING_AS_CLOSED_BUT_THE_DIFFERENTIAL_TRIES_TO_EXTEND_IT_IN__AT__ = "The_base_snapshot_marks_a_slicing_as_closed_but_the_differential_tries_to_extend_it_in__at__";
-  public static final String THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_ = "This_base_property_must_be_an_Array_not_a_";
+  public static final String THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_ = "This_base_property_must_be_an_Array_not_";
   public static final String THIS_CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAME = "This_cannot_be_parsed_as_a_FHIR_object_no_name";
   public static final String THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAMESPACENAME_ = "This_does_not_appear_to_be_a_FHIR_resource_unknown_namespacename_";
   public static final String THIS_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_ = "This_does_not_appear_to_be_a_FHIR_resource_unknown_name_";
   public static final String THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_ = "This_element_does_not_match_any_known_slice_";
   public static final String THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_ = "This_property_must_be_an_Array_not_";
-  public static final String THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_ = "This_property_must_be_an_Array_not_a_";
   public static final String THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_ = "This_property_must_be_an_object_not_";
   public static final String THIS_PROPERTY_MUST_BE_AN_SIMPLE_VALUE_NOT_ = "This_property_must_be_an_simple_value_not_";
-  public static final String THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_A_ = "This_property_must_be_a_Literal_not_a_";
-  public static final String THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_A_ = "This_property_must_be_a_URI_or_bnode_not_a_";
+  public static final String THIS_PROPERTY_MUST_BE_A_LITERAL_NOT_ = "This_property_must_be_a_Literal_not_";
+  public static final String THIS_PROPERTY_MUST_BE_A_URI_OR_BNODE_NOT_ = "This_property_must_be_a_URI_or_bnode_not_";
   public static final String THIS_PROPERTY_MUST_BE__NOT_ = "This_property_must_be__not_";
   public static final String THIS__CANNOT_BE_PARSED_AS_A_FHIR_OBJECT_NO_NAMESPACE = "This__cannot_be_parsed_as_a_FHIR_object_no_namespace";
   public static final String TYPE_CHECKS_FIXED_CC = "TYPE_CHECKS_FIXED_CC";
@@ -466,6 +484,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_REGEX = "Type_Specific_Checks_DT_Primitive_Regex";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_VALUEEXT = "Type_Specific_Checks_DT_Primitive_ValueExt";
   public static final String TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_WS = "Type_Specific_Checks_DT_Primitive_WS";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS = "TYPE_SPECIFIC_CHECKS_DT_QTY_NO_ANNOTATIONS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_LENGTH = "Type_Specific_Checks_DT_String_Length";
   public static final String TYPE_SPECIFIC_CHECKS_DT_STRING_WS = "Type_Specific_Checks_DT_String_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_TIME_VALID = "Type_Specific_Checks_DT_Time_Valid";
@@ -473,8 +492,11 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_UUID = "Type_Specific_Checks_DT_URI_UUID";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URI_WS = "Type_Specific_Checks_DT_URI_WS";
   public static final String TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE = "Type_Specific_Checks_DT_URL_Resolve";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT = "Type_Specific_Checks_DT_UUID_Strat";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_VAID = "Type_Specific_Checks_DT_UUID_Vaid";
+  public static final String UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER = "Unable_to_connect_to_terminology_server";
   public static final String UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__ = "Unable_to_connect_to_terminology_server_Use_parameter_tx_na_tun_run_without_using_terminology_services_to_validate_LOINC_SNOMED_ICDX_etc_Error__";
   public static final String UNABLE_TO_FIND_BASE_DEFINITION_FOR_LOGICAL_MODEL__FROM_ = "Unable_to_find_base_definition_for_logical_model__from_";
   public static final String UNABLE_TO_FIND_BASE__FOR_ = "Unable_to_find_base__for_";
@@ -527,6 +549,8 @@ public class I18nConstants {
   public static final String UNSUPPORTED_FIXED_PATTERN_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__ = "Unsupported_fixed_pattern_type_for_discriminator_for_slice__";
   public static final String UNSUPPORTED_FIXED_VALUE_TYPE_FOR_DISCRIMINATOR_FOR_SLICE__ = "Unsupported_fixed_value_type_for_discriminator_for_slice__";
   public static final String UNSUPPORTED_IDENTIFIER_PATTERN__EXTENSIONS_ARE_NOT_ALLOWED__FOR_DISCRIMINATOR_FOR_SLICE_ = "Unsupported_Identifier_pattern__extensions_are_not_allowed__for_discriminator_for_slice_";
+  public static final String UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE = "UNSUPPORTED_IDENTIFIER_PATTERN_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE";
+  public static final String UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE = "UNSUPPORTED_IDENTIFIER_PATTERN_NO_PROPERTY_NOT_SUPPORTED_FOR_DISCRIMINATOR_FOR_SLICE";
   public static final String UNSUPPORTED_VERSION_R1 = "Unsupported_version_R1";
   public static final String UNSUPPORTED_VERSION_R2 = "Unsupported_version_R2";
   public static final String UNSUPPORTED_VERSION_R2B = "Unsupported_version_R2B";
@@ -558,6 +582,8 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_THIS_VERSION_OK = "VALIDATION_VAL_PROFILE_THIS_VERSION_OK";
   public static final String VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER = "VALIDATION_VAL_PROFILE_THIS_VERSION_OTHER";
   public static final String VALIDATION_VAL_PROFILE_UNKNOWN = "Validation_VAL_Profile_Unknown";
+  public static final String VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY = "VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY";
+  public static final String VALIDATION_VAL_PROFILE_UNKNOWN_ERROR = "VALIDATION_VAL_PROFILE_UNKNOWN_ERROR";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE = "Validation_VAL_Profile_WrongType";
   public static final String VALIDATION_VAL_PROFILE_WRONGTYPE2 = "Validation_VAL_Profile_WrongType2";
   public static final String VALIDATION_VAL_UNKNOWN_PROFILE = "Validation_VAL_Unknown_Profile";
@@ -575,9 +601,15 @@ public class I18nConstants {
   public static final String XHTML_URL_EMPTY = "XHTML_URL_EMPTY";
   public static final String XHTML_URL_INVALID = "XHTML_URL_INVALID";
   public static final String XHTML_URL_INVALID_CHARS = "XHTML_URL_INVALID_CHARS";
+  public static final String XHTML_URL_DATA_NO_DATA = "XHTML_URL_DATA_NO_DATA"; 
+  public static final String XHTML_URL_DATA_DATA_INVALID_COMMA = "XHTML_URL_DATA_DATA_INVALID_COMMA"; 
+  public static final String XHTML_URL_DATA_DATA_INVALID = "XHTML_URL_DATA_DATA_INVALID"; 
+  public static final String XHTML_URL_DATA_MIMETYPE = "XHTML_URL_DATA_MIMETYPE";  
+
   public static final String XHTML_XHTML_ATTRIBUTE_ILLEGAL = "XHTML_XHTML_Attribute_Illegal";
   public static final String XHTML_XHTML_DOCTYPE_ILLEGAL = "XHTML_XHTML_DOCTYPE_ILLEGAL";
   public static final String XHTML_XHTML_ELEMENT_ILLEGAL = "XHTML_XHTML_Element_Illegal";
+  public static final String XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA = "XHTML_XHTML_ELEMENT_ILLEGAL_IN_PARA";
   public static final String XHTML_XHTML_NAME_INVALID = "XHTML_XHTML_Name_Invalid";
   public static final String XHTML_XHTML_NS_INVALID = "XHTML_XHTML_NS_InValid";
   public static final String XML_ATTR_VALUE_INVALID = "xml_attr_value_invalid";

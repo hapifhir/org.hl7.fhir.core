@@ -3,8 +3,8 @@ package org.hl7.fhir.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.cache.NpmPackage;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -181,6 +181,10 @@ public class VersionUtilities {
   public static String getMajMin(String version) {
     if (version == null)
       return null;
+    
+    if ("current".equals(version)) {
+      return CURRENT_VERSION;
+    }
 
     if (Utilities.charCount(version, '.') == 1) {
       String[] p = version.split("\\.");
@@ -193,6 +197,16 @@ public class VersionUtilities {
     }
   }
 
+  public static String getPatch(String version) {
+    if (version == null)
+      return null;
+    if (Utilities.charCount(version, '.') == 2) {
+      String[] p = version.split("\\.");
+      return p[2];  
+    }
+    return null;
+  }
+
   public static boolean isSemVer(String version) {
     if (Utilities.charCount(version, '.') != 2) {
       return false;
@@ -202,19 +216,80 @@ public class VersionUtilities {
   }
 
   /** 
-   * return true if the current vresion equals test, or later 
-   * 
-   * so if a feature is defined in 4.0, if (VersionUtilities.isThisOrLater("4.0", version))...
+   * return true if the current version equals test, or later,
+   * so if a feature is defined in 4.0, if (VersionUtilities.isThisOrLater("4.0", version))
+   * <p>
+   * This method tries to perform a numeric parse, so that <code>0.9</code> will be considered below <code>0.10</code>
+   * in accordance with SemVer. If either side contains a non-numeric character in a version string, a simple text
+   * compare will be done instead.
+   * </p>
    *  
+   * @param test The value to compare to
+   * @param current The value being compared
+   * @return Is {@literal current} later or equal to {@literal test}? For example, if <code>this = 0.5</code> and <code>current = 0.6</code> this method will return true
+   */
+  public static boolean isThisOrLater(String test, String current) {
+    if (test == null || current == null) {
+      return false;
+    }
+    String t = getMajMin(test);
+    String c = getMajMin(current);
+    if (t == null || c == null) {
+      return false;
+    }
+    if (c.compareTo(t) == 0) {
+      return isMajMinOrLaterPatch(test, current);
+    }
+
+    String[] testParts = t.split("\\.");
+    String[] currentParts = c.split("\\.");
+
+    for (int i = 0; i < Math.max(testParts.length, currentParts.length); i++) {
+      if (i == testParts.length) {
+        return true;
+      } else if (i == currentParts.length) {
+        return false;
+      }
+      String testPart = testParts[i];
+      String currentPart = currentParts[i];
+      if (testPart.equals(currentPart)) {
+        continue;
+      }
+      return compareVersionPart(testPart, currentPart);
+    }
+
+    return true;
+  }
+
+  private static boolean compareVersionPart(String theTestPart, String theCurrentPart) {
+    if (StringUtils.isNumeric(theTestPart) && StringUtils.isNumeric(theCurrentPart)) {
+      return Integer.parseInt(theCurrentPart) - Integer.parseInt(theTestPart) >= 0;
+    } else {
+      return theCurrentPart.compareTo(theTestPart) >= 0;
+    }
+  }
+
+  /** 
+   * return true if the current version equals test for major and min, or later patch 
+   * 
    * @param test
    * @param current
    * @return
    */
-  public static boolean isThisOrLater(String test, String current) {
+  public static boolean isMajMinOrLaterPatch(String test, String current) {
     String t = getMajMin(test);
     String c = getMajMin(current);
-    boolean ok = c.compareTo(t) >= 0;
-    return ok;
+    if (c != null && c.compareTo(t) == 0) {
+      String pt = getPatch(test);
+      String pc = getPatch(current);
+      if (pt==null || "x".equals(pt)) {
+        return true;
+      }
+      if (pc!=null) {
+        return compareVersionPart(pt, pc);
+      }
+    }
+    return false;
   }
 
   public static String incMajorVersion(String v) {
@@ -289,6 +364,7 @@ public class VersionUtilities {
       res.add("TestScript");
     }
     if (isR3Ver(version)) {
+      res.add("CodeSystem");
       res.add("CapabilityStatement");
       res.add("StructureDefinition");
       res.add("ImplementationGuide");
@@ -313,6 +389,7 @@ public class VersionUtilities {
     }
     if (isR4Ver(version)) {
 
+      res.add("CodeSystem");
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
       res.add("ChargeItemDefinition");
@@ -344,7 +421,7 @@ public class VersionUtilities {
       res.add("ValueSet");
     }
 
-    if (isR5Ver(version)) {
+    if (isR5Ver(version) || "current".equals(version)) {
 
       res.add("ActivityDefinition");
       res.add("CapabilityStatement");
@@ -378,6 +455,14 @@ public class VersionUtilities {
 
     }
     return res;
+  }
+
+  public static String getVersionForPackage(String pid) {
+    if (pid.startsWith("hl7.fhir.r")) {
+      String[] p = pid.split("\\.");
+      return versionFromCode(p[2]);
+    }
+    return null;
   }
 
 }

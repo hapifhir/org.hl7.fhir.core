@@ -76,16 +76,17 @@ import org.hl7.fhir.r5.model.StructureMap.StructureMapModelMode;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapStructureComponent;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.IResourceValidator;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
-import org.hl7.fhir.utilities.cache.BasePackageCacheManager;
-import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.cache.NpmPackage;
-import org.hl7.fhir.utilities.cache.NpmPackage.PackageResourceInformation;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
+import org.hl7.fhir.utilities.npm.BasePackageCacheManager;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
@@ -138,7 +139,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   }
 
   public interface IValidatorFactory {
-    IResourceValidator makeValidator(IWorkerContext ctxts) throws FHIRException;
+    IResourceValidator makeValidator(IWorkerContext ctxt) throws FHIRException;
+    IResourceValidator makeValidator(IWorkerContext ctxts, XVerExtensionManager xverManager) throws FHIRException;
   }
 
 	private Questionnaire questionnaire;
@@ -148,6 +150,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   private boolean ignoreProfileErrors;
   private boolean progress;
   private List<String> loadedPackages = new ArrayList<String>();
+  private boolean canNoTS;
+  private XVerExtensionManager xverManager;
 
   public SimpleWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     super();
@@ -242,19 +246,15 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	}
 
 	 public static SimpleWorkerContext fromClassPath(String name) throws IOException, FHIRException {
-	   InputStream s = SimpleWorkerContext.class.getResourceAsStream("/"+name);
-	    SimpleWorkerContext res = new SimpleWorkerContext();
-	   res.loadFromStream(s, null);
-	    return res;
+	    return fromClassPath(name, false);
 	  }
-
-//	public static SimpleWorkerContext fromDefinitions(Map<String, byte[]> source) throws IOException, FHIRException {
-//		SimpleWorkerContext res = new SimpleWorkerContext();
-//		for (String name : source.keySet()) {
-//		  res.loadDefinitionItem(name, new ByteArrayInputStream(source.get(name)), null, null);
-//		}
-//		return res;
-//	}
+	 public static SimpleWorkerContext fromClassPath(String name, boolean allowDuplicates) throws IOException, FHIRException {
+	   InputStream s = SimpleWorkerContext.class.getResourceAsStream("/" + name);
+     SimpleWorkerContext res = new SimpleWorkerContext();
+     res.setAllowLoadingDuplicates(allowDuplicates);
+	   res.loadFromStream(s, null);
+     return res;
+	  }
 
   public static SimpleWorkerContext fromDefinitions(Map<String, byte[]> source, IContextResourceLoader loader, PackageVersion pi) throws FileNotFoundException, IOException, FHIRException  {
     SimpleWorkerContext res = new SimpleWorkerContext();
@@ -299,7 +299,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       setTxCaps(txClient.getTerminologyCapabilities());
       return cps.getSoftware().getVersion();
     } catch (Exception e) {
-      throw new FHIRException(formatMessage(I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__, e.getMessage()), e);
+      throw new FHIRException(formatMessage(canNoTS ? I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__ : I18nConstants.UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER, e.getMessage()), e);
     }
   }
 
@@ -538,7 +538,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	public IResourceValidator newValidator() throws FHIRException {
 	  if (validatorFactory == null)
 	    throw new Error(formatMessage(I18nConstants.NO_VALIDATOR_CONFIGURED));
-	  return validatorFactory.makeValidator(this);
+	  return validatorFactory.makeValidator(this, xverManager);
 	}
 
 
@@ -769,6 +769,10 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       ProfileUtilities pu = new ProfileUtilities(this, msgs, this);
       pu.setAutoFixSliceNames(true);
       pu.setThrowException(false);
+      if (xverManager == null) {
+        xverManager = new XVerExtensionManager(this);
+      }
+      pu.setXver(xverManager);
       if (sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
         pu.sortDifferential(sd, p, p.getUrl(), errors, true);
       }
@@ -811,8 +815,28 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     return loadedPackages.contains(id+"#"+ver);
   }
 
+  public boolean hasPackage(String idAndver) {
+    return loadedPackages.contains(idAndver);
+  }
+
   public void setClock(TimeTracker tt) {
     clock = tt;
-    
   }
+
+  public boolean isCanNoTS() {
+    return canNoTS;
+  }
+
+  public void setCanNoTS(boolean canNoTS) {
+    this.canNoTS = canNoTS;
+  }
+
+  public XVerExtensionManager getXVer() {
+    if (xverManager == null) {
+      xverManager = new XVerExtensionManager(this);
+    }
+   return xverManager;
+  }
+  
 }
+

@@ -34,6 +34,7 @@ package org.hl7.fhir.r5.utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,6 +43,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
+import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
 import org.hl7.fhir.utilities.Utilities;
@@ -102,15 +104,39 @@ public interface IResourceValidator {
     void recordProfileUsage(StructureDefinition profile, Object appContext, Element element);
   }
   
+
   public interface IValidatorResourceFetcher {
 
     Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException;
     ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url);
-    boolean resolveURL(Object appContext, String path, String url) throws IOException, FHIRException;
+    boolean resolveURL(Object appContext, String path, String url, String type) throws IOException, FHIRException;
 
     byte[] fetchRaw(String url) throws MalformedURLException, IOException; // for attachment checking
     
     void setLocale(Locale locale);
+    
+    
+    /**
+     * this is used when the validator encounters a reference to a structure definition, value set or code system at some random URL reference 
+     * while validating. 
+     *
+     *  Added in v5.2.2. return null to leave functionality as it was before then.
+     *  
+     * @param primitiveValue
+     * @return an R5 version of the resource
+     * @throws URISyntaxException 
+     */
+    CanonicalResource fetchCanonicalResource(String url) throws URISyntaxException;
+    
+    /**
+     * Whether to try calling fetchCanonicalResource for this reference (not whether it will succeed - just throw an exception from fetchCanonicalResource if it doesn't resolve. This is a policy thing.
+     * 
+     *  Added in v5.2.2. return false to leave functionality as it was before then.
+     *  
+     * @param url
+     * @return
+     */
+    boolean fetchesCanonicalResource(String url);
   }
   
   public enum BestPracticeWarningLevel {
@@ -184,6 +210,14 @@ public interface IResourceValidator {
   public boolean isShowMessagesFromReferences();
   public void setShowMessagesFromReferences(boolean value);
 
+  /** 
+   * this is used internally in the publishing stack to ensure that everything is water tight, but 
+   * this check is not necessary or appropriate at run time when the validator is hosted in HAPI
+   * @return
+   */
+  public boolean isWantCheckSnapshotUnchanged();
+  public void setWantCheckSnapshotUnchanged(boolean wantCheckSnapshotUnchanged);
+  
   //FIXME: don't need that, gets never used?
 //  public String getValidationLanguage();
 //  public void setValidationLanguage(String value);
