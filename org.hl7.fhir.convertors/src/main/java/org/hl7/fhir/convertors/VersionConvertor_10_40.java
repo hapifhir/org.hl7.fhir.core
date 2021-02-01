@@ -2923,6 +2923,8 @@ public class VersionConvertor_10_40 {
       return TestScript10_40.convertTestScript((org.hl7.fhir.dstu2.model.TestScript) src);
     if (src instanceof org.hl7.fhir.dstu2.model.ValueSet)
       return ValueSet10_40.convertValueSet((org.hl7.fhir.dstu2.model.ValueSet) src, advisor);
+    if (src instanceof org.hl7.fhir.dstu2.model.Medication)
+      return Medication10_40.convertMedication((org.hl7.fhir.dstu2.model.Medication) src);
     throw new FHIRException("Unknown resource " + src.fhirType());
   }
 
