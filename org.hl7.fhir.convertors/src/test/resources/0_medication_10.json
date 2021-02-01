@@ -1,0 +1,24 @@
+{
+  "resourceType": "Medication",
+  "id": "FOBAfoba",
+  "code": {
+    "coding": [
+      {
+        "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+        "code": "309309",
+        "display": "CIPROFLOXACIN 500 MG TABLET"
+      }
+    ],
+    "text": "CIPROFLOXACIN 500 MG TABLET"
+  },
+  "form": {
+    "coding": [
+      {
+        "system": "urn:oid:1.2.840.114350.1.13.331.2.7.4.698288.310",
+        "code": "81",
+        "display": "Tablet"
+      }
+    ],
+    "text": "Tablet"
+  }
+}
