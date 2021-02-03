@@ -330,6 +330,18 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean autoFixSliceNames;
   private XVerExtensionManager xver;
 
+  public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
+    super();
+    this.context = context;
+    this.messages = messages;
+    this.pkp = pkp;
+
+    this.fpe = fpe;
+    if (context != null && this.fpe == null) {
+      this.fpe = new FHIRPathEngine(context, this);
+    }
+  }
+
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp) {
     super();
     this.context = context;

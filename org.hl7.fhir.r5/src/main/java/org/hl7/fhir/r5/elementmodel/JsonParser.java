@@ -53,6 +53,7 @@ import org.hl7.fhir.r5.formats.JsonCreator;
 import org.hl7.fhir.r5.formats.JsonCreatorCanonical;
 import org.hl7.fhir.r5.formats.JsonCreatorGson;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -75,8 +76,14 @@ public class JsonParser extends ParserBase {
 	private Map<JsonElement, LocationData> map;
 	private boolean allowComments;
 
+  private FHIRPathEngine fpe;
+  private ProfileUtilities profileUtilities;
+
 	public JsonParser(IWorkerContext context) {
 		super(context);
+    
+    this.fpe = new FHIRPathEngine(this.context);
+    this.profileUtilities = new ProfileUtilities(this.context, null, null, this.fpe);
 	}
 
 	public Element parse(String source, String type) throws Exception {
@@ -86,7 +93,7 @@ public class JsonParser extends ParserBase {
     if (sd == null)
       return null;
 
-    Element result = new Element(type, new Property(context, sd.getSnapshot().getElement().get(0), sd));
+    Element result = new Element(type, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities));
     checkObject(obj, path);
     result.setType(type);
     parseChildren(path, obj, result, true);
@@ -135,7 +142,7 @@ public class JsonParser extends ParserBase {
 			if (sd == null)
 				return null;
 
-			Element result = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd));
+			Element result = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities));
 			checkObject(object, path);
 			result.markLocation(line(object), col(object));
 			result.setType(name);
@@ -357,7 +364,7 @@ public class JsonParser extends ParserBase {
 			StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, context.getOverrideVersionNs()));
 			if (sd == null)
 				throw new FHIRFormatError(context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name));
-			parent.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(parent.getProperty()), elementProperty);
+			parent.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities), SpecialElement.fromProperty(parent.getProperty()), elementProperty);
 			parent.setType(name);
 			parseChildren(npath, res, parent, true);
 		}

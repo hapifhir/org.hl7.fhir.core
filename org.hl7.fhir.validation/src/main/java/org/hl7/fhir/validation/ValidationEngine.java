@@ -207,6 +207,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   private Map<String, ValidationControl> validationControl = new HashMap<>();
   private QuestionnaireMode questionnaireMode;
 
+  private FHIRPathEngine fpe;
+
   public ValidationEngine() throws IOException {
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     context = SimpleWorkerContext.fromNothing();
@@ -269,6 +271,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     }
     NpmPackage npmX = pcm.loadPackage("hl7.fhir.xver-extensions", "0.0.4");
     context.loadFromPackage(npmX, null);
+
+    this.fpe = new FHIRPathEngine(context);
   }
 
   private IContextResourceLoader loaderForVersion() {
@@ -1310,7 +1314,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   private OperationOutcome messagesToOutcome(List<ValidationMessage> messages) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
     for (ValidationMessage vm : filterMessages(messages)) {
-      FHIRPathEngine fpe = new FHIRPathEngine(context);
       try {
         fpe.parse(vm.getLocation());
       } catch (Exception e) {
@@ -1387,7 +1390,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
 
   public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
     Content cnt = loadContent(source, "validate", false);
-    FHIRPathEngine fpe = new FHIRPathEngine(context);
     Element e = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
     return fpe.evaluateToString(e, expression);
   }
