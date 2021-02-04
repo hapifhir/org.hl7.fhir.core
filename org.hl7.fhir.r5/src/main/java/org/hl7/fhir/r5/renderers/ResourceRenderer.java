@@ -125,6 +125,44 @@ public abstract class ResourceRenderer extends DataRenderer {
     }
   }
 
+  public void renderCanonical(Resource res, XhtmlNode x, String url) throws UnsupportedEncodingException, IOException {
+    ResourceWrapper rw = new ResourceWrapperDirect(this.context, res);
+    renderCanonical(rw, x, url);
+  }
+
+  public void renderCanonical(ResourceWrapper rw, XhtmlNode x, String url) throws UnsupportedEncodingException, IOException {
+    renderCanonical(rw, x, url, true); 
+  }
+  
+  public void renderCanonical(ResourceWrapper rw, XhtmlNode x, String url, boolean allowLinks) throws UnsupportedEncodingException, IOException {
+    if (url == null) {
+      return;
+    }
+    Resource target = context.getWorker().fetchResource(Resource.class, url);
+    if (target == null || !(target instanceof CanonicalResource)) {
+      x.code().tx(url);
+    } else {
+      CanonicalResource cr = (CanonicalResource) target;
+      if (url.contains("|")) {
+        if (target.hasUserData("path")) {
+          x.ah(target.getUserString("path")).tx(cr.present()+" (version "+cr.getVersion()+")");
+        } else {
+          url = url.substring(0, url.indexOf("|"));
+          x.code().tx(url);
+          x.tx(": "+cr.present()+" (version "+cr.getVersion()+")");          
+        }
+      } else {
+        if (target.hasUserData("path")) {
+          x.ah(target.getUserString("path")).tx(cr.present());
+        } else {
+          url = url.substring(0, url.indexOf("|"));
+          x.code().tx(url);
+          x.tx(": "+cr.present());          
+        }
+      }
+    }
+  }
+
   public void renderReference(Resource res, XhtmlNode x, Reference r) throws UnsupportedEncodingException, IOException {
     ResourceWrapper rw = new ResourceWrapperDirect(this.context, res);
     renderReference(rw, x, r);
@@ -327,5 +365,9 @@ public abstract class ResourceRenderer extends DataRenderer {
    public static String makeInternalBundleLink(String fullUrl) {
      return fullUrl.replace(":", "-");
    }
+
+  public boolean canRender(Resource resource) {
+    return true;
+  }
 
 }

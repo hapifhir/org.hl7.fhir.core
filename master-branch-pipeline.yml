@@ -11,6 +11,7 @@ pool:
 variables:
 - group: PGP_VAR_GROUP
 - group: SONATYPE_VAR_GROUP
+- group: GIT_VAR_GROUP
 
 steps:
   # We need a valid signing key. 
@@ -44,23 +45,23 @@ steps:
                                     https://maven.apache.org/xsd/settings-1.0.0.xsd">
         <servers>
           <server>
+            <id>github</id>
+            <username>$(GIT_USER_NAME)</username>
+            <password>$(GIT_PAT)</password>
+          </server>
+          <server>
             <id>ossrh</id>
             <username>$(SONATYPE_USER)</username>
             <password>$(SONATYPE_PASS)</password>
           </server>
           <server>
-            <id>sonatype-nexus-snapshots</id>
-            <username>$(SONATYPE_USER)</username>
-            <password>$(SONATYPE_PASS)</password>
+            <id>$(PGP_KEYNAME)</id>
+            <passphrase>$(PGP_PASSPHRASE)</passphrase>
           </server>
           <server>
-            <id>sonatype-nexus-staging</id>
-            <username>$(SONATYPE_USER)</username>
-            <password>$(SONATYPE_PASS)</password>
-          </server>
-          <server>
-              <id>$(PGP_KEYNAME)</id>
-              <passphrase>$(PGP_PASSPHRASE)</passphrase>
+            <id>github-releases</id>
+            <username>markiantorno</username>
+            <password>$(GIT_PACKAGE_PAT)</password>
           </server>
         </servers>
         <profiles>
@@ -81,9 +82,19 @@ steps:
   # Deploy the SNAPSHOT artifact to sonatype nexus.
   # This is done for the master branch merges only.
   - task: Maven@3
-    displayName: 'Deploy $(module) to Sonatype staging'
+    displayName: 'Deploy to Sonatype staging'
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
       goals: deploy
-      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -Pdeploy'
+      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -DdeployToSonatype'
+      publishJUnitResults: false
+
+  # Deploy the SNAPSHOT artifact to GitHub packages.
+  # This is done for the master branch merges only.
+  - task: Maven@3
+    displayName: 'Deploy to GitHub packages'
+    inputs:
+      mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
+      goals: deploy
+      options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToGitHub'
       publishJUnitResults: false

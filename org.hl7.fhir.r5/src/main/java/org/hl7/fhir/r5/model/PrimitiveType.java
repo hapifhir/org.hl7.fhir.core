@@ -248,4 +248,8 @@ public abstract class PrimitiveType<T> extends DataType implements IPrimitiveTyp
   public boolean hasPrimitiveValue() {
     return StringUtils.isNotBlank(getValueAsString());
   }
+  
+  public String fpValue() {
+    return primitiveValue();
+  }
 }

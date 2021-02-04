@@ -4,9 +4,22 @@
 | :---: |
 | [![Build Status][Badge-BuildPipeline]][Link-BuildPipeline] |
 
+This is the core object handling code, with utilities (including validator), for the FHIR specification. 
+included in this repo: 
+
+* org.fhir.fhir.utilities: Shared code used by all the other projects - including the internationalization code
+* org.fhir.fhir.r5: Object models and utilities for R5 candidate (will change regularly as new R5 candidates are released)
+* org.fhir.fhir.r4: Object models and utilities for R4
+* org.fhir.fhir.dstu3: Object models and utilities for STU3
+* org.fhir.fhir.dstu2: Object models and utilities for STU2
+* org.fhir.fhir.dstu2016may: Object models and utilities for an early STU3 candidate used by some implementers
+* org.fhir.fhir.convertors: Code to convert between versions, and other version indepedence code - uses all the above projects
+* org.fhir.fhir.validation: The FHIR Java validator
+* org.fhir.fhir.validation.cli: Holder project for releasing the FHIR validator as as single fat jar (will be removed in the future)
+
 ### CI/CD
 
-All intergration and delivery done on Azure pipelines. Azure project can be viewed [here][Link-AzureProject].
+All integration and delivery done on Azure pipelines. Azure project can be viewed [here][Link-AzureProject].
 
 ### Current Versions 
 | Project | Current Release | Latest SNAPSHOT |
@@ -113,7 +126,7 @@ compile group: 'ca.uhn.hapi.fhir', name: 'hapi-fhir-structures-r5', version: '(l
 ```
 
 ### Maintenance
-This project is maintained by [Grahame Grieve][Link-grahameGithub] and [James Agnew][Link-jamesGithub] on behalf of the FHIR community.
+This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew][Link-jamesGithub] and [Mark Iantorno][Link-markGithub] on behalf of the FHIR community.
 
 [Link-AzureProject]: https://dev.azure.com/fhir-pipelines/fhir-core-library
 [Link-BuildPipeline]: https://dev.azure.com/fhir-pipelines/fhir-core-library/_build/latest?definitionId=29&branchName=master
@@ -134,6 +147,7 @@ This project is maintained by [Grahame Grieve][Link-grahameGithub] and [James Ag
 [Link-validationSonatypeRelease]: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation&v=LATEST "Sonatype Release"
 [Link-grahameGithub]: https://github.com/grahamegrieve
 [Link-jamesGithub]: https://github.com/jamesagnew
+[Link-markGithub]: https://github.com/markiantorno
 [Link-Publishing]: https://github.com/FHIR/fhir-test-cases/wiki/Publishing-Binaries
 [Link-PublishingRelease]: https://github.com/FHIR/fhir-test-cases/wiki/Detailed-Release-Instructions
 

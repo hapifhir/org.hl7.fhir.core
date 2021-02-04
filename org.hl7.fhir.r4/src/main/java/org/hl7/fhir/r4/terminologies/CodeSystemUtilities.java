@@ -67,7 +67,7 @@ public class CodeSystemUtilities {
 
   public static void setNotSelectable(CodeSystem cs, ConceptDefinitionComponent concept) throws FHIRFormatError {
     defineNotSelectableProperty(cs);
-    ConceptPropertyComponent p = getProperty(concept, "notSelectable");
+    ConceptPropertyComponent p = getProperty(concept, "abstract");
     if (p != null)
       p.setValue(new BooleanType(true));
     else

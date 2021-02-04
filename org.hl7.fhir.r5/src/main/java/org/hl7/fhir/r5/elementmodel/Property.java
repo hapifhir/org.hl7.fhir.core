@@ -57,11 +57,16 @@ public class Property {
 	private Boolean canBePrimitive;
   private ProfileUtilities profileUtilities; 
 
-	public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure) {
+  public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure, ProfileUtilities profileUtilities) {
 		this.context = context;
 		this.definition = definition;
 		this.structure = structure;
-    profileUtilities = new ProfileUtilities(context, null, null); 
+    this.profileUtilities = profileUtilities;
+	}
+
+
+	public Property(IWorkerContext context, ElementDefinition definition, StructureDefinition structure) {
+    this(context, definition, structure, new ProfileUtilities(context, null, null));
 	}
 
 	public String getName() {
@@ -109,17 +114,31 @@ public class Property {
       return definition.getPath();
     ElementDefinition ed = definition;
     if (definition.hasContentReference()) {
-      if (!definition.getContentReference().startsWith("#"))
-        throw new Error("not handled yet");
+      String url = null;
+      String path = definition.getContentReference();
+      if (!path.startsWith("#")) {
+        if (path.contains("#")) {
+          url = path.substring(0, path.indexOf("#"));
+          path = path.substring(path.indexOf("#")+1);
+        } else {
+          throw new Error("Illegal content reference '"+path+"'");
+        }
+      } else {
+        path = path.substring(1);
+      }
+      StructureDefinition sd = (url == null || url.equals(structure.getUrl())) ? structure : context.fetchResource(StructureDefinition.class, url, structure);
+      if (sd == null) {
+        throw new Error("Unknown Type in content reference '"+path+"'");        
+      }
       boolean found = false;
-      for (ElementDefinition d : structure.getSnapshot().getElement()) {
-        if (d.hasId() && d.getId().equals(definition.getContentReference().substring(1))) {
+      for (ElementDefinition d : sd.getSnapshot().getElement()) {
+        if (d.hasId() && d.getId().equals(path)) {
           found = true;
           ed = d;
         }
       }
       if (!found)
-        throw new Error("Unable to resolve "+definition.getContentReference()+" at "+definition.getPath()+" on "+structure.getUrl());
+        throw new Error("Unable to resolve "+definition.getContentReference()+" at "+definition.getPath()+" on "+sd.getUrl());
     }
     if (ed.getType().size() == 0)
 			return null;
@@ -340,7 +359,7 @@ public class Property {
     }
     List<Property> properties = new ArrayList<Property>();
     for (ElementDefinition child : children) {
-      properties.add(new Property(context, child, sd));
+      properties.add(new Property(context, child, sd, this.profileUtilities));
     }
     return properties;
   }
@@ -379,7 +398,7 @@ public class Property {
     }
     List<Property> properties = new ArrayList<Property>();
     for (ElementDefinition child : children) {
-      properties.add(new Property(context, child, sd));
+      properties.add(new Property(context, child, sd, this.profileUtilities));
     }
     return properties;
   }

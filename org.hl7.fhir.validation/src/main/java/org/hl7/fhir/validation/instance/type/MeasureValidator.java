@@ -5,7 +5,6 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,31 +21,28 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.Library;
 import org.hl7.fhir.r5.model.Measure;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.renderers.DataRenderer;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext;
-import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupComponent;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupPopulationComponent;
 import org.hl7.fhir.r5.model.Measure.MeasureGroupStratifierComponent;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.renderers.DataRenderer;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
+import org.hl7.fhir.validation.instance.utils.NodeStack;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.w3c.dom.Document;
 
-import net.sf.saxon.tree.tiny.LargeStringBuffer;
-
 public class MeasureValidator extends BaseValidator {
 
-  public MeasureValidator(IWorkerContext context, TimeTracker timeTracker) {
-    super(context);
+  public MeasureValidator(IWorkerContext context, TimeTracker timeTracker, XVerExtensionManager xverManager) {
+    super(context, xverManager);
     source = Source.InstanceValidator;
     this.timeTracker = timeTracker;
   }

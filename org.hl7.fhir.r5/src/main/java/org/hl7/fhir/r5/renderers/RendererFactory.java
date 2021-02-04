@@ -36,6 +36,9 @@ public class RendererFactory {
     if ("OperationDefinition".equals(resourceName)) {
       return new OperationDefinitionRenderer(context);
     }
+    if ("SearchParameter".equals(resourceName)) {
+      return new SearchParameterRenderer(context);
+    }
     if ("CompartmentDefinition".equals(resourceName)) {
       return new CompartmentDefinitionRenderer(context);
     }
@@ -59,6 +62,9 @@ public class RendererFactory {
     if ("Encounter".equals(resourceName)) {
       return new EncounterRenderer(context);
     }
+    if ("Library".equals(resourceName)) {
+      return new LibraryRenderer(context);
+    }
     if ("List".equals(resourceName)) {
       return new ListRenderer(context);
     }
@@ -74,6 +80,9 @@ public class RendererFactory {
     }
     if ("Parameters".equals(resourceName)) {
       return new ParametersRenderer(context);
+    }
+    if ("Bundle".equals(resourceName)) {
+      return new BundleRenderer(context);
     }
     return new ProfileDrivenRenderer(context);    
   }
@@ -101,6 +110,9 @@ public class RendererFactory {
 
     if ("List".equals(resource.getName())) {
       return new ListRenderer(context);
+    }
+    if ("Library".equals(resource.getName())) {
+      return new LibraryRenderer(context);
     }
     if ("DiagnosticReport".equals(resource.getName())) {
       return new DiagnosticReportRenderer(context);

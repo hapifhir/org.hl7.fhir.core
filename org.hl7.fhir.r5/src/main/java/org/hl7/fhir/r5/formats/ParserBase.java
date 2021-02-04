@@ -36,7 +36,9 @@ package org.hl7.fhir.r5.formats;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -46,6 +48,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.utilities.Utilities;
 
 public abstract class ParserBase extends FormatUtilities implements IParser {
@@ -100,6 +103,7 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
     bytes.close();
     return bytes.toByteArray();
   }
+
 
   // -- Parser Configuration --------------------------------
 
@@ -231,6 +235,15 @@ public abstract class ParserBase extends FormatUtilities implements IParser {
 
   protected String parseUuidPrimitive(String value) {
     return value;
+  }
+
+  @Override
+  public Resource parseAndClose(InputStream input) throws IOException, FHIRFormatError {
+    try {
+      return parse(input);
+    } finally {
+      input.close();
+    }
   }
 
 

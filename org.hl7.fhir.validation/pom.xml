@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>5.1.8-SNAPSHOT</version>
+        <version>5.2.21-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -110,32 +110,40 @@
         <dependency>
             <groupId>info.cqframework</groupId>
             <artifactId>cql</artifactId>
-            <version>1.4.9</version>
+            <version>${info_cqframework_version}</version>
         </dependency>
         <dependency>
             <groupId>info.cqframework</groupId>
             <artifactId>model</artifactId>
-            <version>1.4.9</version>
+            <version>${info_cqframework_version}</version>
         </dependency>
         <dependency>
             <groupId>info.cqframework</groupId>
             <artifactId>elm</artifactId>
-            <version>1.4.9</version>
+            <version>${info_cqframework_version}</version>
         </dependency>
         <dependency>
             <groupId>info.cqframework</groupId>
             <artifactId>cql-to-elm</artifactId>
-            <version>1.4.9</version>
+            <version>${info_cqframework_version}</version>
         </dependency>
         <dependency>
             <groupId>info.cqframework</groupId>
             <artifactId>quick</artifactId>
-            <version>1.4.9</version>
+            <version>${info_cqframework_version}</version>
         </dependency>
         <dependency>
             <groupId>info.cqframework</groupId>
             <artifactId>qdm</artifactId>
-            <version>1.4.9</version>
+            <version>${info_cqframework_version}</version>
+        </dependency>
+
+        <!-- OkHttpDependency -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.0</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- Test Dependencies -->

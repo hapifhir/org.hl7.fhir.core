@@ -42,7 +42,9 @@ import org.hl7.fhir.utilities.Utilities;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -51,6 +53,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	static final long NANOS_PER_MILLIS = 1000000L;
 
 	static final long NANOS_PER_SECOND = 1000000000L;
+  private static final Map<String, TimeZone> timezoneCache = new ConcurrentHashMap<>();
 	private static final FastDateFormat ourHumanDateFormat = FastDateFormat.getDateInstance(FastDateFormat.MEDIUM);
 
 	private static final FastDateFormat ourHumanDateTimeFormat = FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM);
@@ -174,7 +177,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 		} else {
 			GregorianCalendar cal;
 			if (myTimeZoneZulu) {
-				cal = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+				cal = new GregorianCalendar(getTimeZone("GMT"));
 			} else if (myTimeZone != null) {
 				cal = new GregorianCalendar(myTimeZone);
 			} else {
@@ -346,7 +349,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 	 */
 	public TimeZone getTimeZone() {
 		if (myTimeZoneZulu) {
-			return TimeZone.getTimeZone("GMT");
+			return getTimeZone("GMT");
 		}
 		return myTimeZone;
 	}
@@ -652,7 +655,7 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
 			parseInt(theWholeValue, theValue.substring(1, 3), 0, 23);
 			parseInt(theWholeValue, theValue.substring(4, 6), 0, 59);
 			myTimeZoneZulu = false;
-			myTimeZone = TimeZone.getTimeZone("GMT" + theValue);
+			myTimeZone = getTimeZone("GMT" + theValue);
 		}
 
 		return this;
@@ -866,8 +869,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     if (hasTimezone() != theOther.hasTimezone()) {
       if (!couldBeTheSameTime(this, theOther)) {
         return false;
-      } else if (getPrecision() != theOther.getPrecision()) {
-        return false;
       } else {
         return null;
       }
@@ -885,8 +886,6 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
     }    
   }
 
-
-
   private boolean couldBeTheSameTime(BaseDateTimeType theArg1, BaseDateTimeType theArg2) {
     long lowLeft = theArg1.getValue().getTime();
     long highLeft = theArg1.getHighEdge().getValue().getTime();
@@ -900,16 +899,12 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
       lowRight = lowRight - (14 * DateUtils.MILLIS_PER_HOUR);
       highRight = highRight + (14 * DateUtils.MILLIS_PER_HOUR);
     }
-    System.out.print("["+((lowLeft / 1000) - 130000000)+"-"+((highLeft / 1000)  - 130000000)+"] vs ["+((lowRight / 1000) - 130000000)+"-"+((highRight / 1000) - 130000000)+"] = ");
     if (highRight < lowLeft) {
-      System.out.println("false");
       return false;
     }
     if (highLeft < lowRight) {
-      System.out.println("false");
       return false;
     }
-    System.out.println("true");
     return true;
   }
 
@@ -1001,6 +996,14 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
         return def;
       }
 
+      if (left.getSecond() < right.getSecond()) {
+        return -1;
+      } else if (left.getSecond() > right.getSecond()) {
+        return 1;
+      } else if (left.getPrecision() == TemporalPrecisionEnum.SECOND && right.getPrecision() == TemporalPrecisionEnum.SECOND) {
+        return 0;
+      }
+
       if (left.getSecondsMilli() < right.getSecondsMilli()) {
         return -1;
       } else if (left.getSecondsMilli() > right.getSecondsMilli()) {
@@ -1009,5 +1012,14 @@ public abstract class BaseDateTimeType extends PrimitiveType<Date> {
         return 0;
       }
     }
+
+    @Override
+    public String fpValue() {
+      return "@"+primitiveValue();
+    }
+
+  private TimeZone getTimeZone(String offset) {
+    return timezoneCache.computeIfAbsent(offset, TimeZone::getTimeZone);
+  }
 
 }
