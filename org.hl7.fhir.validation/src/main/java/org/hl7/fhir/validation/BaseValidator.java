@@ -3,6 +3,7 @@ package org.hl7.fhir.validation;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -64,23 +65,63 @@ POSSIBILITY OF SUCH DAMAGE.
 
  */
 import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.terminologies.ValueSetUtilities;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.validation.BaseValidator.TrackedLocationRelatedMessage;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 
 public class BaseValidator {
+
+  public class TrackedLocationRelatedMessage {
+    private Object location;
+    private ValidationMessage vmsg;
+    public TrackedLocationRelatedMessage(Object location, ValidationMessage vmsg) {
+      super();
+      this.location = location;
+      this.vmsg = vmsg;
+    }
+    public Object getLocation() {
+      return location;
+    }
+    public ValidationMessage getVmsg() {
+      return vmsg;
+    }
+    
+  }
+
+  public class ValidationControl {
+    private boolean allowed;
+    private IssueSeverity level;
+    
+    public ValidationControl(boolean allowed, IssueSeverity level) {
+      super();
+      this.allowed = allowed;
+      this.level = level;
+    }
+    public boolean isAllowed() {
+      return allowed;
+    }
+    public IssueSeverity getLevel() {
+      return level;
+    }
+  }
 
   protected final String META = "meta";
   protected final String ENTRY = "entry";
@@ -98,13 +139,31 @@ public class BaseValidator {
   protected Source source;
   protected IWorkerContext context;
   protected TimeTracker timeTracker = new TimeTracker();
-
-
-  public BaseValidator(IWorkerContext context){
+  protected XVerExtensionManager xverManager;
+  protected List<TrackedLocationRelatedMessage> trackedMessages = new ArrayList<>();
+  protected List<ValidationMessage> messagesToRemove = new ArrayList<>();
+  
+  public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
+    super();
     this.context = context;
+    this.xverManager = xverManager;
+    if (this.xverManager == null) {
+      this.xverManager = new XVerExtensionManager(context);
+    }
+
   }
 
   /**
+   * Use to control what validation the validator performs. 
+   * Using this, you can turn particular kinds of validation on and off 
+   * In addition, you can override the error | warning | hint level and make it a different level
+   * 
+   * There is no way to do this using the command line validator; it's a service that is only 
+   * offered when the validator is hosted in some other process
+   */
+  private Map<String, ValidationControl> validationControl = new HashMap<>();
+
+    /**
    * Test a rule and add a {@link IssueSeverity#FATAL} validation message if the validation fails
    * 
    * @param thePass
@@ -262,9 +321,10 @@ public class BaseValidator {
    *          Set this parameter to <code>false</code> if the validation does not pass
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
-  protected boolean hint(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String msg) {
+  protected boolean hint(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
-      addValidationMessage(errors, type, -1, -1, path, msg, IssueSeverity.INFORMATION, null);
+      String message = context.formatMessage(theMessage, theMessageArguments);
+      addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.INFORMATION, null);
     }
     return thePass;
   }
@@ -287,7 +347,10 @@ public class BaseValidator {
   protected boolean txRule(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String theMessage, Object... theMessageArguments) {
     if (!thePass) {
       String message = context.formatMessage(theMessage, theMessageArguments);
-      errors.add(new ValidationMessage(Source.TerminologyEngine, type, line, col, path, message, IssueSeverity.ERROR).setTxLink(txLink));
+      ValidationMessage vm = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, message, IssueSeverity.ERROR).setMessageId(theMessage);
+      if (checkMsgId(theMessage, vm)) {
+        errors.add(vm.setTxLink(txLink));
+      }
     }
     return thePass;
   }
@@ -415,8 +478,21 @@ public class BaseValidator {
 
   protected ValidationMessage addValidationMessage(List<ValidationMessage> errors, IssueType type, int line, int col, String path, String msg, IssueSeverity theSeverity, Source theSource, String id) {
     ValidationMessage validationMessage = new ValidationMessage(theSource, type, line, col, path, msg, theSeverity).setMessageId(id);
-    errors.add(validationMessage);
+    if (checkMsgId(id, validationMessage)) {
+      errors.add(validationMessage);
+    }
     return validationMessage;
+  }
+
+  public boolean checkMsgId(String id, ValidationMessage vm) { 
+    if (id != null && validationControl.containsKey(id)) {
+      ValidationControl control = validationControl.get(id);
+      if (control.level != null) {
+        vm.setLevel(control.level);
+      }
+      return control.isAllowed();
+    }
+    return true;
   }
 
   /**
@@ -429,12 +505,46 @@ public class BaseValidator {
   protected boolean txWarning(List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
-      errors.add(new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg));
+      ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg);
+      if (checkMsgId(msg, vmsg)) {
+        errors.add(vmsg);
+      }
+    }
+    return thePass;
+
+  }
+  
+  /**
+   * Test a rule and add a {@link IssueSeverity#WARNING} validation message if the validation fails. Also, keep track of it later in case we want to remove it if we find a required binding for this element later
+   * 
+   * @param thePass
+   *          Set this parameter to <code>false</code> if the validation does not pass
+   * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
+   */
+  protected boolean txWarningForLaterRemoval(Object location, List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+    if (!thePass) {
+      String nmsg = context.formatMessage(msg, theMessageArguments);
+      ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg);
+      if (checkMsgId(msg, vmsg)) {
+        errors.add(vmsg);
+      }
+      trackedMessages.add(new TrackedLocationRelatedMessage(location, vmsg));
     }
     return thePass;
 
   }
 
+  protected void removeTrackedMessagesForLocation(List<ValidationMessage> errors, Object location, String path) {
+    List<TrackedLocationRelatedMessage> messages = new ArrayList<>();
+    for (TrackedLocationRelatedMessage m : trackedMessages) {
+      if (m.getLocation() == location) {
+        messages.add(m);
+        messagesToRemove.add(m.getVmsg());
+      }
+    }
+    trackedMessages.removeAll(messages);    
+  }
+  
   protected boolean warningOrError(boolean isError, List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
@@ -471,6 +581,21 @@ public class BaseValidator {
     if (!thePass) {
       String message = context.formatMessage(msg, theMessageArguments);
       addValidationMessage(errors, type, -1, -1, path, message, IssueSeverity.WARNING, null);
+    }
+    return thePass;
+  }
+
+  /**
+   * Test a rule and add a {@link IssueSeverity#WARNING} validation message if the validation fails
+   * 
+   * @param thePass
+   *          Set this parameter to <code>false</code> if the validation does not pass
+   * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
+   */
+  protected boolean warningOrHint(List<ValidationMessage> errors, IssueType type, String path, boolean thePass, boolean warning, String msg, Object... theMessageArguments) {
+    if (!thePass) {
+      String message = context.formatMessage(msg, theMessageArguments);
+      addValidationMessage(errors, type, -1, -1, path, message, warning ? IssueSeverity.WARNING : IssueSeverity.INFORMATION, null);
     }
     return thePass;
   }
@@ -567,7 +692,10 @@ public class BaseValidator {
   }
 
   protected void addValidationMessage(List<ValidationMessage> errors, IssueType type, String path, String msg, String html, IssueSeverity theSeverity, String id) {
-    errors.add(new ValidationMessage(source, type, -1, -1, path, msg, html, theSeverity).setMessageId(id));
+    ValidationMessage vm = new ValidationMessage(source, type, -1, -1, path, msg, html, theSeverity);
+    if (checkMsgId(id, vm)) {
+      errors.add(vm.setMessageId(id));
+    }
   }
 
   /**
@@ -802,5 +930,78 @@ public class BaseValidator {
     }
   }
 
+  public Map<String, ValidationControl> getValidationControl() {
+    return validationControl;
+  }
 
+  public XVerExtensionStatus xverStatus(String url) {
+    return xverManager.status(url);
+  }
+
+  public boolean isXverUrl(String url) {
+    return xverManager.matchingUrl(url);    
+  }
+  
+  public StructureDefinition xverDefn(String url) {
+    return xverManager.makeDefinition(url);
+  }
+  
+  public String xverVersion(String url) {
+    return xverManager.getVersion(url);
+  }
+
+  public String xverElementId(String url) {
+    return xverManager.getElementId(url);
+  }
+
+  public StructureDefinition getXverExt(StructureDefinition profile, List<ValidationMessage> errors, String url) {
+    if (isXverUrl(url)) {
+      switch (xverStatus(url)) {
+        case BadVersion:
+          rule(errors, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INVALID, url, xverVersion(url));
+          return null;
+        case Unknown:
+          rule(errors, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INVALIDID, url, xverElementId(url));
+          return null;
+        case Invalid:
+          rule(errors, IssueType.BUSINESSRULE, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_NOCHANGE, url, xverElementId(url));
+          return null;
+        case Valid:
+          StructureDefinition defn = xverDefn(url);
+          context.generateSnapshot(defn);
+          context.cacheResource(defn);
+          return defn;
+        default:
+          rule(errors, IssueType.INVALID, profile.getId(), false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
+          return null;
+      }
+    } else {
+      return null;      
+    }
+  }
+  
+  public StructureDefinition getXverExt(List<ValidationMessage> errors, String path, Element element, String url) {
+    if (isXverUrl(url)) {
+      switch (xverStatus(url)) {
+      case BadVersion:
+        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALID, url, xverVersion(url));
+        break;
+      case Unknown:
+        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INVALIDID, url, xverElementId(url));
+        break;
+      case Invalid:
+        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_NOCHANGE, url, xverElementId(url));
+        break;
+      case Valid:
+        StructureDefinition ex = xverDefn(url);
+        context.generateSnapshot(ex);
+        context.cacheResource(ex);
+        return ex;
+      default:
+        rule(errors, IssueType.INVALID, element.line(), element.col(), path + "[url='" + url + "']", false, I18nConstants.EXTENSION_EXT_VERSION_INTERNAL, url);
+        break;
+      }
+    }
+    return null;
+  }
 }

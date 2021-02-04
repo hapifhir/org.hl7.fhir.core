@@ -142,7 +142,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     rows.add(r);
     boolean hasExt = false;
 
-    r.setIcon("icon-q-"+i.getType().toCode()+".png", i.getType().getDisplay());
+    r.setIcon("icon-q-"+i.getType().toCode().toLowerCase()+".png", i.getType().getDisplay());
     r.getCells().add(gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+i.getLinkId(), i.getLinkId(), null, null));
     String txt = (i.hasPrefix() ? i.getPrefix() + ". " : "") + i.getText();
     r.getCells().add(gen.new Cell(null, null, txt, null, null));
@@ -361,7 +361,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     rows.add(r);
     boolean hasExt = false;
 
-    r.setIcon("icon-q-"+i.getType().toCode()+".png", i.getType().getDisplay());
+    r.setIcon("icon-q-"+i.getType().toCode().toLowerCase()+".png", i.getType().getDisplay());
     r.getCells().add(gen.new Cell(null, context.getDefinitionsTarget() == null ? "" : context.getDefinitionsTarget()+"#item."+i.getLinkId(), i.getLinkId(), null, null));
     Cell defn = gen.new Cell();
     r.getCells().add(defn);
@@ -709,8 +709,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.hasAnswerValueSet()) {
       ValueSet vs = null;
       if (i.getAnswerValueSet().startsWith("#")) {
-        vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1)).copy();
+        vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1));
         if (vs != null && !vs.hasUrl()) {
+          vs = vs.copy();
           vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase());
         }
       } else {

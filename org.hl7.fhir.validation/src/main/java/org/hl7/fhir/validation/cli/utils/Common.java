@@ -89,7 +89,15 @@ public class Common {
     System.out.println("Loading (v = " + version + ", tx server -> " + txServer + ")");
     ValidationEngine ve = new ValidationEngine(definitions, FhirPublication.fromCode(version), version, tt);
     ve.connectToTSServer(txServer, txLog, FhirPublication.fromCode(version));
-    return ve; 
+    return ve;
+  }
+
+  public static boolean isNetworkPath(String path) {
+    return path.startsWith("https:") || path.startsWith("http:");
+  }
+
+  public static boolean isWildcardPath(String name) {
+    return name.contains("*");
   }
 
 }

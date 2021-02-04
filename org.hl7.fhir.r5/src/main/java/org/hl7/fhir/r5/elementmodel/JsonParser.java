@@ -53,6 +53,7 @@ import org.hl7.fhir.r5.formats.JsonCreator;
 import org.hl7.fhir.r5.formats.JsonCreatorCanonical;
 import org.hl7.fhir.r5.formats.JsonCreatorGson;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -75,8 +76,14 @@ public class JsonParser extends ParserBase {
 	private Map<JsonElement, LocationData> map;
 	private boolean allowComments;
 
+  private FHIRPathEngine fpe;
+  private ProfileUtilities profileUtilities;
+
 	public JsonParser(IWorkerContext context) {
 		super(context);
+    
+    this.fpe = new FHIRPathEngine(this.context);
+    this.profileUtilities = new ProfileUtilities(this.context, null, null, this.fpe);
 	}
 
 	public Element parse(String source, String type) throws Exception {
@@ -86,7 +93,7 @@ public class JsonParser extends ParserBase {
     if (sd == null)
       return null;
 
-    Element result = new Element(type, new Property(context, sd.getSnapshot().getElement().get(0), sd));
+    Element result = new Element(type, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities));
     checkObject(obj, path);
     result.setType(type);
     parseChildren(path, obj, result, true);
@@ -135,7 +142,7 @@ public class JsonParser extends ParserBase {
 			if (sd == null)
 				return null;
 
-			Element result = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd));
+			Element result = new Element(name, new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities));
 			checkObject(object, path);
 			result.markLocation(line(object), col(object));
 			result.setType(name);
@@ -165,7 +172,6 @@ public class JsonParser extends ParserBase {
 		Set<String> processed = new HashSet<String>();
 		if (hasResourceType)
 			processed.add("resourceType");
-		processed.add("fhir_comments");
 
 		// note that we do not trouble ourselves to maintain the wire format order here - we don't even know what it was anyway
 		// first pass: process the properties
@@ -208,6 +214,9 @@ public class JsonParser extends ParserBase {
 		JsonElement e = object.get(name);
 		if (property.isList() && (e instanceof JsonArray)) {
 			JsonArray arr = (JsonArray) e;
+			if (arr.size() == 0) {
+        logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.ARRAY_CANNOT_BE_EMPTY), IssueSeverity.ERROR);			  
+			}
 			int c = 0;
 			for (JsonElement am : arr) {
 				parseChildComplexInstance(npath+"["+c+"]", object, element, property, name, am);
@@ -215,7 +224,7 @@ public class JsonParser extends ParserBase {
 			}
 		} else {
 		  if (property.isList()) {
-	      logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describeType(e)), IssueSeverity.ERROR);
+	      logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describeType(e), name, path), IssueSeverity.ERROR);
 		  }
 			parseChildComplexInstance(npath, object, element, property, name, e);
 		}
@@ -244,7 +253,7 @@ public class JsonParser extends ParserBase {
 			else
 				parseChildren(npath, child, n, false);
 		} else
-			logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e)), IssueSeverity.ERROR);
+			logError(line(e), col(e), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE__NOT_, (property.isList() ? "an Array" : "an Object"), describe(e), name, npath), IssueSeverity.ERROR);
 	}
 
 	private String describe(JsonElement e) {
@@ -270,11 +279,11 @@ public class JsonParser extends ParserBase {
 			if (property.isList()) {
 			  boolean ok = true;
 			  if (!(main == null || main instanceof JsonArray)) {
-					logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_, describe(main)), IssueSeverity.ERROR);
+					logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(main), name, path), IssueSeverity.ERROR);
 	        ok = false;
 			  }
         if (!(fork == null || fork instanceof JsonArray)) {
-					logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_A_, describe(main)), IssueSeverity.ERROR);
+					logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_BASE_PROPERTY_MUST_BE_AN_ARRAY_NOT_, describe(main), name, path), IssueSeverity.ERROR);
           ok = false;
         }
         if (ok) {
@@ -304,9 +313,9 @@ public class JsonParser extends ParserBase {
 	    JsonElement main, JsonElement fork) throws FHIRException {
 			if (main != null && !(main instanceof JsonPrimitive))
 				logError(line(main), col(main), npath, IssueType.INVALID, context.formatMessage(
-          I18nConstants.THIS_PROPERTY_MUST_BE_AN_SIMPLE_VALUE_NOT_, describe(main)), IssueSeverity.ERROR);
+          I18nConstants.THIS_PROPERTY_MUST_BE_AN_SIMPLE_VALUE_NOT_, describe(main), name, npath), IssueSeverity.ERROR);
 			else if (fork != null && !(fork instanceof JsonObject))
-				logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(fork)), IssueSeverity.ERROR);
+				logError(line(fork), col(fork), npath, IssueType.INVALID, context.formatMessage(I18nConstants.THIS_PROPERTY_MUST_BE_AN_OBJECT_NOT_, describe(fork), name, npath), IssueSeverity.ERROR);
 			else {
 				Element n = new Element(name, property).markLocation(line(main != null ? main : fork), col(main != null ? main : fork));
 				element.getChildren().add(n);
@@ -355,7 +364,7 @@ public class JsonParser extends ParserBase {
 			StructureDefinition sd = context.fetchResource(StructureDefinition.class, ProfileUtilities.sdNs(name, context.getOverrideVersionNs()));
 			if (sd == null)
 				throw new FHIRFormatError(context.formatMessage(I18nConstants.CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_, name));
-			parent.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd), SpecialElement.fromProperty(parent.getProperty()), elementProperty);
+			parent.updateProperty(new Property(context, sd.getSnapshot().getElement().get(0), sd, this.profileUtilities), SpecialElement.fromProperty(parent.getProperty()), elementProperty);
 			parent.setType(name);
 			parseChildren(npath, res, parent, true);
 		}

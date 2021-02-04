@@ -1,0 +1,20 @@
+{
+  "resourceType": "Device",
+  "id": "DEV000000000873",
+  "identifier": [
+    {
+      "system": "https://fresenius.org/device",
+      "value": "DEV000000000873"
+    }
+  ],
+  "definition": {
+    "reference": "Dialysis"
+  },
+  "serialNumber": "LC020678",
+  "deviceName": [
+    {
+      "name": "LC020678",
+      "type": "manufacturer-name"
+    }
+  ]
+}

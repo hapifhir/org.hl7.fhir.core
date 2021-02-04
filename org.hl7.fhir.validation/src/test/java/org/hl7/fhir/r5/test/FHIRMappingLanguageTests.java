@@ -6,7 +6,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -20,11 +19,11 @@ import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.ValidationEngine;
-
 import org.hl7.fhir.validation.instance.InstanceValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -91,7 +90,7 @@ public class FHIRMappingLanguageTests {
 
     String msg = null;
     try {
-      StructureMap r = new org.hl7.fhir.r5.utils.StructureMapUtilities(context).parse(stringMap, map);
+      StructureMap r = new StructureMapUtilities(context).parse(stringMap, map);
       context.cacheResource(r);
       org.hl7.fhir.r5.elementmodel.Element element = validationEngine.transform(byteSource, FhirFormat.JSON, r.getUrl());
       s = new ByteArrayOutputStream();

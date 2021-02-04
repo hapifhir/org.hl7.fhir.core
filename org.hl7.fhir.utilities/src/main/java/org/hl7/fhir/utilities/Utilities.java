@@ -47,6 +47,8 @@ import java.math.RoundingMode;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -320,13 +322,13 @@ public class Utilities {
       destFile.createNewFile();
     }
 
-    FileChannel source = null;
-    FileChannel destination = null;
+    FileInputStream source = null;
+    FileOutputStream destination = null;
 
     try {
-      source = new FileInputStream(sourceFile).getChannel();
-      destination = new FileOutputStream(destFile).getChannel();
-      destination.transferFrom(source, 0, source.size());
+      source = new FileInputStream(sourceFile);
+      destination = new FileOutputStream(destFile);
+      destination.getChannel().transferFrom(source.getChannel(), 0, source.getChannel().size());
     } finally {
       if (source != null) {
         source.close();
@@ -398,8 +400,8 @@ public class Utilities {
                 clearDirectory(fh.getAbsolutePath());
               fh.delete();
             }
+            }
           }
-        }
       }
     }
   }
@@ -637,7 +639,7 @@ public class Utilities {
       return false;
     }
     File tmp = new File("c:\\temp");
-    return tmp.exists() && tmp.isDirectory();
+    return tmp.exists() && tmp.isDirectory() && tmp.canWrite();
   }
 
   public static String pathURL(String... args) {
@@ -776,7 +778,7 @@ public class Utilities {
 
 
   public static String encodeUri(String v) {
-    return v.replace(" ", "%20").replace("?", "%3F").replace("=", "%3D");
+    return v.replace(" ", "%20").replace("?", "%3F").replace("=", "%3D").replace("|", "%7C");
   }
 
 
@@ -1088,7 +1090,8 @@ public class Utilities {
 
 
   public static boolean isAbsoluteUrl(String ref) {
-    return ref != null && (ref.startsWith("http:") || ref.startsWith("https:") || ref.startsWith("urn:uuid:") || ref.startsWith("urn:oid:"));
+    return ref != null && (ref.startsWith("http:") || ref.startsWith("https:") || ref.startsWith("urn:uuid:") || ref.startsWith("urn:oid:") || 
+        Utilities.startsWithInList(ref, "urn:iso:", "urn:iso-iec:", "urn:iso-cie:", "urn:iso-astm:", "urn:iso-ieee:", "urn:iec:")); // rfc5141
   }
 
 

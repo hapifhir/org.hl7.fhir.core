@@ -41,7 +41,7 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
       CapabilityStatementRestComponent rest = conf.getRest().get(0);
       XhtmlNode t = x.table(null);
       addTableRow(t, "Mode", rest.getMode().toString());
-      addTableRow(t, "Description", rest.getDocumentation());
+      addMarkdown(addTableRow(t, "Description"), rest.getDocumentation());
 
       addTableRow(t, "Transaction", showOp(rest, SystemRestfulInteraction.TRANSACTION));
       addTableRow(t, "System History", showOp(rest, SystemRestfulInteraction.HISTORYSYSTEM));
@@ -143,7 +143,12 @@ public class CapabilityStatementRenderer extends ResourceRenderer {
     return "";
   }
 
-
+  private XhtmlNode addTableRow(XhtmlNode t, String name) {
+    XhtmlNode tr = t.tr();
+    tr.td().addText(name);
+    return tr.td();
+  }
+  
   private void addTableRow(XhtmlNode t, String name, String value) {
     XhtmlNode tr = t.tr();
     tr.td().addText(name);

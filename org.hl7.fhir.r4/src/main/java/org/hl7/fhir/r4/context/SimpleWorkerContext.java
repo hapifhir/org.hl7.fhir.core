@@ -79,7 +79,7 @@ import org.hl7.fhir.r4.utils.IResourceValidator;
 import org.hl7.fhir.r4.utils.NarrativeGenerator;
 import org.hl7.fhir.utilities.CSFileInputStream;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.cache.NpmPackage;
+import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;

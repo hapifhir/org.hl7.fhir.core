@@ -1,0 +1,39 @@
+{
+  "resourceType": "Procedure",
+  "id": "MrShokoProcedure",
+  "identifier": [
+    {
+      "use": "usual",
+      "type": {
+        "text": "ORD"
+      },
+      "system": "urn:oid:1.2.840.114350.1.13.404.2.7.2.798268",
+      "value": "1158800385"
+    },
+    {
+      "use": "usual",
+      "type": {
+        "text": "EAP"
+      },
+      "system": "urn:oid:1.2.840.114350.1.13.404.2.7.2.696580",
+      "value": "183667"
+    }
+  ],
+  "subject": {
+    "display": "Mr Shoko",
+    "reference": "Mr Shoko"
+  },
+  "status": "completed",
+  "code": {
+    "coding": [
+      {
+        "system": "urn:oid:1.2.840.114350.1.13.404.2.7.2.696580",
+        "code": "183667",
+        "display": "COLONOSCOPY  "
+      }
+    ],
+    "text": "Colonoscopy"
+  },
+  "notPerformed": false,
+  "performedDateTime": "2010-01-01T01:01:01Z"
+}

@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.renderers;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,6 +64,8 @@ public class ValueSetRenderer extends TerminologyRenderer {
   }
 
   private static final String ABSTRACT_CODE_HINT = "This code is not selectable ('Abstract')";
+
+  private static final int MAX_LANGS_IN_LINE = 5;
 
   private List<ConceptMapRenderInstructions> renderingMaps = new ArrayList<ConceptMapRenderInstructions>();
 
@@ -222,25 +226,45 @@ public class ValueSetRenderer extends TerminologyRenderer {
     tr.td().attribute("style", "white-space:nowrap").b().tx("Code");
     if (doSystem)
       tr.td().b().tx("System");
-    tr.td().b().tx("Display");
-    if (doDefinition)
+    XhtmlNode tdDisp = tr.td();
+    tdDisp.b().tx("Display");
+    boolean doLangs = false;
+    for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
+      scanForLangs(c, langs);
+    }
+    if (doDefinition) {
       tr.td().b().tx("Definition");
+      doLangs = false;
+    } else {
+      // if we're not doing definitions and we don't have too many languages, we'll do them in line
+      if (langs.size() < MAX_LANGS_IN_LINE) {
+        doLangs = true;
+        if (vs.hasLanguage()) {
+          tdDisp.tx(" - "+describeLang(vs.getLanguage()));
+        }
+        for (String lang : langs) {
+          tr.td().b().addText(describeLang(lang));
+        }
+      }
+    }
 
+    
     addMapHeaders(tr, maps);
     for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
-      addExpansionRowToTable(t, c, 0, doLevel, doSystem, doDefinition, maps, allCS, langs);
+      addExpansionRowToTable(t, c, 0, doLevel, doSystem, doDefinition, maps, allCS, langs, doLangs);
     }
 
     // now, build observed languages
 
-    if (langs.size() > 0) {
+    if (!doLangs && langs.size() > 0) {
       Collections.sort(langs);
       x.para().b().tx("Additional Language Displays");
       t = x.table( "codes");
       tr = t.tr();
       tr.td().b().tx("Code");
-      for (String lang : langs)
+      for (String lang : langs) {
         tr.td().b().addText(describeLang(lang));
+      }
       for (ValueSetExpansionContainsComponent c : vs.getExpansion().getContains()) {
         addLanguageRow(c, t, langs);
       }
@@ -459,7 +483,6 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if ("1.0m".equals(v))  return "Jul 1999";
     if ("1.0l".equals(v))  return "Jan 1998";
     if ("1.0ja".equals(v)) return "Oct 1997";
-
     return null;
   }
 
@@ -505,19 +528,32 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private void addLanguageRow(ValueSetExpansionContainsComponent c, XhtmlNode t, List<String> langs) {
     XhtmlNode tr = t.tr();
     tr.td().addText(c.getCode());
+    addLangaugesToRow(c, langs, tr);
+    for (ValueSetExpansionContainsComponent cc : c.getContains()) {
+      addLanguageRow(cc, t, langs);
+    }
+  }
+
+  public void addLangaugesToRow(ValueSetExpansionContainsComponent c, List<String> langs, XhtmlNode tr) {
     for (String lang : langs) {
       String d = null;
       for (Extension ext : c.getExtension()) {
         if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
           String l = ToolingExtensions.readStringExtension(ext, "lang");
-          if (lang.equals(l))
+          if (lang.equals(l)) {
             d = ToolingExtensions.readStringExtension(ext, "content");
+          }
+        }
+      }
+      if (d == null) {
+        for (ConceptReferenceDesignationComponent dd : c.getDesignation()) {
+          String l = dd.getLanguage();
+          if (lang.equals(l)) {
+            d = dd.getValue();
+          }
         }
       }
       tr.td().addText(d == null ? "" : d);
-    }
-    for (ValueSetExpansionContainsComponent cc : c.getContains()) {
-      addLanguageRow(cc, t, langs);
     }
   }
 
@@ -561,7 +597,27 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return ref.replace("\\", "/");
   }
 
-  private void addExpansionRowToTable(XhtmlNode t, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs) {
+  private void scanForLangs(ValueSetExpansionContainsComponent c, List<String> langs) {
+    for (Extension ext : c.getExtension()) {
+      if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
+        String lang = ToolingExtensions.readStringExtension(ext,  "lang");
+        if (!Utilities.noString(lang) && !langs.contains(lang)) {
+          langs.add(lang);
+        }
+      }
+    }
+    for (ConceptReferenceDesignationComponent d : c.getDesignation()) {
+      String lang = d.getLanguage();
+      if (!Utilities.noString(lang) && !langs.contains(lang)) {
+        langs.add(lang);
+      }
+    }
+    for (ValueSetExpansionContainsComponent cc : c.getContains()) {
+      scanForLangs(cc, langs);
+    }    
+  }
+  
+  private void addExpansionRowToTable(XhtmlNode t, ValueSetExpansionContainsComponent c, int i, boolean doLevel, boolean doSystem, boolean doDefinition, List<UsedConceptMap> maps, CodeSystem allCS, List<String> langs, boolean doLangs) {
     XhtmlNode tr = t.tr();
     XhtmlNode td = tr.td();
 
@@ -606,15 +662,11 @@ public class ValueSetRenderer extends TerminologyRenderer {
           td.i().tx("("+mapping.comp.getComment()+")");
       }
     }
-    for (Extension ext : c.getExtension()) {
-      if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
-        String lang = ToolingExtensions.readStringExtension(ext,  "lang");
-        if (!Utilities.noString(lang) && !langs.contains(lang))
-          langs.add(lang);
-      }
+    if (doLangs) {
+      addLangaugesToRow(c, langs, tr);
     }
     for (ValueSetExpansionContainsComponent cc : c.getContains()) {
-      addExpansionRowToTable(t, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs);
+      addExpansionRowToTable(t, cc, i+1, doLevel, doSystem, doDefinition, maps, allCS, langs, doLangs);
     }
   }
 
@@ -677,7 +729,14 @@ public class ValueSetRenderer extends TerminologyRenderer {
   private boolean generateComposition(XhtmlNode x, ValueSet vs, boolean header, List<UsedConceptMap> maps) throws FHIRException, IOException {
     boolean hasExtensions = false;
     List<String> langs = new ArrayList<String>();
-
+    for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
+      scanForLangs(inc, langs);
+    }
+    for (ConceptSetComponent inc : vs.getCompose().getExclude()) {
+      scanForLangs(inc, langs);
+    }
+    boolean doLangs = langs.size() < MAX_LANGS_IN_LINE;
+    
     if (header) {
       XhtmlNode h = x.h2();
       h.addText(vs.present());
@@ -686,27 +745,27 @@ public class ValueSetRenderer extends TerminologyRenderer {
         generateCopyright(x, vs);
     }
     if (vs.getCompose().getInclude().size() == 1 && vs.getCompose().getExclude().size() == 0) {
-      hasExtensions = genInclude(x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, maps) || hasExtensions;
+      hasExtensions = genInclude(x.ul(), vs.getCompose().getInclude().get(0), "Include", langs, doLangs, maps) || hasExtensions;
     } else {
       XhtmlNode p = x.para();
       p.tx("This value set includes codes based on the following rules:");
       XhtmlNode ul = x.ul();
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
-        hasExtensions = genInclude(ul, inc, "Include", langs, maps) || hasExtensions;
+        hasExtensions = genInclude(ul, inc, "Include", langs, doLangs, maps) || hasExtensions;
       }
       if (vs.getCompose().hasExclude()) {
         p = x.para();
         p.tx("This value set excludes codes based on the following rules:");
         ul = x.ul();
         for (ConceptSetComponent exc : vs.getCompose().getExclude()) {
-          hasExtensions = genInclude(ul, exc, "Exclude", langs, maps) || hasExtensions;
+          hasExtensions = genInclude(ul, exc, "Exclude", langs, doLangs, maps) || hasExtensions;
         }
       }
     }
     
     // now, build observed languages
 
-    if (langs.size() > 0) {
+    if (!doLangs && langs.size() > 0) {
       Collections.sort(langs);
       x.para().b().tx("Additional Language Displays");
       XhtmlNode t = x.table( "codes");
@@ -724,7 +783,26 @@ public class ValueSetRenderer extends TerminologyRenderer {
     return hasExtensions;
   }
 
-  private boolean genInclude(XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, List<UsedConceptMap> maps) throws FHIRException, IOException {
+  private void scanForLangs(ConceptSetComponent inc, List<String> langs) {
+    for (ConceptReferenceComponent cc : inc.getConcept()) {
+      for (Extension ext : cc.getExtension()) {
+        if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
+          String lang = ToolingExtensions.readStringExtension(ext,  "lang");
+          if (!Utilities.noString(lang) && !langs.contains(lang)) {
+            langs.add(lang);
+          }
+        }
+      }
+      for (ConceptReferenceDesignationComponent d : cc.getDesignation()) {
+        String lang = d.getLanguage();
+        if (!Utilities.noString(lang) && !langs.contains(lang)) {
+          langs.add(lang);
+        }
+      }
+    }
+  }
+
+  private boolean genInclude(XhtmlNode ul, ConceptSetComponent inc, String type, List<String> langs, boolean doLangs, List<UsedConceptMap> maps) throws FHIRException, IOException {
     boolean hasExtensions = false;
     XhtmlNode li;
     li = ul.li();
@@ -751,11 +829,12 @@ public class ValueSetRenderer extends TerminologyRenderer {
           boolean hasDefinition = false;
           for (ConceptReferenceComponent c : inc.getConcept()) {
             hasComments = hasComments || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT);
-            hasDefinition = hasDefinition || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION);
+            ConceptDefinitionComponent cc = definitions.get(c.getCode()); 
+            hasDefinition = hasDefinition || ((cc != null && cc.hasDefinition()) || ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION));
           }
           if (hasComments || hasDefinition)
             hasExtensions = true;
-          addMapHeaders(addTableHeaderRowStandard(t, false, true, hasDefinition, hasComments, false, false, null), maps);
+          addMapHeaders(addTableHeaderRowStandard(t, false, true, hasDefinition, hasComments, false, false, null, langs, doLangs), maps);
           for (ConceptReferenceComponent c : inc.getConcept()) {
             XhtmlNode tr = t.tr();
             XhtmlNode td = tr.td();
@@ -768,18 +847,22 @@ public class ValueSetRenderer extends TerminologyRenderer {
             else if (cc != null && !Utilities.noString(cc.getDisplay()))
               td.addText(cc.getDisplay());
 
-            td = tr.td();
-            if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION))
-              smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
-            else if (cc != null && !Utilities.noString(cc.getDefinition()))
-              smartAddText(td, cc.getDefinition());
-
-            if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
-              smartAddText(tr.td(), "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
+            if (hasDefinition) {
+              td = tr.td();
+              if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_DEFINITION)) {
+                smartAddText(td, ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_DEFINITION));
+              } else if (cc != null && !Utilities.noString(cc.getDefinition())) {
+                smartAddText(td, cc.getDefinition());
+              }
             }
-            for (ConceptReferenceDesignationComponent cd : c.getDesignation()) {
-              if (cd.hasLanguage() && !langs.contains(cd.getLanguage()))
-                langs.add(cd.getLanguage());
+            if (hasComments) {
+              td = tr.td();
+              if (ExtensionHelper.hasExtension(c, ToolingExtensions.EXT_VS_COMMENT)) {
+                smartAddText(td, "Note: "+ToolingExtensions.readStringExtension(c, ToolingExtensions.EXT_VS_COMMENT));
+              }
+            }
+            if (doLangs) {
+              addLangaugesToRow(c, langs, tr);
             }
           }
         }
@@ -850,6 +933,29 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     }
     return hasExtensions;
+  }
+
+  public void addLangaugesToRow(ConceptReferenceComponent c, List<String> langs, XhtmlNode tr) {
+    for (String lang : langs) {
+      String d = null;
+      for (Extension ext : c.getExtension()) {
+        if (ToolingExtensions.EXT_TRANSLATION.equals(ext.getUrl())) {
+          String l = ToolingExtensions.readStringExtension(ext, "lang");
+          if (lang.equals(l)) {
+            d = ToolingExtensions.readStringExtension(ext, "content");
+          }
+        }
+      }
+      if (d == null) {
+        for (ConceptReferenceDesignationComponent dd : c.getDesignation()) {
+          String l = dd.getLanguage();
+          if (lang.equals(l)) {
+            d = dd.getValue();
+          }
+        }
+      }
+      tr.td().addText(d == null ? "" : d);
+    }
   }
 
 

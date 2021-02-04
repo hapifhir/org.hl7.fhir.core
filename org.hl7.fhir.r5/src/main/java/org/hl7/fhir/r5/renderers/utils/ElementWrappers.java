@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.r5.conformance.ProfileUtilities.ElementDefinitionResolution;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -70,7 +72,7 @@ public class ElementWrappers {
     @Override
     public List<PropertyWrapper> children() {
       if (list == null) {
-        children = context.getProfileUtilities().getChildList(structure, definition);
+        children = context.getProfileUtilities().getChildList(structure, definition, false, true);
         if (children.isEmpty() && !Utilities.noString(type)) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(type);
           children = context.getProfileUtilities().getChildList(sd, sd.getSnapshot().getElementFirstRep());
@@ -246,7 +248,16 @@ public class ElementWrappers {
     public String fhirType() {
       return wrapped.fhirType();
     }
-  }
+
+    @Override
+    public PropertyWrapper getChildByName(String name) {
+      for (PropertyWrapper p : children())
+        if (p.getName().equals(name))
+          return p;
+      return null;
+    }
+
+}
 
   public static class PropertyWrapperMetaElement extends RendererWrapperImpl implements PropertyWrapper {
 
@@ -276,8 +287,9 @@ public class ElementWrappers {
     public List<BaseWrapper> getValues() {
       if (list == null) {
         list = new ArrayList<BaseWrapper>();
-        for (Element e : values)
-          list.add(new BaseWrapperMetaElement(context, e, e.fhirType(), structure, definition));
+        for (Element e : values) {
+           list.add(new BaseWrapperMetaElement(context, e, e.fhirType(), structure, definition));
+        }
       }
       return list;
     }

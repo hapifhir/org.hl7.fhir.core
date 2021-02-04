@@ -5,15 +5,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.ExpressionNode;
 import org.hl7.fhir.r5.model.ExpressionNode.Kind;
 import org.hl7.fhir.r5.model.ExpressionNode.Operation;
 import org.hl7.fhir.r5.model.SearchParameter;
-import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
+import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -21,7 +20,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.BaseValidator;
 import org.hl7.fhir.validation.TimeTracker;
-import org.hl7.fhir.validation.instance.type.SearchParameterValidator.FhirPathSorter;
 import org.hl7.fhir.validation.instance.utils.NodeStack;
 
 public class SearchParameterValidator extends BaseValidator {
@@ -37,8 +35,8 @@ public class SearchParameterValidator extends BaseValidator {
 
   private FHIRPathEngine fpe;
 
-  public SearchParameterValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe) {
-    super(context);
+  public SearchParameterValidator(IWorkerContext context, TimeTracker timeTracker, FHIRPathEngine fpe, XVerExtensionManager xverManager) {
+    super(context, xverManager);
     source = Source.InstanceValidator;
     this.fpe = fpe;
     this.timeTracker = timeTracker;
