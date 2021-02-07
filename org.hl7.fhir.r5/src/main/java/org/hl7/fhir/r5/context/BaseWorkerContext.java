@@ -750,7 +750,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 3rd pass: hit the server
     for (CodingValidationRequest t : codes) {
       t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs) : null);
-      codeSystemsUsed.add(t.getCoding().getSystem());
+      if (t.getCoding().hasSystem()) {
+        codeSystemsUsed.add(t.getCoding().getSystem());
+      }
       if (txCache != null) { 
         t.setResult(txCache.getValidation(t.getCacheToken()));
       }
@@ -846,7 +848,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       options = ValidationOptions.defaults();
     }
     
-    codeSystemsUsed.add(code.getSystem());
+    if (code.hasSystem()) {
+      codeSystemsUsed.add(code.getSystem());
+    }
     CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
     ValidationResult res = null;
     if (txCache != null) {
@@ -922,7 +926,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return res;
     }
     for (Coding c : code.getCoding()) {
-      codeSystemsUsed.add(c.getSystem());
+      if (c.hasSystem()) {
+        codeSystemsUsed.add(c.getSystem());
+      }
     }
 
     if (options.isUseClient()) {
@@ -1132,6 +1138,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public boolean isNoTerminologyServer() {
     return noTerminologyServer;
+  }
+
+  public void setNoTerminologyServer(boolean noTerminologyServer) {
+    this.noTerminologyServer = noTerminologyServer;
   }
 
   public String getName() {

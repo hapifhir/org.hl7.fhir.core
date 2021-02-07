@@ -76,15 +76,19 @@ public class JsonParser extends ParserBase {
 	private Map<JsonElement, LocationData> map;
 	private boolean allowComments;
 
-  private FHIRPathEngine fpe;
   private ProfileUtilities profileUtilities;
 
-	public JsonParser(IWorkerContext context) {
-		super(context);
+  public JsonParser(IWorkerContext context, ProfileUtilities utilities) {
+    super(context);
     
-    this.fpe = new FHIRPathEngine(this.context);
-    this.profileUtilities = new ProfileUtilities(this.context, null, null, this.fpe);
-	}
+    this.profileUtilities = utilities;
+  }
+  
+  public JsonParser(IWorkerContext context) {
+    super(context);
+    
+    this.profileUtilities = new ProfileUtilities(this.context, null, null, new FHIRPathEngine(context));
+  }
 
 	public Element parse(String source, String type) throws Exception {
 	  JsonObject obj = (JsonObject) new com.google.gson.JsonParser().parse(source);
