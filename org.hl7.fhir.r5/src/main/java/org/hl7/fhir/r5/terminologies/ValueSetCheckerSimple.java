@@ -152,6 +152,9 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
           throw new FHIRException(warningMessage);
         }
       }
+      if (cs != null && cs.hasSupplements()) {
+        return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.CODESYSTEM_CS_NO_SUPPLEMENT, cs.getUrl()));        
+      }
       if (cs!=null && cs.getContent() != CodeSystemContentMode.COMPLETE) {
         warningMessage = "Resolved system "+system+", but the definition is not complete";
         if (!inExpansion && cs.getContent() != CodeSystemContentMode.FRAGMENT) { // we're going to give it a go if it's a fragment

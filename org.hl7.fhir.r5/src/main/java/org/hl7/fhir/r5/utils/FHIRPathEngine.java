@@ -304,7 +304,6 @@ public class FHIRPathEngine {
     public ValueSet resolveValueSet(Object appContext, String url);
   }
 
-
   /**
    * @param worker - used when validating paths (@check), and used doing value set membership when executing tests (once that's defined)
    */

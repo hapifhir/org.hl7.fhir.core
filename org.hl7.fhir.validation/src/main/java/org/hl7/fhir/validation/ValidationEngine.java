@@ -834,6 +834,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     context.setTlogging(false);
     if (url == null) {
       context.setCanRunWithoutTerminology(true);
+      context.setNoTerminologyServer(true);
       return "n/a: No Terminology Server";
     } else {
       try {
