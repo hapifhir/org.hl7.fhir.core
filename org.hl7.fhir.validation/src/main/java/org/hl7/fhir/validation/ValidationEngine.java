@@ -50,6 +50,8 @@ import org.hl7.fhir.validation.cli.model.ScanOutputItem;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher.IPackageInstaller;
 import org.hl7.fhir.validation.cli.utils.*;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -1390,8 +1392,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
 
   public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
     Content cnt = loadContent(source, "validate", false);
+    FHIRPathEngine fpe = this.getValidator().getFHIRPathEngine();
     Element e = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
-    return fpe.evaluateToString(e, expression);
+    ExpressionNode exp = fpe.parse(expression);
+    return fpe.evaluateToString(new ValidatorHostContext(context, e), e, e, e, exp);
   }
 
   public StructureDefinition snapshot(String source, String version) throws FHIRException, IOException {
