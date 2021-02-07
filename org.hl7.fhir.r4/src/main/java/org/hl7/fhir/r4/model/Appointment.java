@@ -137,6 +137,7 @@ A specific time might or might not be pre-allocated.
             case ENTEREDINERROR: return "entered-in-error";
             case CHECKEDIN: return "checked-in";
             case WAITLIST: return "waitlist";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -152,6 +153,7 @@ A specific time might or might not be pre-allocated.
             case ENTEREDINERROR: return "http://hl7.org/fhir/appointmentstatus";
             case CHECKEDIN: return "http://hl7.org/fhir/appointmentstatus";
             case WAITLIST: return "http://hl7.org/fhir/appointmentstatus";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -167,6 +169,7 @@ A specific time might or might not be pre-allocated.
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case CHECKEDIN: return "When checked in, all pre-encounter administrative work is complete, and the encounter may begin. (where multiple patients are involved, they are all present).";
             case WAITLIST: return "The appointment has been placed on a waitlist, to be scheduled/confirmed in the future when a slot/service is available.\nA specific time might or might not be pre-allocated.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -182,6 +185,7 @@ A specific time might or might not be pre-allocated.
             case ENTEREDINERROR: return "Entered in error";
             case CHECKEDIN: return "Checked In";
             case WAITLIST: return "Waitlisted";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -308,6 +312,7 @@ A specific time might or might not be pre-allocated.
             case REQUIRED: return "required";
             case OPTIONAL: return "optional";
             case INFORMATIONONLY: return "information-only";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -316,6 +321,7 @@ A specific time might or might not be pre-allocated.
             case REQUIRED: return "http://hl7.org/fhir/participantrequired";
             case OPTIONAL: return "http://hl7.org/fhir/participantrequired";
             case INFORMATIONONLY: return "http://hl7.org/fhir/participantrequired";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -324,6 +330,7 @@ A specific time might or might not be pre-allocated.
             case REQUIRED: return "The participant is required to attend the appointment.";
             case OPTIONAL: return "The participant may optionally attend the appointment.";
             case INFORMATIONONLY: return "The participant is excluded from the appointment, and might not be informed of the appointment taking place. (Appointment is about them, not for them - such as 2 doctors discussing results about a patient's test).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -332,6 +339,7 @@ A specific time might or might not be pre-allocated.
             case REQUIRED: return "Required";
             case OPTIONAL: return "Optional";
             case INFORMATIONONLY: return "Information Only";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -423,6 +431,7 @@ A specific time might or might not be pre-allocated.
             case DECLINED: return "declined";
             case TENTATIVE: return "tentative";
             case NEEDSACTION: return "needs-action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -432,6 +441,7 @@ A specific time might or might not be pre-allocated.
             case DECLINED: return "http://hl7.org/fhir/participationstatus";
             case TENTATIVE: return "http://hl7.org/fhir/participationstatus";
             case NEEDSACTION: return "http://hl7.org/fhir/participationstatus";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -441,6 +451,7 @@ A specific time might or might not be pre-allocated.
             case DECLINED: return "The participant has declined the appointment and will not participate in the appointment.";
             case TENTATIVE: return "The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.";
             case NEEDSACTION: return "The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -450,6 +461,7 @@ A specific time might or might not be pre-allocated.
             case DECLINED: return "Declined";
             case TENTATIVE: return "Tentative";
             case NEEDSACTION: return "Needs Action";
+            case NULL: return null;
             default: return "?";
           }
         }

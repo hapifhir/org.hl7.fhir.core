@@ -78,6 +78,7 @@ public enum V3DocumentStorage {
             case AA: return "AA";
             case AR: return "AR";
             case PU: return "PU";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3DocumentStorage {
             case AA: return "A storage status in which a document is available on-line and is also stored off-line for long-term access.";
             case AR: return "A storage status in which a document has been stored off-line for long-term access.";
             case PU: return "A storage status in which a document is no longer available in this system.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3DocumentStorage {
             case AA: return "active and archived";
             case AR: return "archived (not active)";
             case PU: return "purged";
+            case NULL: return null;
             default: return "?";
           }
     }

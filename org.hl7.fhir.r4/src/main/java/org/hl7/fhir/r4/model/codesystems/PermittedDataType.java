@@ -127,6 +127,7 @@ public enum PermittedDataType {
             case TIME: return "time";
             case DATETIME: return "dateTime";
             case PERIOD: return "Period";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public enum PermittedDataType {
             case TIME: return "A time during the day, in the format hh:mm:ss.";
             case DATETIME: return "A date, date-time or partial date (e.g. just year or year + month) as used in human communication.";
             case PERIOD: return "A time range defined by start and end date/time.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public enum PermittedDataType {
             case TIME: return "time";
             case DATETIME: return "dateTime";
             case PERIOD: return "Period";
+            case NULL: return null;
             default: return "?";
           }
     }

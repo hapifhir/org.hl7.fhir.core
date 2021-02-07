@@ -103,6 +103,7 @@ public class CareTeam extends DomainResource {
             case SUSPENDED: return "suspended";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +114,7 @@ public class CareTeam extends DomainResource {
             case SUSPENDED: return "http://hl7.org/fhir/care-team-status";
             case INACTIVE: return "http://hl7.org/fhir/care-team-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/care-team-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +125,7 @@ public class CareTeam extends DomainResource {
             case SUSPENDED: return "The care team is temporarily on hold or suspended and not participating in the coordination and delivery of care.";
             case INACTIVE: return "The care team was, but is no longer, participating in the coordination and delivery of care.";
             case ENTEREDINERROR: return "The care team should have never existed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -133,6 +136,7 @@ public class CareTeam extends DomainResource {
             case SUSPENDED: return "Suspended";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

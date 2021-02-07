@@ -78,6 +78,7 @@ public enum SubscriptionStatus {
             case ACTIVE: return "active";
             case ERROR: return "error";
             case OFF: return "off";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum SubscriptionStatus {
             case ACTIVE: return "The subscription is active.";
             case ERROR: return "The server has an error executing the notification.";
             case OFF: return "Too many errors have occurred or the subscription has expired.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum SubscriptionStatus {
             case ACTIVE: return "Active";
             case ERROR: return "Error";
             case OFF: return "Off";
+            case NULL: return null;
             default: return "?";
           }
     }

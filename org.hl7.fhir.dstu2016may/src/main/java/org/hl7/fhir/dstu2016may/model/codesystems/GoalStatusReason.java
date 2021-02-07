@@ -78,6 +78,7 @@ public enum GoalStatusReason {
             case LIFEEVENT: return "life-event";
             case REPLACED: return "replaced";
             case PATIENTREQUEST: return "patient-request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum GoalStatusReason {
             case LIFEEVENT: return "Goal suspended or ended because of a significant life event (marital change, bereavement, etc.).";
             case REPLACED: return "Goal has been superseded by a new goal.";
             case PATIENTREQUEST: return "Patient wishes the goal to be set aside, at least temporarily.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum GoalStatusReason {
             case LIFEEVENT: return "life event";
             case REPLACED: return "replaced";
             case PATIENTREQUEST: return "patient request";
+            case NULL: return null;
             default: return "?";
           }
     }

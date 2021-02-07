@@ -64,6 +64,7 @@ public enum VisionEyeCodes {
           switch (this) {
             case RIGHT: return "right";
             case LEFT: return "left";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum VisionEyeCodes {
           switch (this) {
             case RIGHT: return "Right Eye.";
             case LEFT: return "Left Eye.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum VisionEyeCodes {
           switch (this) {
             case RIGHT: return "Right Eye";
             case LEFT: return "Left Eye";
+            case NULL: return null;
             default: return "?";
           }
     }

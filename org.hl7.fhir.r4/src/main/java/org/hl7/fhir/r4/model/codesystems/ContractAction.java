@@ -64,6 +64,7 @@ public enum ContractAction {
           switch (this) {
             case ACTIONA: return "action-a";
             case ACTIONB: return "action-b";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ContractAction {
           switch (this) {
             case ACTIONA: return "Definition for Action A";
             case ACTIONB: return "Definition for Action B";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ContractAction {
           switch (this) {
             case ACTIONA: return "Action A";
             case ACTIONB: return "Action B";
+            case NULL: return null;
             default: return "?";
           }
     }

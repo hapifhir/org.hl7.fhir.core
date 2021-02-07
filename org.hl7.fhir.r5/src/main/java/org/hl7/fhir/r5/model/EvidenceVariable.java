@@ -82,6 +82,7 @@ public class EvidenceVariable extends MetadataResource {
           switch (this) {
             case INTERSECTION: return "intersection";
             case UNION: return "union";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class EvidenceVariable extends MetadataResource {
           switch (this) {
             case INTERSECTION: return "http://hl7.org/fhir/characteristic-combination";
             case UNION: return "http://hl7.org/fhir/characteristic-combination";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public class EvidenceVariable extends MetadataResource {
           switch (this) {
             case INTERSECTION: return "Combine characteristics with AND.";
             case UNION: return "Combine characteristics with OR.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class EvidenceVariable extends MetadataResource {
           switch (this) {
             case INTERSECTION: return "intersection";
             case UNION: return "union";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -202,6 +206,7 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "mean-of-median";
             case MEDIANOFMEAN: return "median-of-mean";
             case MEDIANOFMEDIAN: return "median-of-median";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +218,7 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "http://hl7.org/fhir/group-measure";
             case MEDIANOFMEAN: return "http://hl7.org/fhir/group-measure";
             case MEDIANOFMEDIAN: return "http://hl7.org/fhir/group-measure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -224,6 +230,7 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "Aggregated using Mean of study median values.";
             case MEDIANOFMEAN: return "Aggregated using Median of study mean values.";
             case MEDIANOFMEDIAN: return "Aggregated using Median of study median values.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -235,6 +242,7 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "Mean of Study Medins";
             case MEDIANOFMEAN: return "Median of Study Means";
             case MEDIANOFMEDIAN: return "Median of Study Medians";
+            case NULL: return null;
             default: return "?";
           }
         }

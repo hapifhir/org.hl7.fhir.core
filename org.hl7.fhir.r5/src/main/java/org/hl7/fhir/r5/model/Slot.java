@@ -103,6 +103,7 @@ public class Slot extends DomainResource {
             case BUSYUNAVAILABLE: return "busy-unavailable";
             case BUSYTENTATIVE: return "busy-tentative";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +114,7 @@ public class Slot extends DomainResource {
             case BUSYUNAVAILABLE: return "http://hl7.org/fhir/slotstatus";
             case BUSYTENTATIVE: return "http://hl7.org/fhir/slotstatus";
             case ENTEREDINERROR: return "http://hl7.org/fhir/slotstatus";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +125,7 @@ public class Slot extends DomainResource {
             case BUSYUNAVAILABLE: return "Indicates that the time interval is busy and that the interval cannot be scheduled.";
             case BUSYTENTATIVE: return "Indicates that the time interval is busy because one or more events have been tentatively scheduled for that interval.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -133,6 +136,7 @@ public class Slot extends DomainResource {
             case BUSYUNAVAILABLE: return "Busy (Unavailable)";
             case BUSYTENTATIVE: return "Busy (Tentative)";
             case ENTEREDINERROR: return "Entered in error";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -197,6 +197,7 @@ public enum ObservationStatistics {
             case SKEW: return "skew";
             case KURTOSIS: return "kurtosis";
             case REGRESSION: return "regression";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -226,6 +227,7 @@ public enum ObservationStatistics {
             case SKEW: return "Skewness is a measure of the asymmetry of the probability distribution of a real-valued random variable about its mean. The skewness value can be positive or negative, or even undefined.  Source: [Wikipedia](https://en.wikipedia.org/wiki/Skewness).";
             case KURTOSIS: return "Kurtosis  is a measure of the \"tailedness\" of the probability distribution of a real-valued random variable.   Source: [Wikipedia](https://en.wikipedia.org/wiki/Kurtosis).";
             case REGRESSION: return "Linear regression is an approach for modeling two-dimensional sample points with one independent variable and one dependent variable (conventionally, the x and y coordinates in a Cartesian coordinate system) and finds a linear function (a non-vertical straight line) that, as accurately as possible, predicts the dependent variable values as a function of the independent variables. Source: [Wikipedia](https://en.wikipedia.org/wiki/Simple_linear_regression)  This Statistic code will return both a gradient and an intercept value.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -252,6 +254,7 @@ public enum ObservationStatistics {
             case SKEW: return "Skew";
             case KURTOSIS: return "Kurtosis";
             case REGRESSION: return "Regression";
+            case NULL: return null;
             default: return "?";
           }
     }

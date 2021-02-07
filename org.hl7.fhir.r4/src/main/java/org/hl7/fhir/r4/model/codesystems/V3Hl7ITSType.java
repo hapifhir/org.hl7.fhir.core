@@ -64,6 +64,7 @@ public enum V3Hl7ITSType {
           switch (this) {
             case UML: return "UML";
             case XML: return "XML";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3Hl7ITSType {
           switch (this) {
             case UML: return "Description: ITS based on the Universal Modeling Language.";
             case XML: return "Description: ITS based on the Extensible Markup Language.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3Hl7ITSType {
           switch (this) {
             case UML: return "universal modeling language";
             case XML: return "extensible markup language";
+            case NULL: return null;
             default: return "?";
           }
     }

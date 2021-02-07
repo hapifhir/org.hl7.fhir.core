@@ -71,6 +71,7 @@ public enum ReportParticipantType {
             case TESTENGINE: return "test-engine";
             case CLIENT: return "client";
             case SERVER: return "server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ReportParticipantType {
             case TESTENGINE: return "The test execution engine.";
             case CLIENT: return "A FHIR Client";
             case SERVER: return "A FHIR Server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ReportParticipantType {
             case TESTENGINE: return "Test Engine";
             case CLIENT: return "Client";
             case SERVER: return "Server";
+            case NULL: return null;
             default: return "?";
           }
     }

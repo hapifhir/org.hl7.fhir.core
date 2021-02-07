@@ -92,6 +92,7 @@ public enum AdverseEventOutcome {
             case RESOLVEDWITHSEQUELAE: return "resolvedWithSequelae";
             case FATAL: return "fatal";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum AdverseEventOutcome {
             case RESOLVEDWITHSEQUELAE: return "";
             case FATAL: return "";
             case UNKNOWN: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum AdverseEventOutcome {
             case RESOLVEDWITHSEQUELAE: return "Resolved with Sequelae";
             case FATAL: return "Fatal";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

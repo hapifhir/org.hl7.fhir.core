@@ -78,6 +78,7 @@ public enum ImplantStatus {
             case NONFUNCTIONAL: return "non-functional";
             case DISABLED: return "disabled";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ImplantStatus {
             case NONFUNCTIONAL: return "The implanted device is not working.";
             case DISABLED: return "The implanted device has been turned off.";
             case UNKNOWN: return "the functional status of the implant has not been determined.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ImplantStatus {
             case NONFUNCTIONAL: return "Non-Functional";
             case DISABLED: return "Disabled";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -57,6 +57,7 @@ public enum ContractSecurityControl {
         public String toCode() {
           switch (this) {
             case POLICY: return "policy";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum ContractSecurityControl {
         public String getDefinition() {
           switch (this) {
             case POLICY: return "To be completed";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case POLICY: return "Policy";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -78,6 +78,7 @@ public enum RequestPriority {
             case URGENT: return "urgent";
             case ASAP: return "asap";
             case STAT: return "stat";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum RequestPriority {
             case URGENT: return "The request should be actioned promptly - higher priority than routine";
             case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent";
             case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum RequestPriority {
             case URGENT: return "Urgent";
             case ASAP: return "ASAP";
             case STAT: return "STAT";
+            case NULL: return null;
             default: return "?";
           }
     }

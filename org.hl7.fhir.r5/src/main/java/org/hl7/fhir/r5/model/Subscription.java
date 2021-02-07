@@ -89,6 +89,7 @@ public class Subscription extends DomainResource {
             case EMPTY: return "empty";
             case IDONLY: return "id-only";
             case FULLRESOURCE: return "full-resource";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class Subscription extends DomainResource {
             case EMPTY: return "http://hl7.org/fhir/subscription-payload-content";
             case IDONLY: return "http://hl7.org/fhir/subscription-payload-content";
             case FULLRESOURCE: return "http://hl7.org/fhir/subscription-payload-content";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class Subscription extends DomainResource {
             case EMPTY: return "No resource content is transacted in the notification payload.";
             case IDONLY: return "Only the resource id is transacted in the notification payload.";
             case FULLRESOURCE: return "The entire resource is transacted in the notification payload.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class Subscription extends DomainResource {
             case EMPTY: return "empty";
             case IDONLY: return "id-only";
             case FULLRESOURCE: return "full-resource";
+            case NULL: return null;
             default: return "?";
           }
         }

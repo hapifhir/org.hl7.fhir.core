@@ -78,6 +78,7 @@ public enum CatalogEntryStatus {
             case PENDING: return "pending";
             case DISCONTINUED: return "discontinued";
             case OFFICIAL: return "official";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum CatalogEntryStatus {
             case PENDING: return "The entry is pending some action e.g. confirmation or approval";
             case DISCONTINUED: return "The catalog entry is discontinued";
             case OFFICIAL: return "The catalog entry is considered official";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum CatalogEntryStatus {
             case PENDING: return "Pending";
             case DISCONTINUED: return "Discontinued";
             case OFFICIAL: return "Official";
+            case NULL: return null;
             default: return "?";
           }
     }

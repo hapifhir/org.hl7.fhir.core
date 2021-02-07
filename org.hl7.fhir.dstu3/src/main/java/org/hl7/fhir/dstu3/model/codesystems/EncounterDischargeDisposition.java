@@ -120,6 +120,7 @@ public enum EncounterDischargeDisposition {
             case REHAB: return "rehab";
             case SNF: return "snf";
             case OTH: return "oth";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum EncounterDischargeDisposition {
             case REHAB: return "The patient was discharged and is to receive post acute care rehabilitation services.";
             case SNF: return "The patient has been discharged to a skilled nursing facility for the patient to receive additional care.";
             case OTH: return "The discharge disposition has not otherwise defined.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum EncounterDischargeDisposition {
             case REHAB: return "Rehabilitation";
             case SNF: return "Skilled nursing facility";
             case OTH: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -527,6 +527,7 @@ public enum V3ParticipationType {
             case VRF: return "VRF";
             case AUTHEN: return "AUTHEN";
             case LA: return "LA";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -596,6 +597,7 @@ public enum V3ParticipationType {
             case VRF: return "A person who verifies the correctness and appropriateness of the service (plan, order, event, etc.) and hence takes on accountability.";
             case AUTHEN: return "A verifier who attests to the accuracy of an act, but who does not have privileges to legally authenticate the act. An example would be a resident physician who sees a patient and dictates a note, then later signs it. Their signature constitutes an authentication.";
             case LA: return "A verifier who legally authenticates the accuracy of an act. An example would be a staff physician who sees a patient and dictates a note, then later signs it. Their signature constitutes a legal authentication.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -662,6 +664,7 @@ public enum V3ParticipationType {
             case VRF: return "verifier";
             case AUTHEN: return "authenticator";
             case LA: return "legal authenticator";
+            case NULL: return null;
             default: return "?";
           }
     }

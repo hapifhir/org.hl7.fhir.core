@@ -57,6 +57,7 @@ public enum AssetAvailability {
         public String toCode() {
           switch (this) {
             case LEASE: return "lease";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum AssetAvailability {
         public String getDefinition() {
           switch (this) {
             case LEASE: return "To be completed";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case LEASE: return "Lease";
+            case NULL: return null;
             default: return "?";
           }
     }

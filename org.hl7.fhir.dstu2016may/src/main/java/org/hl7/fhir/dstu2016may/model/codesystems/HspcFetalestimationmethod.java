@@ -64,6 +64,7 @@ public enum HspcFetalestimationmethod {
           switch (this) {
             case _103241: return "103241";
             case _205940: return "205940";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum HspcFetalestimationmethod {
           switch (this) {
             case _103241: return "A method to estimate due date based on the reported date of the last known menstrual period.";
             case _205940: return "A method to estimate due date by measuring the size of the uterus.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum HspcFetalestimationmethod {
           switch (this) {
             case _103241: return "Last known menstrual period";
             case _205940: return "Uterine size";
+            case NULL: return null;
             default: return "?";
           }
     }

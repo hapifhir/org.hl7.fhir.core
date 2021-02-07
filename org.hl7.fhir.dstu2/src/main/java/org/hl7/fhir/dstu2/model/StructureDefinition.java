@@ -86,6 +86,7 @@ public class StructureDefinition extends DomainResource {
             case DATATYPE: return "datatype";
             case RESOURCE: return "resource";
             case LOGICAL: return "logical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -94,6 +95,7 @@ public class StructureDefinition extends DomainResource {
             case DATATYPE: return "http://hl7.org/fhir/structure-definition-kind";
             case RESOURCE: return "http://hl7.org/fhir/structure-definition-kind";
             case LOGICAL: return "http://hl7.org/fhir/structure-definition-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -102,6 +104,7 @@ public class StructureDefinition extends DomainResource {
             case DATATYPE: return "A data type - either a primitive or complex structure that defines a set of data elements. These can be used throughout Resource and extension definitions.";
             case RESOURCE: return "A resource defined by the FHIR specification.";
             case LOGICAL: return "A logical model - a conceptual package of data that will be mapped to resources for implementation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -110,6 +113,7 @@ public class StructureDefinition extends DomainResource {
             case DATATYPE: return "Data Type";
             case RESOURCE: return "Resource";
             case LOGICAL: return "Logical Model";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -193,6 +197,7 @@ public class StructureDefinition extends DomainResource {
             case DATATYPE: return "datatype";
             case MAPPING: return "mapping";
             case EXTENSION: return "extension";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -202,6 +207,7 @@ public class StructureDefinition extends DomainResource {
             case DATATYPE: return "http://hl7.org/fhir/extension-context";
             case MAPPING: return "http://hl7.org/fhir/extension-context";
             case EXTENSION: return "http://hl7.org/fhir/extension-context";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -211,6 +217,7 @@ public class StructureDefinition extends DomainResource {
             case DATATYPE: return "The context is all nodes matching a particular data type element path (root or repeating element) or all elements referencing a particular primitive data type (expressed as the datatype name).";
             case MAPPING: return "The context is all nodes whose mapping to a specified reference model corresponds to a particular mapping structure.  The context identifies the mapping target. The mapping should clearly identify where such an extension could be used.";
             case EXTENSION: return "The context is a particular extension from a particular profile, a uri that identifies the extension definition.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -220,6 +227,7 @@ public class StructureDefinition extends DomainResource {
             case DATATYPE: return "Datatype";
             case MAPPING: return "Mapping";
             case EXTENSION: return "Extension";
+            case NULL: return null;
             default: return "?";
           }
         }

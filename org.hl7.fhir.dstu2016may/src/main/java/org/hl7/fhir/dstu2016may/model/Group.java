@@ -105,6 +105,7 @@ public class Group extends DomainResource {
             case DEVICE: return "device";
             case MEDICATION: return "medication";
             case SUBSTANCE: return "substance";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,6 +117,7 @@ public class Group extends DomainResource {
             case DEVICE: return "http://hl7.org/fhir/group-type";
             case MEDICATION: return "http://hl7.org/fhir/group-type";
             case SUBSTANCE: return "http://hl7.org/fhir/group-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,6 +129,7 @@ public class Group extends DomainResource {
             case DEVICE: return "Group contains Device resources";
             case MEDICATION: return "Group contains Medication resources";
             case SUBSTANCE: return "Group contains Substance resources";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +141,7 @@ public class Group extends DomainResource {
             case DEVICE: return "Device";
             case MEDICATION: return "Medication";
             case SUBSTANCE: return "Substance";
+            case NULL: return null;
             default: return "?";
           }
         }

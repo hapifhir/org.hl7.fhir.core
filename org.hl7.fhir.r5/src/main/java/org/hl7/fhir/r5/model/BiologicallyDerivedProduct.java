@@ -105,6 +105,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "fluid";
             case CELLS: return "cells";
             case BIOLOGICALAGENT: return "biologicalAgent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,6 +116,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "http://hl7.org/fhir/product-category";
             case CELLS: return "http://hl7.org/fhir/product-category";
             case BIOLOGICALAGENT: return "http://hl7.org/fhir/product-category";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -125,6 +127,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "Body fluid.";
             case CELLS: return "Collection of cells.";
             case BIOLOGICALAGENT: return "Biological agent of unspecified type.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +138,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "Fluid";
             case CELLS: return "Cells";
             case BIOLOGICALAGENT: return "BiologicalAgent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -224,6 +228,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
           switch (this) {
             case AVAILABLE: return "available";
             case UNAVAILABLE: return "unavailable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -231,6 +236,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
           switch (this) {
             case AVAILABLE: return "http://hl7.org/fhir/product-status";
             case UNAVAILABLE: return "http://hl7.org/fhir/product-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -238,6 +244,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
           switch (this) {
             case AVAILABLE: return "Product is currently available for use.";
             case UNAVAILABLE: return "Product is not currently available for use.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -245,6 +252,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
           switch (this) {
             case AVAILABLE: return "Available";
             case UNAVAILABLE: return "Unavailable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -323,6 +331,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FARENHEIT: return "farenheit";
             case CELSIUS: return "celsius";
             case KELVIN: return "kelvin";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -331,6 +340,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FARENHEIT: return "http://hl7.org/fhir/product-storage-scale";
             case CELSIUS: return "http://hl7.org/fhir/product-storage-scale";
             case KELVIN: return "http://hl7.org/fhir/product-storage-scale";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -339,6 +349,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FARENHEIT: return "Fahrenheit temperature scale.";
             case CELSIUS: return "Celsius or centigrade temperature scale.";
             case KELVIN: return "Kelvin absolute thermodynamic temperature scale.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -347,6 +358,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FARENHEIT: return "Fahrenheit";
             case CELSIUS: return "Celsius";
             case KELVIN: return "Kelvin";
+            case NULL: return null;
             default: return "?";
           }
         }

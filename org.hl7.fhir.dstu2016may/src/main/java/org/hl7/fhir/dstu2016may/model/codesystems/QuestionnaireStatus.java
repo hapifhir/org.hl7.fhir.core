@@ -71,6 +71,7 @@ public enum QuestionnaireStatus {
             case DRAFT: return "draft";
             case PUBLISHED: return "published";
             case RETIRED: return "retired";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum QuestionnaireStatus {
             case DRAFT: return "This Questionnaire is not ready for official use.";
             case PUBLISHED: return "This Questionnaire is ready for use.";
             case RETIRED: return "This Questionnaire should no longer be used to gather data.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum QuestionnaireStatus {
             case DRAFT: return "Draft";
             case PUBLISHED: return "Published";
             case RETIRED: return "Retired";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -78,6 +78,7 @@ public enum AllergyIntoleranceCategory {
             case MEDICATION: return "medication";
             case ENVIRONMENT: return "environment";
             case BIOLOGIC: return "biologic";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum AllergyIntoleranceCategory {
             case MEDICATION: return "Substances administered to achieve a physiological effect.";
             case ENVIRONMENT: return "Any substances that are encountered in the environment, including any substance not already classified as food, medication, or biologic.";
             case BIOLOGIC: return "A preparation that is synthesized from living organisms or their products, especially a human or animal protein, such as a hormone or antitoxin, that is used as a diagnostic, preventive, or therapeutic agent. Examples of biologic medications include: vaccines; allergenic extracts, which are used for both diagnosis and treatment (for example, allergy shots); gene therapies; cellular therapies.  There are other biologic products, such as tissues, that are not typically associated with allergies.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum AllergyIntoleranceCategory {
             case MEDICATION: return "Medication";
             case ENVIRONMENT: return "Environment";
             case BIOLOGIC: return "Biologic";
+            case NULL: return null;
             default: return "?";
           }
     }

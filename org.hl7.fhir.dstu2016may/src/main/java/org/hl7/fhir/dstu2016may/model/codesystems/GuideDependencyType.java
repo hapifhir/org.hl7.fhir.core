@@ -64,6 +64,7 @@ public enum GuideDependencyType {
           switch (this) {
             case REFERENCE: return "reference";
             case INCLUSION: return "inclusion";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum GuideDependencyType {
           switch (this) {
             case REFERENCE: return "The guide is referred to by URL.";
             case INCLUSION: return "The guide is embedded in this guide when published.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum GuideDependencyType {
           switch (this) {
             case REFERENCE: return "Reference";
             case INCLUSION: return "Inclusion";
+            case NULL: return null;
             default: return "?";
           }
     }

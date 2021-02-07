@@ -64,6 +64,7 @@ public enum MeasureDataUsage {
           switch (this) {
             case SUPPLEMENTALDATA: return "supplemental-data";
             case RISKADJUSTMENTFACTOR: return "risk-adjustment-factor";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum MeasureDataUsage {
           switch (this) {
             case SUPPLEMENTALDATA: return "The data is intended to be provided as additional information alongside the measure results.";
             case RISKADJUSTMENTFACTOR: return "The data is intended to be used to calculate and apply a risk adjustment model for the measure.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum MeasureDataUsage {
           switch (this) {
             case SUPPLEMENTALDATA: return "Supplemental Data";
             case RISKADJUSTMENTFACTOR: return "Risk Adjustment Factor";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -90,6 +90,7 @@ public class SupplyRequest extends DomainResource {
             case COMPLETED: return "completed";
             case FAILED: return "failed";
             case CANCELLED: return "cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +100,7 @@ public class SupplyRequest extends DomainResource {
             case COMPLETED: return "http://hl7.org/fhir/supplyrequest-status";
             case FAILED: return "http://hl7.org/fhir/supplyrequest-status";
             case CANCELLED: return "http://hl7.org/fhir/supplyrequest-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public class SupplyRequest extends DomainResource {
             case COMPLETED: return "Supply has been received by the requestor.";
             case FAILED: return "The supply will not be completed because the supplier was unable or unwilling to supply the item.";
             case CANCELLED: return "The orderer of the supply cancelled the request.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +120,7 @@ public class SupplyRequest extends DomainResource {
             case COMPLETED: return "Received";
             case FAILED: return "Failed";
             case CANCELLED: return "Cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }

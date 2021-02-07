@@ -92,6 +92,7 @@ public enum V3ManagedParticipationStatus {
             case COMPLETED: return "completed";
             case PENDING: return "pending";
             case NULLIFIED: return "nullified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum V3ManagedParticipationStatus {
             case COMPLETED: return "The terminal state representing the successful completion of the Participation.";
             case PENDING: return "The state representing that fact that the Participation has not yet become active.";
             case NULLIFIED: return "The state representing the termination of a Participation instance that was created in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum V3ManagedParticipationStatus {
             case COMPLETED: return "completed";
             case PENDING: return "pending";
             case NULLIFIED: return "nullified";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -159,6 +159,7 @@ responding, withdrawal, non-compliance and/or adverse event.
             case POTENTIALCANDIDATE: return "potential-candidate";
             case SCREENING: return "screening";
             case WITHDRAWN: return "withdrawn";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -177,6 +178,7 @@ responding, withdrawal, non-compliance and/or adverse event.
             case POTENTIALCANDIDATE: return "http://hl7.org/fhir/research-subject-status";
             case SCREENING: return "http://hl7.org/fhir/research-subject-status";
             case WITHDRAWN: return "http://hl7.org/fhir/research-subject-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -195,6 +197,7 @@ responding, withdrawal, non-compliance and/or adverse event.
             case POTENTIALCANDIDATE: return "A person that is potentially eligible for participation in the study.";
             case SCREENING: return "A person who is being evaluated for eligibility for a study.";
             case WITHDRAWN: return "The person has withdrawn their participation in the study before registration.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +216,7 @@ responding, withdrawal, non-compliance and/or adverse event.
             case POTENTIALCANDIDATE: return "Potential Candidate";
             case SCREENING: return "Screening";
             case WITHDRAWN: return "Withdrawn";
+            case NULL: return null;
             default: return "?";
           }
         }

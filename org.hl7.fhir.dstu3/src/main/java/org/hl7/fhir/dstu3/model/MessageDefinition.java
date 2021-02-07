@@ -91,6 +91,7 @@ public class MessageDefinition extends MetadataResource {
             case CONSEQUENCE: return "Consequence";
             case CURRENCY: return "Currency";
             case NOTIFICATION: return "Notification";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +100,7 @@ public class MessageDefinition extends MetadataResource {
             case CONSEQUENCE: return "http://hl7.org/fhir/message-significance-category";
             case CURRENCY: return "http://hl7.org/fhir/message-significance-category";
             case NOTIFICATION: return "http://hl7.org/fhir/message-significance-category";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -107,6 +109,7 @@ public class MessageDefinition extends MetadataResource {
             case CONSEQUENCE: return "The message represents/requests a change that should not be processed more than once; e.g., making a booking for an appointment.";
             case CURRENCY: return "The message represents a response to query for current information. Retrospective processing is wrong and/or wasteful.";
             case NOTIFICATION: return "The content is not necessarily intended to be current, and it can be reprocessed, though there may be version issues created by processing old notifications.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,6 +118,7 @@ public class MessageDefinition extends MetadataResource {
             case CONSEQUENCE: return "Consequence";
             case CURRENCY: return "Currency";
             case NOTIFICATION: return "Notification";
+            case NULL: return null;
             default: return "?";
           }
         }

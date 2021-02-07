@@ -92,6 +92,7 @@ public enum GuidanceResponseStatus {
             case INPROGRESS: return "in-progress";
             case FAILURE: return "failure";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum GuidanceResponseStatus {
             case INPROGRESS: return "The request is currently being processed.";
             case FAILURE: return "The request was not processed successfully.";
             case ENTEREDINERROR: return "The response was entered in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum GuidanceResponseStatus {
             case INPROGRESS: return "In Progress";
             case FAILURE: return "Failure";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
     }

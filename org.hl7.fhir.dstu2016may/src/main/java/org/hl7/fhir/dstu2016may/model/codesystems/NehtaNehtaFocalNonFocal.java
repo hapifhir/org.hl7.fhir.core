@@ -57,6 +57,7 @@ public enum NehtaNehtaFocalNonFocal {
         public String toCode() {
           switch (this) {
             case NONFOCAL: return "non_focal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum NehtaNehtaFocalNonFocal {
         public String getDefinition() {
           switch (this) {
             case NONFOCAL: return "Non-focal";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case NONFOCAL: return "Non-focal";
+            case NULL: return null;
             default: return "?";
           }
     }

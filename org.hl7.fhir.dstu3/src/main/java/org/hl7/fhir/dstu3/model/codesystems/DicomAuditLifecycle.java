@@ -155,6 +155,7 @@ public enum DicomAuditLifecycle {
             case _13: return "13";
             case _14: return "14";
             case _15: return "15";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -178,6 +179,7 @@ public enum DicomAuditLifecycle {
             case _13: return "";
             case _14: return "";
             case _15: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -198,6 +200,7 @@ public enum DicomAuditLifecycle {
             case _13: return "Archiving";
             case _14: return "Logical deletion";
             case _15: return "Permanent erasure / Physical destruction";
+            case NULL: return null;
             default: return "?";
           }
     }

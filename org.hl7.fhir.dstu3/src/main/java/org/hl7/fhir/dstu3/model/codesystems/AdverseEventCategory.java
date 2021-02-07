@@ -64,6 +64,7 @@ public enum AdverseEventCategory {
           switch (this) {
             case AE: return "AE";
             case PAE: return "PAE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum AdverseEventCategory {
           switch (this) {
             case AE: return "";
             case PAE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum AdverseEventCategory {
           switch (this) {
             case AE: return "Adverse Event";
             case PAE: return "Potential Adverse Event";
+            case NULL: return null;
             default: return "?";
           }
     }

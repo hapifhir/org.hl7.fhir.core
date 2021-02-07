@@ -64,6 +64,7 @@ public enum ServicePlace {
           switch (this) {
             case EMERGENCY: return "emergency";
             case CLINIC: return "clinic";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ServicePlace {
           switch (this) {
             case EMERGENCY: return "Emergency Department";
             case CLINIC: return "Clinic";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ServicePlace {
           switch (this) {
             case EMERGENCY: return "Emergency Department";
             case CLINIC: return "Clinic";
+            case NULL: return null;
             default: return "?";
           }
     }

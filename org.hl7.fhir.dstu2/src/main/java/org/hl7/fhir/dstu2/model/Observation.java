@@ -112,6 +112,7 @@ public class Observation extends DomainResource {
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -124,6 +125,7 @@ public class Observation extends DomainResource {
             case CANCELLED: return "http://hl7.org/fhir/observation-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/observation-status";
             case UNKNOWN: return "http://hl7.org/fhir/observation-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -136,6 +138,7 @@ public class Observation extends DomainResource {
             case CANCELLED: return "The observation is unavailable because the measurement was not started or not completed (also sometimes called \"aborted\").";
             case ENTEREDINERROR: return "The observation has been withdrawn following previous final release.";
             case UNKNOWN: return "The observation status is unknown.  Note that \"unknown\" is a value of last resort and every attempt should be made to provide a meaningful value other than \"unknown\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -148,6 +151,7 @@ public class Observation extends DomainResource {
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown Status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -269,6 +273,7 @@ public class Observation extends DomainResource {
             case REPLACES: return "replaces";
             case QUALIFIEDBY: return "qualified-by";
             case INTERFEREDBY: return "interfered-by";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -280,6 +285,7 @@ public class Observation extends DomainResource {
             case REPLACES: return "http://hl7.org/fhir/observation-relationshiptypes";
             case QUALIFIEDBY: return "http://hl7.org/fhir/observation-relationshiptypes";
             case INTERFEREDBY: return "http://hl7.org/fhir/observation-relationshiptypes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -291,6 +297,7 @@ public class Observation extends DomainResource {
             case REPLACES: return "This observation replaces a previous observation (i.e. a revised value). The target observation is now obsolete.";
             case QUALIFIEDBY: return "The value of the target observation qualifies (refines) the semantics of the source observation (e.g. a lipemia measure target from a plasma measure).";
             case INTERFEREDBY: return "The value of the target observation interferes (degrades quality, or prevents valid observation) with the semantics of the source observation (e.g. a hemolysis measure target from a plasma potassium measure which has no value).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -302,6 +309,7 @@ public class Observation extends DomainResource {
             case REPLACES: return "Replaces";
             case QUALIFIEDBY: return "Qualified By";
             case INTERFEREDBY: return "Interfered By";
+            case NULL: return null;
             default: return "?";
           }
         }

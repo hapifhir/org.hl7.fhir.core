@@ -92,6 +92,7 @@ public enum DefinitionUse {
             case WIREFORMAT: return "wire-format";
             case ARCHETYPE: return "archetype";
             case TEMPLATE: return "template";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum DefinitionUse {
             case WIREFORMAT: return "This structure represents and existing structure (e.g. CDA, HL7 v2)";
             case ARCHETYPE: return "This structure captures an analysis of a domain";
             case TEMPLATE: return "This structure is a template (n.b: 'template' has many meanings)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum DefinitionUse {
             case WIREFORMAT: return "Wire Format";
             case ARCHETYPE: return "Domain Analysis Model";
             case TEMPLATE: return "Template";
+            case NULL: return null;
             default: return "?";
           }
     }

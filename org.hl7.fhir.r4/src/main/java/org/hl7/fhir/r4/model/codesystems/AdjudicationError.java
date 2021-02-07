@@ -64,6 +64,7 @@ public enum AdjudicationError {
           switch (this) {
             case A001: return "a001";
             case A002: return "a002";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum AdjudicationError {
           switch (this) {
             case A001: return "Missing Identifier";
             case A002: return "Missing Creation Date";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum AdjudicationError {
           switch (this) {
             case A001: return "Missing Identifier";
             case A002: return "Missing Creation Date";
+            case NULL: return null;
             default: return "?";
           }
     }

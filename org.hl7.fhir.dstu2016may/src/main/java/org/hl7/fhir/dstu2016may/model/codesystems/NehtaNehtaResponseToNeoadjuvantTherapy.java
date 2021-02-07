@@ -57,6 +57,7 @@ public enum NehtaNehtaResponseToNeoadjuvantTherapy {
         public String toCode() {
           switch (this) {
             case NOPRIORTREATMENT: return "no_prior_treatment";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum NehtaNehtaResponseToNeoadjuvantTherapy {
         public String getDefinition() {
           switch (this) {
             case NOPRIORTREATMENT: return "No prior treatment";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case NOPRIORTREATMENT: return "No prior treatment";
+            case NULL: return null;
             default: return "?";
           }
     }

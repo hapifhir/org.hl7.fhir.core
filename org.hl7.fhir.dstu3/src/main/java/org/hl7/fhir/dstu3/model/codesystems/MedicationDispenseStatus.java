@@ -92,6 +92,7 @@ public enum MedicationDispenseStatus {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case STOPPED: return "stopped";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum MedicationDispenseStatus {
             case COMPLETED: return "All actions that are implied by the dispense have occurred.";
             case ENTEREDINERROR: return "The dispense was entered in error and therefore nullified.";
             case STOPPED: return "Actions implied by the dispense have been permanently halted, before all of them occurred.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum MedicationDispenseStatus {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in-Error";
             case STOPPED: return "Stopped";
+            case NULL: return null;
             default: return "?";
           }
     }

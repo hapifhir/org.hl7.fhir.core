@@ -64,6 +64,7 @@ public enum V3ContainerSeparator {
           switch (this) {
             case GEL: return "GEL";
             case NONE: return "NONE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3ContainerSeparator {
           switch (this) {
             case GEL: return "A gelatinous type of separator material.";
             case NONE: return "No separator material is present in the container.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3ContainerSeparator {
           switch (this) {
             case GEL: return "Gel";
             case NONE: return "None";
+            case NULL: return null;
             default: return "?";
           }
     }

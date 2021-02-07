@@ -71,6 +71,7 @@ public enum VersioningPolicy {
             case NOVERSION: return "no-version";
             case VERSIONED: return "versioned";
             case VERSIONEDUPDATE: return "versioned-update";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum VersioningPolicy {
             case NOVERSION: return "VersionId meta-property is not supported (server) or used (client).";
             case VERSIONED: return "VersionId meta-property is supported (server) or used (client).";
             case VERSIONEDUPDATE: return "VersionId is must be correct for updates (server) or will be specified (If-match header) for updates (client).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum VersioningPolicy {
             case NOVERSION: return "No VersionId Support";
             case VERSIONED: return "Versioned";
             case VERSIONEDUPDATE: return "VersionId tracked fully";
+            case NULL: return null;
             default: return "?";
           }
     }

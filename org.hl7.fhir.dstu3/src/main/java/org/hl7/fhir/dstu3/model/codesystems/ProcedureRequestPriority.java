@@ -78,6 +78,7 @@ public enum ProcedureRequestPriority {
             case URGENT: return "urgent";
             case STAT: return "stat";
             case ASAP: return "asap";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ProcedureRequestPriority {
             case URGENT: return "The request should be done urgently.";
             case STAT: return "The request is time-critical.";
             case ASAP: return "The request should be acted on as soon as possible.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ProcedureRequestPriority {
             case URGENT: return "Urgent";
             case STAT: return "Stat";
             case ASAP: return "ASAP";
+            case NULL: return null;
             default: return "?";
           }
     }

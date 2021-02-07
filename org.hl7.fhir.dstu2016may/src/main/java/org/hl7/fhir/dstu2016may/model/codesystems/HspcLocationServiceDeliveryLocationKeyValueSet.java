@@ -57,6 +57,7 @@ public enum HspcLocationServiceDeliveryLocationKeyValueSet {
         public String toCode() {
           switch (this) {
             case _119: return "119";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum HspcLocationServiceDeliveryLocationKeyValueSet {
         public String getDefinition() {
           switch (this) {
             case _119: return "A location that is categorized by the nursing skill, specialty, or type of care delivered";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case _119: return "Facility";
+            case NULL: return null;
             default: return "?";
           }
     }

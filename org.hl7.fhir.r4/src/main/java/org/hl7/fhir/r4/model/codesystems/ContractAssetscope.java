@@ -57,6 +57,7 @@ public enum ContractAssetscope {
         public String toCode() {
           switch (this) {
             case THING: return "thing";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum ContractAssetscope {
         public String getDefinition() {
           switch (this) {
             case THING: return "To be completed";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case THING: return "Thing";
+            case NULL: return null;
             default: return "?";
           }
     }

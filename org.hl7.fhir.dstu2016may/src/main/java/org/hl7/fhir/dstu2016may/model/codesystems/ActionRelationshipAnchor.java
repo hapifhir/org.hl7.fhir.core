@@ -64,6 +64,7 @@ public enum ActionRelationshipAnchor {
           switch (this) {
             case START: return "start";
             case END: return "end";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ActionRelationshipAnchor {
           switch (this) {
             case START: return "The action relationship is anchored to the start of the related action";
             case END: return "The action relationship is anchored to the end of the related action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ActionRelationshipAnchor {
           switch (this) {
             case START: return "Start";
             case END: return "End";
+            case NULL: return null;
             default: return "?";
           }
     }

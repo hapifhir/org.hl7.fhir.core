@@ -85,6 +85,7 @@ public enum HspcPractitionerPrivilege {
             case _77F1B390A4334708AD3B070E358868F4: return "77f1b390-a433-4708-ad3b-070e358868f4";
             case _5750552B25D44EB886F98233756449F0: return "5750552b-25d4-4eb8-86f9-8233756449f0";
             case _45FC874FD78743F2A2AA5954446B163D: return "45fc874f-d787-43f2-a2aa-5954446b163d";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum HspcPractitionerPrivilege {
             case _77F1B390A4334708AD3B070E358868F4: return "The provider is not allowed to practice or admit at this time";
             case _5750552B25D44EB886F98233756449F0: return "The provider is allowed to practice only, cannot admit patients";
             case _45FC874FD78743F2A2AA5954446B163D: return "The provider is allowed to practice and admit for a limited time";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum HspcPractitionerPrivilege {
             case _77F1B390A4334708AD3B070E358868F4: return "Privileges Suspended";
             case _5750552B25D44EB886F98233756449F0: return "Practice Privileges Only (not allowed to admit)";
             case _45FC874FD78743F2A2AA5954446B163D: return "Temporary Privileges";
+            case NULL: return null;
             default: return "?";
           }
     }

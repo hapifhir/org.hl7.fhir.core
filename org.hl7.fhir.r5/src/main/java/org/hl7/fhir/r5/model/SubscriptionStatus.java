@@ -96,6 +96,7 @@ public class SubscriptionStatus extends DomainResource {
             case HEARTBEAT: return "heartbeat";
             case EVENTNOTIFICATION: return "event-notification";
             case QUERYSTATUS: return "query-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +106,7 @@ public class SubscriptionStatus extends DomainResource {
             case HEARTBEAT: return "http://hl7.org/fhir/subscription-notification-type";
             case EVENTNOTIFICATION: return "http://hl7.org/fhir/subscription-notification-type";
             case QUERYSTATUS: return "http://hl7.org/fhir/subscription-notification-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +116,7 @@ public class SubscriptionStatus extends DomainResource {
             case HEARTBEAT: return "The status was generated to perform a heartbeat notification to the subscriber.";
             case EVENTNOTIFICATION: return "The status was generated for an event to the subscriber.";
             case QUERYSTATUS: return "The status was generated in response to a query/request.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +126,7 @@ public class SubscriptionStatus extends DomainResource {
             case HEARTBEAT: return "Heartbeat";
             case EVENTNOTIFICATION: return "Event Notification";
             case QUERYSTATUS: return "Query Status";
+            case NULL: return null;
             default: return "?";
           }
         }

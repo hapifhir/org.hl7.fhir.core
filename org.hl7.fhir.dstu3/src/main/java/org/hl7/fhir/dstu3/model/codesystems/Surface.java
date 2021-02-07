@@ -127,6 +127,7 @@ public enum Surface {
             case DO: return "DO";
             case DI: return "DI";
             case MOD: return "MOD";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public enum Surface {
             case DO: return "The Distoclusal surfaces of a tooth.";
             case DI: return "The Distoincisal surfaces of a tooth.";
             case MOD: return "The Mesioclusodistal surfaces of a tooth.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public enum Surface {
             case DO: return "Distoclusal";
             case DI: return "Distoincisal";
             case MOD: return "Mesioclusodistal";
+            case NULL: return null;
             default: return "?";
           }
     }

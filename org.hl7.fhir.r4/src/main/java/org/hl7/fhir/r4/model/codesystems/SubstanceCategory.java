@@ -99,6 +99,7 @@ public enum SubstanceCategory {
             case FOOD: return "food";
             case DRUG: return "drug";
             case MATERIAL: return "material";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum SubstanceCategory {
             case FOOD: return "A food, dietary ingredient, or dietary supplement for human or animal.";
             case DRUG: return "A substance intended for use in the diagnosis, cure, mitigation, treatment, or prevention of disease in man or other animals (Federal Food Drug and Cosmetic Act).";
             case MATERIAL: return "A finished product which is not normally ingested, absorbed or injected (e.g. steel, iron, wood, plastic and paper).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum SubstanceCategory {
             case FOOD: return "Dietary Substance";
             case DRUG: return "Drug or Medicament";
             case MATERIAL: return "Material";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -6497,6 +6497,7 @@ public enum V3Race {
             case _21279: return "2127-9";
             case _21295: return "2129-5";
             case _21311: return "2131-1";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7426,6 +7427,7 @@ public enum V3Race {
             case _21279: return "Israeili";
             case _21295: return "Arab";
             case _21311: return "Note that this term remains in the table for completeness, even though within HL7, the notion of Other code is deprecated.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8352,6 +8354,7 @@ public enum V3Race {
             case _21279: return "Israeili";
             case _21295: return "Arab";
             case _21311: return "Other Race";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -150,6 +150,7 @@ public enum V3ActRelationshipSubset {
             case ACTRELATIONSHIPPASTSUBSET: return "ActRelationshipPastSubset";
             case MAX: return "MAX";
             case MIN: return "MIN";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -172,6 +173,7 @@ public enum V3ActRelationshipSubset {
             case ACTRELATIONSHIPPASTSUBSET: return "ActRelationshipPastSubset";
             case MAX: return "The occurrence whose value attribute is greater than all other occurrences at the time the instance is created.";
             case MIN: return "The occurrence whose value attribute is less than all other occurrences at the time the instance is created.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -191,6 +193,7 @@ public enum V3ActRelationshipSubset {
             case ACTRELATIONSHIPPASTSUBSET: return "ActRelationshipPastSubset";
             case MAX: return "maximum";
             case MIN: return "minimum";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -183,6 +183,7 @@ public enum ServiceUscls {
             case _99111: return "99111";
             case _99333: return "99333";
             case _99555: return "99555";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -210,6 +211,7 @@ public enum ServiceUscls {
             case _99111: return "Lab, commercial";
             case _99333: return "Lab, in office";
             case _99555: return "Expense";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -234,6 +236,7 @@ public enum ServiceUscls {
             case _99111: return "Lab, commercial";
             case _99333: return "Lab, in office";
             case _99555: return "Expense";
+            case NULL: return null;
             default: return "?";
           }
     }

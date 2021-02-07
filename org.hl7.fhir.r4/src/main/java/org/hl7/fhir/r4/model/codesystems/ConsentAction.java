@@ -85,6 +85,7 @@ public enum ConsentAction {
             case USE: return "use";
             case DISCLOSE: return "disclose";
             case CORRECT: return "correct";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ConsentAction {
             case USE: return "Utilize the retrieved information";
             case DISCLOSE: return "Transfer retrieved information";
             case CORRECT: return "Allow retrieval of a patient's information for the purpose of update or rectify";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ConsentAction {
             case USE: return "Use";
             case DISCLOSE: return "Disclose";
             case CORRECT: return "Access and Correct";
+            case NULL: return null;
             default: return "?";
           }
     }

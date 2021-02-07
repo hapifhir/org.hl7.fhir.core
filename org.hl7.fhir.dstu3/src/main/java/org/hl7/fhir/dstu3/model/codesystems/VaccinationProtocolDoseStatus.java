@@ -64,6 +64,7 @@ public enum VaccinationProtocolDoseStatus {
           switch (this) {
             case COUNT: return "count";
             case NOCOUNT: return "nocount";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum VaccinationProtocolDoseStatus {
           switch (this) {
             case COUNT: return "The dose counts toward fulfilling a path to immunity for a patient, providing protection against the target disease.";
             case NOCOUNT: return "The dose does not count toward fulfilling a path to immunity for a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum VaccinationProtocolDoseStatus {
           switch (this) {
             case COUNT: return "Counts";
             case NOCOUNT: return "Does not Count";
+            case NULL: return null;
             default: return "?";
           }
     }

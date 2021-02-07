@@ -106,6 +106,7 @@ public enum SearchParamType {
             case COMPOSITE: return "composite";
             case QUANTITY: return "quantity";
             case URI: return "uri";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum SearchParamType {
             case COMPOSITE: return "A composite search parameter that combines a search on two values together.";
             case QUANTITY: return "A search parameter that searches on a quantity.";
             case URI: return "A search parameter that searches on a URI (RFC 3986).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum SearchParamType {
             case COMPOSITE: return "Composite";
             case QUANTITY: return "Quantity";
             case URI: return "URI";
+            case NULL: return null;
             default: return "?";
           }
     }

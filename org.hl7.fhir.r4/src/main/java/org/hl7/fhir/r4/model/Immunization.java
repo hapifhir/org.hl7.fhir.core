@@ -87,6 +87,7 @@ public class Immunization extends DomainResource {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case NOTDONE: return "not-done";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -95,6 +96,7 @@ public class Immunization extends DomainResource {
             case COMPLETED: return "http://hl7.org/fhir/event-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/event-status";
             case NOTDONE: return "http://hl7.org/fhir/event-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +105,7 @@ public class Immunization extends DomainResource {
             case COMPLETED: return "";
             case ENTEREDINERROR: return "";
             case NOTDONE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,6 +114,7 @@ public class Immunization extends DomainResource {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case NOTDONE: return "not-done";
+            case NULL: return null;
             default: return "?";
           }
         }

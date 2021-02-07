@@ -77,6 +77,7 @@ public enum V3HL7ContextConductionStyle {
             case C: return "C";
             case I: return "I";
             case V: return "V";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -88,6 +89,7 @@ public enum V3HL7ContextConductionStyle {
             case C: return "Definition: Context conduction is defined using the contextConductionCode and contextConductionInd attributes on ActRelationship and Participation.\r\n\n                        \n                           UsageNotes: This approach is deprecated as of March, 2010.";
             case I: return "Definition: Context conduction is not explicitly defined.  The recipient of an instance must infer conduction based on the semantics of the model and what is deemed \"reasonable\".\r\n\n                        \n                           UsageNotes: Because this approach can lead to variation in instance interpretation, its use is discouraged.";
             case V: return "Definition: Context conduction is defined using the ActRelationship.blockedContextActRelationshipType and blockedContextParticipationType attributes and the \"conductible\" property on the ActRelationshipType and ParticipationType code systems.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public enum V3HL7ContextConductionStyle {
             case C: return "conduction-indicator-based";
             case I: return "inferred";
             case V: return "vocabulary-based";
+            case NULL: return null;
             default: return "?";
           }
     }

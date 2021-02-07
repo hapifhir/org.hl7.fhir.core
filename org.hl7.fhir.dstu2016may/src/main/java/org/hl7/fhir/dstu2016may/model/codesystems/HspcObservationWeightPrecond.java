@@ -141,6 +141,7 @@ public enum HspcObservationWeightPrecond {
             case _84135: return "84135";
             case _84136: return "84136";
             case _84137: return "84137";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +163,7 @@ public enum HspcObservationWeightPrecond {
             case _84135: return "Body weight including a gown or drape";
             case _84136: return "Body weight the includes some other weight";
             case _84137: return "Body weight after subtracting some other included weight";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -180,6 +182,7 @@ public enum HspcObservationWeightPrecond {
             case _84135: return "Weight with gown or drape";
             case _84136: return "Weight with added-on weight";
             case _84137: return "Weight without added-on weight";
+            case NULL: return null;
             default: return "?";
           }
     }

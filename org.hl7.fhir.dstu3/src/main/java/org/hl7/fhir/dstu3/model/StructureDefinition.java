@@ -99,6 +99,7 @@ public class StructureDefinition extends MetadataResource {
             case COMPLEXTYPE: return "complex-type";
             case RESOURCE: return "resource";
             case LOGICAL: return "logical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +109,7 @@ public class StructureDefinition extends MetadataResource {
             case COMPLEXTYPE: return "http://hl7.org/fhir/structure-definition-kind";
             case RESOURCE: return "http://hl7.org/fhir/structure-definition-kind";
             case LOGICAL: return "http://hl7.org/fhir/structure-definition-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public class StructureDefinition extends MetadataResource {
             case COMPLEXTYPE: return "A  complex structure that defines a set of data elements. These can be used throughout Resource and extension definitions, and in logical models.";
             case RESOURCE: return "A resource defined by the FHIR specification.";
             case LOGICAL: return "A conceptual package of data that will be mapped to resources for implementation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +129,7 @@ public class StructureDefinition extends MetadataResource {
             case COMPLEXTYPE: return "Complex Data Type";
             case RESOURCE: return "Resource";
             case LOGICAL: return "Logical Model";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -216,6 +220,7 @@ public class StructureDefinition extends MetadataResource {
             case RESOURCE: return "resource";
             case DATATYPE: return "datatype";
             case EXTENSION: return "extension";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -224,6 +229,7 @@ public class StructureDefinition extends MetadataResource {
             case RESOURCE: return "http://hl7.org/fhir/extension-context";
             case DATATYPE: return "http://hl7.org/fhir/extension-context";
             case EXTENSION: return "http://hl7.org/fhir/extension-context";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -232,6 +238,7 @@ public class StructureDefinition extends MetadataResource {
             case RESOURCE: return "The context is all elements matching a particular resource element path.";
             case DATATYPE: return "The context is all nodes matching a particular data type element path (root or repeating element) or all elements referencing a particular primitive data type (expressed as the datatype name).";
             case EXTENSION: return "The context is a particular extension from a particular profile, a uri that identifies the extension definition.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -240,6 +247,7 @@ public class StructureDefinition extends MetadataResource {
             case RESOURCE: return "Resource";
             case DATATYPE: return "Datatype";
             case EXTENSION: return "Extension";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -317,6 +325,7 @@ public class StructureDefinition extends MetadataResource {
           switch (this) {
             case SPECIALIZATION: return "specialization";
             case CONSTRAINT: return "constraint";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -324,6 +333,7 @@ public class StructureDefinition extends MetadataResource {
           switch (this) {
             case SPECIALIZATION: return "http://hl7.org/fhir/type-derivation-rule";
             case CONSTRAINT: return "http://hl7.org/fhir/type-derivation-rule";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -331,6 +341,7 @@ public class StructureDefinition extends MetadataResource {
           switch (this) {
             case SPECIALIZATION: return "This definition defines a new type that adds additional elements to the base type";
             case CONSTRAINT: return "This definition adds additional rules to an existing concrete type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -338,6 +349,7 @@ public class StructureDefinition extends MetadataResource {
           switch (this) {
             case SPECIALIZATION: return "Specialization";
             case CONSTRAINT: return "Constraint";
+            case NULL: return null;
             default: return "?";
           }
         }

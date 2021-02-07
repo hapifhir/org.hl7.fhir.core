@@ -106,6 +106,7 @@ public enum TaskPerformerType {
             case MANAGER: return "manager";
             case ACQUIRER: return "acquirer";
             case REVIEWER: return "reviewer";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum TaskPerformerType {
             case MANAGER: return "A workflow participant that manages task activity.";
             case ACQUIRER: return "A workflow participant that acquires resources (specimens, images, etc) necessary to perform the task.";
             case REVIEWER: return "A workflow participant that reviews task inputs or outputs.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum TaskPerformerType {
             case MANAGER: return "Manager";
             case ACQUIRER: return "Acquirer";
             case REVIEWER: return "Reviewer";
+            case NULL: return null;
             default: return "?";
           }
     }

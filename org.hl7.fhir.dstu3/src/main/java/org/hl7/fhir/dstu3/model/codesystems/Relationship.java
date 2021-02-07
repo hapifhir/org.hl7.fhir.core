@@ -85,6 +85,7 @@ public enum Relationship {
             case _3: return "3";
             case _4: return "4";
             case _5: return "5";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum Relationship {
             case _3: return "The patient is the child of the subscriber (policy holder)";
             case _4: return "The patient is the common law spouse of the subscriber (policy holder)";
             case _5: return "The patient has some other relationship, such as parent, to the subscriber (policy holder)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum Relationship {
             case _3: return "Child";
             case _4: return "Common Law Spouse";
             case _5: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

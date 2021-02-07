@@ -169,6 +169,7 @@ public enum ItemType {
             case ATTACHMENT: return "attachment";
             case REFERENCE: return "reference";
             case QUANTITY: return "quantity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -194,6 +195,7 @@ public enum ItemType {
             case ATTACHMENT: return "Question with binary content such as an image, PDF, etc. as an answer (valueAttachment).";
             case REFERENCE: return "Question with a reference to another resource (practitioner, organization, etc.) as an answer (valueReference).";
             case QUANTITY: return "Question with a combination of a numeric value and unit, potentially with a comparator (<, >, etc.) as an answer. (valueQuantity) There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit' that can be used to define what unit should be captured (or the unit that has a ucum conversion from the provided unit).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -216,6 +218,7 @@ public enum ItemType {
             case ATTACHMENT: return "Attachment";
             case REFERENCE: return "Reference";
             case QUANTITY: return "Quantity";
+            case NULL: return null;
             default: return "?";
           }
     }

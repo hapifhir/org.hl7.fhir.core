@@ -2178,6 +2178,7 @@ public enum V3Dentition {
             case TIDRS: return "TIDRs";
             case TIDSS: return "TIDSs";
             case TIDTS: return "TIDTs";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2490,6 +2491,7 @@ public enum V3Dentition {
             case TIDRS: return "Supernumerary mandibular right primary canine";
             case TIDSS: return "Supernumerary mandibular right first primary molar";
             case TIDTS: return "Supernumerary mandibular right second primary molar";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2799,6 +2801,7 @@ public enum V3Dentition {
             case TIDRS: return "Rs";
             case TIDSS: return "Ss";
             case TIDTS: return "Ts";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -93,6 +93,7 @@ public class FamilyMemberHistory extends DomainResource {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case HEALTHUNKNOWN: return "health-unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -102,6 +103,7 @@ public class FamilyMemberHistory extends DomainResource {
             case COMPLETED: return "http://hl7.org/fhir/history-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/history-status";
             case HEALTHUNKNOWN: return "http://hl7.org/fhir/history-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,6 +113,7 @@ public class FamilyMemberHistory extends DomainResource {
             case COMPLETED: return "All relevant health information is known and captured.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case HEALTHUNKNOWN: return "Health information for this individual is unavailable/unknown.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -120,6 +123,7 @@ public class FamilyMemberHistory extends DomainResource {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in error";
             case HEALTHUNKNOWN: return "Health unknown";
+            case NULL: return null;
             default: return "?";
           }
         }

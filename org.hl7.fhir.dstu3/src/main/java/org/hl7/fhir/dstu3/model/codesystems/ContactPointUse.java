@@ -85,6 +85,7 @@ public enum ContactPointUse {
             case TEMP: return "temp";
             case OLD: return "old";
             case MOBILE: return "mobile";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ContactPointUse {
             case TEMP: return "A temporary contact point. The period can provide more detailed information.";
             case OLD: return "This contact point is no longer in use (or was never correct, but retained for records).";
             case MOBILE: return "A telecommunication device that moves and stays with its owner. May have characteristics of all other use codes, suitable for urgent matters, not the first choice for routine business.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ContactPointUse {
             case TEMP: return "Temp";
             case OLD: return "Old";
             case MOBILE: return "Mobile";
+            case NULL: return null;
             default: return "?";
           }
     }

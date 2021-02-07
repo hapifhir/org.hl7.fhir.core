@@ -113,6 +113,7 @@ public enum HspcObservationWeightMeasMethodDevice {
             case _2185: return "2185";
             case _50550851: return "50550851";
             case _521443011: return "521443011";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum HspcObservationWeightMeasMethodDevice {
             case _2185: return "A body weight based on other measurements plotted on a percentile chart.";
             case _50550851: return "A scale designed for use with infants only";
             case _521443011: return "A measuring tape created to relate a child's height, as measured by the tape to the child's weight";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum HspcObservationWeightMeasMethodDevice {
             case _2185: return "Weight, percentile";
             case _50550851: return "Infant Scale";
             case _521443011: return "Broselow tape";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -64,6 +64,7 @@ public enum StrandType {
           switch (this) {
             case WATSON: return "watson";
             case CRICK: return "crick";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum StrandType {
           switch (this) {
             case WATSON: return "Watson strand of reference sequence.";
             case CRICK: return "Crick strand of reference sequence.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum StrandType {
           switch (this) {
             case WATSON: return "Watson strand of referenceSeq";
             case CRICK: return "Crick strand of referenceSeq";
+            case NULL: return null;
             default: return "?";
           }
     }

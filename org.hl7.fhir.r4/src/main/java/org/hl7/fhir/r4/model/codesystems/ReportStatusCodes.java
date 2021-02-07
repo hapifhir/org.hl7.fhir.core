@@ -85,6 +85,7 @@ public enum ReportStatusCodes {
             case WAITING: return "waiting";
             case STOPPED: return "stopped";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ReportStatusCodes {
             case WAITING: return "A test operation is waiting for an external client request.";
             case STOPPED: return "The test script execution was manually stopped.";
             case ENTEREDINERROR: return "This test report was entered or created in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ReportStatusCodes {
             case WAITING: return "Waiting";
             case STOPPED: return "Stopped";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
     }

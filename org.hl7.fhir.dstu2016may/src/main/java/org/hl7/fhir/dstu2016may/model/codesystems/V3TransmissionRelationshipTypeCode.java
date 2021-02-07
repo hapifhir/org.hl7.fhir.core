@@ -57,6 +57,7 @@ public enum V3TransmissionRelationshipTypeCode {
         public String toCode() {
           switch (this) {
             case SEQL: return "SEQL";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum V3TransmissionRelationshipTypeCode {
         public String getDefinition() {
           switch (this) {
             case SEQL: return "Description:A transmission relationship indicating that the source transmission follows the target transmission.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case SEQL: return "sequence";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -78,6 +78,7 @@ public enum ClaimUseLink {
             case PROPOSED: return "proposed";
             case EXPLORATORY: return "exploratory";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ClaimUseLink {
             case PROPOSED: return "The treatment is proposed and this represents a Pre-authorization for the services.";
             case EXPLORATORY: return "The treatment is proposed and this represents a Pre-determination for the services.";
             case OTHER: return "A locally defined or otherwise resolved status.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ClaimUseLink {
             case PROPOSED: return "Proposed";
             case EXPLORATORY: return "Exploratory";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

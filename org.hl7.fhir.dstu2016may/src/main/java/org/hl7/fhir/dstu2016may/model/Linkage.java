@@ -83,6 +83,7 @@ public class Linkage extends DomainResource {
             case SOURCE: return "source";
             case ALTERNATE: return "alternate";
             case HISTORICAL: return "historical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -91,6 +92,7 @@ public class Linkage extends DomainResource {
             case SOURCE: return "http://hl7.org/fhir/linkage-type";
             case ALTERNATE: return "http://hl7.org/fhir/linkage-type";
             case HISTORICAL: return "http://hl7.org/fhir/linkage-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public class Linkage extends DomainResource {
             case SOURCE: return "The record represents the \"source of truth\" (from the perspective of this Linkage resource) for the underlying event/condition/etc.";
             case ALTERNATE: return "The record represents the alternative view of the underlying event/condition/etc.  The record may still be actively maintained, even though it is not considered to be the source of truth.";
             case HISTORICAL: return "The record represents an obsolete record of the underlyng event/condition/etc.  It is not expected to be actively maintained.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -107,6 +110,7 @@ public class Linkage extends DomainResource {
             case SOURCE: return "Source of truth";
             case ALTERNATE: return "Alternate record";
             case HISTORICAL: return "Historical/obsolete record";
+            case NULL: return null;
             default: return "?";
           }
         }

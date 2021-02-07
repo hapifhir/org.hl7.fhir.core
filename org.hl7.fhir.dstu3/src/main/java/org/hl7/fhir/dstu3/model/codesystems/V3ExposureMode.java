@@ -85,6 +85,7 @@ public enum V3ExposureMode {
             case CONTACT: return "CONTACT";
             case FOODBORNE: return "FOODBORNE";
             case WATERBORNE: return "WATERBORNE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum V3ExposureMode {
             case CONTACT: return "Description: Communication of an agent from a living subject or environmental source to a living subject through direct physical contact.";
             case FOODBORNE: return "Description: Communication of an agent from a food source to a living subject via oral consumption.";
             case WATERBORNE: return "Description: Communication of an agent to a living subject by contact and/or consumption via an aqueous medium";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum V3ExposureMode {
             case CONTACT: return "contact";
             case FOODBORNE: return "foodborne";
             case WATERBORNE: return "waterborne";
+            case NULL: return null;
             default: return "?";
           }
     }

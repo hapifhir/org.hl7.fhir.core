@@ -92,6 +92,7 @@ public enum ConsentStateCodes {
             case REJECTED: return "rejected";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ConsentStateCodes {
             case REJECTED: return "The consent has been rejected by one or more of the parties.";
             case INACTIVE: return "The consent is terminated or replaced.";
             case ENTEREDINERROR: return "The consent was created wrongly (e.g. wrong patient) and should be ignored.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ConsentStateCodes {
             case REJECTED: return "Rejected";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
     }

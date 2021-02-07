@@ -78,6 +78,7 @@ public enum StructureDefinitionKind {
             case COMPLEXTYPE: return "complex-type";
             case RESOURCE: return "resource";
             case LOGICAL: return "logical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum StructureDefinitionKind {
             case COMPLEXTYPE: return "A  complex structure that defines a set of data elements. These can be used throughout Resource and extension definitions, and in logical models.";
             case RESOURCE: return "A resource defined by the FHIR specification.";
             case LOGICAL: return "A conceptual package of data that will be mapped to resources for implementation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum StructureDefinitionKind {
             case COMPLEXTYPE: return "Complex Data Type";
             case RESOURCE: return "Resource";
             case LOGICAL: return "Logical Model";
+            case NULL: return null;
             default: return "?";
           }
     }

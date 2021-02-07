@@ -105,6 +105,7 @@ public class Account extends DomainResource {
             case ENTEREDINERROR: return "entered-in-error";
             case ONHOLD: return "on-hold";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,6 +116,7 @@ public class Account extends DomainResource {
             case ENTEREDINERROR: return "http://hl7.org/fhir/account-status";
             case ONHOLD: return "http://hl7.org/fhir/account-status";
             case UNKNOWN: return "http://hl7.org/fhir/account-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -125,6 +127,7 @@ public class Account extends DomainResource {
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case ONHOLD: return "This account is on hold.";
             case UNKNOWN: return "The account status is unknown.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +138,7 @@ public class Account extends DomainResource {
             case ENTEREDINERROR: return "Entered in error";
             case ONHOLD: return "On Hold";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }

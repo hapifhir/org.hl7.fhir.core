@@ -148,6 +148,7 @@ public enum DiagnosticOrderStatus {
             case REJECTED: return "rejected";
             case FAILED: return "failed";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -170,6 +171,7 @@ public enum DiagnosticOrderStatus {
             case REJECTED: return "The receiving system has declined to fulfill the request.";
             case FAILED: return "The diagnostic investigation was attempted, but due to some procedural error, it could not be completed.";
             case ENTEREDINERROR: return "The request was entered in error and voided.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -189,6 +191,7 @@ public enum DiagnosticOrderStatus {
             case REJECTED: return "Rejected";
             case FAILED: return "Failed";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -106,6 +106,7 @@ public enum OrganizationRole {
             case SUPPLIER: return "supplier";
             case HIE_HIO: return "HIE/HIO";
             case MEMBER: return "member";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum OrganizationRole {
             case SUPPLIER: return "An organization that provides medical supplies (e.g. medical devices, equipment, pharmaceutical products, etc.)";
             case HIE_HIO: return "An organization that facilitates electronic clinical data exchange between entities";
             case MEMBER: return "A type of non-ownership relationship between entities (encompasses partnerships, collaboration, joint ventures, etc.)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum OrganizationRole {
             case SUPPLIER: return "Supplier";
             case HIE_HIO: return "HIE/HIO";
             case MEMBER: return "Member";
+            case NULL: return null;
             default: return "?";
           }
     }

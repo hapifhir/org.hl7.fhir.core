@@ -101,6 +101,7 @@ public class QuestionnaireResponse extends DomainResource {
             case AMENDED: return "amended";
             case ENTEREDINERROR: return "entered-in-error";
             case STOPPED: return "stopped";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,6 +112,7 @@ public class QuestionnaireResponse extends DomainResource {
             case AMENDED: return "http://hl7.org/fhir/questionnaire-answers-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/questionnaire-answers-status";
             case STOPPED: return "http://hl7.org/fhir/questionnaire-answers-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -121,6 +123,7 @@ public class QuestionnaireResponse extends DomainResource {
             case AMENDED: return "This QuestionnaireResponse has been filled out with answers, then marked as complete, yet changes or additions have been made to it afterwards.";
             case ENTEREDINERROR: return "This QuestionnaireResponse was entered in error and voided.";
             case STOPPED: return "This QuestionnaireResponse has been partially filled out with answers but has been abandoned. It is unknown whether changes or additions are expected to be made to it.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -131,6 +134,7 @@ public class QuestionnaireResponse extends DomainResource {
             case AMENDED: return "Amended";
             case ENTEREDINERROR: return "Entered in Error";
             case STOPPED: return "Stopped";
+            case NULL: return null;
             default: return "?";
           }
         }

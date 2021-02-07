@@ -120,6 +120,7 @@ public enum QicoreAdverseeventCategory {
             case SURGERY: return "surgery";
             case EMBOLISM: return "embolism";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum QicoreAdverseeventCategory {
             case SURGERY: return "Surgery or Anesthesia (includes invasive procedures)";
             case EMBOLISM: return "Venous Thromboembolism";
             case OTHER: return "Other (please specify)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum QicoreAdverseeventCategory {
             case SURGERY: return "Surgery or Anesthesia";
             case EMBOLISM: return "Venous Thromboembolism";
             case OTHER: return "Other (please specify)";
+            case NULL: return null;
             default: return "?";
           }
     }

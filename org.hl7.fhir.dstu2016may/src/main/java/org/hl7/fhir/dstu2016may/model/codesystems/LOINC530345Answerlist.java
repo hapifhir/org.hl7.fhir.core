@@ -85,6 +85,7 @@ public enum LOINC530345Answerlist {
             case LA67053: return "LA6705-3";
             case LA67061: return "LA6706-1";
             case LA67079: return "LA6707-9";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum LOINC530345Answerlist {
             case LA67053: return "Homozygous";
             case LA67061: return "Heterozygous";
             case LA67079: return "Hemizygous";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum LOINC530345Answerlist {
             case LA67053: return "Homozygous";
             case LA67061: return "Heterozygous";
             case LA67079: return "Hemizygous";
+            case NULL: return null;
             default: return "?";
           }
     }

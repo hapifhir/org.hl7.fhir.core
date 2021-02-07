@@ -2472,6 +2472,7 @@ public enum SpdxLicense {
             case ZPL1_1: return "ZPL-1.1";
             case ZPL2_0: return "ZPL-2.0";
             case ZPL2_1: return "ZPL-2.1";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2826,6 +2827,7 @@ public enum SpdxLicense {
             case ZPL1_1: return "Zope Public License 1.1.";
             case ZPL2_0: return "Zope Public License 2.0.";
             case ZPL2_1: return "Zope Public License 2.1.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -3177,6 +3179,7 @@ public enum SpdxLicense {
             case ZPL1_1: return "Zope Public License 1.1";
             case ZPL2_0: return "Zope Public License 2.0";
             case ZPL2_1: return "Zope Public License 2.1";
+            case NULL: return null;
             default: return "?";
           }
     }

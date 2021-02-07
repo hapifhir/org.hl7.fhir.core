@@ -71,6 +71,7 @@ public enum MedicationrequestCourseOfTherapy {
             case CONTINUOUS: return "continuous";
             case ACUTE: return "acute";
             case SEASONAL: return "seasonal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum MedicationrequestCourseOfTherapy {
             case CONTINUOUS: return "A medication which is expected to be continued beyond the present order and which the patient should be assumed to be taking unless explicitly stopped.";
             case ACUTE: return "A medication which the patient is only expected to consume for the duration of the current order and which is not expected to be renewed.";
             case SEASONAL: return "A medication which is expected to be used on a part time basis at certain times of the year";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum MedicationrequestCourseOfTherapy {
             case CONTINUOUS: return "Continuous long term therapy";
             case ACUTE: return "Short course (acute) therapy";
             case SEASONAL: return "Seasonal";
+            case NULL: return null;
             default: return "?";
           }
     }
