@@ -64,6 +64,7 @@ public enum V3LocalRemoteControlState {
           switch (this) {
             case L: return "L";
             case R: return "R";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3LocalRemoteControlState {
           switch (this) {
             case L: return "An equipment can either work autonomously ('Local' control state).";
             case R: return "An equipment can be controlled by another system, e.g., LAS computer ('Remote' control state).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3LocalRemoteControlState {
           switch (this) {
             case L: return "Local";
             case R: return "Remote";
+            case NULL: return null;
             default: return "?";
           }
     }

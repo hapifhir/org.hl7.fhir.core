@@ -64,6 +64,7 @@ public enum ContractSubtype {
           switch (this) {
             case DISCLOSURECA: return "disclosure-CA";
             case DISCLOSUREUS: return "disclosure-US";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ContractSubtype {
           switch (this) {
             case DISCLOSURECA: return "";
             case DISCLOSUREUS: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ContractSubtype {
           switch (this) {
             case DISCLOSURECA: return "disclosure-CA";
             case DISCLOSUREUS: return "disclosure-US";
+            case NULL: return null;
             default: return "?";
           }
     }

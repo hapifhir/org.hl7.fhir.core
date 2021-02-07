@@ -99,6 +99,7 @@ public enum ProvenanceAgentType {
             case PATIENT: return "patient";
             case DEVICE: return "device";
             case RELATEDPERSON: return "related-person";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum ProvenanceAgentType {
             case PATIENT: return "The participant is the patient, a person or animal receiving care or other health-related services.";
             case DEVICE: return "The participant is a device, an instance of a manufactured thing that is used in the provision of healthcare without being substantially changed through that activity. The device may be a machine, an insert, a computer, an application, etc. This includes durable (reusable) medical equipment as well as disposable equipment used for diagnostic, treatment, and research for healthcare and public health.";
             case RELATEDPERSON: return "The participant is a related person, a person that is involved in the care for a patient, but who is not the target of healthcare, nor has a formal responsibility in the care process.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum ProvenanceAgentType {
             case PATIENT: return "Patient";
             case DEVICE: return "Device";
             case RELATEDPERSON: return "Related Person";
+            case NULL: return null;
             default: return "?";
           }
     }

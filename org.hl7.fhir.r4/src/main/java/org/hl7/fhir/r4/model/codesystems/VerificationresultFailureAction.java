@@ -78,6 +78,7 @@ public enum VerificationresultFailureAction {
             case WARN: return "warn";
             case RECONLY: return "rec-only";
             case NONE: return "none";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum VerificationresultFailureAction {
             case WARN: return "";
             case RECONLY: return "";
             case NONE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum VerificationresultFailureAction {
             case WARN: return "Warning";
             case RECONLY: return "Record only";
             case NONE: return "None";
+            case NULL: return null;
             default: return "?";
           }
     }

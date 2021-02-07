@@ -92,6 +92,7 @@ public enum GaoEvaluationResultCode {
             case INCOMPLETE: return "incomplete";
             case MANUAL: return "manual";
             case NOTCOVERED: return "notcovered";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum GaoEvaluationResultCode {
             case INCOMPLETE: return "Evaluation was not completed (e.g., because more information is necessary).";
             case MANUAL: return "The evaluation was issued through a manual process.";
             case NOTCOVERED: return "No evaluation was performed as the requested service is not covered for this patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum GaoEvaluationResultCode {
             case INCOMPLETE: return "Evaluation not completed.";
             case MANUAL: return "Manual Evaluation";
             case NOTCOVERED: return "Not covered";
+            case NULL: return null;
             default: return "?";
           }
     }

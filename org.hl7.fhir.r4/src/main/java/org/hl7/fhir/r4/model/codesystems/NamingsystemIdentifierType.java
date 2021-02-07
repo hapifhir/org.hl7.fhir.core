@@ -78,6 +78,7 @@ public enum NamingsystemIdentifierType {
             case UUID: return "uuid";
             case URI: return "uri";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum NamingsystemIdentifierType {
             case UUID: return "A universally unique identifier of the form a5afddf4-e880-459b-876e-e4591b0acc11.";
             case URI: return "A uniform resource identifier (ideally a URL - uniform resource locator); e.g. http://unitsofmeasure.org.";
             case OTHER: return "Some other type of unique identifier; e.g. HL7-assigned reserved string such as LN for LOINC.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum NamingsystemIdentifierType {
             case UUID: return "UUID";
             case URI: return "URI";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

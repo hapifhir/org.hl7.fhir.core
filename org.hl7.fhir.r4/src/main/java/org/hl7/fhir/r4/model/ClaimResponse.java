@@ -96,6 +96,7 @@ public class ClaimResponse extends DomainResource {
             case CANCELLED: return "cancelled";
             case DRAFT: return "draft";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +106,7 @@ public class ClaimResponse extends DomainResource {
             case CANCELLED: return "http://hl7.org/fhir/fm-status";
             case DRAFT: return "http://hl7.org/fhir/fm-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/fm-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +116,7 @@ public class ClaimResponse extends DomainResource {
             case CANCELLED: return "The instance is withdrawn, rescinded or reversed.";
             case DRAFT: return "A new instance the contents of which is not complete.";
             case ENTEREDINERROR: return "The instance was entered in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +126,7 @@ public class ClaimResponse extends DomainResource {
             case CANCELLED: return "Cancelled";
             case DRAFT: return "Draft";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +217,7 @@ public class ClaimResponse extends DomainResource {
             case CLAIM: return "claim";
             case PREAUTHORIZATION: return "preauthorization";
             case PREDETERMINATION: return "predetermination";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -221,6 +226,7 @@ public class ClaimResponse extends DomainResource {
             case CLAIM: return "http://hl7.org/fhir/claim-use";
             case PREAUTHORIZATION: return "http://hl7.org/fhir/claim-use";
             case PREDETERMINATION: return "http://hl7.org/fhir/claim-use";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -229,6 +235,7 @@ public class ClaimResponse extends DomainResource {
             case CLAIM: return "The treatment is complete and this represents a Claim for the services.";
             case PREAUTHORIZATION: return "The treatment is proposed and this represents a Pre-authorization for the services.";
             case PREDETERMINATION: return "The treatment is proposed and this represents a Pre-determination for the services.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -237,6 +244,7 @@ public class ClaimResponse extends DomainResource {
             case CLAIM: return "Claim";
             case PREAUTHORIZATION: return "Preauthorization";
             case PREDETERMINATION: return "Predetermination";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -328,6 +336,7 @@ public class ClaimResponse extends DomainResource {
             case COMPLETE: return "complete";
             case ERROR: return "error";
             case PARTIAL: return "partial";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -337,6 +346,7 @@ public class ClaimResponse extends DomainResource {
             case COMPLETE: return "http://hl7.org/fhir/remittance-outcome";
             case ERROR: return "http://hl7.org/fhir/remittance-outcome";
             case PARTIAL: return "http://hl7.org/fhir/remittance-outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -346,6 +356,7 @@ public class ClaimResponse extends DomainResource {
             case COMPLETE: return "The processing has completed without errors";
             case ERROR: return "One or more errors have been detected in the Claim";
             case PARTIAL: return "No errors have been detected in the Claim and some of the adjudication has been performed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -355,6 +366,7 @@ public class ClaimResponse extends DomainResource {
             case COMPLETE: return "Processing Complete";
             case ERROR: return "Error";
             case PARTIAL: return "Partial Processing";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -115,6 +115,7 @@ public class CarePlan extends DomainResource {
             case ENTEREDINERROR: return "entered-in-error";
             case CANCELLED: return "cancelled";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,6 +128,7 @@ public class CarePlan extends DomainResource {
             case ENTEREDINERROR: return "http://hl7.org/fhir/care-plan-status";
             case CANCELLED: return "http://hl7.org/fhir/care-plan-status";
             case UNKNOWN: return "http://hl7.org/fhir/care-plan-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -139,6 +141,7 @@ public class CarePlan extends DomainResource {
             case ENTEREDINERROR: return "The plan was entered in error and voided.";
             case CANCELLED: return "The plan has been terminated prior to reaching completion (though it may have been replaced by a new plan).";
             case UNKNOWN: return "The authoring system doesn't know the current state of the care plan.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -151,6 +154,7 @@ public class CarePlan extends DomainResource {
             case ENTEREDINERROR: return "Entered In Error";
             case CANCELLED: return "Cancelled";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -268,6 +272,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case PLAN: return "plan";
             case ORDER: return "order";
             case OPTION: return "option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -277,6 +282,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case PLAN: return "http://hl7.org/fhir/care-plan-intent";
             case ORDER: return "http://hl7.org/fhir/care-plan-intent";
             case OPTION: return "http://hl7.org/fhir/care-plan-intent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -286,6 +292,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case PLAN: return "The care plan represents an intention to ensure something occurs without providing an authorization for others to act";
             case ORDER: return "The care plan represents a request/demand and authorization for action";
             case OPTION: return "The care plan represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.\n\nRefer to [[[RequestGroup]]] for additional information on how this status is used";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -295,6 +302,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case PLAN: return "Plan";
             case ORDER: return "Order";
             case OPTION: return "Option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -413,6 +421,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case COMPLETED: return "completed";
             case CANCELLED: return "cancelled";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -425,6 +434,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case COMPLETED: return "http://hl7.org/fhir/care-plan-activity-status";
             case CANCELLED: return "http://hl7.org/fhir/care-plan-activity-status";
             case UNKNOWN: return "http://hl7.org/fhir/care-plan-activity-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -437,6 +447,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case COMPLETED: return "The activities have been completed (more or less) as planned.";
             case CANCELLED: return "The activities have been ended prior to completion (perhaps even before they were started).";
             case UNKNOWN: return "The authoring system doesn't know the current state of the activity.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -449,6 +460,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case COMPLETED: return "Completed";
             case CANCELLED: return "Cancelled";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }

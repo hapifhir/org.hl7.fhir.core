@@ -71,6 +71,7 @@ public enum AdverseEventCausalityMethod {
             case PROBABILITYSCALE: return "ProbabilityScale";
             case BAYESIAN: return "Bayesian";
             case CHECKLIST: return "Checklist";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum AdverseEventCausalityMethod {
             case PROBABILITYSCALE: return "";
             case BAYESIAN: return "";
             case CHECKLIST: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum AdverseEventCausalityMethod {
             case PROBABILITYSCALE: return "Probability Scale";
             case BAYESIAN: return "Bayesian";
             case CHECKLIST: return "Checklist";
+            case NULL: return null;
             default: return "?";
           }
     }

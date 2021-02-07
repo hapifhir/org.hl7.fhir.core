@@ -89,6 +89,7 @@ public class EvidenceVariable extends MetadataResource {
             case DICHOTOMOUS: return "dichotomous";
             case CONTINUOUS: return "continuous";
             case DESCRIPTIVE: return "descriptive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class EvidenceVariable extends MetadataResource {
             case DICHOTOMOUS: return "http://hl7.org/fhir/variable-type";
             case CONTINUOUS: return "http://hl7.org/fhir/variable-type";
             case DESCRIPTIVE: return "http://hl7.org/fhir/variable-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class EvidenceVariable extends MetadataResource {
             case DICHOTOMOUS: return "The variable is dichotomous, such as present or absent.";
             case CONTINUOUS: return "The variable is a continuous result such as a quantity.";
             case DESCRIPTIVE: return "The variable is described narratively rather than quantitatively.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class EvidenceVariable extends MetadataResource {
             case DICHOTOMOUS: return "Dichotomous";
             case CONTINUOUS: return "Continuous";
             case DESCRIPTIVE: return "Descriptive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -218,6 +222,7 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "mean-of-median";
             case MEDIANOFMEAN: return "median-of-mean";
             case MEDIANOFMEDIAN: return "median-of-median";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -229,6 +234,7 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "http://hl7.org/fhir/group-measure";
             case MEDIANOFMEAN: return "http://hl7.org/fhir/group-measure";
             case MEDIANOFMEDIAN: return "http://hl7.org/fhir/group-measure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -240,6 +246,7 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "Aggregated using Mean of study median values.";
             case MEDIANOFMEAN: return "Aggregated using Median of study mean values.";
             case MEDIANOFMEDIAN: return "Aggregated using Median of study median values.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -251,6 +258,7 @@ public class EvidenceVariable extends MetadataResource {
             case MEANOFMEDIAN: return "Mean of Study Medins";
             case MEDIANOFMEAN: return "Median of Study Means";
             case MEDIANOFMEDIAN: return "Median of Study Medians";
+            case NULL: return null;
             default: return "?";
           }
         }

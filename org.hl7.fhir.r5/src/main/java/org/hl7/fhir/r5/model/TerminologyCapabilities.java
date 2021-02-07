@@ -82,6 +82,7 @@ public class TerminologyCapabilities extends CanonicalResource {
           switch (this) {
             case EXPLICIT: return "explicit";
             case ALL: return "all";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class TerminologyCapabilities extends CanonicalResource {
           switch (this) {
             case EXPLICIT: return "http://hl7.org/fhir/code-search-support";
             case ALL: return "http://hl7.org/fhir/code-search-support";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public class TerminologyCapabilities extends CanonicalResource {
           switch (this) {
             case EXPLICIT: return "The search for code on ValueSet only includes codes explicitly detailed on includes or expansions.";
             case ALL: return "The search for code on ValueSet only includes all codes based on the expansion of the value set.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class TerminologyCapabilities extends CanonicalResource {
           switch (this) {
             case EXPLICIT: return "Explicit Codes";
             case ALL: return "Implicit Codes";
+            case NULL: return null;
             default: return "?";
           }
         }

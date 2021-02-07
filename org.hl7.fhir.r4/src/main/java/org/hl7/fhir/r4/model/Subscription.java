@@ -95,6 +95,7 @@ public class Subscription extends DomainResource {
             case ACTIVE: return "active";
             case ERROR: return "error";
             case OFF: return "off";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -104,6 +105,7 @@ public class Subscription extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/subscription-status";
             case ERROR: return "http://hl7.org/fhir/subscription-status";
             case OFF: return "http://hl7.org/fhir/subscription-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +115,7 @@ public class Subscription extends DomainResource {
             case ACTIVE: return "The subscription is active.";
             case ERROR: return "The server has an error executing the notification.";
             case OFF: return "Too many errors have occurred or the subscription has expired.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +125,7 @@ public class Subscription extends DomainResource {
             case ACTIVE: return "Active";
             case ERROR: return "Error";
             case OFF: return "Off";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -226,6 +230,7 @@ public class Subscription extends DomainResource {
             case EMAIL: return "email";
             case SMS: return "sms";
             case MESSAGE: return "message";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -236,6 +241,7 @@ public class Subscription extends DomainResource {
             case EMAIL: return "http://hl7.org/fhir/subscription-channel-type";
             case SMS: return "http://hl7.org/fhir/subscription-channel-type";
             case MESSAGE: return "http://hl7.org/fhir/subscription-channel-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -246,6 +252,7 @@ public class Subscription extends DomainResource {
             case EMAIL: return "The channel is executed by sending an email to the email addressed in the URI (which must be a mailto:).";
             case SMS: return "The channel is executed by sending an SMS message to the phone number identified in the URL (tel:).";
             case MESSAGE: return "The channel is executed by sending a message (e.g. a Bundle with a MessageHeader resource etc.) to the application identified in the URI.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -256,6 +263,7 @@ public class Subscription extends DomainResource {
             case EMAIL: return "Email";
             case SMS: return "SMS";
             case MESSAGE: return "Message";
+            case NULL: return null;
             default: return "?";
           }
         }

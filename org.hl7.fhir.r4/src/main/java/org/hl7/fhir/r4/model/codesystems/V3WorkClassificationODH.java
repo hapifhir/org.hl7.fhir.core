@@ -113,6 +113,7 @@ public enum V3WorkClassificationODH {
             case UWNSE: return "UWNSE";
             case UWSE: return "UWSE";
             case VW: return "VW";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum V3WorkClassificationODH {
             case UWNSE: return "A situation in which an individual works for a business (not government) that they do not own without receiving a paid salary or wage.";
             case UWSE: return "A situation in which an individual works for himself or herself without receiving a paid salary or wage.";
             case VW: return "A situation in which an individual chooses to do something, especially for other people or for an organization, willingly and without being forced or compensated to do it.  This can include formal activity undertaken through public, private and voluntary organizations as well as informal community participation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum V3WorkClassificationODH {
             case UWNSE: return "Unpaid non-governmental work, not self-employed";
             case UWSE: return "Unpaid work, self-employed";
             case VW: return "Voluntary work";
+            case NULL: return null;
             default: return "?";
           }
     }

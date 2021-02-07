@@ -78,6 +78,7 @@ public enum OralProsthodonticMaterial {
             case _2: return "2";
             case _3: return "3";
             case _4: return "4";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum OralProsthodonticMaterial {
             case _2: return "Maryland Bridge";
             case _3: return "Denture Acrylic";
             case _4: return "Denture Chrome Cobalt";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum OralProsthodonticMaterial {
             case _2: return "Maryland Bridge";
             case _3: return "Denture Acrylic";
             case _4: return "Denture Chrome Cobalt";
+            case NULL: return null;
             default: return "?";
           }
     }

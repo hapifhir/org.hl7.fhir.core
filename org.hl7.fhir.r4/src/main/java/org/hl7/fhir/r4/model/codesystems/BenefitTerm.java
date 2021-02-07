@@ -71,6 +71,7 @@ public enum BenefitTerm {
             case ANNUAL: return "annual";
             case DAY: return "day";
             case LIFETIME: return "lifetime";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum BenefitTerm {
             case ANNUAL: return "Annual, renewing on the anniversary";
             case DAY: return "Per day";
             case LIFETIME: return "For the total term, lifetime, of the policy or coverage";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum BenefitTerm {
             case ANNUAL: return "Annual";
             case DAY: return "Day";
             case LIFETIME: return "Lifetime";
+            case NULL: return null;
             default: return "?";
           }
     }

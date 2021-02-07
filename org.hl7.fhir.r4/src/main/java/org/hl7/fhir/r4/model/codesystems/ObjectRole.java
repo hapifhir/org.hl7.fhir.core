@@ -218,6 +218,7 @@ public enum ObjectRole {
             case _22: return "22";
             case _23: return "23";
             case _24: return "24";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -250,6 +251,7 @@ public enum ObjectRole {
             case _22: return "(Deprecated).";
             case _23: return "An object that specifies or controls the routing or delivery of items.  For example, a distribution list is the routing criteria for mail.  The items delivered may be documents, jobs, or other objects.";
             case _24: return "The contents of a query.  This is used to capture the contents of any kind of query.  For security surveillance purposes knowing the queries being made is very important.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -279,6 +281,7 @@ public enum ObjectRole {
             case _22: return "Table";
             case _23: return "Routing Criteria";
             case _24: return "Query";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -71,6 +71,7 @@ public enum ExpressionLanguage {
             case TEXT_CQL: return "text/cql";
             case TEXT_FHIRPATH: return "text/fhirpath";
             case APPLICATION_XFHIRQUERY: return "application/x-fhir-query";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ExpressionLanguage {
             case TEXT_CQL: return "Clinical Quality Language.";
             case TEXT_FHIRPATH: return "FHIRPath.";
             case APPLICATION_XFHIRQUERY: return "FHIR's RESTful query syntax - typically independent of base URL.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ExpressionLanguage {
             case TEXT_CQL: return "CQL";
             case TEXT_FHIRPATH: return "FHIRPath";
             case APPLICATION_XFHIRQUERY: return "FHIR Query";
+            case NULL: return null;
             default: return "?";
           }
     }

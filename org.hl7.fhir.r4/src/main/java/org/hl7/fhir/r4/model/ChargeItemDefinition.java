@@ -111,6 +111,7 @@ public class ChargeItemDefinition extends MetadataResource {
             case DISCOUNT: return "discount";
             case TAX: return "tax";
             case INFORMATIONAL: return "informational";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public class ChargeItemDefinition extends MetadataResource {
             case DISCOUNT: return "http://hl7.org/fhir/invoice-priceComponentType";
             case TAX: return "http://hl7.org/fhir/invoice-priceComponentType";
             case INFORMATIONAL: return "http://hl7.org/fhir/invoice-priceComponentType";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -133,6 +135,7 @@ public class ChargeItemDefinition extends MetadataResource {
             case DISCOUNT: return "the amount is a discount applied on the base price.";
             case TAX: return "the amount is the tax component of the total price.";
             case INFORMATIONAL: return "the amount is of informational character, it has not been applied in the calculation of the total price.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +147,7 @@ public class ChargeItemDefinition extends MetadataResource {
             case DISCOUNT: return "discount";
             case TAX: return "tax";
             case INFORMATIONAL: return "informational";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -90,6 +90,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case ERROR: return "error";
             case WARNING: return "warning";
             case INFORMATION: return "information";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +100,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case ERROR: return "http://hl7.org/fhir/issue-severity";
             case WARNING: return "http://hl7.org/fhir/issue-severity";
             case INFORMATION: return "http://hl7.org/fhir/issue-severity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case ERROR: return "The issue is sufficiently important to cause the action to fail.";
             case WARNING: return "The issue is not important enough to cause the action to fail, but may cause it to be performed suboptimally or in a way that is not as desired.";
             case INFORMATION: return "The issue has no relation to the degree of success of the action.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +120,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case ERROR: return "Error";
             case WARNING: return "Warning";
             case INFORMATION: return "Information";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -381,6 +385,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case TIMEOUT: return "timeout";
             case THROTTLED: return "throttled";
             case INFORMATIONAL: return "informational";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -415,6 +420,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case TIMEOUT: return "http://hl7.org/fhir/issue-type";
             case THROTTLED: return "http://hl7.org/fhir/issue-type";
             case INFORMATIONAL: return "http://hl7.org/fhir/issue-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -449,6 +455,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case TIMEOUT: return "An internal timeout has occurred.";
             case THROTTLED: return "The system is not prepared to handle this request due to load management.";
             case INFORMATIONAL: return "A message unrelated to the processing success of the completed operation (examples of the latter include things like reminders of password expiry, system maintenance times, etc.).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -483,6 +490,7 @@ public class OperationOutcome extends DomainResource implements IBaseOperationOu
             case TIMEOUT: return "Timeout";
             case THROTTLED: return "Throttled";
             case INFORMATIONAL: return "Informational Note";
+            case NULL: return null;
             default: return "?";
           }
         }

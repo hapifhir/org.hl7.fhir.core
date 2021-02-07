@@ -71,6 +71,7 @@ public enum Referralcategory {
             case PROPOSAL: return "proposal";
             case PLAN: return "plan";
             case REQUEST: return "request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum Referralcategory {
             case PROPOSAL: return "The referral request represents a suggestion or recommendation that a referral be made.";
             case PLAN: return "The referral request represents an intention by the author to make a referral, but no actual referral has yet been made/authorized.";
             case REQUEST: return "This is an actual referral request which, when active, will have the authorizations needed to allow it to be actioned.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum Referralcategory {
             case PROPOSAL: return "Proposal";
             case PLAN: return "Plan";
             case REQUEST: return "Request";
+            case NULL: return null;
             default: return "?";
           }
     }

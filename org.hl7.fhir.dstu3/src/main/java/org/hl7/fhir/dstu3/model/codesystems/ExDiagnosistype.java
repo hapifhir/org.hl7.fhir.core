@@ -134,6 +134,7 @@ public enum ExDiagnosistype {
             case REMOTE: return "remote";
             case RETROSPECTIVE: return "retrospective";
             case SELF: return "self";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum ExDiagnosistype {
             case REMOTE: return "A diagnosis determined using telemedicine techniques.";
             case RETROSPECTIVE: return "The labeling of an illness in a specific historical event using modern knowledge, methods and disease classifications.";
             case SELF: return "A diagnosis determined by the patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum ExDiagnosistype {
             case REMOTE: return "Remote Diagnosis";
             case RETROSPECTIVE: return "Retrospective Diagnosis";
             case SELF: return "Self Diagnosis";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -97,6 +97,7 @@ public class CodeSystem extends MetadataResource {
             case ISA: return "is-a";
             case PARTOF: return "part-of";
             case CLASSIFIEDWITH: return "classified-with";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public class CodeSystem extends MetadataResource {
             case ISA: return "http://hl7.org/fhir/codesystem-hierarchy-meaning";
             case PARTOF: return "http://hl7.org/fhir/codesystem-hierarchy-meaning";
             case CLASSIFIEDWITH: return "http://hl7.org/fhir/codesystem-hierarchy-meaning";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,6 +117,7 @@ public class CodeSystem extends MetadataResource {
             case ISA: return "A hierarchy where the child concepts have an IS-A relationship with the parents - that is, all the properties of the parent are also true for its child concepts. Not that is-a is a property of the concepts, so additional subsumption relationships may be defined using properties or the [subsumes](extension-codesystem-subsumes.html) extension.";
             case PARTOF: return "Child elements list the individual parts of a composite whole (e.g. body site).";
             case CLASSIFIEDWITH: return "Child concepts in the hierarchy may have only one parent, and there is a presumption that the code system is a \"closed world\" meaning all things must be in the hierarchy. This results in concepts such as \"not otherwise classified.\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -124,6 +127,7 @@ public class CodeSystem extends MetadataResource {
             case ISA: return "Is-A";
             case PARTOF: return "Part Of";
             case CLASSIFIEDWITH: return "Classified With";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -228,6 +232,7 @@ public class CodeSystem extends MetadataResource {
             case FRAGMENT: return "fragment";
             case COMPLETE: return "complete";
             case SUPPLEMENT: return "supplement";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -238,6 +243,7 @@ public class CodeSystem extends MetadataResource {
             case FRAGMENT: return "http://hl7.org/fhir/codesystem-content-mode";
             case COMPLETE: return "http://hl7.org/fhir/codesystem-content-mode";
             case SUPPLEMENT: return "http://hl7.org/fhir/codesystem-content-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -248,6 +254,7 @@ public class CodeSystem extends MetadataResource {
             case FRAGMENT: return "A subset of the code system concepts are included in the code system resource. This is a curated subset released for a specific purpose under the governance of the code system steward, and that the intent, bounds and consequences of the fragmentation are clearly defined in the fragment or the code system documentation. Fragments are also known as partitions.";
             case COMPLETE: return "All the concepts defined by the code system are included in the code system resource.";
             case SUPPLEMENT: return "The resource doesn't define any new concepts; it just provides additional designations and properties to another code system.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -258,6 +265,7 @@ public class CodeSystem extends MetadataResource {
             case FRAGMENT: return "Fragment";
             case COMPLETE: return "Complete";
             case SUPPLEMENT: return "Supplement";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -396,6 +404,7 @@ public class CodeSystem extends MetadataResource {
             case NOTIN: return "not-in";
             case GENERALIZES: return "generalizes";
             case EXISTS: return "exists";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -410,6 +419,7 @@ public class CodeSystem extends MetadataResource {
             case NOTIN: return "http://hl7.org/fhir/filter-operator";
             case GENERALIZES: return "http://hl7.org/fhir/filter-operator";
             case EXISTS: return "http://hl7.org/fhir/filter-operator";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -424,6 +434,7 @@ public class CodeSystem extends MetadataResource {
             case NOTIN: return "The specified property of the code is not in the set of codes or concepts specified in the provided value (comma separated list).";
             case GENERALIZES: return "Includes all concept ids that have a transitive is-a relationship from the concept Id provided as the value, including the provided concept itself (i.e. include ancestor codes and self).";
             case EXISTS: return "The specified property of the code has at least one value (if the specified value is true; if the specified value is false, then matches when the specified property of the code has no values).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -438,6 +449,7 @@ public class CodeSystem extends MetadataResource {
             case NOTIN: return "Not in Set";
             case GENERALIZES: return "Generalizes (by Subsumption)";
             case EXISTS: return "Exists";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -586,6 +598,7 @@ public class CodeSystem extends MetadataResource {
             case BOOLEAN: return "boolean";
             case DATETIME: return "dateTime";
             case DECIMAL: return "decimal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -598,6 +611,7 @@ public class CodeSystem extends MetadataResource {
             case BOOLEAN: return "http://hl7.org/fhir/concept-property-type";
             case DATETIME: return "http://hl7.org/fhir/concept-property-type";
             case DECIMAL: return "http://hl7.org/fhir/concept-property-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -610,6 +624,7 @@ public class CodeSystem extends MetadataResource {
             case BOOLEAN: return "The property value is a boolean true | false.";
             case DATETIME: return "The property is a date or a date + time.";
             case DECIMAL: return "The property value is a decimal number.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -622,6 +637,7 @@ public class CodeSystem extends MetadataResource {
             case BOOLEAN: return "boolean";
             case DATETIME: return "dateTime";
             case DECIMAL: return "decimal";
+            case NULL: return null;
             default: return "?";
           }
         }

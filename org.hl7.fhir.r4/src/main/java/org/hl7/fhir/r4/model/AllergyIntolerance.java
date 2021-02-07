@@ -80,6 +80,7 @@ public class AllergyIntolerance extends DomainResource {
           switch (this) {
             case ALLERGY: return "allergy";
             case INTOLERANCE: return "intolerance";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -87,6 +88,7 @@ public class AllergyIntolerance extends DomainResource {
           switch (this) {
             case ALLERGY: return "http://hl7.org/fhir/allergy-intolerance-type";
             case INTOLERANCE: return "http://hl7.org/fhir/allergy-intolerance-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -94,6 +96,7 @@ public class AllergyIntolerance extends DomainResource {
           switch (this) {
             case ALLERGY: return "A propensity for hypersensitive reaction(s) to a substance.  These reactions are most typically type I hypersensitivity, plus other \"allergy-like\" reactions, including pseudoallergy.";
             case INTOLERANCE: return "A propensity for adverse reactions to a substance that is not judged to be allergic or \"allergy-like\".  These reactions are typically (but not necessarily) non-immune.  They are to some degree idiosyncratic and/or patient-specific (i.e. are not a reaction that is expected to occur with most or all patients given similar circumstances).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +104,7 @@ public class AllergyIntolerance extends DomainResource {
           switch (this) {
             case ALLERGY: return "Allergy";
             case INTOLERANCE: return "Intolerance";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -186,6 +190,7 @@ public class AllergyIntolerance extends DomainResource {
             case MEDICATION: return "medication";
             case ENVIRONMENT: return "environment";
             case BIOLOGIC: return "biologic";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -195,6 +200,7 @@ public class AllergyIntolerance extends DomainResource {
             case MEDICATION: return "http://hl7.org/fhir/allergy-intolerance-category";
             case ENVIRONMENT: return "http://hl7.org/fhir/allergy-intolerance-category";
             case BIOLOGIC: return "http://hl7.org/fhir/allergy-intolerance-category";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -204,6 +210,7 @@ public class AllergyIntolerance extends DomainResource {
             case MEDICATION: return "Substances administered to achieve a physiological effect.";
             case ENVIRONMENT: return "Any substances that are encountered in the environment, including any substance not already classified as food, medication, or biologic.";
             case BIOLOGIC: return "A preparation that is synthesized from living organisms or their products, especially a human or animal protein, such as a hormone or antitoxin, that is used as a diagnostic, preventive, or therapeutic agent. Examples of biologic medications include: vaccines; allergenic extracts, which are used for both diagnosis and treatment (for example, allergy shots); gene therapies; cellular therapies.  There are other biologic products, such as tissues, which are not typically associated with allergies.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +220,7 @@ public class AllergyIntolerance extends DomainResource {
             case MEDICATION: return "Medication";
             case ENVIRONMENT: return "Environment";
             case BIOLOGIC: return "Biologic";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -303,6 +311,7 @@ public class AllergyIntolerance extends DomainResource {
             case LOW: return "low";
             case HIGH: return "high";
             case UNABLETOASSESS: return "unable-to-assess";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -311,6 +320,7 @@ public class AllergyIntolerance extends DomainResource {
             case LOW: return "http://hl7.org/fhir/allergy-intolerance-criticality";
             case HIGH: return "http://hl7.org/fhir/allergy-intolerance-criticality";
             case UNABLETOASSESS: return "http://hl7.org/fhir/allergy-intolerance-criticality";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -319,6 +329,7 @@ public class AllergyIntolerance extends DomainResource {
             case LOW: return "Worst case result of a future exposure is not assessed to be life-threatening or having high potential for organ system failure.";
             case HIGH: return "Worst case result of a future exposure is assessed to be life-threatening or having high potential for organ system failure.";
             case UNABLETOASSESS: return "Unable to assess the worst case result of a future exposure.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -327,6 +338,7 @@ public class AllergyIntolerance extends DomainResource {
             case LOW: return "Low Risk";
             case HIGH: return "High Risk";
             case UNABLETOASSESS: return "Unable to Assess Risk";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -411,6 +423,7 @@ public class AllergyIntolerance extends DomainResource {
             case MILD: return "mild";
             case MODERATE: return "moderate";
             case SEVERE: return "severe";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -419,6 +432,7 @@ public class AllergyIntolerance extends DomainResource {
             case MILD: return "http://hl7.org/fhir/reaction-event-severity";
             case MODERATE: return "http://hl7.org/fhir/reaction-event-severity";
             case SEVERE: return "http://hl7.org/fhir/reaction-event-severity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -427,6 +441,7 @@ public class AllergyIntolerance extends DomainResource {
             case MILD: return "Causes mild physiological effects.";
             case MODERATE: return "Causes moderate physiological effects.";
             case SEVERE: return "Causes severe physiological effects.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -435,6 +450,7 @@ public class AllergyIntolerance extends DomainResource {
             case MILD: return "Mild";
             case MODERATE: return "Moderate";
             case SEVERE: return "Severe";
+            case NULL: return null;
             default: return "?";
           }
         }

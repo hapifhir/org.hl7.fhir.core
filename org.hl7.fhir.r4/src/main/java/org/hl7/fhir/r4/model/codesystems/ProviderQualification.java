@@ -71,6 +71,7 @@ public enum ProviderQualification {
             case _311405: return "311405";
             case _604215: return "604215";
             case _604210: return "604210";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ProviderQualification {
             case _311405: return "Dentist General Practitioner (DDS, DDM).";
             case _604215: return "Ophthalmologist.";
             case _604210: return "Optometrist.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ProviderQualification {
             case _311405: return "Dentist";
             case _604215: return "Ophthalmologist";
             case _604210: return "Optometrist";
+            case NULL: return null;
             default: return "?";
           }
     }

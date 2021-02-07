@@ -64,6 +64,7 @@ public enum ChoiceListOrientation {
           switch (this) {
             case HORIZONTAL: return "horizontal";
             case VERTICAL: return "vertical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ChoiceListOrientation {
           switch (this) {
             case HORIZONTAL: return "List choices along the horizontal axis.";
             case VERTICAL: return "List choices down the vertical axis.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ChoiceListOrientation {
           switch (this) {
             case HORIZONTAL: return "Horizontal";
             case VERTICAL: return "Vertical";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -115,6 +115,7 @@ public class MedicationAdministration extends DomainResource {
             case ENTEREDINERROR: return "entered-in-error";
             case STOPPED: return "stopped";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,6 +128,7 @@ public class MedicationAdministration extends DomainResource {
             case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
             case STOPPED: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
             case UNKNOWN: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -139,6 +141,7 @@ public class MedicationAdministration extends DomainResource {
             case ENTEREDINERROR: return "The administration was entered in error and therefore nullified.";
             case STOPPED: return "Actions implied by the administration have been permanently halted, before all of them occurred.";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this request. Note: This concept is not to be used for 'other' - one of the listed statuses is presumed to apply, it's just not known which one.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -151,6 +154,7 @@ public class MedicationAdministration extends DomainResource {
             case ENTEREDINERROR: return "Entered in Error";
             case STOPPED: return "Stopped";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -64,6 +64,7 @@ public enum ExposureState {
           switch (this) {
             case EXPOSURE: return "exposure";
             case EXPOSUREALTERNATIVE: return "exposure-alternative";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ExposureState {
           switch (this) {
             case EXPOSURE: return "used when the results by exposure is describing the results for the primary exposure of interest.";
             case EXPOSUREALTERNATIVE: return "used when the results by exposure is describing the results for the alternative exposure state, control state or comparator state.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ExposureState {
           switch (this) {
             case EXPOSURE: return "Exposure";
             case EXPOSUREALTERNATIVE: return "Exposure Alternative";
+            case NULL: return null;
             default: return "?";
           }
     }

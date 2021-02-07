@@ -120,6 +120,7 @@ public enum CoverageCopayType {
             case COPAY: return "copay";
             case DEDUCTIBLE: return "deductible";
             case MAXOUTOFPOCKET: return "maxoutofpocket";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum CoverageCopayType {
             case COPAY: return "A standard fixed currency amount applied to all classes or service or product not otherwise specified.";
             case DEDUCTIBLE: return "The accumulated amount of patient payment before the coverage begins to pay for services.";
             case MAXOUTOFPOCKET: return "The maximum amout of payment for services which a patient, or family, is expected to incur - typically annually.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum CoverageCopayType {
             case COPAY: return "Copay Amount";
             case DEDUCTIBLE: return "Deductible";
             case MAXOUTOFPOCKET: return "Maximum out of pocket";
+            case NULL: return null;
             default: return "?";
           }
     }

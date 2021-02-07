@@ -330,6 +330,7 @@ public enum V3VaccineManufacturer {
             case USA: return "USA";
             case WA: return "WA";
             case WAL: return "WAL";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -378,6 +379,7 @@ public enum V3VaccineManufacturer {
             case USA: return "United States Army Medical Research and Materiel Command";
             case WA: return "Wyeth-Ayerst [Inactive-use WAL]";
             case WAL: return "Wyeth-Ayerst (includes Wyeth-Lederle Vaccines and Pediatrics, Wyeth Laboratories, Lederle Laboratories, and Praxis Biologics)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -423,6 +425,7 @@ public enum V3VaccineManufacturer {
             case USA: return "United States Army Medical Research and Materiel Command";
             case WA: return "Wyeth-Ayerst [Inactive - use WAL]";
             case WAL: return "Wyeth-Ayerst (includes Wyeth-Lederle Vaccines and Pediatrics, Wyeth Laboratories, Lederle Laboratories, and Praxis Biologics)";
+            case NULL: return null;
             default: return "?";
           }
     }

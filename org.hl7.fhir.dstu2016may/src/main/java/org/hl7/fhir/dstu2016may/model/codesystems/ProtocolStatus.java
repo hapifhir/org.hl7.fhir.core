@@ -92,6 +92,7 @@ public enum ProtocolStatus {
             case ACTIVE: return "active";
             case WITHDRAWN: return "withdrawn";
             case SUPERSEDED: return "superseded";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ProtocolStatus {
             case ACTIVE: return "This protocol is ready for use in production systems";
             case WITHDRAWN: return "This protocol has been withdrawn and should no longer be used";
             case SUPERSEDED: return "This protocol has been replaced and a different protocol should be used in its place";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ProtocolStatus {
             case ACTIVE: return "Active";
             case WITHDRAWN: return "Withdrawn";
             case SUPERSEDED: return "Superseded";
+            case NULL: return null;
             default: return "?";
           }
     }

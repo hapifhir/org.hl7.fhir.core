@@ -127,6 +127,7 @@ public enum PatientContactRelationship {
             case GUARANTOR: return "guarantor";
             case OWNER: return "owner";
             case PARENT: return "parent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public enum PatientContactRelationship {
             case GUARANTOR: return "Contact for financial matters";
             case OWNER: return "For animals, the owner of the animal";
             case PARENT: return "Parent of the patient";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public enum PatientContactRelationship {
             case GUARANTOR: return "Guarantor";
             case OWNER: return "Owner of animal";
             case PARENT: return "Parent";
+            case NULL: return null;
             default: return "?";
           }
     }

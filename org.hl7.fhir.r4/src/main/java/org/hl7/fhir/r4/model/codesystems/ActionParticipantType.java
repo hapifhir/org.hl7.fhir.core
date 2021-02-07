@@ -78,6 +78,7 @@ public enum ActionParticipantType {
             case PRACTITIONER: return "practitioner";
             case RELATEDPERSON: return "related-person";
             case DEVICE: return "device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ActionParticipantType {
             case PRACTITIONER: return "The participant is a practitioner involved in the patient's care.";
             case RELATEDPERSON: return "The participant is a person related to the patient.";
             case DEVICE: return "The participant is a system or device used in the care of the patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ActionParticipantType {
             case PRACTITIONER: return "Practitioner";
             case RELATEDPERSON: return "Related Person";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
     }

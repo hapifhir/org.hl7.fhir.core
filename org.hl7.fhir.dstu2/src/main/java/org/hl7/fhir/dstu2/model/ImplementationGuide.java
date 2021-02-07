@@ -79,6 +79,7 @@ public class ImplementationGuide extends DomainResource {
           switch (this) {
             case REFERENCE: return "reference";
             case INCLUSION: return "inclusion";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -86,6 +87,7 @@ public class ImplementationGuide extends DomainResource {
           switch (this) {
             case REFERENCE: return "http://hl7.org/fhir/guide-dependency-type";
             case INCLUSION: return "http://hl7.org/fhir/guide-dependency-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -93,6 +95,7 @@ public class ImplementationGuide extends DomainResource {
           switch (this) {
             case REFERENCE: return "The guide is referred to by URL.";
             case INCLUSION: return "The guide is embedded in this guide when published.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -100,6 +103,7 @@ public class ImplementationGuide extends DomainResource {
           switch (this) {
             case REFERENCE: return "Reference";
             case INCLUSION: return "Inclusion";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -191,6 +195,7 @@ public class ImplementationGuide extends DomainResource {
             case EXTENSION: return "extension";
             case DICTIONARY: return "dictionary";
             case LOGICAL: return "logical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -202,6 +207,7 @@ public class ImplementationGuide extends DomainResource {
             case EXTENSION: return "http://hl7.org/fhir/guide-resource-purpose";
             case DICTIONARY: return "http://hl7.org/fhir/guide-resource-purpose";
             case LOGICAL: return "http://hl7.org/fhir/guide-resource-purpose";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +219,7 @@ public class ImplementationGuide extends DomainResource {
             case EXTENSION: return "The resource defines an extension (StructureDefinition) that is used in the implementation guide.";
             case DICTIONARY: return "The resource contains a dictionary that is part of the implementation guide.";
             case LOGICAL: return "The resource defines a logical model (in a StructureDefinition) that is used in the implementation guide.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -224,6 +231,7 @@ public class ImplementationGuide extends DomainResource {
             case EXTENSION: return "Extension";
             case DICTIONARY: return "Dictionary";
             case LOGICAL: return "Logical Model";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -353,6 +361,7 @@ public class ImplementationGuide extends DomainResource {
             case DICTIONARY: return "dictionary";
             case TOC: return "toc";
             case RESOURCE: return "resource";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -366,6 +375,7 @@ public class ImplementationGuide extends DomainResource {
             case DICTIONARY: return "http://hl7.org/fhir/guide-page-kind";
             case TOC: return "http://hl7.org/fhir/guide-page-kind";
             case RESOURCE: return "http://hl7.org/fhir/guide-page-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -379,6 +389,7 @@ public class ImplementationGuide extends DomainResource {
             case DICTIONARY: return "This is a page that creates the listed resources as a dictionary.";
             case TOC: return "This is a generated page that contains the table of contents.";
             case RESOURCE: return "This is a page that represents a presented resource. This is typically used for generated conformance resource presentations.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -392,6 +403,7 @@ public class ImplementationGuide extends DomainResource {
             case DICTIONARY: return "Dictionary";
             case TOC: return "Table Of Contents";
             case RESOURCE: return "Resource";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -71,6 +71,7 @@ public enum DeviceAction {
             case IMPLANTED: return "implanted";
             case EXPLANTED: return "explanted";
             case MANIPULATED: return "manipulated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum DeviceAction {
             case IMPLANTED: return "The device was implanted in the patient during the procedure.";
             case EXPLANTED: return "The device was explanted from the patient during the procedure.";
             case MANIPULATED: return "The device remains in the patient, but its location, settings, or functionality was changed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum DeviceAction {
             case IMPLANTED: return "Implanted";
             case EXPLANTED: return "Explanted";
             case MANIPULATED: return "Manipulated";
+            case NULL: return null;
             default: return "?";
           }
     }

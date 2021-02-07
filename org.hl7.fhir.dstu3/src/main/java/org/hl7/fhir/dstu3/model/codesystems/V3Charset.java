@@ -120,6 +120,7 @@ public enum V3Charset {
             case USASCII: return "US-ASCII";
             case UTF7: return "UTF-7";
             case UTF8: return "UTF-8";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum V3Charset {
             case USASCII: return "Required for HL7 use.";
             case UTF7: return "HL7 is indifferent to the use of this Charset.";
             case UTF8: return "Required for Unicode support.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum V3Charset {
             case USASCII: return "US-ASCII";
             case UTF7: return "UTF-7";
             case UTF8: return "UTF-8";
+            case NULL: return null;
             default: return "?";
           }
     }

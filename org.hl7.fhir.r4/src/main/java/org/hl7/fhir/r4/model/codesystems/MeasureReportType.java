@@ -78,6 +78,7 @@ public enum MeasureReportType {
             case SUBJECTLIST: return "subject-list";
             case SUMMARY: return "summary";
             case DATACOLLECTION: return "data-collection";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MeasureReportType {
             case SUBJECTLIST: return "A subject list report that includes a listing of subjects that satisfied each population criteria in the measure.";
             case SUMMARY: return "A summary report that returns the number of members in each population criteria for the measure.";
             case DATACOLLECTION: return "A data collection report that contains data-of-interest for the measure.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MeasureReportType {
             case SUBJECTLIST: return "Subject List";
             case SUMMARY: return "Summary";
             case DATACOLLECTION: return "Data Collection";
+            case NULL: return null;
             default: return "?";
           }
     }

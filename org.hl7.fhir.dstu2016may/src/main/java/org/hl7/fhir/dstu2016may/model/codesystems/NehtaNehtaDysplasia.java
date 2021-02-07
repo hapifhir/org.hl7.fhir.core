@@ -64,6 +64,7 @@ public enum NehtaNehtaDysplasia {
           switch (this) {
             case WITHDYSPLASIA: return "with_dysplasia";
             case WITHOUTDYSPLASIA: return "without_dysplasia";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum NehtaNehtaDysplasia {
           switch (this) {
             case WITHDYSPLASIA: return "Indicates the presence of dysplasia";
             case WITHOUTDYSPLASIA: return "Indicates the absence of dysplasia";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum NehtaNehtaDysplasia {
           switch (this) {
             case WITHDYSPLASIA: return "With dysplasia";
             case WITHOUTDYSPLASIA: return "Without dysplasia";
+            case NULL: return null;
             default: return "?";
           }
     }

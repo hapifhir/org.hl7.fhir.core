@@ -78,6 +78,7 @@ public enum IssueSeverity {
             case ERROR: return "error";
             case WARNING: return "warning";
             case INFORMATION: return "information";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum IssueSeverity {
             case ERROR: return "The issue is sufficiently important to cause the action to fail.";
             case WARNING: return "The issue is not important enough to cause the action to fail but may cause it to be performed suboptimally or in a way that is not as desired.";
             case INFORMATION: return "The issue has no relation to the degree of success of the action.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum IssueSeverity {
             case ERROR: return "Error";
             case WARNING: return "Warning";
             case INFORMATION: return "Information";
+            case NULL: return null;
             default: return "?";
           }
     }

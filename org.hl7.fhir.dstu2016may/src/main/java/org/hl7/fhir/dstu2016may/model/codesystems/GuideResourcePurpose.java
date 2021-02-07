@@ -92,6 +92,7 @@ public enum GuideResourcePurpose {
             case EXTENSION: return "extension";
             case DICTIONARY: return "dictionary";
             case LOGICAL: return "logical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum GuideResourcePurpose {
             case EXTENSION: return "The resource defines an extension (StructureDefinition) that is used in the implementation guide.";
             case DICTIONARY: return "The resource contains a dictionary that is part of the implementation guide.";
             case LOGICAL: return "The resource defines a logical model (in a StructureDefinition) that is used in the implementation guide.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum GuideResourcePurpose {
             case EXTENSION: return "Extension";
             case DICTIONARY: return "Dictionary";
             case LOGICAL: return "Logical Model";
+            case NULL: return null;
             default: return "?";
           }
     }

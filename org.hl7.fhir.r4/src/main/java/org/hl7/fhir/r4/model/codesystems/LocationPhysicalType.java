@@ -148,6 +148,7 @@ public enum LocationPhysicalType {
             case RD: return "rd";
             case AREA: return "area";
             case JDN: return "jdn";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -170,6 +171,7 @@ public enum LocationPhysicalType {
             case RD: return "A defined path to travel between 2 points that has a known name.";
             case AREA: return "A defined physical boundary of something, such as a flood risk zone, region, postcode";
             case JDN: return "A wide scope that covers a conceptual domain, such as a Nation (Country wide community or Federal Government - e.g. Ministry of Health),  Province or State (community or Government), Business (throughout the enterprise), Nation with a business scope of an agency (e.g. CDC, FDA etc.) or a Business segment (UK Pharmacy), not just an physical boundary";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -189,6 +191,7 @@ public enum LocationPhysicalType {
             case RD: return "Road";
             case AREA: return "Area";
             case JDN: return "Jurisdiction";
+            case NULL: return null;
             default: return "?";
           }
     }

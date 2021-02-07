@@ -64,6 +64,7 @@ public enum MeasureImprovementNotation {
           switch (this) {
             case INCREASE: return "increase";
             case DECREASE: return "decrease";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum MeasureImprovementNotation {
           switch (this) {
             case INCREASE: return "Improvement is indicated as an increase in the score or measurement (e.g. Higher score indicates better quality).";
             case DECREASE: return "Improvement is indicated as a decrease in the score or measurement (e.g. Lower score indicates better quality).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum MeasureImprovementNotation {
           switch (this) {
             case INCREASE: return "Increased score indicates improvement";
             case DECREASE: return "Decreased score indicates improvement";
+            case NULL: return null;
             default: return "?";
           }
     }

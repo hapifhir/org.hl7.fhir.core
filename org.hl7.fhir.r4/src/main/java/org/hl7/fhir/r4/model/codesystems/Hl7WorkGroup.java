@@ -218,6 +218,7 @@ public enum Hl7WorkGroup {
             case US: return "us";
             case VOCAB: return "vocab";
             case AID: return "aid";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -250,6 +251,7 @@ public enum Hl7WorkGroup {
             case US: return "US Realm Taskforce (http://www.hl7.org/Special/committees/usrealm/index.cfm).";
             case VOCAB: return "Vocabulary (http://www.hl7.org/Special/committees/Vocab/index.cfm).";
             case AID: return "Application Implementation and Design (http://www.hl7.org/Special/committees/java/index.cfm).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -279,6 +281,7 @@ public enum Hl7WorkGroup {
             case US: return "US Realm Taskforce";
             case VOCAB: return "Vocabulary";
             case AID: return "Application Implementation and Design";
+            case NULL: return null;
             default: return "?";
           }
     }

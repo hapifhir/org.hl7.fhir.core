@@ -131,6 +131,7 @@ public class SearchParameter extends CanonicalResource {
             case SA: return "sa";
             case EB: return "eb";
             case AP: return "ap";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -145,6 +146,7 @@ public class SearchParameter extends CanonicalResource {
             case SA: return "http://hl7.org/fhir/search-comparator";
             case EB: return "http://hl7.org/fhir/search-comparator";
             case AP: return "http://hl7.org/fhir/search-comparator";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -159,6 +161,7 @@ public class SearchParameter extends CanonicalResource {
             case SA: return "the value for the parameter in the resource starts after the provided value.";
             case EB: return "the value for the parameter in the resource ends before the provided value.";
             case AP: return "the value for the parameter in the resource is approximately the same to the provided value.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -173,6 +176,7 @@ public class SearchParameter extends CanonicalResource {
             case SA: return "Starts After";
             case EB: return "Ends Before";
             case AP: return "Approximately";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -356,6 +360,7 @@ public class SearchParameter extends CanonicalResource {
             case TYPE: return "type";
             case IDENTIFIER: return "identifier";
             case OFTYPE: return "ofType";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -373,6 +378,7 @@ public class SearchParameter extends CanonicalResource {
             case TYPE: return "http://hl7.org/fhir/search-modifier-code";
             case IDENTIFIER: return "http://hl7.org/fhir/search-modifier-code";
             case OFTYPE: return "http://hl7.org/fhir/search-modifier-code";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -390,6 +396,7 @@ public class SearchParameter extends CanonicalResource {
             case TYPE: return "The search parameter only applies to the Resource Type specified as a modifier (e.g. the modifier is not actually :type, but :Patient etc.).";
             case IDENTIFIER: return "The search parameter applies to the identifier on the resource, not the reference.";
             case OFTYPE: return "The search parameter has the format system|code|value, where the system and code refer to an Identifier.type.coding.system and .code, and match if any of the type codes match. All 3 parts must be present.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -407,6 +414,7 @@ public class SearchParameter extends CanonicalResource {
             case TYPE: return "Type";
             case IDENTIFIER: return "Identifier";
             case OFTYPE: return "Of Type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -559,6 +567,7 @@ public class SearchParameter extends CanonicalResource {
             case NEARBY: return "nearby";
             case DISTANCE: return "distance";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -569,6 +578,7 @@ public class SearchParameter extends CanonicalResource {
             case NEARBY: return "http://hl7.org/fhir/search-xpath-usage";
             case DISTANCE: return "http://hl7.org/fhir/search-xpath-usage";
             case OTHER: return "http://hl7.org/fhir/search-xpath-usage";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -579,6 +589,7 @@ public class SearchParameter extends CanonicalResource {
             case NEARBY: return "The search parameter is based on a spatial transform of the selected nodes.";
             case DISTANCE: return "The search parameter is based on a spatial transform of the selected nodes, using physical distance from the middle.";
             case OTHER: return "The interpretation of the xpath statement is unknown (and can't be automated).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -589,6 +600,7 @@ public class SearchParameter extends CanonicalResource {
             case NEARBY: return "Nearby";
             case DISTANCE: return "Distance";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
         }

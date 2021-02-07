@@ -92,6 +92,7 @@ public enum EndpointStatus {
             case OFF: return "off";
             case ENTEREDINERROR: return "entered-in-error";
             case TEST: return "test";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum EndpointStatus {
             case OFF: return "This endpoint is no longer to be used";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case TEST: return "This endpoint is not intended for production usage.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum EndpointStatus {
             case OFF: return "Off";
             case ENTEREDINERROR: return "Entered in error";
             case TEST: return "Test";
+            case NULL: return null;
             default: return "?";
           }
     }

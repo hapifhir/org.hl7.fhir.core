@@ -57,6 +57,7 @@ public enum ContractDefinitionType {
         public String toCode() {
           switch (this) {
             case TEMP: return "temp";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum ContractDefinitionType {
         public String getDefinition() {
           switch (this) {
             case TEMP: return "To be completed";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case TEMP: return "Temporary Value";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -77,6 +77,7 @@ public class ActionDefinition extends Type implements ICompositeType {
           switch (this) {
             case BEFORE: return "before";
             case AFTER: return "after";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -84,6 +85,7 @@ public class ActionDefinition extends Type implements ICompositeType {
           switch (this) {
             case BEFORE: return "http://hl7.org/fhir/action-relationship-type";
             case AFTER: return "http://hl7.org/fhir/action-relationship-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -91,6 +93,7 @@ public class ActionDefinition extends Type implements ICompositeType {
           switch (this) {
             case BEFORE: return "The action must be performed before the related action";
             case AFTER: return "The action must be performed after the related action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +101,7 @@ public class ActionDefinition extends Type implements ICompositeType {
           switch (this) {
             case BEFORE: return "Before";
             case AFTER: return "After";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -164,6 +168,7 @@ public class ActionDefinition extends Type implements ICompositeType {
           switch (this) {
             case START: return "start";
             case END: return "end";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +176,7 @@ public class ActionDefinition extends Type implements ICompositeType {
           switch (this) {
             case START: return "http://hl7.org/fhir/action-relationship-anchor";
             case END: return "http://hl7.org/fhir/action-relationship-anchor";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -178,6 +184,7 @@ public class ActionDefinition extends Type implements ICompositeType {
           switch (this) {
             case START: return "The action relationship is anchored to the start of the related action";
             case END: return "The action relationship is anchored to the end of the related action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -185,6 +192,7 @@ public class ActionDefinition extends Type implements ICompositeType {
           switch (this) {
             case START: return "Start";
             case END: return "End";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -258,6 +266,7 @@ public class ActionDefinition extends Type implements ICompositeType {
             case PATIENT: return "patient";
             case PRACTITIONER: return "practitioner";
             case RELATEDPERSON: return "related-person";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -266,6 +275,7 @@ public class ActionDefinition extends Type implements ICompositeType {
             case PATIENT: return "http://hl7.org/fhir/action-participant-type";
             case PRACTITIONER: return "http://hl7.org/fhir/action-participant-type";
             case RELATEDPERSON: return "http://hl7.org/fhir/action-participant-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -274,6 +284,7 @@ public class ActionDefinition extends Type implements ICompositeType {
             case PATIENT: return "The participant is the patient under evaluation";
             case PRACTITIONER: return "The participant is a practitioner involved in the patient's care";
             case RELATEDPERSON: return "The participant is a person related to the patient";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -282,6 +293,7 @@ public class ActionDefinition extends Type implements ICompositeType {
             case PATIENT: return "Patient";
             case PRACTITIONER: return "Practitioner";
             case RELATEDPERSON: return "Related Person";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -368,6 +380,7 @@ public class ActionDefinition extends Type implements ICompositeType {
             case UPDATE: return "update";
             case REMOVE: return "remove";
             case FIREEVENT: return "fire-event";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -377,6 +390,7 @@ public class ActionDefinition extends Type implements ICompositeType {
             case UPDATE: return "http://hl7.org/fhir/action-type";
             case REMOVE: return "http://hl7.org/fhir/action-type";
             case FIREEVENT: return "http://hl7.org/fhir/action-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -386,6 +400,7 @@ public class ActionDefinition extends Type implements ICompositeType {
             case UPDATE: return "The action is to update an existing resource";
             case REMOVE: return "The action is to remove an existing resource";
             case FIREEVENT: return "The action is to fire a specific event";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -395,6 +410,7 @@ public class ActionDefinition extends Type implements ICompositeType {
             case UPDATE: return "Update";
             case REMOVE: return "Remove";
             case FIREEVENT: return "Fire Event";
+            case NULL: return null;
             default: return "?";
           }
         }

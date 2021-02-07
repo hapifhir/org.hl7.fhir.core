@@ -78,6 +78,7 @@ public enum ContentType {
             case JSON: return "json";
             case TTL: return "ttl";
             case NONE: return "none";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ContentType {
             case JSON: return "JSON content-type corresponding to the application/fhir+json mime-type.";
             case TTL: return "RDF content-type corresponding to the text/turtle mime-type.";
             case NONE: return "Prevent the use of the corresponding http header.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ContentType {
             case JSON: return "json";
             case TTL: return "ttl";
             case NONE: return "none";
+            case NULL: return null;
             default: return "?";
           }
     }

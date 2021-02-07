@@ -134,6 +134,7 @@ public enum EventTiming {
             case EVE_LATE: return "EVE.late";
             case NIGHT: return "NIGHT";
             case PHS: return "PHS";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum EventTiming {
             case EVE_LATE: return "Event occurs during the late evening. The exact time is unspecified and established by institution convention or patient interpretation.";
             case NIGHT: return "Event occurs during the night. The exact time is unspecified and established by institution convention or patient interpretation.";
             case PHS: return "Event occurs [offset] after subject goes to sleep. The exact time is unspecified and established by institution convention or patient interpretation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum EventTiming {
             case EVE_LATE: return "Late Evening";
             case NIGHT: return "Night";
             case PHS: return "After Sleep";
+            case NULL: return null;
             default: return "?";
           }
     }

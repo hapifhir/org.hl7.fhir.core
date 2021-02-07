@@ -85,6 +85,7 @@ public enum ClaimTypeLink {
             case PHARMACY: return "pharmacy";
             case PROFESSIONAL: return "professional";
             case VISION: return "vision";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ClaimTypeLink {
             case PHARMACY: return "A claim for Pharmacy based goods and services.";
             case PROFESSIONAL: return "A claim for Professional, typically out-patient, goods and services.";
             case VISION: return "A claim for Vision (Opthamologist, Optometrist and Optician) goods and services.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ClaimTypeLink {
             case PHARMACY: return "Pharmacy";
             case PROFESSIONAL: return "Professional";
             case VISION: return "Vision";
+            case NULL: return null;
             default: return "?";
           }
     }

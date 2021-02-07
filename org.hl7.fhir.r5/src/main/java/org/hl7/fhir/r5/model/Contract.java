@@ -174,6 +174,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "revoked";
             case RESOLVED: return "resolved";
             case TERMINATED: return "terminated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -194,6 +195,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "http://hl7.org/fhir/contract-publicationstatus";
             case RESOLVED: return "http://hl7.org/fhir/contract-publicationstatus";
             case TERMINATED: return "http://hl7.org/fhir/contract-publicationstatus";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -214,6 +216,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "A Contract that is rescinded.  May be required prior to replacing with an updated Contract. Comparable FHIR and v.3 status codes: nullified.";
             case RESOLVED: return "Contract is reactivated after being pended because of faulty execution. *E.g., competency of the signer(s), or where the policy is substantially different from and did not accompany the application/form so that the applicant could not compare them. Aka - ''reactivated''. Usage: Optional stage where a pended contract is reactivated. Precedence Order = 8. Comparable FHIR and v.3 status codes: reactivated.";
             case TERMINATED: return "Contract reaches its expiry date. It might or might not be renewed or renegotiated. Usage: Normal end of contract period. Precedence Order = 12. Comparable FHIR and v.3 status codes: Obsoleted.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -234,6 +237,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "Revoked";
             case RESOLVED: return "Resolved";
             case TERMINATED: return "Terminated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -474,6 +478,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "revoked";
             case RESOLVED: return "resolved";
             case TERMINATED: return "terminated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -494,6 +499,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "http://hl7.org/fhir/contract-status";
             case RESOLVED: return "http://hl7.org/fhir/contract-status";
             case TERMINATED: return "http://hl7.org/fhir/contract-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -514,6 +520,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "A Contract that is rescinded.  May be required prior to replacing with an updated Contract. Comparable FHIR and v.3 status codes: nullified.";
             case RESOLVED: return "Contract is reactivated after being pended because of faulty execution. *E.g., competency of the signer(s), or where the policy is substantially different from and did not accompany the application/form so that the applicant could not compare them. Aka - ''reactivated''. Usage: Optional stage where a pended contract is reactivated. Precedence Order = 8. Comparable FHIR and v.3 status codes: reactivated.";
             case TERMINATED: return "Contract reaches its expiry date. It might or might not be renewed or renegotiated. Usage: Normal end of contract period. Precedence Order = 12. Comparable FHIR and v.3 status codes: Obsoleted.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -534,6 +541,7 @@ public class Contract extends DomainResource {
             case REVOKED: return "Revoked";
             case RESOLVED: return "Resolved";
             case TERMINATED: return "Terminated";
+            case NULL: return null;
             default: return "?";
           }
         }

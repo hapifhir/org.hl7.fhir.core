@@ -85,6 +85,7 @@ public enum RejectionCriteria {
             case BROKEN: return "broken";
             case CLOTTED: return "clotted";
             case WRONGTEMPERATURE: return "wrong-temperature";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum RejectionCriteria {
             case BROKEN: return "specimen container broken.";
             case CLOTTED: return "specimen clotted.";
             case WRONGTEMPERATURE: return "specimen temperature inappropriate.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum RejectionCriteria {
             case BROKEN: return "broken specimen container";
             case CLOTTED: return "specimen clotted";
             case WRONGTEMPERATURE: return "specimen temperature inappropriate";
+            case NULL: return null;
             default: return "?";
           }
     }

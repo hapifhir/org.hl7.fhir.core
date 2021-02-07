@@ -85,6 +85,7 @@ public enum Referralstatus {
             case CANCELLED: return "cancelled";
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum Referralstatus {
             case CANCELLED: return "The referral has been cancelled without being completed. For example it is no longer needed.";
             case COMPLETED: return "The referral has been completely actioned.";
             case ENTEREDINERROR: return "This referral record should never have existed, though it's possible some degree of real-world activity or decisions may have been taken due to its existence";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum Referralstatus {
             case CANCELLED: return "Cancelled";
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
     }

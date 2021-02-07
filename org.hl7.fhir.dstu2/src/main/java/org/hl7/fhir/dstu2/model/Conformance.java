@@ -89,6 +89,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case INSTANCE: return "instance";
             case CAPABILITY: return "capability";
             case REQUIREMENTS: return "requirements";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case INSTANCE: return "http://hl7.org/fhir/conformance-statement-kind";
             case CAPABILITY: return "http://hl7.org/fhir/conformance-statement-kind";
             case REQUIREMENTS: return "http://hl7.org/fhir/conformance-statement-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case INSTANCE: return "The Conformance instance represents the present capabilities of a specific system instance.  This is the kind returned by OPTIONS for a FHIR server end-point.";
             case CAPABILITY: return "The Conformance instance represents the capabilities of a system or piece of software, independent of a particular installation.";
             case REQUIREMENTS: return "The Conformance instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case INSTANCE: return "Instance";
             case CAPABILITY: return "Capability";
             case REQUIREMENTS: return "Requirements";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -196,6 +200,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case EXTENSIONS: return "extensions";
             case ELEMENTS: return "elements";
             case BOTH: return "both";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -205,6 +210,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case EXTENSIONS: return "http://hl7.org/fhir/unknown-content-code";
             case ELEMENTS: return "http://hl7.org/fhir/unknown-content-code";
             case BOTH: return "http://hl7.org/fhir/unknown-content-code";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -214,6 +220,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case EXTENSIONS: return "The application accepts unknown extensions, but not unknown elements.";
             case ELEMENTS: return "The application accepts unknown elements, but not unknown extensions.";
             case BOTH: return "The application accepts unknown elements and extensions.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -223,6 +230,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case EXTENSIONS: return "Unknown Extensions";
             case ELEMENTS: return "Unknown Elements";
             case BOTH: return "Unknown Elements and Extensions";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -298,6 +306,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case CLIENT: return "client";
             case SERVER: return "server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -305,6 +314,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case CLIENT: return "http://hl7.org/fhir/restful-conformance-mode";
             case SERVER: return "http://hl7.org/fhir/restful-conformance-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -312,6 +322,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case CLIENT: return "The application acts as a client for this resource.";
             case SERVER: return "The application acts as a server for this resource.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -319,6 +330,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case CLIENT: return "Client";
             case SERVER: return "Server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -431,6 +443,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case HISTORYTYPE: return "history-type";
             case CREATE: return "create";
             case SEARCHTYPE: return "search-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -445,6 +458,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case HISTORYTYPE: return "http://hl7.org/fhir/restful-interaction";
             case CREATE: return "http://hl7.org/fhir/restful-interaction";
             case SEARCHTYPE: return "http://hl7.org/fhir/restful-interaction";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -459,6 +473,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case HISTORYTYPE: return "";
             case CREATE: return "";
             case SEARCHTYPE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -473,6 +488,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case HISTORYTYPE: return "history-type";
             case CREATE: return "create";
             case SEARCHTYPE: return "search-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -585,6 +601,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case NOVERSION: return "no-version";
             case VERSIONED: return "versioned";
             case VERSIONEDUPDATE: return "versioned-update";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -593,6 +610,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case NOVERSION: return "http://hl7.org/fhir/versioning-policy";
             case VERSIONED: return "http://hl7.org/fhir/versioning-policy";
             case VERSIONEDUPDATE: return "http://hl7.org/fhir/versioning-policy";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -601,6 +619,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case NOVERSION: return "VersionId meta-property is not supported (server) or used (client).";
             case VERSIONED: return "VersionId meta-property is supported (server) or used (client).";
             case VERSIONEDUPDATE: return "VersionId is must be correct for updates (server) or will be specified (If-match header) for updates (client).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -609,6 +628,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case NOVERSION: return "No VersionId Support";
             case VERSIONED: return "Versioned";
             case VERSIONEDUPDATE: return "VersionId tracked fully";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -685,6 +705,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case NOTSUPPORTED: return "not-supported";
             case SINGLE: return "single";
             case MULTIPLE: return "multiple";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -693,6 +714,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case NOTSUPPORTED: return "http://hl7.org/fhir/conditional-delete-status";
             case SINGLE: return "http://hl7.org/fhir/conditional-delete-status";
             case MULTIPLE: return "http://hl7.org/fhir/conditional-delete-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -701,6 +723,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case NOTSUPPORTED: return "No support for conditional deletes.";
             case SINGLE: return "Conditional deletes are supported, but only single resources at a time.";
             case MULTIPLE: return "Conditional deletes are supported, and multiple resources can be deleted in a single interaction.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -709,6 +732,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case NOTSUPPORTED: return "Not Supported";
             case SINGLE: return "Single Deletes Supported";
             case MULTIPLE: return "Multiple Deletes Supported";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -834,6 +858,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case BELOW: return "below";
             case ABOVE: return "above";
             case TYPE: return "type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -849,6 +874,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case BELOW: return "http://hl7.org/fhir/search-modifier-code";
             case ABOVE: return "http://hl7.org/fhir/search-modifier-code";
             case TYPE: return "http://hl7.org/fhir/search-modifier-code";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -864,6 +890,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case BELOW: return "The search parameter tests whether the value in a resource is subsumed by the specified value (is-a, or hierarchical relationships).";
             case ABOVE: return "The search parameter tests whether the value in a resource subsumes the specified value (is-a, or hierarchical relationships).";
             case TYPE: return "The search parameter only applies to the Resource Type specified as a modifier (e.g. the modifier is not actually :type, but :Patient etc.).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -879,6 +906,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case BELOW: return "Below";
             case ABOVE: return "Above";
             case TYPE: return "Type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -997,6 +1025,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case TRANSACTION: return "transaction";
             case SEARCHSYSTEM: return "search-system";
             case HISTORYSYSTEM: return "history-system";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1005,6 +1034,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case TRANSACTION: return "http://hl7.org/fhir/restful-interaction";
             case SEARCHSYSTEM: return "http://hl7.org/fhir/restful-interaction";
             case HISTORYSYSTEM: return "http://hl7.org/fhir/restful-interaction";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1013,6 +1043,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case TRANSACTION: return "";
             case SEARCHSYSTEM: return "";
             case HISTORYSYSTEM: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1021,6 +1052,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case TRANSACTION: return "transaction";
             case SEARCHSYSTEM: return "search-system";
             case HISTORYSYSTEM: return "history-system";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1104,6 +1136,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case BATCH: return "batch";
             case TRANSACTION: return "transaction";
             case BOTH: return "both";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1113,6 +1146,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case BATCH: return "http://hl7.org/fhir/transaction-mode";
             case TRANSACTION: return "http://hl7.org/fhir/transaction-mode";
             case BOTH: return "http://hl7.org/fhir/transaction-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1122,6 +1156,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case BATCH: return "Batches are  supported.";
             case TRANSACTION: return "Transactions are supported.";
             case BOTH: return "Both batches and transactions are supported.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1131,6 +1166,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case BATCH: return "Batches supported";
             case TRANSACTION: return "Transactions Supported";
             case BOTH: return "Batches & Transactions";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1213,6 +1249,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case CONSEQUENCE: return "Consequence";
             case CURRENCY: return "Currency";
             case NOTIFICATION: return "Notification";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1221,6 +1258,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case CONSEQUENCE: return "http://hl7.org/fhir/message-significance-category";
             case CURRENCY: return "http://hl7.org/fhir/message-significance-category";
             case NOTIFICATION: return "http://hl7.org/fhir/message-significance-category";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1229,6 +1267,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case CONSEQUENCE: return "The message represents/requests a change that should not be processed more than once; e.g. Making a booking for an appointment.";
             case CURRENCY: return "The message represents a response to query for current information. Retrospective processing is wrong and/or wasteful.";
             case NOTIFICATION: return "The content is not necessarily intended to be current, and it can be reprocessed, though there may be version issues created by processing old notifications.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1237,6 +1276,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
             case CONSEQUENCE: return "Consequence";
             case CURRENCY: return "Currency";
             case NOTIFICATION: return "Notification";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1306,6 +1346,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case SENDER: return "sender";
             case RECEIVER: return "receiver";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1313,6 +1354,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case SENDER: return "http://hl7.org/fhir/message-conformance-event-mode";
             case RECEIVER: return "http://hl7.org/fhir/message-conformance-event-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1320,6 +1362,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case SENDER: return "The application sends requests and receives responses.";
             case RECEIVER: return "The application receives requests and sends responses.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1327,6 +1370,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case SENDER: return "Sender";
             case RECEIVER: return "Receiver";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1390,6 +1434,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case PRODUCER: return "producer";
             case CONSUMER: return "consumer";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1397,6 +1442,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case PRODUCER: return "http://hl7.org/fhir/document-mode";
             case CONSUMER: return "http://hl7.org/fhir/document-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1404,6 +1450,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case PRODUCER: return "The application produces documents of the specified type.";
             case CONSUMER: return "The application consumes documents of the specified type.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1411,6 +1458,7 @@ public class Conformance extends DomainResource implements IBaseConformance {
           switch (this) {
             case PRODUCER: return "Producer";
             case CONSUMER: return "Consumer";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -98,6 +98,7 @@ public class AuditEvent extends DomainResource {
             case U: return "U";
             case D: return "D";
             case E: return "E";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +109,7 @@ public class AuditEvent extends DomainResource {
             case U: return "http://hl7.org/fhir/audit-event-action";
             case D: return "http://hl7.org/fhir/audit-event-action";
             case E: return "http://hl7.org/fhir/audit-event-action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -118,6 +120,7 @@ public class AuditEvent extends DomainResource {
             case U: return "Update data, such as revise patient information.";
             case D: return "Delete items, such as a doctor master file record.";
             case E: return "Perform a system or application function such as log-on, program execution or use of an object's method, or perform a query/search operation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -128,6 +131,7 @@ public class AuditEvent extends DomainResource {
             case U: return "Update";
             case D: return "Delete";
             case E: return "Execute";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -223,6 +227,7 @@ public class AuditEvent extends DomainResource {
             case _4: return "4";
             case _8: return "8";
             case _12: return "12";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -232,6 +237,7 @@ public class AuditEvent extends DomainResource {
             case _4: return "http://hl7.org/fhir/audit-event-outcome";
             case _8: return "http://hl7.org/fhir/audit-event-outcome";
             case _12: return "http://hl7.org/fhir/audit-event-outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -241,6 +247,7 @@ public class AuditEvent extends DomainResource {
             case _4: return "The action was not successful due to some kind of catered for error (often equivalent to an HTTP 400 response).";
             case _8: return "The action was not successful due to some kind of unexpected error (often equivalent to an HTTP 500 response).";
             case _12: return "An error of such magnitude occurred that the system is no longer available for use (i.e. the system died).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -250,6 +257,7 @@ public class AuditEvent extends DomainResource {
             case _4: return "Minor failure";
             case _8: return "Serious failure";
             case _12: return "Major failure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -346,6 +354,7 @@ public class AuditEvent extends DomainResource {
             case _3: return "3";
             case _4: return "4";
             case _5: return "5";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -356,6 +365,7 @@ public class AuditEvent extends DomainResource {
             case _3: return "http://hl7.org/fhir/network-type";
             case _4: return "http://hl7.org/fhir/network-type";
             case _5: return "http://hl7.org/fhir/network-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -366,6 +376,7 @@ public class AuditEvent extends DomainResource {
             case _3: return "The assigned telephone number.";
             case _4: return "The assigned email address.";
             case _5: return "URI (User directory, HTTP-PUT, ftp, etc.).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -376,6 +387,7 @@ public class AuditEvent extends DomainResource {
             case _3: return "Telephone Number";
             case _4: return "Email address";
             case _5: return "URI";
+            case NULL: return null;
             default: return "?";
           }
         }

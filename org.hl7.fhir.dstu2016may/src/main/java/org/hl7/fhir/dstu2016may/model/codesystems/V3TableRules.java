@@ -85,6 +85,7 @@ public enum V3TableRules {
             case GROUPS: return "groups";
             case NONE: return "none";
             case ROWS: return "rows";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum V3TableRules {
             case GROUPS: return "groups";
             case NONE: return "none";
             case ROWS: return "rows";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum V3TableRules {
             case GROUPS: return "groups";
             case NONE: return "none";
             case ROWS: return "rows";
+            case NULL: return null;
             default: return "?";
           }
     }

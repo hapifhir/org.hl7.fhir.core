@@ -98,6 +98,7 @@ public class TestScript extends MetadataResource {
             case JSON: return "json";
             case TTL: return "ttl";
             case NONE: return "none";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -107,6 +108,7 @@ public class TestScript extends MetadataResource {
             case JSON: return "http://hl7.org/fhir/content-type";
             case TTL: return "http://hl7.org/fhir/content-type";
             case NONE: return "http://hl7.org/fhir/content-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,6 +118,7 @@ public class TestScript extends MetadataResource {
             case JSON: return "JSON content-type corresponding to the application/fhir+json mime-type.";
             case TTL: return "RDF content-type corresponding to the text/turtle mime-type.";
             case NONE: return "Prevent the use of the corresponding http header.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -125,6 +128,7 @@ public class TestScript extends MetadataResource {
             case JSON: return "json";
             case TTL: return "ttl";
             case NONE: return "none";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -208,6 +212,7 @@ public class TestScript extends MetadataResource {
           switch (this) {
             case RESPONSE: return "response";
             case REQUEST: return "request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -215,6 +220,7 @@ public class TestScript extends MetadataResource {
           switch (this) {
             case RESPONSE: return "http://hl7.org/fhir/assert-direction-codes";
             case REQUEST: return "http://hl7.org/fhir/assert-direction-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -222,6 +228,7 @@ public class TestScript extends MetadataResource {
           switch (this) {
             case RESPONSE: return "The assertion is evaluated on the response. This is the default value.";
             case REQUEST: return "The assertion is evaluated on the request.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -229,6 +236,7 @@ public class TestScript extends MetadataResource {
           switch (this) {
             case RESPONSE: return "response";
             case REQUEST: return "request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -363,6 +371,7 @@ public class TestScript extends MetadataResource {
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
             case EVAL: return "eval";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -379,6 +388,7 @@ public class TestScript extends MetadataResource {
             case CONTAINS: return "http://hl7.org/fhir/assert-operator-codes";
             case NOTCONTAINS: return "http://hl7.org/fhir/assert-operator-codes";
             case EVAL: return "http://hl7.org/fhir/assert-operator-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -395,6 +405,7 @@ public class TestScript extends MetadataResource {
             case CONTAINS: return "Compare value string contains a known value.";
             case NOTCONTAINS: return "Compare value string does not contain a known value.";
             case EVAL: return "Evaluate the fluentpath expression as a boolean condition.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -411,6 +422,7 @@ public class TestScript extends MetadataResource {
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
             case EVAL: return "evaluate";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -564,6 +576,7 @@ public class TestScript extends MetadataResource {
             case PATCH: return "patch";
             case POST: return "post";
             case PUT: return "put";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -575,6 +588,7 @@ public class TestScript extends MetadataResource {
             case PATCH: return "http://hl7.org/fhir/http-operations";
             case POST: return "http://hl7.org/fhir/http-operations";
             case PUT: return "http://hl7.org/fhir/http-operations";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -586,6 +600,7 @@ public class TestScript extends MetadataResource {
             case PATCH: return "HTTP PATCH operation";
             case POST: return "HTTP POST operation";
             case PUT: return "HTTP PUT operation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -597,6 +612,7 @@ public class TestScript extends MetadataResource {
             case PATCH: return "PATCH";
             case POST: return "POST";
             case PUT: return "PUT";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -762,6 +778,7 @@ public class TestScript extends MetadataResource {
             case GONE: return "gone";
             case PRECONDITIONFAILED: return "preconditionFailed";
             case UNPROCESSABLE: return "unprocessable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -779,6 +796,7 @@ public class TestScript extends MetadataResource {
             case GONE: return "http://hl7.org/fhir/assert-response-code-types";
             case PRECONDITIONFAILED: return "http://hl7.org/fhir/assert-response-code-types";
             case UNPROCESSABLE: return "http://hl7.org/fhir/assert-response-code-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -796,6 +814,7 @@ public class TestScript extends MetadataResource {
             case GONE: return "Response code is 410.";
             case PRECONDITIONFAILED: return "Response code is 412.";
             case UNPROCESSABLE: return "Response code is 422.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -813,6 +832,7 @@ public class TestScript extends MetadataResource {
             case GONE: return "gone";
             case PRECONDITIONFAILED: return "preconditionFailed";
             case UNPROCESSABLE: return "unprocessable";
+            case NULL: return null;
             default: return "?";
           }
         }

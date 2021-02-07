@@ -64,6 +64,7 @@ public enum V3EmployeeJobClass {
           switch (this) {
             case FT: return "FT";
             case PT: return "PT";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3EmployeeJobClass {
           switch (this) {
             case FT: return "Employment in which the employee is expected to work at least a standard work week (defined by the US Bureau of Labor Statistics as 35-44 hours per week)";
             case PT: return "Employment in which the employee is expected to work less than a standard work week (defined by the US Bureau of Labor Statistics as 35-44 hours per week)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3EmployeeJobClass {
           switch (this) {
             case FT: return "full-time";
             case PT: return "part-time";
+            case NULL: return null;
             default: return "?";
           }
     }

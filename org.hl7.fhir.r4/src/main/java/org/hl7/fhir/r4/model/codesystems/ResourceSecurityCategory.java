@@ -85,6 +85,7 @@ public enum ResourceSecurityCategory {
             case INDIVIDUAL: return "individual";
             case PATIENT: return "patient";
             case NOTCLASSIFIED: return "not-classified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ResourceSecurityCategory {
             case INDIVIDUAL: return "These Resources do NOT contain Patient data, but do contain individual information about other participants. These other individuals are Practitioners, PractionerRole, CareTeam, or other users. These identities are needed to enable the practice of healthcare. These identities are identities under general privacy regulations, and thus must consider Privacy risk. Often access to these other identities are covered by business relationships. For this purpose access to these Resources will tend to be Role specific using methods such as RBAC or ABAC.";
             case PATIENT: return "These Resources make up the bulk of FHIR and therefore are the most commonly understood. These Resources contain highly sesitive health information, or are closely linked to highly sensitive health information. These Resources will often use the security labels to differentiate various confidentiality levels within this broad group of Patient Sensitive data. Access to these Resources often requires a declared Purpose Of Use. Access to these Resources is often controlled by a Privacy Consent.";
             case NOTCLASSIFIED: return "Some Resources can be used for a wide scope of use-cases that span very sensitive to very non-sensitive. These Resources do not fall into any of the above classifications, as their sensitivity is highly variable. These Resources will need special handling. These Resources often contain metadata that describes the content in a way that can be used for Access Control decisions.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ResourceSecurityCategory {
             case INDIVIDUAL: return "Individual Sensitive Resource";
             case PATIENT: return "Patient Sensitive";
             case NOTCLASSIFIED: return "Not classified";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -78,6 +78,7 @@ public enum V3TableCellScope {
             case COLGROUP: return "colgroup";
             case ROW: return "row";
             case ROWGROUP: return "rowgroup";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3TableCellScope {
             case COLGROUP: return "colgroup";
             case ROW: return "row";
             case ROWGROUP: return "rowgroup";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3TableCellScope {
             case COLGROUP: return "colgroup";
             case ROW: return "row";
             case ROWGROUP: return "rowgroup";
+            case NULL: return null;
             default: return "?";
           }
     }

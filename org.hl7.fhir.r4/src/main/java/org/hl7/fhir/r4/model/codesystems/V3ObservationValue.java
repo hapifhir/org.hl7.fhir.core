@@ -1922,6 +1922,7 @@ Long-term shared authentication secrets, if used, are never revealed to any part
             case _COMMONCLINICALOBSERVATIONVALUE: return "_CommonClinicalObservationValue";
             case _INDIVIDUALCASESAFETYREPORTVALUEDOMAINS: return "_IndividualCaseSafetyReportValueDomains";
             case _INDICATIONVALUE: return "_IndicationValue";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2180,6 +2181,7 @@ Long-term shared authentication secrets, if used, are never revealed to any part
             case _COMMONCLINICALOBSERVATIONVALUE: return "Description:Used in a patient care message to value simple clinical (non-lab) observations.";
             case _INDIVIDUALCASESAFETYREPORTVALUEDOMAINS: return "This domain is established as a parent to a variety of value domains being defined to support the communication of Individual Case Safety Reports to regulatory bodies. Arguably, this aggregation is not taxonomically pure, but the grouping will facilitate the management of these domains.";
             case _INDICATIONVALUE: return "Indicates the specific observation result which is the reason for the action (prescription, lab test, etc.). E.g. Headache, Ear infection, planned diagnostic image (requiring contrast agent), etc.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2435,6 +2437,7 @@ Long-term shared authentication secrets, if used, are never revealed to any part
             case _COMMONCLINICALOBSERVATIONVALUE: return "common clinical observation";
             case _INDIVIDUALCASESAFETYREPORTVALUEDOMAINS: return "Individual Case Safety Report Value Domains";
             case _INDICATIONVALUE: return "IndicationValue";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -85,6 +85,7 @@ public enum CommunicationStatus {
             case SUSPENDED: return "suspended";
             case REJECTED: return "rejected";
             case FAILED: return "failed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum CommunicationStatus {
             case SUSPENDED: return "The communication transmission has been held by originating system/user request.";
             case REJECTED: return "The receiving system has declined to accept the message.";
             case FAILED: return "There was a failure in transmitting the message out.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum CommunicationStatus {
             case SUSPENDED: return "Suspended";
             case REJECTED: return "Rejected";
             case FAILED: return "Failed";
+            case NULL: return null;
             default: return "?";
           }
     }

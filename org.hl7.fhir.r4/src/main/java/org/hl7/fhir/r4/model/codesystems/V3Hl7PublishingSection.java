@@ -98,6 +98,7 @@ public enum V3Hl7PublishingSection {
             case HM: return "HM";
             case IM: return "IM";
             case UU: return "UU";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -110,6 +111,7 @@ public enum V3Hl7PublishingSection {
             case HM: return "Description: Represents the HL7 V3 publishing section that deals with the health care provision and clinical management.\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.\r\n\n                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.";
             case IM: return "Description: Represents the HL7 V3 publishing section that deals with the definition and management of the computing and communication infrastructure necessary to support health care.\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.\r\n\n                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.";
             case UU: return "Description: Represents the HL7 V3 publishing section that holds specifications that are unassigned - that have not yet been assigned to one of the formal publishing sections.\r\n\n                        \n                           UsageNote: V3 Specifications are published in a set of \"domains\", which contain interactions and related specifications for a single area of health care within which can be supported by a single, coherent set of interoperability specifications.\r\n\n                        For publishing purposes, these domains are aggregated into sub-sections of related health care areas and these sub-sections are further aggregated into three major sets.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +121,7 @@ public enum V3Hl7PublishingSection {
             case HM: return "health and clinical management";
             case IM: return "infrastructure management";
             case UU: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

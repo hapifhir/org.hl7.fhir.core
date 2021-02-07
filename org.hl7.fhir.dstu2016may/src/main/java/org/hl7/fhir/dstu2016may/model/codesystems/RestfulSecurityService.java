@@ -92,6 +92,7 @@ public enum RestfulSecurityService {
             case BASIC: return "Basic";
             case KERBEROS: return "Kerberos";
             case CERTIFICATES: return "Certificates";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum RestfulSecurityService {
             case BASIC: return "Basic authentication defined in HTTP specification.";
             case KERBEROS: return "see http://www.ietf.org/rfc/rfc4120.txt.";
             case CERTIFICATES: return "SSL where client must have a certificate registered with the server.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum RestfulSecurityService {
             case BASIC: return "Basic";
             case KERBEROS: return "Kerberos";
             case CERTIFICATES: return "Certificates";
+            case NULL: return null;
             default: return "?";
           }
     }

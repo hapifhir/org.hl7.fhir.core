@@ -85,6 +85,7 @@ public enum SubscriptionChannelType {
             case EMAIL: return "email";
             case SMS: return "sms";
             case MESSAGE: return "message";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum SubscriptionChannelType {
             case EMAIL: return "The channel is executed by sending an email to the email addressed in the URI (which must be a mailto:).";
             case SMS: return "The channel is executed by sending an SMS message to the phone number identified in the URL (tel:).";
             case MESSAGE: return "The channel is executed by sending a message (e.g. a Bundle with a MessageHeader resource etc.) to the application identified in the URI.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum SubscriptionChannelType {
             case EMAIL: return "Email";
             case SMS: return "SMS";
             case MESSAGE: return "Message";
+            case NULL: return null;
             default: return "?";
           }
     }

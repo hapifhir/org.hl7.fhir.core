@@ -78,6 +78,7 @@ public enum ConceptSubsumptionOutcome {
             case SUBSUMES: return "subsumes";
             case SUBSUMEDBY: return "subsumed-by";
             case NOTSUBSUMED: return "not-subsumed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ConceptSubsumptionOutcome {
             case SUBSUMES: return "Coding/code \"A\" subsumes Coding/code \"B\" (e.g. B has all the properties A has, and some of it's own).";
             case SUBSUMEDBY: return "Coding/code \"A\" is subsumed by Coding/code \"B\" (e.g. A has all the properties B has, and some of it's own).";
             case NOTSUBSUMED: return "Coding/code \"A\" and Coding/code \"B\" are disjoint (e.g. each has propeties that the other doesn't have).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ConceptSubsumptionOutcome {
             case SUBSUMES: return "Subsumes";
             case SUBSUMEDBY: return "Subsumed-By";
             case NOTSUBSUMED: return "Not-Subsumed";
+            case NULL: return null;
             default: return "?";
           }
     }

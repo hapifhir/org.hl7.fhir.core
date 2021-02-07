@@ -57,6 +57,7 @@ public enum CommonTags {
         public String toCode() {
           switch (this) {
             case ACTIONABLE: return "actionable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum CommonTags {
         public String getDefinition() {
           switch (this) {
             case ACTIONABLE: return "This request is intended to be acted upon, not merely stored";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case ACTIONABLE: return "Actionable";
+            case NULL: return null;
             default: return "?";
           }
     }

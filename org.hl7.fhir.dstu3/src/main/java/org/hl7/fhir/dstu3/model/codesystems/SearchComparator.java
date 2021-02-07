@@ -113,6 +113,7 @@ public enum SearchComparator {
             case SA: return "sa";
             case EB: return "eb";
             case AP: return "ap";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum SearchComparator {
             case SA: return "the value for the parameter in the resource starts after the provided value";
             case EB: return "the value for the parameter in the resource ends before the provided value";
             case AP: return "the value for the parameter in the resource is approximately the same to the provided value.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum SearchComparator {
             case SA: return "Starts After";
             case EB: return "Ends Before";
             case AP: return "Approximately";
+            case NULL: return null;
             default: return "?";
           }
     }

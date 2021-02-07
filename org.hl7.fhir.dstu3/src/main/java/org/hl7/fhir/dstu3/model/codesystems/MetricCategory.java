@@ -78,6 +78,7 @@ public enum MetricCategory {
             case SETTING: return "setting";
             case CALCULATION: return "calculation";
             case UNSPECIFIED: return "unspecified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MetricCategory {
             case SETTING: return "DeviceObservations generated for this DeviceMetric is a setting that will influence the behavior of the Device.";
             case CALCULATION: return "DeviceObservations generated for this DeviceMetric are calculated.";
             case UNSPECIFIED: return "The category of this DeviceMetric is unspecified.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MetricCategory {
             case SETTING: return "Setting";
             case CALCULATION: return "Calculation";
             case UNSPECIFIED: return "Unspecified";
+            case NULL: return null;
             default: return "?";
           }
     }

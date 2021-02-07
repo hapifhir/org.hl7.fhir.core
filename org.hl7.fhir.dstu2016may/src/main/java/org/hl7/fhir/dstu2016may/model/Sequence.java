@@ -86,6 +86,7 @@ public class Sequence extends DomainResource {
             case AA: return "AA";
             case DNA: return "DNA";
             case RNA: return "RNA";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -94,6 +95,7 @@ public class Sequence extends DomainResource {
             case AA: return "http://hl7.org/fhir/sequence-type";
             case DNA: return "http://hl7.org/fhir/sequence-type";
             case RNA: return "http://hl7.org/fhir/sequence-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -102,6 +104,7 @@ public class Sequence extends DomainResource {
             case AA: return "Amino acid sequence";
             case DNA: return "DNA Sequence";
             case RNA: return "RNA Sequence";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -110,6 +113,7 @@ public class Sequence extends DomainResource {
             case AA: return "AA Sequence";
             case DNA: return "DNA Sequence";
             case RNA: return "RNA Sequence";
+            case NULL: return null;
             default: return "?";
           }
         }

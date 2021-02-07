@@ -106,6 +106,7 @@ public enum V3ContextControl {
             case _CONTEXTCONTROLOVERRIDING: return "_ContextControlOverriding";
             case OP: return "OP";
             case _CONTEXTCONTROLPROPAGATING: return "_ContextControlPropagating";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum V3ContextControl {
             case _CONTEXTCONTROLOVERRIDING: return "The association adds to the existing context associated with the Act, but replaces associations propagated from ancestor Acts whose typeCodes are the same or more specific.";
             case OP: return "The association is added to the existing context associated with the Act, but overrides an association with the same typeCode. This overriding association will propagate to any descendant Acts reached by conducting ActRelationships (see contextControlCode). Examples: If an 'Author' Participation were marked as \"Overriding, Propagating\" it means that the author will replace the set of author participations that have propagated from ancestor Acts, and will itself be the only author to propagate to any child Acts that allow context to be propagated.";
             case _CONTEXTCONTROLPROPAGATING: return "The association propagates to any child Acts that are related via a conducting ActRelationship (refer to contextConductionInd).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum V3ContextControl {
             case _CONTEXTCONTROLOVERRIDING: return "ContextControlOverriding";
             case OP: return "overriding, propagating";
             case _CONTEXTCONTROLPROPAGATING: return "ContextControlPropagating";
+            case NULL: return null;
             default: return "?";
           }
     }

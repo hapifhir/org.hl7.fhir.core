@@ -71,6 +71,7 @@ public enum MessageTransport {
             case HTTP: return "http";
             case FTP: return "ftp";
             case MLLP: return "mllp";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum MessageTransport {
             case HTTP: return "The application sends or receives messages using HTTP POST (may be over http: or https:).";
             case FTP: return "The application sends or receives messages using File Transfer Protocol.";
             case MLLP: return "The application sends or receives messages using HL7's Minimal Lower Level Protocol.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum MessageTransport {
             case HTTP: return "HTTP";
             case FTP: return "FTP";
             case MLLP: return "MLLP";
+            case NULL: return null;
             default: return "?";
           }
     }

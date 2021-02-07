@@ -78,6 +78,7 @@ public enum V3ActExposureLevelCode {
             case HIGH: return "HIGH";
             case LOW: return "LOW";
             case MEDIUM: return "MEDIUM";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3ActExposureLevelCode {
             case HIGH: return "Description: Exposure to an agent at a relatively high level above background.";
             case LOW: return "Description: Exposure to an agent at a relatively low level above background.";
             case MEDIUM: return "Description: Exposure to an agent at a relatively moderate level above background.A";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3ActExposureLevelCode {
             case HIGH: return "high";
             case LOW: return "low";
             case MEDIUM: return "medium";
+            case NULL: return null;
             default: return "?";
           }
     }

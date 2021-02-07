@@ -78,6 +78,7 @@ public enum GraphCompartmentRule {
             case MATCHING: return "matching";
             case DIFFERENT: return "different";
             case CUSTOM: return "custom";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum GraphCompartmentRule {
             case MATCHING: return "The compartment must be the same - the record must be about the same patient, but the reference may be different.";
             case DIFFERENT: return "The compartment must be different.";
             case CUSTOM: return "The compartment rule is defined in the accompanying FHIRPath expression.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum GraphCompartmentRule {
             case MATCHING: return "Matching";
             case DIFFERENT: return "Different";
             case CUSTOM: return "Custom";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -127,6 +127,7 @@ public enum V3EntityRisk {
             case INJ: return "INJ";
             case POI: return "POI";
             case RAD: return "RAD";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public enum V3EntityRisk {
             case INJ: return "Material is solid and sharp (e.g., cannulas).  Dispose in hard container.";
             case POI: return "Material is poisonous to humans and/or animals.  Special care must be taken to avoid incorporation, even of small amounts.";
             case RAD: return "Material is a source for ionizing radiation and must be handled with special care to avoid injury of those who handle it and to avoid environmental hazards.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public enum V3EntityRisk {
             case INJ: return "injury hazard";
             case POI: return "poison";
             case RAD: return "radioactive";
+            case NULL: return null;
             default: return "?";
           }
     }

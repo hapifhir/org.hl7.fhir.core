@@ -176,6 +176,7 @@ public enum V3CalendarCycle {
             case DY: return "DY";
             case WY: return "WY";
             case WM: return "WM";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -202,6 +203,7 @@ public enum V3CalendarCycle {
             case DY: return "day of the year";
             case WY: return "week of the year";
             case WM: return "The week with the month's first Thursday in it (analagous to the ISO 8601 definition for week of the year).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -225,6 +227,7 @@ public enum V3CalendarCycle {
             case DY: return "day of the year";
             case WY: return "week of the year";
             case WM: return "week of the month";
+            case NULL: return null;
             default: return "?";
           }
     }

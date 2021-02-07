@@ -120,6 +120,7 @@ public enum ProvenanceAgentType {
             case CUSTODIAN: return "custodian";
             case ASSEMBLER: return "assembler";
             case COMPOSER: return "composer";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum ProvenanceAgentType {
             case CUSTODIAN: return "The entity that is accountable for maintaining a true an accurate copy of the original record";
             case ASSEMBLER: return "A device that operates independently of an author on custodian's algorithms for data extraction of existing information for purpose of generating a new artifact.";
             case COMPOSER: return "A device used by an author to record new information, which may also be used by the author to select existing information for aggregation with newly recorded information for the purpose of generating a new artifact.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum ProvenanceAgentType {
             case CUSTODIAN: return "Custodian";
             case ASSEMBLER: return "Assembler";
             case COMPOSER: return "Composer";
+            case NULL: return null;
             default: return "?";
           }
     }

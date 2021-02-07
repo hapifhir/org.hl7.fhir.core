@@ -71,6 +71,7 @@ public enum NehtaNehtaMutatedWildtype {
             case MUTATED: return "mutated";
             case WILDTYPE: return "wild_type";
             case NOTTESTED: return "not_tested";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum NehtaNehtaMutatedWildtype {
             case MUTATED: return "The gene mutation type is mutated";
             case WILDTYPE: return "The gene mutation type is wild type";
             case NOTTESTED: return "The gene mutation was not tested";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum NehtaNehtaMutatedWildtype {
             case MUTATED: return "Mutated";
             case WILDTYPE: return "Wild type";
             case NOTTESTED: return "Not tested";
+            case NULL: return null;
             default: return "?";
           }
     }

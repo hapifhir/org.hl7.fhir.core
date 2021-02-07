@@ -78,6 +78,7 @@ public enum PublicationStatus {
             case ACTIVE: return "active";
             case RETIRED: return "retired";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum PublicationStatus {
             case ACTIVE: return "This resource is ready for normal use.";
             case RETIRED: return "This resource has been withdrawn or superseded and should no longer be used.";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this resource.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum PublicationStatus {
             case ACTIVE: return "Active";
             case RETIRED: return "Retired";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

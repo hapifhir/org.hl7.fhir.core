@@ -64,6 +64,7 @@ public enum ConsentExceptType {
           switch (this) {
             case DENY: return "deny";
             case PERMIT: return "permit";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ConsentExceptType {
           switch (this) {
             case DENY: return "Consent is denied for actions meeting these rules";
             case PERMIT: return "Consent is provided for actions meeting these rules";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ConsentExceptType {
           switch (this) {
             case DENY: return "Opt Out";
             case PERMIT: return "Opt In";
+            case NULL: return null;
             default: return "?";
           }
     }

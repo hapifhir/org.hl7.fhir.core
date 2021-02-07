@@ -92,6 +92,7 @@ public enum Ruleset {
             case CDANETV2: return "cdanet-v2";
             case CDANETV4: return "cdanet-v4";
             case CPHA3: return "cpha-3";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum Ruleset {
             case CDANETV2: return "";
             case CDANETV4: return "";
             case CPHA3: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum Ruleset {
             case CDANETV2: return "cdanet-v2";
             case CDANETV4: return "cdanet-v4";
             case CPHA3: return "cpha-3";
+            case NULL: return null;
             default: return "?";
           }
     }

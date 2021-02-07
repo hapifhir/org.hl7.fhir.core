@@ -134,6 +134,7 @@ public enum AssertResponseCodeTypes {
             case GONE: return "gone";
             case PRECONDITIONFAILED: return "preconditionFailed";
             case UNPROCESSABLE: return "unprocessable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum AssertResponseCodeTypes {
             case GONE: return "Response code is 410.";
             case PRECONDITIONFAILED: return "Response code is 412.";
             case UNPROCESSABLE: return "Response code is 422.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum AssertResponseCodeTypes {
             case GONE: return "gone";
             case PRECONDITIONFAILED: return "preconditionFailed";
             case UNPROCESSABLE: return "unprocessable";
+            case NULL: return null;
             default: return "?";
           }
     }

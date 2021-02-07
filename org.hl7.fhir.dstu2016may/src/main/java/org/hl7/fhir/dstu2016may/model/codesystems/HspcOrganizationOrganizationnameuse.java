@@ -57,6 +57,7 @@ public enum HspcOrganizationOrganizationnameuse {
         public String toCode() {
           switch (this) {
             case _526758025: return "526758025";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum HspcOrganizationOrganizationnameuse {
         public String getDefinition() {
           switch (this) {
             case _526758025: return "A name used to represent the organization in a stock exchange market.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case _526758025: return "Stock Exchange Name";
+            case NULL: return null;
             default: return "?";
           }
     }

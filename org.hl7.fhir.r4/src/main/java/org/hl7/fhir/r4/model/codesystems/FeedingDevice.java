@@ -204,6 +204,7 @@ public enum FeedingDevice {
             case SPOUTCUP: return "spout-cup";
             case AUTOFEEDINGDEVICE: return "autofeeding-device";
             case ROCKERKNIFE: return "rocker-knife";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -234,6 +235,7 @@ public enum FeedingDevice {
             case SPOUTCUP: return "Spout cup definition:";
             case AUTOFEEDINGDEVICE: return "Automated feeding devices definition:";
             case ROCKERKNIFE: return "Rocker knife definition:";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -261,6 +263,7 @@ public enum FeedingDevice {
             case SPOUTCUP: return "Spout cup";
             case AUTOFEEDINGDEVICE: return "Automated feeding devices";
             case ROCKERKNIFE: return "Rocker knife";
+            case NULL: return null;
             default: return "?";
           }
     }

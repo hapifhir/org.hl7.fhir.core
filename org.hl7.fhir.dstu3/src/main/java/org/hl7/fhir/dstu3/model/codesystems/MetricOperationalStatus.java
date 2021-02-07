@@ -78,6 +78,7 @@ public enum MetricOperationalStatus {
             case OFF: return "off";
             case STANDBY: return "standby";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MetricOperationalStatus {
             case OFF: return "The DeviceMetric is not operating.";
             case STANDBY: return "The DeviceMetric is operating, but will not generate any DeviceObservations.";
             case ENTEREDINERROR: return "The DeviceMetric was entered in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MetricOperationalStatus {
             case OFF: return "Off";
             case STANDBY: return "Standby";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
     }

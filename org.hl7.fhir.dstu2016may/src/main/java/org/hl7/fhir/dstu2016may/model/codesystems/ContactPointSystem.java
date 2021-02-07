@@ -85,6 +85,7 @@ public enum ContactPointSystem {
             case EMAIL: return "email";
             case PAGER: return "pager";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ContactPointSystem {
             case EMAIL: return "The value is an email address.";
             case PAGER: return "The value is a pager number. These may be local pager numbers that are only usable on a particular pager system.";
             case OTHER: return "A contact that is not a phone, fax, or email address. The format of the value SHOULD be a URL. This is intended for various personal contacts including blogs, Twitter, Facebook, etc. Do not use for email addresses. If this is not a URL, then it will require human interpretation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ContactPointSystem {
             case EMAIL: return "Email";
             case PAGER: return "Pager";
             case OTHER: return "URL";
+            case NULL: return null;
             default: return "?";
           }
     }

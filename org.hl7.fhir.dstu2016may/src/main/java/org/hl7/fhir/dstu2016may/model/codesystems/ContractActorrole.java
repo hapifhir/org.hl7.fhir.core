@@ -64,6 +64,7 @@ public enum ContractActorrole {
           switch (this) {
             case PRACTITIONER: return "practitioner";
             case PATIENT: return "patient";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ContractActorrole {
           switch (this) {
             case PRACTITIONER: return "";
             case PATIENT: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ContractActorrole {
           switch (this) {
             case PRACTITIONER: return "Practitioner";
             case PATIENT: return "Patient";
+            case NULL: return null;
             default: return "?";
           }
     }

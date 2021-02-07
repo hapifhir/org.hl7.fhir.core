@@ -131,6 +131,7 @@ public class Goal extends DomainResource {
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
             case REJECTED: return "rejected";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -145,6 +146,7 @@ public class Goal extends DomainResource {
             case CANCELLED: return "http://hl7.org/fhir/goal-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/goal-status";
             case REJECTED: return "http://hl7.org/fhir/goal-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -159,6 +161,7 @@ public class Goal extends DomainResource {
             case CANCELLED: return "The goal has been abandoned.";
             case ENTEREDINERROR: return "The goal was entered in error and voided.";
             case REJECTED: return "A proposed goal was rejected.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -173,6 +176,7 @@ public class Goal extends DomainResource {
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered in Error";
             case REJECTED: return "Rejected";
+            case NULL: return null;
             default: return "?";
           }
         }

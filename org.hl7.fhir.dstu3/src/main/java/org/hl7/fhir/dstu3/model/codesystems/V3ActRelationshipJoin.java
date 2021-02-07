@@ -78,6 +78,7 @@ public enum V3ActRelationshipJoin {
             case K: return "K";
             case W: return "W";
             case X: return "X";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3ActRelationshipJoin {
             case K: return "When all other concurrent branches are terminated, interrupt and discontinue this branch.";
             case W: return "Wait for this branch to terminate.";
             case X: return "Wait for any one of the branches in the set of exclusive wait branches to terminate, then discontinue all the other exclusive wait branches.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3ActRelationshipJoin {
             case K: return "kill";
             case W: return "wait";
             case X: return "exclusive wait";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -103,6 +103,7 @@ public class ClinicalUseIssue extends DomainResource {
             case INTERACTION: return "interaction";
             case UNDESIRABLEEFFECT: return "undesirable-effect";
             case WARNING: return "warning";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +114,7 @@ public class ClinicalUseIssue extends DomainResource {
             case INTERACTION: return "http://hl7.org/fhir/clinical-use-issue-type";
             case UNDESIRABLEEFFECT: return "http://hl7.org/fhir/clinical-use-issue-type";
             case WARNING: return "http://hl7.org/fhir/clinical-use-issue-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +125,7 @@ public class ClinicalUseIssue extends DomainResource {
             case INTERACTION: return "Interactions between the medication and other substances.";
             case UNDESIRABLEEFFECT: return "Side effects or adverse effects associated with the medication.";
             case WARNING: return "A general warning or issue that is not specifically one of the other types.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -133,6 +136,7 @@ public class ClinicalUseIssue extends DomainResource {
             case INTERACTION: return "Interaction";
             case UNDESIRABLEEFFECT: return "Undesirable Effect";
             case WARNING: return "Warning";
+            case NULL: return null;
             default: return "?";
           }
         }

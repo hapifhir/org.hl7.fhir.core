@@ -64,6 +64,7 @@ public enum HspcArrivalStatus {
           switch (this) {
             case _2000000339: return "2000000339";
             case _51084650: return "51084650";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum HspcArrivalStatus {
           switch (this) {
             case _2000000339: return "The patient is present at the service delivery location.";
             case _51084650: return "The patient is currently travelling to the service delivery location.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum HspcArrivalStatus {
           switch (this) {
             case _2000000339: return "Arrived";
             case _51084650: return "In transit";
+            case NULL: return null;
             default: return "?";
           }
     }

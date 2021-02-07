@@ -64,6 +64,7 @@ public enum AdverseEventCausalityAssess {
           switch (this) {
             case ASSESS1: return "assess1";
             case ASSESS2: return "assess2";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum AdverseEventCausalityAssess {
           switch (this) {
             case ASSESS1: return "";
             case ASSESS2: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum AdverseEventCausalityAssess {
           switch (this) {
             case ASSESS1: return "assess1 placeholder";
             case ASSESS2: return "assess2 placeholder";
+            case NULL: return null;
             default: return "?";
           }
     }

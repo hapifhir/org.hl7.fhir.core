@@ -106,6 +106,7 @@ public enum CoverageeligibilityresponseExAuthSupport {
             case ACCIDENTREPORT: return "accidentreport";
             case MODEL: return "model";
             case PICTURE: return "picture";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum CoverageeligibilityresponseExAuthSupport {
             case ACCIDENTREPORT: return "A formal accident report as would be filed with police or a simlar official body.";
             case MODEL: return "A physical model of the affected area.";
             case PICTURE: return "A photograph of the affected area.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum CoverageeligibilityresponseExAuthSupport {
             case ACCIDENTREPORT: return "Accident Report";
             case MODEL: return "Model";
             case PICTURE: return "Picture";
+            case NULL: return null;
             default: return "?";
           }
     }

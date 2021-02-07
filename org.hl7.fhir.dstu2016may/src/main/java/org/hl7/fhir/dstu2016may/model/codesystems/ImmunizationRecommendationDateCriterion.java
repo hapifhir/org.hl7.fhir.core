@@ -85,6 +85,7 @@ public enum ImmunizationRecommendationDateCriterion {
             case EARLIEST: return "earliest";
             case OVERDUE: return "overdue";
             case LATEST: return "latest";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ImmunizationRecommendationDateCriterion {
             case EARLIEST: return "As early as possible.";
             case OVERDUE: return "Date the next dose is considered overdue.";
             case LATEST: return "The latest date the next dose is to be given.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ImmunizationRecommendationDateCriterion {
             case EARLIEST: return "Earliest Date";
             case OVERDUE: return "Past Due Date";
             case LATEST: return "Latest";
+            case NULL: return null;
             default: return "?";
           }
     }

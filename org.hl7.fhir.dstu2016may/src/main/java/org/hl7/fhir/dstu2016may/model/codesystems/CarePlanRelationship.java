@@ -71,6 +71,7 @@ public enum CarePlanRelationship {
             case INCLUDES: return "includes";
             case REPLACES: return "replaces";
             case FULFILLS: return "fulfills";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum CarePlanRelationship {
             case INCLUDES: return "The referenced plan is considered to be part of this plan.";
             case REPLACES: return "This plan takes the places of the referenced plan.";
             case FULFILLS: return "This plan provides details about how to perform activities defined at a higher level by the referenced plan.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum CarePlanRelationship {
             case INCLUDES: return "Includes";
             case REPLACES: return "Replaces";
             case FULFILLS: return "Fulfills";
+            case NULL: return null;
             default: return "?";
           }
     }

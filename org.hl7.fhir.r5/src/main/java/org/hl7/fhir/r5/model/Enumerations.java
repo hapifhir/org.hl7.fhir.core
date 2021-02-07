@@ -111,6 +111,7 @@ public class Enumerations {
           switch (this) {
             case SINGLE: return "single";
             case MULTIPLE: return "multiple";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -118,6 +119,7 @@ public class Enumerations {
           switch (this) {
             case SINGLE: return "http://hl7.org/fhir/action-cardinality-behavior";
             case MULTIPLE: return "http://hl7.org/fhir/action-cardinality-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -125,6 +127,7 @@ public class Enumerations {
           switch (this) {
             case SINGLE: return "The action may only be selected one time.";
             case MULTIPLE: return "The action may be selected multiple times.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -132,6 +135,7 @@ public class Enumerations {
           switch (this) {
             case SINGLE: return "Single";
             case MULTIPLE: return "Multiple";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -207,6 +211,7 @@ public class Enumerations {
             case APPLICABILITY: return "applicability";
             case START: return "start";
             case STOP: return "stop";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -215,6 +220,7 @@ public class Enumerations {
             case APPLICABILITY: return "http://hl7.org/fhir/action-condition-kind";
             case START: return "http://hl7.org/fhir/action-condition-kind";
             case STOP: return "http://hl7.org/fhir/action-condition-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -223,6 +229,7 @@ public class Enumerations {
             case APPLICABILITY: return "The condition describes whether or not a given action is applicable.";
             case START: return "The condition is a starting condition for the action.";
             case STOP: return "The condition is a stop, or exit condition for the action.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -231,6 +238,7 @@ public class Enumerations {
             case APPLICABILITY: return "Applicability";
             case START: return "Start";
             case STOP: return "Stop";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -312,6 +320,7 @@ public class Enumerations {
             case VISUALGROUP: return "visual-group";
             case LOGICALGROUP: return "logical-group";
             case SENTENCEGROUP: return "sentence-group";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -320,6 +329,7 @@ public class Enumerations {
             case VISUALGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
             case LOGICALGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
             case SENTENCEGROUP: return "http://hl7.org/fhir/action-grouping-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -328,6 +338,7 @@ public class Enumerations {
             case VISUALGROUP: return "Any group marked with this behavior should be displayed as a visual group to the end user.";
             case LOGICALGROUP: return "A group with this behavior logically groups its sub-elements, and may be shown as a visual group to the end user, but it is not required to do so.";
             case SENTENCEGROUP: return "A group of related alternative actions is a sentence group if the target referenced by the action is the same in all the actions and each action simply constitutes a different variation on how to specify the details for the target. For example, two actions that could be in a SentenceGroup are \"aspirin, 500 mg, 2 times per day\" and \"aspirin, 300 mg, 3 times per day\". In both cases, aspirin is the target referenced by the action, and the two actions represent different options for how aspirin might be ordered for the patient. Note that a SentenceGroup would almost always have an associated selection behavior of \"AtMostOne\", unless it's a required action, in which case, it would be \"ExactlyOne\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -336,6 +347,7 @@ public class Enumerations {
             case VISUALGROUP: return "Visual Group";
             case LOGICALGROUP: return "Logical Group";
             case SENTENCEGROUP: return "Sentence Group";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -424,6 +436,7 @@ public class Enumerations {
             case PRACTITIONER: return "practitioner";
             case RELATEDPERSON: return "related-person";
             case DEVICE: return "device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -433,6 +446,7 @@ public class Enumerations {
             case PRACTITIONER: return "http://hl7.org/fhir/action-participant-type";
             case RELATEDPERSON: return "http://hl7.org/fhir/action-participant-type";
             case DEVICE: return "http://hl7.org/fhir/action-participant-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -442,6 +456,7 @@ public class Enumerations {
             case PRACTITIONER: return "The participant is a practitioner involved in the patient's care.";
             case RELATEDPERSON: return "The participant is a person related to the patient.";
             case DEVICE: return "The participant is a system or device used in the care of the patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -451,6 +466,7 @@ public class Enumerations {
             case PRACTITIONER: return "Practitioner";
             case RELATEDPERSON: return "Related Person";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -531,6 +547,7 @@ public class Enumerations {
           switch (this) {
             case YES: return "yes";
             case NO: return "no";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -538,6 +555,7 @@ public class Enumerations {
           switch (this) {
             case YES: return "http://hl7.org/fhir/action-precheck-behavior";
             case NO: return "http://hl7.org/fhir/action-precheck-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -545,6 +563,7 @@ public class Enumerations {
           switch (this) {
             case YES: return "An action with this behavior is one of the most frequent action that is, or should be, included by an end user, for the particular context in which the action occurs. The system displaying the action to the end user should consider \"pre-checking\" such an action as a convenience for the user.";
             case NO: return "An action with this behavior is one of the less frequent actions included by the end user, for the particular context in which the action occurs. The system displaying the actions to the end user would typically not \"pre-check\" such an action.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -552,6 +571,7 @@ public class Enumerations {
           switch (this) {
             case YES: return "Yes";
             case NO: return "No";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -669,6 +689,7 @@ public class Enumerations {
             case AFTERSTART: return "after-start";
             case AFTER: return "after";
             case AFTEREND: return "after-end";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -683,6 +704,7 @@ public class Enumerations {
             case AFTERSTART: return "http://hl7.org/fhir/action-relationship-type";
             case AFTER: return "http://hl7.org/fhir/action-relationship-type";
             case AFTEREND: return "http://hl7.org/fhir/action-relationship-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -697,6 +719,7 @@ public class Enumerations {
             case AFTERSTART: return "The action must be performed after the start of the related action.";
             case AFTER: return "The action must be performed after the related action.";
             case AFTEREND: return "The action must be performed after the end of the related action.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -711,6 +734,7 @@ public class Enumerations {
             case AFTERSTART: return "After Start";
             case AFTER: return "After";
             case AFTEREND: return "After End";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -828,6 +852,7 @@ public class Enumerations {
             case MUST: return "must";
             case COULD: return "could";
             case MUSTUNLESSDOCUMENTED: return "must-unless-documented";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -836,6 +861,7 @@ public class Enumerations {
             case MUST: return "http://hl7.org/fhir/action-required-behavior";
             case COULD: return "http://hl7.org/fhir/action-required-behavior";
             case MUSTUNLESSDOCUMENTED: return "http://hl7.org/fhir/action-required-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -844,6 +870,7 @@ public class Enumerations {
             case MUST: return "An action with this behavior must be included in the actions processed by the end user; the end user SHALL NOT choose not to include this action.";
             case COULD: return "An action with this behavior may be included in the set of actions processed by the end user.";
             case MUSTUNLESSDOCUMENTED: return "An action with this behavior must be included in the set of actions processed by the end user, unless the end user provides documentation as to why the action was not included.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -852,6 +879,7 @@ public class Enumerations {
             case MUST: return "Must";
             case COULD: return "Could";
             case MUSTUNLESSDOCUMENTED: return "Must Unless Documented";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -954,6 +982,7 @@ public class Enumerations {
             case EXACTLYONE: return "exactly-one";
             case ATMOSTONE: return "at-most-one";
             case ONEORMORE: return "one-or-more";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -965,6 +994,7 @@ public class Enumerations {
             case EXACTLYONE: return "http://hl7.org/fhir/action-selection-behavior";
             case ATMOSTONE: return "http://hl7.org/fhir/action-selection-behavior";
             case ONEORMORE: return "http://hl7.org/fhir/action-selection-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -976,6 +1006,7 @@ public class Enumerations {
             case EXACTLYONE: return "The end user must choose one and only one of the selectable actions in the group. The user SHALL NOT choose none of the actions in the group.";
             case ATMOSTONE: return "The end user may choose zero or at most one of the actions in the group.";
             case ONEORMORE: return "The end user must choose a minimum of one, and as many additional as desired.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -987,6 +1018,7 @@ public class Enumerations {
             case EXACTLYONE: return "Exactly One";
             case ATMOSTONE: return "At Most One";
             case ONEORMORE: return "One Or More";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1093,6 +1125,7 @@ public class Enumerations {
             case FEMALE: return "female";
             case OTHER: return "other";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1102,6 +1135,7 @@ public class Enumerations {
             case FEMALE: return "http://hl7.org/fhir/administrative-gender";
             case OTHER: return "http://hl7.org/fhir/administrative-gender";
             case UNKNOWN: return "http://hl7.org/fhir/administrative-gender";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1111,6 +1145,7 @@ public class Enumerations {
             case FEMALE: return "Female.";
             case OTHER: return "Other.";
             case UNKNOWN: return "Unknown.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1120,6 +1155,7 @@ public class Enumerations {
             case FEMALE: return "Female";
             case OTHER: return "Other";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1214,6 +1250,7 @@ public class Enumerations {
             case EXTENSIBLE: return "extensible";
             case PREFERRED: return "preferred";
             case EXAMPLE: return "example";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1223,6 +1260,7 @@ public class Enumerations {
             case EXTENSIBLE: return "http://hl7.org/fhir/binding-strength";
             case PREFERRED: return "http://hl7.org/fhir/binding-strength";
             case EXAMPLE: return "http://hl7.org/fhir/binding-strength";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1232,6 +1270,7 @@ public class Enumerations {
             case EXTENSIBLE: return "To be conformant, the concept in this element SHALL be from the specified value set if any of the codes within the value set can apply to the concept being communicated.  If the value set does not cover the concept (based on human review), alternate codings (or, data type allowing, text) may be included instead.";
             case PREFERRED: return "Instances are encouraged to draw from the specified codes for interoperability purposes but are not required to do so to be considered conformant.";
             case EXAMPLE: return "Instances are not expected or even encouraged to draw from the specified value set.  The value set merely provides examples of the types of concepts intended to be included.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1241,6 +1280,7 @@ public class Enumerations {
             case EXTENSIBLE: return "Extensible";
             case PREFERRED: return "Preferred";
             case EXAMPLE: return "Example";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1328,6 +1368,7 @@ public class Enumerations {
             case INSTANCE: return "instance";
             case CAPABILITY: return "capability";
             case REQUIREMENTS: return "requirements";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1336,6 +1377,7 @@ public class Enumerations {
             case INSTANCE: return "http://hl7.org/fhir/capability-statement-kind";
             case CAPABILITY: return "http://hl7.org/fhir/capability-statement-kind";
             case REQUIREMENTS: return "http://hl7.org/fhir/capability-statement-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1344,6 +1386,7 @@ public class Enumerations {
             case INSTANCE: return "The CapabilityStatement instance represents the present capabilities of a specific system instance.  This is the kind returned by /metadata for a FHIR server end-point.";
             case CAPABILITY: return "The CapabilityStatement instance represents the capabilities of a system or piece of software, independent of a particular installation.";
             case REQUIREMENTS: return "The CapabilityStatement instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1352,6 +1395,7 @@ public class Enumerations {
             case INSTANCE: return "Instance";
             case CAPABILITY: return "Capability";
             case REQUIREMENTS: return "Requirements";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1440,6 +1484,7 @@ public class Enumerations {
             case COMPLETE: return "complete";
             case ERROR: return "error";
             case PARTIAL: return "partial";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1449,6 +1494,7 @@ public class Enumerations {
             case COMPLETE: return "http://hl7.org/fhir/remittance-outcome";
             case ERROR: return "http://hl7.org/fhir/remittance-outcome";
             case PARTIAL: return "http://hl7.org/fhir/remittance-outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1458,6 +1504,7 @@ public class Enumerations {
             case COMPLETE: return "The processing has completed without errors";
             case ERROR: return "One or more errors have been detected in the Claim";
             case PARTIAL: return "No errors have been detected in the Claim and some of the adjudication has been performed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1467,6 +1514,7 @@ public class Enumerations {
             case COMPLETE: return "Processing Complete";
             case ERROR: return "Error";
             case PARTIAL: return "Partial Processing";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1568,6 +1616,7 @@ public class Enumerations {
             case RELATEDPERSON: return "RelatedPerson";
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1578,6 +1627,7 @@ public class Enumerations {
             case RELATEDPERSON: return "http://hl7.org/fhir/compartment-type";
             case PRACTITIONER: return "http://hl7.org/fhir/compartment-type";
             case DEVICE: return "http://hl7.org/fhir/compartment-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1588,6 +1638,7 @@ public class Enumerations {
             case RELATEDPERSON: return "The compartment definition is for the related-person compartment.";
             case PRACTITIONER: return "The compartment definition is for the practitioner compartment.";
             case DEVICE: return "The compartment definition is for the device compartment.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1598,6 +1649,7 @@ public class Enumerations {
             case RELATEDPERSON: return "RelatedPerson";
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1698,6 +1750,7 @@ public class Enumerations {
             case FINAL: return "final";
             case AMENDED: return "amended";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1707,6 +1760,7 @@ public class Enumerations {
             case FINAL: return "http://hl7.org/fhir/composition-status";
             case AMENDED: return "http://hl7.org/fhir/composition-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/composition-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1716,6 +1770,7 @@ public class Enumerations {
             case FINAL: return "This version of the composition is complete and verified by an appropriate person and no further work is planned. Any subsequent updates would be on a new version of the composition.";
             case AMENDED: return "The composition content or the referenced resources have been modified (edited or added to) subsequent to being released as \"final\" and the composition is complete and verified by an authorized person.";
             case ENTEREDINERROR: return "The composition or document was originally created/issued in error, and this is an amendment that marks that the entire series should not be considered as valid.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1725,6 +1780,7 @@ public class Enumerations {
             case FINAL: return "Final";
             case AMENDED: return "Amended";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1826,6 +1882,7 @@ public class Enumerations {
             case SOURCEISNARROWERTHANTARGET: return "source-is-narrower-than-target";
             case SOURCEISBROADERTHANTARGET: return "source-is-broader-than-target";
             case NOTRELATEDTO: return "not-related-to";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1836,6 +1893,7 @@ public class Enumerations {
             case SOURCEISNARROWERTHANTARGET: return "http://hl7.org/fhir/concept-map-relationship";
             case SOURCEISBROADERTHANTARGET: return "http://hl7.org/fhir/concept-map-relationship";
             case NOTRELATEDTO: return "http://hl7.org/fhir/concept-map-relationship";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1846,6 +1904,7 @@ public class Enumerations {
             case SOURCEISNARROWERTHANTARGET: return "The source concept is narrower in meaning than the target concept.";
             case SOURCEISBROADERTHANTARGET: return "The source concept is broader in meaning than the target concept.";
             case NOTRELATEDTO: return "This is an explicit assertion that the target concept is not related to the source concept.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1856,6 +1915,7 @@ public class Enumerations {
             case SOURCEISNARROWERTHANTARGET: return "Source Is Narrower Than Target";
             case SOURCEISBROADERTHANTARGET: return "Source Is Broader Than Target";
             case NOTRELATEDTO: return "Not Related To";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1977,6 +2037,7 @@ public class Enumerations {
             case FRI: return "fri";
             case SAT: return "sat";
             case SUN: return "sun";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1989,6 +2050,7 @@ public class Enumerations {
             case FRI: return "http://hl7.org/fhir/days-of-week";
             case SAT: return "http://hl7.org/fhir/days-of-week";
             case SUN: return "http://hl7.org/fhir/days-of-week";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2001,6 +2063,7 @@ public class Enumerations {
             case FRI: return "Friday.";
             case SAT: return "Saturday.";
             case SUN: return "Sunday.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2013,6 +2076,7 @@ public class Enumerations {
             case FRI: return "Friday";
             case SAT: return "Saturday";
             case SUN: return "Sunday";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2139,6 +2203,7 @@ public class Enumerations {
             case MANUFACTURERNAME: return "manufacturer-name";
             case MODELNAME: return "model-name";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2150,6 +2215,7 @@ public class Enumerations {
             case MANUFACTURERNAME: return "http://hl7.org/fhir/device-nametype";
             case MODELNAME: return "http://hl7.org/fhir/device-nametype";
             case OTHER: return "http://hl7.org/fhir/device-nametype";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2161,6 +2227,7 @@ public class Enumerations {
             case MANUFACTURERNAME: return "The formal name as provided by the manufacturer of the device.";
             case MODELNAME: return "The name of the model. The manufacturer-name or user-friendly-name may include that as a component.";
             case OTHER: return "other.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2172,6 +2239,7 @@ public class Enumerations {
             case MANUFACTURERNAME: return "Manufacturer name";
             case MODELNAME: return "Model name";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2271,6 +2339,7 @@ public class Enumerations {
             case CURRENT: return "current";
             case SUPERSEDED: return "superseded";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2279,6 +2348,7 @@ public class Enumerations {
             case CURRENT: return "http://hl7.org/fhir/document-reference-status";
             case SUPERSEDED: return "http://hl7.org/fhir/document-reference-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/document-reference-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2287,6 +2357,7 @@ public class Enumerations {
             case CURRENT: return "This is the current reference for this document.";
             case SUPERSEDED: return "This reference has been superseded by another reference.";
             case ENTEREDINERROR: return "This reference was created in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2295,6 +2366,7 @@ public class Enumerations {
             case CURRENT: return "Current";
             case SUPERSEDED: return "Superseded";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2383,6 +2455,7 @@ public class Enumerations {
             case TRANSFORMS: return "transforms";
             case SIGNS: return "signs";
             case APPENDS: return "appends";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2392,6 +2465,7 @@ public class Enumerations {
             case TRANSFORMS: return "http://hl7.org/fhir/document-relationship-type";
             case SIGNS: return "http://hl7.org/fhir/document-relationship-type";
             case APPENDS: return "http://hl7.org/fhir/document-relationship-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2401,6 +2475,7 @@ public class Enumerations {
             case TRANSFORMS: return "This document was generated by transforming the target document (e.g. format or language conversion).";
             case SIGNS: return "This document is a signature of the target document.";
             case APPENDS: return "This document adds additional information to the target document.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2410,6 +2485,7 @@ public class Enumerations {
             case TRANSFORMS: return "Transforms";
             case SIGNS: return "Signs";
             case APPENDS: return "Appends";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2532,6 +2608,7 @@ public class Enumerations {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2545,6 +2622,7 @@ public class Enumerations {
             case COMPLETED: return "http://hl7.org/fhir/event-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/event-status";
             case UNKNOWN: return "http://hl7.org/fhir/event-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2558,6 +2636,7 @@ public class Enumerations {
             case COMPLETED: return "The event has now concluded.";
             case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"stopped\" rather than \"entered-in-error\".).";
             case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this event.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2571,6 +2650,7 @@ public class Enumerations {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2689,6 +2769,7 @@ public class Enumerations {
             case DICHOTOMOUS: return "dichotomous";
             case ORDINAL: return "ordinal";
             case POLYCHOTOMOUS: return "polychotomous";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2698,6 +2779,7 @@ public class Enumerations {
             case DICHOTOMOUS: return "http://hl7.org/fhir/variable-handling";
             case ORDINAL: return "http://hl7.org/fhir/variable-handling";
             case POLYCHOTOMOUS: return "http://hl7.org/fhir/variable-handling";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2707,6 +2789,7 @@ public class Enumerations {
             case DICHOTOMOUS: return "A dichotomous variable is a categorical variable which is defined to have only 2 categories or possible values (from STATO http://purl.obolibrary.org/obo/STATO_0000090).";
             case ORDINAL: return "An ordinal variable is a categorical variable where the discrete possible values are ordered or correspond to an implicit ranking (from STATO http://purl.obolibrary.org/obo/STATO_0000228).";
             case POLYCHOTOMOUS: return "A polychotomous variable is a categorical variable which is defined to have minimally 2 categories or possible values. (from STATO  http://purl.obolibrary.org/obo/STATO_0000087).  Suggestion to limit code use to situations when neither dichotomous nor ordinal variables apply.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2716,6 +2799,7 @@ public class Enumerations {
             case DICHOTOMOUS: return "dichotomous variable";
             case ORDINAL: return "ordinal variable";
             case POLYCHOTOMOUS: return "polychotomous variable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4332,6 +4416,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case TYPE: return "Type";
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4558,6 +4643,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
             case TYPE: return "http://hl7.org/fhir/abstract-types";
             case ANY: return "http://hl7.org/fhir/abstract-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4784,6 +4870,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
             case TYPE: return "A place holder that means any kind of data type";
             case ANY: return "A place holder that means any kind of resource";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -5010,6 +5097,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case TYPE: return "Type";
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -6570,6 +6658,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "4.2.0";
             case _4_4_0: return "4.4.0";
             case _4_5_0: return "4.5.0";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -6602,6 +6691,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_4_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_5_0: return "http://hl7.org/fhir/FHIR-version";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -6634,6 +6724,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "R5 Preview #1.";
             case _4_4_0: return "R5 Preview #2.";
             case _4_5_0: return "R5 Preview #3.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -6666,6 +6757,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "4.2.0";
             case _4_4_0: return "4.4.0";
             case _4_5_0: return "4.5.0";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -6997,6 +7089,7 @@ public String toCode(int len) {
             case NOTIN: return "not-in";
             case GENERALIZES: return "generalizes";
             case EXISTS: return "exists";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7011,6 +7104,7 @@ public String toCode(int len) {
             case NOTIN: return "http://hl7.org/fhir/filter-operator";
             case GENERALIZES: return "http://hl7.org/fhir/filter-operator";
             case EXISTS: return "http://hl7.org/fhir/filter-operator";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7025,6 +7119,7 @@ public String toCode(int len) {
             case NOTIN: return "The specified property of the code is not in the set of codes or concepts specified in the provided value (comma separated list).";
             case GENERALIZES: return "Includes all concept ids that have a transitive is-a relationship from the concept Id provided as the value, including the provided concept itself (i.e. include ancestor codes and self).";
             case EXISTS: return "The specified property of the code has at least one value (if the specified value is true; if the specified value is false, then matches when the specified property of the code has no values).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7039,6 +7134,7 @@ public String toCode(int len) {
             case NOTIN: return "Not in Set";
             case GENERALIZES: return "Generalizes (by Subsumption)";
             case EXISTS: return "Exists";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7163,6 +7259,7 @@ public String toCode(int len) {
             case CANCELLED: return "cancelled";
             case DRAFT: return "draft";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7172,6 +7269,7 @@ public String toCode(int len) {
             case CANCELLED: return "http://hl7.org/fhir/fm-status";
             case DRAFT: return "http://hl7.org/fhir/fm-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/fm-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7181,6 +7279,7 @@ public String toCode(int len) {
             case CANCELLED: return "The instance is withdrawn, rescinded or reversed.";
             case DRAFT: return "A new instance the contents of which is not complete.";
             case ENTEREDINERROR: return "The instance was entered in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7190,6 +7289,7 @@ public String toCode(int len) {
             case CANCELLED: return "Cancelled";
             case DRAFT: return "Draft";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7298,6 +7398,7 @@ public String toCode(int len) {
             case DISCOUNT: return "discount";
             case TAX: return "tax";
             case INFORMATIONAL: return "informational";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7309,6 +7410,7 @@ public String toCode(int len) {
             case DISCOUNT: return "http://hl7.org/fhir/invoice-priceComponentType";
             case TAX: return "http://hl7.org/fhir/invoice-priceComponentType";
             case INFORMATIONAL: return "http://hl7.org/fhir/invoice-priceComponentType";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7320,6 +7422,7 @@ public String toCode(int len) {
             case DISCOUNT: return "the amount is a discount applied on the base price.";
             case TAX: return "the amount is the tax component of the total price.";
             case INFORMATIONAL: return "the amount is of informational character, it has not been applied in the calculation of the total price.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7331,6 +7434,7 @@ public String toCode(int len) {
             case DISCOUNT: return "discount";
             case TAX: return "tax";
             case INFORMATIONAL: return "informational";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7430,6 +7534,7 @@ public String toCode(int len) {
             case WORKING: return "working";
             case SNAPSHOT: return "snapshot";
             case CHANGES: return "changes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7438,6 +7543,7 @@ public String toCode(int len) {
             case WORKING: return "http://hl7.org/fhir/list-mode";
             case SNAPSHOT: return "http://hl7.org/fhir/list-mode";
             case CHANGES: return "http://hl7.org/fhir/list-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7446,6 +7552,7 @@ public String toCode(int len) {
             case WORKING: return "This list is the master list, maintained in an ongoing fashion with regular updates as the real world list it is tracking changes.";
             case SNAPSHOT: return "This list was prepared as a snapshot. It should not be assumed to be current.";
             case CHANGES: return "A point-in-time list that shows what changes have been made or recommended.  E.g. a discharge medication list showing what was added and removed during an encounter.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7454,6 +7561,7 @@ public String toCode(int len) {
             case WORKING: return "Working List";
             case SNAPSHOT: return "Snapshot List";
             case CHANGES: return "Change List";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7528,6 +7636,7 @@ public String toCode(int len) {
           switch (this) {
             case INCREASE: return "increase";
             case DECREASE: return "decrease";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7535,6 +7644,7 @@ public String toCode(int len) {
           switch (this) {
             case INCREASE: return "http://terminology.hl7.org/CodeSystem/measure-improvement-notation";
             case DECREASE: return "http://terminology.hl7.org/CodeSystem/measure-improvement-notation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7542,6 +7652,7 @@ public String toCode(int len) {
           switch (this) {
             case INCREASE: return "Improvement is indicated as an increase in the score or measurement (e.g. Higher score indicates better quality).";
             case DECREASE: return "Improvement is indicated as a decrease in the score or measurement (e.g. Lower score indicates better quality).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7549,6 +7660,7 @@ public String toCode(int len) {
           switch (this) {
             case INCREASE: return "Increased score indicates improvement";
             case DECREASE: return "Decreased score indicates improvement";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7603,21 +7715,25 @@ public String toCode(int len) {
         }
         public String toCode() {
           switch (this) {
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7681,6 +7797,7 @@ public String toCode(int len) {
             case DISPLAY: return "display";
             case PRINT: return "print";
             case PRINTOPER: return "printoper";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7689,6 +7806,7 @@ public String toCode(int len) {
             case DISPLAY: return "http://hl7.org/fhir/note-type";
             case PRINT: return "http://hl7.org/fhir/note-type";
             case PRINTOPER: return "http://hl7.org/fhir/note-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7697,6 +7815,7 @@ public String toCode(int len) {
             case DISPLAY: return "Display the note.";
             case PRINT: return "Print the note on the form.";
             case PRINTOPER: return "Print the note for the operator.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7705,6 +7824,7 @@ public String toCode(int len) {
             case DISPLAY: return "Display";
             case PRINT: return "Print (Form)";
             case PRINTOPER: return "Print (Operator)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7821,6 +7941,7 @@ public String toCode(int len) {
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7834,6 +7955,7 @@ public String toCode(int len) {
             case CANCELLED: return "http://hl7.org/fhir/observation-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/observation-status";
             case UNKNOWN: return "http://hl7.org/fhir/observation-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7847,6 +7969,7 @@ public String toCode(int len) {
             case CANCELLED: return "The observation is unavailable because the measurement was not started or not completed (also sometimes called \"aborted\").";
             case ENTEREDINERROR: return "The observation has been withdrawn following previous final release.  This electronic record should never have existed, though it is possible that real-world decisions were based on it. (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
             case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this observation. Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, but the authoring/source system does not know which.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7860,6 +7983,7 @@ public String toCode(int len) {
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7964,6 +8088,7 @@ public String toCode(int len) {
           switch (this) {
             case IN: return "in";
             case OUT: return "out";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7971,6 +8096,7 @@ public String toCode(int len) {
           switch (this) {
             case IN: return "http://hl7.org/fhir/operation-parameter-use";
             case OUT: return "http://hl7.org/fhir/operation-parameter-use";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7978,6 +8104,7 @@ public String toCode(int len) {
           switch (this) {
             case IN: return "This is an input parameter.";
             case OUT: return "This is an output parameter.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7985,6 +8112,7 @@ public String toCode(int len) {
           switch (this) {
             case IN: return "In";
             case OUT: return "Out";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8067,6 +8195,7 @@ public String toCode(int len) {
             case DECLINED: return "declined";
             case TENTATIVE: return "tentative";
             case NEEDSACTION: return "needs-action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8076,6 +8205,7 @@ public String toCode(int len) {
             case DECLINED: return "http://hl7.org/fhir/participationstatus";
             case TENTATIVE: return "http://hl7.org/fhir/participationstatus";
             case NEEDSACTION: return "http://hl7.org/fhir/participationstatus";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8085,6 +8215,7 @@ public String toCode(int len) {
             case DECLINED: return "The participant has declined the appointment and will not participate in the appointment.";
             case TENTATIVE: return "The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.";
             case NEEDSACTION: return "The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8094,6 +8225,7 @@ public String toCode(int len) {
             case DECLINED: return "Declined";
             case TENTATIVE: return "Tentative";
             case NEEDSACTION: return "Needs Action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8188,6 +8320,7 @@ public String toCode(int len) {
             case ACTIVE: return "active";
             case RETIRED: return "retired";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8197,6 +8330,7 @@ public String toCode(int len) {
             case ACTIVE: return "http://hl7.org/fhir/publication-status";
             case RETIRED: return "http://hl7.org/fhir/publication-status";
             case UNKNOWN: return "http://hl7.org/fhir/publication-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8206,6 +8340,7 @@ public String toCode(int len) {
             case ACTIVE: return "This resource is ready for normal use.";
             case RETIRED: return "This resource has been withdrawn or superseded and should no longer be used.";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this resource.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8215,6 +8350,7 @@ public String toCode(int len) {
             case ACTIVE: return "Active";
             case RETIRED: return "Retired";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8309,6 +8445,7 @@ public String toCode(int len) {
             case LESS_OR_EQUAL: return "<=";
             case GREATER_OR_EQUAL: return ">=";
             case GREATER_THAN: return ">";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8318,6 +8455,7 @@ public String toCode(int len) {
             case LESS_OR_EQUAL: return "http://hl7.org/fhir/quantity-comparator";
             case GREATER_OR_EQUAL: return "http://hl7.org/fhir/quantity-comparator";
             case GREATER_THAN: return "http://hl7.org/fhir/quantity-comparator";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8327,6 +8465,7 @@ public String toCode(int len) {
             case LESS_OR_EQUAL: return "The actual value is less than or equal to the given value.";
             case GREATER_OR_EQUAL: return "The actual value is greater than or equal to the given value.";
             case GREATER_THAN: return "The actual value is greater than the given value.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8336,6 +8475,7 @@ public String toCode(int len) {
             case LESS_OR_EQUAL: return "Less or Equal to";
             case GREATER_OR_EQUAL: return "Greater or Equal to";
             case GREATER_THAN: return "Greater than";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8465,6 +8605,7 @@ public String toCode(int len) {
             case FILLERORDER: return "filler-order";
             case INSTANCEORDER: return "instance-order";
             case OPTION: return "option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8479,6 +8620,7 @@ public String toCode(int len) {
             case FILLERORDER: return "http://hl7.org/fhir/request-intent";
             case INSTANCEORDER: return "http://hl7.org/fhir/request-intent";
             case OPTION: return "http://hl7.org/fhir/request-intent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8493,6 +8635,7 @@ public String toCode(int len) {
             case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
             case INSTANCEORDER: return "An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.";
             case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8507,6 +8650,7 @@ public String toCode(int len) {
             case FILLERORDER: return "Filler Order";
             case INSTANCEORDER: return "Instance Order";
             case OPTION: return "Option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8631,6 +8775,7 @@ public String toCode(int len) {
             case URGENT: return "urgent";
             case ASAP: return "asap";
             case STAT: return "stat";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8640,6 +8785,7 @@ public String toCode(int len) {
             case URGENT: return "http://hl7.org/fhir/request-priority";
             case ASAP: return "http://hl7.org/fhir/request-priority";
             case STAT: return "http://hl7.org/fhir/request-priority";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8649,6 +8795,7 @@ public String toCode(int len) {
             case URGENT: return "The request should be actioned promptly - higher priority than routine.";
             case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent.";
             case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8658,6 +8805,7 @@ public String toCode(int len) {
             case URGENT: return "Urgent";
             case ASAP: return "ASAP";
             case STAT: return "STAT";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8773,6 +8921,7 @@ public String toCode(int len) {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8785,6 +8934,7 @@ public String toCode(int len) {
             case COMPLETED: return "http://hl7.org/fhir/request-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/request-status";
             case UNKNOWN: return "http://hl7.org/fhir/request-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8797,6 +8947,7 @@ public String toCode(int len) {
             case COMPLETED: return "The activity described by the request has been fully performed.  No further activity will occur.";
             case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"revoked\" rather than \"entered-in-error\".).";
             case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8809,6 +8960,7 @@ public String toCode(int len) {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -9939,6 +10091,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10093,6 +10246,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case VALUESET: return "http://hl7.org/fhir/resource-types";
             case VERIFICATIONRESULT: return "http://hl7.org/fhir/resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10247,6 +10401,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case VALUESET: return "A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).";
             case VERIFICATIONRESULT: return "Describes validation requirements, source(s), status and dates for one or more elements.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10401,6 +10556,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11351,6 +11507,7 @@ The primary difference between a medicationusage and a medicationadministration 
           switch (this) {
             case CLIENT: return "client";
             case SERVER: return "server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11358,6 +11515,7 @@ The primary difference between a medicationusage and a medicationadministration 
           switch (this) {
             case CLIENT: return "http://hl7.org/fhir/restful-capability-mode";
             case SERVER: return "http://hl7.org/fhir/restful-capability-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11365,6 +11523,7 @@ The primary difference between a medicationusage and a medicationadministration 
           switch (this) {
             case CLIENT: return "The application acts as a client for this resource.";
             case SERVER: return "The application acts as a server for this resource.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11372,6 +11531,7 @@ The primary difference between a medicationusage and a medicationadministration 
           switch (this) {
             case CLIENT: return "Client";
             case SERVER: return "Server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11489,6 +11649,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case QUANTITY: return "quantity";
             case URI: return "uri";
             case SPECIAL: return "special";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11503,6 +11664,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case QUANTITY: return "http://hl7.org/fhir/search-param-type";
             case URI: return "http://hl7.org/fhir/search-param-type";
             case SPECIAL: return "http://hl7.org/fhir/search-param-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11517,6 +11679,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case QUANTITY: return "A search parameter that searches on a quantity.";
             case URI: return "A search parameter that searches on a URI (RFC 3986).";
             case SPECIAL: return "Special logic applies to this parameter per the description of the search parameter.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11531,6 +11694,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case QUANTITY: return "Quantity";
             case URI: return "URI";
             case SPECIAL: return "Special";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11732,6 +11896,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case IN: return "in";
             case NOTIN: return "not-in";
             case OFTYPE: return "of-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11752,6 +11917,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case IN: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
             case NOTIN: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
             case OFTYPE: return "http://terminology.hl7.org/CodeSystem/subscription-search-modifier";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11772,6 +11938,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case IN: return "The search parameter is a member of a Group or List, or the search parameter is a URI (relative or absolute) that identifies a value set, and the search parameter tests whether the value is present in the specified Group, List, or Value Set.";
             case NOTIN: return "The search parameter is a member of a Group or List, or the search parameter is a URI (relative or absolute) that identifies a value set, and the search parameter tests whether the value is NOT present in the specified Group, List, or Value Set.";
             case OFTYPE: return "The search parameter has the format system|code|value, where the system and code refer to a Identifier.type.coding.system and .code, and match if any of the type codes match. All 3 parts must be present.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11792,6 +11959,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case IN: return "In";
             case NOTIN: return "Not In";
             case OFTYPE: return "Of Type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11952,6 +12120,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ACTIVE: return "active";
             case ERROR: return "error";
             case OFF: return "off";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11961,6 +12130,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ACTIVE: return "http://terminology.hl7.org/CodeSystem/subscription-state";
             case ERROR: return "http://terminology.hl7.org/CodeSystem/subscription-state";
             case OFF: return "http://terminology.hl7.org/CodeSystem/subscription-state";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11970,6 +12140,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ACTIVE: return "The subscription is active.";
             case ERROR: return "The server has an error executing the notification.";
             case OFF: return "Too many errors have occurred or the subscription has expired.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11979,6 +12150,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case ACTIVE: return "Active";
             case ERROR: return "Error";
             case OFF: return "Off";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -12066,6 +12238,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIM: return "claim";
             case PREAUTHORIZATION: return "preauthorization";
             case PREDETERMINATION: return "predetermination";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -12074,6 +12247,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIM: return "http://hl7.org/fhir/claim-use";
             case PREAUTHORIZATION: return "http://hl7.org/fhir/claim-use";
             case PREDETERMINATION: return "http://hl7.org/fhir/claim-use";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -12082,6 +12256,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIM: return "The treatment is complete and this represents a Claim for the services.";
             case PREAUTHORIZATION: return "The treatment is proposed and this represents a Pre-authorization for the services.";
             case PREDETERMINATION: return "The treatment is proposed and this represents a Pre-determination for the services.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -12090,6 +12265,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case CLAIM: return "Claim";
             case PREAUTHORIZATION: return "Preauthorization";
             case PREDETERMINATION: return "Predetermination";
+            case NULL: return null;
             default: return "?";
           }
         }

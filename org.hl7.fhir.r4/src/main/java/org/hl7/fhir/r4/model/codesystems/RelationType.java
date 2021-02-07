@@ -64,6 +64,7 @@ public enum RelationType {
           switch (this) {
             case TRIGGERS: return "triggers";
             case ISREPLACEDBY: return "is-replaced-by";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum RelationType {
           switch (this) {
             case TRIGGERS: return "the related entry represents an activity that may be triggered by the current item.";
             case ISREPLACEDBY: return "the related entry represents an item that replaces the current retired item.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum RelationType {
           switch (this) {
             case TRIGGERS: return "Triggers";
             case ISREPLACEDBY: return "Replaced By";
+            case NULL: return null;
             default: return "?";
           }
     }

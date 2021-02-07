@@ -71,6 +71,7 @@ public enum ReportResultCodes {
             case PASS: return "pass";
             case FAIL: return "fail";
             case PENDING: return "pending";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ReportResultCodes {
             case PASS: return "All test operations successfully passed all asserts.";
             case FAIL: return "One or more test operations failed one or more asserts.";
             case PENDING: return "One or more test operations is pending execution completion.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ReportResultCodes {
             case PASS: return "Pass";
             case FAIL: return "Fail";
             case PENDING: return "Pending";
+            case NULL: return null;
             default: return "?";
           }
     }

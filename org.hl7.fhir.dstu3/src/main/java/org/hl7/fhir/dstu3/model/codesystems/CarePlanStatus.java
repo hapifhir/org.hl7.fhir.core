@@ -99,6 +99,7 @@ public enum CarePlanStatus {
             case ENTEREDINERROR: return "entered-in-error";
             case CANCELLED: return "cancelled";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum CarePlanStatus {
             case ENTEREDINERROR: return "The plan was entered in error and voided.";
             case CANCELLED: return "The plan has been terminated prior to reaching completion (though it may have been replaced by a new plan).";
             case UNKNOWN: return "The authoring system doesn't know the current state of the care plan.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum CarePlanStatus {
             case ENTEREDINERROR: return "Entered In Error";
             case CANCELLED: return "Cancelled";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

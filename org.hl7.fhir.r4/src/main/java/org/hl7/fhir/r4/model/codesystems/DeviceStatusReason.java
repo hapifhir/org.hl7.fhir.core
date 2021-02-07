@@ -106,6 +106,7 @@ public enum DeviceStatusReason {
             case TRANSDUCDISCON: return "transduc-discon";
             case HWDISCON: return "hw-discon";
             case OFF: return "off";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum DeviceStatusReason {
             case TRANSDUCDISCON: return "The device transducer is disconnected.";
             case HWDISCON: return "The device hardware is disconnected.";
             case OFF: return "The device is off.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum DeviceStatusReason {
             case TRANSDUCDISCON: return "Transducer Disconnected";
             case HWDISCON: return "Hardware Disconnected";
             case OFF: return "Off";
+            case NULL: return null;
             default: return "?";
           }
     }

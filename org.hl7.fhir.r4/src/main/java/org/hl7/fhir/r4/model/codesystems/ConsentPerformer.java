@@ -85,6 +85,7 @@ public enum ConsentPerformer {
             case GRANTOR: return "grantor";
             case DELEGATEE: return "delegatee";
             case DELEGATOR: return "delegator";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ConsentPerformer {
             case GRANTOR: return "An entity which agrees to confer certain rights or authority to a grantee.";
             case DELEGATEE: return "A party to whom some right or authority is granted by a delegator.";
             case DELEGATOR: return "A party that grants all or some portion its right or authority to another party.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ConsentPerformer {
             case GRANTOR: return "Grantor";
             case DELEGATEE: return "Delegatee";
             case DELEGATOR: return "Delegator";
+            case NULL: return null;
             default: return "?";
           }
     }

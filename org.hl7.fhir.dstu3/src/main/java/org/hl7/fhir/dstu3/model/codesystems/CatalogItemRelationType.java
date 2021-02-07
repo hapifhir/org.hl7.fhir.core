@@ -85,6 +85,7 @@ public enum CatalogItemRelationType {
             case CONTAINSSBST: return "contains-sbst";
             case COMBINESWITH: return "combines-with";
             case REQUIRES: return "requires";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum CatalogItemRelationType {
             case CONTAINSSBST: return "The entry contains the related entry as a substance";
             case COMBINESWITH: return "The entry combines with the related entry";
             case REQUIRES: return "The entry requires the related entry for use";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum CatalogItemRelationType {
             case CONTAINSSBST: return "Contains Substance";
             case COMBINESWITH: return "Combines with";
             case REQUIRES: return "Requires";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -134,6 +134,7 @@ public enum BenefitType {
             case VISIONCONTACTS: return "vision-contacts";
             case MEDICALPRIMARYCARE: return "medical-primarycare";
             case PHARMACYDISPENSE: return "pharmacy-dispense";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum BenefitType {
             case VISIONCONTACTS: return "Contact Lenses";
             case MEDICALPRIMARYCARE: return "Medical Primary Health Coverage";
             case PHARMACYDISPENSE: return "Pharmacy Dispense Coverage";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum BenefitType {
             case VISIONCONTACTS: return "Vision Contacts Coverage";
             case MEDICALPRIMARYCARE: return "Medical Primary Health Coverage";
             case PHARMACYDISPENSE: return "Pharmacy Dispense Coverage";
+            case NULL: return null;
             default: return "?";
           }
     }

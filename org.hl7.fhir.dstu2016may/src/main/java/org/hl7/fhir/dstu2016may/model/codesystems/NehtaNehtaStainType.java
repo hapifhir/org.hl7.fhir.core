@@ -71,6 +71,7 @@ public enum NehtaNehtaStainType {
             case NOTTESTED: return "not_tested";
             case NORMALSTAINING: return "normal_staining";
             case LOSSOFSTAINING: return "loss_of_staining";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum NehtaNehtaStainType {
             case NOTTESTED: return "The mismathch repair enzyne was not tested";
             case NORMALSTAINING: return "The mismatch repair enzyme had normal staining";
             case LOSSOFSTAINING: return "The gene mutation was not tested";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum NehtaNehtaStainType {
             case NOTTESTED: return "Not tested";
             case NORMALSTAINING: return "Normal Staining";
             case LOSSOFSTAINING: return "Not tested";
+            case NULL: return null;
             default: return "?";
           }
     }

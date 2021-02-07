@@ -169,6 +169,7 @@ public enum ServicePlace {
             case _20: return "20";
             case _21: return "21";
             case _41: return "41";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -194,6 +195,7 @@ public enum ServicePlace {
             case _20: return "Location, distinct from a hospital emergency room, an office, or a clinic, whose purpose is to diagnose and treat illness or injury for unscheduled, ambulatory patients seeking immediate medical attention.";
             case _21: return "A facility, other than psychiatric, which primarily provides diagnostic, therapeutic (both surgical and nonsurgical), and rehabilitation services by, or under, the supervision of physicians to patients admitted for a variety of medical conditions.";
             case _41: return "A land vehicle specifically designed, equipped and staffed for lifesaving and transporting the sick or injured.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -216,6 +218,7 @@ public enum ServicePlace {
             case _20: return "Urgent Care Facility";
             case _21: return "Inpatient Hospital";
             case _41: return "Ambulance—Land";
+            case NULL: return null;
             default: return "?";
           }
     }
