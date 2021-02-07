@@ -332,6 +332,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
   private FHIRPathEngine fpe;
 
+  public FHIRPathEngine getFHIRPathEngine() {
+    return fpe;
+  }
+
   // configuration items
   private CheckDisplayOption checkDisplay;
   private boolean anyExtensionsAllowed;
