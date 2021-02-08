@@ -1969,7 +1969,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
             } else {
               if (url.contains("hl7.org") || url.contains("fhir.org")) {
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
+                rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
               } else {
                 warning(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
               }
@@ -2342,18 +2342,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       return null;
     } else {
-    Set<Character> invalidChars = new HashSet<>();
-    for (char ch : value.toCharArray()) {
-      if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*' ))) {
-        invalidChars.add(ch);
+      Set<Character> invalidChars = new HashSet<>();
+      for (char ch : value.toCharArray()) {
+        if (!(Character.isDigit(ch) || Character.isAlphabetic(ch) || Utilities.existsInList(ch, ';', '?', ':', '@', '&', '=', '+', '$', '.', ',', '/', '%', '-', '_', '~', '#', '[', ']', '!', '\'', '(', ')', '*' ))) {
+          invalidChars.add(ch);
+        }
+      }
+      if (invalidChars.isEmpty()) {
+        return null;
+      } else {
+        return context.formatMessage(I18nConstants.XHTML_URL_INVALID_CHARS, invalidChars.toString());
       }
     }
-    if (invalidChars.isEmpty()) {
-      return null;
-    } else {
-      return  context.formatMessage(I18nConstants.XHTML_URL_INVALID_CHARS, invalidChars.toString());
-    }
-  }
   }
 
   private String checkValidMimeType(String mt) {

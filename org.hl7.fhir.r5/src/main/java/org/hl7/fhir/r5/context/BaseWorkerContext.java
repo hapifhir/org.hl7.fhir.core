@@ -1055,23 +1055,25 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     String display = null;
     TerminologyServiceErrorClass err = TerminologyServiceErrorClass.UNKNOWN;
     for (ParametersParameterComponent p : pOut.getParameter()) {
-      if (p.getName().equals("result")) {
-        ok = ((BooleanType) p.getValue()).getValue().booleanValue();
-      } else if (p.getName().equals("message")) {
-        message = ((StringType) p.getValue()).getValue();
-      } else if (p.getName().equals("display")) {
-        display = ((StringType) p.getValue()).getValue();
-      } else if (p.getName().equals("cause")) {
-        try {
-          IssueType it = IssueType.fromCode(((StringType) p.getValue()).getValue());
-          if (it == IssueType.UNKNOWN) {
-            err = TerminologyServiceErrorClass.UNKNOWN;
-          } else if (it == IssueType.NOTFOUND) {
-            err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
-          } else if (it == IssueType.NOTSUPPORTED) {
-            err = TerminologyServiceErrorClass.VALUESET_UNSUPPORTED;
+      if (p.hasValue()) {
+        if (p.getName().equals("result")) {
+          ok = ((BooleanType) p.getValue()).getValue().booleanValue();
+        } else if (p.getName().equals("message")) {
+          message = ((StringType) p.getValue()).getValue();
+        } else if (p.getName().equals("display")) {
+          display = ((StringType) p.getValue()).getValue();
+        } else if (p.getName().equals("cause")) {
+          try {
+            IssueType it = IssueType.fromCode(((StringType) p.getValue()).getValue());
+            if (it == IssueType.UNKNOWN) {
+              err = TerminologyServiceErrorClass.UNKNOWN;
+            } else if (it == IssueType.NOTFOUND) {
+              err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
+            } else if (it == IssueType.NOTSUPPORTED) {
+              err = TerminologyServiceErrorClass.VALUESET_UNSUPPORTED;
+            }
+          } catch (FHIRException e) {
           }
-        } catch (FHIRException e) {
         }
       }
     }

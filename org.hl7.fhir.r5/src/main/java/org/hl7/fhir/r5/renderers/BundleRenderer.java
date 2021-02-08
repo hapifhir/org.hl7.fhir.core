@@ -62,7 +62,7 @@ public class BundleRenderer extends ResourceRenderer {
   public boolean render(XhtmlNode x, ResourceWrapper b) throws FHIRFormatError, DefinitionException, IOException, FHIRException, EOperationOutcome {
     List<BaseWrapper> entries = b.children("entry");
     if ("document".equals(b.get("type").primitiveValue())) {
-      if (entries.isEmpty() || (entries.get(0).has("resource") && "Composition".equals(entries.get(0).get("resource").fhirType())))
+      if (entries.isEmpty() || (entries.get(0).has("resource") && !"Composition".equals(entries.get(0).get("resource").fhirType())))
         throw new FHIRException("Invalid document '"+b.getId()+"' - first entry is not a Composition ('"+entries.get(0).get("resource").fhirType()+"')");
       return renderDocument(x, b, entries);
     } else if ("collection".equals(b.get("type").primitiveValue()) && allEntriesAreHistoryProvenance(entries)) {
@@ -119,7 +119,7 @@ public class BundleRenderer extends ResourceRenderer {
     // * The subject resource Narrative
     // * The Composition resource Narrative
     // * The section.text Narratives
-    ResourceWrapper comp = (ResourceWrapper) entries.get(0).getChildByName("resource").getValues().get(0);
+    ResourceWrapper comp = (ResourceWrapper) entries.get(0).getChildByName("resource").getAsResource();
     ResourceWrapper subject = resolveReference(entries, comp.get("subject"));
     if (subject != null) {
       if (subject.hasNarrative()) {
@@ -175,7 +175,7 @@ public class BundleRenderer extends ResourceRenderer {
           if (entry.has("fullUrl")) {
             String fu = entry.get("fullUrl").primitiveValue();
             if (ref.equals(fu)) {
-              return (ResourceWrapper) entry.getChildByName("resource").getValues().get(0);
+              return (ResourceWrapper) entry.getChildByName("resource").getAsResource();
             }
           }
         }

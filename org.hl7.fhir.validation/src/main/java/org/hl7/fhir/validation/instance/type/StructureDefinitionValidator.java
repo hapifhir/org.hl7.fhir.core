@@ -4,7 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
@@ -19,12 +21,15 @@ import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.ExpressionNode;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
+import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
@@ -115,10 +120,12 @@ public class StructureDefinitionValidator extends BaseValidator {
   private void validateElementDefinition(List<ValidationMessage> errors, Element element, NodeStack stack, boolean snapshot, boolean hasSnapshot, StructureDefinition sd) {
     boolean typeMustSupport = false;
     List<Element> types = element.getChildrenByName("type");
+    Set<String> typeCodes = new HashSet<>();
     for (Element type : types) {
       if (hasMustSupportExtension(type)) {
         typeMustSupport = true;
       }
+      typeCodes.add(type.getChildValue("code"));
       // check the stated profile - must be a constraint on the type 
       if (snapshot || sd != null) {
         validateElementType(errors, type, stack.push(type, -1, null, null), sd, element.getChildValue("path"));
@@ -131,6 +138,50 @@ public class StructureDefinitionValidator extends BaseValidator {
         hint(errors, IssueType.EXCEPTION, stack.getLiteralPath(), hasSnapshot || "true".equals(element.getChildValue("mustSupport")), I18nConstants.SD_NESTED_MUST_SUPPORT_DIFF, element.getNamedChildValue("path"));        
       }
     }
+    if (element.hasChild("binding")) {
+      Element binding = element.getNamedChild("binding");
+      validateBinding(errors, binding, stack.push(binding, -1, null, null), typeCodes, snapshot, element.getNamedChildValue("path"));
+    } else {
+      // this is a good idea but there's plenty of cases where the rule isn't met; maybe one day it's worth investing the time to exclude these cases and bring this rule back
+//      String bt = boundType(typeCodes);
+//      hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bt == null, I18nConstants.SD_ED_SHOULD_BIND, element.getNamedChildValue("path"), bt);              
+    }
+  }
+
+  private String boundType(Set<String> typeCodes) {
+    for (String tc : typeCodes) {
+      if (Utilities.existsInList(tc, "code", "Coding", "CodeableConcept", "Quantity", "CodeableReference")) {
+        return tc;
+      }
+    }
+    return null;
+  }
+
+  private String bindableType(Set<String> typeCodes) {
+    String ret = boundType(typeCodes);
+    if (ret != null) {
+      return ret;
+    }
+    for (String tc : typeCodes) {
+      if (Utilities.existsInList(tc, "string", "uri", "CodeableConcept", "Quantity", "CodeableReference")) {
+        return tc;
+      }
+    }
+    return null;
+  }
+
+  private void validateBinding(List<ValidationMessage> errors, Element binding, NodeStack stack, Set<String> typeCodes, boolean snapshot, String path) {
+    rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bindableType(typeCodes) != null, I18nConstants.SD_ED_BIND_NO_BINDABLE, path, typeCodes.toString());
+    if (binding.hasChild("valueSet")) {
+      Element valueSet = binding.getNamedChild("valueSet");
+      String ref = valueSet.hasPrimitiveValue() ? valueSet.primitiveValue() : valueSet.getNamedChildValue("reference");
+      if (warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || ref != null, I18nConstants.SD_ED_SHOULD_BIND_WITH_VS, path)) {
+        Resource vs = context.fetchResource(Resource.class, ref);
+        if (warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs != null, I18nConstants.SD_ED_BIND_UNKNOWN_VS, path, ref)) {
+          rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType());
+        }
+      }
+    } 
   }
 
   private void validateElementType(List<ValidationMessage> errors, Element type, NodeStack stack, StructureDefinition sd, String path) {
@@ -223,7 +274,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (t == null) {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd.getKind() == StructureDefinitionKind.RESOURCE, I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd.getKind() == StructureDefinitionKind.RESOURCE, I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Resource");
         }
       }
     } else if (code.equals("canonical")) {
@@ -231,9 +282,11 @@ public class StructureDefinitionValidator extends BaseValidator {
         String t = determineBaseType(sd);
         if (t == null) {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
+        } else if (!VersionUtilities.isR5Ver(context.getVersion())) {
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t) || "Resource".equals(t), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource");
         } else {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t), I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
-        }
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource");
+        }  
       }
     } else {
       rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_NO_TARGET_PROFILE, code);
@@ -247,10 +300,11 @@ public class StructureDefinitionValidator extends BaseValidator {
         return true;
       }
       sd = sd.hasBaseDefinition() ? context.fetchResource(StructureDefinition.class, sd.getBaseDefinition()) : null;
-      if (sd != null && !sd.getAbstract()) {
+      if (!(VersionUtilities.isR2Ver(context.getVersion()) || VersionUtilities.isR2BVer(context.getVersion())) && sd != null && !sd.getAbstract()) {
         sd = null;
       }
     }
+    
     return false;
   }
 
