@@ -83,6 +83,7 @@ public class DeviceMetric extends DomainResource {
             case ON: return "on";
             case OFF: return "off";
             case STANDBY: return "standby";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -91,6 +92,7 @@ public class DeviceMetric extends DomainResource {
             case ON: return "http://hl7.org/fhir/metric-operational-status";
             case OFF: return "http://hl7.org/fhir/metric-operational-status";
             case STANDBY: return "http://hl7.org/fhir/metric-operational-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public class DeviceMetric extends DomainResource {
             case ON: return "The DeviceMetric is operating and will generate DeviceObservations.";
             case OFF: return "The DeviceMetric is not operating.";
             case STANDBY: return "The DeviceMetric is operating, but will not generate any DeviceObservations.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -107,6 +110,7 @@ public class DeviceMetric extends DomainResource {
             case ON: return "On";
             case OFF: return "Off";
             case STANDBY: return "Standby";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -218,6 +222,7 @@ public class DeviceMetric extends DomainResource {
             case MAGENTA: return "magenta";
             case CYAN: return "cyan";
             case WHITE: return "white";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -231,6 +236,7 @@ public class DeviceMetric extends DomainResource {
             case MAGENTA: return "http://hl7.org/fhir/metric-color";
             case CYAN: return "http://hl7.org/fhir/metric-color";
             case WHITE: return "http://hl7.org/fhir/metric-color";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -244,6 +250,7 @@ public class DeviceMetric extends DomainResource {
             case MAGENTA: return "Color for representation - magenta.";
             case CYAN: return "Color for representation - cyan.";
             case WHITE: return "Color for representation - white.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -257,6 +264,7 @@ public class DeviceMetric extends DomainResource {
             case MAGENTA: return "Color Magenta";
             case CYAN: return "Color Cyan";
             case WHITE: return "Color White";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -370,6 +378,7 @@ public class DeviceMetric extends DomainResource {
             case SETTING: return "setting";
             case CALCULATION: return "calculation";
             case UNSPECIFIED: return "unspecified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -379,6 +388,7 @@ public class DeviceMetric extends DomainResource {
             case SETTING: return "http://hl7.org/fhir/metric-category";
             case CALCULATION: return "http://hl7.org/fhir/metric-category";
             case UNSPECIFIED: return "http://hl7.org/fhir/metric-category";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -388,6 +398,7 @@ public class DeviceMetric extends DomainResource {
             case SETTING: return "DeviceObservations generated for this DeviceMetric is a setting that will influence the behavior of the Device.";
             case CALCULATION: return "DeviceObservations generated for this DeviceMetric are calculated.";
             case UNSPECIFIED: return "The category of this DeviceMetric is unspecified.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -397,6 +408,7 @@ public class DeviceMetric extends DomainResource {
             case SETTING: return "Setting";
             case CALCULATION: return "Calculation";
             case UNSPECIFIED: return "Unspecified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -486,6 +498,7 @@ public class DeviceMetric extends DomainResource {
             case OFFSET: return "offset";
             case GAIN: return "gain";
             case TWOPOINT: return "two-point";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -495,6 +508,7 @@ public class DeviceMetric extends DomainResource {
             case OFFSET: return "http://hl7.org/fhir/metric-calibration-type";
             case GAIN: return "http://hl7.org/fhir/metric-calibration-type";
             case TWOPOINT: return "http://hl7.org/fhir/metric-calibration-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -504,6 +518,7 @@ public class DeviceMetric extends DomainResource {
             case OFFSET: return "TODO";
             case GAIN: return "TODO";
             case TWOPOINT: return "TODO";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -513,6 +528,7 @@ public class DeviceMetric extends DomainResource {
             case OFFSET: return "Offset";
             case GAIN: return "Gain";
             case TWOPOINT: return "Two Point";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -602,6 +618,7 @@ public class DeviceMetric extends DomainResource {
             case CALIBRATIONREQUIRED: return "calibration-required";
             case CALIBRATED: return "calibrated";
             case UNSPECIFIED: return "unspecified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -611,6 +628,7 @@ public class DeviceMetric extends DomainResource {
             case CALIBRATIONREQUIRED: return "http://hl7.org/fhir/metric-calibration-state";
             case CALIBRATED: return "http://hl7.org/fhir/metric-calibration-state";
             case UNSPECIFIED: return "http://hl7.org/fhir/metric-calibration-state";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -620,6 +638,7 @@ public class DeviceMetric extends DomainResource {
             case CALIBRATIONREQUIRED: return "The metric needs to be calibrated.";
             case CALIBRATED: return "The metric has been calibrated.";
             case UNSPECIFIED: return "The state of calibration of this metric is unspecified.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -629,6 +648,7 @@ public class DeviceMetric extends DomainResource {
             case CALIBRATIONREQUIRED: return "Calibration Required";
             case CALIBRATED: return "Calibrated";
             case UNSPECIFIED: return "Unspecified";
+            case NULL: return null;
             default: return "?";
           }
         }

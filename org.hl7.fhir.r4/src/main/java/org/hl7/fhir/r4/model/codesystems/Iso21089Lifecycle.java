@@ -239,6 +239,7 @@ public enum Iso21089Lifecycle {
             case UNLINK: return "unlink";
             case UNMERGE: return "unmerge";
             case VERIFY: return "verify";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -274,6 +275,7 @@ public enum Iso21089Lifecycle {
             case UNLINK: return "Occurs when an agent causes the system to disconnect two or more record entries previously connected, rendering them separate (disconnected) again.";
             case UNMERGE: return "Occurs when an agent causes the system to reverse a previous record entry merge operation, rendering them separate again.";
             case VERIFY: return "Occurs when an agent causes the system to confirm compliance of data or data objects with regulations, requirements, specifications, or other imposed conditions based on organizational policy.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -306,6 +308,7 @@ public enum Iso21089Lifecycle {
             case UNLINK: return "Unlink Record Lifecycle Event";
             case UNMERGE: return "Unmerge Record Lifecycle Event";
             case VERIFY: return "Verify Record Lifecycle Event";
+            case NULL: return null;
             default: return "?";
           }
     }

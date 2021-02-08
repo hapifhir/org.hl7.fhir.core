@@ -106,6 +106,7 @@ public enum V3CodingRationale {
             case HL7: return "HL7";
             case SH: return "SH";
             case SRC: return "SRC";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum V3CodingRationale {
             case HL7: return "HL7 Specified or Mandated";
             case SH: return "Both HL7 mandated and the original code (precoordination)";
             case SRC: return "Source (or original) code";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum V3CodingRationale {
             case HL7: return "HL7 Specified or Mandated";
             case SH: return "Both HL7 mandated and the original code";
             case SRC: return "Source (or original) code";
+            case NULL: return null;
             default: return "?";
           }
     }

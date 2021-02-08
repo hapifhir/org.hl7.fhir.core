@@ -155,6 +155,7 @@ public enum DataAbsentReason {
             case POSITIVEINFINITY: return "positive-infinity";
             case NOTPERFORMED: return "not-performed";
             case NOTPERMITTED: return "not-permitted";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -178,6 +179,7 @@ public enum DataAbsentReason {
             case POSITIVEINFINITY: return "The numeric value is excessively high and unrepresentable due to a floating point processing error.";
             case NOTPERFORMED: return "The value is not available because the observation procedure (test, etc.) was not performed.";
             case NOTPERMITTED: return "The value is not permitted in this context (e.g. due to profiles, or the base data types).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -198,6 +200,7 @@ public enum DataAbsentReason {
             case POSITIVEINFINITY: return "Positive Infinity (PINF)";
             case NOTPERFORMED: return "Not Performed";
             case NOTPERMITTED: return "Not Permitted";
+            case NULL: return null;
             default: return "?";
           }
     }

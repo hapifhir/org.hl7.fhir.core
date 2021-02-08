@@ -8475,6 +8475,7 @@ the measure population as a narrative description (e.g., all patients seen in th
             case DOSEIND: return "DOSEIND";
             case PRA: return "PRA";
             case STORE: return "STORE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -9577,6 +9578,7 @@ the measure population as a narrative description (e.g., all patients seen in th
             case DOSEIND: return "";
             case PRA: return "";
             case STORE: return "The act of putting something away for safe keeping. The \"something\" may be physical object such as a specimen, or information, such as observations regarding a specimen.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10676,6 +10678,7 @@ the measure population as a narrative description (e.g., all patients seen in th
             case DOSEIND: return "DOSEIND";
             case PRA: return "PRA";
             case STORE: return "Storage";
+            case NULL: return null;
             default: return "?";
           }
     }

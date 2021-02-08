@@ -92,6 +92,7 @@ public enum ServicePharmacy {
             case MARKUP: return "markup";
             case DISPENSEFEE: return "dispensefee";
             case COMPOUNDFEE: return "compoundfee";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ServicePharmacy {
             case MARKUP: return "The additional cost assessed on the drug.";
             case DISPENSEFEE: return "The professional fee charged for dispensing the product or service.";
             case COMPOUNDFEE: return "The professional fee charged for compounding the medication.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ServicePharmacy {
             case MARKUP: return "Markup";
             case DISPENSEFEE: return "Dispense Fee";
             case COMPOUNDFEE: return "Compounding Fee";
+            case NULL: return null;
             default: return "?";
           }
     }

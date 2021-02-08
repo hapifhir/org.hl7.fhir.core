@@ -71,6 +71,7 @@ public enum CdshooksIndicator {
             case INFO: return "info";
             case WARNING: return "warning";
             case CRITICAL: return "critical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum CdshooksIndicator {
             case INFO: return "";
             case WARNING: return "";
             case CRITICAL: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum CdshooksIndicator {
             case INFO: return "The response is informational";
             case WARNING: return "The response is a warning";
             case CRITICAL: return "The response is critical and indicates the workflow should not be allowed to proceed";
+            case NULL: return null;
             default: return "?";
           }
     }

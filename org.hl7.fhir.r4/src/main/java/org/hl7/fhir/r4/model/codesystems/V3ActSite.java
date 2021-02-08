@@ -428,6 +428,7 @@ public enum V3ActSite {
             case RUFA: return "RUFA";
             case RVG: return "RVG";
             case RVL: return "RVL";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -490,6 +491,7 @@ public enum V3ActSite {
             case RUFA: return "right upper forearm";
             case RVG: return "right ventragluteal";
             case RVL: return "right vastus lateralis";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -549,6 +551,7 @@ public enum V3ActSite {
             case RUFA: return "right upper forearm";
             case RVG: return "right ventragluteal";
             case RVL: return "right vastus lateralis";
+            case NULL: return null;
             default: return "?";
           }
     }

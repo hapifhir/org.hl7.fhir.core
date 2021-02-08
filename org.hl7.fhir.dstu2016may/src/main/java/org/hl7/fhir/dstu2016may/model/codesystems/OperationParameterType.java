@@ -57,6 +57,7 @@ public enum OperationParameterType {
         public String toCode() {
           switch (this) {
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum OperationParameterType {
         public String getDefinition() {
           switch (this) {
             case ANY: return "Special type for any kind of resource";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
     }

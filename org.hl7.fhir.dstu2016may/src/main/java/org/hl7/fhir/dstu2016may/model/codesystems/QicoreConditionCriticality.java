@@ -92,6 +92,7 @@ public enum QicoreConditionCriticality {
             case FUNCTIONALLOSS: return "functional-loss";
             case LIFETHREATENING: return "life-threatening";
             case REQUIRESHOSPITALIZATION: return "requires-hospitalization";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum QicoreConditionCriticality {
             case FUNCTIONALLOSS: return "The condition may result in partial or full loss of function or capacity";
             case LIFETHREATENING: return "The condition is considered to be life-threatening";
             case REQUIRESHOSPITALIZATION: return "The condition requires hospitalization";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum QicoreConditionCriticality {
             case FUNCTIONALLOSS: return "Potential loss of function or capacity";
             case LIFETHREATENING: return "Life Threatening";
             case REQUIRESHOSPITALIZATION: return "Requires Hospitalization";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -71,6 +71,7 @@ public enum AnimalGenderstatus {
             case NEUTERED: return "neutered";
             case INTACT: return "intact";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum AnimalGenderstatus {
             case NEUTERED: return "The animal has been sterilized, castrated or otherwise made infertile.";
             case INTACT: return "The animal's reproductive organs are intact.";
             case UNKNOWN: return "Unable to determine whether the animal has been neutered.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum AnimalGenderstatus {
             case NEUTERED: return "Neutered";
             case INTACT: return "Intact";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

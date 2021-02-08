@@ -96,6 +96,7 @@ public class Consent extends DomainResource {
             case RELATED: return "related";
             case DEPENDENTS: return "dependents";
             case AUTHOREDBY: return "authoredby";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +106,7 @@ public class Consent extends DomainResource {
             case RELATED: return "http://hl7.org/fhir/consent-data-meaning";
             case DEPENDENTS: return "http://hl7.org/fhir/consent-data-meaning";
             case AUTHOREDBY: return "http://hl7.org/fhir/consent-data-meaning";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +116,7 @@ public class Consent extends DomainResource {
             case RELATED: return "The consent applies directly to the instance of the resource and instances it refers to.";
             case DEPENDENTS: return "The consent applies directly to the instance of the resource and instances that refer to it.";
             case AUTHOREDBY: return "The consent applies to instances of resources that are authored by.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +126,7 @@ public class Consent extends DomainResource {
             case RELATED: return "Related";
             case DEPENDENTS: return "Dependents";
             case AUTHOREDBY: return "AuthoredBy";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -206,6 +210,7 @@ public class Consent extends DomainResource {
           switch (this) {
             case DENY: return "deny";
             case PERMIT: return "permit";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +218,7 @@ public class Consent extends DomainResource {
           switch (this) {
             case DENY: return "http://hl7.org/fhir/consent-provision-type";
             case PERMIT: return "http://hl7.org/fhir/consent-provision-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -220,6 +226,7 @@ public class Consent extends DomainResource {
           switch (this) {
             case DENY: return "Consent is denied for actions meeting these rules.";
             case PERMIT: return "Consent is provided for actions meeting these rules.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -227,6 +234,7 @@ public class Consent extends DomainResource {
           switch (this) {
             case DENY: return "Deny";
             case PERMIT: return "Permit";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -319,6 +327,7 @@ public class Consent extends DomainResource {
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -329,6 +338,7 @@ public class Consent extends DomainResource {
             case INACTIVE: return "http://hl7.org/fhir/consent-state-codes";
             case ENTEREDINERROR: return "http://hl7.org/fhir/consent-state-codes";
             case UNKNOWN: return "http://hl7.org/fhir/consent-state-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -339,6 +349,7 @@ public class Consent extends DomainResource {
             case INACTIVE: return "The consent is terminated or replaced.";
             case ENTEREDINERROR: return "The consent was created wrongly (e.g. wrong patient) and should be ignored.";
             case UNKNOWN: return "The resource is in an indeterminate state.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -349,6 +360,7 @@ public class Consent extends DomainResource {
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }

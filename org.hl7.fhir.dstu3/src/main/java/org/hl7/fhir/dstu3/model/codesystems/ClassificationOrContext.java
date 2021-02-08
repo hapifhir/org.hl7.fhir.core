@@ -64,6 +64,7 @@ public enum ClassificationOrContext {
           switch (this) {
             case CLASSIFICATION: return "classification";
             case CONTEXT: return "context";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ClassificationOrContext {
           switch (this) {
             case CLASSIFICATION: return "Indicates the useContext is a classification - e.g. Administrative, financial, etc.";
             case CONTEXT: return "Indicates the useContext is a context - a domain of use - e.g. Particular country, organization or system";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ClassificationOrContext {
           switch (this) {
             case CLASSIFICATION: return "Classification";
             case CONTEXT: return "Context";
+            case NULL: return null;
             default: return "?";
           }
     }

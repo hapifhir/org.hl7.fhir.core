@@ -92,6 +92,7 @@ public enum V3TargetAwareness {
             case M: return "M";
             case P: return "P";
             case U: return "U";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum V3TargetAwareness {
             case M: return "Target person is marginally aware of the issue.";
             case P: return "Target person is partially aware of the issue.";
             case U: return "Target person has not yet been informed of the issue.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum V3TargetAwareness {
             case M: return "marginal";
             case P: return "partial";
             case U: return "uninformed";
+            case NULL: return null;
             default: return "?";
           }
     }

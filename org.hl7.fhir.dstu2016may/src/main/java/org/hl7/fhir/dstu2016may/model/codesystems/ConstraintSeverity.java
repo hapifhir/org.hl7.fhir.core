@@ -64,6 +64,7 @@ public enum ConstraintSeverity {
           switch (this) {
             case ERROR: return "error";
             case WARNING: return "warning";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ConstraintSeverity {
           switch (this) {
             case ERROR: return "If the constraint is violated, the resource is not conformant.";
             case WARNING: return "If the constraint is violated, the resource is conformant, but it is not necessarily following best practice.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ConstraintSeverity {
           switch (this) {
             case ERROR: return "Error";
             case WARNING: return "Warning";
+            case NULL: return null;
             default: return "?";
           }
     }

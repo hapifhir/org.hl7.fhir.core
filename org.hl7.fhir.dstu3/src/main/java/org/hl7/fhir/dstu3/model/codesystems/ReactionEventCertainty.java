@@ -78,6 +78,7 @@ public enum ReactionEventCertainty {
             case LIKELY: return "likely";
             case CONFIRMED: return "confirmed";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ReactionEventCertainty {
             case LIKELY: return "There is a high level of clinical certainty that the reaction was caused by the identified substance.";
             case CONFIRMED: return "There is a very high level of clinical certainty that the reaction was due to the identified substance, which may include clinical evidence by testing or rechallenge.";
             case UNKNOWN: return "The clinical certainty that the reaction was caused by the identified substance is unknown.  It is an explicit assertion that certainty is not known.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ReactionEventCertainty {
             case LIKELY: return "Likely";
             case CONFIRMED: return "Confirmed";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

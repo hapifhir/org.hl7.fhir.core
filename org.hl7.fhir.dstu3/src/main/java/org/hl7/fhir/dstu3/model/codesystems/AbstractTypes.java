@@ -64,6 +64,7 @@ public enum AbstractTypes {
           switch (this) {
             case TYPE: return "Type";
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum AbstractTypes {
           switch (this) {
             case TYPE: return "A place holder that means any kind of data type";
             case ANY: return "A place holder that means any kind of resource";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum AbstractTypes {
           switch (this) {
             case TYPE: return "Type";
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
     }

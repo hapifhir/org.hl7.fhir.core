@@ -124,6 +124,7 @@ public class CarePlan extends DomainResource {
             case TASK: return "Task";
             case SERVICEREQUEST: return "ServiceRequest";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -137,6 +138,7 @@ public class CarePlan extends DomainResource {
             case TASK: return "http://hl7.org/fhir/resource-types";
             case SERVICEREQUEST: return "http://hl7.org/fhir/resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -150,6 +152,7 @@ public class CarePlan extends DomainResource {
             case TASK: return "A task to be performed.";
             case SERVICEREQUEST: return "A record of a request for service such as diagnostic investigations, treatments, or operations to be performed.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -163,6 +166,7 @@ public class CarePlan extends DomainResource {
             case TASK: return "Task";
             case SERVICEREQUEST: return "ServiceRequest";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -319,6 +323,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "stopped";
             case UNKNOWN: return "unknown";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -333,6 +338,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "http://hl7.org/fhir/care-plan-activity-status";
             case UNKNOWN: return "http://hl7.org/fhir/care-plan-activity-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/care-plan-activity-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -347,6 +353,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "The planned care plan activity has been ended prior to completion after the activity was started.";
             case UNKNOWN: return "The current state of the care plan activity is not known.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, but the authoring/source system does not know which one.";
             case ENTEREDINERROR: return "Care plan activity was entered in error and voided.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -361,6 +368,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "Stopped";
             case UNKNOWN: return "Unknown";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -495,6 +503,7 @@ public class CarePlan extends DomainResource {
             case ORDER: return "order";
             case OPTION: return "option";
             case DIRECTIVE: return "directive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -505,6 +514,7 @@ public class CarePlan extends DomainResource {
             case ORDER: return "http://hl7.org/fhir/request-intent";
             case OPTION: return "http://hl7.org/fhir/request-intent";
             case DIRECTIVE: return "http://hl7.org/fhir/request-intent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -515,6 +525,7 @@ public class CarePlan extends DomainResource {
             case ORDER: return "The request represents a request/demand and authorization for action by a Practitioner.";
             case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
             case DIRECTIVE: return "The request represents a legally binding instruction authored by a Patient or RelatedPerson.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -525,6 +536,7 @@ public class CarePlan extends DomainResource {
             case ORDER: return "Order";
             case OPTION: return "Option";
             case DIRECTIVE: return "Directive";
+            case NULL: return null;
             default: return "?";
           }
         }

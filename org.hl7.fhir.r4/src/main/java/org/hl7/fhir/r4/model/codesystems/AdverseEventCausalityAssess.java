@@ -92,6 +92,7 @@ public enum AdverseEventCausalityAssess {
             case UNLIKELY: return "Unlikely";
             case CONDITIONALCLASSIFIED: return "Conditional-Classified";
             case UNASSESSABLEUNCLASSIFIABLE: return "Unassessable-Unclassifiable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum AdverseEventCausalityAssess {
             case UNLIKELY: return "i) Event or laboratory test abnormality, with a time to drug intake that makes a relationship improbable (but not impossible); or ii) Disease or other drugs provide plausible explanations.";
             case CONDITIONALCLASSIFIED: return "i) Event or laboratory test abnormality; ii) More data for proper assessment needed; or iii) Additional data under examination.";
             case UNASSESSABLEUNCLASSIFIABLE: return "i) Report suggesting an adverse reaction; ii) Cannot be judged because information is insufficient or contradictory; or iii) Data cannot be supplemented or verified.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum AdverseEventCausalityAssess {
             case UNLIKELY: return "Unlikely";
             case CONDITIONALCLASSIFIED: return "Conditional/Classified";
             case UNASSESSABLEUNCLASSIFIABLE: return "Unassessable/Unclassifiable";
+            case NULL: return null;
             default: return "?";
           }
     }

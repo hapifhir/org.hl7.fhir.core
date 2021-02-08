@@ -64,6 +64,7 @@ public enum CoverageFinancialException {
           switch (this) {
             case RETIRED: return "retired";
             case FOSTER: return "foster";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum CoverageFinancialException {
           switch (this) {
             case RETIRED: return "Retired persons have all copays and deductibles reduced.";
             case FOSTER: return "Children in the foster care have all copays and deductibles waived.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum CoverageFinancialException {
           switch (this) {
             case RETIRED: return "Retired";
             case FOSTER: return "Foster child";
+            case NULL: return null;
             default: return "?";
           }
     }

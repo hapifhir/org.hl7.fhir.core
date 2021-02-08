@@ -71,6 +71,7 @@ public enum CopyNumberEvent {
             case AMP: return "amp";
             case DEL: return "del";
             case LOF: return "lof";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum CopyNumberEvent {
             case AMP: return "amplification.";
             case DEL: return "deletion.";
             case LOF: return "loss of function.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum CopyNumberEvent {
             case AMP: return "amplification";
             case DEL: return "deletion";
             case LOF: return "loss of function";
+            case NULL: return null;
             default: return "?";
           }
     }

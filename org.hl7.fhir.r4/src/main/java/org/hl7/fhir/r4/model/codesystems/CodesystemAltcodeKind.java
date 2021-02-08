@@ -85,6 +85,7 @@ public enum CodesystemAltcodeKind {
             case CASEINSENSITIVE: return "case-insensitive";
             case CASESENSITIVE: return "case-sensitive";
             case EXPRESSION: return "expression";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum CodesystemAltcodeKind {
             case CASEINSENSITIVE: return "The code is an alternative to be used when a case insensitive code is required (when the primary codes are case sensitive).";
             case CASESENSITIVE: return "The code is an alternative to be used when a case sensitive code is required (when the primary codes are case insensitive).";
             case EXPRESSION: return "The code is an alternative for the primary code that is built using the expression grammar defined by the code system.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum CodesystemAltcodeKind {
             case CASEINSENSITIVE: return "Case Insensitive";
             case CASESENSITIVE: return "Case Sensitive";
             case EXPRESSION: return "Expression";
+            case NULL: return null;
             default: return "?";
           }
     }

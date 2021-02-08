@@ -130,6 +130,7 @@ public class Encounter extends DomainResource {
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +145,7 @@ public class Encounter extends DomainResource {
             case CANCELLED: return "http://hl7.org/fhir/encounter-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/encounter-status";
             case UNKNOWN: return "http://hl7.org/fhir/encounter-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -158,6 +160,7 @@ public class Encounter extends DomainResource {
             case CANCELLED: return "The Encounter has ended before it has begun.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case UNKNOWN: return "The encounter status is unknown. Note that \"unknown\" is a value of last resort and every attempt should be made to provide a meaningful value other than \"unknown\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -172,6 +175,7 @@ public class Encounter extends DomainResource {
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -299,6 +303,7 @@ public class Encounter extends DomainResource {
             case ACTIVE: return "active";
             case RESERVED: return "reserved";
             case COMPLETED: return "completed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -308,6 +313,7 @@ public class Encounter extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/encounter-location-status";
             case RESERVED: return "http://hl7.org/fhir/encounter-location-status";
             case COMPLETED: return "http://hl7.org/fhir/encounter-location-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -317,6 +323,7 @@ public class Encounter extends DomainResource {
             case ACTIVE: return "The patient is currently at this location, or was between the period specified.\r\rA system may update these records when the patient leaves the location to either reserved, or completed.";
             case RESERVED: return "This location is held empty for this patient.";
             case COMPLETED: return "The patient was at this location during the period specified.\r\rNot to be used when the patient is currently at the location.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -326,6 +333,7 @@ public class Encounter extends DomainResource {
             case ACTIVE: return "Active";
             case RESERVED: return "Reserved";
             case COMPLETED: return "Completed";
+            case NULL: return null;
             default: return "?";
           }
         }

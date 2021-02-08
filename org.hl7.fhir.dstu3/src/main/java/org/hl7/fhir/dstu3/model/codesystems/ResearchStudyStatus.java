@@ -92,6 +92,7 @@ public enum ResearchStudyStatus {
             case STOPPED: return "stopped";
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ResearchStudyStatus {
             case STOPPED: return "The study was terminated prior to the final determination of results";
             case COMPLETED: return "The information sought by the study has been gathered and compiled and no further work is being performed";
             case ENTEREDINERROR: return "This study never actually existed.  The record is retained for tracking purposes in the event decisions may have been made based on this erroneous information.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ResearchStudyStatus {
             case STOPPED: return "Stopped";
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in error";
+            case NULL: return null;
             default: return "?";
           }
     }

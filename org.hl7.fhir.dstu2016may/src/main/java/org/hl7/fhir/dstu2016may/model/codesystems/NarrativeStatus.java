@@ -78,6 +78,7 @@ public enum NarrativeStatus {
             case EXTENSIONS: return "extensions";
             case ADDITIONAL: return "additional";
             case EMPTY: return "empty";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum NarrativeStatus {
             case EXTENSIONS: return "The contents of the narrative are entirely generated from the structured data in the content and some of the content is generated from extensions";
             case ADDITIONAL: return "The contents of the narrative contain additional information not found in the structured data";
             case EMPTY: return "The contents of the narrative are some equivalent of \"No human-readable text provided in this case\"";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum NarrativeStatus {
             case EXTENSIONS: return "Extensions";
             case ADDITIONAL: return "Additional";
             case EMPTY: return "Empty";
+            case NULL: return null;
             default: return "?";
           }
     }

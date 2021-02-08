@@ -64,6 +64,7 @@ public enum PrecheckBehavior {
           switch (this) {
             case YES: return "yes";
             case NO: return "no";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum PrecheckBehavior {
           switch (this) {
             case YES: return "An item with this behavior is one of the most frequent items that is, or should be, included by an end user, for the particular context in which the item occurs. The system displaying the item to the end user should consider \"pre-checking\" such an item as a convenience for the user";
             case NO: return "An item with this behavior is one of the less frequent items included by the end user, for the particular context in which the item occurs. The system displaying the items to the end user would typically not \"pre-check\" such an item";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum PrecheckBehavior {
           switch (this) {
             case YES: return "Yes";
             case NO: return "No";
+            case NULL: return null;
             default: return "?";
           }
     }

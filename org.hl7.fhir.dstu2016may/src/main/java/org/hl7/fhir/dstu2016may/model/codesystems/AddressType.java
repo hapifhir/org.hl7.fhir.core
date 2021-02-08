@@ -71,6 +71,7 @@ public enum AddressType {
             case POSTAL: return "postal";
             case PHYSICAL: return "physical";
             case BOTH: return "both";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum AddressType {
             case POSTAL: return "Mailing addresses - PO Boxes and care-of addresses.";
             case PHYSICAL: return "A physical address that can be visited.";
             case BOTH: return "An address that is both physical and postal.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum AddressType {
             case POSTAL: return "Postal";
             case PHYSICAL: return "Physical";
             case BOTH: return "Postal & Physical";
+            case NULL: return null;
             default: return "?";
           }
     }

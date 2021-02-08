@@ -92,6 +92,7 @@ public enum RiskEstimateType {
             case MEDIAN: return "median";
             case COUNT: return "count";
             case DESCRIPTIVE: return "descriptive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum RiskEstimateType {
             case MEDIAN: return "continuous numerical measure reported as the middle of the range.";
             case COUNT: return "descriptive measure reported as total number of items.";
             case DESCRIPTIVE: return "descriptive measure reported as narrative.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum RiskEstimateType {
             case MEDIAN: return "median";
             case COUNT: return "count";
             case DESCRIPTIVE: return "descriptive";
+            case NULL: return null;
             default: return "?";
           }
     }

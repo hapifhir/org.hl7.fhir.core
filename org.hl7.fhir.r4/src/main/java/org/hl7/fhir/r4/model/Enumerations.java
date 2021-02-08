@@ -91,6 +91,7 @@ public class Enumerations {
           switch (this) {
             case TYPE: return "Type";
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public class Enumerations {
           switch (this) {
             case TYPE: return "http://hl7.org/fhir/abstract-types";
             case ANY: return "http://hl7.org/fhir/abstract-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class Enumerations {
           switch (this) {
             case TYPE: return "A place holder that means any kind of data type";
             case ANY: return "A place holder that means any kind of resource";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -112,6 +115,7 @@ public class Enumerations {
           switch (this) {
             case TYPE: return "Type";
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -194,6 +198,7 @@ public class Enumerations {
             case FEMALE: return "female";
             case OTHER: return "other";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -203,6 +208,7 @@ public class Enumerations {
             case FEMALE: return "http://hl7.org/fhir/administrative-gender";
             case OTHER: return "http://hl7.org/fhir/administrative-gender";
             case UNKNOWN: return "http://hl7.org/fhir/administrative-gender";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -212,6 +218,7 @@ public class Enumerations {
             case FEMALE: return "Female.";
             case OTHER: return "Other.";
             case UNKNOWN: return "Unknown.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -221,6 +228,7 @@ public class Enumerations {
             case FEMALE: return "Female";
             case OTHER: return "Other";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -329,6 +337,7 @@ public class Enumerations {
             case WK: return "wk";
             case MO: return "mo";
             case A: return "a";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -340,6 +349,7 @@ public class Enumerations {
             case WK: return "http://unitsofmeasure.org";
             case MO: return "http://unitsofmeasure.org";
             case A: return "http://unitsofmeasure.org";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -351,6 +361,7 @@ public class Enumerations {
             case WK: return "";
             case MO: return "";
             case A: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -362,6 +373,7 @@ public class Enumerations {
             case WK: return "Week";
             case MO: return "Month";
             case A: return "Year";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -468,6 +480,7 @@ public class Enumerations {
             case EXTENSIBLE: return "extensible";
             case PREFERRED: return "preferred";
             case EXAMPLE: return "example";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -477,6 +490,7 @@ public class Enumerations {
             case EXTENSIBLE: return "http://hl7.org/fhir/binding-strength";
             case PREFERRED: return "http://hl7.org/fhir/binding-strength";
             case EXAMPLE: return "http://hl7.org/fhir/binding-strength";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -486,6 +500,7 @@ public class Enumerations {
             case EXTENSIBLE: return "To be conformant, the concept in this element SHALL be from the specified value set if any of the codes within the value set can apply to the concept being communicated.  If the value set does not cover the concept (based on human review), alternate codings (or, data type allowing, text) may be included instead.";
             case PREFERRED: return "Instances are encouraged to draw from the specified codes for interoperability purposes but are not required to do so to be considered conformant.";
             case EXAMPLE: return "Instances are not expected or even encouraged to draw from the specified value set.  The value set merely provides examples of the types of concepts intended to be included.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -495,6 +510,7 @@ public class Enumerations {
             case EXTENSIBLE: return "Extensible";
             case PREFERRED: return "Preferred";
             case EXAMPLE: return "Example";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -631,6 +647,7 @@ public class Enumerations {
             case INEXACT: return "inexact";
             case UNMATCHED: return "unmatched";
             case DISJOINT: return "disjoint";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -646,6 +663,7 @@ public class Enumerations {
             case INEXACT: return "http://hl7.org/fhir/concept-map-equivalence";
             case UNMATCHED: return "http://hl7.org/fhir/concept-map-equivalence";
             case DISJOINT: return "http://hl7.org/fhir/concept-map-equivalence";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -661,6 +679,7 @@ public class Enumerations {
             case INEXACT: return "The target mapping overlaps with the source concept, but both source and target cover additional meaning, or the definitions are imprecise and it is uncertain whether they have the same boundaries to their meaning. The sense in which the mapping is inexact SHALL be described in the comments in this case, and applications should be careful when attempting to use these mappings operationally.";
             case UNMATCHED: return "There is no match for this concept in the target code system.";
             case DISJOINT: return "This is an explicit assertion that there is no mapping between the source and target concept.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -676,6 +695,7 @@ public class Enumerations {
             case INEXACT: return "Inexact";
             case UNMATCHED: return "Unmatched";
             case DISJOINT: return "Disjoint";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -883,6 +903,7 @@ public class Enumerations {
             case POSITIVEINFINITY: return "positive-infinity";
             case NOTPERFORMED: return "not-performed";
             case NOTPERMITTED: return "not-permitted";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -903,6 +924,7 @@ public class Enumerations {
             case POSITIVEINFINITY: return "http://terminology.hl7.org/CodeSystem/data-absent-reason";
             case NOTPERFORMED: return "http://terminology.hl7.org/CodeSystem/data-absent-reason";
             case NOTPERMITTED: return "http://terminology.hl7.org/CodeSystem/data-absent-reason";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -923,6 +945,7 @@ public class Enumerations {
             case POSITIVEINFINITY: return "The numeric value is excessively high and unrepresentable due to a floating point processing error.";
             case NOTPERFORMED: return "The value is not available because the observation procedure (test, etc.) was not performed.";
             case NOTPERMITTED: return "The value is not permitted in this context (e.g. due to profiles, or the base data types).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -943,6 +966,7 @@ public class Enumerations {
             case POSITIVEINFINITY: return "Positive Infinity (PINF)";
             case NOTPERFORMED: return "Not Performed";
             case NOTPERMITTED: return "Not Permitted";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1516,6 +1540,7 @@ public class Enumerations {
             case URL: return "url";
             case UUID: return "uuid";
             case XHTML: return "xhtml";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1584,6 +1609,7 @@ public class Enumerations {
             case URL: return "http://hl7.org/fhir/data-types";
             case UUID: return "http://hl7.org/fhir/data-types";
             case XHTML: return "http://hl7.org/fhir/data-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1652,6 +1678,7 @@ public class Enumerations {
             case URL: return "A URI that is a literal reference";
             case UUID: return "A UUID, represented as a URI";
             case XHTML: return "XHTML format, as defined by W3C, but restricted usage (mainly, no active content)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1720,6 +1747,7 @@ public class Enumerations {
             case URL: return "url";
             case UUID: return "uuid";
             case XHTML: return "XHTML";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2182,6 +2210,7 @@ public class Enumerations {
             case OPERATIONDEFINITION: return "OperationDefinition";
             case PLANDEFINITION: return "PlanDefinition";
             case QUESTIONNAIRE: return "Questionnaire";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2193,6 +2222,7 @@ public class Enumerations {
             case OPERATIONDEFINITION: return "http://hl7.org/fhir/definition-resource-types";
             case PLANDEFINITION: return "http://hl7.org/fhir/definition-resource-types";
             case QUESTIONNAIRE: return "http://hl7.org/fhir/definition-resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2204,6 +2234,7 @@ public class Enumerations {
             case OPERATIONDEFINITION: return "A formal computable definition of an operation (on the RESTful interface) or a named query (using the search interaction).";
             case PLANDEFINITION: return "This resource allows for the definition of various types of plans as a sharable, consumable, and executable artifact. The resource is general enough to support the description of a broad range of clinical artifacts such as clinical decision support rules, order sets and protocols.";
             case QUESTIONNAIRE: return "A structured set of questions intended to guide the collection of answers from end-users. Questionnaires provide detailed control over order, presentation, phraseology and grouping to allow coherent, consistent data collection.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2215,6 +2246,7 @@ public class Enumerations {
             case OPERATIONDEFINITION: return "OperationDefinition";
             case PLANDEFINITION: return "PlanDefinition";
             case QUESTIONNAIRE: return "Questionnaire";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2314,6 +2346,7 @@ public class Enumerations {
             case CURRENT: return "current";
             case SUPERSEDED: return "superseded";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2322,6 +2355,7 @@ public class Enumerations {
             case CURRENT: return "http://hl7.org/fhir/document-reference-status";
             case SUPERSEDED: return "http://hl7.org/fhir/document-reference-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/document-reference-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2330,6 +2364,7 @@ public class Enumerations {
             case CURRENT: return "This is the current reference for this document.";
             case SUPERSEDED: return "This reference has been superseded by another reference.";
             case ENTEREDINERROR: return "This reference was created in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2338,6 +2373,7 @@ public class Enumerations {
             case CURRENT: return "Current";
             case SUPERSEDED: return "Superseded";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2636,6 +2672,7 @@ public class Enumerations {
             case RISKASSESSMENT: return "RiskAssessment";
             case SUPPLYDELIVERY: return "SupplyDelivery";
             case TASK: return "Task";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2675,6 +2712,7 @@ public class Enumerations {
             case RISKASSESSMENT: return "http://hl7.org/fhir/event-resource-types";
             case SUPPLYDELIVERY: return "http://hl7.org/fhir/event-resource-types";
             case TASK: return "http://hl7.org/fhir/event-resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2714,6 +2752,7 @@ public class Enumerations {
             case RISKASSESSMENT: return "Potential outcomes for a subject with likelihood.";
             case SUPPLYDELIVERY: return "Delivery of bulk Supplies.";
             case TASK: return "A task to be performed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2753,6 +2792,7 @@ public class Enumerations {
             case RISKASSESSMENT: return "RiskAssessment";
             case SUPPLYDELIVERY: return "SupplyDelivery";
             case TASK: return "Task";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4493,6 +4533,7 @@ The primary difference between a medication statement and a medication administr
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case TYPE: return "Type";
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4711,6 +4752,7 @@ The primary difference between a medication statement and a medication administr
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
             case TYPE: return "http://hl7.org/fhir/abstract-types";
             case ANY: return "http://hl7.org/fhir/abstract-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -4929,6 +4971,7 @@ The primary difference between a medication statement and a medication administr
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
             case TYPE: return "A place holder that means any kind of data type";
             case ANY: return "A place holder that means any kind of resource";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -5147,6 +5190,7 @@ The primary difference between a medication statement and a medication administr
             case VISIONPRESCRIPTION: return "VisionPrescription";
             case TYPE: return "Type";
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -7947,6 +7991,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8163,6 +8208,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "http://hl7.org/fhir/resource-types";
             case VERIFICATIONRESULT: return "http://hl7.org/fhir/resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8379,6 +8425,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).";
             case VERIFICATIONRESULT: return "Describes validation requirements, source(s), status and dates for one or more elements.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -8595,6 +8642,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10065,6 +10113,7 @@ The primary difference between a medication statement and a medication administr
             case _3_5_0: return "3.5.0";
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10093,6 +10142,7 @@ The primary difference between a medication statement and a medication administr
             case _3_5_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_0_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_0_1: return "http://hl7.org/fhir/FHIR-version";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10121,6 +10171,7 @@ The primary difference between a medication statement and a medication administr
             case _3_5_0: return "R4 Ballot #2.";
             case _4_0_0: return "FHIR Release 4 (Normative + STU).";
             case _4_0_1: return "FHIR Release 4 Technical Correction #1.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10149,6 +10200,7 @@ The primary difference between a medication statement and a medication administr
             case _3_5_0: return "3.5.0";
             case _4_0_0: return "4.0.0";
             case _4_0_1: return "4.0.1";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10398,6 +10450,7 @@ The primary difference between a medication statement and a medication administr
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
             case VALUESET: return "ValueSet";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10412,6 +10465,7 @@ The primary difference between a medication statement and a medication administr
             case STRUCTUREDEFINITION: return "http://hl7.org/fhir/knowledge-resource-types";
             case STRUCTUREMAP: return "http://hl7.org/fhir/knowledge-resource-types";
             case VALUESET: return "http://hl7.org/fhir/knowledge-resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10426,6 +10480,7 @@ The primary difference between a medication statement and a medication administr
             case STRUCTUREDEFINITION: return "Structural Definition.";
             case STRUCTUREMAP: return "A Map of relationships between 2 structures that can be used to transform data.";
             case VALUESET: return "A set of codes drawn from one or more code systems.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10440,6 +10495,7 @@ The primary difference between a medication statement and a medication administr
             case STRUCTUREDEFINITION: return "StructureDefinition";
             case STRUCTUREMAP: return "StructureMap";
             case VALUESET: return "ValueSet";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10536,21 +10592,25 @@ The primary difference between a medication statement and a medication administr
         }
         public String toCode() {
           switch (this) {
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDefinition() {
           switch (this) {
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10614,6 +10674,7 @@ The primary difference between a medication statement and a medication administr
             case DISPLAY: return "display";
             case PRINT: return "print";
             case PRINTOPER: return "printoper";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10622,6 +10683,7 @@ The primary difference between a medication statement and a medication administr
             case DISPLAY: return "http://hl7.org/fhir/note-type";
             case PRINT: return "http://hl7.org/fhir/note-type";
             case PRINTOPER: return "http://hl7.org/fhir/note-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10630,6 +10692,7 @@ The primary difference between a medication statement and a medication administr
             case DISPLAY: return "Display the note.";
             case PRINT: return "Print the note on the form.";
             case PRINTOPER: return "Print the note for the operator.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10638,6 +10701,7 @@ The primary difference between a medication statement and a medication administr
             case DISPLAY: return "Display";
             case PRINT: return "Print (Form)";
             case PRINTOPER: return "Print (Operator)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10726,6 +10790,7 @@ The primary difference between a medication statement and a medication administr
             case ACTIVE: return "active";
             case RETIRED: return "retired";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10735,6 +10800,7 @@ The primary difference between a medication statement and a medication administr
             case ACTIVE: return "http://hl7.org/fhir/publication-status";
             case RETIRED: return "http://hl7.org/fhir/publication-status";
             case UNKNOWN: return "http://hl7.org/fhir/publication-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10744,6 +10810,7 @@ The primary difference between a medication statement and a medication administr
             case ACTIVE: return "This resource is ready for normal use.";
             case RETIRED: return "This resource has been withdrawn or superseded and should no longer be used.";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this resource.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10753,6 +10820,7 @@ The primary difference between a medication statement and a medication administr
             case ACTIVE: return "Active";
             case RETIRED: return "Retired";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10847,6 +10915,7 @@ The primary difference between a medication statement and a medication administr
             case COMPLETE: return "complete";
             case ERROR: return "error";
             case PARTIAL: return "partial";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10856,6 +10925,7 @@ The primary difference between a medication statement and a medication administr
             case COMPLETE: return "http://hl7.org/fhir/remittance-outcome";
             case ERROR: return "http://hl7.org/fhir/remittance-outcome";
             case PARTIAL: return "http://hl7.org/fhir/remittance-outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10865,6 +10935,7 @@ The primary difference between a medication statement and a medication administr
             case COMPLETE: return "The processing has completed without errors";
             case ERROR: return "One or more errors have been detected in the Claim";
             case PARTIAL: return "No errors have been detected in the Claim and some of the adjudication has been performed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10874,6 +10945,7 @@ The primary difference between a medication statement and a medication administr
             case COMPLETE: return "Processing Complete";
             case ERROR: return "Error";
             case PARTIAL: return "Partial Processing";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11045,6 +11117,7 @@ The primary difference between a medication statement and a medication administr
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11065,6 +11138,7 @@ The primary difference between a medication statement and a medication administr
             case SUPPLYREQUEST: return "http://hl7.org/fhir/request-resource-types";
             case TASK: return "http://hl7.org/fhir/request-resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/request-resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11085,6 +11159,7 @@ The primary difference between a medication statement and a medication administr
             case SUPPLYREQUEST: return "Request for a medication, substance or device.";
             case TASK: return "A task to be performed.";
             case VISIONPRESCRIPTION: return "Prescription for vision correction products for a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11105,6 +11180,7 @@ The primary difference between a medication statement and a medication administr
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -12276,6 +12352,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -12429,6 +12506,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "http://hl7.org/fhir/resource-types";
             case VERIFICATIONRESULT: return "http://hl7.org/fhir/resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -12582,6 +12660,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).";
             case VERIFICATIONRESULT: return "Describes validation requirements, source(s), status and dates for one or more elements.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -12735,6 +12814,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -13728,6 +13808,7 @@ The primary difference between a medication statement and a medication administr
             case QUANTITY: return "quantity";
             case URI: return "uri";
             case SPECIAL: return "special";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -13742,6 +13823,7 @@ The primary difference between a medication statement and a medication administr
             case QUANTITY: return "http://hl7.org/fhir/search-param-type";
             case URI: return "http://hl7.org/fhir/search-param-type";
             case SPECIAL: return "http://hl7.org/fhir/search-param-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -13756,6 +13838,7 @@ The primary difference between a medication statement and a medication administr
             case QUANTITY: return "A search parameter that searches on a quantity.";
             case URI: return "A search parameter that searches on a URI (RFC 3986).";
             case SPECIAL: return "Special logic applies to this parameter per the description of the search parameter.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -13770,6 +13853,7 @@ The primary difference between a medication statement and a medication administr
             case QUANTITY: return "Quantity";
             case URI: return "URI";
             case SPECIAL: return "Special";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -13908,6 +13992,7 @@ The primary difference between a medication statement and a medication administr
             case SUFFICIENT: return "sufficient";
             case WITHDRAWN: return "withdrawn";
             case NILKNOWN: return "nil-known";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -13919,6 +14004,7 @@ The primary difference between a medication statement and a medication administr
             case SUFFICIENT: return "http://terminology.hl7.org/CodeSystem/special-values";
             case WITHDRAWN: return "http://terminology.hl7.org/CodeSystem/special-values";
             case NILKNOWN: return "http://terminology.hl7.org/CodeSystem/special-values";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -13930,6 +14016,7 @@ The primary difference between a medication statement and a medication administr
             case SUFFICIENT: return "The specific quantity is not known, but is known to be non-zero and is not specified because it makes up the bulk of the material.";
             case WITHDRAWN: return "The value is no longer available.";
             case NILKNOWN: return "The are no known applicable values in this context.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -13941,6 +14028,7 @@ The primary difference between a medication statement and a medication administr
             case SUFFICIENT: return "Sufficient Quantity";
             case WITHDRAWN: return "Value Withdrawn";
             case NILKNOWN: return "Nil Known";
+            case NULL: return null;
             default: return "?";
           }
         }

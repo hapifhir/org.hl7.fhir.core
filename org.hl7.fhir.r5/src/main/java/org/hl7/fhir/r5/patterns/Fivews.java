@@ -289,6 +289,7 @@ public interface Fivews extends PatternBase {
             case NOTREADY: return "not-ready";
             case TRANSDUCDISCON: return "transduc-discon";
             case HWDISCON: return "hw-discon";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -325,6 +326,7 @@ public interface Fivews extends PatternBase {
             case NOTREADY: return "http://hl7.org/fhir/resource-status";
             case TRANSDUCDISCON: return "http://hl7.org/fhir/resource-status";
             case HWDISCON: return "http://hl7.org/fhir/resource-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -361,6 +363,7 @@ public interface Fivews extends PatternBase {
             case NOTREADY: return "Behind the planned timelines";
             case TRANSDUCDISCON: return "The device transducer is disconnected";
             case HWDISCON: return "The hardware is disconnected";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -397,6 +400,7 @@ public interface Fivews extends PatternBase {
             case NOTREADY: return "not-ready";
             case TRANSDUCDISCON: return "transduc-discon";
             case HWDISCON: return "hw-discon";
+            case NULL: return null;
             default: return "?";
           }
         }

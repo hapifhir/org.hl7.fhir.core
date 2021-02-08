@@ -78,6 +78,7 @@ public enum ConformanceExpectation {
             case SHOULD: return "SHOULD";
             case MAY: return "MAY";
             case SHOULDNOT: return "SHOULD-NOT";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ConformanceExpectation {
             case SHOULD: return "Support for the specified capability is strongly encouraged and failure to support it should only occur after careful consideration.";
             case MAY: return "Support for the specified capability is not necessary to be considered conformant and the requirement should be considered strictly optional.";
             case SHOULDNOT: return "Support for the specified capability is strongly discouraged and should occur only after careful consideration.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ConformanceExpectation {
             case SHOULD: return "SHOULD";
             case MAY: return "MAY";
             case SHOULDNOT: return "SHOULD-NOT";
+            case NULL: return null;
             default: return "?";
           }
     }

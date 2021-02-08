@@ -71,6 +71,7 @@ public enum Payeetype {
             case SUBSCRIBER: return "subscriber";
             case PROVIDER: return "provider";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum Payeetype {
             case SUBSCRIBER: return "The subscriber (policy holder) will be reimbursed.";
             case PROVIDER: return "Any benefit payable will be paid to the provider (Assignment of Benefit).";
             case OTHER: return "Any benefit payable will be paid to a third party such as a guarrantor.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum Payeetype {
             case SUBSCRIBER: return "Subscriber";
             case PROVIDER: return "Provider";
             case OTHER: return "Provider";
+            case NULL: return null;
             default: return "?";
           }
     }

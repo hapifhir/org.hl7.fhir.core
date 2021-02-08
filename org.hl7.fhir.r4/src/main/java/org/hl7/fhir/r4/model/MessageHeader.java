@@ -88,6 +88,7 @@ public class MessageHeader extends DomainResource {
             case OK: return "ok";
             case TRANSIENTERROR: return "transient-error";
             case FATALERROR: return "fatal-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +97,7 @@ public class MessageHeader extends DomainResource {
             case OK: return "http://hl7.org/fhir/response-code";
             case TRANSIENTERROR: return "http://hl7.org/fhir/response-code";
             case FATALERROR: return "http://hl7.org/fhir/response-code";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -104,6 +106,7 @@ public class MessageHeader extends DomainResource {
             case OK: return "The message was accepted and processed without error.";
             case TRANSIENTERROR: return "Some internal unexpected error occurred - wait and try again. Note - this is usually used for things like database unavailable, which may be expected to resolve, though human intervention may be required.";
             case FATALERROR: return "The message was rejected because of a problem with the content. There is no point in re-sending without change. The response narrative SHALL describe the issue.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -112,6 +115,7 @@ public class MessageHeader extends DomainResource {
             case OK: return "OK";
             case TRANSIENTERROR: return "Transient Error";
             case FATALERROR: return "Fatal Error";
+            case NULL: return null;
             default: return "?";
           }
         }

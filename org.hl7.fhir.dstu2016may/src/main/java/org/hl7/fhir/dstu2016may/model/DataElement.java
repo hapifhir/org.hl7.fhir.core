@@ -108,6 +108,7 @@ public class DataElement extends DomainResource {
             case CONVERTABLE: return "convertable";
             case SCALEABLE: return "scaleable";
             case FLEXIBLE: return "flexible";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +120,7 @@ public class DataElement extends DomainResource {
             case CONVERTABLE: return "http://hl7.org/fhir/dataelement-stringency";
             case SCALEABLE: return "http://hl7.org/fhir/dataelement-stringency";
             case FLEXIBLE: return "http://hl7.org/fhir/dataelement-stringency";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +132,7 @@ public class DataElement extends DomainResource {
             case CONVERTABLE: return "The data element allows multiple units of measure that are convertable between each other (e.g. inches and centimeters) and/or allows data to be captured in multiple value sets for which a known mapping exists allowing conversion of meaning.";
             case SCALEABLE: return "A convertable data element where unit conversions are different only by a power of 10; e.g. g, mg, kg.";
             case FLEXIBLE: return "The data element is unconstrained in units, choice of data types and/or choice of vocabulary such that automated comparison of data captured using the data element is not possible.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -141,6 +144,7 @@ public class DataElement extends DomainResource {
             case CONVERTABLE: return "Convertable";
             case SCALEABLE: return "Scaleable";
             case FLEXIBLE: return "Flexible";
+            case NULL: return null;
             default: return "?";
           }
         }

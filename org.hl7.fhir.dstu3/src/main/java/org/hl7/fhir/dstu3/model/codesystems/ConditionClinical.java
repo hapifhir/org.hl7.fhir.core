@@ -85,6 +85,7 @@ public enum ConditionClinical {
             case INACTIVE: return "inactive";
             case REMISSION: return "remission";
             case RESOLVED: return "resolved";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ConditionClinical {
             case INACTIVE: return "The subject is no longer experiencing the symptoms of the condition or there is no longer evidence of the condition.";
             case REMISSION: return "The subject is no longer experiencing the symptoms of the condition, but there is a risk of the symptoms returning.";
             case RESOLVED: return "The subject is no longer experiencing the symptoms of the condition and there is a negligible perceived risk of the symptoms returning.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ConditionClinical {
             case INACTIVE: return "Inactive";
             case REMISSION: return "Remission";
             case RESOLVED: return "Resolved";
+            case NULL: return null;
             default: return "?";
           }
     }

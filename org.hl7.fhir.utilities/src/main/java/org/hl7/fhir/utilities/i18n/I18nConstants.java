@@ -50,6 +50,9 @@ public class I18nConstants {
   public static final String CODESYSTEM_CS_VS_INVALID = "CodeSystem_CS_VS_Invalid";
   public static final String CODESYSTEM_CS_VS_EXP_MISMATCH = "CODESYSTEM_CS_VS_EXP_MISMATCH";
   public static final String CODESYSTEM_CS_VS_WRONGSYSTEM = "CodeSystem_CS_VS_WrongSystem";
+  public static final String CODESYSTEM_CS_NO_SUPPLEMENT = "CODESYSTEM_CS_NO_SUPPLEMENT"; 
+  public static final String CODESYSTEM_CS_SUPP_CANT_CHECK = "CODESYSTEM_CS_SUPP_CANT_CHECK";
+  public static final String CODESYSTEM_CS_SUPP_INVALID_CODE = "CODESYSTEM_CS_SUPP_INVALID_CODE";
   public static final String CODE_FOUND_IN_EXPANSION_HOWEVER_ = "Code_found_in_expansion_however_";
   public static final String CODING_HAS_NO_SYSTEM__CANNOT_VALIDATE = "Coding_has_no_system__cannot_validate";
   public static final String CONTAINED_RESOURCE_DOES_NOT_APPEAR_TO_BE_A_FHIR_RESOURCE_UNKNOWN_NAME_ = "Contained_resource_does_not_appear_to_be_a_FHIR_resource_unknown_name_";

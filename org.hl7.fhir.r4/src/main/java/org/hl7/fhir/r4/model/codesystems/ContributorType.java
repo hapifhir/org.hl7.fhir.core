@@ -78,6 +78,7 @@ public enum ContributorType {
             case EDITOR: return "editor";
             case REVIEWER: return "reviewer";
             case ENDORSER: return "endorser";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ContributorType {
             case EDITOR: return "An editor of the content of the module.";
             case REVIEWER: return "A reviewer of the content of the module.";
             case ENDORSER: return "An endorser of the content of the module.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ContributorType {
             case EDITOR: return "Editor";
             case REVIEWER: return "Reviewer";
             case ENDORSER: return "Endorser";
+            case NULL: return null;
             default: return "?";
           }
     }

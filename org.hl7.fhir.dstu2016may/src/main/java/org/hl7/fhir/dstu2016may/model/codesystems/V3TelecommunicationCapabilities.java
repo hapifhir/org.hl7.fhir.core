@@ -85,6 +85,7 @@ public enum V3TelecommunicationCapabilities {
             case SMS: return "sms";
             case TTY: return "tty";
             case VOICE: return "voice";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum V3TelecommunicationCapabilities {
             case SMS: return "Description: This device can receive SMS messages.";
             case TTY: return "Description: This device is a text telephone.";
             case VOICE: return "Description: This device can receive voice calls (i.e. talking to another person, or a recording device, or a voice activated computer).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum V3TelecommunicationCapabilities {
             case SMS: return "sms";
             case TTY: return "text";
             case VOICE: return "voice";
+            case NULL: return null;
             default: return "?";
           }
     }

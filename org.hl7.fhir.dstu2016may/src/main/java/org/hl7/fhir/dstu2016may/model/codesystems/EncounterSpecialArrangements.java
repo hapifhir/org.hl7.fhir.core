@@ -85,6 +85,7 @@ public enum EncounterSpecialArrangements {
             case INT: return "int";
             case ATT: return "att";
             case DOG: return "dog";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum EncounterSpecialArrangements {
             case INT: return "";
             case ATT: return "";
             case DOG: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum EncounterSpecialArrangements {
             case INT: return "Interpreter";
             case ATT: return "Attendant";
             case DOG: return "Guide dog";
+            case NULL: return null;
             default: return "?";
           }
     }

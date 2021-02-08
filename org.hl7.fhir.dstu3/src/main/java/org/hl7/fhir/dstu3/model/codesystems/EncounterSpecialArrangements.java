@@ -85,6 +85,7 @@ public enum EncounterSpecialArrangements {
             case INT: return "int";
             case ATT: return "att";
             case DOG: return "dog";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum EncounterSpecialArrangements {
             case INT: return "The patient is not fluent in the local language and requires an interpreter to be available. Refer to the Patient.Language property for the type of interpreter required.";
             case ATT: return "A person who accompanies a patient to provide assistive services necessary for the patient's care during the encounter.";
             case DOG: return "The patient has a guide-dog and the location used for the encounter should be able to support the presence of the service animal.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum EncounterSpecialArrangements {
             case INT: return "Interpreter";
             case ATT: return "Attendant";
             case DOG: return "Guide dog";
+            case NULL: return null;
             default: return "?";
           }
     }

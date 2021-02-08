@@ -99,6 +99,7 @@ public enum ActivityDefinitionCategory {
             case PROCEDURE: return "procedure";
             case SUPPLY: return "supply";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum ActivityDefinitionCategory {
             case PROCEDURE: return "To modify the patient in some way (surgery, physiotherapy, education, counseling, etc.)";
             case SUPPLY: return "To provide something to the patient (medication, medical supply, etc.)";
             case OTHER: return "Some other form of action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum ActivityDefinitionCategory {
             case PROCEDURE: return "Procedure";
             case SUPPLY: return "Supply";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

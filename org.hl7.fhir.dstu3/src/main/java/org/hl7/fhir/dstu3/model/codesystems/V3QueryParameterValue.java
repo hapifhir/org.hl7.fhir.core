@@ -162,6 +162,7 @@ public enum V3QueryParameterValue {
             case ISSFA: return "ISSFA";
             case ISSFI: return "ISSFI";
             case ISSFU: return "ISSFU";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -186,6 +187,7 @@ public enum V3QueryParameterValue {
             case ISSFA: return "Description:Result set should not be filtered based on the presence of issues.";
             case ISSFI: return "Description:Result set should be filtered to only include records with associated issues.";
             case ISSFU: return "Description:Result set should be filtered to only include records with associated unmanaged issues.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -207,6 +209,7 @@ public enum V3QueryParameterValue {
             case ISSFA: return "all";
             case ISSFI: return "with issues";
             case ISSFU: return "with unmanaged issues";
+            case NULL: return null;
             default: return "?";
           }
     }

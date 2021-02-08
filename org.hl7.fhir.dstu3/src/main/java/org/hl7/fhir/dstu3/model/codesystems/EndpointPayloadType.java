@@ -64,6 +64,7 @@ public enum EndpointPayloadType {
           switch (this) {
             case ANY: return "any";
             case NONE: return "none";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum EndpointPayloadType {
           switch (this) {
             case ANY: return "Any payload type can be used with this endpoint, it is either a payload agnostic infrastructure (such as a storage repository), or some other type of endpoint where payload considerations are internally handled, and not available";
             case NONE: return "This endpoint does not require any content to be sent, simply connecting to the endpoint is enough notification. This can be used as a 'ping' to wakeup a service to retrieve content, which could be to ensure security considerations are correctly handled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum EndpointPayloadType {
           switch (this) {
             case ANY: return "Any";
             case NONE: return "None";
+            case NULL: return null;
             default: return "?";
           }
     }

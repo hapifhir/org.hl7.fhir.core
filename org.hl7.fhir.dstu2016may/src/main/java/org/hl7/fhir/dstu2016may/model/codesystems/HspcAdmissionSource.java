@@ -197,6 +197,7 @@ public enum HspcAdmissionSource {
             case _510105656: return "510105656";
             case _528129530: return "528129530";
             case _510105654: return "510105654";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -226,6 +227,7 @@ public enum HspcAdmissionSource {
             case _510105656: return "The source of admission is a transfer from an external home health agency";
             case _528129530: return "The source of admission is a transfer from a hospice facility";
             case _510105654: return "The source of admission is a transfer from a psychiatric, substance abuse, or rehabilitation facility";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -252,6 +254,7 @@ public enum HspcAdmissionSource {
             case _510105656: return "Transfer From Another HHA";
             case _528129530: return "Transfer from hospice";
             case _510105654: return "Transfer From Pysch, Substance Abuse or Rehab Hosp";
+            case NULL: return null;
             default: return "?";
           }
     }

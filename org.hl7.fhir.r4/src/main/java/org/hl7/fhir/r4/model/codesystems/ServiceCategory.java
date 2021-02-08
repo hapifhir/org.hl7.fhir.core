@@ -316,6 +316,7 @@ public enum ServiceCategory {
             case _32: return "32";
             case _37: return "37";
             case _33: return "33";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -362,6 +363,7 @@ public enum ServiceCategory {
             case _32: return "Support group/s";
             case _37: return "Test Message (HSD admin use only)";
             case _33: return "Transport";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -405,6 +407,7 @@ public enum ServiceCategory {
             case _32: return "Support Group/s";
             case _37: return "Test Message (HSD admin)";
             case _33: return "Transport";
+            case NULL: return null;
             default: return "?";
           }
     }

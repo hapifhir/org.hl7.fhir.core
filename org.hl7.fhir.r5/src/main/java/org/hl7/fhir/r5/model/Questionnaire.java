@@ -82,6 +82,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case ALL: return "all";
             case ANY: return "any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case ALL: return "http://hl7.org/fhir/questionnaire-enable-behavior";
             case ANY: return "http://hl7.org/fhir/questionnaire-enable-behavior";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case ALL: return "Enable the question when all the enableWhen criteria are satisfied.";
             case ANY: return "Enable the question when any of the enableWhen criteria are satisfied.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class Questionnaire extends MetadataResource {
           switch (this) {
             case ALL: return "All";
             case ANY: return "Any";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -209,6 +213,7 @@ public class Questionnaire extends MetadataResource {
             case LESS_THAN: return "<";
             case GREATER_OR_EQUAL: return ">=";
             case LESS_OR_EQUAL: return "<=";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -221,6 +226,7 @@ public class Questionnaire extends MetadataResource {
             case LESS_THAN: return "http://hl7.org/fhir/questionnaire-enable-operator";
             case GREATER_OR_EQUAL: return "http://hl7.org/fhir/questionnaire-enable-operator";
             case LESS_OR_EQUAL: return "http://hl7.org/fhir/questionnaire-enable-operator";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -233,6 +239,7 @@ public class Questionnaire extends MetadataResource {
             case LESS_THAN: return "True if whether at least no answer has a value that is less than the enableWhen answer.";
             case GREATER_OR_EQUAL: return "True if whether at least no answer has a value that is greater or equal to the enableWhen answer.";
             case LESS_OR_EQUAL: return "True if whether at least no answer has a value that is less or equal to the enableWhen answer.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -245,6 +252,7 @@ public class Questionnaire extends MetadataResource {
             case LESS_THAN: return "Less Than";
             case GREATER_OR_EQUAL: return "Greater or Equals";
             case LESS_OR_EQUAL: return "Less or Equals";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -451,6 +459,7 @@ public class Questionnaire extends MetadataResource {
             case ATTACHMENT: return "attachment";
             case REFERENCE: return "reference";
             case QUANTITY: return "quantity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -473,6 +482,7 @@ public class Questionnaire extends MetadataResource {
             case ATTACHMENT: return "http://hl7.org/fhir/item-type";
             case REFERENCE: return "http://hl7.org/fhir/item-type";
             case QUANTITY: return "http://hl7.org/fhir/item-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -495,6 +505,7 @@ public class Questionnaire extends MetadataResource {
             case ATTACHMENT: return "Question with binary content such as an image, PDF, etc. as an answer (valueAttachment).";
             case REFERENCE: return "Question with a reference to another resource (practitioner, organization, etc.) as an answer (valueReference).";
             case QUANTITY: return "Question with a combination of a numeric value and unit, potentially with a comparator (<, >, etc.) as an answer. (valueQuantity) There is an extension 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit' that can be used to define what unit should be captured (or the unit that has a ucum conversion from the provided unit).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -517,6 +528,7 @@ public class Questionnaire extends MetadataResource {
             case ATTACHMENT: return "Attachment";
             case REFERENCE: return "Reference";
             case QUANTITY: return "Quantity";
+            case NULL: return null;
             default: return "?";
           }
         }

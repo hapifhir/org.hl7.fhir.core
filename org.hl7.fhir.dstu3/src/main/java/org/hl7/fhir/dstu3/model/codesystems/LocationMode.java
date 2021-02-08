@@ -64,6 +64,7 @@ public enum LocationMode {
           switch (this) {
             case INSTANCE: return "instance";
             case KIND: return "kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum LocationMode {
           switch (this) {
             case INSTANCE: return "The Location resource represents a specific instance of a location (e.g. Operating Theatre 1A).";
             case KIND: return "The Location represents a class of locations (e.g. Any Operating Theatre) although this class of locations could be constrained within a specific boundary (such as organization, or parent location, address etc.).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum LocationMode {
           switch (this) {
             case INSTANCE: return "Instance";
             case KIND: return "Kind";
+            case NULL: return null;
             default: return "?";
           }
     }

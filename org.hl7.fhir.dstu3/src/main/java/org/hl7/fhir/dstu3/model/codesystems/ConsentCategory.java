@@ -239,6 +239,7 @@ public enum ConsentCategory {
             case VA105345AMHV: return "VA-10-5345a-MHV";
             case VA1010116: return "VA-10-10116";
             case VA214142: return "VA-21-4142";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -274,6 +275,7 @@ public enum ConsentCategory {
             case VA105345AMHV: return "VA Form 10-5345a-MHV Individualâ€™s Request for a Copy of their own health information from MyHealtheVet enables a veteran to receive a copy of all available personal health information to be delivered through the veteranâ€™s My HealtheVet account. Note: Form is available at http://www.va.gov/vaforms/medical/pdf/vha-10-5345a-MHV-fill.pdf";
             case VA1010116: return "VA Form 10-10116 Revocation of Authorization for Use and Release of Individually Identifiable Health Information for Veterans Health Administration Research. Comment: Opt-in with Restriction Consent Directive with status = 'completed'. Note: Form is available at http://www.northerncalifornia.va.gov/northerncalifornia/services/rnd/docs/vha-10-10116.pdf ";
             case VA214142: return "VA Form 21-4142 (Authorization and Consent to Release Information to the Department of Veterans Affairs (VA) enables a veteran to authorize the US Veterans Administration [VA] to request veteranâ€™s health information from non-VA providers. Aka VA Compensation Application Note: Form is available at http://www.vba.va.gov/pubs/forms/VBA-21-4142-ARE.pdf . For additional information regarding VA Form 21-4142, refer to the following website: www.benefits.va.gov/compensation/consent_privateproviders";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -306,6 +308,7 @@ public enum ConsentCategory {
             case VA105345AMHV: return "VA Form 10-5345a-MHV";
             case VA1010116: return "VA Form 10-10-10116";
             case VA214142: return "VA Form 21-4142";
+            case NULL: return null;
             default: return "?";
           }
     }

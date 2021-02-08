@@ -134,6 +134,7 @@ public enum SearchModifierCode {
             case TYPE: return "type";
             case IDENTIFIER: return "identifier";
             case OFTYPE: return "ofType";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum SearchModifierCode {
             case TYPE: return "The search parameter only applies to the Resource Type specified as a modifier (e.g. the modifier is not actually :type, but :Patient etc.).";
             case IDENTIFIER: return "The search parameter applies to the identifier on the resource, not the reference.";
             case OFTYPE: return "The search parameter has the format system|code|value, where the system and code refer to an Identifier.type.coding.system and .code, and match if any of the type codes match. All 3 parts must be present.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum SearchModifierCode {
             case TYPE: return "Type";
             case IDENTIFIER: return "Identifier";
             case OFTYPE: return "Of Type";
+            case NULL: return null;
             default: return "?";
           }
     }

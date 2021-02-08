@@ -71,6 +71,7 @@ public enum GoalAcceptanceStatus {
             case AGREE: return "agree";
             case DISAGREE: return "disagree";
             case PENDING: return "pending";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum GoalAcceptanceStatus {
             case AGREE: return "Stakeholder supports pursuit of the goal";
             case DISAGREE: return "Stakeholder is not in support of the pursuit of the goal";
             case PENDING: return "Stakeholder has not yet made a decision on whether they support the goal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum GoalAcceptanceStatus {
             case AGREE: return "Agree";
             case DISAGREE: return "Disagree";
             case PENDING: return "Pending";
+            case NULL: return null;
             default: return "?";
           }
     }

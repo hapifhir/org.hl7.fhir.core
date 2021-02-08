@@ -64,6 +64,7 @@ public enum BenefitNetwork {
           switch (this) {
             case IN: return "in";
             case OUT: return "out";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum BenefitNetwork {
           switch (this) {
             case IN: return "Services rendered by a Network provider";
             case OUT: return "Services rendered by a provider who is not in the Network";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum BenefitNetwork {
           switch (this) {
             case IN: return "In Network";
             case OUT: return "Out of Network";
+            case NULL: return null;
             default: return "?";
           }
     }

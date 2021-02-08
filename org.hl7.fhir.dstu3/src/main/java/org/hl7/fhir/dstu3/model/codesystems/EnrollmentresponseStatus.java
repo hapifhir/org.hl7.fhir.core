@@ -78,6 +78,7 @@ public enum EnrollmentresponseStatus {
             case CANCELLED: return "cancelled";
             case DRAFT: return "draft";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum EnrollmentresponseStatus {
             case CANCELLED: return "The resource instance is withdrawn, rescinded or reversed.";
             case DRAFT: return "A new resource instance the contents of which is not complete.";
             case ENTEREDINERROR: return "The resource instance was entered in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum EnrollmentresponseStatus {
             case CANCELLED: return "Cancelled";
             case DRAFT: return "Draft";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
     }

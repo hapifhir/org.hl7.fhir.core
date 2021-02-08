@@ -92,6 +92,7 @@ public enum V3Hl7V3Conformance {
             case RC: return "RC";
             case RI: return "RI";
             case U: return "U";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum V3Hl7V3Conformance {
             case RC: return "Description: The element is considered \"required\" (i.e. must be supported) from the perspective of systems that consume  instances, but is \"undetermined\" for systems that generate instances.  Used only as part of specifications that define both initiator and consumer expectations.";
             case RI: return "Description: The element is considered \"required\" (i.e. must be supported) from the perspective of systems that generate instances, but is \"undetermined\" for systems that consume instances.  Used only as part of specifications that define both initiator and consumer expectations.";
             case U: return "Description: The conformance expectations for this element have not yet been determined.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum V3Hl7V3Conformance {
             case RC: return "required for consumer";
             case RI: return "required for initiator";
             case U: return "undetermined";
+            case NULL: return null;
             default: return "?";
           }
     }

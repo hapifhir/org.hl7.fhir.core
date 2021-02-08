@@ -99,6 +99,7 @@ public enum ContactPointSystem {
             case URL: return "url";
             case SMS: return "sms";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum ContactPointSystem {
             case URL: return "A contact that is not a phone, fax, pager or email address and is expressed as a URL.  This is intended for various institutional or personal contacts including web sites, blogs, Skype, Twitter, Facebook, etc. Do not use for email addresses.";
             case SMS: return "A contact that can be used for sending an sms message (e.g. mobile phones, some landlines).";
             case OTHER: return "A contact that is not a phone, fax, page or email address and is not expressible as a URL.  E.g. Internal mail address.  This SHOULD NOT be used for contacts that are expressible as a URL (e.g. Skype, Twitter, Facebook, etc.)  Extensions may be used to distinguish \"other\" contact types.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum ContactPointSystem {
             case URL: return "URL";
             case SMS: return "SMS";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -197,6 +197,7 @@ public enum FHIRVersion {
             case _3_3_0: return "3.3.0";
             case _3_5_0: return "3.5.0";
             case _4_0_0: return "4.0.0";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -226,6 +227,7 @@ public enum FHIRVersion {
             case _3_3_0: return "R4 Ballot #1.";
             case _3_5_0: return "R4 Ballot #2.";
             case _4_0_0: return "FHIR Release 4 (Normative + STU).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -252,6 +254,7 @@ public enum FHIRVersion {
             case _3_3_0: return "3.3.0";
             case _3_5_0: return "3.5.0";
             case _4_0_0: return "4.0.0";
+            case NULL: return null;
             default: return "?";
           }
     }

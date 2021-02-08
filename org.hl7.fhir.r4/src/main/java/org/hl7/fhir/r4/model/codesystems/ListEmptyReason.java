@@ -92,6 +92,7 @@ public enum ListEmptyReason {
             case UNAVAILABLE: return "unavailable";
             case NOTSTARTED: return "notstarted";
             case CLOSED: return "closed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ListEmptyReason {
             case UNAVAILABLE: return "Information to populate this list cannot be obtained; e.g. unconscious patient.";
             case NOTSTARTED: return "The work to populate this list has not yet begun.";
             case CLOSED: return "This list has now closed or has ceased to be relevant or useful.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ListEmptyReason {
             case UNAVAILABLE: return "Unavailable";
             case NOTSTARTED: return "Not Started";
             case CLOSED: return "Closed";
+            case NULL: return null;
             default: return "?";
           }
     }

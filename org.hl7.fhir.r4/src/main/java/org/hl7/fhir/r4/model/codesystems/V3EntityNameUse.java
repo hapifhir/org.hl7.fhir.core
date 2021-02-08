@@ -157,6 +157,7 @@ public enum V3EntityNameUse {
             case SRCH: return "SRCH";
             case PHON: return "PHON";
             case SNDX: return "SNDX";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -180,6 +181,7 @@ public enum V3EntityNameUse {
             case SRCH: return "A name intended for use in searching or matching.";
             case PHON: return "A name spelled phonetically.\r\n\n                        There are a variety of phonetic spelling algorithms. This code value does not distinguish between these.Discussion:";
             case SNDX: return "A name spelled according to the SoundEx algorithm.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -200,6 +202,7 @@ public enum V3EntityNameUse {
             case SRCH: return "search";
             case PHON: return "phonetic";
             case SNDX: return "Soundex";
+            case NULL: return null;
             default: return "?";
           }
     }

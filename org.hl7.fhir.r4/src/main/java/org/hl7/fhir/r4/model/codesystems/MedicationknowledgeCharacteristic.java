@@ -99,6 +99,7 @@ public enum MedicationknowledgeCharacteristic {
             case COATING: return "coating";
             case SCORING: return "scoring";
             case LOGO: return "logo";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum MedicationknowledgeCharacteristic {
             case COATING: return "Description of the coating of the product";
             case SCORING: return "Description of the scoring of the product";
             case LOGO: return "Description of the Logo of the product";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum MedicationknowledgeCharacteristic {
             case COATING: return "Coating";
             case SCORING: return "Scoring";
             case LOGO: return "Logo";
+            case NULL: return null;
             default: return "?";
           }
     }

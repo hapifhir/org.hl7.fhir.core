@@ -78,6 +78,7 @@ public enum V3TableCellVerticalAlign {
             case BOTTOM: return "bottom";
             case MIDDLE: return "middle";
             case TOP: return "top";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3TableCellVerticalAlign {
             case BOTTOM: return "bottom";
             case MIDDLE: return "middle";
             case TOP: return "top";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3TableCellVerticalAlign {
             case BOTTOM: return "bottom";
             case MIDDLE: return "middle";
             case TOP: return "top";
+            case NULL: return null;
             default: return "?";
           }
     }

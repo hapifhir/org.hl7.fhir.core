@@ -80,6 +80,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -87,6 +88,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
             case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/medication-admin-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -94,6 +96,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "";
             case ENTEREDINERROR: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +104,7 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }

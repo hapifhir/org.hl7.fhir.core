@@ -92,6 +92,7 @@ public enum MedicationOrderStatus {
             case ENTEREDINERROR: return "entered-in-error";
             case STOPPED: return "stopped";
             case DRAFT: return "draft";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum MedicationOrderStatus {
             case ENTEREDINERROR: return "The prescription was entered in error.";
             case STOPPED: return "Actions implied by the prescription are to be permanently halted, before all of them occurred.";
             case DRAFT: return "The prescription is not yet 'actionable', i.e. it is a work in progress, requires sign-off or verification, and needs to be run through decision support process.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum MedicationOrderStatus {
             case ENTEREDINERROR: return "Entered In Error";
             case STOPPED: return "Stopped";
             case DRAFT: return "Draft";
+            case NULL: return null;
             default: return "?";
           }
     }

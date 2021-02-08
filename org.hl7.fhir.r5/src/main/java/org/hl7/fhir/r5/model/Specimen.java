@@ -96,6 +96,7 @@ public class Specimen extends DomainResource {
             case UNAVAILABLE: return "unavailable";
             case UNSATISFACTORY: return "unsatisfactory";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +106,7 @@ public class Specimen extends DomainResource {
             case UNAVAILABLE: return "http://hl7.org/fhir/specimen-status";
             case UNSATISFACTORY: return "http://hl7.org/fhir/specimen-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/specimen-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +116,7 @@ public class Specimen extends DomainResource {
             case UNAVAILABLE: return "There is no physical specimen because it is either lost, destroyed or consumed.";
             case UNSATISFACTORY: return "The specimen cannot be used because of a quality issue such as a broken container, contamination, or too old.";
             case ENTEREDINERROR: return "The specimen was entered in error and therefore nullified.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +126,7 @@ public class Specimen extends DomainResource {
             case UNAVAILABLE: return "Unavailable";
             case UNSATISFACTORY: return "Unsatisfactory";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

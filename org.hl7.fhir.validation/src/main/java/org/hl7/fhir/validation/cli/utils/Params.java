@@ -129,10 +129,10 @@ public class Params {
         cliContext.getBundleValidationRules().add(new BundleValidationRule(r, p));
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
-          throw new Error("Specified -questionnaire without indicating questionnaire file");
+          throw new Error("Specified -questionnaire without indicating questionnaire mode");
         else {
           String q = args[++i];
-          cliContext.setQuestionnaireMode(QuestionnaireMode.valueOf(q));
+          cliContext.setQuestionnaireMode(QuestionnaireMode.fromCode(q));
         }
       } else if (args[i].equals(NATIVE)) {
         cliContext.setDoNative(true);

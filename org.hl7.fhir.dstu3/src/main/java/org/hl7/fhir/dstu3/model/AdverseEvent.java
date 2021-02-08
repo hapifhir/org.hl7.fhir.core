@@ -80,6 +80,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case AE: return "AE";
             case PAE: return "PAE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -87,6 +88,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case AE: return "http://hl7.org/fhir/adverse-event-category";
             case PAE: return "http://hl7.org/fhir/adverse-event-category";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -94,6 +96,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case AE: return "";
             case PAE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +104,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case AE: return "Adverse Event";
             case PAE: return "Potential Adverse Event";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -172,6 +176,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case CAUSALITY1: return "causality1";
             case CAUSALITY2: return "causality2";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -179,6 +184,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case CAUSALITY1: return "http://hl7.org/fhir/adverse-event-causality";
             case CAUSALITY2: return "http://hl7.org/fhir/adverse-event-causality";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -186,6 +192,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case CAUSALITY1: return "";
             case CAUSALITY2: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -193,6 +200,7 @@ public class AdverseEvent extends DomainResource {
           switch (this) {
             case CAUSALITY1: return "causality1 placeholder";
             case CAUSALITY2: return "causality2 placeholder";
+            case NULL: return null;
             default: return "?";
           }
         }

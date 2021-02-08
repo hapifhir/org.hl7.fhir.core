@@ -78,6 +78,7 @@ public enum AllergyVerificationStatus {
             case CONFIRMED: return "confirmed";
             case REFUTED: return "refuted";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum AllergyVerificationStatus {
             case CONFIRMED: return "A high level of certainty about the propensity for a reaction to the identified substance, which may include clinical evidence by testing or rechallenge.";
             case REFUTED: return "A propensity for a reaction to the identified substance has been disproven with a high level of clinical certainty, which may include testing or rechallenge, and is refuted.";
             case ENTEREDINERROR: return "The statement was entered in error and is not valid.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum AllergyVerificationStatus {
             case CONFIRMED: return "Confirmed";
             case REFUTED: return "Refuted";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
     }

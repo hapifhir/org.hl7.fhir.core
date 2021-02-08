@@ -82,6 +82,7 @@ public class ExampleScenario extends CanonicalResource {
           switch (this) {
             case PERSON: return "person";
             case ENTITY: return "entity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class ExampleScenario extends CanonicalResource {
           switch (this) {
             case PERSON: return "http://hl7.org/fhir/examplescenario-actor-type";
             case ENTITY: return "http://hl7.org/fhir/examplescenario-actor-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public class ExampleScenario extends CanonicalResource {
           switch (this) {
             case PERSON: return "A person.";
             case ENTITY: return "A system.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class ExampleScenario extends CanonicalResource {
           switch (this) {
             case PERSON: return "Person";
             case ENTITY: return "System";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -64,6 +64,7 @@ public enum ProductStatus {
           switch (this) {
             case AVAILABLE: return "available";
             case UNAVAILABLE: return "unavailable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ProductStatus {
           switch (this) {
             case AVAILABLE: return "Product is currently available for use.";
             case UNAVAILABLE: return "Product is not currently available for use.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ProductStatus {
           switch (this) {
             case AVAILABLE: return "Available";
             case UNAVAILABLE: return "Unavailable";
+            case NULL: return null;
             default: return "?";
           }
     }

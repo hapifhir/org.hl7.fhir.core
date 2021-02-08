@@ -64,6 +64,7 @@ public enum CodeSearchSupport {
           switch (this) {
             case EXPLICIT: return "explicit";
             case ALL: return "all";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum CodeSearchSupport {
           switch (this) {
             case EXPLICIT: return "The search for code on ValueSet only includes codes explicitly detailed on includes or expansions.";
             case ALL: return "The search for code on ValueSet only includes all codes based on the expansion of the value set.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum CodeSearchSupport {
           switch (this) {
             case EXPLICIT: return "Explicit Codes";
             case ALL: return "Implicit Codes";
+            case NULL: return null;
             default: return "?";
           }
     }

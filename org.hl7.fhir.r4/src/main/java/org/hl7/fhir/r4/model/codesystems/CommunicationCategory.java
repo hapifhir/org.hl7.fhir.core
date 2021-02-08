@@ -78,6 +78,7 @@ public enum CommunicationCategory {
             case NOTIFICATION: return "notification";
             case REMINDER: return "reminder";
             case INSTRUCTION: return "instruction";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum CommunicationCategory {
             case NOTIFICATION: return "The communication conveys a notification.";
             case REMINDER: return "The communication conveys a reminder.";
             case INSTRUCTION: return "The communication conveys an instruction.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum CommunicationCategory {
             case NOTIFICATION: return "Notification";
             case REMINDER: return "Reminder";
             case INSTRUCTION: return "Instruction";
+            case NULL: return null;
             default: return "?";
           }
     }

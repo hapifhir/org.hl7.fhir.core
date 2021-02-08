@@ -106,6 +106,7 @@ public enum MedicationRequestStatus {
             case STOPPED: return "stopped";
             case DRAFT: return "draft";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum MedicationRequestStatus {
             case STOPPED: return "Actions implied by the prescription are to be permanently halted, before all of them occurred.";
             case DRAFT: return "The prescription is not yet 'actionable', i.e. it is a work in progress, requires sign-off or verification, and needs to be run through decision support process.";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum MedicationRequestStatus {
             case STOPPED: return "Stopped";
             case DRAFT: return "Draft";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

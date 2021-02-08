@@ -108,6 +108,7 @@ public class Device extends DomainResource {
             case CARD: return "card";
             case SELFREPORTED: return "self-reported";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +120,7 @@ public class Device extends DomainResource {
             case CARD: return "http://hl7.org/fhir/udi-entry-type";
             case SELFREPORTED: return "http://hl7.org/fhir/udi-entry-type";
             case UNKNOWN: return "http://hl7.org/fhir/udi-entry-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +132,7 @@ public class Device extends DomainResource {
             case CARD: return "The data originated from a patient's implant card and was read by an operator.";
             case SELFREPORTED: return "The data originated from a patient source and was not directly scanned or read from a label or card.";
             case UNKNOWN: return "The method of data capture has not been determined.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -141,6 +144,7 @@ public class Device extends DomainResource {
             case CARD: return "Card";
             case SELFREPORTED: return "Self Reported";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -250,6 +254,7 @@ public class Device extends DomainResource {
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -259,6 +264,7 @@ public class Device extends DomainResource {
             case INACTIVE: return "http://hl7.org/fhir/device-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/device-status";
             case UNKNOWN: return "http://hl7.org/fhir/device-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -268,6 +274,7 @@ public class Device extends DomainResource {
             case INACTIVE: return "The device is no longer available for use (e.g. lost, expired, damaged).  Note: For *implanted devices*  this means that the device has been removed from the patient.";
             case ENTEREDINERROR: return "The device was entered in error and voided.";
             case UNKNOWN: return "The status of the device has not been determined.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -277,6 +284,7 @@ public class Device extends DomainResource {
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -388,6 +396,7 @@ public class Device extends DomainResource {
             case MANUFACTURERNAME: return "manufacturer-name";
             case MODELNAME: return "model-name";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -399,6 +408,7 @@ public class Device extends DomainResource {
             case MANUFACTURERNAME: return "http://hl7.org/fhir/device-nametype";
             case MODELNAME: return "http://hl7.org/fhir/device-nametype";
             case OTHER: return "http://hl7.org/fhir/device-nametype";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -410,6 +420,7 @@ public class Device extends DomainResource {
             case MANUFACTURERNAME: return "Manufacturer name.";
             case MODELNAME: return "Model name.";
             case OTHER: return "other.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -421,6 +432,7 @@ public class Device extends DomainResource {
             case MANUFACTURERNAME: return "Manufacturer name";
             case MODELNAME: return "Model name";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }

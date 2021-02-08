@@ -71,6 +71,7 @@ public enum MeasureReportType {
             case INDIVIDUAL: return "individual";
             case PATIENTLIST: return "patient-list";
             case SUMMARY: return "summary";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum MeasureReportType {
             case INDIVIDUAL: return "An individual report that provides information on the performance for a given measure with respect to a single patient";
             case PATIENTLIST: return "A patient list report that includes a listing of patients that satisfied each population criteria in the measure";
             case SUMMARY: return "A summary report that returns the number of patients in each population criteria for the measure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum MeasureReportType {
             case INDIVIDUAL: return "Individual";
             case PATIENTLIST: return "Patient List";
             case SUMMARY: return "Summary";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -568,6 +568,7 @@ public enum IHEFormatcodeCs {
             case URN_HL7ORG_SDWG_CCDANONXMLBODY_1_1: return "urn:hl7-org:sdwg:ccda-nonXMLBody:1.1";
             case URN_HL7ORG_SDWG_CCDASTRUCTUREDBODY_2_1: return "urn:hl7-org:sdwg:ccda-structuredBody:2.1";
             case URN_HL7ORG_SDWG_CCDANONXMLBODY_2_1: return "urn:hl7-org:sdwg:ccda-nonXMLBody:2.1";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -650,6 +651,7 @@ public enum IHEFormatcodeCs {
             case URN_HL7ORG_SDWG_CCDANONXMLBODY_1_1: return "";
             case URN_HL7ORG_SDWG_CCDASTRUCTUREDBODY_2_1: return "";
             case URN_HL7ORG_SDWG_CCDANONXMLBODY_2_1: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -729,6 +731,7 @@ public enum IHEFormatcodeCs {
             case URN_HL7ORG_SDWG_CCDANONXMLBODY_1_1: return "For documents following C-CDA 1.1 constraints using a non structured body.";
             case URN_HL7ORG_SDWG_CCDASTRUCTUREDBODY_2_1: return "For documents following C-CDA 2.1 constraints using a structured body.";
             case URN_HL7ORG_SDWG_CCDANONXMLBODY_2_1: return "For documents following C-CDA 2.1 constraints using a non structured body.";
+            case NULL: return null;
             default: return "?";
           }
     }

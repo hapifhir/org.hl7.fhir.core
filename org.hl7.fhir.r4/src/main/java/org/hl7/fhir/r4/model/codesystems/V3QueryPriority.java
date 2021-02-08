@@ -64,6 +64,7 @@ public enum V3QueryPriority {
           switch (this) {
             case D: return "D";
             case I: return "I";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3QueryPriority {
           switch (this) {
             case D: return "Query response is deferred.";
             case I: return "Query response is immediate.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3QueryPriority {
           switch (this) {
             case D: return "Deferred";
             case I: return "Immediate";
+            case NULL: return null;
             default: return "?";
           }
     }

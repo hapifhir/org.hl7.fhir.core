@@ -113,6 +113,7 @@ public enum ConsentCategory {
             case RESEARCH: return "research";
             case RSDID: return "rsdid";
             case RSREID: return "rsreid";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum ConsentCategory {
             case RESEARCH: return "Consent to have healthcare information in an electronic health record accessed for research purposes. [VALUE SET: ActConsentType (2.16.840.1.113883.1.11.19897)]";
             case RSDID: return "Consent to have de-identified healthcare information in an electronic health record that is accessed for research purposes, but without consent to re-identify the information under any circumstance. [VALUE SET: ActConsentType (2.16.840.1.113883.1.11.19897)";
             case RSREID: return "Consent to have de-identified healthcare information in an electronic health record that is accessed for research purposes re-identified under specific circumstances outlined in the consent. [VALUE SET: ActConsentType (2.16.840.1.113883.1.11.19897)]";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum ConsentCategory {
             case RESEARCH: return "Research Information Access";
             case RSDID: return "De-identified Information Access";
             case RSREID: return "Re-identifiable Information Access";
+            case NULL: return null;
             default: return "?";
           }
     }

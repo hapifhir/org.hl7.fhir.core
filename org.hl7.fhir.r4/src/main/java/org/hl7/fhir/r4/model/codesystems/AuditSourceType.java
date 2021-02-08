@@ -113,6 +113,7 @@ public enum AuditSourceType {
             case _7: return "7";
             case _8: return "8";
             case _9: return "9";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum AuditSourceType {
             case _7: return "ISO level 1-3 network component.";
             case _8: return "ISO level 4-6 operating software.";
             case _9: return "Other kind of device (defined by DICOM, but some other code/system can be used).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum AuditSourceType {
             case _7: return "Network Device";
             case _8: return "Network Router";
             case _9: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -2436,7 +2436,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
 	  case INEXACT : return "><";
 	  case UNMATCHED : return "-";
 	  case DISJOINT : return "!=";
-    default: return "?";
+    case NULL: return null;
+            default: return "?";
 	  }
   }
 

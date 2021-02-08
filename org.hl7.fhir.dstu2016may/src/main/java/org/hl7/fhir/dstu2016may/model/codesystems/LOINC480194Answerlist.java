@@ -99,6 +99,7 @@ public enum LOINC480194Answerlist {
             case LA66881: return "LA6688-1";
             case LA66899: return "LA6689-9";
             case LA66907: return "LA6690-7";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum LOINC480194Answerlist {
             case LA66881: return "Insertion/Deletion";
             case LA66899: return "Inversion";
             case LA66907: return "Substitution";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum LOINC480194Answerlist {
             case LA66881: return "Insertion/Deletion";
             case LA66899: return "Inversion";
             case LA66907: return "Substitution";
+            case NULL: return null;
             default: return "?";
           }
     }

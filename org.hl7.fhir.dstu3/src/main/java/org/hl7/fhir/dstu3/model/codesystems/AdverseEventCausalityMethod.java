@@ -64,6 +64,7 @@ public enum AdverseEventCausalityMethod {
           switch (this) {
             case METHOD1: return "method1";
             case METHOD2: return "method2";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum AdverseEventCausalityMethod {
           switch (this) {
             case METHOD1: return "";
             case METHOD2: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum AdverseEventCausalityMethod {
           switch (this) {
             case METHOD1: return "placeholder";
             case METHOD2: return "placeholder";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -148,6 +148,7 @@ public enum SmartCapabilities {
             case PERMISSIONOFFLINE: return "permission-offline";
             case PERMISSIONPATIENT: return "permission-patient";
             case PERMISSIONUSER: return "permission-user";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -170,6 +171,7 @@ public enum SmartCapabilities {
             case PERMISSIONOFFLINE: return "support for refresh tokens (requested by offline_access scope).";
             case PERMISSIONPATIENT: return "support for patient-level scopes (e.g. patient/Observation.read).";
             case PERMISSIONUSER: return "support for user-level scopes (e.g. user/Appointment.read).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -189,6 +191,7 @@ public enum SmartCapabilities {
             case PERMISSIONOFFLINE: return "Supports Refresh Token";
             case PERMISSIONPATIENT: return "Supports Patient Level Scopes";
             case PERMISSIONUSER: return "Supports User Level Scopes";
+            case NULL: return null;
             default: return "?";
           }
     }

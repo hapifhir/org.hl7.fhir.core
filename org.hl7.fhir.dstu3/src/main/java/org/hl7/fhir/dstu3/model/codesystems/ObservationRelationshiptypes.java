@@ -92,6 +92,7 @@ public enum ObservationRelationshiptypes {
             case REPLACES: return "replaces";
             case QUALIFIEDBY: return "qualified-by";
             case INTERFEREDBY: return "interfered-by";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ObservationRelationshiptypes {
             case REPLACES: return "This observation replaces a previous observation (i.e. a revised value). The target observation is now obsolete.";
             case QUALIFIEDBY: return "The value of the target observation qualifies (refines) the semantics of the source observation (e.g. a lipemia measure target from a plasma measure).";
             case INTERFEREDBY: return "The value of the target observation interferes (degrades quality, or prevents valid observation) with the semantics of the source observation (e.g. a hemolysis measure target from a plasma potassium measure, which has no value).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ObservationRelationshiptypes {
             case REPLACES: return "Replaces";
             case QUALIFIEDBY: return "Qualified By";
             case INTERFEREDBY: return "Interfered By";
+            case NULL: return null;
             default: return "?";
           }
     }

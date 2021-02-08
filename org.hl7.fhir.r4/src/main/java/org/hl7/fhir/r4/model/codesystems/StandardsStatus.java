@@ -94,6 +94,7 @@ Future versions of FHIR may make significant changes to Trial Use content that a
             case INFORMATIVE: return "informative";
             case DEPRECATED: return "deprecated";
             case EXTERNAL: return "external";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +109,7 @@ Future versions of FHIR may make significant changes to Trial Use content that a
             case INFORMATIVE: return "This portion of the specification is provided for implementer assistance, and does not make rules that implementers are required to follow. Typical examples of this content in the FHIR specification are tables of contents, registries, examples, and implementer advice.";
             case DEPRECATED: return "This portion of the specification is provided for implementer assistance, and does not make rules that implementers are required to follow. Typical examples of this content in the FHIR specification are tables of contents, registries, examples, and implementer advice.";
             case EXTERNAL: return "This is content that is managed outside the FHIR Specification, but included for implementer convenience.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +121,7 @@ Future versions of FHIR may make significant changes to Trial Use content that a
             case INFORMATIVE: return "Informative";
             case DEPRECATED: return "Deprecated";
             case EXTERNAL: return "External";
+            case NULL: return null;
             default: return "?";
           }
     }

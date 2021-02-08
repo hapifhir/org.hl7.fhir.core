@@ -99,6 +99,7 @@ public enum RequestStatus {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum RequestStatus {
             case COMPLETED: return "Activity against the request has been sufficiently completed to the satisfaction of the requester";
             case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".)";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" . One of the listed statuses is presumed to apply,  but the system creating the request doesn't know.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum RequestStatus {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

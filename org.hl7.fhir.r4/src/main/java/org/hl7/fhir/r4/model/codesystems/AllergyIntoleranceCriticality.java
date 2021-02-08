@@ -71,6 +71,7 @@ public enum AllergyIntoleranceCriticality {
             case LOW: return "low";
             case HIGH: return "high";
             case UNABLETOASSESS: return "unable-to-assess";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum AllergyIntoleranceCriticality {
             case LOW: return "Worst case result of a future exposure is not assessed to be life-threatening or having high potential for organ system failure.";
             case HIGH: return "Worst case result of a future exposure is assessed to be life-threatening or having high potential for organ system failure.";
             case UNABLETOASSESS: return "Unable to assess the worst case result of a future exposure.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum AllergyIntoleranceCriticality {
             case LOW: return "Low Risk";
             case HIGH: return "High Risk";
             case UNABLETOASSESS: return "Unable to Assess Risk";
+            case NULL: return null;
             default: return "?";
           }
     }

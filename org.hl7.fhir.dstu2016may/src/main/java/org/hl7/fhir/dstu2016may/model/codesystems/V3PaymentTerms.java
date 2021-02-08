@@ -78,6 +78,7 @@ public enum V3PaymentTerms {
             case N30: return "N30";
             case N60: return "N60";
             case N90: return "N90";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3PaymentTerms {
             case N30: return "Payment in full for products and/or services is required 30 days from the time the service is performed or goods delivered.";
             case N60: return "Payment in full for products and/or services is required 60 days from the time the service is performed or goods delivered.";
             case N90: return "Payment in full for products and/or services is required 90 days from the time the service is performed or goods delivered.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3PaymentTerms {
             case N30: return "Net 30 days";
             case N60: return "Net 60 days";
             case N90: return "Net 90 days";
+            case NULL: return null;
             default: return "?";
           }
     }

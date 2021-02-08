@@ -99,6 +99,7 @@ public enum TaskCode {
             case CHANGE: return "change";
             case SUSPEND: return "suspend";
             case RESUME: return "resume";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum TaskCode {
             case CHANGE: return "Update the focal resource of the owning system to reflect the content specified as the Task.focus";
             case SUSPEND: return "Transition the focal resource from 'active' or 'in-progress' to 'suspended'";
             case RESUME: return "Transition the focal resource from 'suspended' to 'active' or 'in-progress' as appropriate for the resource type.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum TaskCode {
             case CHANGE: return "Change the focal resource";
             case SUSPEND: return "Suspend the focal resource";
             case RESUME: return "Re-activate the focal resource";
+            case NULL: return null;
             default: return "?";
           }
     }

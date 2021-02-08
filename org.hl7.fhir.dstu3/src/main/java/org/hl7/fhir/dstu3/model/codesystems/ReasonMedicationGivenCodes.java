@@ -71,6 +71,7 @@ public enum ReasonMedicationGivenCodes {
             case A: return "a";
             case B: return "b";
             case C: return "c";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ReasonMedicationGivenCodes {
             case A: return "No reason known.";
             case B: return "The administration was following an ordered protocol.";
             case C: return "The administration was needed to treat an emergency.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ReasonMedicationGivenCodes {
             case A: return "None";
             case B: return "Given as Ordered";
             case C: return "Emergency";
+            case NULL: return null;
             default: return "?";
           }
     }

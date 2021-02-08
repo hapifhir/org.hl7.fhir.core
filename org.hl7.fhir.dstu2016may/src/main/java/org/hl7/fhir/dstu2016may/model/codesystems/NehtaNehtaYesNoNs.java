@@ -57,6 +57,7 @@ public enum NehtaNehtaYesNoNs {
         public String toCode() {
           switch (this) {
             case NOTSTATED: return "not-stated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum NehtaNehtaYesNoNs {
         public String getDefinition() {
           switch (this) {
             case NOTSTATED: return "Indicates whether a response was not stated.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case NOTSTATED: return "Not stated";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -71,6 +71,7 @@ public enum FmItemtype {
             case GROUP: return "group";
             case PRODUCT: return "product";
             case SERVICE: return "service";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum FmItemtype {
             case GROUP: return "A group of products and/or Services, amount ar the summary or detail level products and services.";
             case PRODUCT: return "A billed product line item.";
             case SERVICE: return "A billed service line item.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum FmItemtype {
             case GROUP: return "Group";
             case PRODUCT: return "Product";
             case SERVICE: return "Service";
+            case NULL: return null;
             default: return "?";
           }
     }

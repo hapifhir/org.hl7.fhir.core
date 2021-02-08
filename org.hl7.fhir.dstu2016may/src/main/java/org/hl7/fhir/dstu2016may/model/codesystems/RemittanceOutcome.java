@@ -64,6 +64,7 @@ public enum RemittanceOutcome {
           switch (this) {
             case COMPLETE: return "complete";
             case ERROR: return "error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum RemittanceOutcome {
           switch (this) {
             case COMPLETE: return "The processing completed without errors.";
             case ERROR: return "The processing identified errors.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum RemittanceOutcome {
           switch (this) {
             case COMPLETE: return "Complete";
             case ERROR: return "Error";
+            case NULL: return null;
             default: return "?";
           }
     }

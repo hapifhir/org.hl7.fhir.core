@@ -78,6 +78,7 @@ public enum ConditionalReadStatus {
             case MODIFIEDSINCE: return "modified-since";
             case NOTMATCH: return "not-match";
             case FULLSUPPORT: return "full-support";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ConditionalReadStatus {
             case MODIFIEDSINCE: return "Conditional reads are supported, but only with the If-Modified-Since HTTP Header.";
             case NOTMATCH: return "Conditional reads are supported, but only with the If-None-Match HTTP Header.";
             case FULLSUPPORT: return "Conditional reads are supported, with both If-Modified-Since and If-None-Match HTTP Headers.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ConditionalReadStatus {
             case MODIFIEDSINCE: return "If-Modified-Since";
             case NOTMATCH: return "If-None-Match";
             case FULLSUPPORT: return "Full Support";
+            case NULL: return null;
             default: return "?";
           }
     }

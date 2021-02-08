@@ -85,6 +85,7 @@ public enum ImmunizationRecommendationStatus {
             case IMMUNE: return "immune";
             case CONTRAINDICATED: return "contraindicated";
             case COMPLETE: return "complete";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ImmunizationRecommendationStatus {
             case IMMUNE: return "The patient is immune to the target disease and further immunization against the disease is not likely to provide benefit.";
             case CONTRAINDICATED: return "The patient is contraindicated for futher doses.";
             case COMPLETE: return "The patient is fully protected and no further doses are recommended.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ImmunizationRecommendationStatus {
             case IMMUNE: return "Immune";
             case CONTRAINDICATED: return "Contraindicated";
             case COMPLETE: return "Complete";
+            case NULL: return null;
             default: return "?";
           }
     }

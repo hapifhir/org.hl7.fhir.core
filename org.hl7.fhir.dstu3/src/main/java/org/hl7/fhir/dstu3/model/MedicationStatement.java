@@ -108,6 +108,7 @@ public class MedicationStatement extends DomainResource {
             case INTENDED: return "intended";
             case STOPPED: return "stopped";
             case ONHOLD: return "on-hold";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +120,7 @@ public class MedicationStatement extends DomainResource {
             case INTENDED: return "http://hl7.org/fhir/medication-statement-status";
             case STOPPED: return "http://hl7.org/fhir/medication-statement-status";
             case ONHOLD: return "http://hl7.org/fhir/medication-statement-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +132,7 @@ public class MedicationStatement extends DomainResource {
             case INTENDED: return "The medication may be taken at some time in the future.";
             case STOPPED: return "Actions implied by the statement have been permanently halted, before all of them occurred.";
             case ONHOLD: return "Actions implied by the statement have been temporarily halted, but are expected to continue later. May also be called \"suspended\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -141,6 +144,7 @@ public class MedicationStatement extends DomainResource {
             case INTENDED: return "Intended";
             case STOPPED: return "Stopped";
             case ONHOLD: return "On Hold";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -250,6 +254,7 @@ public class MedicationStatement extends DomainResource {
             case N: return "n";
             case UNK: return "unk";
             case NA: return "na";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -259,6 +264,7 @@ public class MedicationStatement extends DomainResource {
             case N: return "http://hl7.org/fhir/medication-statement-taken";
             case UNK: return "http://hl7.org/fhir/medication-statement-taken";
             case NA: return "http://hl7.org/fhir/medication-statement-taken";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -268,6 +274,7 @@ public class MedicationStatement extends DomainResource {
             case N: return "Negative assertion that patient has not taken medication";
             case UNK: return "Unknown assertion if patient has taken medication";
             case NA: return "Patient reporting does not apply";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -277,6 +284,7 @@ public class MedicationStatement extends DomainResource {
             case N: return "No";
             case UNK: return "Unknown";
             case NA: return "Not Applicable";
+            case NULL: return null;
             default: return "?";
           }
         }

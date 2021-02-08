@@ -155,6 +155,7 @@ public enum V3HtmlLinkType {
             case START: return "start";
             case STYLESHEET: return "stylesheet";
             case SUBSECTION: return "subsection";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -178,6 +179,7 @@ public enum V3HtmlLinkType {
             case START: return "Refers to the first document in a collection of documents. This link type tells search engines which document is considered by the author to be the starting point of the collection.";
             case STYLESHEET: return "Refers to an external style sheet. See the section on external style sheets for details. This is used together with the link type \"Alternate\" for user-selectable alternate style sheets.";
             case SUBSECTION: return "Refers to a document serving as a subsection in a collection of documents.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -198,6 +200,7 @@ public enum V3HtmlLinkType {
             case START: return "start";
             case STYLESHEET: return "stylesheet";
             case SUBSECTION: return "subsection";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -50,6 +50,7 @@ public enum MessageEvents {
         }
         public String toCode() {
           switch (this) {
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -58,11 +59,13 @@ public enum MessageEvents {
         }
         public String getDefinition() {
           switch (this) {
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
+            case NULL: return null;
             default: return "?";
           }
     }

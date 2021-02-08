@@ -85,6 +85,7 @@ public enum FlagCategory {
             case LAB: return "lab";
             case ADMIN: return "admin";
             case CONTACT: return "contact";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum FlagCategory {
             case LAB: return "Flags related to performing laboratory tests and related processes (e.g. phlebotomy).";
             case ADMIN: return "Flags related to administrative and financial processes.";
             case CONTACT: return "Flags related to coming into contact with the patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum FlagCategory {
             case LAB: return "Lab";
             case ADMIN: return "Administrative";
             case CONTACT: return "Subject contact";
+            case NULL: return null;
             default: return "?";
           }
     }

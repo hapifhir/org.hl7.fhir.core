@@ -64,6 +64,7 @@ public enum ImmunizationProgramEligibility {
           switch (this) {
             case INELIGIBLE: return "ineligible";
             case UNINSURED: return "uninsured";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ImmunizationProgramEligibility {
           switch (this) {
             case INELIGIBLE: return "The patient is not eligible for the funding program.";
             case UNINSURED: return "The patient is eligible for the funding program because they are uninsured.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ImmunizationProgramEligibility {
           switch (this) {
             case INELIGIBLE: return "Not Eligible";
             case UNINSURED: return "Uninsured";
+            case NULL: return null;
             default: return "?";
           }
     }

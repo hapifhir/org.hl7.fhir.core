@@ -57,6 +57,7 @@ public enum HspcObservationDataOriginationMode {
         public String toCode() {
           switch (this) {
             case _14610118: return "14610118";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum HspcObservationDataOriginationMode {
         public String getDefinition() {
           switch (this) {
             case _14610118: return "Information that is given directly, either verbally or written, that is not the result of a measurement or estimate.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case _14610118: return "Stated";
+            case NULL: return null;
             default: return "?";
           }
     }

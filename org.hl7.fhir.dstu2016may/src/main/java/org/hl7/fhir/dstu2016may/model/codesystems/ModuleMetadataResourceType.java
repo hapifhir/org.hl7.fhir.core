@@ -92,6 +92,7 @@ public enum ModuleMetadataResourceType {
             case PREDECESSOR: return "predecessor";
             case SUCCESSOR: return "successor";
             case DERIVEDFROM: return "derived-from";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ModuleMetadataResourceType {
             case PREDECESSOR: return "The previous version of the module";
             case SUCCESSOR: return "The next version of the module";
             case DERIVEDFROM: return "The module is derived from the resource. This is intended to capture the relationship when a particular module is based on the content of another module, but is modified to capture either a different set of overall requirements, or a more specific set of requirements such as those involved in a particular institution or clinical setting";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ModuleMetadataResourceType {
             case PREDECESSOR: return "Predecessor";
             case SUCCESSOR: return "Successor";
             case DERIVEDFROM: return "Derived From";
+            case NULL: return null;
             default: return "?";
           }
     }

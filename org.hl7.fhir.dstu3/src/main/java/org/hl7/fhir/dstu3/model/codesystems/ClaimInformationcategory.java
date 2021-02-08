@@ -120,6 +120,7 @@ public enum ClaimInformationcategory {
             case MISSINGTOOTH: return "missingtooth";
             case PROSTHESIS: return "prosthesis";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum ClaimInformationcategory {
             case MISSINGTOOTH: return "Teeth which are missing for any reason, for example: prior extraction, never developed.";
             case PROSTHESIS: return "The type of prosthesis and date of supply if a previously supplied prosthesis.";
             case OTHER: return "Other information identified by the type.system.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum ClaimInformationcategory {
             case MISSINGTOOTH: return "Missing Tooth";
             case PROSTHESIS: return "Prosthesis";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

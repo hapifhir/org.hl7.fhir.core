@@ -71,6 +71,7 @@ public enum CapabilityStatementKind {
             case INSTANCE: return "instance";
             case CAPABILITY: return "capability";
             case REQUIREMENTS: return "requirements";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum CapabilityStatementKind {
             case INSTANCE: return "The CapabilityStatement instance represents the present capabilities of a specific system instance.  This is the kind returned by /metadata for a FHIR server end-point.";
             case CAPABILITY: return "The CapabilityStatement instance represents the capabilities of a system or piece of software, independent of a particular installation.";
             case REQUIREMENTS: return "The CapabilityStatement instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum CapabilityStatementKind {
             case INSTANCE: return "Instance";
             case CAPABILITY: return "Capability";
             case REQUIREMENTS: return "Requirements";
+            case NULL: return null;
             default: return "?";
           }
     }

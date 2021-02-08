@@ -92,6 +92,7 @@ public enum V3AcknowledgementType {
             case CA: return "CA";
             case CE: return "CE";
             case CR: return "CR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum V3AcknowledgementType {
             case CA: return "Receiving message handling service accepts responsibility for passing message onto receiving application.";
             case CE: return "Receiving message handling service cannot accept message for any other reason (e.g. message sequence number, etc.).";
             case CR: return "Receiving message handling service rejects message if interaction identifier, version or processing mode is incompatible with known receiving application role information.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum V3AcknowledgementType {
             case CA: return "Accept Acknowledgement Commit Accept";
             case CE: return "Accept Acknowledgement Commit Error";
             case CR: return "Accept Acknowledgement Commit Reject";
+            case NULL: return null;
             default: return "?";
           }
     }

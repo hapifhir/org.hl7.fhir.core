@@ -885,6 +885,7 @@ The primary difference between a medication statement and a medication administr
             case TESTSCRIPT: return "TestScript";
             case VALUESET: return "ValueSet";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1012,6 +1013,7 @@ The primary difference between a medication statement and a medication administr
             case TESTSCRIPT: return "A structured set of tests against a FHIR server implementation to determine compliance against the FHIR specification.";
             case VALUESET: return "A value set specifies a set of codes drawn from one or more code systems.";
             case VISIONPRESCRIPTION: return "An authorization for the supply of glasses and/or contact lenses to a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1136,6 +1138,7 @@ The primary difference between a medication statement and a medication administr
             case TESTSCRIPT: return "TestScript";
             case VALUESET: return "ValueSet";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
     }

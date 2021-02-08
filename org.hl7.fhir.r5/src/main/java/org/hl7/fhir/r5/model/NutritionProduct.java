@@ -89,6 +89,7 @@ public class NutritionProduct extends DomainResource {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class NutritionProduct extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/nutritionproduct-status";
             case INACTIVE: return "http://hl7.org/fhir/nutritionproduct-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/nutritionproduct-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class NutritionProduct extends DomainResource {
             case ACTIVE: return "The product can be used.";
             case INACTIVE: return "The product is not expected or allowed to be used.";
             case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class NutritionProduct extends DomainResource {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

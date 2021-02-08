@@ -71,6 +71,7 @@ public enum GoalPriority {
             case HIGHPRIORITY: return "high-priority";
             case MEDIUMPRIORITY: return "medium-priority";
             case LOWPRIORITY: return "low-priority";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum GoalPriority {
             case HIGHPRIORITY: return "Indicates that the goal is of considerable importance and should be a primary focus of care delivery.";
             case MEDIUMPRIORITY: return "Indicates that the goal has a reasonable degree of importance and that concrete action should be taken towards the goal.  Attainment is not as critical as high-priority goals.";
             case LOWPRIORITY: return "The goal is desirable but is not sufficiently important to devote significant resources to.  Achievement of the goal may be sought when incidental to achieving other goals.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum GoalPriority {
             case HIGHPRIORITY: return "High Priority";
             case MEDIUMPRIORITY: return "Medium Priority";
             case LOWPRIORITY: return "Low Priority";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -78,6 +78,7 @@ public enum MedicationStatementTaken {
             case N: return "n";
             case UNK: return "unk";
             case NA: return "na";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MedicationStatementTaken {
             case N: return "Negative assertion that patient has not taken medication";
             case UNK: return "Unknown assertion if patient has taken medication";
             case NA: return "Patient reporting does not apply";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MedicationStatementTaken {
             case N: return "No";
             case UNK: return "Unknown";
             case NA: return "Not Applicable";
+            case NULL: return null;
             default: return "?";
           }
     }

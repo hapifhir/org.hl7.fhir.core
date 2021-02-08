@@ -64,6 +64,7 @@ public enum CoverageException {
           switch (this) {
             case STUDENT: return "student";
             case DISABLED: return "disabled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum CoverageException {
           switch (this) {
             case STUDENT: return "Fulltime Student";
             case DISABLED: return "Disabled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum CoverageException {
           switch (this) {
             case STUDENT: return "Student (Fulltime)";
             case DISABLED: return "Disabled";
+            case NULL: return null;
             default: return "?";
           }
     }

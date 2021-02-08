@@ -106,6 +106,7 @@ public class DeviceUseStatement extends DomainResource {
             case INTENDED: return "intended";
             case STOPPED: return "stopped";
             case ONHOLD: return "on-hold";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +118,7 @@ public class DeviceUseStatement extends DomainResource {
             case INTENDED: return "http://hl7.org/fhir/device-statement-status";
             case STOPPED: return "http://hl7.org/fhir/device-statement-status";
             case ONHOLD: return "http://hl7.org/fhir/device-statement-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -128,6 +130,7 @@ public class DeviceUseStatement extends DomainResource {
             case INTENDED: return "The device may be used at some time in the future.";
             case STOPPED: return "Actions implied by the statement have been permanently halted, before all of them occurred.";
             case ONHOLD: return "Actions implied by the statement have been temporarily halted, but are expected to continue later. May also be called \"suspended\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -139,6 +142,7 @@ public class DeviceUseStatement extends DomainResource {
             case INTENDED: return "Intended";
             case STOPPED: return "Stopped";
             case ONHOLD: return "On Hold";
+            case NULL: return null;
             default: return "?";
           }
         }

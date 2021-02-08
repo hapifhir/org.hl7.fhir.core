@@ -274,6 +274,7 @@ public enum Teeth {
             case _46: return "46";
             case _47: return "47";
             case _48: return "48";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -314,6 +315,7 @@ public enum Teeth {
             case _46: return "Lower Right Tooth 6 from the central axis, permanent dentition.";
             case _47: return "Lower Right Tooth 7 from the central axis, permanent dentition.";
             case _48: return "Lower Right Tooth 8 from the central axis, permanent dentition.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -351,6 +353,7 @@ public enum Teeth {
             case _46: return "46";
             case _47: return "47";
             case _48: return "48";
+            case NULL: return null;
             default: return "?";
           }
     }
