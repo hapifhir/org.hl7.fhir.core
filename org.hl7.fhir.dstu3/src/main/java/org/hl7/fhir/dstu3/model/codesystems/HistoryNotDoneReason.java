@@ -78,6 +78,7 @@ public enum HistoryNotDoneReason {
             case WITHHELD: return "withheld";
             case UNABLETOOBTAIN: return "unable-to-obtain";
             case DEFERRED: return "deferred";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum HistoryNotDoneReason {
             case WITHHELD: return "The patient withheld or refused to share the information.";
             case UNABLETOOBTAIN: return "Information cannot be obtained; e.g. unconscious patient";
             case DEFERRED: return "Patient does not have the information now, but can provide the information at a later date.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum HistoryNotDoneReason {
             case WITHHELD: return "Information Withheld";
             case UNABLETOOBTAIN: return "Unable To Obtain";
             case DEFERRED: return "Deferred";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -85,6 +85,7 @@ public enum EncounterPriority {
             case URG: return "urg";
             case SURG: return "s-urg";
             case NOURG: return "no-urg";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum EncounterPriority {
             case URG: return "Within 30 minutes.";
             case SURG: return "Within 60 minutes.";
             case NOURG: return "Within 120 minutes.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum EncounterPriority {
             case URG: return "Urgent";
             case SURG: return "Semi-urgent";
             case NOURG: return "Non-urgent";
+            case NULL: return null;
             default: return "?";
           }
     }

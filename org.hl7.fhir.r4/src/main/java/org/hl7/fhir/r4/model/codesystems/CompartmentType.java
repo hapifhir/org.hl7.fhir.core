@@ -85,6 +85,7 @@ public enum CompartmentType {
             case RELATEDPERSON: return "RelatedPerson";
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum CompartmentType {
             case RELATEDPERSON: return "The compartment definition is for the related-person compartment.";
             case PRACTITIONER: return "The compartment definition is for the practitioner compartment.";
             case DEVICE: return "The compartment definition is for the device compartment.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum CompartmentType {
             case RELATEDPERSON: return "RelatedPerson";
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
     }

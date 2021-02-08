@@ -89,6 +89,7 @@ public class TerminologyCapabilities extends MetadataResource {
             case INSTANCE: return "instance";
             case CAPABILITY: return "capability";
             case REQUIREMENTS: return "requirements";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class TerminologyCapabilities extends MetadataResource {
             case INSTANCE: return "http://hl7.org/fhir/capability-statement-kind";
             case CAPABILITY: return "http://hl7.org/fhir/capability-statement-kind";
             case REQUIREMENTS: return "http://hl7.org/fhir/capability-statement-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class TerminologyCapabilities extends MetadataResource {
             case INSTANCE: return "The CapabilityStatement instance represents the present capabilities of a specific system instance.  This is the kind returned by /metadata for a FHIR server end-point.";
             case CAPABILITY: return "The CapabilityStatement instance represents the capabilities of a system or piece of software, independent of a particular installation.";
             case REQUIREMENTS: return "The CapabilityStatement instance represents a set of requirements for other systems to meet; e.g. as part of an implementation guide or 'request for proposal'.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class TerminologyCapabilities extends MetadataResource {
             case INSTANCE: return "Instance";
             case CAPABILITY: return "Capability";
             case REQUIREMENTS: return "Requirements";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -190,6 +194,7 @@ public class TerminologyCapabilities extends MetadataResource {
           switch (this) {
             case EXPLICIT: return "explicit";
             case ALL: return "all";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -197,6 +202,7 @@ public class TerminologyCapabilities extends MetadataResource {
           switch (this) {
             case EXPLICIT: return "http://hl7.org/fhir/code-search-support";
             case ALL: return "http://hl7.org/fhir/code-search-support";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -204,6 +210,7 @@ public class TerminologyCapabilities extends MetadataResource {
           switch (this) {
             case EXPLICIT: return "The search for code on ValueSet only includes codes explicitly detailed on includes or expansions.";
             case ALL: return "The search for code on ValueSet only includes all codes based on the expansion of the value set.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -211,6 +218,7 @@ public class TerminologyCapabilities extends MetadataResource {
           switch (this) {
             case EXPLICIT: return "Explicit Codes";
             case ALL: return "Implicit Codes";
+            case NULL: return null;
             default: return "?";
           }
         }

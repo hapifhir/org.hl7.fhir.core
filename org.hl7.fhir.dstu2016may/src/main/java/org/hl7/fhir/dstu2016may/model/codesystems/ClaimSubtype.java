@@ -64,6 +64,7 @@ public enum ClaimSubtype {
           switch (this) {
             case ORTHO: return "ortho";
             case EMERGENCY: return "emergency";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ClaimSubtype {
           switch (this) {
             case ORTHO: return "A claim for Orthodontic Services.";
             case EMERGENCY: return "A claim for emergency services.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ClaimSubtype {
           switch (this) {
             case ORTHO: return "Orthodontic Claim";
             case EMERGENCY: return "Emergency Claim";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -1073,6 +1073,7 @@ public enum V3EntityCode {
             case WING: return "WING";
             case _RESOURCEGROUPENTITYTYPE: return "_ResourceGroupEntityType";
             case PRAC: return "PRAC";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1226,6 +1227,7 @@ public enum V3EntityCode {
             case WING: return "The location of a wing of a building (e.g. East Wing).  The same room number for the same floor number can be distinguished by wing number in some situations";
             case _RESOURCEGROUPENTITYTYPE: return "Codes to characterize a Resource Group using categories that typify its membership and/or function\r\n\n                        .\r\n\n                        \n                           Example: PractitionerGroup";
             case PRAC: return "PractitionerGroup";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1376,6 +1378,7 @@ public enum V3EntityCode {
             case WING: return "Wing Location";
             case _RESOURCEGROUPENTITYTYPE: return "ResourceGroupEntityType";
             case PRAC: return "PractitionerGroup";
+            case NULL: return null;
             default: return "?";
           }
     }

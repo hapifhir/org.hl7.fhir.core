@@ -64,6 +64,7 @@ public enum Intervention {
           switch (this) {
             case UNKNOWN: return "unknown";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum Intervention {
           switch (this) {
             case UNKNOWN: return "Unknown";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum Intervention {
           switch (this) {
             case UNKNOWN: return "Unknown";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

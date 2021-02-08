@@ -64,6 +64,7 @@ public enum ContractType {
           switch (this) {
             case PRIVACY: return "privacy";
             case DISCLOSURE: return "disclosure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ContractType {
           switch (this) {
             case PRIVACY: return "";
             case DISCLOSURE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ContractType {
           switch (this) {
             case PRIVACY: return "privacy";
             case DISCLOSURE: return "disclosure";
+            case NULL: return null;
             default: return "?";
           }
     }

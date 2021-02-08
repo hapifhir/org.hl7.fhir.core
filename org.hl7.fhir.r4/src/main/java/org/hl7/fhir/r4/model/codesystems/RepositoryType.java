@@ -85,6 +85,7 @@ public enum RepositoryType {
             case LOGIN: return "login";
             case OAUTH: return "oauth";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum RepositoryType {
             case LOGIN: return "When logged into the website, the resource can be seen.";
             case OAUTH: return "When logged in and  follow the API in the website related with URL, the resource can be seen.";
             case OTHER: return "Some other complicated or particular way to get resource from URL.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum RepositoryType {
             case LOGIN: return "Result cannot be access unless an account is logged in";
             case OAUTH: return "Result need to be fetched with API and need LOGIN( or cookies are required when visiting the link of resource)";
             case OTHER: return "Some other complicated or particular way to get resource from URL.";
+            case NULL: return null;
             default: return "?";
           }
     }

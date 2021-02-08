@@ -134,6 +134,7 @@ public enum ContainerCap {
             case BROWN: return "brown";
             case WHITE: return "white";
             case PINK: return "pink";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum ContainerCap {
             case BROWN: return "brown cap.";
             case WHITE: return "white cap.";
             case PINK: return "pink cap.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum ContainerCap {
             case BROWN: return "brown cap";
             case WHITE: return "white cap";
             case PINK: return "pink cap";
+            case NULL: return null;
             default: return "?";
           }
     }

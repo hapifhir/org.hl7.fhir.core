@@ -253,6 +253,7 @@ public enum IssueType {
             case TIMEOUT: return "timeout";
             case THROTTLED: return "throttled";
             case INFORMATIONAL: return "informational";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -290,6 +291,7 @@ public enum IssueType {
             case TIMEOUT: return "An internal timeout has occurred.";
             case THROTTLED: return "The system is not prepared to handle this request due to load management.";
             case INFORMATIONAL: return "A message unrelated to the processing success of the completed operation (examples of the latter include things like reminders of password expiry, system maintenance times, etc.).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -324,6 +326,7 @@ public enum IssueType {
             case TIMEOUT: return "Timeout";
             case THROTTLED: return "Throttled";
             case INFORMATIONAL: return "Informational Note";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -132,6 +132,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case HISTORY: return "history";
             case SEARCHSET: return "searchset";
             case COLLECTION: return "collection";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case HISTORY: return "http://hl7.org/fhir/bundle-type";
             case SEARCHSET: return "http://hl7.org/fhir/bundle-type";
             case COLLECTION: return "http://hl7.org/fhir/bundle-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -160,6 +162,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case HISTORY: return "The bundle is a list of resources from a history interaction on a server.";
             case SEARCHSET: return "The bundle is a list of resources returned as a result of a search/query interaction, operation, or message.";
             case COLLECTION: return "The bundle is a set of resources collected into a single package for ease of distribution.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -174,6 +177,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case HISTORY: return "History List";
             case SEARCHSET: return "Search Results";
             case COLLECTION: return "Collection";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -294,6 +298,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case MATCH: return "match";
             case INCLUDE: return "include";
             case OUTCOME: return "outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -302,6 +307,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case MATCH: return "http://hl7.org/fhir/search-entry-mode";
             case INCLUDE: return "http://hl7.org/fhir/search-entry-mode";
             case OUTCOME: return "http://hl7.org/fhir/search-entry-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -310,6 +316,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case MATCH: return "This resource matched the search specification.";
             case INCLUDE: return "This resource is returned because it is referred to from another resource in the search set.";
             case OUTCOME: return "An OperationOutcome that provides additional information about the processing of a search.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -318,6 +325,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case MATCH: return "Match";
             case INCLUDE: return "Include";
             case OUTCOME: return "Outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -409,6 +417,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case POST: return "POST";
             case PUT: return "PUT";
             case DELETE: return "DELETE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -418,6 +427,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case POST: return "http://hl7.org/fhir/http-verb";
             case PUT: return "http://hl7.org/fhir/http-verb";
             case DELETE: return "http://hl7.org/fhir/http-verb";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -427,6 +437,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case POST: return "HTTP POST";
             case PUT: return "HTTP PUT";
             case DELETE: return "HTTP DELETE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -436,6 +447,7 @@ public class Bundle extends Resource implements IBaseBundle {
             case POST: return "POST";
             case PUT: return "PUT";
             case DELETE: return "DELETE";
+            case NULL: return null;
             default: return "?";
           }
         }

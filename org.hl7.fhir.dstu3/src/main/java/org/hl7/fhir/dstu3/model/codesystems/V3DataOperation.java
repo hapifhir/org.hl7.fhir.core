@@ -190,6 +190,7 @@ public enum V3DataOperation {
             case RELEASE: return "RELEASE";
             case RESUME: return "RESUME";
             case SUSPEND: return "SUSPEND";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -218,6 +219,7 @@ public enum V3DataOperation {
             case RELEASE: return "Description:Change the status of an object representing an Act so it is no longer \"held\", i.e., allow action to occur. For an HL7 Act, the state transitions per the HL7 Reference Information Model.";
             case RESUME: return "Description:Change the status of a suspended object representing an Act to \"active\", i.e., so it can be performed or is being performed. For an HL7 Act, the state transitions per the HL7 Reference Information Model.";
             case SUSPEND: return "Definition:Change the status of an object representing an Act to suspended, i.e., so it is temporarily not in service.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -243,6 +245,7 @@ public enum V3DataOperation {
             case RELEASE: return "release";
             case RESUME: return "resume";
             case SUSPEND: return "suspend";
+            case NULL: return null;
             default: return "?";
           }
     }

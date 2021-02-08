@@ -64,6 +64,7 @@ public enum QuestionnaireDisplayCategory {
           switch (this) {
             case INSTRUCTIONS: return "instructions";
             case SECURITY: return "security";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum QuestionnaireDisplayCategory {
           switch (this) {
             case INSTRUCTIONS: return "The text provides guidances on how to populate or use a portion of the questionnaire (or the questionnaire as a whole).";
             case SECURITY: return "The text provides guidance on how the information should be or will be handled from a security/confidentiality/access control perspective when completed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum QuestionnaireDisplayCategory {
           switch (this) {
             case INSTRUCTIONS: return "Instructions";
             case SECURITY: return "Security";
+            case NULL: return null;
             default: return "?";
           }
     }

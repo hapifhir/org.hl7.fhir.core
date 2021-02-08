@@ -89,6 +89,7 @@ public class SubscriptionTopic extends DomainResource {
             case CREATE: return "create";
             case UPDATE: return "update";
             case DELETE: return "delete";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class SubscriptionTopic extends DomainResource {
             case CREATE: return "http://hl7.org/fhir/restful-interaction";
             case UPDATE: return "http://hl7.org/fhir/restful-interaction";
             case DELETE: return "http://hl7.org/fhir/restful-interaction";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class SubscriptionTopic extends DomainResource {
             case CREATE: return "Create a new resource with a server assigned id.";
             case UPDATE: return "Update an existing resource by its id (or create it if it is new).";
             case DELETE: return "Delete a resource.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class SubscriptionTopic extends DomainResource {
             case CREATE: return "create";
             case UPDATE: return "update";
             case DELETE: return "delete";
+            case NULL: return null;
             default: return "?";
           }
         }

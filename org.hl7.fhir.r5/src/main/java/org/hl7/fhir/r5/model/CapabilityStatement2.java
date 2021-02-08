@@ -96,6 +96,7 @@ public class CapabilityStatement2 extends CanonicalResource {
             case BATCH: return "batch";
             case SEARCHSYSTEM: return "search-system";
             case HISTORYSYSTEM: return "history-system";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +106,7 @@ public class CapabilityStatement2 extends CanonicalResource {
             case BATCH: return "http://hl7.org/fhir/restful-interaction";
             case SEARCHSYSTEM: return "http://hl7.org/fhir/restful-interaction";
             case HISTORYSYSTEM: return "http://hl7.org/fhir/restful-interaction";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +116,7 @@ public class CapabilityStatement2 extends CanonicalResource {
             case BATCH: return "perform a set of a separate interactions in a single http operation";
             case SEARCHSYSTEM: return "Search all resources based on some filter criteria.";
             case HISTORYSYSTEM: return "Retrieve the change history for all resources on a system.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +126,7 @@ public class CapabilityStatement2 extends CanonicalResource {
             case BATCH: return "batch";
             case SEARCHSYSTEM: return "search-system";
             case HISTORYSYSTEM: return "history-system";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -255,6 +259,7 @@ public class CapabilityStatement2 extends CanonicalResource {
             case HISTORYTYPE: return "history-type";
             case CREATE: return "create";
             case SEARCHTYPE: return "search-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -269,6 +274,7 @@ public class CapabilityStatement2 extends CanonicalResource {
             case HISTORYTYPE: return "http://hl7.org/fhir/restful-interaction";
             case CREATE: return "http://hl7.org/fhir/restful-interaction";
             case SEARCHTYPE: return "http://hl7.org/fhir/restful-interaction";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -283,6 +289,7 @@ public class CapabilityStatement2 extends CanonicalResource {
             case HISTORYTYPE: return "Retrieve the change history for all resources of a particular type.";
             case CREATE: return "Create a new resource with a server assigned id.";
             case SEARCHTYPE: return "Search all resources of the specified type based on some filter criteria.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -297,6 +304,7 @@ public class CapabilityStatement2 extends CanonicalResource {
             case HISTORYTYPE: return "history-type";
             case CREATE: return "create";
             case SEARCHTYPE: return "search-type";
+            case NULL: return null;
             default: return "?";
           }
         }

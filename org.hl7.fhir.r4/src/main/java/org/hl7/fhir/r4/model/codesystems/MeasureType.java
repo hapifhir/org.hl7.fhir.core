@@ -85,6 +85,7 @@ public enum MeasureType {
             case STRUCTURE: return "structure";
             case PATIENTREPORTEDOUTCOME: return "patient-reported-outcome";
             case COMPOSITE: return "composite";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum MeasureType {
             case STRUCTURE: return "A measure that focuses on a health care provider's capacity, systems, and processes to provide high-quality care.";
             case PATIENTREPORTEDOUTCOME: return "A measure that focuses on patient-reported information such as patient engagement or patient experience measures.";
             case COMPOSITE: return "A measure that combines multiple component measures in to a single quality measure.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum MeasureType {
             case STRUCTURE: return "Structure";
             case PATIENTREPORTEDOUTCOME: return "Patient Reported Outcome";
             case COMPOSITE: return "Composite";
+            case NULL: return null;
             default: return "?";
           }
     }

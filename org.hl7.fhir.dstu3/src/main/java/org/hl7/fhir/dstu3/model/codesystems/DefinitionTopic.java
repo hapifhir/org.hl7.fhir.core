@@ -71,6 +71,7 @@ public enum DefinitionTopic {
             case TREATMENT: return "treatment";
             case EDUCATION: return "education";
             case ASSESSMENT: return "assessment";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum DefinitionTopic {
             case TREATMENT: return "The definition is related to treatment of the patient";
             case EDUCATION: return "The definition is related to education of the patient";
             case ASSESSMENT: return "The definition is related to assessment of the patient";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum DefinitionTopic {
             case TREATMENT: return "Treatment";
             case EDUCATION: return "Education";
             case ASSESSMENT: return "Assessment";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -85,6 +85,7 @@ public enum ReferenceHandlingPolicy {
             case RESOLVES: return "resolves";
             case ENFORCED: return "enforced";
             case LOCAL: return "local";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ReferenceHandlingPolicy {
             case RESOLVES: return "The server will attempt to resolve logical references to literal references (if resolution fails, the server may still accept resources; see logical)";
             case ENFORCED: return "The server enforces that references have integrity - e.g. it ensures that references can always be resolved. This is typically the case for clinical record systems, but often not the case for middleware/proxy systems";
             case LOCAL: return "The server does not support references that point to other servers";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ReferenceHandlingPolicy {
             case RESOLVES: return "Resolves References";
             case ENFORCED: return "Reference Integrity Enforced";
             case LOCAL: return "Local References Only";
+            case NULL: return null;
             default: return "?";
           }
     }

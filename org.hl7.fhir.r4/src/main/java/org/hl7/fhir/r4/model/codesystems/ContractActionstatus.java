@@ -57,6 +57,7 @@ public enum ContractActionstatus {
         public String toCode() {
           switch (this) {
             case COMPLETE: return "complete";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum ContractActionstatus {
         public String getDefinition() {
           switch (this) {
             case COMPLETE: return "To be completed";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case COMPLETE: return "Complete";
+            case NULL: return null;
             default: return "?";
           }
     }

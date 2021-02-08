@@ -92,6 +92,7 @@ public class ImagingExcerpt extends DomainResource {
             case WADOURI: return "WADO-URI";
             case IID: return "IID";
             case WADOWS: return "WADO-WS";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +102,7 @@ public class ImagingExcerpt extends DomainResource {
             case WADOURI: return "http://hl7.org/fhir/dWebType";
             case IID: return "http://hl7.org/fhir/dWebType";
             case WADOWS: return "http://hl7.org/fhir/dWebType";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -110,6 +112,7 @@ public class ImagingExcerpt extends DomainResource {
             case WADOURI: return "Web Access to DICOM Persistent Objects - URI";
             case IID: return "IHE - Invoke Image Display Profile";
             case WADOWS: return "Web Access to DICOM Persistent Objects - Web Services";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +122,7 @@ public class ImagingExcerpt extends DomainResource {
             case WADOURI: return "WADO-URI";
             case IID: return "IID";
             case WADOWS: return "WADO-WS";
+            case NULL: return null;
             default: return "?";
           }
         }

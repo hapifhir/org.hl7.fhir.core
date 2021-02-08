@@ -78,6 +78,7 @@ public enum ResearchStudyReasonStopped {
             case CLOSEDDUETOTOXICITY: return "closed-due-to-toxicity";
             case CLOSEDDUETOLACKOFSTUDYPROGRESS: return "closed-due-to-lack-of-study-progress";
             case TEMPORARILYCLOSEDPERSTUDYDESIGN: return "temporarily-closed-per-study-design";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ResearchStudyReasonStopped {
             case CLOSEDDUETOTOXICITY: return "The study prematurely ended due to toxicity.";
             case CLOSEDDUETOLACKOFSTUDYPROGRESS: return "The study prematurely ended due to lack of study progress.";
             case TEMPORARILYCLOSEDPERSTUDYDESIGN: return "The study prematurely ended temporarily per study design.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ResearchStudyReasonStopped {
             case CLOSEDDUETOTOXICITY: return "Closed due to toxicity";
             case CLOSEDDUETOLACKOFSTUDYPROGRESS: return "Closed due to lack of study progress";
             case TEMPORARILYCLOSEDPERSTUDYDESIGN: return "Temporarily closed per study design";
+            case NULL: return null;
             default: return "?";
           }
     }

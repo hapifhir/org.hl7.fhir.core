@@ -106,6 +106,7 @@ public enum AdverseEventSeriousness {
             case SERIOUSRESULTSINDISABILITY: return "SeriousResultsInDisability";
             case SERIOUSISBIRTHDEFECT: return "SeriousIsBirthDefect";
             case SERIOUSREQUIRESPREVENTIMPAIRMENT: return "SeriousRequiresPreventImpairment";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum AdverseEventSeriousness {
             case SERIOUSRESULTSINDISABILITY: return "Results in persistent or significant disability/incapacity.";
             case SERIOUSISBIRTHDEFECT: return "Is a congenital anomaly/birth defect.";
             case SERIOUSREQUIRESPREVENTIMPAIRMENT: return "Requires intervention to prevent permanent impairment or damage (i.e., an important medical event that requires medical judgement).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum AdverseEventSeriousness {
             case SERIOUSRESULTSINDISABILITY: return "Results in persistent or significant disability/incapacity";
             case SERIOUSISBIRTHDEFECT: return "Is a congenital anomaly/birth defect";
             case SERIOUSREQUIRESPREVENTIMPAIRMENT: return "Requires intervention to prevent permanent impairment";
+            case NULL: return null;
             default: return "?";
           }
     }

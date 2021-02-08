@@ -92,6 +92,7 @@ public enum GuideParameterCode {
     case GENERATEJSON: return "generate-json";
     case GENERATETURTLE: return "generate-turtle";
     case HTMLTEMPLATE: return "html-template";
+    case NULL: return null;
     default: return "?";
     }
   }
@@ -107,6 +108,7 @@ public enum GuideParameterCode {
     case GENERATEJSON: return "http://hl7.org/fhir/guide-parameter-code";
     case GENERATETURTLE: return "http://hl7.org/fhir/guide-parameter-code";
     case HTMLTEMPLATE: return "http://hl7.org/fhir/guide-parameter-code";
+    case NULL: return null;
     default: return "?";
     }
   }
@@ -122,6 +124,7 @@ public enum GuideParameterCode {
     case GENERATEJSON: return "The value of this boolean 0..1 parameter specifies whether the IG publisher creates examples in JSON format. If not present, the Publication Tool decides whether to generate JSON.";
     case GENERATETURTLE: return "The value of this boolean 0..1 parameter specifies whether the IG publisher creates examples in Turtle format. If not present, the Publication Tool decides whether to generate Turtle.";
     case HTMLTEMPLATE: return "The value of this string singleton parameter is the name of the file to use as the builder template for each generated page (see templating).";
+    case NULL: return null;
     default: return "?";
     }
   }
@@ -137,6 +140,7 @@ public enum GuideParameterCode {
     case GENERATEJSON: return "Generate JSON";
     case GENERATETURTLE: return "Generate Turtle";
     case HTMLTEMPLATE: return "HTML Template";
+    case NULL: return null;
     default: return "?";
     }
   }

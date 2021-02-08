@@ -70,7 +70,7 @@ public class ElementWrappers {
     @Override
     public List<PropertyWrapper> children() {
       if (list == null) {
-        children = context.getProfileUtilities().getChildList(structure, definition);
+        children = context.getProfileUtilities().getChildList(structure, definition, false, true);
         if (children.isEmpty() && !Utilities.noString(type)) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(type);
           children = context.getProfileUtilities().getChildList(sd, sd.getSnapshot().getElementFirstRep());

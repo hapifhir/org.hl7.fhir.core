@@ -71,6 +71,7 @@ public enum ListStatus {
             case CURRENT: return "current";
             case RETIRED: return "retired";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ListStatus {
             case CURRENT: return "The list is considered to be an active part of the patient's record.";
             case RETIRED: return "The list is \"old\" and should no longer be considered accurate or relevant.";
             case ENTEREDINERROR: return "The list was never accurate.  It is retained for medico-legal purposes only.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ListStatus {
             case CURRENT: return "Current";
             case RETIRED: return "Retired";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
     }

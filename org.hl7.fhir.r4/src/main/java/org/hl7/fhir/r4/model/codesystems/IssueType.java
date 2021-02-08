@@ -267,6 +267,7 @@ public enum IssueType {
             case INCOMPLETE: return "incomplete";
             case THROTTLED: return "throttled";
             case INFORMATIONAL: return "informational";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -306,6 +307,7 @@ public enum IssueType {
             case INCOMPLETE: return "Not all data sources typically accessed could be reached or responded in time, so the returned information might not be complete (applies to search interactions and some operations).";
             case THROTTLED: return "The system is not prepared to handle this request due to load management.";
             case INFORMATIONAL: return "A message unrelated to the processing success of the completed operation (examples of the latter include things like reminders of password expiry, system maintenance times, etc.).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -342,6 +344,7 @@ public enum IssueType {
             case INCOMPLETE: return "Incomplete Results";
             case THROTTLED: return "Throttled";
             case INFORMATIONAL: return "Informational Note";
+            case NULL: return null;
             default: return "?";
           }
     }

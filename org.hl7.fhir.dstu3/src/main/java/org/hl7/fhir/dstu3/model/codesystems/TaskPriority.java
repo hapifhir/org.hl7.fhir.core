@@ -71,6 +71,7 @@ public enum TaskPriority {
             case LOW: return "low";
             case NORMAL: return "normal";
             case HIGH: return "high";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum TaskPriority {
             case LOW: return "This task has low priority.";
             case NORMAL: return "This task has normal priority.";
             case HIGH: return "This task has high priority.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum TaskPriority {
             case LOW: return "Low";
             case NORMAL: return "Normal";
             case HIGH: return "High";
+            case NULL: return null;
             default: return "?";
           }
     }

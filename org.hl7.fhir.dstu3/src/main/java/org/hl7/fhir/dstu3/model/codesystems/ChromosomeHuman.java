@@ -218,6 +218,7 @@ public enum ChromosomeHuman {
             case _22: return "22";
             case X: return "X";
             case Y: return "Y";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -250,6 +251,7 @@ public enum ChromosomeHuman {
             case _22: return "chromosome 22";
             case X: return "chromosome X";
             case Y: return "chromosome Y";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -279,6 +281,7 @@ public enum ChromosomeHuman {
             case _22: return "chromosome 22";
             case X: return "chromosome X";
             case Y: return "chromosome Y";
+            case NULL: return null;
             default: return "?";
           }
     }

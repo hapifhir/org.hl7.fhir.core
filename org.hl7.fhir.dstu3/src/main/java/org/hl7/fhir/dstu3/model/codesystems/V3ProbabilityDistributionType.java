@@ -113,6 +113,7 @@ public enum V3ProbabilityDistributionType {
             case T: return "T";
             case U: return "U";
             case X2: return "X2";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum V3ProbabilityDistributionType {
             case T: return "Used to describe the quotient of a normal random variable and the square root of a c2 random variable.  The t-distribution has one parameter n, the number of degrees of freedom. The relationship to mean m  and variance s2 are: m = 0 and s2 = n / (n - 2)";
             case U: return "The uniform distribution assigns a constant probability over the entire interval of possible outcomes, while all outcomes outside this interval are assumed to have zero probability.  The width of this interval is 2s sqrt(3).  Thus, the uniform distribution assigns the probability densities f(x) = sqrt(2 s sqrt(3))  to values m - s sqrt(3) >= x <= m + s sqrt(3) and f(x) = 0 otherwise.";
             case X2: return "Used to describe the sum of squares of random variables which occurs when a variance is estimated (rather than presumed) from the sample.  The only parameter of the c2-distribution is n, so called the number of degrees of freedom (which is the number of independent parts in the sum).  The c2-distribution is a special type of g-distribution with parameter a = n /2 and b  = 2.  Hence, m = n and s2 = 2 n.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum V3ProbabilityDistributionType {
             case T: return "T";
             case U: return "uniform";
             case X2: return "chi square";
+            case NULL: return null;
             default: return "?";
           }
     }

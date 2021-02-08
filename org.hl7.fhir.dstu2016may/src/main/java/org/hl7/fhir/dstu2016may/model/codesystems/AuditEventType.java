@@ -57,6 +57,7 @@ public enum AuditEventType {
         public String toCode() {
           switch (this) {
             case REST: return "rest";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum AuditEventType {
         public String getDefinition() {
           switch (this) {
             case REST: return "Audit Event: Execution of a RESTful operation as defined by FHIR.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case REST: return "RESTful Operation";
+            case NULL: return null;
             default: return "?";
           }
     }

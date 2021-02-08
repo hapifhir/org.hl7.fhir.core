@@ -85,6 +85,7 @@ public enum V3QueryStatusCode {
             case EXECUTING: return "executing";
             case NEW: return "new";
             case WAITCONTINUEDQUERYRESPONSE: return "waitContinuedQueryResponse";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum V3QueryStatusCode {
             case EXECUTING: return "Query Status executing";
             case NEW: return "Query Status new";
             case WAITCONTINUEDQUERYRESPONSE: return "Query Status wait continued";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum V3QueryStatusCode {
             case EXECUTING: return "executing";
             case NEW: return "new";
             case WAITCONTINUEDQUERYRESPONSE: return "waitContinuedQueryResponse";
+            case NULL: return null;
             default: return "?";
           }
     }

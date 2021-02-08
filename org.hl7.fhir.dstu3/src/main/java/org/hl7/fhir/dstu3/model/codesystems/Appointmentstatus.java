@@ -106,6 +106,7 @@ public enum Appointmentstatus {
             case CANCELLED: return "cancelled";
             case NOSHOW: return "noshow";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum Appointmentstatus {
             case CANCELLED: return "The appointment has been cancelled.";
             case NOSHOW: return "Some or all of the participant(s) have not/did not appear for the appointment (usually the patient).";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum Appointmentstatus {
             case CANCELLED: return "Cancelled";
             case NOSHOW: return "No Show";
             case ENTEREDINERROR: return "Entered in error";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -71,6 +71,7 @@ public enum ObservationRangeCategory {
             case REFERENCE: return "reference";
             case CRITICAL: return "critical";
             case ABSOLUTE: return "absolute";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ObservationRangeCategory {
             case REFERENCE: return "Reference (Normal) Range for Ordinal and Continuous Observations.";
             case CRITICAL: return "Critical Range for Ordinal and Continuous Observations.";
             case ABSOLUTE: return "Absolute Range for Ordinal and Continuous Observations. Results outside this range are not possible.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ObservationRangeCategory {
             case REFERENCE: return "reference range";
             case CRITICAL: return "critical range";
             case ABSOLUTE: return "absolute range";
+            case NULL: return null;
             default: return "?";
           }
     }

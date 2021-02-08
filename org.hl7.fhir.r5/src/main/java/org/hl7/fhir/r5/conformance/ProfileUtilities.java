@@ -330,6 +330,18 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean autoFixSliceNames;
   private XVerExtensionManager xver;
 
+  public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
+    super();
+    this.context = context;
+    this.messages = messages;
+    this.pkp = pkp;
+
+    this.fpe = fpe;
+    if (context != null && this.fpe == null) {
+      this.fpe = new FHIRPathEngine(context, this);
+    }
+  }
+
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp) {
     super();
     this.context = context;
@@ -459,6 +471,10 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
   
   public List<ElementDefinition> getChildList(StructureDefinition profile, String path, String id, boolean diff) {
+    return getChildList(profile, path, id, diff, false);
+  }
+  
+  public List<ElementDefinition> getChildList(StructureDefinition profile, String path, String id, boolean diff, boolean refs) {
     List<ElementDefinition> res = new ArrayList<ElementDefinition>();
 
     boolean capturing = id==null;
@@ -483,11 +499,18 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (capturing) {
         String p = e.getPath();
   
-        if (!Utilities.noString(e.getContentReference()) && path.startsWith(p)) {
+        if (refs && !Utilities.noString(e.getContentReference()) && path.startsWith(p)) {
           if (path.length() > p.length()) {
             return getChildList(profile, e.getContentReference()+"."+path.substring(p.length()+1), null, diff);
           } else if (e.getContentReference().startsWith("#")) {
             return getChildList(profile, e.getContentReference().substring(1), null, diff);            
+          } else if (e.getContentReference().contains("#")) {
+            String url = e.getContentReference().substring(0, e.getContentReference().indexOf("#"));
+            StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+            if (sd == null) {
+              throw new DefinitionException("Unable to find Structure "+url);
+            }
+            return getChildList(sd, e.getContentReference().substring(e.getContentReference().indexOf("#")+1), null, diff);      
           } else {
             return getChildList(profile, e.getContentReference(), null, diff);
           }
@@ -502,6 +525,10 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
 
     return res;
+  }
+
+  public List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element, boolean diff, boolean refs) {
+    return getChildList(structure, element.getPath(), element.getId(), diff, refs);
   }
 
   public List<ElementDefinition> getChildList(StructureDefinition structure, ElementDefinition element, boolean diff) {
@@ -3306,7 +3333,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), tail(ed.getElement().getPath()), ed.getElement().getPath()));
         } else {
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "See ", ed.getElement().getPath()), null));
-          c.getPieces().add(gen.new Piece(ed.getSource().getUserString("path")+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getType()+")", ed.getElement().getPath()));
+          c.getPieces().add(gen.new Piece(corePath+ed.getSource().getUserString("path")+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getType()+")", ed.getElement().getPath()));
         }
       }
       return c;
@@ -3438,6 +3465,10 @@ public class ProfileUtilities extends TranslatingUtilities {
     return c;
   }
 
+
+  private String pfx(String prefix, String url) {
+    return Utilities.isAbsoluteUrl(url) ? url : prefix + url;
+  }
 
   public void genTargetLink(HierarchicalTableGenerator gen, String profileBaseFileName, String corePath, Cell c, TypeRefComponent t, String u) {
     if (u.startsWith("http://hl7.org/fhir/StructureDefinition/")) {
@@ -6484,6 +6515,10 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public static boolean isMustSupport(CanonicalType profile) {
     return "true".equals(ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_MUST_SUPPORT));
+  }
+
+  public ElementDefinitionResolution resolveContentRef(StructureDefinition structure, ElementDefinition element) {
+    return getElementById(structure, structure.getSnapshot().getElement(), element.getContentReference());
   }
   
 }

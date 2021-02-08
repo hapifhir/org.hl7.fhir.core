@@ -162,6 +162,7 @@ public enum V3HL7UpdateMode {
             case AU: return "AU";
             case I: return "I";
             case V: return "V";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -186,6 +187,7 @@ public enum V3HL7UpdateMode {
             case AU: return "Description: AU: If this item exists, update it with these values. If it does not exist, create it with these values. If the item is part of the collection, update each item that matches this item, and if no items match, add a new item to the collection.";
             case I: return "Ignore this role, it is not relevant to the update.";
             case V: return "Verify - this message element must match a value already in the receiving systems database in order to process the message.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -207,6 +209,7 @@ public enum V3HL7UpdateMode {
             case AU: return "Add or Update";
             case I: return "Ignore";
             case V: return "Verify";
+            case NULL: return null;
             default: return "?";
           }
     }

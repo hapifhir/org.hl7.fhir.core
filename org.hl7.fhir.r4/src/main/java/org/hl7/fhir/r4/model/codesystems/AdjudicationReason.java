@@ -64,6 +64,7 @@ public enum AdjudicationReason {
           switch (this) {
             case AR001: return "ar001";
             case AR002: return "ar002";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum AdjudicationReason {
           switch (this) {
             case AR001: return "Not covered";
             case AR002: return "Plan Limit Reached";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum AdjudicationReason {
           switch (this) {
             case AR001: return "Not covered";
             case AR002: return "Plan Limit Reached";
+            case NULL: return null;
             default: return "?";
           }
     }

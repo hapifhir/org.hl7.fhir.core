@@ -127,6 +127,7 @@ public enum AssertOperatorCodes {
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
             case EVAL: return "eval";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public enum AssertOperatorCodes {
             case CONTAINS: return "Compare value string contains a known value.";
             case NOTCONTAINS: return "Compare value string does not contain a known value.";
             case EVAL: return "Evaluate the fluentpath expression as a boolean condition.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public enum AssertOperatorCodes {
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
             case EVAL: return "evaluate";
+            case NULL: return null;
             default: return "?";
           }
     }

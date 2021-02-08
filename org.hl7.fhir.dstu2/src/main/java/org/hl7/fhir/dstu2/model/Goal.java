@@ -125,6 +125,7 @@ public class Goal extends DomainResource {
             case SUSTAINING: return "sustaining";
             case ONHOLD: return "on-hold";
             case CANCELLED: return "cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -139,6 +140,7 @@ public class Goal extends DomainResource {
             case SUSTAINING: return "http://hl7.org/fhir/goal-status";
             case ONHOLD: return "http://hl7.org/fhir/goal-status";
             case CANCELLED: return "http://hl7.org/fhir/goal-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public class Goal extends DomainResource {
             case SUSTAINING: return "The goal has been met, but ongoing activity is needed to sustain the goal objective";
             case ONHOLD: return "The goal remains a long term objective but is no longer being actively pursued for a temporary period of time.";
             case CANCELLED: return "The goal is no longer being sought";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -167,6 +170,7 @@ public class Goal extends DomainResource {
             case SUSTAINING: return "Sustaining";
             case ONHOLD: return "On Hold";
             case CANCELLED: return "Cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }

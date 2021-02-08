@@ -78,6 +78,7 @@ public enum VerificationresultCommunicationMethod {
             case PORTAL: return "portal";
             case PULL: return "pull";
             case PUSH: return "push";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum VerificationresultCommunicationMethod {
             case PORTAL: return "The information is submitted/retrieved via a portal";
             case PULL: return "The information is retrieved (i.e. pulled) from a source (e.g. over an API)";
             case PUSH: return "The information is sent (i.e. pushed) from a source (e.g. over an API, asynchronously, secure messaging)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum VerificationresultCommunicationMethod {
             case PORTAL: return "Portal";
             case PULL: return "Pull";
             case PUSH: return "Push";
+            case NULL: return null;
             default: return "?";
           }
     }

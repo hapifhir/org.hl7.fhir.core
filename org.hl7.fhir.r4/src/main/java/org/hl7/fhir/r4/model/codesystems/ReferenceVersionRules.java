@@ -71,6 +71,7 @@ public enum ReferenceVersionRules {
             case EITHER: return "either";
             case INDEPENDENT: return "independent";
             case SPECIFIC: return "specific";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ReferenceVersionRules {
             case EITHER: return "The reference may be either version independent or version specific.";
             case INDEPENDENT: return "The reference must be version independent.";
             case SPECIFIC: return "The reference must be version specific.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ReferenceVersionRules {
             case EITHER: return "Either Specific or independent";
             case INDEPENDENT: return "Version independent";
             case SPECIFIC: return "Version Specific";
+            case NULL: return null;
             default: return "?";
           }
     }

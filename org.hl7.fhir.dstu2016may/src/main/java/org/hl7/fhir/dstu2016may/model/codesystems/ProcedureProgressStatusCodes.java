@@ -92,6 +92,7 @@ public enum ProcedureProgressStatusCodes {
             case D: return "d";
             case E: return "e";
             case F: return "f";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ProcedureProgressStatusCodes {
             case D: return "";
             case E: return "";
             case F: return "The patient is in the recovery room.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ProcedureProgressStatusCodes {
             case D: return "Opened (skin)";
             case E: return "Closed (skin)";
             case F: return "In Recovery Room";
+            case NULL: return null;
             default: return "?";
           }
     }

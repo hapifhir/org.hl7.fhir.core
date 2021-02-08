@@ -95,6 +95,7 @@ public class ContactPoint extends Type implements ICompositeType {
             case EMAIL: return "email";
             case PAGER: return "pager";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +106,7 @@ public class ContactPoint extends Type implements ICompositeType {
             case EMAIL: return "http://hl7.org/fhir/contact-point-system";
             case PAGER: return "http://hl7.org/fhir/contact-point-system";
             case OTHER: return "http://hl7.org/fhir/contact-point-system";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,6 +117,7 @@ public class ContactPoint extends Type implements ICompositeType {
             case EMAIL: return "The value is an email address.";
             case PAGER: return "The value is a pager number. These may be local pager numbers that are only usable on a particular pager system.";
             case OTHER: return "A contact that is not a phone, fax, or email address. The format of the value SHOULD be a URL. This is intended for various personal contacts including blogs, Twitter, Facebook, etc. Do not use for email addresses. If this is not a URL, then it will require human interpretation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -125,6 +128,7 @@ public class ContactPoint extends Type implements ICompositeType {
             case EMAIL: return "Email";
             case PAGER: return "Pager";
             case OTHER: return "URL";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -230,6 +234,7 @@ public class ContactPoint extends Type implements ICompositeType {
             case TEMP: return "temp";
             case OLD: return "old";
             case MOBILE: return "mobile";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -240,6 +245,7 @@ public class ContactPoint extends Type implements ICompositeType {
             case TEMP: return "http://hl7.org/fhir/contact-point-use";
             case OLD: return "http://hl7.org/fhir/contact-point-use";
             case MOBILE: return "http://hl7.org/fhir/contact-point-use";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -250,6 +256,7 @@ public class ContactPoint extends Type implements ICompositeType {
             case TEMP: return "A temporary contact point. The period can provide more detailed information.";
             case OLD: return "This contact point is no longer in use (or was never correct, but retained for records).";
             case MOBILE: return "A telecommunication device that moves and stays with its owner. May have characteristics of all other use codes, suitable for urgent matters, not the first choice for routine business.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -260,6 +267,7 @@ public class ContactPoint extends Type implements ICompositeType {
             case TEMP: return "Temp";
             case OLD: return "Old";
             case MOBILE: return "Mobile";
+            case NULL: return null;
             default: return "?";
           }
         }

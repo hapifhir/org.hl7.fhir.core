@@ -121,6 +121,7 @@ A specific time might or might not be pre-allocated.
             case ENTEREDINERROR: return "entered-in-error";
             case CHECKEDIN: return "checked-in";
             case WAITLIST: return "waitlist";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -139,6 +140,7 @@ A specific time might or might not be pre-allocated.
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case CHECKEDIN: return "When checked in, all pre-encounter administrative work is complete, and the encounter may begin. (where multiple patients are involved, they are all present).";
             case WAITLIST: return "The appointment has been placed on a waitlist, to be scheduled/confirmed in the future when a slot/service is available.\nA specific time might or might not be pre-allocated.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +156,7 @@ A specific time might or might not be pre-allocated.
             case ENTEREDINERROR: return "Entered in error";
             case CHECKEDIN: return "Checked In";
             case WAITLIST: return "Waitlisted";
+            case NULL: return null;
             default: return "?";
           }
     }

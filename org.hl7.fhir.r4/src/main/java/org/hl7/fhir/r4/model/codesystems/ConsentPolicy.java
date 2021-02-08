@@ -232,6 +232,7 @@ public enum ConsentPolicy {
             case NIHGRDR: return "nih-grdr";
             case NIH527: return "nih-527";
             case GA4GH: return "ga4gh";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -266,6 +267,7 @@ public enum ConsentPolicy {
             case NIHGRDR: return "Global Rare Disease Patient Registry and Data Repository (GRDR) consent is an agreement of a healthcare consumer to permit collection, access, use and disclosure of de-identified rare disease information and collection of bio-specimens, medical information, family history and other related information from patients to permit the registry collection of health and genetic information, and specimens for pseudonymized disclosure for research purpose of use. https://rarediseases.info.nih.gov/files/informed_consent_template.pdf";
             case NIH527: return "NIH Authorization for the Release of Medical Information is a patient’s consent for the National Institutes of Health Clinical Center to release medical information to care providers, which can be revoked. Note: Consent Form available @ http://cc.nih.gov/participate/_pdf/NIH-527.pdf";
             case GA4GH: return "Global Alliance for Genomic Health Data Sharing Consent Form is an example of the GA4GH Population origins and ancestry research consent form. Consenters agree to permitting a specified research project to collect ancestry and genetic information in controlled-access databases, and to allow other researchers to use deidentified information from those databases. http://www.commonaccord.org/index.php?action=doc&file=Wx/org/genomicsandhealth/REWG/Demo/Roberta_Robinson_US";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -297,6 +299,7 @@ public enum ConsentPolicy {
             case NIHGRDR: return "NIH Global Rare Disease Patient Registry and Data Repository consent";
             case NIH527: return "NIH Authorization for the Release of Medical Information";
             case GA4GH: return "Population origins and ancestry research consent";
+            case NULL: return null;
             default: return "?";
           }
     }

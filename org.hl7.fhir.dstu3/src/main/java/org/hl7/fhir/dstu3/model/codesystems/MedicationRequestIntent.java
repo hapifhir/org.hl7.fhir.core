@@ -78,6 +78,7 @@ public enum MedicationRequestIntent {
             case PLAN: return "plan";
             case ORDER: return "order";
             case INSTANCEORDER: return "instance-order";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MedicationRequestIntent {
             case PLAN: return "The request represents an intension to ensure something occurs without providing an authorization for others to act";
             case ORDER: return "The request represents a request/demand and authorization for action";
             case INSTANCEORDER: return "The request represents an instance for the particular order, for example a medication administration record.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MedicationRequestIntent {
             case PLAN: return "Plan";
             case ORDER: return "Order";
             case INSTANCEORDER: return "Instance Order";
+            case NULL: return null;
             default: return "?";
           }
     }

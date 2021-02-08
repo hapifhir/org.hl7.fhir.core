@@ -113,6 +113,7 @@ public enum EncounterStatus {
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum EncounterStatus {
             case CANCELLED: return "The Encounter has ended before it has begun.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case UNKNOWN: return "The encounter status is unknown. Note that \"unknown\" is a value of last resort and every attempt should be made to provide a meaningful value other than \"unknown\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum EncounterStatus {
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

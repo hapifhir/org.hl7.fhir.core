@@ -64,6 +64,7 @@ public enum RelatedClaimRelationship {
           switch (this) {
             case PRIOR: return "prior";
             case ASSOCIATED: return "associated";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum RelatedClaimRelationship {
           switch (this) {
             case PRIOR: return "A prior claim instance for the same intended suite of services.";
             case ASSOCIATED: return "A claim for a different suite of services which is related the the suite claimed here.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum RelatedClaimRelationship {
           switch (this) {
             case PRIOR: return "Prior Claim";
             case ASSOCIATED: return "Associated Claim";
+            case NULL: return null;
             default: return "?";
           }
     }

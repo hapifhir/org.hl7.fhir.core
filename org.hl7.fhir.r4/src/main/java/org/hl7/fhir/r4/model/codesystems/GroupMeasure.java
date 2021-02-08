@@ -92,6 +92,7 @@ public enum GroupMeasure {
             case MEANOFMEDIAN: return "mean-of-median";
             case MEDIANOFMEAN: return "median-of-mean";
             case MEDIANOFMEDIAN: return "median-of-median";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum GroupMeasure {
             case MEANOFMEDIAN: return "Aggregated using Mean of study median values.";
             case MEDIANOFMEAN: return "Aggregated using Median of study mean values.";
             case MEDIANOFMEDIAN: return "Aggregated using Median of study median values.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum GroupMeasure {
             case MEANOFMEDIAN: return "Mean of Study Medins";
             case MEDIANOFMEAN: return "Median of Study Means";
             case MEDIANOFMEDIAN: return "Median of Study Medians";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -57,6 +57,7 @@ public enum TaskIntent {
         public String toCode() {
           switch (this) {
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum TaskIntent {
         public String getDefinition() {
           switch (this) {
             case UNKNOWN: return "The intent is not known.  When dealing with Task, it's not always known (or relevant) how the task was initiated - i.e. whether it was proposed, planned, ordered or just done spontaneously.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

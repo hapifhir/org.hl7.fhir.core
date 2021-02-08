@@ -78,6 +78,7 @@ public enum HistoryStatus {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case HEALTHUNKNOWN: return "health-unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum HistoryStatus {
             case COMPLETED: return "All available related health information is captured as of the date (and possibly time) when the family member history was taken.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case HEALTHUNKNOWN: return "Health information for this individual is unavailable/unknown.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum HistoryStatus {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in error";
             case HEALTHUNKNOWN: return "Health unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

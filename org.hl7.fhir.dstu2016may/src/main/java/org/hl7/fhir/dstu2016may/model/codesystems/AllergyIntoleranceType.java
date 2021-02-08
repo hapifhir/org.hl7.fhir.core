@@ -64,6 +64,7 @@ public enum AllergyIntoleranceType {
           switch (this) {
             case ALLERGY: return "allergy";
             case INTOLERANCE: return "intolerance";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum AllergyIntoleranceType {
           switch (this) {
             case ALLERGY: return "A propensity for hypersensitivity reaction(s) to a substance.  These reactions are most typically type I hypersensitivity, plus other \"allergy-like\" reactions, including pseudoallergy.";
             case INTOLERANCE: return "A propensity for adverse reactions to a substance that is not judged to be allergic or \"allergy-like\".  These reactions are typically (but not necessarily) non-immune.  They are to some degree idiosyncratic and/or individually specific (i.e. are not a reaction that is expected to occur with most or all patients given similar circumstances).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum AllergyIntoleranceType {
           switch (this) {
             case ALLERGY: return "Allergy";
             case INTOLERANCE: return "Intolerance";
+            case NULL: return null;
             default: return "?";
           }
     }

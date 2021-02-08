@@ -92,6 +92,7 @@ public enum ContactentityType {
             case PAYOR: return "PAYOR";
             case PATINF: return "PATINF";
             case PRESS: return "PRESS";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ContactentityType {
             case PAYOR: return "Contact details for dealing with issues related to insurance claims/adjudication/payment.";
             case PATINF: return "Generic information contact for patients.";
             case PRESS: return "Dedicated contact point for matters relating to press enquiries.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ContactentityType {
             case PAYOR: return "Payor";
             case PATINF: return "Patient";
             case PRESS: return "Press";
+            case NULL: return null;
             default: return "?";
           }
     }

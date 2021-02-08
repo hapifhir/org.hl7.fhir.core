@@ -120,6 +120,8 @@ import org.hl7.fhir.validation.cli.model.ScanOutputItem;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher.IPackageInstaller;
 import org.hl7.fhir.validation.cli.utils.*;
 import org.hl7.fhir.validation.instance.InstanceValidator;
+import org.hl7.fhir.validation.instance.utils.NodeStack;
+import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -310,6 +312,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   private Map<String, ValidationControl> validationControl = new HashMap<>();
   private QuestionnaireMode questionnaireMode;
 
+  private FHIRPathEngine fpe;
+
   public ValidationEngine() throws IOException {
     pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     context = SimpleWorkerContext.fromNothing();
@@ -408,6 +412,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     }
     NpmPackage npmX = pcm.loadPackage("hl7.fhir.xver-extensions", "0.0.4");
     context.loadFromPackage(npmX, null);
+
+    this.fpe = new FHIRPathEngine(context);
   }
 
   private IContextResourceLoader loaderForVersion() {
@@ -976,6 +982,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     context.setTlogging(false);
     if (url == null) {
       context.setCanRunWithoutTerminology(true);
+      context.setNoTerminologyServer(true);
       return "n/a: No Terminology Server";
     } else {
       try {
@@ -1451,7 +1458,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   private OperationOutcome messagesToOutcome(List<ValidationMessage> messages) throws IOException, FHIRException, EOperationOutcome {
     OperationOutcome op = new OperationOutcome();
     for (ValidationMessage vm : filterMessages(messages)) {
-      FHIRPathEngine fpe = new FHIRPathEngine(context);
       try {
         fpe.parse(vm.getLocation());
       } catch (Exception e) {
@@ -1528,9 +1534,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
 
   public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
     Content cnt = loadContent(source, "validate", false);
-    FHIRPathEngine fpe = new FHIRPathEngine(context);
+    FHIRPathEngine fpe = this.getValidator().getFHIRPathEngine();
     Element e = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
-    return fpe.evaluateToString(e, expression);
+    ExpressionNode exp = fpe.parse(expression);
+    return fpe.evaluateToString(new ValidatorHostContext(context, e), e, e, e, exp);
   }
 
   public StructureDefinition snapshot(String source, String version) throws FHIRException, IOException {

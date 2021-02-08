@@ -64,6 +64,7 @@ public enum MapContextType {
           switch (this) {
             case TYPE: return "type";
             case VARIABLE: return "variable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum MapContextType {
           switch (this) {
             case TYPE: return "The context specifies a type";
             case VARIABLE: return "The context specifies a variable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum MapContextType {
           switch (this) {
             case TYPE: return "Type";
             case VARIABLE: return "Variable";
+            case NULL: return null;
             default: return "?";
           }
     }

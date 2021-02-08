@@ -148,6 +148,7 @@ public enum EndpointConnectionType {
             case HL7V2MLLP: return "hl7v2-mllp";
             case SECUREEMAIL: return "secure-email";
             case DIRECTPROJECT: return "direct-project";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -170,6 +171,7 @@ public enum EndpointConnectionType {
             case HL7V2MLLP: return "HL7v2 messages over an LLP TCP connection";
             case SECUREEMAIL: return "Email delivery using a digital certificate to encrypt the content using the public key, receiver must have the private key to decrypt the content";
             case DIRECTPROJECT: return "Direct Project information - http://wiki.directproject.org/";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -189,6 +191,7 @@ public enum EndpointConnectionType {
             case HL7V2MLLP: return "HL7 v2 MLLP";
             case SECUREEMAIL: return "Secure email";
             case DIRECTPROJECT: return "Direct Project";
+            case NULL: return null;
             default: return "?";
           }
     }

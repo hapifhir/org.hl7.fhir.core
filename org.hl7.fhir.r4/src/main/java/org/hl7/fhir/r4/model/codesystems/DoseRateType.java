@@ -64,6 +64,7 @@ public enum DoseRateType {
           switch (this) {
             case CALCULATED: return "calculated";
             case ORDERED: return "ordered";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum DoseRateType {
           switch (this) {
             case CALCULATED: return "The dose specified is calculated by the prescriber or the system.";
             case ORDERED: return "The dose specified is as ordered by the prescriber.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum DoseRateType {
           switch (this) {
             case CALCULATED: return "Calculated";
             case ORDERED: return "Ordered";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -89,6 +89,7 @@ public class Immunization extends DomainResource {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case NOTDONE: return "not-done";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class Immunization extends DomainResource {
             case COMPLETED: return "http://hl7.org/fhir/event-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/event-status";
             case NOTDONE: return "http://hl7.org/fhir/event-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class Immunization extends DomainResource {
             case COMPLETED: return "The event has now concluded.";
             case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"stopped\" rather than \"entered-in-error\".).";
             case NOTDONE: return "The event was terminated prior to any activity beyond preparation.  I.e. The 'main' activity has not yet begun.  The boundary between preparatory and the 'main' activity is context-specific.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class Immunization extends DomainResource {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
             case NOTDONE: return "Not Done";
+            case NULL: return null;
             default: return "?";
           }
         }

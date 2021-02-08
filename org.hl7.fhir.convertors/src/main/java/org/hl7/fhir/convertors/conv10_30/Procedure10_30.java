@@ -41,6 +41,8 @@ public class Procedure10_30 {
         if (src.hasBasedOn())
             tgt.setRequest(VersionConvertor_10_30.convertReference(src.getBasedOnFirstRep()));
         for (org.hl7.fhir.dstu3.model.Procedure.ProcedureFocalDeviceComponent t : src.getFocalDevice()) tgt.addFocalDevice(convertProcedureFocalDeviceComponent(t));
+        for (org.hl7.fhir.dstu3.model.Annotation note : src.getNote()) tgt.addNotes(VersionConvertor_10_30.convertAnnotation(note));
+        for (org.hl7.fhir.dstu3.model.Reference r : src.getUsedReference()) tgt.addUsed(VersionConvertor_10_30.convertReference(r));
         return tgt;
     }
 
@@ -80,6 +82,8 @@ public class Procedure10_30 {
         if (src.hasRequest())
             tgt.addBasedOn(VersionConvertor_10_30.convertReference(src.getRequest()));
         for (org.hl7.fhir.dstu2.model.Procedure.ProcedureFocalDeviceComponent t : src.getFocalDevice()) tgt.addFocalDevice(convertProcedureFocalDeviceComponent(t));
+        for (org.hl7.fhir.dstu2.model.Annotation note : src.getNotes()) tgt.addNote(VersionConvertor_10_30.convertAnnotation(note));
+        for (org.hl7.fhir.dstu2.model.Reference r : src.getUsed()) tgt.addUsedReference(VersionConvertor_10_30.convertReference(r));
         return tgt;
     }
 

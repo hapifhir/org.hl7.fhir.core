@@ -108,6 +108,7 @@ public class DeviceDefinition extends DomainResource {
             case MANUFACTURERNAME: return "manufacturer-name";
             case MODELNAME: return "model-name";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +120,7 @@ public class DeviceDefinition extends DomainResource {
             case MANUFACTURERNAME: return "http://hl7.org/fhir/device-nametype";
             case MODELNAME: return "http://hl7.org/fhir/device-nametype";
             case OTHER: return "http://hl7.org/fhir/device-nametype";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +132,7 @@ public class DeviceDefinition extends DomainResource {
             case MANUFACTURERNAME: return "Manufacturer name.";
             case MODELNAME: return "Model name.";
             case OTHER: return "other.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -141,6 +144,7 @@ public class DeviceDefinition extends DomainResource {
             case MANUFACTURERNAME: return "Manufacturer name";
             case MODELNAME: return "Model name";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }

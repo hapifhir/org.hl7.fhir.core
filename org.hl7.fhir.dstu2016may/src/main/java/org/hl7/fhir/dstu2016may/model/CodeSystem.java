@@ -94,6 +94,7 @@ public class CodeSystem extends DomainResource {
             case EXAMPLAR: return "examplar";
             case FRAGMENT: return "fragment";
             case COMPLETE: return "complete";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +104,7 @@ public class CodeSystem extends DomainResource {
             case EXAMPLAR: return "http://hl7.org/fhir/codesystem-content-mode";
             case FRAGMENT: return "http://hl7.org/fhir/codesystem-content-mode";
             case COMPLETE: return "http://hl7.org/fhir/codesystem-content-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -112,6 +114,7 @@ public class CodeSystem extends DomainResource {
             case EXAMPLAR: return "A few representative concepts are included in the code system resource";
             case FRAGMENT: return "A subset of the code system concepts are included in the code system resource";
             case COMPLETE: return "All the concepts defined by the code system are included in the code system resource";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -121,6 +124,7 @@ public class CodeSystem extends DomainResource {
             case EXAMPLAR: return "Examplar";
             case FRAGMENT: return "Fragment";
             case COMPLETE: return "Complete";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -227,6 +231,7 @@ public class CodeSystem extends DomainResource {
             case INTEGER: return "integer";
             case BOOLEAN: return "boolean";
             case DATETIME: return "dateTime";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -238,6 +243,7 @@ public class CodeSystem extends DomainResource {
             case INTEGER: return "http://hl7.org/fhir/concept-property-type";
             case BOOLEAN: return "http://hl7.org/fhir/concept-property-type";
             case DATETIME: return "http://hl7.org/fhir/concept-property-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -249,6 +255,7 @@ public class CodeSystem extends DomainResource {
             case INTEGER: return "The property value is a string (often used to assign ranking values to concepts for supporting score assessments)";
             case BOOLEAN: return "The property value is a boolean true | false";
             case DATETIME: return "The property is a date or a date + time";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -260,6 +267,7 @@ public class CodeSystem extends DomainResource {
             case INTEGER: return "integer";
             case BOOLEAN: return "boolean";
             case DATETIME: return "dateTime";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -71,6 +71,7 @@ public enum V3Sequencing {
             case A: return "A";
             case D: return "D";
             case N: return "N";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3Sequencing {
             case A: return "Ascending sequence order.";
             case D: return "Descending sequence order.";
             case N: return "No enforced sequence order.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3Sequencing {
             case A: return "Ascending";
             case D: return "Descending";
             case N: return "None";
+            case NULL: return null;
             default: return "?";
           }
     }

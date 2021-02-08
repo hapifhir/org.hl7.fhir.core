@@ -78,6 +78,7 @@ public enum AuditEventOutcome {
             case _4: return "4";
             case _8: return "8";
             case _12: return "12";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum AuditEventOutcome {
             case _4: return "The action was not successful due to some kind of catered for error (often equivalent to an HTTP 400 response).";
             case _8: return "The action was not successful due to some kind of unexpected error (often equivalent to an HTTP 500 response).";
             case _12: return "An error of such magnitude occurred that the system is no longer available for use (i.e. the system died).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum AuditEventOutcome {
             case _4: return "Minor failure";
             case _8: return "Serious failure";
             case _12: return "Major failure";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -92,6 +92,7 @@ public enum CoverageLevel {
             case SUBPLAN: return "subplan";
             case CLASS: return "class";
             case SUBCLASS: return "subclass";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum CoverageLevel {
             case SUBPLAN: return "A subset of a specific suite of benefits.";
             case CLASS: return "A class of benefits.";
             case SUBCLASS: return "A subset of a class of benefits.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum CoverageLevel {
             case SUBPLAN: return "SubPlan";
             case CLASS: return "Class";
             case SUBCLASS: return "SubClass";
+            case NULL: return null;
             default: return "?";
           }
     }

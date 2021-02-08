@@ -358,6 +358,7 @@ public enum V3GTSAbbreviation {
             case QOD: return "QOD";
             case TID: return "TID";
             case WK: return "WK";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -410,6 +411,7 @@ public enum V3GTSAbbreviation {
             case QOD: return "Every other day at institution specified times.";
             case TID: return "Three times a day at institution specified time";
             case WK: return "Weekly at institution specified time.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -459,6 +461,7 @@ public enum V3GTSAbbreviation {
             case QOD: return "QOD";
             case TID: return "TID";
             case WK: return "weekly";
+            case NULL: return null;
             default: return "?";
           }
     }

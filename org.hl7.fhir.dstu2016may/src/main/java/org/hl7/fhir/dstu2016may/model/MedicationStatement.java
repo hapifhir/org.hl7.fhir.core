@@ -94,6 +94,7 @@ public class MedicationStatement extends DomainResource {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case INTENDED: return "intended";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +104,7 @@ public class MedicationStatement extends DomainResource {
             case COMPLETED: return "http://hl7.org/fhir/medication-statement-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/medication-statement-status";
             case INTENDED: return "http://hl7.org/fhir/medication-statement-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -112,6 +114,7 @@ public class MedicationStatement extends DomainResource {
             case COMPLETED: return "The medication is no longer being taken.";
             case ENTEREDINERROR: return "The statement was entered in error.";
             case INTENDED: return "The medication may be taken at some time in the future.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -121,6 +124,7 @@ public class MedicationStatement extends DomainResource {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
             case INTENDED: return "Intended";
+            case NULL: return null;
             default: return "?";
           }
         }

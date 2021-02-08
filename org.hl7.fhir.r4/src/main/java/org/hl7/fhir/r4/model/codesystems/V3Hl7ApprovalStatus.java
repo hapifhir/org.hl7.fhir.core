@@ -200,6 +200,7 @@ public enum V3Hl7ApprovalStatus {
             case PROP: return "prop";
             case REF: return "ref";
             case WD: return "wd";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -228,6 +229,7 @@ public enum V3Hl7ApprovalStatus {
             case PROP: return "Description: Content submitted to a committee for consideration for future inclusion in the standard.";
             case REF: return "Description: Content intended to support other content that is subject to approval, but which is not itself subject to formal approval.";
             case WD: return "Description: Content that represents an item that was at one point a normative or informative standard, but was subsequently withdrawn.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -253,6 +255,7 @@ public enum V3Hl7ApprovalStatus {
             case PROP: return "proposal";
             case REF: return "reference";
             case WD: return "withdrawn";
+            case NULL: return null;
             default: return "?";
           }
     }

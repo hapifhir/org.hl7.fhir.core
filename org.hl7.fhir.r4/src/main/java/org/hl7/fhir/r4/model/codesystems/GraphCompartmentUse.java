@@ -64,6 +64,7 @@ public enum GraphCompartmentUse {
           switch (this) {
             case CONDITION: return "condition";
             case REQUIREMENT: return "requirement";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum GraphCompartmentUse {
           switch (this) {
             case CONDITION: return "This compartment rule is a condition for whether the rule applies.";
             case REQUIREMENT: return "This compartment rule is enforced on any relationships that meet the conditions.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum GraphCompartmentUse {
           switch (this) {
             case CONDITION: return "Condition";
             case REQUIREMENT: return "Requirement";
+            case NULL: return null;
             default: return "?";
           }
     }

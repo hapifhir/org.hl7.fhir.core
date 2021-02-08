@@ -64,6 +64,7 @@ public enum HspcPatientAdoptionInfo {
           switch (this) {
             case _526742432: return "526742432";
             case _526742433: return "526742433";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum HspcPatientAdoptionInfo {
           switch (this) {
             case _526742432: return "An indication that the medical records being viewed are from a time prior to a patient's adoption and therefore cannot be viewed by the adoptive gaurdians.";
             case _526742433: return "An indication that the medical records being viewed are from a time after a patient's adoption and can be viewed by the adoptive gaurdians.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum HspcPatientAdoptionInfo {
           switch (this) {
             case _526742432: return "Adopted Birth Record";
             case _526742433: return "Adopted Patient Record";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -124,6 +124,7 @@ public class MedicationRequest extends DomainResource {
             case FILLERORDER: return "filler-order";
             case INSTANCEORDER: return "instance-order";
             case OPTION: return "option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -137,6 +138,7 @@ public class MedicationRequest extends DomainResource {
             case FILLERORDER: return "http://hl7.org/fhir/CodeSystem/medicationrequest-intent";
             case INSTANCEORDER: return "http://hl7.org/fhir/CodeSystem/medicationrequest-intent";
             case OPTION: return "http://hl7.org/fhir/CodeSystem/medicationrequest-intent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -150,6 +152,7 @@ public class MedicationRequest extends DomainResource {
             case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
             case INSTANCEORDER: return "The request represents an instance for the particular order, for example a medication administration record.";
             case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or  other constraints among a set of requests.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -163,6 +166,7 @@ public class MedicationRequest extends DomainResource {
             case FILLERORDER: return "Filler Order";
             case INSTANCEORDER: return "Instance Order";
             case OPTION: return "Option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -312,6 +316,7 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "stopped";
             case DRAFT: return "draft";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -325,6 +330,7 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "http://hl7.org/fhir/CodeSystem/medicationrequest-status";
             case DRAFT: return "http://hl7.org/fhir/CodeSystem/medicationrequest-status";
             case UNKNOWN: return "http://hl7.org/fhir/CodeSystem/medicationrequest-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -338,6 +344,7 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "Actions implied by the prescription are to be permanently halted, before all of the administrations occurred. This should not be used if the original order was entered in error";
             case DRAFT: return "The prescription is not yet 'actionable', e.g. it is a work in progress, requires sign-off, verification or needs to be run through decision support process.";
             case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this observation. Note: This concept is not to be used for 'other' - one of the listed statuses is presumed to apply, but the authoring/source system does not know which.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -351,6 +358,7 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "Stopped";
             case DRAFT: return "Draft";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -93,6 +93,7 @@ public class Person extends DomainResource {
             case LEVEL2: return "level2";
             case LEVEL3: return "level3";
             case LEVEL4: return "level4";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -102,6 +103,7 @@ public class Person extends DomainResource {
             case LEVEL2: return "http://hl7.org/fhir/identity-assuranceLevel";
             case LEVEL3: return "http://hl7.org/fhir/identity-assuranceLevel";
             case LEVEL4: return "http://hl7.org/fhir/identity-assuranceLevel";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,6 +113,7 @@ public class Person extends DomainResource {
             case LEVEL2: return "Some confidence in the asserted identity's accuracy.";
             case LEVEL3: return "High confidence in the asserted identity's accuracy.";
             case LEVEL4: return "Very high confidence in the asserted identity's accuracy.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -120,6 +123,7 @@ public class Person extends DomainResource {
             case LEVEL2: return "Level 2";
             case LEVEL3: return "Level 3";
             case LEVEL4: return "Level 4";
+            case NULL: return null;
             default: return "?";
           }
         }

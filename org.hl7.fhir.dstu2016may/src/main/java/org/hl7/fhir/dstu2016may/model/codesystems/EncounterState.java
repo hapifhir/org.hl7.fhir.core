@@ -92,6 +92,7 @@ public enum EncounterState {
             case ONLEAVE: return "onleave";
             case FINISHED: return "finished";
             case CANCELLED: return "cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum EncounterState {
             case ONLEAVE: return "The Encounter has begun, but the patient is temporarily on leave.";
             case FINISHED: return "The Encounter has ended.";
             case CANCELLED: return "The Encounter has ended before it has begun.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum EncounterState {
             case ONLEAVE: return "On Leave";
             case FINISHED: return "Finished";
             case CANCELLED: return "Cancelled";
+            case NULL: return null;
             default: return "?";
           }
     }

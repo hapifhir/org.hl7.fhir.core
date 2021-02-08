@@ -153,6 +153,7 @@ public class DiagnosticOrder extends DomainResource {
             case SUSPENDED: return "suspended";
             case REJECTED: return "rejected";
             case FAILED: return "failed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +172,7 @@ public class DiagnosticOrder extends DomainResource {
             case SUSPENDED: return "http://hl7.org/fhir/diagnostic-order-status";
             case REJECTED: return "http://hl7.org/fhir/diagnostic-order-status";
             case FAILED: return "http://hl7.org/fhir/diagnostic-order-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -189,6 +191,7 @@ public class DiagnosticOrder extends DomainResource {
             case SUSPENDED: return "The request has been held by originating system/user request.";
             case REJECTED: return "The receiving system has declined to fulfill the request.";
             case FAILED: return "The diagnostic investigation was attempted, but due to some procedural error, it could not be completed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -207,6 +210,7 @@ public class DiagnosticOrder extends DomainResource {
             case SUSPENDED: return "Suspended";
             case REJECTED: return "Rejected";
             case FAILED: return "Failed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -350,6 +354,7 @@ public class DiagnosticOrder extends DomainResource {
             case URGENT: return "urgent";
             case STAT: return "stat";
             case ASAP: return "asap";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -359,6 +364,7 @@ public class DiagnosticOrder extends DomainResource {
             case URGENT: return "http://hl7.org/fhir/diagnostic-order-priority";
             case STAT: return "http://hl7.org/fhir/diagnostic-order-priority";
             case ASAP: return "http://hl7.org/fhir/diagnostic-order-priority";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -368,6 +374,7 @@ public class DiagnosticOrder extends DomainResource {
             case URGENT: return "The order should be urgently.";
             case STAT: return "The order is time-critical.";
             case ASAP: return "The order should be acted on as soon as possible.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -377,6 +384,7 @@ public class DiagnosticOrder extends DomainResource {
             case URGENT: return "Urgent";
             case STAT: return "Stat";
             case ASAP: return "ASAP";
+            case NULL: return null;
             default: return "?";
           }
         }

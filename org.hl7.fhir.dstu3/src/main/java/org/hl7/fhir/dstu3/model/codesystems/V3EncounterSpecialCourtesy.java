@@ -85,6 +85,7 @@ public enum V3EncounterSpecialCourtesy {
             case PRF: return "PRF";
             case STF: return "STF";
             case VIP: return "VIP";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum V3EncounterSpecialCourtesy {
             case PRF: return "professional courtesy";
             case STF: return "Courtesies extended to the staff of the entity providing service.";
             case VIP: return "very important person";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum V3EncounterSpecialCourtesy {
             case PRF: return "professional courtesy";
             case STF: return "staff";
             case VIP: return "very important person";
+            case NULL: return null;
             default: return "?";
           }
     }

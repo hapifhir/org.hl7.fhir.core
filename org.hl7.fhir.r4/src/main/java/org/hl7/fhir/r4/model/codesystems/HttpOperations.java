@@ -99,6 +99,7 @@ public enum HttpOperations {
             case POST: return "post";
             case PUT: return "put";
             case HEAD: return "head";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum HttpOperations {
             case POST: return "HTTP POST operation.";
             case PUT: return "HTTP PUT operation.";
             case HEAD: return "HTTP HEAD operation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum HttpOperations {
             case POST: return "POST";
             case PUT: return "PUT";
             case HEAD: return "HEAD";
+            case NULL: return null;
             default: return "?";
           }
     }

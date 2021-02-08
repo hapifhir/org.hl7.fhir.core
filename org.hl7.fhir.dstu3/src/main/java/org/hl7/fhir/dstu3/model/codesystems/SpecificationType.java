@@ -106,6 +106,7 @@ public enum SpecificationType {
             case FIRMWAREREVISION: return "firmware-revision";
             case PROTOCOLREVISION: return "protocol-revision";
             case GMDN: return "gmdn";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum SpecificationType {
             case FIRMWAREREVISION: return "Firmware Revision - MDC_ID_PROD_SPEC_FW";
             case PROTOCOLREVISION: return "Protocol Revision - MDC_ID_PROD_SPEC_PROTOCOL";
             case GMDN: return "GMDN - MDC_ID_PROD_SPEC_GMDN";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum SpecificationType {
             case FIRMWAREREVISION: return "Firmware Revision";
             case PROTOCOLREVISION: return "Protocol Revision";
             case GMDN: return "GMDN";
+            case NULL: return null;
             default: return "?";
           }
     }

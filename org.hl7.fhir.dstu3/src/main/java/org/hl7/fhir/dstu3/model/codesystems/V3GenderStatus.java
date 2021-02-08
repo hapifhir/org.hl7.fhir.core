@@ -64,6 +64,7 @@ public enum V3GenderStatus {
           switch (this) {
             case I: return "I";
             case N: return "N";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3GenderStatus {
           switch (this) {
             case I: return "Reproductively intact";
             case N: return "Reproductively neutered";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3GenderStatus {
           switch (this) {
             case I: return "Intact";
             case N: return "Neutered";
+            case NULL: return null;
             default: return "?";
           }
     }

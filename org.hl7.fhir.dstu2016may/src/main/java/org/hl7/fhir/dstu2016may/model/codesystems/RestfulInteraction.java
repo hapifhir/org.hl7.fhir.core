@@ -162,6 +162,7 @@ public enum RestfulInteraction {
             case TRANSACTION: return "transaction";
             case BATCH: return "batch";
             case OPERATION: return "operation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -186,6 +187,7 @@ public enum RestfulInteraction {
             case TRANSACTION: return "Update, create or delete a set of resources as a single transaction.";
             case BATCH: return "perform a set of a separate interactions in a single http operation";
             case OPERATION: return "Perform an operation as defined by an OperationDefinition.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -207,6 +209,7 @@ public enum RestfulInteraction {
             case TRANSACTION: return "transaction";
             case BATCH: return "batch";
             case OPERATION: return "operation";
+            case NULL: return null;
             default: return "?";
           }
     }

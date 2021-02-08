@@ -78,6 +78,7 @@ public enum MedicationStatementStatus {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case INTENDED: return "intended";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MedicationStatementStatus {
             case COMPLETED: return "The medication is no longer being taken.";
             case ENTEREDINERROR: return "The statement was entered in error.";
             case INTENDED: return "The medication may be taken at some time in the future.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MedicationStatementStatus {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
             case INTENDED: return "Intended";
+            case NULL: return null;
             default: return "?";
           }
     }

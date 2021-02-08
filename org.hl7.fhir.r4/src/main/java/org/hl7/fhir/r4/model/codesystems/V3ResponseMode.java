@@ -71,6 +71,7 @@ public enum V3ResponseMode {
             case D: return "D";
             case I: return "I";
             case Q: return "Q";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3ResponseMode {
             case D: return "The receiver may respond in a non-immediate manner. Note: this will be the default value.";
             case I: return "The receiver is required to assume that the sender is blocking and behave appropriately by sending an immediate response.";
             case Q: return "The receiver shall keep any application responses in a queue until such time as the queue is polled.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3ResponseMode {
             case D: return "deferred";
             case I: return "immediate";
             case Q: return "queue";
+            case NULL: return null;
             default: return "?";
           }
     }

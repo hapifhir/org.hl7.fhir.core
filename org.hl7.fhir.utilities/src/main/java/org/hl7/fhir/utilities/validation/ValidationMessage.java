@@ -3,19 +3,19 @@ package org.hl7.fhir.utilities.validation;
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
-  
+
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
-    
-   * Redistributions of source code must retain the above copyright notice, this 
+
+ * Redistributions of source code must retain the above copyright notice, this 
      list of conditions and the following disclaimer.
-   * Redistributions in binary form must reproduce the above copyright notice, 
+ * Redistributions in binary form must reproduce the above copyright notice, 
      this list of conditions and the following disclaimer in the documentation 
      and/or other materials provided with the distribution.
-   * Neither the name of HL7 nor the names of its contributors may be used to 
+ * Neither the name of HL7 nor the names of its contributors may be used to 
      endorse or promote products derived from this software without specific 
      prior written permission.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
@@ -26,7 +26,7 @@ package org.hl7.fhir.utilities.validation;
   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
-  
+
  */
 
 
@@ -127,6 +127,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       case ERROR: return "error";
       case WARNING: return "warning";
       case INFORMATION: return "information";
+      case NULL: return null;
       default: return "?";
       }
     }
@@ -136,6 +137,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       case ERROR: return "http://hl7.org/fhir/issue-severity";
       case WARNING: return "http://hl7.org/fhir/issue-severity";
       case INFORMATION: return "http://hl7.org/fhir/issue-severity";
+      case NULL: return null;
       default: return "?";
       }
     }
@@ -145,6 +147,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       case ERROR: return "The issue is sufficiently important to cause the action to fail.";
       case WARNING: return "The issue is not important enough to cause the action to fail, but may cause it to be performed suboptimally or in a way that is not as desired.";
       case INFORMATION: return "The issue has no relation to the degree of success of the action.";
+      case NULL: return null;
       default: return "?";
       }
     }
@@ -154,6 +157,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       case ERROR: return "Error";
       case WARNING: return "Warning";
       case INFORMATION: return "Information";
+      case NULL: return null;
       default: return "?";
       }
     }
@@ -380,6 +384,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       case TIMEOUT: return "timeout";
       case THROTTLED: return "throttled";
       case INFORMATIONAL: return "informational";
+      case NULL: return null;
       default: return "?";
       }
     }
@@ -414,6 +419,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       case TIMEOUT: return "http://hl7.org/fhir/issue-type";
       case THROTTLED: return "http://hl7.org/fhir/issue-type";
       case INFORMATIONAL: return "http://hl7.org/fhir/issue-type";
+      case NULL: return null;
       default: return "?";
       }
     }
@@ -448,6 +454,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       case TIMEOUT: return "An internal timeout has occurred.";
       case THROTTLED: return "The system is not prepared to handle this request due to load management.";
       case INFORMATIONAL: return "A message unrelated to the processing success of the completed operation (examples of the latter include things like reminders of password expiry, system maintenance times, etc.).";
+      case NULL: return null;
       default: return "?";
       }
     }
@@ -482,6 +489,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
       case TIMEOUT: return "Timeout";
       case THROTTLED: return "Throttled";
       case INFORMATIONAL: return "Informational Note";
+      case NULL: return null;
       default: return "?";
       }
     }
@@ -692,7 +700,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   public String getDisplay() {
     return level + ": " + (location==null || location.isEmpty() ? "" : (location + ": ")) + message;
   }
-  
+
   /**
    * Returns a representation of this ValidationMessage suitable for logging. The values of
    * most of the internal fields are included, so this may not be suitable for display to 
@@ -781,5 +789,5 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     this.signpost = signpost;
   }
 
-  
+
 }

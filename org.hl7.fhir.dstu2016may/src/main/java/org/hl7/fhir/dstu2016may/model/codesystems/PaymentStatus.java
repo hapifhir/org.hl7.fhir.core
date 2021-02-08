@@ -64,6 +64,7 @@ public enum PaymentStatus {
           switch (this) {
             case PAID: return "paid";
             case CLEARED: return "cleared";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum PaymentStatus {
           switch (this) {
             case PAID: return "";
             case CLEARED: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum PaymentStatus {
           switch (this) {
             case PAID: return "paid";
             case CLEARED: return "cleared";
+            case NULL: return null;
             default: return "?";
           }
     }

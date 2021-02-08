@@ -85,6 +85,7 @@ public enum V3ActRelationshipCheckpoint {
             case S: return "S";
             case T: return "T";
             case X: return "X";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum V3ActRelationshipCheckpoint {
             case S: return "Condition is tested once before the service is executed (IF condition THEN service).";
             case T: return "Condition must be true throughout the execution and the service is interrupted (asynchronously) as soon as the condition turns false (asynchronous WHILE loop).  The service must be interruptible.";
             case X: return "Condition is a loop checkpoint, i.e. it is a step of an activity plan and, if negative causes the containing loop to exit.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum V3ActRelationshipCheckpoint {
             case S: return "entry";
             case T: return "through";
             case X: return "exit";
+            case NULL: return null;
             default: return "?";
           }
     }

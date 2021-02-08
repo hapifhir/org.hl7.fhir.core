@@ -1245,6 +1245,7 @@ public enum V3ActRelationshipType {
             case MTGT_ADJ: return "MTGT.ADJ";
             case RACT: return "RACT";
             case SUGG: return "SUGG";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1390,6 +1391,7 @@ public enum V3ActRelationshipType {
             case MTGT_ADJ: return "adjunct mitigation";
             case RACT: return "";
             case SUGG: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1532,6 +1534,7 @@ public enum V3ActRelationshipType {
             case MTGT_ADJ: return "adjunct mitigation";
             case RACT: return "RACT";
             case SUGG: return "SUGG";
+            case NULL: return null;
             default: return "?";
           }
     }

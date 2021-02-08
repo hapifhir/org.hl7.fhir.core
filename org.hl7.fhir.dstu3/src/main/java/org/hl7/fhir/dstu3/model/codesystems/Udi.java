@@ -57,6 +57,7 @@ public enum Udi {
         public String toCode() {
           switch (this) {
             case GUDID: return "gudid";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum Udi {
         public String getDefinition() {
           switch (this) {
             case GUDID: return "GUDID (FDA) US Repository";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case GUDID: return "GUDID (FDA)";
+            case NULL: return null;
             default: return "?";
           }
     }

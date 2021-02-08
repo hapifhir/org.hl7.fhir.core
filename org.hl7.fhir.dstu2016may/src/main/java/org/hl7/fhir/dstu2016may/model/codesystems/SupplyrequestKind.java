@@ -64,6 +64,7 @@ public enum SupplyrequestKind {
           switch (this) {
             case CENTRAL: return "central";
             case NONSTOCK: return "nonstock";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum SupplyrequestKind {
           switch (this) {
             case CENTRAL: return "Supply is stored and requested from central supply.";
             case NONSTOCK: return "Supply is not onsite and must be requested from an outside vendor using a non-stock requisition.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum SupplyrequestKind {
           switch (this) {
             case CENTRAL: return "Central Supply";
             case NONSTOCK: return "Non-Stock";
+            case NULL: return null;
             default: return "?";
           }
     }

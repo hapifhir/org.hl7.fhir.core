@@ -71,6 +71,7 @@ public enum ExtensionContextType {
             case FHIRPATH: return "fhirpath";
             case ELEMENT: return "element";
             case EXTENSION: return "extension";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ExtensionContextType {
             case FHIRPATH: return "The context is all elements that match the FHIRPath query found in the expression.";
             case ELEMENT: return "The context is any element that has an ElementDefinition.id that matches that found in the expression. This includes ElementDefinition Ids that have slicing identifiers. The full path for the element is [url]#[elementid]. If there is no #, the Element id is one defined in the base specification.";
             case EXTENSION: return "The context is a particular extension from a particular StructureDefinition, and the expression is just a uri that identifies the extension.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ExtensionContextType {
             case FHIRPATH: return "FHIRPath";
             case ELEMENT: return "Element ID";
             case EXTENSION: return "Extension URL";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -71,6 +71,7 @@ public enum V3MapRelationship {
             case BT: return "BT";
             case E: return "E";
             case NT: return "NT";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3MapRelationship {
             case BT: return "The first concept is at a more abstract level than the second concept.  For example, Hepatitis is broader than Hepatitis A, and endocrine disease is broader than Diabetes Mellitus.  Broader than is the opposite of the narrower than relationship.";
             case E: return "The two concepts have identical meaning.";
             case NT: return "The first concept is at a more detailed level than the second concept.  For example, Pennicillin G is narrower than Pennicillin, and vellus hair is narrower than hair.  Narrower than is the opposite of broader than.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3MapRelationship {
             case BT: return "Broader Than";
             case E: return "Exact";
             case NT: return "Narrower Than";
+            case NULL: return null;
             default: return "?";
           }
     }

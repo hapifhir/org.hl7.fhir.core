@@ -115,6 +115,7 @@ public class DeviceRequest extends DomainResource {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,6 +128,7 @@ public class DeviceRequest extends DomainResource {
             case COMPLETED: return "http://hl7.org/fhir/request-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/request-status";
             case UNKNOWN: return "http://hl7.org/fhir/request-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -139,6 +141,7 @@ public class DeviceRequest extends DomainResource {
             case COMPLETED: return "Activity against the request has been sufficiently completed to the satisfaction of the requester";
             case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it.  (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".)";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" . One of the listed statuses is presumed to apply,  but the system creating the request doesn't know.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -151,6 +154,7 @@ public class DeviceRequest extends DomainResource {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -266,6 +270,7 @@ public class DeviceRequest extends DomainResource {
             case URGENT: return "urgent";
             case ASAP: return "asap";
             case STAT: return "stat";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -275,6 +280,7 @@ public class DeviceRequest extends DomainResource {
             case URGENT: return "http://hl7.org/fhir/request-priority";
             case ASAP: return "http://hl7.org/fhir/request-priority";
             case STAT: return "http://hl7.org/fhir/request-priority";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -284,6 +290,7 @@ public class DeviceRequest extends DomainResource {
             case URGENT: return "The request should be actioned promptly - higher priority than routine";
             case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent";
             case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -293,6 +300,7 @@ public class DeviceRequest extends DomainResource {
             case URGENT: return "Urgent";
             case ASAP: return "ASAP";
             case STAT: return "STAT";
+            case NULL: return null;
             default: return "?";
           }
         }

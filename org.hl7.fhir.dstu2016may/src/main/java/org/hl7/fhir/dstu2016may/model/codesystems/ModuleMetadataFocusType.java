@@ -106,6 +106,7 @@ public enum ModuleMetadataFocusType {
             case WORKFLOWTASK: return "workflow-task";
             case CLINICALVENUE: return "clinical-venue";
             case JURISDICTION: return "jurisdiction";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum ModuleMetadataFocusType {
             case WORKFLOWTASK: return "The context for the clinical task(s) represented by this artifact. Can be any task context represented by the HL7 ActTaskCode value set (OID: 2.16.840.1.113883.1.11.19846). General categories include: order entry, patient documentation and patient information review";
             case CLINICALVENUE: return "The venue in which an artifact could be used.  For example, Outpatient, Inpatient, Home, Nursing home. The code value may originate from either the HL7 ActEncounter (OID: 2.16.840.1.113883.1.11.13955) or NUCC non-individual provider codes OID: 2.16.840.1.113883.1.11.19465";
             case JURISDICTION: return "The jurisdiction in which the artifact is intended to be used";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum ModuleMetadataFocusType {
             case WORKFLOWTASK: return "Workflow Task";
             case CLINICALVENUE: return "Clinical Venue";
             case JURISDICTION: return "Jurisdiction";
+            case NULL: return null;
             default: return "?";
           }
     }
