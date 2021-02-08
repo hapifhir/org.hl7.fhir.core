@@ -709,8 +709,9 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.hasAnswerValueSet()) {
       ValueSet vs = null;
       if (i.getAnswerValueSet().startsWith("#")) {
-        vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1)).copy();
+        vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1));
         if (vs != null && !vs.hasUrl()) {
+          vs = vs.copy();
           vs.setUrl("urn:uuid:"+UUID.randomUUID().toString().toLowerCase());
         }
       } else {

@@ -510,7 +510,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             if (sd == null) {
               throw new DefinitionException("Unable to find Structure "+url);
             }
-            return getChildList(sd, e.getContentReference().substring(e.getContentReference().indexOf("#")+1), null, diff);      
+            return getChildList(sd, e.getContentReference().substring(e.getContentReference().indexOf("#")+1), null, diff);            
           } else {
             return getChildList(profile, e.getContentReference(), null, diff);
           }
@@ -3333,7 +3333,7 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.getPieces().add(gen.new Piece("#"+ed.getElement().getPath(), tail(ed.getElement().getPath()), ed.getElement().getPath()));
         } else {
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "See ", ed.getElement().getPath()), null));
-          c.getPieces().add(gen.new Piece(corePath+ed.getSource().getUserString("path")+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getType()+")", ed.getElement().getPath()));
+          c.getPieces().add(gen.new Piece(pfx(corePath, ed.getSource().getUserString("path"))+"#"+ed.getElement().getPath(), tail(ed.getElement().getPath())+" ("+ed.getSource().getType()+")", ed.getElement().getPath()));
         }
       }
       return c;

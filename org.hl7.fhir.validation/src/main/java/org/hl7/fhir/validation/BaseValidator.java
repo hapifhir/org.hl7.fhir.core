@@ -84,9 +84,27 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
+import org.hl7.fhir.validation.BaseValidator.TrackedLocationRelatedMessage;
 import org.hl7.fhir.validation.instance.utils.IndexedElement;
 
 public class BaseValidator {
+
+  public class TrackedLocationRelatedMessage {
+    private Object location;
+    private ValidationMessage vmsg;
+    public TrackedLocationRelatedMessage(Object location, ValidationMessage vmsg) {
+      super();
+      this.location = location;
+      this.vmsg = vmsg;
+    }
+    public Object getLocation() {
+      return location;
+    }
+    public ValidationMessage getVmsg() {
+      return vmsg;
+    }
+    
+  }
 
   public class ValidationControl {
     private boolean allowed;
@@ -122,8 +140,10 @@ public class BaseValidator {
   protected IWorkerContext context;
   protected TimeTracker timeTracker = new TimeTracker();
   protected XVerExtensionManager xverManager;
-
-    public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
+  protected List<TrackedLocationRelatedMessage> trackedMessages = new ArrayList<>();
+  protected List<ValidationMessage> messagesToRemove = new ArrayList<>();
+  
+  public BaseValidator(IWorkerContext context, XVerExtensionManager xverManager) {
     super();
     this.context = context;
     this.xverManager = xverManager;
@@ -493,7 +513,38 @@ public class BaseValidator {
     return thePass;
 
   }
+  
+  /**
+   * Test a rule and add a {@link IssueSeverity#WARNING} validation message if the validation fails. Also, keep track of it later in case we want to remove it if we find a required binding for this element later
+   * 
+   * @param thePass
+   *          Set this parameter to <code>false</code> if the validation does not pass
+   * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
+   */
+  protected boolean txWarningForLaterRemoval(Object location, List<ValidationMessage> errors, String txLink, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
+    if (!thePass) {
+      String nmsg = context.formatMessage(msg, theMessageArguments);
+      ValidationMessage vmsg = new ValidationMessage(Source.TerminologyEngine, type, line, col, path, nmsg, IssueSeverity.WARNING).setTxLink(txLink).setMessageId(msg);
+      if (checkMsgId(msg, vmsg)) {
+        errors.add(vmsg);
+      }
+      trackedMessages.add(new TrackedLocationRelatedMessage(location, vmsg));
+    }
+    return thePass;
 
+  }
+
+  protected void removeTrackedMessagesForLocation(List<ValidationMessage> errors, Object location, String path) {
+    List<TrackedLocationRelatedMessage> messages = new ArrayList<>();
+    for (TrackedLocationRelatedMessage m : trackedMessages) {
+      if (m.getLocation() == location) {
+        messages.add(m);
+        messagesToRemove.add(m.getVmsg());
+      }
+    }
+    trackedMessages.removeAll(messages);    
+  }
+  
   protected boolean warningOrError(boolean isError, List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, Object... theMessageArguments) {
     if (!thePass) {
       String nmsg = context.formatMessage(msg, theMessageArguments);
