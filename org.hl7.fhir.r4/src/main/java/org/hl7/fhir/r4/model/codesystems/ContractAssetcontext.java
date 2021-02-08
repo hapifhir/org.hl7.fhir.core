@@ -57,6 +57,7 @@ public enum ContractAssetcontext {
         public String toCode() {
           switch (this) {
             case CUSTODIAN: return "custodian";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum ContractAssetcontext {
         public String getDefinition() {
           switch (this) {
             case CUSTODIAN: return "To be completed";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case CUSTODIAN: return "Custodian";
+            case NULL: return null;
             default: return "?";
           }
     }

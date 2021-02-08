@@ -71,6 +71,7 @@ public enum PaymentType {
             case PAYMENT: return "payment";
             case ADJUSTMENT: return "adjustment";
             case ADVANCE: return "advance";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum PaymentType {
             case PAYMENT: return "The amount is partial or complete settlement of the amounts due.";
             case ADJUSTMENT: return "The amount is an adjustment regarding claims already paid.";
             case ADVANCE: return "The amount is an advance against future claims.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum PaymentType {
             case PAYMENT: return "Payment";
             case ADJUSTMENT: return "Adjustment";
             case ADVANCE: return "Advance";
+            case NULL: return null;
             default: return "?";
           }
     }

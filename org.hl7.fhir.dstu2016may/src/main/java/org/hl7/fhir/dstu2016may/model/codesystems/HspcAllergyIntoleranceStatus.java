@@ -71,6 +71,7 @@ public enum HspcAllergyIntoleranceStatus {
             case _1797: return "1797";
             case _69074: return "69074";
             case _31119: return "31119";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum HspcAllergyIntoleranceStatus {
             case _1797: return "Indication that a symptom or condition is subsided or healed.";
             case _69074: return "The state of being mistaken.";
             case _31119: return "The state of not likely being true.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum HspcAllergyIntoleranceStatus {
             case _1797: return "Resolved";
             case _69074: return "Error";
             case _31119: return "Unlikely";
+            case NULL: return null;
             default: return "?";
           }
     }

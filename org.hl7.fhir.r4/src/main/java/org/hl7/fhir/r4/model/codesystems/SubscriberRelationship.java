@@ -99,6 +99,7 @@ public enum SubscriberRelationship {
             case OTHER: return "other";
             case SELF: return "self";
             case INJURED: return "injured";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum SubscriberRelationship {
             case OTHER: return "The Beneficiary has some other relationship the Subscriber";
             case SELF: return "The Beneficiary is the Subscriber";
             case INJURED: return "The Beneficiary is covered under insurance of the subscriber due to an injury.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum SubscriberRelationship {
             case OTHER: return "Other";
             case SELF: return "Self";
             case INJURED: return "Injured Party";
+            case NULL: return null;
             default: return "?";
           }
     }

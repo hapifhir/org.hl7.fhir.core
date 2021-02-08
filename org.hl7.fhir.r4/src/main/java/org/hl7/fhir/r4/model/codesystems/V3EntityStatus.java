@@ -85,6 +85,7 @@ public enum V3EntityStatus {
             case INACTIVE: return "inactive";
             case TERMINATED: return "terminated";
             case NULLIFIED: return "nullified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum V3EntityStatus {
             case INACTIVE: return "Definition: The state representing the fact that the entity is inactive.";
             case TERMINATED: return "The state representing the normal termination of an Entity record.";
             case NULLIFIED: return "The state representing the termination of an Entity record instance that was created in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum V3EntityStatus {
             case INACTIVE: return "inactive";
             case TERMINATED: return "terminated";
             case NULLIFIED: return "nullified";
+            case NULL: return null;
             default: return "?";
           }
     }

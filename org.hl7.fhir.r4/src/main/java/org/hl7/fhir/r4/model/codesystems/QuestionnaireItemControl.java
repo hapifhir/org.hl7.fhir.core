@@ -225,6 +225,7 @@ public enum QuestionnaireItemControl {
             case SLIDER: return "slider";
             case SPINNER: return "spinner";
             case TEXTBOX: return "text-box";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -258,6 +259,7 @@ public enum QuestionnaireItemControl {
             case SLIDER: return "A control where an axis is displayed between the high and low values and the control can be visually manipulated to select a value anywhere on the axis.";
             case SPINNER: return "A control where a list of numeric or other ordered values can be scrolled through via arrows.";
             case TEXTBOX: return "A control where a user can type in their answer freely.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -288,6 +290,7 @@ public enum QuestionnaireItemControl {
             case SLIDER: return "Slider";
             case SPINNER: return "Spinner";
             case TEXTBOX: return "Text Box";
+            case NULL: return null;
             default: return "?";
           }
     }

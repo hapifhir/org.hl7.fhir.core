@@ -85,6 +85,7 @@ public enum InvoiceStatus {
             case BALANCED: return "balanced";
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum InvoiceStatus {
             case BALANCED: return "the invoice has been balaced / completely paid.";
             case CANCELLED: return "the invoice was cancelled.";
             case ENTEREDINERROR: return "the invoice was determined as entered in error before it was issued.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum InvoiceStatus {
             case BALANCED: return "balanced";
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered in error";
+            case NULL: return null;
             default: return "?";
           }
     }

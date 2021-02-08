@@ -71,6 +71,7 @@ public enum ContractTermSubtype {
             case ORALHEALTHBASIC: return "OralHealth-Basic";
             case ORALHEALTHMAJOR: return "OralHealth-Major";
             case ORALHEALTHORTHODONTIC: return "OralHealth-Orthodontic";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ContractTermSubtype {
             case ORALHEALTHBASIC: return "";
             case ORALHEALTHMAJOR: return "";
             case ORALHEALTHORTHODONTIC: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ContractTermSubtype {
             case ORALHEALTHBASIC: return "OralHealth-Basic";
             case ORALHEALTHMAJOR: return "OralHealth-Major";
             case ORALHEALTHORTHODONTIC: return "OralHealth-Orthodontic";
+            case NULL: return null;
             default: return "?";
           }
     }

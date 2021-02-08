@@ -85,6 +85,7 @@ public enum AuditEventAction {
             case U: return "U";
             case D: return "D";
             case E: return "E";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum AuditEventAction {
             case U: return "Update data, such as revise patient information.";
             case D: return "Delete items, such as a doctor master file record.";
             case E: return "Perform a system or application function such as log-on, program execution or use of an object's method, or perform a query/search operation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum AuditEventAction {
             case U: return "Update";
             case D: return "Delete";
             case E: return "Execute";
+            case NULL: return null;
             default: return "?";
           }
     }

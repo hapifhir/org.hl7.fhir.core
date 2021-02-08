@@ -71,6 +71,7 @@ public enum ResearchStudyObjectiveType {
             case PRIMARY: return "primary";
             case SECONDARY: return "secondary";
             case EXPLORATORY: return "exploratory";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ResearchStudyObjectiveType {
             case PRIMARY: return "The main question to be answered, and the one that drives any statistical planning for the study—e.g., calculation of the sample size to provide the appropriate power for statistical testing.";
             case SECONDARY: return "Question to be answered in the study that is of lesser importance than the primary objective.";
             case EXPLORATORY: return "Exploratory questions to be answered in the study.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ResearchStudyObjectiveType {
             case PRIMARY: return "Primary";
             case SECONDARY: return "Secondary";
             case EXPLORATORY: return "Exploratory";
+            case NULL: return null;
             default: return "?";
           }
     }

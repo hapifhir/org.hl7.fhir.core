@@ -92,6 +92,7 @@ public enum UdiEntryType {
             case CARD: return "card";
             case SELFREPORTED: return "self-reported";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum UdiEntryType {
             case CARD: return "The data originated from a patient's implant card and read by an operator.";
             case SELFREPORTED: return "The data originated from a patient source and not directly scanned or read from a label or card.";
             case UNKNOWN: return "The method of data capture has not been determined";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum UdiEntryType {
             case CARD: return "Card";
             case SELFREPORTED: return "Self Reported";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

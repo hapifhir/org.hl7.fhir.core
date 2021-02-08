@@ -104,6 +104,7 @@ public enum V3AcknowledgementDetailType {
             case ERR: return "ERR";
             case INFO: return "INFO";
             case WARN: return "WARN";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -118,6 +119,7 @@ public enum V3AcknowledgementDetailType {
             case ERR: return "";
             case INFO: return "";
             case WARN: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -129,6 +131,7 @@ public enum V3AcknowledgementDetailType {
             case ERR: return "ERR";
             case INFO: return "INFO";
             case WARN: return "WARN";
+            case NULL: return null;
             default: return "?";
           }
     }

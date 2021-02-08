@@ -88,6 +88,7 @@ public class Address extends Type implements ICompositeType {
             case WORK: return "work";
             case TEMP: return "temp";
             case OLD: return "old";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class Address extends Type implements ICompositeType {
             case WORK: return "http://hl7.org/fhir/address-use";
             case TEMP: return "http://hl7.org/fhir/address-use";
             case OLD: return "http://hl7.org/fhir/address-use";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +108,7 @@ public class Address extends Type implements ICompositeType {
             case WORK: return "An office address. First choice for business related contacts during business hours.";
             case TEMP: return "A temporary address. The period can provide more detailed information.";
             case OLD: return "This address is no longer in use (or was never correct, but retained for records).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,6 +118,7 @@ public class Address extends Type implements ICompositeType {
             case WORK: return "Work";
             case TEMP: return "Temporary";
             case OLD: return "Old / Incorrect";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -197,6 +201,7 @@ public class Address extends Type implements ICompositeType {
             case POSTAL: return "postal";
             case PHYSICAL: return "physical";
             case BOTH: return "both";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -205,6 +210,7 @@ public class Address extends Type implements ICompositeType {
             case POSTAL: return "http://hl7.org/fhir/address-type";
             case PHYSICAL: return "http://hl7.org/fhir/address-type";
             case BOTH: return "http://hl7.org/fhir/address-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +219,7 @@ public class Address extends Type implements ICompositeType {
             case POSTAL: return "Mailing addresses - PO Boxes and care-of addresses.";
             case PHYSICAL: return "A physical address that can be visited.";
             case BOTH: return "An address that is both physical and postal.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -221,6 +228,7 @@ public class Address extends Type implements ICompositeType {
             case POSTAL: return "Postal";
             case PHYSICAL: return "Physical";
             case BOTH: return "Postal & Physical";
+            case NULL: return null;
             default: return "?";
           }
         }

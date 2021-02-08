@@ -113,6 +113,7 @@ public enum ExRevenueCenter {
             case _0451: return "0451";
             case _0452: return "0452";
             case _0010: return "0010";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum ExRevenueCenter {
             case _0451: return "Emergency Room - EM/EMTALA";
             case _0452: return "Emergency Room - beyond EMTALA";
             case _0010: return "Vision Clinic";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum ExRevenueCenter {
             case _0451: return "Emergency Room - EM/EMTALA";
             case _0452: return "Emergency Room - beyond EMTALA";
             case _0010: return "Vision Clinic";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -185,6 +185,7 @@ public enum V3TimingEvent {
             case PCM: return "PCM";
             case PCV: return "PCV";
             case WAKE: return "WAKE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -211,6 +212,7 @@ public enum V3TimingEvent {
             case PCM: return "after breakfast (from lat. post cibus matutinus)";
             case PCV: return "after dinner (from lat. post cibus vespertinus)";
             case WAKE: return "Description: Upon waking up from a regular period of sleep, in order to start regular activities (this would exclude waking up from a nap or temporarily waking up during a period of sleep)\r\n\n                        \n                           Usage Notes: e.g.\r\n\n                        Take pulse rate on waking in management of thyrotoxicosis.\r\n\n                        Take BP on waking in management of hypertension\r\n\n                        Take basal body temperature on waking in establishing date of ovulation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -234,6 +236,7 @@ public enum V3TimingEvent {
             case PCM: return "PCM";
             case PCV: return "PCV";
             case WAKE: return "WAKE";
+            case NULL: return null;
             default: return "?";
           }
     }

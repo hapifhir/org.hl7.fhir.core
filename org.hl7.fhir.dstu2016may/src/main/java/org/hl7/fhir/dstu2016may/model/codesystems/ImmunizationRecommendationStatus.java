@@ -64,6 +64,7 @@ public enum ImmunizationRecommendationStatus {
           switch (this) {
             case DUE: return "due";
             case OVERDUE: return "overdue";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ImmunizationRecommendationStatus {
           switch (this) {
             case DUE: return "The patient is due for their next vaccination.";
             case OVERDUE: return "The patient is considered overdue for their next vaccination.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ImmunizationRecommendationStatus {
           switch (this) {
             case DUE: return "Due";
             case OVERDUE: return "Overdue";
+            case NULL: return null;
             default: return "?";
           }
     }

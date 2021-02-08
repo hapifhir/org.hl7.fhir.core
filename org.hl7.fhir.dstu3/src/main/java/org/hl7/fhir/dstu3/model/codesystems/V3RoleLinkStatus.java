@@ -92,6 +92,7 @@ public enum V3RoleLinkStatus {
             case COMPLETED: return "COMPLETED";
             case PENDING: return "PENDING";
             case NULLIFIED: return "NULLIFIED";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum V3RoleLinkStatus {
             case COMPLETED: return "Description: The terminal state representing the successful completion of the RoleLink.";
             case PENDING: return "Description: The state indicates the RoleLink has not yet become active.";
             case NULLIFIED: return "Description: The state representing the termination of a RoleLink instance that was created in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum V3RoleLinkStatus {
             case COMPLETED: return "completed";
             case PENDING: return "pending";
             case NULLIFIED: return "nullified";
+            case NULL: return null;
             default: return "?";
           }
     }

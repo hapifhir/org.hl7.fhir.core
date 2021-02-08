@@ -64,6 +64,7 @@ public enum TestscriptProfileOriginTypes {
           switch (this) {
             case FHIRCLIENT: return "FHIR-Client";
             case FHIRSDCFORMFILLER: return "FHIR-SDC-FormFiller";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum TestscriptProfileOriginTypes {
           switch (this) {
             case FHIRCLIENT: return "General FHIR client used to initiate operations against a FHIR server.";
             case FHIRSDCFORMFILLER: return "A FHIR client acting as a Structured Data Capture Form Filler.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum TestscriptProfileOriginTypes {
           switch (this) {
             case FHIRCLIENT: return "FHIR Client";
             case FHIRSDCFORMFILLER: return "FHIR SDC FormFiller";
+            case NULL: return null;
             default: return "?";
           }
     }

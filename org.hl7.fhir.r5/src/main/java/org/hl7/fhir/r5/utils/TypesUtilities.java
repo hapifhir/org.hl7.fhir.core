@@ -80,9 +80,9 @@ public class TypesUtilities {
     
   }
   
-  public static List<String> wildcardTypes() {
+  public static List<String> wildcardTypes(String version) {
     List<String> res = new ArrayList<String>();
-    for (WildcardInformation wi : wildcards())
+    for (WildcardInformation wi : wildcards(version))
       res.add(wi.getTypeName());
     return res;
   }
@@ -94,7 +94,10 @@ public class TypesUtilities {
   //   Any of the IDMP data types
   // You have to walk into them to profile them.
   //
-  public static List<WildcardInformation> wildcards() {
+  public static List<WildcardInformation> wildcards(String version) {
+    if (version.startsWith("_")) {
+      throw new Error("underscore");
+    }
     List<WildcardInformation> res = new ArrayList<WildcardInformation>();
 
     // primitive types
@@ -108,7 +111,9 @@ public class TypesUtilities {
     res.add(new WildcardInformation("id", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("instant", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("integer", TypeClassification.PRIMITIVE));
-    res.add(new WildcardInformation("integer64", TypeClassification.PRIMITIVE));
+    if (!version.startsWith("4.0")) {
+      res.add(new WildcardInformation("integer64", TypeClassification.PRIMITIVE));
+    }
     res.add(new WildcardInformation("markdown", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("oid", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("positiveInt", TypeClassification.PRIMITIVE));

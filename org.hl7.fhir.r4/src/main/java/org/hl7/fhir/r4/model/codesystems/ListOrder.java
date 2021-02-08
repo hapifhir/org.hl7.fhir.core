@@ -106,6 +106,7 @@ public enum ListOrder {
             case ALPHABETIC: return "alphabetic";
             case CATEGORY: return "category";
             case PATIENT: return "patient";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum ListOrder {
             case ALPHABETIC: return "The list is sorted alphabetically by an unspecified property of the items in the list.";
             case CATEGORY: return "The list is sorted categorically by an unspecified property of the items in the list.";
             case PATIENT: return "The list is sorted by patient, with items for each patient grouped together.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum ListOrder {
             case ALPHABETIC: return "Sorted Alphabetically";
             case CATEGORY: return "Sorted by Category";
             case PATIENT: return "Sorted by Patient";
+            case NULL: return null;
             default: return "?";
           }
     }

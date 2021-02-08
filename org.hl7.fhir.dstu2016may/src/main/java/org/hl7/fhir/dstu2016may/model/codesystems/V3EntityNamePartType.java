@@ -85,6 +85,7 @@ public enum V3EntityNamePartType {
             case GIV: return "GIV";
             case PFX: return "PFX";
             case SFX: return "SFX";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum V3EntityNamePartType {
             case GIV: return "Given name (don't call it \"first name\" since this given names do not always come first)";
             case PFX: return "A prefix has a strong association to the immediately following name part. A prefix has no implicit trailing white space (it has implicit leading white space though). Note that prefixes can be inverted.";
             case SFX: return "Description:A suffix has a strong association to the immediately preceding name part. A suffix has no implicit leading white space (it has implicit trailing white space though). Suffices cannot be inverted.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum V3EntityNamePartType {
             case GIV: return "given";
             case PFX: return "prefix";
             case SFX: return "suffix";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -78,6 +78,7 @@ public enum V3ActInvoiceElementModifier {
             case FAX: return "FAX";
             case LINV: return "LINV";
             case PAPER: return "PAPER";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3ActInvoiceElementModifier {
             case FAX: return "Fax with supporting information to follow.";
             case LINV: return "Represents the last invoice from the perspective of the provider.";
             case PAPER: return "Paper documentation (or other physical format) with supporting information to follow.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3ActInvoiceElementModifier {
             case FAX: return "Fax To Follow";
             case LINV: return "Last Invoice";
             case PAPER: return "Paper Documentation To Follow";
+            case NULL: return null;
             default: return "?";
           }
     }

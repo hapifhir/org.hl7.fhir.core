@@ -71,6 +71,7 @@ public enum Fundsreserve {
             case PATIENT: return "patient";
             case PROVIDER: return "provider";
             case NONE: return "none";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum Fundsreserve {
             case PATIENT: return "";
             case PROVIDER: return "";
             case NONE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum Fundsreserve {
             case PATIENT: return "patient";
             case PROVIDER: return "provider";
             case NONE: return "none";
+            case NULL: return null;
             default: return "?";
           }
     }

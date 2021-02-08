@@ -92,6 +92,7 @@ public enum ProcedureProgressStatusCodes {
             case OPENINCISION: return "open-incision";
             case CLOSEDINCISION: return "closed-incision";
             case INRECOVERYROOM: return "in-recovery-room";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ProcedureProgressStatusCodes {
             case OPENINCISION: return "The patient has open incision(s).";
             case CLOSEDINCISION: return "The patient has incision(s) closed.";
             case INRECOVERYROOM: return "The patient is in the recovery room.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ProcedureProgressStatusCodes {
             case OPENINCISION: return "Open Incision";
             case CLOSEDINCISION: return "Closed Incision";
             case INRECOVERYROOM: return "In Recovery Room";
+            case NULL: return null;
             default: return "?";
           }
     }

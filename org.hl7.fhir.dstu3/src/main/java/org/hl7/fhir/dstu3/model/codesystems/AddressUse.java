@@ -78,6 +78,7 @@ public enum AddressUse {
             case WORK: return "work";
             case TEMP: return "temp";
             case OLD: return "old";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum AddressUse {
             case WORK: return "An office address. First choice for business related contacts during business hours.";
             case TEMP: return "A temporary address. The period can provide more detailed information.";
             case OLD: return "This address is no longer in use (or was never correct, but retained for records).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum AddressUse {
             case WORK: return "Work";
             case TEMP: return "Temporary";
             case OLD: return "Old / Incorrect";
+            case NULL: return null;
             default: return "?";
           }
     }

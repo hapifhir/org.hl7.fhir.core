@@ -64,6 +64,7 @@ public enum V3ActUncertainty {
           switch (this) {
             case N: return "N";
             case U: return "U";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3ActUncertainty {
           switch (this) {
             case N: return "Specifies that the act statement is made without explicit tagging of uncertainty. This is the normal statement, meaning that it is not free of errors and uncertainty may still exist.";
             case U: return "Specifies that the originator of the Act statement does not have full confidence in the applicability (i.e., in event mood: factual truth) of the statement.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3ActUncertainty {
           switch (this) {
             case N: return "stated with no assertion of uncertainty";
             case U: return "stated with uncertainty";
+            case NULL: return null;
             default: return "?";
           }
     }

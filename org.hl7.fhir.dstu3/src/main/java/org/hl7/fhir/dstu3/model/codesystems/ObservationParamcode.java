@@ -78,6 +78,7 @@ public enum ObservationParamcode {
             case MAX: return "max";
             case MIN: return "min";
             case COUNT: return "count";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ObservationParamcode {
             case MAX: return "The [maximum](https://en.wikipedia.org/wiki/Maximal_element) value of N measurements over the stated period";
             case MIN: return "The [minimum](https://en.wikipedia.org/wiki/Minimal_element) value of N measurements over the stated period";
             case COUNT: return "The [number] of measurements over the stated period";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ObservationParamcode {
             case MAX: return "Maximum";
             case MIN: return "Minimum";
             case COUNT: return "Count";
+            case NULL: return null;
             default: return "?";
           }
     }

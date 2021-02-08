@@ -71,6 +71,7 @@ public enum ExpansionParameterSource {
             case INPUT: return "input";
             case SERVER: return "server";
             case CODESYSTEM: return "codesystem";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ExpansionParameterSource {
             case INPUT: return "The parameter was supplied by the client in the $expand request.";
             case SERVER: return "The parameter was added by the expansion engine on the server.";
             case CODESYSTEM: return "The parameter was added from one the code systems used in the $expand operation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ExpansionParameterSource {
             case INPUT: return "Client Input";
             case SERVER: return "Server Engine";
             case CODESYSTEM: return "Code System";
+            case NULL: return null;
             default: return "?";
           }
     }

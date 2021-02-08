@@ -85,6 +85,7 @@ public enum RiskProbability {
             case MODERATE: return "moderate";
             case HIGH: return "high";
             case CERTAIN: return "certain";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum RiskProbability {
             case MODERATE: return "The specified outcome has a reasonable likelihood of occurrence.";
             case HIGH: return "The specified outcome is more likely to occur than not.";
             case CERTAIN: return "The specified outcome is effectively guaranteed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum RiskProbability {
             case MODERATE: return "Moderate likelihood";
             case HIGH: return "High likelihood";
             case CERTAIN: return "Certain";
+            case NULL: return null;
             default: return "?";
           }
     }

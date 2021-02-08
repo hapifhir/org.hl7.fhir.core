@@ -71,6 +71,7 @@ public enum HspcLocationCondition {
             case _182845: return "182845";
             case _528112801: return "528112801";
             case _182843: return "182843";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum HspcLocationCondition {
             case _182845: return "The assigned service delivery location is currently dirty, awaiting cleaning.";
             case _528112801: return "The assigned service delivery location has been cleaned, awaiting occupancy.";
             case _182843: return "The assigned service delivery location is currently occupied.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum HspcLocationCondition {
             case _182845: return "Contaminated";
             case _528112801: return "Clean";
             case _182843: return "Occupied";
+            case NULL: return null;
             default: return "?";
           }
     }

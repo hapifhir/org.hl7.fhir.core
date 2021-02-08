@@ -113,6 +113,7 @@ public enum QicoreAppropriatenessScore {
             case PROBABLYAPPROPRIATE: return "probably-appropriate";
             case APPROPRIATE: return "appropriate";
             case EXTREMELYAPPROPRIATE: return "extremely-appropriate";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum QicoreAppropriatenessScore {
             case PROBABLYAPPROPRIATE: return "The procedure is probably appropriate";
             case APPROPRIATE: return "The procedure is appropriate";
             case EXTREMELYAPPROPRIATE: return "The procedure is extremely appropriate";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum QicoreAppropriatenessScore {
             case PROBABLYAPPROPRIATE: return "Probably Appropriate";
             case APPROPRIATE: return "Appropriate";
             case EXTREMELYAPPROPRIATE: return "Extremely Appropriate";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -113,6 +113,7 @@ public enum MeasurePopulation {
             case MEASUREPOPULATION: return "measure-population";
             case MEASUREPOPULATIONEXCLUSION: return "measure-population-exclusion";
             case MEASUREOBSERVATION: return "measure-observation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum MeasurePopulation {
             case MEASUREPOPULATION: return "Measure population criteria define the patients or events for which the individual observation for the measure should be taken. Measure populations are used for continuous variable measures rather than numerator and denominator criteria.";
             case MEASUREPOPULATIONEXCLUSION: return "Measure population criteria define the patients or events that should be removed from the measure population before determining the outcome of one or more continuous variables defined for the measure observation. Measure population exclusion criteria are used within continuous variable measures to help narrow the measure population.";
             case MEASUREOBSERVATION: return "Defines the individual observation to be performed for each patient or event in the measure population. Measure observations for each case in the population are aggregated to determine the overall measure score for the population.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum MeasurePopulation {
             case MEASUREPOPULATION: return "Measure Population";
             case MEASUREPOPULATIONEXCLUSION: return "Measure Population Exclusion";
             case MEASUREOBSERVATION: return "Measure Observation";
+            case NULL: return null;
             default: return "?";
           }
     }

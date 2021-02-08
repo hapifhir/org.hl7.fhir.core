@@ -1835,6 +1835,7 @@ public enum V3AmericanIndianAlaskaNativeLanguages {
             case XPSD: return "x-PSD";
             case XYUC: return "x-YUC";
             case XZUN: return "x-ZUN";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2098,6 +2099,7 @@ public enum V3AmericanIndianAlaskaNativeLanguages {
             case XPSD: return "Plains Indian Sign Language";
             case XYUC: return "Yuchi";
             case XZUN: return "Zuni";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2358,6 +2360,7 @@ public enum V3AmericanIndianAlaskaNativeLanguages {
             case XPSD: return "Plains Indian Sign Language";
             case XYUC: return "Yuchi";
             case XZUN: return "Zuni";
+            case NULL: return null;
             default: return "?";
           }
     }

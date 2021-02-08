@@ -71,6 +71,7 @@ public enum TaskStage {
             case PROPOSAL: return "proposal";
             case PLANNED: return "planned";
             case ACTIONABLE: return "actionable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum TaskStage {
             case PROPOSAL: return "The request is a recommendation or suggestion where there has not yet been any commitment to action";
             case PLANNED: return "The request has a specific intention to be performed and may be scheduled but is not yet authorized to be performed";
             case ACTIONABLE: return "Indicates that the task is authorized and ready to be actioned";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum TaskStage {
             case PROPOSAL: return "proposal";
             case PLANNED: return "planned";
             case ACTIONABLE: return "actionable";
+            case NULL: return null;
             default: return "?";
           }
     }

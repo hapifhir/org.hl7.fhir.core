@@ -78,6 +78,7 @@ public enum MetricCalibrationType {
             case OFFSET: return "offset";
             case GAIN: return "gain";
             case TWOPOINT: return "two-point";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MetricCalibrationType {
             case OFFSET: return "TODO";
             case GAIN: return "TODO";
             case TWOPOINT: return "TODO";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MetricCalibrationType {
             case OFFSET: return "Offset";
             case GAIN: return "Gain";
             case TWOPOINT: return "Two Point";
+            case NULL: return null;
             default: return "?";
           }
     }

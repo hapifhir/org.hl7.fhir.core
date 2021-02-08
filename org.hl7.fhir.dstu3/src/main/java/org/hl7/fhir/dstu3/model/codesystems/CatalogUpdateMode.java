@@ -71,6 +71,7 @@ public enum CatalogUpdateMode {
             case UPDATE: return "update";
             case REPLACE: return "replace";
             case UPSERT: return "upsert";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum CatalogUpdateMode {
             case UPDATE: return "This is a product submission";
             case REPLACE: return "The catalog content is expected to be replacing the existing entries";
             case UPSERT: return "The catalog content is expected to update the entries, and if not existing, insert the entry";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum CatalogUpdateMode {
             case UPDATE: return "Update";
             case REPLACE: return "Replace";
             case UPSERT: return "Upsert";
+            case NULL: return null;
             default: return "?";
           }
     }

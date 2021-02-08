@@ -78,6 +78,7 @@ public enum ConditionCategory {
             case SYMPTOM: return "symptom";
             case FINDING: return "finding";
             case DIAGNOSIS: return "diagnosis";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ConditionCategory {
             case SYMPTOM: return "A symptom of a condition (as might be mentioned in a review of systems).";
             case FINDING: return "An observation made by a healthcare provider.";
             case DIAGNOSIS: return "This is a judgment made by a healthcare provider that the patient has a particular disease or condition.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ConditionCategory {
             case SYMPTOM: return "Symptom";
             case FINDING: return "Finding";
             case DIAGNOSIS: return "Diagnosis";
+            case NULL: return null;
             default: return "?";
           }
     }

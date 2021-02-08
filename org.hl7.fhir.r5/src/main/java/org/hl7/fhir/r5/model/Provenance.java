@@ -103,6 +103,7 @@ public class Provenance extends DomainResource {
             case QUOTATION: return "quotation";
             case SOURCE: return "source";
             case REMOVAL: return "removal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +114,7 @@ public class Provenance extends DomainResource {
             case QUOTATION: return "http://hl7.org/fhir/provenance-entity-role";
             case SOURCE: return "http://hl7.org/fhir/provenance-entity-role";
             case REMOVAL: return "http://hl7.org/fhir/provenance-entity-role";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,6 +125,7 @@ public class Provenance extends DomainResource {
             case QUOTATION: return "The repeat of (some or all of) an entity, such as text or image, by someone who might or might not be its original author.";
             case SOURCE: return "A primary source for a topic refers to something produced by some agent with direct experience and knowledge about the topic, at the time of the topic's study, without benefit from hindsight.";
             case REMOVAL: return "A derivation for which the entity is removed from accessibility usually through the use of the Delete operation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -133,6 +136,7 @@ public class Provenance extends DomainResource {
             case QUOTATION: return "Quotation";
             case SOURCE: return "Source";
             case REMOVAL: return "Removal";
+            case NULL: return null;
             default: return "?";
           }
         }

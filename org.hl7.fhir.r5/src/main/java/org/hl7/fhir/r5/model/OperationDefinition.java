@@ -82,6 +82,7 @@ public class OperationDefinition extends CanonicalResource {
           switch (this) {
             case OPERATION: return "operation";
             case QUERY: return "query";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class OperationDefinition extends CanonicalResource {
           switch (this) {
             case OPERATION: return "http://hl7.org/fhir/operation-kind";
             case QUERY: return "http://hl7.org/fhir/operation-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public class OperationDefinition extends CanonicalResource {
           switch (this) {
             case OPERATION: return "This operation is invoked as an operation.";
             case QUERY: return "This operation is a named query, invoked using the search mechanism.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class OperationDefinition extends CanonicalResource {
           switch (this) {
             case OPERATION: return "Operation";
             case QUERY: return "Query";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -99,6 +99,7 @@ public enum QuestionnaireEnableOperator {
             case LESS_THAN: return "<";
             case GREATER_OR_EQUAL: return ">=";
             case LESS_OR_EQUAL: return "<=";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum QuestionnaireEnableOperator {
             case LESS_THAN: return "True if whether at least no answer has a value that is less than the enableWhen answer.";
             case GREATER_OR_EQUAL: return "True if whether at least no answer has a value that is greater or equal to the enableWhen answer.";
             case LESS_OR_EQUAL: return "True if whether at least no answer has a value that is less or equal to the enableWhen answer.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum QuestionnaireEnableOperator {
             case LESS_THAN: return "Less Than";
             case GREATER_OR_EQUAL: return "Greater or Equals";
             case LESS_OR_EQUAL: return "Less or Equals";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -450,7 +450,7 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 		if ("http://www.w3.org/XML/1998/namespace".equals(namespace))
 			return "xml:";
 		
-		if (namespace == null || "".equals(namespace) || "default".equals(namespace))
+		if (namespace == null || "".equals(namespace) || "noNamespace".equals(namespace))
 			return "";
 		
 		XMLNamespace ns = findByNamespace(namespace);

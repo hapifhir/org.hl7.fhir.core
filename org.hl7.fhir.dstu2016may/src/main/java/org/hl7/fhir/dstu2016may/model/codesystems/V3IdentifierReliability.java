@@ -71,6 +71,7 @@ public enum V3IdentifierReliability {
             case ISS: return "ISS";
             case UNV: return "UNV";
             case VRF: return "VRF";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3IdentifierReliability {
             case ISS: return "Description: The identifier was issued by the system responsible for constructing the instance.";
             case UNV: return "Description: The identifier was provided to the system that constructed the instance, but has not been verified. e.g. a Drivers  license entered manually into a system by a user.";
             case VRF: return "Description: The identifier was not issued by the system responsible for constructing the instance, but the system that captured the id has verified the identifier with the issuing authority, or with another system that has verified the identifier.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3IdentifierReliability {
             case ISS: return "Issued by System";
             case UNV: return "Unverified by system";
             case VRF: return "Verified by system";
+            case NULL: return null;
             default: return "?";
           }
     }

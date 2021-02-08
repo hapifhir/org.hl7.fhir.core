@@ -71,6 +71,7 @@ public enum ClinicalImpressionStatus {
             case DRAFT: return "draft";
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ClinicalImpressionStatus {
             case DRAFT: return "The assessment is still on-going and results are not yet final.";
             case COMPLETED: return "The assessment is done and the results are final.";
             case ENTEREDINERROR: return "This assessment was never actually done and the record is erroneous (e.g. Wrong patient).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ClinicalImpressionStatus {
             case DRAFT: return "In progress";
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
     }

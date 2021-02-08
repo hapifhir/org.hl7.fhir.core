@@ -81,6 +81,7 @@ public class Media extends DomainResource {
             case PHOTO: return "photo";
             case VIDEO: return "video";
             case AUDIO: return "audio";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class Media extends DomainResource {
             case PHOTO: return "http://hl7.org/fhir/digital-media-type";
             case VIDEO: return "http://hl7.org/fhir/digital-media-type";
             case AUDIO: return "http://hl7.org/fhir/digital-media-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +99,7 @@ public class Media extends DomainResource {
             case PHOTO: return "The media consists of one or more unmoving images, including photographs, computer-generated graphs and charts, and scanned documents";
             case VIDEO: return "The media consists of a series of frames that capture a moving image";
             case AUDIO: return "The media consists of a sound recording";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +108,7 @@ public class Media extends DomainResource {
             case PHOTO: return "Photo";
             case VIDEO: return "Video";
             case AUDIO: return "Audio";
+            case NULL: return null;
             default: return "?";
           }
         }

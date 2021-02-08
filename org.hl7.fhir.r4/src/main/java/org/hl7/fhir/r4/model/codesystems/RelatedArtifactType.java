@@ -106,6 +106,7 @@ public enum RelatedArtifactType {
             case DERIVEDFROM: return "derived-from";
             case DEPENDSON: return "depends-on";
             case COMPOSEDOF: return "composed-of";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum RelatedArtifactType {
             case DERIVEDFROM: return "The knowledge resource is derived from the related artifact. This is intended to capture the relationship in which a particular knowledge resource is based on the content of another artifact, but is modified to capture either a different set of overall requirements, or a more specific set of requirements such as those involved in a particular institution or clinical setting.";
             case DEPENDSON: return "The knowledge resource depends on the given related artifact.";
             case COMPOSEDOF: return "The knowledge resource is composed of the given related artifact.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum RelatedArtifactType {
             case DERIVEDFROM: return "Derived From";
             case DEPENDSON: return "Depends On";
             case COMPOSEDOF: return "Composed Of";
+            case NULL: return null;
             default: return "?";
           }
     }

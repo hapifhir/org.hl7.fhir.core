@@ -85,6 +85,7 @@ public enum V3TableCellHorizontalAlign {
             case JUSTIFY: return "justify";
             case LEFT: return "left";
             case RIGHT: return "right";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum V3TableCellHorizontalAlign {
             case JUSTIFY: return "justify";
             case LEFT: return "left";
             case RIGHT: return "right";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum V3TableCellHorizontalAlign {
             case JUSTIFY: return "justify";
             case LEFT: return "left";
             case RIGHT: return "right";
+            case NULL: return null;
             default: return "?";
           }
     }

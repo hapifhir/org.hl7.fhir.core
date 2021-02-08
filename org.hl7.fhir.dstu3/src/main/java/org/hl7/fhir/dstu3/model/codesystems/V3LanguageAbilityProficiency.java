@@ -78,6 +78,7 @@ public enum V3LanguageAbilityProficiency {
             case F: return "F";
             case G: return "G";
             case P: return "P";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3LanguageAbilityProficiency {
             case F: return "Fair";
             case G: return "Good";
             case P: return "Poor";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3LanguageAbilityProficiency {
             case F: return "Fair";
             case G: return "Good";
             case P: return "Poor";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -78,6 +78,7 @@ public enum V3AcknowledgementCondition {
             case ER: return "ER";
             case NE: return "NE";
             case SU: return "SU";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3AcknowledgementCondition {
             case ER: return "Send an acknowledgement for error/reject conditions only.";
             case NE: return "Never send an acknowledgement.";
             case SU: return "Send an acknowledgement for successful completions only.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3AcknowledgementCondition {
             case ER: return "Error/reject only";
             case NE: return "Never";
             case SU: return "Successful only";
+            case NULL: return null;
             default: return "?";
           }
     }

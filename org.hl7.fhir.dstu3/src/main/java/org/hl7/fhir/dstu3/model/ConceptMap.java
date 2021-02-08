@@ -95,6 +95,7 @@ public class ConceptMap extends MetadataResource {
             case PROVIDED: return "provided";
             case FIXED: return "fixed";
             case OTHERMAP: return "other-map";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +104,7 @@ public class ConceptMap extends MetadataResource {
             case PROVIDED: return "http://hl7.org/fhir/conceptmap-unmapped-mode";
             case FIXED: return "http://hl7.org/fhir/conceptmap-unmapped-mode";
             case OTHERMAP: return "http://hl7.org/fhir/conceptmap-unmapped-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,6 +113,7 @@ public class ConceptMap extends MetadataResource {
             case PROVIDED: return "Use the code as provided in the $translate request";
             case FIXED: return "Use the code explicitly provided in the group.unmapped";
             case OTHERMAP: return "Use the map identified by the canonical URL in URL";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +122,7 @@ public class ConceptMap extends MetadataResource {
             case PROVIDED: return "Provided Code";
             case FIXED: return "Fixed Code";
             case OTHERMAP: return "Other Map";
+            case NULL: return null;
             default: return "?";
           }
         }

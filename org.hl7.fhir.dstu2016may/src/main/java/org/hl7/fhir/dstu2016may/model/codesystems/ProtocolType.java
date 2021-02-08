@@ -78,6 +78,7 @@ public enum ProtocolType {
             case DEVICE: return "device";
             case DRUG: return "drug";
             case STUDY: return "study";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ProtocolType {
             case DEVICE: return "The protocol describes the appropriate use of a particular device (medical device, software, etc.)";
             case DRUG: return "The protocol describes the appropriate use of a particular medication including indications for use, dosages, treatment cycles, etc.";
             case STUDY: return "The protocol describes the set of steps to occur for study subjects enrolled in an interventional study";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ProtocolType {
             case DEVICE: return "Device";
             case DRUG: return "Drug";
             case STUDY: return "Study";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -578,6 +578,7 @@ Members of the OO WG have recently attempted to contact members of RCRIM regardi
             case NR: return "NR";
             case RR: return "RR";
             case WR: return "WR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -643,6 +644,7 @@ Members of the OO WG have recently attempted to contact members of RCRIM regardi
             case NR: return "An absence finding used to indicate that the specified component / analyte did not react measurably with the reagent.";
             case RR: return "A presence finding used to indicate that the specified component / analyte reacted with the reagent above the reliably measurable limit of the performed test.";
             case WR: return "A weighted presence finding used to indicate that the specified component / analyte reacted with the reagent, but below the reliably measurable limit of the performed test.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -705,6 +707,7 @@ Members of the OO WG have recently attempted to contact members of RCRIM regardi
             case NR: return "Non-reactive";
             case RR: return "Reactive";
             case WR: return "Weakly reactive";
+            case NULL: return null;
             default: return "?";
           }
     }

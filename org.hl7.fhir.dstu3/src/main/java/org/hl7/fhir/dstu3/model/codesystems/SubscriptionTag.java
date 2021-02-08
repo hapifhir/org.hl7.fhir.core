@@ -64,6 +64,7 @@ public enum SubscriptionTag {
           switch (this) {
             case QUEUED: return "queued";
             case DELIVERED: return "delivered";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum SubscriptionTag {
           switch (this) {
             case QUEUED: return "The message has been queued for processing on a destination systems.";
             case DELIVERED: return "The message has been delivered to its intended recipient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum SubscriptionTag {
           switch (this) {
             case QUEUED: return "Queued";
             case DELIVERED: return "Delivered";
+            case NULL: return null;
             default: return "?";
           }
     }

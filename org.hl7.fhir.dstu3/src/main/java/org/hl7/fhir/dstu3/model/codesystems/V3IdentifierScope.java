@@ -87,6 +87,7 @@ public enum V3IdentifierScope {
             case OBJ: return "OBJ";
             case VER: return "VER";
             case VW: return "VW";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +100,7 @@ public enum V3IdentifierScope {
             case OBJ: return "Description: The identifier associated with a particular object. It remains consistent as the object undergoes state transitions.";
             case VER: return "Description: An identifier that references a particular object as it existed at a given point in time. The identifier SHALL change with each state transition on the object. I.e. The version identifier of an object prior to a 'suspend' state transition is distinct from the identifier of the object after the state transition. Each version identifier can be tied to exactly one ControlAct event which brought that version into being (though the control act may never be instantiated).\r\n\n                        \n                            NOTE: Applications that do not support versioning of objects must ignore and not persist these ids to avoid confusion resulting from leaving the same identifier on an object that undergoes changes.";
             case VW: return "Description: An identifier that references a particular object as it existed at a given point in time. The identifier SHALL change with each state transition on the object.\r\n\n                        \n                           Example The version identifier of an object prior to a 'suspend' state transition is distinct from the identifier of the object after the state transition. Each version identifier can be tied to exactly one ControlAct event which brought that version into being (though the control act may never be instantiated).\r\n\n                        \n                            NOTE: Applications that do not support versioning of objects must ignore and not persist these ids to avoid confusion resulting from leaving the same identifier on an object that undergoes changes.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum V3IdentifierScope {
             case OBJ: return "Object Identifier";
             case VER: return "Version Identifier";
             case VW: return "View Specific Identifier";
+            case NULL: return null;
             default: return "?";
           }
     }

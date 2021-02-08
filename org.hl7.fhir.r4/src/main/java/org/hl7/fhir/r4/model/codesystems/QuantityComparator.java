@@ -78,6 +78,7 @@ public enum QuantityComparator {
             case LESS_OR_EQUAL: return "<=";
             case GREATER_OR_EQUAL: return ">=";
             case GREATER_THAN: return ">";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum QuantityComparator {
             case LESS_OR_EQUAL: return "The actual value is less than or equal to the given value.";
             case GREATER_OR_EQUAL: return "The actual value is greater than or equal to the given value.";
             case GREATER_THAN: return "The actual value is greater than the given value.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum QuantityComparator {
             case LESS_OR_EQUAL: return "Less or Equal to";
             case GREATER_OR_EQUAL: return "Greater or Equal to";
             case GREATER_THAN: return "Greater than";
+            case NULL: return null;
             default: return "?";
           }
     }

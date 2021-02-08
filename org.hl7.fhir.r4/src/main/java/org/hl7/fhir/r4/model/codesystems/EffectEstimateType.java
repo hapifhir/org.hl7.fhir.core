@@ -99,6 +99,7 @@ public enum EffectEstimateType {
             case ABSOLUTEMEANDIFF: return "absolute-MeanDiff";
             case ABSOLUTESMD: return "absolute-SMD";
             case ABSOLUTEMEDIANDIFF: return "absolute-MedianDiff";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum EffectEstimateType {
             case ABSOLUTEMEANDIFF: return "mean difference (a type of absolute effect estimate).";
             case ABSOLUTESMD: return "standardized mean difference (a type of absolute effect estimate).";
             case ABSOLUTEMEDIANDIFF: return "median difference (a type of absolute effect estimate).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum EffectEstimateType {
             case ABSOLUTEMEANDIFF: return "mean difference";
             case ABSOLUTESMD: return "standardized mean difference";
             case ABSOLUTEMEDIANDIFF: return "median difference";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -173,6 +173,7 @@ public class ActivityDefinition extends MetadataResource {
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -193,6 +194,7 @@ public class ActivityDefinition extends MetadataResource {
             case SUPPLYREQUEST: return "http://hl7.org/fhir/request-resource-types";
             case TASK: return "http://hl7.org/fhir/request-resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/request-resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +215,7 @@ public class ActivityDefinition extends MetadataResource {
             case SUPPLYREQUEST: return "Request for a medication, substance or device.";
             case TASK: return "A task to be performed.";
             case VISIONPRESCRIPTION: return "Prescription for vision correction products for a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -233,6 +236,7 @@ public class ActivityDefinition extends MetadataResource {
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }

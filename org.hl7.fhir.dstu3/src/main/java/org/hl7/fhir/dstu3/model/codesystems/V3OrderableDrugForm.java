@@ -1177,6 +1177,7 @@ public enum V3OrderableDrugForm {
             case SWAB: return "SWAB";
             case MEDSWAB: return "MEDSWAB";
             case WAFER: return "WAFER";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1346,6 +1347,7 @@ public enum V3OrderableDrugForm {
             case SWAB: return "A wad of absorbent material usually wound around one end of a small stick and used for applying medication or for removing material from an area.";
             case MEDSWAB: return "Medicated swab";
             case WAFER: return "A thin slice of material containing a medicinal agent.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1512,6 +1514,7 @@ public enum V3OrderableDrugForm {
             case SWAB: return "Swab";
             case MEDSWAB: return "Medicated swab";
             case WAFER: return "Wafer";
+            case NULL: return null;
             default: return "?";
           }
     }

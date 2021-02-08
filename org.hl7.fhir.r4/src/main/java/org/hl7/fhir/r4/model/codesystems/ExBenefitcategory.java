@@ -246,6 +246,7 @@ public enum ExBenefitcategory {
             case F3: return "F3";
             case F4: return "F4";
             case F6: return "F6";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -282,6 +283,7 @@ public enum ExBenefitcategory {
             case F3: return "Dental Coverage.";
             case F4: return "Hearing Coverage.";
             case F6: return "Vision Coverage.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -315,6 +317,7 @@ public enum ExBenefitcategory {
             case F3: return "Dental Coverage";
             case F4: return "Hearing Coverage";
             case F6: return "Vision Coverage";
+            case NULL: return null;
             default: return "?";
           }
     }

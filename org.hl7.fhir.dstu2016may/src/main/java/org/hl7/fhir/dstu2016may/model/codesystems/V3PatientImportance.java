@@ -113,6 +113,7 @@ public enum V3PatientImportance {
             case SFM: return "SFM";
             case STF: return "STF";
             case VIP: return "VIP";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum V3PatientImportance {
             case SFM: return "Family member of staff member";
             case STF: return "Staff member of the health care organization";
             case VIP: return "Very important person of interest to the health care organization";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum V3PatientImportance {
             case SFM: return "Staff Family Member";
             case STF: return "Staff Member";
             case VIP: return "Very Important Person";
+            case NULL: return null;
             default: return "?";
           }
     }

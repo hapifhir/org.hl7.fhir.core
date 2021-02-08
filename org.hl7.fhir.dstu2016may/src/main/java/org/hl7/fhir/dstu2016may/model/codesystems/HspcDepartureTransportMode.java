@@ -57,6 +57,7 @@ public enum HspcDepartureTransportMode {
         public String toCode() {
           switch (this) {
             case _14586425: return "14586425";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum HspcDepartureTransportMode {
         public String getDefinition() {
           switch (this) {
             case _14586425: return "The subject departed by means of a law enforcement vehicle.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case _14586425: return "Left w/ Law Enforcement";
+            case NULL: return null;
             default: return "?";
           }
     }

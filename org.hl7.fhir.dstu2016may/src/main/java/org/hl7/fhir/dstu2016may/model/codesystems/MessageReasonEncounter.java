@@ -92,6 +92,7 @@ public enum MessageReasonEncounter {
             case RETURN: return "return";
             case MOVED: return "moved";
             case EDIT: return "edit";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum MessageReasonEncounter {
             case RETURN: return "The patient has returned from a temporary absence.";
             case MOVED: return "The patient has been moved to a new location.";
             case EDIT: return "Encounter details have been updated (e.g. to correct a coding error).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum MessageReasonEncounter {
             case RETURN: return "Returned";
             case MOVED: return "Moved";
             case EDIT: return "Edit";
+            case NULL: return null;
             default: return "?";
           }
     }

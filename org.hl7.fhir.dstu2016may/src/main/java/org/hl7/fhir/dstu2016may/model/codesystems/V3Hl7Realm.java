@@ -365,6 +365,7 @@ public enum V3Hl7Realm {
             case X1: return "X1";
             case NAMESPACEREALMS: return "NamespaceRealms";
             case ZZ: return "ZZ";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -418,6 +419,7 @@ public enum V3Hl7Realm {
             case X1: return "Description: Realm code for use of Example Realm";
             case NAMESPACEREALMS: return "Description: Codes that can be used in the \"realm\" portion of HL7 v3 artifact identifiers.";
             case ZZ: return "Description: An artifact created for local use only.  This realm namespace has no owning affiliate.  Its use is uncontrolled, i.e. anyone can create artifacts using this realm namespace.  Because of this, there is a significant likelihood of artifact identifier collisions.  Implementers are encouraged to register their artifacts under an affiliate owned and controlled namespace to avoid such collision problems where possible.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -468,6 +470,7 @@ public enum V3Hl7Realm {
             case X1: return "Example Realm";
             case NAMESPACEREALMS: return "namespace realms";
             case ZZ: return "Localized Version";
+            case NULL: return null;
             default: return "?";
           }
     }

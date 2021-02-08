@@ -57,6 +57,7 @@ public enum NehtaNehtaNotidentifiedPresentIndeterminate {
         public String toCode() {
           switch (this) {
             case NOTIDENTIFIED: return "not_identified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum NehtaNehtaNotidentifiedPresentIndeterminate {
         public String getDefinition() {
           switch (this) {
             case NOTIDENTIFIED: return "Indicates whether the value was not identified";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case NOTIDENTIFIED: return "Not identified";
+            case NULL: return null;
             default: return "?";
           }
     }

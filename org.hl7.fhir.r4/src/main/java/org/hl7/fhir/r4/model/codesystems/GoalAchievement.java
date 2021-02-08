@@ -113,6 +113,7 @@ public enum GoalAchievement {
             case NOTACHIEVED: return "not-achieved";
             case NOPROGRESS: return "no-progress";
             case NOTATTAINABLE: return "not-attainable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum GoalAchievement {
             case NOTACHIEVED: return "The goal has not been met and there might or might not have been progress towards target.";
             case NOPROGRESS: return "The goal has not been met and little to no progress towards target.";
             case NOTATTAINABLE: return "The goal is not possible to be met.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum GoalAchievement {
             case NOTACHIEVED: return "Not Achieved";
             case NOPROGRESS: return "No Progress";
             case NOTATTAINABLE: return "Not Attainable";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -64,6 +64,7 @@ public enum TypeDerivationRule {
           switch (this) {
             case SPECIALIZATION: return "specialization";
             case CONSTRAINT: return "constraint";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum TypeDerivationRule {
           switch (this) {
             case SPECIALIZATION: return "This definition defines a new type that adds additional elements to the base type.";
             case CONSTRAINT: return "This definition adds additional rules to an existing concrete type.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum TypeDerivationRule {
           switch (this) {
             case SPECIALIZATION: return "Specialization";
             case CONSTRAINT: return "Constraint";
+            case NULL: return null;
             default: return "?";
           }
     }

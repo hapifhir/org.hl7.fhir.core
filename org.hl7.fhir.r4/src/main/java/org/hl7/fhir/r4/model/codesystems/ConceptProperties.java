@@ -85,6 +85,7 @@ public enum ConceptProperties {
             case NOTSELECTABLE: return "notSelectable";
             case PARENT: return "parent";
             case CHILD: return "child";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ConceptProperties {
             case NOTSELECTABLE: return "The concept is not intended to be chosen by the user - only intended to be used as a selector for other concepts. Note, though, that the interpretation of this is highly contextual; all concepts are selectable in some context. Property type is boolean";
             case PARENT: return "The concept identified in this property is a parent of the concept on which it is a property. The property type will be 'code'. The meaning of 'parent' is defined by the hierarchyMeaning attribute";
             case CHILD: return "The concept identified in this property is a child of the concept on which it is a property. The property type will be 'code'. The meaning of 'child' is defined by the hierarchyMeaning attribute";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ConceptProperties {
             case NOTSELECTABLE: return "Not Selectable";
             case PARENT: return "Parent";
             case CHILD: return "Child";
+            case NULL: return null;
             default: return "?";
           }
     }

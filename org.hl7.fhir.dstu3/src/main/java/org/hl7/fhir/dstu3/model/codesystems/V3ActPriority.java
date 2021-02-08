@@ -155,6 +155,7 @@ public enum V3ActPriority {
             case T: return "T";
             case UD: return "UD";
             case UR: return "UR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -178,6 +179,7 @@ public enum V3ActPriority {
             case T: return "It is critical to come as close as possible to the requested time (e.g., for a through antimicrobial level).";
             case UD: return "Drug is to be used as directed by the prescriber.";
             case UR: return "Calls for prompt action.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -198,6 +200,7 @@ public enum V3ActPriority {
             case T: return "timing critical";
             case UD: return "use as directed";
             case UR: return "urgent";
+            case NULL: return null;
             default: return "?";
           }
     }

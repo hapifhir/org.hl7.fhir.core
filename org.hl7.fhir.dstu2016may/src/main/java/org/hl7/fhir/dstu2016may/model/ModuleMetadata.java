@@ -99,6 +99,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case DECISIONSUPPORTRULE: return "decision-support-rule";
             case DOCUMENTATIONTEMPLATE: return "documentation-template";
             case ORDERSET: return "order-set";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -109,6 +110,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case DECISIONSUPPORTRULE: return "http://hl7.org/fhir/module-metadata-type";
             case DOCUMENTATIONTEMPLATE: return "http://hl7.org/fhir/module-metadata-type";
             case ORDERSET: return "http://hl7.org/fhir/module-metadata-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +121,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case DECISIONSUPPORTRULE: return "An Event-Condition-Action Rule Artifact";
             case DOCUMENTATIONTEMPLATE: return "A Documentation Template Artifact";
             case ORDERSET: return "An Order Set Artifact";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -129,6 +132,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case DECISIONSUPPORTRULE: return "Decision Support Rule";
             case DOCUMENTATIONTEMPLATE: return "Documentation Template";
             case ORDERSET: return "Order Set";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -220,6 +224,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case DRAFT: return "draft";
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -228,6 +233,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case DRAFT: return "http://hl7.org/fhir/module-metadata-status";
             case ACTIVE: return "http://hl7.org/fhir/module-metadata-status";
             case INACTIVE: return "http://hl7.org/fhir/module-metadata-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -236,6 +242,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case DRAFT: return "The module is in draft state";
             case ACTIVE: return "The module is active";
             case INACTIVE: return "The module is inactive, either rejected before publication, or retired after publication";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -244,6 +251,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case DRAFT: return "Draft";
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -330,6 +338,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case EDITOR: return "editor";
             case REVIEWER: return "reviewer";
             case ENDORSER: return "endorser";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -339,6 +348,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case EDITOR: return "http://hl7.org/fhir/module-metadata-contributor";
             case REVIEWER: return "http://hl7.org/fhir/module-metadata-contributor";
             case ENDORSER: return "http://hl7.org/fhir/module-metadata-contributor";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -348,6 +358,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case EDITOR: return "An editor of the content of the module";
             case REVIEWER: return "A reviewer of the content of the module";
             case ENDORSER: return "An endorser of the content of the module";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -357,6 +368,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case EDITOR: return "Editor";
             case REVIEWER: return "Reviewer";
             case ENDORSER: return "Endorser";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -463,6 +475,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case PREDECESSOR: return "predecessor";
             case SUCCESSOR: return "successor";
             case DERIVEDFROM: return "derived-from";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -474,6 +487,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case PREDECESSOR: return "http://hl7.org/fhir/module-metadata-resource-type";
             case SUCCESSOR: return "http://hl7.org/fhir/module-metadata-resource-type";
             case DERIVEDFROM: return "http://hl7.org/fhir/module-metadata-resource-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -485,6 +499,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case PREDECESSOR: return "The previous version of the module";
             case SUCCESSOR: return "The next version of the module";
             case DERIVEDFROM: return "The module is derived from the resource. This is intended to capture the relationship when a particular module is based on the content of another module, but is modified to capture either a different set of overall requirements, or a more specific set of requirements such as those involved in a particular institution or clinical setting";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -496,6 +511,7 @@ public class ModuleMetadata extends Type implements ICompositeType {
             case PREDECESSOR: return "Predecessor";
             case SUCCESSOR: return "Successor";
             case DERIVEDFROM: return "Derived From";
+            case NULL: return null;
             default: return "?";
           }
         }

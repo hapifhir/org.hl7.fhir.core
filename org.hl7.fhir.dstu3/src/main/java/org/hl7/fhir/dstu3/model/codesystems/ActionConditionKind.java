@@ -71,6 +71,7 @@ public enum ActionConditionKind {
             case APPLICABILITY: return "applicability";
             case START: return "start";
             case STOP: return "stop";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ActionConditionKind {
             case APPLICABILITY: return "The condition describes whether or not a given action is applicable";
             case START: return "The condition is a starting condition for the action";
             case STOP: return "The condition is a stop, or exit condition for the action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ActionConditionKind {
             case APPLICABILITY: return "Applicability";
             case START: return "Start";
             case STOP: return "Stop";
+            case NULL: return null;
             default: return "?";
           }
     }

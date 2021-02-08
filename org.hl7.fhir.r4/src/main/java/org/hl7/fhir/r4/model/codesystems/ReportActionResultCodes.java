@@ -85,6 +85,7 @@ public enum ReportActionResultCodes {
             case FAIL: return "fail";
             case WARNING: return "warning";
             case ERROR: return "error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ReportActionResultCodes {
             case FAIL: return "The action failed.";
             case WARNING: return "The action passed but with warnings.";
             case ERROR: return "The action encountered a fatal error and the engine was unable to process.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ReportActionResultCodes {
             case FAIL: return "Fail";
             case WARNING: return "Warning";
             case ERROR: return "Error";
+            case NULL: return null;
             default: return "?";
           }
     }

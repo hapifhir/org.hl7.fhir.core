@@ -89,6 +89,7 @@ public class StructureDefinition extends CanonicalResource {
             case FHIRPATH: return "fhirpath";
             case ELEMENT: return "element";
             case EXTENSION: return "extension";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class StructureDefinition extends CanonicalResource {
             case FHIRPATH: return "http://hl7.org/fhir/extension-context-type";
             case ELEMENT: return "http://hl7.org/fhir/extension-context-type";
             case EXTENSION: return "http://hl7.org/fhir/extension-context-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class StructureDefinition extends CanonicalResource {
             case FHIRPATH: return "The context is all elements that match the FHIRPath query found in the expression.";
             case ELEMENT: return "The context is any element that has an ElementDefinition.id that matches that found in the expression. This includes ElementDefinition Ids that have slicing identifiers. The full path for the element is [url]#[elementid]. If there is no #, the Element id is one defined in the base specification.";
             case EXTENSION: return "The context is a particular extension from a particular StructureDefinition, and the expression is just a uri that identifies the extension.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class StructureDefinition extends CanonicalResource {
             case FHIRPATH: return "FHIRPath";
             case ELEMENT: return "Element ID";
             case EXTENSION: return "Extension URL";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -204,6 +208,7 @@ public class StructureDefinition extends CanonicalResource {
             case COMPLEXTYPE: return "complex-type";
             case RESOURCE: return "resource";
             case LOGICAL: return "logical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +218,7 @@ public class StructureDefinition extends CanonicalResource {
             case COMPLEXTYPE: return "http://hl7.org/fhir/structure-definition-kind";
             case RESOURCE: return "http://hl7.org/fhir/structure-definition-kind";
             case LOGICAL: return "http://hl7.org/fhir/structure-definition-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -222,6 +228,7 @@ public class StructureDefinition extends CanonicalResource {
             case COMPLEXTYPE: return "A  complex structure that defines a set of data elements that is suitable for use in 'resources'. The base specification defines a number of complex types, and other specifications can define additional types. These structures do not have a maintained identity.";
             case RESOURCE: return "A 'resource' - a directed acyclic graph of elements that aggregrates other types into an identifiable entity. The base FHIR resources are defined by the FHIR specification itself but other 'resources' can be defined in additional specifications (though these will not be recognised as 'resources' by the FHIR specification (i.e. they do not get end-points etc, or act as the targets of references in FHIR defined resources - though other specificatiosn can treat them this way).";
             case LOGICAL: return "A pattern or a template that is not intended to be a real resource or complex type.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -231,6 +238,7 @@ public class StructureDefinition extends CanonicalResource {
             case COMPLEXTYPE: return "Complex Data Type";
             case RESOURCE: return "Resource";
             case LOGICAL: return "Logical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -314,6 +322,7 @@ public class StructureDefinition extends CanonicalResource {
           switch (this) {
             case SPECIALIZATION: return "specialization";
             case CONSTRAINT: return "constraint";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -321,6 +330,7 @@ public class StructureDefinition extends CanonicalResource {
           switch (this) {
             case SPECIALIZATION: return "http://hl7.org/fhir/type-derivation-rule";
             case CONSTRAINT: return "http://hl7.org/fhir/type-derivation-rule";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -328,6 +338,7 @@ public class StructureDefinition extends CanonicalResource {
           switch (this) {
             case SPECIALIZATION: return "This definition defines a new type that adds additional elements to the base type.";
             case CONSTRAINT: return "This definition adds additional rules to an existing concrete type.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -335,6 +346,7 @@ public class StructureDefinition extends CanonicalResource {
           switch (this) {
             case SPECIALIZATION: return "Specialization";
             case CONSTRAINT: return "Constraint";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -85,6 +85,7 @@ public enum ModuleMetadataType {
             case DECISIONSUPPORTRULE: return "decision-support-rule";
             case DOCUMENTATIONTEMPLATE: return "documentation-template";
             case ORDERSET: return "order-set";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ModuleMetadataType {
             case DECISIONSUPPORTRULE: return "An Event-Condition-Action Rule Artifact";
             case DOCUMENTATIONTEMPLATE: return "A Documentation Template Artifact";
             case ORDERSET: return "An Order Set Artifact";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ModuleMetadataType {
             case DECISIONSUPPORTRULE: return "Decision Support Rule";
             case DOCUMENTATIONTEMPLATE: return "Documentation Template";
             case ORDERSET: return "Order Set";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -57,6 +57,7 @@ public enum V3CalendarType {
         public String toCode() {
           switch (this) {
             case GREG: return "GREG";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum V3CalendarType {
         public String getDefinition() {
           switch (this) {
             case GREG: return "The Gregorian calendar is in effect in the most countries of Christian influence since approximately 1582.  This calendar superceded the Julian calendar.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case GREG: return "Gregorian";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -120,6 +120,7 @@ public enum HspcPatientVeteranMilitaryStatus {
             case _40D86A6267A949C68F43C1A9EF51689B: return "40d86a62-67a9-49c6-8f43-c1a9ef51689b";
             case CA02026A3EBF4FB409E002D89C931643: return "ca02026a-3ebf-4fb4-09e0-02d89c931643";
             case _75F4440AEC3747FEB26D39C09C204676: return "75f4440a-ec37-47fe-b26d-39c09c204676";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum HspcPatientVeteranMilitaryStatus {
             case _40D86A6267A949C68F43C1A9EF51689B: return "A previous full-time member of the armed forces (military) who has a commitment to be called to active duty if necessary, but who currently works as a civilian.";
             case CA02026A3EBF4FB409E002D89C931643: return "Retired from a career in the armed forces (military).";
             case _75F4440AEC3747FEB26D39C09C204676: return "A part-time member of a reserve military force of the United States military whos units are composed of members from the state or territory of residence.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum HspcPatientVeteranMilitaryStatus {
             case _40D86A6267A949C68F43C1A9EF51689B: return "Inactive Ready Reserve";
             case CA02026A3EBF4FB409E002D89C931643: return "Retired military";
             case _75F4440AEC3747FEB26D39C09C204676: return "National Guard";
+            case NULL: return null;
             default: return "?";
           }
     }

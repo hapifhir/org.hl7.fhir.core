@@ -78,6 +78,7 @@ public enum SupplydeliveryStatus {
             case COMPLETED: return "completed";
             case ABANDONED: return "abandoned";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum SupplydeliveryStatus {
             case COMPLETED: return "Supply has been delivered (\"completed\").";
             case ABANDONED: return "Delivery was not completed.";
             case ENTEREDINERROR: return "This electronic record should never have existed, though it is possible that real-world decisions were based on it. (If real-world activity has occurred, the status should be \"cancelled\" rather than \"entered-in-error\".)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum SupplydeliveryStatus {
             case COMPLETED: return "Delivered";
             case ABANDONED: return "Abandoned";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
     }

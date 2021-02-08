@@ -78,6 +78,7 @@ public enum AnimalBreeds {
             case IRT: return "irt";
             case TIBMAS: return "tibmas";
             case GRET: return "gret";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum AnimalBreeds {
             case IRT: return "";
             case TIBMAS: return "";
             case GRET: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum AnimalBreeds {
             case IRT: return "Irish Terrier";
             case TIBMAS: return "Tibetan Mastiff";
             case GRET: return "Golden Retriever";
+            case NULL: return null;
             default: return "?";
           }
     }

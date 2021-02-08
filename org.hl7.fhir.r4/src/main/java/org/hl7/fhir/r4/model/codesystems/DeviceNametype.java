@@ -92,6 +92,7 @@ public enum DeviceNametype {
             case MANUFACTURERNAME: return "manufacturer-name";
             case MODELNAME: return "model-name";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum DeviceNametype {
             case MANUFACTURERNAME: return "Manufacturer name.";
             case MODELNAME: return "Model name.";
             case OTHER: return "other.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum DeviceNametype {
             case MANUFACTURERNAME: return "Manufacturer name";
             case MODELNAME: return "Model name";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
     }

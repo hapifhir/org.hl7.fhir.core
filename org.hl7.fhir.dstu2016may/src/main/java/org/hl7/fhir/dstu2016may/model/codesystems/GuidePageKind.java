@@ -106,6 +106,7 @@ public enum GuidePageKind {
             case DICTIONARY: return "dictionary";
             case TOC: return "toc";
             case RESOURCE: return "resource";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum GuidePageKind {
             case DICTIONARY: return "This is a page that creates the listed resources as a dictionary.";
             case TOC: return "This is a generated page that contains the table of contents.";
             case RESOURCE: return "This is a page that represents a presented resource. This is typically used for generated conformance resource presentations.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum GuidePageKind {
             case DICTIONARY: return "Dictionary";
             case TOC: return "Table Of Contents";
             case RESOURCE: return "Resource";
+            case NULL: return null;
             default: return "?";
           }
     }

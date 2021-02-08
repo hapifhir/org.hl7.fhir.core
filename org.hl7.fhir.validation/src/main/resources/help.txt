@@ -41,7 +41,12 @@ The following parameters are supported:
      Note: the profile (and it's dependencies) have to be made available 
      through one of the -ig parameters. Note that package dependencies will 
      automatically be resolved
--questionnaire [file|url}: the location of a questionnaire. If provided, then the validator will validate
+-questionnaire mode: what to do with when validating QuestionnaireResponse resources
+     none (default): just ignore the questionnaire reference
+     required: check that the QuestionnaireResponse has a questionnaire and validate against it 
+     check: if the QuestionnaireResponse has a questionnaire, validate against it
+     The questionnaire must be loaded using the -ig parameter
+the location of a questionnaire. If provided, then the validator will validate
      any QuestionnaireResponse that claims to match the Questionnaire against it
      no default value. This parameter can appear any number of times
 -output [file]: a filename for the results (OperationOutcome)

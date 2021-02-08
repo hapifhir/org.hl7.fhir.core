@@ -108,6 +108,7 @@ public enum V3RoleLinkType {
             case INDAUTH: return "INDAUTH";
             case PART: return "PART";
             case REPL: return "REPL";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -124,6 +125,7 @@ public enum V3RoleLinkType {
             case INDAUTH: return "The source Role has indirect authority over the target role in a chain of authority.";
             case PART: return "The target Role is part of the Source Role.";
             case REPL: return "This relationship indicates that the source Role replaces (or subsumes) the target Role.  Allows for new identifiers and/or new effective time for a registry entry or a certification, etc.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -137,6 +139,7 @@ public enum V3RoleLinkType {
             case INDAUTH: return "has indirect authority over";
             case PART: return "has part";
             case REPL: return "replaces";
+            case NULL: return null;
             default: return "?";
           }
     }

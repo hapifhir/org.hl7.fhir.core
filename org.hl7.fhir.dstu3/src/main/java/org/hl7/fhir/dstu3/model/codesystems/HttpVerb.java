@@ -78,6 +78,7 @@ public enum HttpVerb {
             case POST: return "POST";
             case PUT: return "PUT";
             case DELETE: return "DELETE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum HttpVerb {
             case POST: return "HTTP POST";
             case PUT: return "HTTP PUT";
             case DELETE: return "HTTP DELETE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum HttpVerb {
             case POST: return "POST";
             case PUT: return "PUT";
             case DELETE: return "DELETE";
+            case NULL: return null;
             default: return "?";
           }
     }

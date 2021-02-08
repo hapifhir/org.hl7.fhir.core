@@ -113,6 +113,7 @@ public enum GoalStatusReason {
             case FINANCIALBARRIER: return "financial-barrier";
             case LACKOFTRANSPORTATION: return "lack-of-transportation";
             case LACKOFSOCIALSUPPORT: return "lack-of-social-support";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum GoalStatusReason {
             case FINANCIALBARRIER: return "Goal cannot be reached due to financial barrier or reason.";
             case LACKOFTRANSPORTATION: return "Goal cannot be reached due to a lack of transportation.";
             case LACKOFSOCIALSUPPORT: return "Goal cannot be reached due to a lack of social support.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum GoalStatusReason {
             case FINANCIALBARRIER: return "Financial Reason";
             case LACKOFTRANSPORTATION: return "Lack Of Transportation";
             case LACKOFSOCIALSUPPORT: return "Lack Of Social Support";
+            case NULL: return null;
             default: return "?";
           }
     }

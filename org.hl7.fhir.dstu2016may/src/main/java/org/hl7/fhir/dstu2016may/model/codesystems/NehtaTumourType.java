@@ -64,6 +64,7 @@ public enum NehtaTumourType {
           switch (this) {
             case EPITHELIALTUMOURS: return "epithelial-tumours";
             case MESENCHYMALTUMOURS: return "mesenchymal-tumours";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum NehtaTumourType {
           switch (this) {
             case EPITHELIALTUMOURS: return "";
             case MESENCHYMALTUMOURS: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum NehtaTumourType {
           switch (this) {
             case EPITHELIALTUMOURS: return "Epithelial tumours |+";
             case MESENCHYMALTUMOURS: return "Mesenchymal tumours |+";
+            case NULL: return null;
             default: return "?";
           }
     }

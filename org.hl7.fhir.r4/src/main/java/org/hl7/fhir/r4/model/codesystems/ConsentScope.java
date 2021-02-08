@@ -78,6 +78,7 @@ public enum ConsentScope {
             case RESEARCH: return "research";
             case PATIENTPRIVACY: return "patient-privacy";
             case TREATMENT: return "treatment";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ConsentScope {
             case RESEARCH: return "Consent to participate in research protocol and information sharing required";
             case PATIENTPRIVACY: return "Agreement to collect, access, use or disclose (share) information";
             case TREATMENT: return "Consent to undergo a specific treatment";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ConsentScope {
             case RESEARCH: return "Research";
             case PATIENTPRIVACY: return "Privacy Consent";
             case TREATMENT: return "Treatment";
+            case NULL: return null;
             default: return "?";
           }
     }

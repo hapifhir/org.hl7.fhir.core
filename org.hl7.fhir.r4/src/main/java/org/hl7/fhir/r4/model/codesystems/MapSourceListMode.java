@@ -85,6 +85,7 @@ public enum MapSourceListMode {
             case LAST: return "last";
             case NOTLAST: return "not_last";
             case ONLYONE: return "only_one";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum MapSourceListMode {
             case LAST: return "Only process this rule for the last in the list.";
             case NOTLAST: return "Process this rule for all but the last.";
             case ONLYONE: return "Only process this rule is there is only item.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum MapSourceListMode {
             case LAST: return "Last";
             case NOTLAST: return "All but the last";
             case ONLYONE: return "Enforce only one";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -85,6 +85,7 @@ public enum CatalogContentType {
             case FULLCATALOG: return "full-catalog";
             case CATALOGUPDATE: return "catalog-update";
             case CATALOGRESPONSE: return "catalog-response";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum CatalogContentType {
             case FULLCATALOG: return "This is a full catalog transfer";
             case CATALOGUPDATE: return "This is a differential update";
             case CATALOGRESPONSE: return "This is a response to a request for catalog information";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum CatalogContentType {
             case FULLCATALOG: return "Full Catalog";
             case CATALOGUPDATE: return "Update";
             case CATALOGRESPONSE: return "Response";
+            case NULL: return null;
             default: return "?";
           }
     }
