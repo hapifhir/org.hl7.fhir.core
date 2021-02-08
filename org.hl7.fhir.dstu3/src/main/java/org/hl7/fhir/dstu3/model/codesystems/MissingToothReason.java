@@ -78,6 +78,7 @@ public enum MissingToothReason {
             case C: return "c";
             case U: return "u";
             case O: return "o";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MissingToothReason {
             case C: return "Congenital";
             case U: return "Unknown";
             case O: return "Other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MissingToothReason {
             case C: return "C";
             case U: return "U";
             case O: return "O";
+            case NULL: return null;
             default: return "?";
           }
     }

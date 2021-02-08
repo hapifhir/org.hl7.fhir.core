@@ -57,6 +57,7 @@ public enum HspcLocationServiceDeliveryLocationNameUse {
         public String toCode() {
           switch (this) {
             case ABR: return "ABR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum HspcLocationServiceDeliveryLocationNameUse {
         public String getDefinition() {
           switch (this) {
             case ABR: return "A name or word display that has had a number of letters removed in order to fit into limited fields or spaces";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case ABR: return "Abbreviation";
+            case NULL: return null;
             default: return "?";
           }
     }

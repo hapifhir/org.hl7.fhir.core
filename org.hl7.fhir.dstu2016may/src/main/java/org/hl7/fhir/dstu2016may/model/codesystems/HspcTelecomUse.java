@@ -57,6 +57,7 @@ public enum HspcTelecomUse {
         public String toCode() {
           switch (this) {
             case NS: return "NS";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum HspcTelecomUse {
         public String getDefinition() {
           switch (this) {
             case NS: return "The type of telecom system was not specified for the given number.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case NS: return "Not specified";
+            case NULL: return null;
             default: return "?";
           }
     }

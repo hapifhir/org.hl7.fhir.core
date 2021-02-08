@@ -71,6 +71,7 @@ public enum ConformanceResourceStatus {
             case DRAFT: return "draft";
             case ACTIVE: return "active";
             case RETIRED: return "retired";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ConformanceResourceStatus {
             case DRAFT: return "This resource is still under development.";
             case ACTIVE: return "This resource is ready for normal use.";
             case RETIRED: return "This resource has been withdrawn or superseded and should no longer be used.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ConformanceResourceStatus {
             case DRAFT: return "Draft";
             case ACTIVE: return "Active";
             case RETIRED: return "Retired";
+            case NULL: return null;
             default: return "?";
           }
     }

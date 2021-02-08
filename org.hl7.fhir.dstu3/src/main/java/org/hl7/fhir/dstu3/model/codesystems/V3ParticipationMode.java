@@ -155,6 +155,7 @@ public enum V3ParticipationMode {
             case ONLINEWRIT: return "ONLINEWRIT";
             case EMAILWRIT: return "EMAILWRIT";
             case TYPEWRIT: return "TYPEWRIT";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -178,6 +179,7 @@ public enum V3ParticipationMode {
             case ONLINEWRIT: return "Participation by text or diagrams submitted by computer network, e.g. online survey.";
             case EMAILWRIT: return "Participation by text or diagrams transmitted over an electronic mail system.";
             case TYPEWRIT: return "Participation by text or diagrams printed on paper or other recording medium where the recording was performed using a typewriter, typesetter, computer or similar mechanism.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -198,6 +200,7 @@ public enum V3ParticipationMode {
             case ONLINEWRIT: return "online written";
             case EMAILWRIT: return "email";
             case TYPEWRIT: return "typewritten";
+            case NULL: return null;
             default: return "?";
           }
     }

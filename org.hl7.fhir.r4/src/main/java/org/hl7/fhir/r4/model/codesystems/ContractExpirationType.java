@@ -57,6 +57,7 @@ public enum ContractExpirationType {
         public String toCode() {
           switch (this) {
             case BREACH: return "breach";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum ContractExpirationType {
         public String getDefinition() {
           switch (this) {
             case BREACH: return "To be completed";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case BREACH: return "Breach";
+            case NULL: return null;
             default: return "?";
           }
     }

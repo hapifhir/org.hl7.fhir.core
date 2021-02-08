@@ -85,6 +85,7 @@ public enum NetworkType {
             case _3: return "3";
             case _4: return "4";
             case _5: return "5";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum NetworkType {
             case _3: return "The assigned telephone number.";
             case _4: return "The assigned email address.";
             case _5: return "URI (User directory, HTTP-PUT, ftp, etc.).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum NetworkType {
             case _3: return "Telephone Number";
             case _4: return "Email address";
             case _5: return "URI";
+            case NULL: return null;
             default: return "?";
           }
     }

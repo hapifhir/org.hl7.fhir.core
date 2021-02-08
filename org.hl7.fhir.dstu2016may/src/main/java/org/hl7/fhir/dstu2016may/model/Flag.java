@@ -81,6 +81,7 @@ public class Flag extends DomainResource {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class Flag extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/flag-status";
             case INACTIVE: return "http://hl7.org/fhir/flag-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/flag-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +99,7 @@ public class Flag extends DomainResource {
             case ACTIVE: return "A current flag that should be displayed to a user. A system may use the category to determine which roles should view the flag.";
             case INACTIVE: return "The flag does not need to be displayed any more.";
             case ENTEREDINERROR: return "The flag was added in error, and should no longer be displayed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +108,7 @@ public class Flag extends DomainResource {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

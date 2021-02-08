@@ -71,6 +71,7 @@ public enum VerificationresultCanPushUpdates {
             case YES: return "yes";
             case NO: return "no";
             case UNDETERMINED: return "undetermined";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum VerificationresultCanPushUpdates {
             case YES: return "";
             case NO: return "";
             case UNDETERMINED: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum VerificationresultCanPushUpdates {
             case YES: return "Yes";
             case NO: return "No";
             case UNDETERMINED: return "Undetermined";
+            case NULL: return null;
             default: return "?";
           }
     }

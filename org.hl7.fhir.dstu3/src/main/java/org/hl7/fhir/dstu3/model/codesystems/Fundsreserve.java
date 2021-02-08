@@ -71,6 +71,7 @@ public enum Fundsreserve {
             case PATIENT: return "patient";
             case PROVIDER: return "provider";
             case NONE: return "none";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum Fundsreserve {
             case PATIENT: return "The payor is requested to reserve funds for the provision of the named services by any provider for settlement of future claims related to this request.";
             case PROVIDER: return "The payor is requested to reserve funds solely for the named provider for settlement of future claims related to this request.";
             case NONE: return "The payor is not being requested to reserve any funds for the settlement of future claims.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum Fundsreserve {
             case PATIENT: return "Patient";
             case PROVIDER: return "Provider";
             case NONE: return "None";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -113,6 +113,7 @@ public enum UsageContextType {
             case VENUE: return "venue";
             case SPECIES: return "species";
             case PROGRAM: return "program";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum UsageContextType {
             case VENUE: return "The venue in which an artifact could be used. For example, Outpatient, Inpatient, Home, Nursing home. The code value may originate from the HL7 ServiceDeliveryLocationRoleType value set (http://terminology.hl7.org/ValueSet/v3-ServiceDeliveryLocationRoleType).";
             case SPECIES: return "The species to which an artifact applies. For example, SNOMED - 387961004 | Kingdom Animalia (organism).";
             case PROGRAM: return "A program/project of work for which this artifact is applicable.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum UsageContextType {
             case VENUE: return "Clinical Venue";
             case SPECIES: return "Species";
             case PROGRAM: return "Program";
+            case NULL: return null;
             default: return "?";
           }
     }

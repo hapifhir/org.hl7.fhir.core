@@ -71,6 +71,7 @@ public enum UslabObsKind {
             case RESULT: return "result";
             case RESPONSE: return "response";
             case INFORMATION: return "information";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum UslabObsKind {
             case RESULT: return "The value is Observation.value[x] is an actual result from a laboratory test";
             case RESPONSE: return "The value is Observation.value[x] is a response to laboratory Ask at order (AOE) questions";
             case INFORMATION: return "The value is Observation.value[x] is some other unsolicited clnically relevant information.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum UslabObsKind {
             case RESULT: return "result";
             case RESPONSE: return "response";
             case INFORMATION: return "information";
+            case NULL: return null;
             default: return "?";
           }
     }

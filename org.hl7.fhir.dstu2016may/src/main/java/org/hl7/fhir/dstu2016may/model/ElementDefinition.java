@@ -93,6 +93,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case XMLTEXT: return "xmlText";
             case TYPEATTR: return "typeAttr";
             case CDATEXT: return "cdaText";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -102,6 +103,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case XMLTEXT: return "http://hl7.org/fhir/property-representation";
             case TYPEATTR: return "http://hl7.org/fhir/property-representation";
             case CDATEXT: return "http://hl7.org/fhir/property-representation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,6 +113,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case XMLTEXT: return "This element is represented using the XML text attribute (primitives only)";
             case TYPEATTR: return "The type of this element is indicated using xsi:type";
             case CDATEXT: return "Use CDA narrative instead of XHTML";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -120,6 +123,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case XMLTEXT: return "XML Text";
             case TYPEATTR: return "Type Attribute";
             case CDATEXT: return "CDA Text Format";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -205,6 +209,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case CLOSED: return "closed";
             case OPEN: return "open";
             case OPENATEND: return "openAtEnd";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +218,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case CLOSED: return "http://hl7.org/fhir/resource-slicing-rules";
             case OPEN: return "http://hl7.org/fhir/resource-slicing-rules";
             case OPENATEND: return "http://hl7.org/fhir/resource-slicing-rules";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -221,6 +227,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case CLOSED: return "No additional content is allowed other than that described by the slices in this profile.";
             case OPEN: return "Additional content is allowed anywhere in the list.";
             case OPENATEND: return "Additional content is allowed, but only at the end of the list. Note that using this requires that the slices be ordered, which makes it hard to share uses. This should only be done where absolutely required.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -229,6 +236,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case CLOSED: return "Closed";
             case OPEN: return "Open";
             case OPENATEND: return "Open at End";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -308,6 +316,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case CONTAINED: return "contained";
             case REFERENCED: return "referenced";
             case BUNDLED: return "bundled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -316,6 +325,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case CONTAINED: return "http://hl7.org/fhir/resource-aggregation-mode";
             case REFERENCED: return "http://hl7.org/fhir/resource-aggregation-mode";
             case BUNDLED: return "http://hl7.org/fhir/resource-aggregation-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -324,6 +334,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case CONTAINED: return "The reference is a local reference to a contained resource.";
             case REFERENCED: return "The reference to a resource that has to be resolved externally to the resource that includes the reference.";
             case BUNDLED: return "The resource the reference points to will be found in the same bundle as the resource that includes the reference.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -332,6 +343,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case CONTAINED: return "Contained";
             case REFERENCED: return "Referenced";
             case BUNDLED: return "Bundled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -411,6 +423,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case EITHER: return "either";
             case INDEPENDENT: return "independent";
             case SPECIFIC: return "specific";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -419,6 +432,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case EITHER: return "http://hl7.org/fhir/reference-version-rules";
             case INDEPENDENT: return "http://hl7.org/fhir/reference-version-rules";
             case SPECIFIC: return "http://hl7.org/fhir/reference-version-rules";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -427,6 +441,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case EITHER: return "The reference may be either version independent or version specific";
             case INDEPENDENT: return "The reference must be version independent";
             case SPECIFIC: return "The reference must be version specific";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -435,6 +450,7 @@ public class ElementDefinition extends Type implements ICompositeType {
             case EITHER: return "Either Specific or independent";
             case INDEPENDENT: return "Version independent";
             case SPECIFIC: return "Version Specific";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -507,6 +523,7 @@ public class ElementDefinition extends Type implements ICompositeType {
           switch (this) {
             case ERROR: return "error";
             case WARNING: return "warning";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -514,6 +531,7 @@ public class ElementDefinition extends Type implements ICompositeType {
           switch (this) {
             case ERROR: return "http://hl7.org/fhir/constraint-severity";
             case WARNING: return "http://hl7.org/fhir/constraint-severity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -521,6 +539,7 @@ public class ElementDefinition extends Type implements ICompositeType {
           switch (this) {
             case ERROR: return "If the constraint is violated, the resource is not conformant.";
             case WARNING: return "If the constraint is violated, the resource is conformant, but it is not necessarily following best practice.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -528,6 +547,7 @@ public class ElementDefinition extends Type implements ICompositeType {
           switch (this) {
             case ERROR: return "Error";
             case WARNING: return "Warning";
+            case NULL: return null;
             default: return "?";
           }
         }

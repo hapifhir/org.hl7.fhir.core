@@ -85,6 +85,7 @@ public enum ExtraSecurityRoleType {
             case DATAPROCESSOR: return "dataprocessor";
             case DATASUBJECT: return "datasubject";
             case HUMANUSER: return "humanuser";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ExtraSecurityRoleType {
             case DATAPROCESSOR: return "An entity that processes collected information over which the data subject may have certain rights under policy or law to control that information's management and distribution by data processors, including the right to access, retrieve, distribute, or delete that information.";
             case DATASUBJECT: return "A person whose personal information is collected or processed, and who may have certain rights under policy or law to control that information's management and distribution by data collectors or processors, including the right to access, retrieve, distribute, or delete that information.";
             case HUMANUSER: return "The human user that has participated.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ExtraSecurityRoleType {
             case DATAPROCESSOR: return "data processor";
             case DATASUBJECT: return "data subject";
             case HUMANUSER: return "human user";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -64,6 +64,7 @@ public enum V3LocalMarkupIgnore {
           switch (this) {
             case ALL: return "all";
             case MARKUP: return "markup";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3LocalMarkupIgnore {
           switch (this) {
             case ALL: return "all";
             case MARKUP: return "markup";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3LocalMarkupIgnore {
           switch (this) {
             case ALL: return "all";
             case MARKUP: return "markup";
+            case NULL: return null;
             default: return "?";
           }
     }

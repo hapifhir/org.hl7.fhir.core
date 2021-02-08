@@ -64,6 +64,7 @@ public enum ContentType {
           switch (this) {
             case XML: return "xml";
             case JSON: return "json";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ContentType {
           switch (this) {
             case XML: return "XML content-type corresponding to the application/xml+fhir mime-type.";
             case JSON: return "JSON content-type corresponding to the application/json+fhir mime-type.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ContentType {
           switch (this) {
             case XML: return "xml";
             case JSON: return "json";
+            case NULL: return null;
             default: return "?";
           }
     }

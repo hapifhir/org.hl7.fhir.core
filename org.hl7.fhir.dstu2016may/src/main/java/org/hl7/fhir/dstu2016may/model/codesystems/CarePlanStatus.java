@@ -85,6 +85,7 @@ public enum CarePlanStatus {
             case ACTIVE: return "active";
             case COMPLETED: return "completed";
             case CANCELLED: return "cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum CarePlanStatus {
             case ACTIVE: return "The plan is intended to be followed and used as part of patient care.";
             case COMPLETED: return "The plan is no longer in use and is not expected to be followed or used in patient care.";
             case CANCELLED: return "The plan has been terminated prior to reaching completion (though it may have been replaced by a new plan).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum CarePlanStatus {
             case ACTIVE: return "Active";
             case COMPLETED: return "Completed";
             case CANCELLED: return "Cancelled";
+            case NULL: return null;
             default: return "?";
           }
     }

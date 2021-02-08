@@ -113,6 +113,7 @@ public enum EncounterDischargeDisposition {
             case PSY: return "psy";
             case REHAB: return "rehab";
             case OTH: return "oth";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum EncounterDischargeDisposition {
             case PSY: return "";
             case REHAB: return "";
             case OTH: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum EncounterDischargeDisposition {
             case PSY: return "Psychiatric hospital";
             case REHAB: return "Rehabilitation";
             case OTH: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

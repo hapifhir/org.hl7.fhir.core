@@ -120,6 +120,7 @@ public enum AssertOperatorCodes {
             case NOTEMPTY: return "notEmpty";
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum AssertOperatorCodes {
             case NOTEMPTY: return "Compare value is not empty.";
             case CONTAINS: return "Compare value string contains a known value.";
             case NOTCONTAINS: return "Compare value string does not contain a known value.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum AssertOperatorCodes {
             case NOTEMPTY: return "notEmpty";
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
+            case NULL: return null;
             default: return "?";
           }
     }

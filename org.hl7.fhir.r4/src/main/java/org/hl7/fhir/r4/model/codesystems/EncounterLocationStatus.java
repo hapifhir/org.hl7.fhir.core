@@ -82,6 +82,7 @@ Not to be used when the patient is currently at the location.
             case ACTIVE: return "active";
             case RESERVED: return "reserved";
             case COMPLETED: return "completed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -94,6 +95,7 @@ Not to be used when the patient is currently at the location.
             case ACTIVE: return "The patient is currently at this location, or was between the period specified.\r\rA system may update these records when the patient leaves the location to either reserved, or completed.";
             case RESERVED: return "This location is held empty for this patient.";
             case COMPLETED: return "The patient was at this location during the period specified.\r\rNot to be used when the patient is currently at the location.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +105,7 @@ Not to be used when the patient is currently at the location.
             case ACTIVE: return "Active";
             case RESERVED: return "Reserved";
             case COMPLETED: return "Completed";
+            case NULL: return null;
             default: return "?";
           }
     }

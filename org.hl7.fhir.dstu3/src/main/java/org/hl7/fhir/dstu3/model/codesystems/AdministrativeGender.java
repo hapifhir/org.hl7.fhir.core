@@ -78,6 +78,7 @@ public enum AdministrativeGender {
             case FEMALE: return "female";
             case OTHER: return "other";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum AdministrativeGender {
             case FEMALE: return "Female";
             case OTHER: return "Other";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum AdministrativeGender {
             case FEMALE: return "Female";
             case OTHER: return "Other";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

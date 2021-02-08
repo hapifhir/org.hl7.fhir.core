@@ -78,6 +78,7 @@ public enum ExDiagnosisrelatedgroup {
             case _101: return "101";
             case _300: return "300";
             case _400: return "400";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ExDiagnosisrelatedgroup {
             case _101: return "Appendectomy without rupture or other complications.";
             case _300: return "Emergency department treatment of a tooth abscess.";
             case _400: return "Head trauma - concussion.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ExDiagnosisrelatedgroup {
             case _101: return "Appendectomy - uncomplicated";
             case _300: return "Tooth abscess";
             case _400: return "Head trauma - concussion";
+            case NULL: return null;
             default: return "?";
           }
     }

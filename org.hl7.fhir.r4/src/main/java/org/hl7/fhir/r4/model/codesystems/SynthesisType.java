@@ -92,6 +92,7 @@ public enum SynthesisType {
             case COMBINEDNMA: return "combined-NMA";
             case RANGE: return "range";
             case CLASSIFICATION: return "classification";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum SynthesisType {
             case COMBINEDNMA: return "An composite meta-analysis derived from direct comparisons and indirect comparisons in a network meta-analysis.";
             case RANGE: return "A range of results across a body of evidence.";
             case CLASSIFICATION: return "An approach describing a body of evidence by categorically classifying individual studies (eg 3 studies showed beneft and 2 studied found no effect).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum SynthesisType {
             case COMBINEDNMA: return "combined direct plus indirect network meta-analysis";
             case RANGE: return "range of results";
             case CLASSIFICATION: return "classifcation of results";
+            case NULL: return null;
             default: return "?";
           }
     }

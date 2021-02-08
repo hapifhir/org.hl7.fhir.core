@@ -1035,6 +1035,7 @@ public enum V3RoleClass {
             case NURS: return "NURS";
             case PA: return "PA";
             case PHYS: return "PHYS";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1155,6 +1156,7 @@ public enum V3RoleClass {
             case NURS: return "nurse";
             case PA: return "physician assistant";
             case PHYS: return "physician";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1272,6 +1274,7 @@ public enum V3RoleClass {
             case NURS: return "nurse";
             case PA: return "physician assistant";
             case PHYS: return "physician";
+            case NULL: return null;
             default: return "?";
           }
     }

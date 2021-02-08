@@ -85,6 +85,7 @@ public enum IdentifierType {
             case SB: return "SB";
             case PLAC: return "PLAC";
             case FILL: return "FILL";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum IdentifierType {
             case SB: return "An identifier issued by a governmental organization to an individual for the purpose of the receipt of social services and benefits.";
             case PLAC: return "The identifier associated with the person or service that requests or places an order.";
             case FILL: return "The Identifier associated with the person, or service, who produces the observations or fulfills the order requested by the requestor.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum IdentifierType {
             case SB: return "Social Beneficiary Identifier";
             case PLAC: return "Placer Identifier";
             case FILL: return "Filler Identifier";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -92,6 +92,7 @@ public enum ConceptPropertyType {
             case INTEGER: return "integer";
             case BOOLEAN: return "boolean";
             case DATETIME: return "dateTime";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ConceptPropertyType {
             case INTEGER: return "The property value is a string (often used to assign ranking values to concepts for supporting score assessments)";
             case BOOLEAN: return "The property value is a boolean true | false";
             case DATETIME: return "The property is a date or a date + time";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ConceptPropertyType {
             case INTEGER: return "integer";
             case BOOLEAN: return "boolean";
             case DATETIME: return "dateTime";
+            case NULL: return null;
             default: return "?";
           }
     }

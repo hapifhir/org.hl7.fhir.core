@@ -106,6 +106,7 @@ public enum MetricColor {
             case MAGENTA: return "magenta";
             case CYAN: return "cyan";
             case WHITE: return "white";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum MetricColor {
             case MAGENTA: return "Color for representation - magenta.";
             case CYAN: return "Color for representation - cyan.";
             case WHITE: return "Color for representation - white.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum MetricColor {
             case MAGENTA: return "Color Magenta";
             case CYAN: return "Color Cyan";
             case WHITE: return "Color White";
+            case NULL: return null;
             default: return "?";
           }
     }

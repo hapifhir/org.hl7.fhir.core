@@ -134,6 +134,7 @@ public enum QicoreCommunicationMedium {
             case MAIL: return "mail";
             case EMAIL: return "email";
             case PORTAL: return "portal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum QicoreCommunicationMedium {
             case MAIL: return "The message was posted via conventional mail";
             case EMAIL: return "The message was sent as an email";
             case PORTAL: return "The message was communicated via a patient portal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum QicoreCommunicationMedium {
             case MAIL: return "Mail (conventional)";
             case EMAIL: return "Electronic mail (email)";
             case PORTAL: return "Patient portal";
+            case NULL: return null;
             default: return "?";
           }
     }

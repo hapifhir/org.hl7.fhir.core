@@ -71,6 +71,7 @@ public enum ExpansionProcessingRule {
             case ALLCODES: return "all-codes";
             case UNGROUPED: return "ungrouped";
             case GROUPSONLY: return "groups-only";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ExpansionProcessingRule {
             case ALLCODES: return "The expansion (when in UI mode) includes all codes *and* any defined groups (in extensions).";
             case UNGROUPED: return "The expanion (when in UI mode) lists the groups, and then any codes that have not been included in a group.";
             case GROUPSONLY: return "The expansion (when in UI mode) only includes the defined groups.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ExpansionProcessingRule {
             case ALLCODES: return "All Codes";
             case UNGROUPED: return "Groups + Ungrouped codes";
             case GROUPSONLY: return "Groups Only";
+            case NULL: return null;
             default: return "?";
           }
     }

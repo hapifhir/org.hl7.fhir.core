@@ -78,6 +78,7 @@ public enum FlagPriority {
             case PL: return "PL";
             case PM: return "PM";
             case PH: return "PH";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum FlagPriority {
             case PL: return "Low priority.";
             case PM: return "Medium priority.";
             case PH: return "High priority.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum FlagPriority {
             case PL: return "Low priority";
             case PM: return "Medium priority";
             case PH: return "High priority";
+            case NULL: return null;
             default: return "?";
           }
     }

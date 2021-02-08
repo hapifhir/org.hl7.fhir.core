@@ -176,6 +176,7 @@ public enum V3EntityNameUseR2 {
             case PHON: return "PHON";
             case SRCH: return "SRCH";
             case T: return "T";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -202,6 +203,7 @@ public enum V3EntityNameUseR2 {
             case PHON: return "Description:The name as understood by the data enterer, i.e. a close approximation of a phonetic spelling of the name, not based on a phonetic algorithm.";
             case SRCH: return "Description:A name intended for use in searching or matching.  This is used when the name is incomplete and contains enough details for search matching, but not enough for other uses.";
             case T: return "Description:A temporary name.  Note that a name valid time can provide more detailed information.  This may also be used for temporary names assigned at birth or in emergency situations.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -225,6 +227,7 @@ public enum V3EntityNameUseR2 {
             case PHON: return "phonetic";
             case SRCH: return "search";
             case T: return "temporary";
+            case NULL: return null;
             default: return "?";
           }
     }

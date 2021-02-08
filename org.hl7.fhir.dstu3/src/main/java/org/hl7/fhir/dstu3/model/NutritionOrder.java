@@ -130,6 +130,7 @@ public class NutritionOrder extends DomainResource {
             case COMPLETED: return "completed";
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +145,7 @@ public class NutritionOrder extends DomainResource {
             case COMPLETED: return "http://hl7.org/fhir/nutrition-request-status";
             case CANCELLED: return "http://hl7.org/fhir/nutrition-request-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/nutrition-request-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -158,6 +160,7 @@ public class NutritionOrder extends DomainResource {
             case COMPLETED: return "All actions that are implied by the order have occurred and no continuation is planned (this will rarely be made explicit).";
             case CANCELLED: return "The request has been withdrawn and is no longer actionable.";
             case ENTEREDINERROR: return "The request was entered in error and voided.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -172,6 +175,7 @@ public class NutritionOrder extends DomainResource {
             case COMPLETED: return "Completed";
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

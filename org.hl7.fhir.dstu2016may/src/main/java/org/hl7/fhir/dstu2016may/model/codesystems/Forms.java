@@ -64,6 +64,7 @@ public enum Forms {
           switch (this) {
             case _1: return "1";
             case _2: return "2";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum Forms {
           switch (this) {
             case _1: return "";
             case _2: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum Forms {
           switch (this) {
             case _1: return "1";
             case _2: return "2";
+            case NULL: return null;
             default: return "?";
           }
     }

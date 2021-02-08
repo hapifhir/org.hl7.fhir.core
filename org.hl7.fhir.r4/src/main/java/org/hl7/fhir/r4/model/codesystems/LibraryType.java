@@ -78,6 +78,7 @@ public enum LibraryType {
             case MODELDEFINITION: return "model-definition";
             case ASSETCOLLECTION: return "asset-collection";
             case MODULEDEFINITION: return "module-definition";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum LibraryType {
             case MODELDEFINITION: return "The resource is a definition of an information model.";
             case ASSETCOLLECTION: return "The resource is a collection of knowledge assets.";
             case MODULEDEFINITION: return "The resource defines the dependencies, parameters, and data requirements for a particular module or evaluation context.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum LibraryType {
             case MODELDEFINITION: return "Model Definition";
             case ASSETCOLLECTION: return "Asset Collection";
             case MODULEDEFINITION: return "Module Definition";
+            case NULL: return null;
             default: return "?";
           }
     }

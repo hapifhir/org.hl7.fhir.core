@@ -71,6 +71,7 @@ public enum SearchEntryMode {
             case MATCH: return "match";
             case INCLUDE: return "include";
             case OUTCOME: return "outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum SearchEntryMode {
             case MATCH: return "This resource matched the search specification.";
             case INCLUDE: return "This resource is returned because it is referred to from another resource in the search set.";
             case OUTCOME: return "An OperationOutcome that provides additional information about the processing of a search.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum SearchEntryMode {
             case MATCH: return "Match";
             case INCLUDE: return "Include";
             case OUTCOME: return "Outcome";
+            case NULL: return null;
             default: return "?";
           }
     }

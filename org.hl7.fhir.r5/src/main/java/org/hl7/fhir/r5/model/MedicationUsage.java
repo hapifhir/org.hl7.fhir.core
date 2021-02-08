@@ -126,6 +126,7 @@ public class MedicationUsage extends DomainResource {
             case ONHOLD: return "on-hold";
             case UNKNOWN: return "unknown";
             case NOTTAKEN: return "not-taken";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -139,6 +140,7 @@ public class MedicationUsage extends DomainResource {
             case ONHOLD: return "http://hl7.org/fhir/CodeSystem/medication-usage-status";
             case UNKNOWN: return "http://hl7.org/fhir/CodeSystem/medication-usage-status";
             case NOTTAKEN: return "http://hl7.org/fhir/CodeSystem/medication-usage-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -152,6 +154,7 @@ public class MedicationUsage extends DomainResource {
             case ONHOLD: return "Actions implied by the usage have been temporarily halted, but are expected to continue later. May also be called 'suspended'.";
             case UNKNOWN: return "The state of the medication use is not currently known.";
             case NOTTAKEN: return "The medication was not consumed by the patient";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -165,6 +168,7 @@ public class MedicationUsage extends DomainResource {
             case ONHOLD: return "On Hold";
             case UNKNOWN: return "Unknown";
             case NOTTAKEN: return "Not Taken";
+            case NULL: return null;
             default: return "?";
           }
         }

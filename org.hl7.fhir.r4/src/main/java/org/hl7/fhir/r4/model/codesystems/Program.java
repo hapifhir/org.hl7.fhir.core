@@ -365,6 +365,7 @@ public enum Program {
             case _43: return "43";
             case _44: return "44";
             case _45: return "45";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -418,6 +419,7 @@ public enum Program {
             case _43: return "";
             case _44: return "";
             case _45: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -468,6 +470,7 @@ public enum Program {
             case _43: return "Supported Residential Service (SRS)";
             case _44: return "Tasmanian Aboriginal Centre (TAC)";
             case _45: return "Victim's Assistance Program";
+            case NULL: return null;
             default: return "?";
           }
     }

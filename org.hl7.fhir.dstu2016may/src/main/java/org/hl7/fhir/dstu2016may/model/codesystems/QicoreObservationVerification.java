@@ -64,6 +64,7 @@ public enum QicoreObservationVerification {
           switch (this) {
             case _1: return "1";
             case _2: return "2";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum QicoreObservationVerification {
           switch (this) {
             case _1: return "The observation was reviewed and verified by a person";
             case _2: return "The observation was verified against a sliding average";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum QicoreObservationVerification {
           switch (this) {
             case _1: return "Human review";
             case _2: return "Sliding average";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -57,6 +57,7 @@ public enum HspcPractitionerPracticeAffiliationType {
         public String toCode() {
           switch (this) {
             case _5B595190ACEB48DEB0D68950A8829183: return "5b595190-aceb-48de-b0d6-8950a8829183";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum HspcPractitionerPracticeAffiliationType {
         public String getDefinition() {
           switch (this) {
             case _5B595190ACEB48DEB0D68950A8829183: return "The provider's connection with the organization as a practitioner is in an educaitonal manner, i.e. as an educator or student.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case _5B595190ACEB48DEB0D68950A8829183: return "School affiliation";
+            case NULL: return null;
             default: return "?";
           }
     }

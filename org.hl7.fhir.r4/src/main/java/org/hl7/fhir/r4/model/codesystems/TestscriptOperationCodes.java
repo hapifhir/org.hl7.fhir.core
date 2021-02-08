@@ -365,6 +365,7 @@ public enum TestscriptOperationCodes {
             case TRANSLATE: return "translate";
             case VALIDATE: return "validate";
             case VALIDATECODE: return "validate-code";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -418,6 +419,7 @@ public enum TestscriptOperationCodes {
             case TRANSLATE: return "Concept Translation";
             case VALIDATE: return "Validate a resource";
             case VALIDATECODE: return "ValueSet based Validation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -468,6 +470,7 @@ public enum TestscriptOperationCodes {
             case TRANSLATE: return "$translate";
             case VALIDATE: return "$validate";
             case VALIDATECODE: return "$validate-code";
+            case NULL: return null;
             default: return "?";
           }
     }

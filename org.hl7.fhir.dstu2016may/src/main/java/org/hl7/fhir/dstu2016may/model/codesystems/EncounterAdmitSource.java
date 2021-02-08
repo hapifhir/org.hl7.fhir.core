@@ -120,6 +120,7 @@ public enum EncounterAdmitSource {
             case PSYCH: return "psych";
             case REHAB: return "rehab";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum EncounterAdmitSource {
             case PSYCH: return "";
             case REHAB: return "";
             case OTHER: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum EncounterAdmitSource {
             case PSYCH: return "From psychiatric hospital";
             case REHAB: return "From rehabilitation facility";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -92,6 +92,7 @@ public enum V3CompressionAlgorithm {
             case Z: return "Z";
             case Z7: return "Z7";
             case ZL: return "ZL";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum V3CompressionAlgorithm {
             case Z: return "Original UNIX compress algorithm and file format using the LZC algorithm (a variant of LZW).  Patent encumbered and less efficient than deflate.";
             case Z7: return "7z compression file format. See [http://www.7-zip.org/7z.html] for more information.";
             case ZL: return "A compressed data format that also uses the deflate algorithm.  Specified as RFC 1950 [http://www.ietf.org/rfc/rfc1952.txt]";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum V3CompressionAlgorithm {
             case Z: return "compress";
             case Z7: return "Z7";
             case ZL: return "zlib";
+            case NULL: return null;
             default: return "?";
           }
     }

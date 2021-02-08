@@ -92,6 +92,7 @@ public enum CommunicationTopic {
             case APPOINTMENTREMINDER: return "appointment-reminder";
             case PHONECONSULT: return "phone-consult";
             case SUMMARYREPORT: return "summary-report";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum CommunicationTopic {
             case APPOINTMENTREMINDER: return "The purpose or content of the communication is an appointment reminder.";
             case PHONECONSULT: return "The purpose or content of the communication is a phone consult.";
             case SUMMARYREPORT: return "The purpose or content of the communication is a summary report.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum CommunicationTopic {
             case APPOINTMENTREMINDER: return "Appointment Reminder";
             case PHONECONSULT: return "Phone Consult";
             case SUMMARYREPORT: return "Summary Report";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -64,6 +64,7 @@ public enum ServicePharmacy {
           switch (this) {
             case SMOKECESS: return "smokecess";
             case FLUSHOT: return "flushot";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ServicePharmacy {
           switch (this) {
             case SMOKECESS: return "Smoking cessation";
             case FLUSHOT: return "Flu Shot";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ServicePharmacy {
           switch (this) {
             case SMOKECESS: return "Smoking cessation";
             case FLUSHOT: return "Flu Shot";
+            case NULL: return null;
             default: return "?";
           }
     }

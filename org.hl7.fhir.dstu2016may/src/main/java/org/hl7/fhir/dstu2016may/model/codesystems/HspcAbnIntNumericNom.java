@@ -64,6 +64,7 @@ public enum HspcAbnIntNumericNom {
           switch (this) {
             case HIGHER: return "higher";
             case LOWER: return "lower";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum HspcAbnIntNumericNom {
           switch (this) {
             case HIGHER: return "The results were lower than the technical limits of the test procedure";
             case LOWER: return "The results were higher than the technical limits of the test procedure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum HspcAbnIntNumericNom {
           switch (this) {
             case HIGHER: return "Higher than technical";
             case LOWER: return "Lower than technical";
+            case NULL: return null;
             default: return "?";
           }
     }

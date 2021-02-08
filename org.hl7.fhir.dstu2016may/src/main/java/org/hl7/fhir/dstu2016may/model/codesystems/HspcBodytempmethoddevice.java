@@ -78,6 +78,7 @@ public enum HspcBodytempmethoddevice {
             case _30522: return "30522";
             case _82735: return "82735";
             case _84301: return "84301";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum HspcBodytempmethoddevice {
             case _30522: return "The thermometer that measure the temperature by the intensity of infrared light emission. ";
             case _82735: return "Thermoluminescent diode thermometer is a thermometer that measures the temperature of the emitted heat from the surface of an area.";
             case _84301: return "MRI diffusion thermometer is an instrument that uses MRI diffusion to indicate the temperature of a substance.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum HspcBodytempmethoddevice {
             case _30522: return "Infrared Thermometer";
             case _82735: return "Thermoluminescent diode thermometer";
             case _84301: return "MRI diffusion thermometer";
+            case NULL: return null;
             default: return "?";
           }
     }

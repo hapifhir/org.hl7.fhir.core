@@ -145,6 +145,7 @@ public class ResearchStudy extends DomainResource {
             case TEMPORARILYCLOSEDTOACCRUAL: return "temporarily-closed-to-accrual";
             case TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION: return "temporarily-closed-to-accrual-and-intervention";
             case WITHDRAWN: return "withdrawn";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -161,6 +162,7 @@ public class ResearchStudy extends DomainResource {
             case TEMPORARILYCLOSEDTOACCRUAL: return "http://hl7.org/fhir/research-study-status";
             case TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION: return "http://hl7.org/fhir/research-study-status";
             case WITHDRAWN: return "http://hl7.org/fhir/research-study-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -177,6 +179,7 @@ public class ResearchStudy extends DomainResource {
             case TEMPORARILYCLOSEDTOACCRUAL: return "Study is temporarily closed for accrual; can be potentially resumed in the future; patients can be examined and treated.";
             case TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION: return "Study is temporarily closed for accrual and intervention and potentially can be resumed in the future.";
             case WITHDRAWN: return "Protocol was withdrawn by the lead organization.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -193,6 +196,7 @@ public class ResearchStudy extends DomainResource {
             case TEMPORARILYCLOSEDTOACCRUAL: return "Temporarily Closed to Accrual";
             case TEMPORARILYCLOSEDTOACCRUALANDINTERVENTION: return "Temporarily Closed to Accrual and Intervention";
             case WITHDRAWN: return "Withdrawn";
+            case NULL: return null;
             default: return "?";
           }
         }

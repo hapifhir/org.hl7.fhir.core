@@ -89,6 +89,7 @@ public class MedicationKnowledge extends DomainResource {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class MedicationKnowledge extends DomainResource {
             case ACTIVE: return "http://terminology.hl7.org/CodeSystem/medicationknowledge-status";
             case INACTIVE: return "http://terminology.hl7.org/CodeSystem/medicationknowledge-status";
             case ENTEREDINERROR: return "http://terminology.hl7.org/CodeSystem/medicationknowledge-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class MedicationKnowledge extends DomainResource {
             case ACTIVE: return "";
             case INACTIVE: return "";
             case ENTEREDINERROR: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class MedicationKnowledge extends DomainResource {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

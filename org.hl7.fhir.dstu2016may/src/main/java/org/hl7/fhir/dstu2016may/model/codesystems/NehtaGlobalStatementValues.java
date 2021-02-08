@@ -71,6 +71,7 @@ public enum NehtaGlobalStatementValues {
             case _01: return "01";
             case _02: return "02";
             case _03: return "03";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum NehtaGlobalStatementValues {
             case _01: return "No information about taking any medication is known.";
             case _02: return "No information about taking any medication is available because the patient was not asked or not able to be asked.";
             case _03: return "No information about taking any medication is supplied.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum NehtaGlobalStatementValues {
             case _01: return "None known";
             case _02: return "Not asked";
             case _03: return "None supplied";
+            case NULL: return null;
             default: return "?";
           }
     }

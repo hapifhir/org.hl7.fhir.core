@@ -64,6 +64,7 @@ public enum NehtaNehtaCrcPeritoneumInvasion {
           switch (this) {
             case TUMOURINVADESTOPERITONEALSURFACE: return "tumour_invades_to_peritoneal_surface";
             case TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE: return "tumour_formed_nodule(s)_discrete_from_tumour_mass_along_the_serosal_surface";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum NehtaNehtaCrcPeritoneumInvasion {
           switch (this) {
             case TUMOURINVADESTOPERITONEALSURFACE: return "Tumour invades to the peritoneal surface";
             case TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE: return "Tumour has formed nodule(s) discrete from the tumour mass along the serosal surface";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum NehtaNehtaCrcPeritoneumInvasion {
           switch (this) {
             case TUMOURINVADESTOPERITONEALSURFACE: return "Tumour invades to the peritoneal surface";
             case TUMOURFORMEDNODULE_S_DISCRETEFROMTUMOURMASSALONGTHESEROSALSURFACE: return "Tumour has formed nodule(s) discrete from the tumour mass along the serosal surface";
+            case NULL: return null;
             default: return "?";
           }
     }

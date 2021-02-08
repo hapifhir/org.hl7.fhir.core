@@ -71,6 +71,7 @@ public enum ExOnsettype {
             case LXM: return "lxm";
             case SYM: return "sym";
             case LMN: return "lmn";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ExOnsettype {
             case LXM: return "Date of last examination.";
             case SYM: return "Date when symptoms were first noticed.";
             case LMN: return "Start date of last menstruation.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ExOnsettype {
             case LXM: return "Last Exam";
             case SYM: return "Start of Symptoms";
             case LMN: return "Last Menstruation";
+            case NULL: return null;
             default: return "?";
           }
     }

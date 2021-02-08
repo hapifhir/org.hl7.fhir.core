@@ -71,6 +71,7 @@ public enum VerificationresultPushTypeAvailable {
             case SPECIFIC: return "specific";
             case ANY: return "any";
             case SOURCE: return "source";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum VerificationresultPushTypeAvailable {
             case SPECIFIC: return "";
             case ANY: return "";
             case SOURCE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum VerificationresultPushTypeAvailable {
             case SPECIFIC: return "Specific requested changes";
             case ANY: return "Any changes";
             case SOURCE: return "As defined by source";
+            case NULL: return null;
             default: return "?";
           }
     }

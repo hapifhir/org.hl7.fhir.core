@@ -92,6 +92,7 @@ public enum Participantstatus {
             case INPROCESS: return "in-process";
             case COMPLETED: return "completed";
             case NEEDSACTION: return "needs-action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum Participantstatus {
             case INPROCESS: return "The participant has in-process the appointment.";
             case COMPLETED: return "The participant has completed the appointment.";
             case NEEDSACTION: return "This is the intitial status of an appointment participant until a participant has replied. It implies that there is no commitment for the appointment.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum Participantstatus {
             case INPROCESS: return "In Process";
             case COMPLETED: return "Completed";
             case NEEDSACTION: return "Needs Action";
+            case NULL: return null;
             default: return "?";
           }
     }

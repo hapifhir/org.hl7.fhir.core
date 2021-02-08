@@ -78,6 +78,7 @@ public enum MapModelMode {
             case QUERIED: return "queried";
             case TARGET: return "target";
             case PRODUCED: return "produced";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MapModelMode {
             case QUERIED: return "This structure describes an instance that the mapping engine may ask for that is used a source of data";
             case TARGET: return "This structure describes an instance passed to the mapping engine that is used a target of data";
             case PRODUCED: return "This structure describes an instance that the mapping engine may ask to create that is used a target of data";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MapModelMode {
             case QUERIED: return "Queried Structure Definition";
             case TARGET: return "Target Structure Definition";
             case PRODUCED: return "Produced Structure Definition";
+            case NULL: return null;
             default: return "?";
           }
     }

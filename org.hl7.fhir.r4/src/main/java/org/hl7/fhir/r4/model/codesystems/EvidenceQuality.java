@@ -78,6 +78,7 @@ public enum EvidenceQuality {
             case MODERATE: return "moderate";
             case LOW: return "low";
             case VERYLOW: return "very-low";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum EvidenceQuality {
             case MODERATE: return "Moderate quality evidence.";
             case LOW: return "Low quality evidence.";
             case VERYLOW: return "Very low quality evidence.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum EvidenceQuality {
             case MODERATE: return "Moderate quality";
             case LOW: return "Low quality";
             case VERYLOW: return "Very low quality";
+            case NULL: return null;
             default: return "?";
           }
     }

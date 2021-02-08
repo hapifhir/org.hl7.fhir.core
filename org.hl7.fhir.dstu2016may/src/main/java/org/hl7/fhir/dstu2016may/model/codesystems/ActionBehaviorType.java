@@ -85,6 +85,7 @@ public enum ActionBehaviorType {
             case REQUIRED: return "required";
             case PRECHECK: return "precheck";
             case CARDINALITY: return "cardinality";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ActionBehaviorType {
             case REQUIRED: return "Specifies required behavior using the action-required-behavior valueset";
             case PRECHECK: return "Specifies precheck behavior using the action-precheck-behavior valueset";
             case CARDINALITY: return "Specifies cardinality behavior using the action-cardinality behavior valueset";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ActionBehaviorType {
             case REQUIRED: return "Required Behavior";
             case PRECHECK: return "Precheck Behavior";
             case CARDINALITY: return "Cardinality Behavior";
+            case NULL: return null;
             default: return "?";
           }
     }

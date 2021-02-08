@@ -71,6 +71,7 @@ public enum V3AdministrativeGender {
             case F: return "F";
             case M: return "M";
             case UN: return "UN";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3AdministrativeGender {
             case F: return "Female";
             case M: return "Male";
             case UN: return "The gender of a person could not be uniquely defined as male or female, such as hermaphrodite.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3AdministrativeGender {
             case F: return "Female";
             case M: return "Male";
             case UN: return "Undifferentiated";
+            case NULL: return null;
             default: return "?";
           }
     }

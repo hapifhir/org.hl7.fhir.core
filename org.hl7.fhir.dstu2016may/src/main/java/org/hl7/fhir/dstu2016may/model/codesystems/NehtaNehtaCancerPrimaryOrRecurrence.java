@@ -71,6 +71,7 @@ public enum NehtaNehtaCancerPrimaryOrRecurrence {
             case NEWPRIMARY: return "new_primary";
             case LOCALRECURRENCE: return "local_recurrence";
             case DISTANTMETASTASES: return "distant_metastases";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum NehtaNehtaCancerPrimaryOrRecurrence {
             case NEWPRIMARY: return "The cancer is a new primary";
             case LOCALRECURRENCE: return "The cancer is a regional (local) recurrence";
             case DISTANTMETASTASES: return "The cancer is a distant metastases";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum NehtaNehtaCancerPrimaryOrRecurrence {
             case NEWPRIMARY: return "New primary";
             case LOCALRECURRENCE: return "Regional (local) recurrence";
             case DISTANTMETASTASES: return "Distant metastases";
+            case NULL: return null;
             default: return "?";
           }
     }

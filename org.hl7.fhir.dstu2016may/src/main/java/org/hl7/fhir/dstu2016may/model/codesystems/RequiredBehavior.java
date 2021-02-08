@@ -71,6 +71,7 @@ public enum RequiredBehavior {
             case MUST: return "must";
             case COULD: return "could";
             case MUSTUNLESSDOCUMENTED: return "must-unless-documented";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum RequiredBehavior {
             case MUST: return "An item with this behavior must be included in the items processed by the end user; the end user may not choose not to include this item";
             case COULD: return "An item with this behavior may be included in the set of items processed by the end user";
             case MUSTUNLESSDOCUMENTED: return "An item with this behavior must be included in the set of items processed by the end user, unless the end user provides documentation as to why the item was not included";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum RequiredBehavior {
             case MUST: return "Must";
             case COULD: return "Could";
             case MUSTUNLESSDOCUMENTED: return "Must Unless Documented";
+            case NULL: return null;
             default: return "?";
           }
     }

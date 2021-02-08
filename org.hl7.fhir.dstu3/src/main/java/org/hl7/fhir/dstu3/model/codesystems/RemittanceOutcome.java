@@ -71,6 +71,7 @@ public enum RemittanceOutcome {
             case COMPLETE: return "complete";
             case ERROR: return "error";
             case PARTIAL: return "partial";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum RemittanceOutcome {
             case COMPLETE: return "The processing has completed without errors";
             case ERROR: return "One or more errors have been detected in the Claim";
             case PARTIAL: return "No errors have been detected in the Claim and some of the adjudication has been performed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum RemittanceOutcome {
             case COMPLETE: return "Processing Complete";
             case ERROR: return "Error";
             case PARTIAL: return "Partial Processing";
+            case NULL: return null;
             default: return "?";
           }
     }

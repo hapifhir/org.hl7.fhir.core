@@ -664,7 +664,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   @Override
   public org.hl7.fhir.r5.elementmodel.Element validate(Object appContext, List<ValidationMessage> errors, JsonObject object, List<StructureDefinition> profiles) throws FHIRException {
-    JsonParser parser = new JsonParser(context);
+    JsonParser parser = new JsonParser(context, new ProfileUtilities(context, null, null, fpe));
     parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
     long t = System.nanoTime();
     Element e = parser.parse(object);
@@ -2162,6 +2162,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           return true;
         }
       }
+      if (tr.getTargetProfile().isEmpty()) {
+        return true;
+      }
     }
     return false;
   }
@@ -2404,7 +2407,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           else if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
             if (binding.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"))
               checkMaxValueSet(errors, path, element, profile, ToolingExtensions.readStringExtension(binding, "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet"), value, stack);
-            else if (!noExtensibleWarnings)
+            else if (!noExtensibleWarnings && !isOkExtension(value, vs))
               txWarningForLaterRemoval(element, errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_17, value, describeReference(binding.getValueSet()), vs.getUrl(), getErrorMessage(vr.getMessage()));
           } else if (binding.getStrength() == BindingStrength.PREFERRED) {
             if (baseOnly) {
@@ -2415,6 +2418,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     } else if (!noBindingMsgSuppressed)
       hint(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !type.equals("code"), I18nConstants.TERMINOLOGY_TX_BINDING_NOSOURCE2);
+  }
+
+  private boolean isOkExtension(String value, ValueSet vs) {
+    if ("http://hl7.org/fhir/ValueSet/defined-types".equals(vs.getUrl())) {
+      return value.startsWith("http://hl7.org/fhirpath/System.");
+    }
+    return false;
   }
 
   private void checkQuantity(List<ValidationMessage> errors, String path, Element focus, Quantity fixed, String fixedSource, boolean pattern) {
@@ -3170,36 +3180,53 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // really, there should only be one level for this (contained resources cannot contain
       // contained resources), but we'll leave that to some other code to worry about
       boolean wasContained = false;
-      while (stack != null && stack.getElement() != null) {
-        if (stack.getElement().getProperty().isResource()) {
+      NodeStack nstack = stack;
+      while (nstack != null && nstack.getElement() != null) {
+        if (nstack.getElement().getProperty().isResource()) {
           // ok, we'll try to find the contained reference
-          if (ref.equals("#") && stack.getElement().getSpecial() != SpecialElement.CONTAINED && wasContained) {
+          if (ref.equals("#") && nstack.getElement().getSpecial() != SpecialElement.CONTAINED && wasContained) {
             ResolvedReference rr = new ResolvedReference();
-            rr.setResource(stack.getElement());
-            rr.setFocus(stack.getElement());
+            rr.setResource(nstack.getElement());
+            rr.setFocus(nstack.getElement());
             rr.setExternal(false);
-            rr.setStack(stack.push(stack.getElement(), -1, stack.getElement().getProperty().getDefinition(), stack.getElement().getProperty().getDefinition()));
-            rr.getStack().qualifyPath(".ofType("+stack.getElement().fhirType()+")");
+            rr.setStack(nstack.push(nstack.getElement(), -1, nstack.getElement().getProperty().getDefinition(), nstack.getElement().getProperty().getDefinition()));
+            rr.getStack().qualifyPath(".ofType("+nstack.getElement().fhirType()+")");
             return rr;            
           }
-          if (stack.getElement().getSpecial() == SpecialElement.CONTAINED) {
+          if (nstack.getElement().getSpecial() == SpecialElement.CONTAINED) {
             wasContained = true;
           }
-          IndexedElement res = getContainedById(stack.getElement(), ref.substring(1));
+          IndexedElement res = getContainedById(nstack.getElement(), ref.substring(1));
           if (res != null) {
             ResolvedReference rr = new ResolvedReference();
-            rr.setResource(stack.getElement());
+            rr.setResource(nstack.getElement());
             rr.setFocus(res.getMatch());
             rr.setExternal(false);
-            rr.setStack(stack.push(res.getMatch(), res.getIndex(), res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
-            rr.getStack().qualifyPath(".ofType("+stack.getElement().fhirType()+")");
+            rr.setStack(nstack.push(res.getMatch(), res.getIndex(), res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
+            rr.getStack().qualifyPath(".ofType("+nstack.getElement().fhirType()+")");
             return rr;
           }
         }
-        if (stack.getElement().getSpecial() == SpecialElement.BUNDLE_ENTRY || stack.getElement().getSpecial() == SpecialElement.PARAMETER) {
+        if (nstack.getElement().getSpecial() == SpecialElement.BUNDLE_ENTRY || nstack.getElement().getSpecial() == SpecialElement.PARAMETER) {
           return null; // we don't try to resolve contained references across this boundary
         }
-        stack = stack.getParent();
+        nstack = nstack.getParent();
+      }
+      // try again, and work up the element parent list 
+      if (ref.equals("#")) {
+        Element e = stack.getElement();
+        while (e != null) {
+          if (e.getProperty().isResource() && (e.getSpecial() != SpecialElement.CONTAINED)) {
+            ResolvedReference rr = new ResolvedReference();
+            rr.setResource(e);
+            rr.setFocus(e);
+            rr.setExternal(false);
+            rr.setStack(stack.push(e, -1, e.getProperty().getDefinition(), e.getProperty().getDefinition()));
+            rr.getStack().qualifyPath(".ofType("+e.fhirType()+")");
+            return rr;            
+          }
+          e = e.getParentForValidator();
+        }
       }
       return null;
     } else {
@@ -4011,7 +4038,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("CapabilityStatement")) {
       validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
-      new CodeSystemValidator(context, timeTracker, xverManager).validateCodeSystem(errors, element, stack);
+      new CodeSystemValidator(context, timeTracker, xverManager).validateCodeSystem(errors, element, stack, new ValidationOptions(stack.getWorkingLang()));
     } else if (element.getType().equals("SearchParameter")) {
       new SearchParameterValidator(context, timeTracker, fpe, xverManager).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {
@@ -4955,15 +4982,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       if (inv.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice") &&
         ToolingExtensions.readBooleanExtension(inv, "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice")) {
         if (bpWarnings == BestPracticeWarningLevel.Hint)
-          hint(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": " + inv.getHuman() + msg + " [" + n.toString() + "]");
+          hint(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + (Utilities.noString(msg) ? "failed" : msg));
         else if (bpWarnings == BestPracticeWarningLevel.Warning)
-          warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": " + inv.getHuman() + msg + " [" + n.toString() + "]");
+          warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + (Utilities.noString(msg) ? "failed" : msg));
         else if (bpWarnings == BestPracticeWarningLevel.Error)
-          rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": " + inv.getHuman() + msg + " [" + n.toString() + "]");
+          rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + (Utilities.noString(msg) ? "failed" : msg));
       } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
-        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": " + inv.getHuman() + msg + " [" + n.toString() + "]");
+        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + (Utilities.noString(msg) ? "failed" : msg));
       } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
-        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getKey() + ": " + inv.getHuman() + msg + " [" + n.toString() + "]");
+        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + (Utilities.noString(msg) ? "failed" : msg));
       }
     }
   }

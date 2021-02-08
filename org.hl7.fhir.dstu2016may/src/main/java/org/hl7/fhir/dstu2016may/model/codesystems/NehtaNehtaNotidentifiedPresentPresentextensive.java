@@ -64,6 +64,7 @@ public enum NehtaNehtaNotidentifiedPresentPresentextensive {
           switch (this) {
             case NOTIDENTIFIED: return "not_identified";
             case PRESENTANDEXTENSIVE: return "present_and_extensive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum NehtaNehtaNotidentifiedPresentPresentextensive {
           switch (this) {
             case NOTIDENTIFIED: return "Indicates whether value was not identified";
             case PRESENTANDEXTENSIVE: return "Indicates whether invasion was presetn and extensive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum NehtaNehtaNotidentifiedPresentPresentextensive {
           switch (this) {
             case NOTIDENTIFIED: return "Not identified";
             case PRESENTANDEXTENSIVE: return "Present and extensive";
+            case NULL: return null;
             default: return "?";
           }
     }

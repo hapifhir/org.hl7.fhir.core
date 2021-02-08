@@ -71,6 +71,7 @@ public enum V3EncounterAdmissionSource {
             case E: return "E";
             case LD: return "LD";
             case NB: return "NB";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3EncounterAdmissionSource {
             case E: return "emergency";
             case LD: return "labor and delivery";
             case NB: return "newborn";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3EncounterAdmissionSource {
             case E: return "emergency";
             case LD: return "labor and delivery";
             case NB: return "newborn";
+            case NULL: return null;
             default: return "?";
           }
     }

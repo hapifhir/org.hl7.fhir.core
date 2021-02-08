@@ -71,6 +71,7 @@ public enum NehtaNehtaResidualTumourStatus {
             case R0: return "r0";
             case R1: return "r1";
             case R2: return "r2";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum NehtaNehtaResidualTumourStatus {
             case R0: return "R0: Complete resection, margins histologically negative, no residual tumour left after resection (primary tumour, regional nodes)";
             case R1: return "R1: Incomplete resection, margins histologically involved, microscopic tumour remains after resection of gross disease (primary tumour, regional nodes)";
             case R2: return "R2: Incomplete resection, margins macroscopically involved or gross disease remains after subtotal resection (eg primary tumour, regional nodes, or liver metastasis).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum NehtaNehtaResidualTumourStatus {
             case R0: return "R0: Complete resection, margins histologically negative, no residual tumour left after resection (primary tumour, regional nodes)";
             case R1: return "R1: Incomplete resection, margins histologically involved, microscopic tumour remains after resection of gross disease (primary tumour, regional nodes)";
             case R2: return "R2: Incomplete resection, margins macroscopically involved or gross disease remains after subtotal resection (eg primary tumour, regional nodes, or liver metastasis).";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -64,6 +64,7 @@ public enum CqifRecommendationStrength {
           switch (this) {
             case STRONG: return "strong";
             case WEAK: return "weak";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum CqifRecommendationStrength {
           switch (this) {
             case STRONG: return "Strong recommendation";
             case WEAK: return "Weak recommendation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum CqifRecommendationStrength {
           switch (this) {
             case STRONG: return "Strong";
             case WEAK: return "Weak";
+            case NULL: return null;
             default: return "?";
           }
     }

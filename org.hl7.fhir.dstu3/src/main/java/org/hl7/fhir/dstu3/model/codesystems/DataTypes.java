@@ -428,6 +428,7 @@ public enum DataTypes {
             case URI: return "uri";
             case UUID: return "uuid";
             case XHTML: return "xhtml";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -490,6 +491,7 @@ public enum DataTypes {
             case URI: return "String of characters used to identify a name or a resource";
             case UUID: return "A UUID, represented as a URI";
             case XHTML: return "XHTML format, as defined by W3C, but restricted usage (mainly, no active content)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -549,6 +551,7 @@ public enum DataTypes {
             case URI: return "uri";
             case UUID: return "uuid";
             case XHTML: return "XHTML";
+            case NULL: return null;
             default: return "?";
           }
     }

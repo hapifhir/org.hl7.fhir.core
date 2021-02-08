@@ -83,6 +83,7 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case SENSE: return "sense";
             case ANTISENSE: return "antisense";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case SENSE: return "http://hl7.org/fhir/orientation-type";
             case ANTISENSE: return "http://hl7.org/fhir/orientation-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +99,7 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case SENSE: return "Sense orientation of reference sequence.";
             case ANTISENSE: return "Antisense orientation of reference sequence.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -104,6 +107,7 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case SENSE: return "Sense orientation of referenceSeq";
             case ANTISENSE: return "Antisense orientation of referenceSeq";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -182,6 +186,7 @@ public class MolecularSequence extends DomainResource {
             case INDEL: return "indel";
             case SNP: return "snp";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -190,6 +195,7 @@ public class MolecularSequence extends DomainResource {
             case INDEL: return "http://hl7.org/fhir/quality-type";
             case SNP: return "http://hl7.org/fhir/quality-type";
             case UNKNOWN: return "http://hl7.org/fhir/quality-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -198,6 +204,7 @@ public class MolecularSequence extends DomainResource {
             case INDEL: return "INDEL Comparison.";
             case SNP: return "SNP Comparison.";
             case UNKNOWN: return "UNKNOWN Comparison.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -206,6 +213,7 @@ public class MolecularSequence extends DomainResource {
             case INDEL: return "INDEL Comparison";
             case SNP: return "SNP Comparison";
             case UNKNOWN: return "UNKNOWN Comparison";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -304,6 +312,7 @@ public class MolecularSequence extends DomainResource {
             case LOGIN: return "login";
             case OAUTH: return "oauth";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -314,6 +323,7 @@ public class MolecularSequence extends DomainResource {
             case LOGIN: return "http://hl7.org/fhir/repository-type";
             case OAUTH: return "http://hl7.org/fhir/repository-type";
             case OTHER: return "http://hl7.org/fhir/repository-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -324,6 +334,7 @@ public class MolecularSequence extends DomainResource {
             case LOGIN: return "When logged into the website, the resource can be seen.";
             case OAUTH: return "When logged in and  follow the API in the website related with URL, the resource can be seen.";
             case OTHER: return "Some other complicated or particular way to get resource from URL.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -334,6 +345,7 @@ public class MolecularSequence extends DomainResource {
             case LOGIN: return "Result cannot be access unless an account is logged in";
             case OAUTH: return "Result need to be fetched with API and need LOGIN( or cookies are required when visiting the link of resource)";
             case OTHER: return "Some other complicated or particular way to get resource from URL.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -430,6 +442,7 @@ public class MolecularSequence extends DomainResource {
             case AA: return "aa";
             case DNA: return "dna";
             case RNA: return "rna";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -438,6 +451,7 @@ public class MolecularSequence extends DomainResource {
             case AA: return "http://hl7.org/fhir/sequence-type";
             case DNA: return "http://hl7.org/fhir/sequence-type";
             case RNA: return "http://hl7.org/fhir/sequence-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -446,6 +460,7 @@ public class MolecularSequence extends DomainResource {
             case AA: return "Amino acid sequence.";
             case DNA: return "DNA Sequence.";
             case RNA: return "RNA Sequence.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -454,6 +469,7 @@ public class MolecularSequence extends DomainResource {
             case AA: return "AA Sequence";
             case DNA: return "DNA Sequence";
             case RNA: return "RNA Sequence";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -531,6 +547,7 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case WATSON: return "watson";
             case CRICK: return "crick";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -538,6 +555,7 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case WATSON: return "http://hl7.org/fhir/strand-type";
             case CRICK: return "http://hl7.org/fhir/strand-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -545,6 +563,7 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case WATSON: return "Watson strand of reference sequence.";
             case CRICK: return "Crick strand of reference sequence.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -552,6 +571,7 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case WATSON: return "Watson strand of referenceSeq";
             case CRICK: return "Crick strand of referenceSeq";
+            case NULL: return null;
             default: return "?";
           }
         }

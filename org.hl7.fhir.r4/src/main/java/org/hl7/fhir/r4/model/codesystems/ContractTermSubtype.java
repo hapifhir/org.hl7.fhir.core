@@ -71,6 +71,7 @@ public enum ContractTermSubtype {
             case CONDITION: return "condition";
             case WARRANTY: return "warranty";
             case INNOMINATE: return "innominate";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ContractTermSubtype {
             case CONDITION: return "Terms that go to the very root of a contract.";
             case WARRANTY: return "Less imperative than a condition, so the contract will survive a breach";
             case INNOMINATE: return "Breach of which might or might not go to the root of the contract depending upon the nature of the breach";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ContractTermSubtype {
             case CONDITION: return "Condition";
             case WARRANTY: return "Warranty";
             case INNOMINATE: return "Innominate";
+            case NULL: return null;
             default: return "?";
           }
     }

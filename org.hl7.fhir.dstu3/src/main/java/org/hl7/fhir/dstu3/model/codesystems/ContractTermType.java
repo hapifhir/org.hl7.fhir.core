@@ -64,6 +64,7 @@ public enum ContractTermType {
           switch (this) {
             case STATUTORY: return "statutory";
             case SUBJECTTO: return "subject-to";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ContractTermType {
           switch (this) {
             case STATUTORY: return "Based on specialized statutes that deal with particular subjects.";
             case SUBJECTTO: return "Execution of the term in the contract is conditional on the execution of other actions.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ContractTermType {
           switch (this) {
             case STATUTORY: return "Statutory";
             case SUBJECTTO: return "Subject To";
+            case NULL: return null;
             default: return "?";
           }
     }

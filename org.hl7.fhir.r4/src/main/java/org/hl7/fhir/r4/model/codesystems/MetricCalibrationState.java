@@ -78,6 +78,7 @@ public enum MetricCalibrationState {
             case CALIBRATIONREQUIRED: return "calibration-required";
             case CALIBRATED: return "calibrated";
             case UNSPECIFIED: return "unspecified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MetricCalibrationState {
             case CALIBRATIONREQUIRED: return "The metric needs to be calibrated.";
             case CALIBRATED: return "The metric has been calibrated.";
             case UNSPECIFIED: return "The state of calibration of this metric is unspecified.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MetricCalibrationState {
             case CALIBRATIONREQUIRED: return "Calibration Required";
             case CALIBRATED: return "Calibrated";
             case UNSPECIFIED: return "Unspecified";
+            case NULL: return null;
             default: return "?";
           }
     }

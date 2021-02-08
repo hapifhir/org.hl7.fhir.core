@@ -92,6 +92,7 @@ public enum QicorePatientMilitaryService {
             case ACTIVEDUTY: return "active-duty";
             case ACTIVERESERVE: return "active-reserve";
             case INACTIVERESERVE: return "inactive-reserve";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum QicorePatientMilitaryService {
             case ACTIVEDUTY: return "The subject is not a reserve member and is currently engaged in full-time military activity";
             case ACTIVERESERVE: return "The subject is a reserve member and is currently engaged in full-time military activity";
             case INACTIVERESERVE: return "The subject is a reserve member and is not currently engaged in full-time military activity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum QicorePatientMilitaryService {
             case ACTIVEDUTY: return "Active Duty";
             case ACTIVERESERVE: return "Active Reserve";
             case INACTIVERESERVE: return "Inactive Reserve";
+            case NULL: return null;
             default: return "?";
           }
     }

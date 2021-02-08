@@ -225,6 +225,7 @@ public enum V3HL7StandardVersionCode {
             case V32012N: return "V3-2012N";
             case V3PR1: return "V3PR1";
             case V32007N: return "V3-2007N";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -258,6 +259,7 @@ public enum V3HL7StandardVersionCode {
             case V32012N: return "Definition: The consistent set of normative and DSTU messaging artifacts as published or contained in repositories in December of 2011, based on the latest version of any V3 models or artifacts (RIM, Data Types, CMETS, Common Messages, Vocabularies) published under the title of Normative Edition 2012. Note: This version code does not cover the version of the XML ITS.";
             case V3PR1: return "Includes all material published as part of the ballot package released for vote in July-August 2003.";
             case V32007N: return "Description:The consistent set of normative and DSTU messaging artifacts as published or contained in repositories in December of 2006, based on the latest version of any V3 models or artifacts (RIM, Datatypes, CMETS, Common Messages, Vocabularies) published under the title of Normative Edition 2007. Note: This versioncode does not cover the version of the XML ITS.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -288,6 +290,7 @@ public enum V3HL7StandardVersionCode {
             case V32012N: return "2012 Normative Edition";
             case V3PR1: return "Version3 Pre-release #1";
             case V32007N: return "2007 Normative Edition";
+            case NULL: return null;
             default: return "?";
           }
     }

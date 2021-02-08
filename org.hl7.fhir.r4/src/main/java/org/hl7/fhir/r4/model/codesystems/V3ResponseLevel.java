@@ -99,6 +99,7 @@ public enum V3ResponseLevel {
             case N: return "N";
             case R: return "R";
             case X: return "X";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum V3ResponseLevel {
             case N: return "Respond only with message level acknowledgements, i.e., only notify acceptance or rejection of the message, do not include any application-level detail";
             case R: return "Respond with exceptions, completions and modifications or revisions done before completion";
             case X: return "Do not send any kind of response";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum V3ResponseLevel {
             case N: return "message-control";
             case R: return "modification";
             case X: return "none";
+            case NULL: return null;
             default: return "?";
           }
     }

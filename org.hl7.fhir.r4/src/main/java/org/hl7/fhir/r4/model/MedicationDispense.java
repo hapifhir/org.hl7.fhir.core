@@ -129,6 +129,7 @@ public class MedicationDispense extends DomainResource {
             case STOPPED: return "stopped";
             case DECLINED: return "declined";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -143,6 +144,7 @@ public class MedicationDispense extends DomainResource {
             case STOPPED: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
             case DECLINED: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
             case UNKNOWN: return "http://terminology.hl7.org/CodeSystem/medicationdispense-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -157,6 +159,7 @@ public class MedicationDispense extends DomainResource {
             case STOPPED: return "Actions implied by the dispense have been permanently halted, before all of them occurred.";
             case DECLINED: return "The dispense was declined and not performed.";
             case UNKNOWN: return "The authoring system does not know which of the status values applies for this medication dispense.  Note: this concept is not to be used for other - one of the listed statuses is presumed to apply, it's just now known which one.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +174,7 @@ public class MedicationDispense extends DomainResource {
             case STOPPED: return "Stopped";
             case DECLINED: return "Declined";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }

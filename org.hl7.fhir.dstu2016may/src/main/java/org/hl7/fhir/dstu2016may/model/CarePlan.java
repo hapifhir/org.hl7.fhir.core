@@ -99,6 +99,7 @@ public class CarePlan extends DomainResource {
             case ACTIVE: return "active";
             case COMPLETED: return "completed";
             case CANCELLED: return "cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -109,6 +110,7 @@ public class CarePlan extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/care-plan-status";
             case COMPLETED: return "http://hl7.org/fhir/care-plan-status";
             case CANCELLED: return "http://hl7.org/fhir/care-plan-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +121,7 @@ public class CarePlan extends DomainResource {
             case ACTIVE: return "The plan is intended to be followed and used as part of patient care.";
             case COMPLETED: return "The plan is no longer in use and is not expected to be followed or used in patient care.";
             case CANCELLED: return "The plan has been terminated prior to reaching completion (though it may have been replaced by a new plan).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -129,6 +132,7 @@ public class CarePlan extends DomainResource {
             case ACTIVE: return "Active";
             case COMPLETED: return "Completed";
             case CANCELLED: return "Cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -220,6 +224,7 @@ public class CarePlan extends DomainResource {
             case INCLUDES: return "includes";
             case REPLACES: return "replaces";
             case FULFILLS: return "fulfills";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -228,6 +233,7 @@ public class CarePlan extends DomainResource {
             case INCLUDES: return "http://hl7.org/fhir/care-plan-relationship";
             case REPLACES: return "http://hl7.org/fhir/care-plan-relationship";
             case FULFILLS: return "http://hl7.org/fhir/care-plan-relationship";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -236,6 +242,7 @@ public class CarePlan extends DomainResource {
             case INCLUDES: return "The referenced plan is considered to be part of this plan.";
             case REPLACES: return "This plan takes the places of the referenced plan.";
             case FULFILLS: return "This plan provides details about how to perform activities defined at a higher level by the referenced plan.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -244,6 +251,7 @@ public class CarePlan extends DomainResource {
             case INCLUDES: return "Includes";
             case REPLACES: return "Replaces";
             case FULFILLS: return "Fulfills";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -344,6 +352,7 @@ public class CarePlan extends DomainResource {
             case ONHOLD: return "on-hold";
             case COMPLETED: return "completed";
             case CANCELLED: return "cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -355,6 +364,7 @@ public class CarePlan extends DomainResource {
             case ONHOLD: return "http://hl7.org/fhir/care-plan-activity-status";
             case COMPLETED: return "http://hl7.org/fhir/care-plan-activity-status";
             case CANCELLED: return "http://hl7.org/fhir/care-plan-activity-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -366,6 +376,7 @@ public class CarePlan extends DomainResource {
             case ONHOLD: return "Activity was started but has temporarily ceased with an expectation of resumption at a future time.";
             case COMPLETED: return "The activities have been completed (more or less) as planned.";
             case CANCELLED: return "The activities have been ended prior to completion (perhaps even before they were started).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -377,6 +388,7 @@ public class CarePlan extends DomainResource {
             case ONHOLD: return "On Hold";
             case COMPLETED: return "Completed";
             case CANCELLED: return "Cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -78,6 +78,7 @@ public enum ActionType {
             case UPDATE: return "update";
             case REMOVE: return "remove";
             case FIREEVENT: return "fire-event";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ActionType {
             case UPDATE: return "The action is to update an existing resource.";
             case REMOVE: return "The action is to remove an existing resource.";
             case FIREEVENT: return "The action is to fire a specific event.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ActionType {
             case UPDATE: return "Update";
             case REMOVE: return "Remove";
             case FIREEVENT: return "Fire Event";
+            case NULL: return null;
             default: return "?";
           }
     }

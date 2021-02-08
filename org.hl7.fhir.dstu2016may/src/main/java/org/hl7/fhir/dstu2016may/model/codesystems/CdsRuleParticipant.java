@@ -78,6 +78,7 @@ public enum CdsRuleParticipant {
             case PERSON: return "person";
             case PRACTITIONER: return "practitioner";
             case RELATEDPERSON: return "related-person";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum CdsRuleParticipant {
             case PERSON: return "The participant is a person";
             case PRACTITIONER: return "The participant is a practitioner involved in the patient's care";
             case RELATEDPERSON: return "The participant is a person related to the patient";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum CdsRuleParticipant {
             case PERSON: return "Person";
             case PRACTITIONER: return "Practitioner";
             case RELATEDPERSON: return "Related Person";
+            case NULL: return null;
             default: return "?";
           }
     }

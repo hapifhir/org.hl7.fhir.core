@@ -71,6 +71,7 @@ public enum FlagStatus {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum FlagStatus {
             case ACTIVE: return "A current flag that should be displayed to a user. A system may use the category to determine which user roles should view the flag.";
             case INACTIVE: return "The flag no longer needs to be displayed.";
             case ENTEREDINERROR: return "The flag was added in error and should no longer be displayed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum FlagStatus {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
     }

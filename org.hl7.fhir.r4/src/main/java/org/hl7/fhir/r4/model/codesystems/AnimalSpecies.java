@@ -71,6 +71,7 @@ public enum AnimalSpecies {
             case CANISLF: return "canislf";
             case OVISA: return "ovisa";
             case SERINUSCD: return "serinuscd";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum AnimalSpecies {
             case CANISLF: return "Canis lupus familiaris";
             case OVISA: return "Ovis aries";
             case SERINUSCD: return "Serinus canaria domestica";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum AnimalSpecies {
             case CANISLF: return "Dog";
             case OVISA: return "Sheep";
             case SERINUSCD: return "Domestic Canary";
+            case NULL: return null;
             default: return "?";
           }
     }

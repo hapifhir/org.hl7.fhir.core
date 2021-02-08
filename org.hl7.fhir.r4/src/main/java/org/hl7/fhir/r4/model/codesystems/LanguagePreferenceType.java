@@ -64,6 +64,7 @@ public enum LanguagePreferenceType {
           switch (this) {
             case VERBAL: return "verbal";
             case WRITTEN: return "written";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum LanguagePreferenceType {
           switch (this) {
             case VERBAL: return "The patient prefers to verbally communicate with the associated language.";
             case WRITTEN: return "The patient prefers to communicate in writing with the associated language.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum LanguagePreferenceType {
           switch (this) {
             case VERBAL: return "verbal";
             case WRITTEN: return "written";
+            case NULL: return null;
             default: return "?";
           }
     }

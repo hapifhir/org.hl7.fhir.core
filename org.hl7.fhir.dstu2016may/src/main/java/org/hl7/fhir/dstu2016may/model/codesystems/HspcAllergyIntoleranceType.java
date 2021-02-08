@@ -57,6 +57,7 @@ public enum HspcAllergyIntoleranceType {
         public String toCode() {
           switch (this) {
             case _521059339: return "521059339";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum HspcAllergyIntoleranceType {
         public String getDefinition() {
           switch (this) {
             case _521059339: return "An abnormal ability to tolerate a food, drug, or environmental substance.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case _521059339: return "Intolerance";
+            case NULL: return null;
             default: return "?";
           }
     }

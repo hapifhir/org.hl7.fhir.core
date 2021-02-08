@@ -106,6 +106,7 @@ public enum V3RelationalOperator {
             case LE: return "LE";
             case LT: return "LT";
             case NE: return "NE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum V3RelationalOperator {
             case LE: return "Less than or equal condition applied to comparisons.";
             case LT: return "Less than condition applied to comparisons.";
             case NE: return "Not equal condition applied to comparisons.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum V3RelationalOperator {
             case LE: return "Less than or equal";
             case LT: return "Less than";
             case NE: return "Not Equal";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -113,6 +113,7 @@ public enum V3TableFrame {
             case RHS: return "rhs";
             case VOID: return "void";
             case VSIDES: return "vsides";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum V3TableFrame {
             case RHS: return "rhs";
             case VOID: return "void";
             case VSIDES: return "vsides";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum V3TableFrame {
             case RHS: return "rhs";
             case VOID: return "void";
             case VSIDES: return "vsides";
+            case NULL: return null;
             default: return "?";
           }
     }

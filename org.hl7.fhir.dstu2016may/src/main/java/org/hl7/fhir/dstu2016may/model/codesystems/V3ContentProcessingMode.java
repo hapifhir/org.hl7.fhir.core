@@ -64,6 +64,7 @@ public enum V3ContentProcessingMode {
           switch (this) {
             case SEQL: return "SEQL";
             case UNOR: return "UNOR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3ContentProcessingMode {
           switch (this) {
             case SEQL: return "Description:The content should be processed in a sequential fashion.";
             case UNOR: return "Description:The content may be processed in any order.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3ContentProcessingMode {
           switch (this) {
             case SEQL: return "Sequential";
             case UNOR: return "Unordered";
+            case NULL: return null;
             default: return "?";
           }
     }

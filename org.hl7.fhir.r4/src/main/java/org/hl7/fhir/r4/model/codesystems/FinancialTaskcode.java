@@ -85,6 +85,7 @@ public enum FinancialTaskcode {
             case RELEASE: return "release";
             case REPROCESS: return "reprocess";
             case STATUS: return "status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum FinancialTaskcode {
             case RELEASE: return "Release any reserved funds or material obligations associated with a resource. For example, any unused but reserved funds or treatment allowance associated with a preauthorization once treatment is complete.";
             case REPROCESS: return "Indication that the processing of a resource, such as a claim, for some or all of the required work is now being requested.";
             case STATUS: return "Check on the processing status of a resource such as the adjudication of a claim.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum FinancialTaskcode {
             case RELEASE: return "Release";
             case REPROCESS: return "Reprocess";
             case STATUS: return "Status check";
+            case NULL: return null;
             default: return "?";
           }
     }

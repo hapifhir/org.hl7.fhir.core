@@ -624,6 +624,7 @@ public enum V3ReligiousAffiliation {
             case _1080: return "1080";
             case _1081: return "1081";
             case _1082: return "1082";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -714,6 +715,7 @@ public enum V3ReligiousAffiliation {
             case _1080: return "Salvation Army";
             case _1081: return "Unitarian Universalist";
             case _1082: return "United Church of Christ";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -801,6 +803,7 @@ public enum V3ReligiousAffiliation {
             case _1080: return "Salvation Army";
             case _1081: return "Unitarian Universalist";
             case _1082: return "United Church of Christ";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -78,6 +78,7 @@ public enum UnknownContentCode {
             case EXTENSIONS: return "extensions";
             case ELEMENTS: return "elements";
             case BOTH: return "both";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum UnknownContentCode {
             case EXTENSIONS: return "The application accepts unknown extensions, but not unknown elements.";
             case ELEMENTS: return "The application accepts unknown elements, but not unknown extensions.";
             case BOTH: return "The application accepts unknown elements and extensions.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum UnknownContentCode {
             case EXTENSIONS: return "Unknown Extensions";
             case ELEMENTS: return "Unknown Elements";
             case BOTH: return "Unknown Elements and Extensions";
+            case NULL: return null;
             default: return "?";
           }
     }

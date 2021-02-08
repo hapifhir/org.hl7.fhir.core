@@ -71,6 +71,7 @@ public enum QicoreAdverseeventType {
             case INCIDENT: return "incident";
             case NEARMISS: return "near-miss";
             case UNSAFE: return "unsafe";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum QicoreAdverseeventType {
             case INCIDENT: return "A safety incident, reaction, medication error, or other untoward medical event affecting a patient";
             case NEARMISS: return "A safety event that almost happened, but was noticed and prevented in time to prevent harm from occurring to the patient";
             case UNSAFE: return "Any unsafe condition that poses a elevated risk to patient safety";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum QicoreAdverseeventType {
             case INCIDENT: return "Incident";
             case NEARMISS: return "Near Miss";
             case UNSAFE: return "Unsafe Condition";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -92,6 +92,7 @@ public enum GroupType {
             case DEVICE: return "device";
             case MEDICATION: return "medication";
             case SUBSTANCE: return "substance";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum GroupType {
             case DEVICE: return "Group contains Device resources.";
             case MEDICATION: return "Group contains Medication resources.";
             case SUBSTANCE: return "Group contains Substance resources.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum GroupType {
             case DEVICE: return "Device";
             case MEDICATION: return "Medication";
             case SUBSTANCE: return "Substance";
+            case NULL: return null;
             default: return "?";
           }
     }

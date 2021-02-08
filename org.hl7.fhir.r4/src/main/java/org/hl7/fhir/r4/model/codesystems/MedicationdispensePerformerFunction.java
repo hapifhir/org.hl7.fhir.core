@@ -78,6 +78,7 @@ public enum MedicationdispensePerformerFunction {
             case PACKAGER: return "packager";
             case CHECKER: return "checker";
             case FINALCHECKER: return "finalchecker";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MedicationdispensePerformerFunction {
             case PACKAGER: return "Prepared the medication.";
             case CHECKER: return "Performed initial quality assurance on the prepared medication";
             case FINALCHECKER: return "Performed the final quality assurance on the prepared medication against the request. Typically, this is a pharmacist function.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MedicationdispensePerformerFunction {
             case PACKAGER: return "Packager";
             case CHECKER: return "Checker";
             case FINALCHECKER: return "Final Checker";
+            case NULL: return null;
             default: return "?";
           }
     }

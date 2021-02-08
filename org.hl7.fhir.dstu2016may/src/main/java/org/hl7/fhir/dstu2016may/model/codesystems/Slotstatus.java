@@ -78,6 +78,7 @@ public enum Slotstatus {
             case FREE: return "free";
             case BUSYUNAVAILABLE: return "busy-unavailable";
             case BUSYTENTATIVE: return "busy-tentative";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum Slotstatus {
             case FREE: return "Indicates that the time interval is free for scheduling.";
             case BUSYUNAVAILABLE: return "Indicates that the time interval is busy and that the interval can not be scheduled.";
             case BUSYTENTATIVE: return "Indicates that the time interval is busy because one or more events have been tentatively scheduled for that interval.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum Slotstatus {
             case FREE: return "Free";
             case BUSYUNAVAILABLE: return "Busy (Unavailable)";
             case BUSYTENTATIVE: return "Busy (Tentative)";
+            case NULL: return null;
             default: return "?";
           }
     }

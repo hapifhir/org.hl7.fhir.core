@@ -86,7 +86,9 @@ public class ValidatorHostContext {
     }
 
     public void sliceNotes(String url, List<ValidationMessage> record) {
+      if (sliceRecords != null) {  
         sliceRecords.put(url, record);
+      }
     }
 
     public ValidatorHostContext forContained(Element element) {

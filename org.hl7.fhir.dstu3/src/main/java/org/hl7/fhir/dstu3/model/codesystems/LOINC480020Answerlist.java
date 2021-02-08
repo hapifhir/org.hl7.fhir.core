@@ -99,6 +99,7 @@ public enum LOINC480020Answerlist {
             case LA181950: return "LA18195-0";
             case LA181968: return "LA18196-8";
             case LA181976: return "LA18197-6";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum LOINC480020Answerlist {
             case LA181950: return "Likely Somatic";
             case LA181968: return "Likely Prenatal";
             case LA181976: return "Unknown Genomic Origin";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum LOINC480020Answerlist {
             case LA181950: return "Likely Somatic";
             case LA181968: return "Likely Prenatal";
             case LA181976: return "Unknown Genomic Origin";
+            case NULL: return null;
             default: return "?";
           }
     }

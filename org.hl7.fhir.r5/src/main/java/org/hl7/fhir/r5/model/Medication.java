@@ -89,6 +89,7 @@ public class Medication extends DomainResource {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -97,6 +98,7 @@ public class Medication extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/CodeSystem/medication-status";
             case INACTIVE: return "http://hl7.org/fhir/CodeSystem/medication-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/CodeSystem/medication-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +107,7 @@ public class Medication extends DomainResource {
             case ACTIVE: return "The medication is available for use.";
             case INACTIVE: return "The medication is not available for use.";
             case ENTEREDINERROR: return "The medication was entered in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -113,6 +116,7 @@ public class Medication extends DomainResource {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

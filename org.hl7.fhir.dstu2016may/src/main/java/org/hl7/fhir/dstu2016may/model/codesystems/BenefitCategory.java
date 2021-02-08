@@ -78,6 +78,7 @@ public enum BenefitCategory {
             case VISION: return "vision";
             case MEDICAL: return "medical";
             case PHARMACY: return "pharmacy";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum BenefitCategory {
             case VISION: return "Vision Health Coverage";
             case MEDICAL: return "Medical Health Coverage";
             case PHARMACY: return "Pharmacy Coverage";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum BenefitCategory {
             case VISION: return "Vision Health Coverage";
             case MEDICAL: return "Medical Health Coverage";
             case PHARMACY: return "Pharmacy Coverage";
+            case NULL: return null;
             default: return "?";
           }
     }

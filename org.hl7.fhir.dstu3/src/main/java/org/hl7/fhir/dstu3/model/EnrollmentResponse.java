@@ -92,6 +92,7 @@ public class EnrollmentResponse extends DomainResource {
             case CANCELLED: return "cancelled";
             case DRAFT: return "draft";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +102,7 @@ public class EnrollmentResponse extends DomainResource {
             case CANCELLED: return "http://hl7.org/fhir/fm-status";
             case DRAFT: return "http://hl7.org/fhir/fm-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/fm-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -110,6 +112,7 @@ public class EnrollmentResponse extends DomainResource {
             case CANCELLED: return "The instance is withdrawn, rescinded or reversed.";
             case DRAFT: return "A new instance the contents of which is not complete.";
             case ENTEREDINERROR: return "The instance was entered in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +122,7 @@ public class EnrollmentResponse extends DomainResource {
             case CANCELLED: return "Cancelled";
             case DRAFT: return "Draft";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

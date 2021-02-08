@@ -64,6 +64,7 @@ public enum ProcedureRelationshipType {
           switch (this) {
             case CAUSEDBY: return "caused-by";
             case BECAUSEOF: return "because-of";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ProcedureRelationshipType {
           switch (this) {
             case CAUSEDBY: return "This procedure had to be performed because of the related one.";
             case BECAUSEOF: return "This procedure caused the related one to be performed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ProcedureRelationshipType {
           switch (this) {
             case CAUSEDBY: return "Caused By";
             case BECAUSEOF: return "Because Of";
+            case NULL: return null;
             default: return "?";
           }
     }

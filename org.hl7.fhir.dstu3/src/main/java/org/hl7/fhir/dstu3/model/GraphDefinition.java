@@ -106,6 +106,7 @@ public class GraphDefinition extends MetadataResource {
             case RELATEDPERSON: return "RelatedPerson";
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,6 +117,7 @@ public class GraphDefinition extends MetadataResource {
             case RELATEDPERSON: return "http://hl7.org/fhir/compartment-type";
             case PRACTITIONER: return "http://hl7.org/fhir/compartment-type";
             case DEVICE: return "http://hl7.org/fhir/compartment-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public class GraphDefinition extends MetadataResource {
             case RELATEDPERSON: return "The compartment definition is for the related-person compartment";
             case PRACTITIONER: return "The compartment definition is for the practitioner compartment";
             case DEVICE: return "The compartment definition is for the device compartment";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -136,6 +139,7 @@ public class GraphDefinition extends MetadataResource {
             case RELATEDPERSON: return "RelatedPerson";
             case PRACTITIONER: return "Practitioner";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -239,6 +243,7 @@ public class GraphDefinition extends MetadataResource {
             case MATCHING: return "matching";
             case DIFFERENT: return "different";
             case CUSTOM: return "custom";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -248,6 +253,7 @@ public class GraphDefinition extends MetadataResource {
             case MATCHING: return "http://hl7.org/fhir/graph-compartment-rule";
             case DIFFERENT: return "http://hl7.org/fhir/graph-compartment-rule";
             case CUSTOM: return "http://hl7.org/fhir/graph-compartment-rule";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -257,6 +263,7 @@ public class GraphDefinition extends MetadataResource {
             case MATCHING: return "The compartment must be the same - the record must be about the same patient, but the reference may be different";
             case DIFFERENT: return "The compartment must be different";
             case CUSTOM: return "The compartment rule is defined in the accompanying FHIRPath expression";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -266,6 +273,7 @@ public class GraphDefinition extends MetadataResource {
             case MATCHING: return "Matching";
             case DIFFERENT: return "Different";
             case CUSTOM: return "Custom";
+            case NULL: return null;
             default: return "?";
           }
         }

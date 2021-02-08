@@ -71,6 +71,7 @@ public enum LocationStatus {
             case ACTIVE: return "active";
             case SUSPENDED: return "suspended";
             case INACTIVE: return "inactive";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum LocationStatus {
             case ACTIVE: return "The location is operational.";
             case SUSPENDED: return "The location is temporarily closed.";
             case INACTIVE: return "The location is no longer used.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum LocationStatus {
             case ACTIVE: return "Active";
             case SUSPENDED: return "Suspended";
             case INACTIVE: return "Inactive";
+            case NULL: return null;
             default: return "?";
           }
     }

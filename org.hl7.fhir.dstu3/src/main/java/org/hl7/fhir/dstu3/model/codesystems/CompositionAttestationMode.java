@@ -78,6 +78,7 @@ public enum CompositionAttestationMode {
             case PROFESSIONAL: return "professional";
             case LEGAL: return "legal";
             case OFFICIAL: return "official";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum CompositionAttestationMode {
             case PROFESSIONAL: return "The person authenticated the content in their professional capacity.";
             case LEGAL: return "The person authenticated the content and accepted legal responsibility for its content.";
             case OFFICIAL: return "The organization authenticated the content as consistent with their policies and procedures.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum CompositionAttestationMode {
             case PROFESSIONAL: return "Professional";
             case LEGAL: return "Legal";
             case OFFICIAL: return "Official";
+            case NULL: return null;
             default: return "?";
           }
     }
