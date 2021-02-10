@@ -30,8 +30,16 @@ public class Condition10_40 {
             tgt.setSeverity(VersionConvertor_10_40.convertCodeableConcept(src.getSeverity()));
         if (src.hasOnset())
             tgt.setOnset(VersionConvertor_10_40.convertType(src.getOnset()));
-        if (src.hasAbatement())
-            tgt.setAbatement(VersionConvertor_10_40.convertType(src.getAbatement()));
+        if (src.hasAbatement()) {
+            org.hl7.fhir.r4.model.Type value = src.getAbatement();
+            if (value instanceof org.hl7.fhir.r4.model.DateTimeType || 
+                value instanceof org.hl7.fhir.r4.model.Age || 
+                value instanceof org.hl7.fhir.r4.model.Period || 
+                value instanceof org.hl7.fhir.r4.model.Range || 
+                value instanceof org.hl7.fhir.r4.model.StringType) {
+                  tgt.setAbatement(VersionConvertor_10_40.convertType(src.getAbatement()));
+                }
+        }
         if (src.hasStage())
             tgt.setStage(convertConditionStageComponent(src.getStageFirstRep()));
         for (org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent t : src.getEvidence()) tgt.addEvidence(convertConditionEvidenceComponent(t));
@@ -65,8 +73,16 @@ public class Condition10_40 {
             tgt.setSeverity(VersionConvertor_10_40.convertCodeableConcept(src.getSeverity()));
         if (src.hasOnset())
             tgt.setOnset(VersionConvertor_10_40.convertType(src.getOnset()));
-        if (src.hasAbatement())
+        if (src.hasAbatement()) {
+          org.hl7.fhir.dstu2.model.Type value = src.getAbatement();
+          if (value instanceof org.hl7.fhir.dstu2.model.DateTimeType ||
+            value instanceof org.hl7.fhir.dstu2.model.Age ||
+            value instanceof org.hl7.fhir.dstu2.model.Period ||
+            value instanceof org.hl7.fhir.dstu2.model.Range ||
+            value instanceof org.hl7.fhir.dstu2.model.StringType) {
             tgt.setAbatement(VersionConvertor_10_40.convertType(src.getAbatement()));
+          }
+        }
         if (src.hasStage())
             tgt.addStage(convertConditionStageComponent(src.getStage()));
         for (org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent t : src.getEvidence()) tgt.addEvidence(convertConditionEvidenceComponent(t));
