@@ -48,7 +48,6 @@ public class OIDBasedValueSetImporter {
     return csver;
   }
 
-
   protected ConceptSetComponent getInclude(ValueSet vs, String url, String csver) {
     for (ConceptSetComponent t : vs.getCompose().getInclude()) {
       if (csver == null) {
@@ -66,20 +65,4 @@ public class OIDBasedValueSetImporter {
     c.setVersion(csver);
     return c;
   }
-
-  protected Document loadXml(InputStream fn) throws Exception {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-      factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-      factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-      factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-      factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-      factory.setXIncludeAware(false);
-      factory.setExpandEntityReferences(false);
-        
-    factory.setNamespaceAware(true);
-      DocumentBuilder builder = factory.newDocumentBuilder();
-      return builder.parse(fn);
-  }
-
-
 }
