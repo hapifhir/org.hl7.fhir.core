@@ -50,6 +50,37 @@ An brief overview of our publishing process is [here][Link-Publishing].
 For more detailed instructions on cutting a release, please read [the wiki][Link-PublishingRelease]
 
 ### Download
+
+All binaries are published on [OSS Sonatype][Link-Sonatype]. You will need to add the proper dependency to your `pom.xml` file, or your `build.gradle.kts` file.
+
+###### pom.xml
+```
+<repositories>
+    <repository>
+        <id>oss-snapshot</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+        <id>oss-releases</id>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+</repositories> 
+```
+###### build.gradle.kts
+
+```
+repositories {
+    maven {
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+    }
+    maven {
+        url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+    }
+}
+```
+
+After adding the necessary repositories, you can include the libraries as follows:
+
 ##### org.hl7.fhir.validation.cli
 ###### Maven
 ```xml
@@ -145,6 +176,7 @@ This project is maintained by [Grahame Grieve][Link-grahameGithub], [James Agnew
 [Link-cliSonatypeRelease]: https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar
 [Link-validationSonatypeSnapshot]: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation&v=LATEST "Sonatype Snapshot"
 [Link-validationSonatypeRelease]: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=ca.uhn.hapi.fhir&a=org.hl7.fhir.validation&v=LATEST "Sonatype Release"
+[Link-sonatype]: https://oss.sonatype.org/
 [Link-grahameGithub]: https://github.com/grahamegrieve
 [Link-jamesGithub]: https://github.com/jamesagnew
 [Link-markGithub]: https://github.com/markiantorno
