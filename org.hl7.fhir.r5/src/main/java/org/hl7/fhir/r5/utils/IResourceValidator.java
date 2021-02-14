@@ -112,8 +112,8 @@ public interface IResourceValidator {
     boolean resolveURL(Object appContext, String path, String url, String type) throws IOException, FHIRException;
 
     byte[] fetchRaw(String url) throws MalformedURLException, IOException; // for attachment checking
-    
-    void setLocale(Locale locale);
+
+    IValidatorResourceFetcher setLocale(Locale locale);
     
     
     /**

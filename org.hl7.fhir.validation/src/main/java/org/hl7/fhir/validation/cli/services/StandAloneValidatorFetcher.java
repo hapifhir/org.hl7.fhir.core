@@ -184,8 +184,10 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
   }
 
   @Override
-  public void setLocale(Locale locale) {
+  public IValidatorResourceFetcher setLocale(Locale locale) {
     // nothing
+
+    return null;
   }
 
   @Override

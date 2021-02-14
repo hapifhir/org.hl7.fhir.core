@@ -1,18 +1,22 @@
 package org.hl7.fhir.validation;
 
+import lombok.Getter;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
+import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
+import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
-import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.model.ScanOutputItem;
+import org.hl7.fhir.validation.instance.InstanceValidator;
 
 import java.io.*;
 import java.net.URL;
@@ -22,34 +26,103 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class ValidationScan {
+public class Scanner {
 
-  protected static final int BUFFER_SIZE = 4096;
+  private static final int BUFFER_SIZE = 4096;
 
-  public static void validateScan(CliContext cliContext, ValidationEngine validator) throws Exception {
-    if (Utilities.noString(cliContext.getOutput()))
+  @Getter private final SimpleWorkerContext context;
+  @Getter private final InstanceValidator validator;
+  @Getter private final IgLoader igLoader;
+  @Getter private final FHIRPathEngine fhirPathEngine;
+
+  public Scanner(SimpleWorkerContext context, InstanceValidator validator, IgLoader igLoader, FHIRPathEngine fhirPathEngine) {
+    this.context = context;
+    this.validator = validator;
+    this.igLoader = igLoader;
+    this.fhirPathEngine = fhirPathEngine;
+  }
+
+  public void validateScan(String output, List<String> sources) throws Exception {
+    if (Utilities.noString(output))
       throw new Exception("Output parameter required when scanning");
-    if (!(new File(cliContext.getOutput()).isDirectory()))
-      throw new Exception("Output '" + cliContext.getOutput() + "' must be a directory when scanning");
-    System.out.println("  .. scan " + cliContext.getSources() + " against loaded IGs");
+    if (!(new File(output).isDirectory()))
+      throw new Exception("Output '" + output + "' must be a directory when scanning");
+    System.out.println("  .. scan " + sources + " against loaded IGs");
     Set<String> urls = new HashSet<>();
-    for (ImplementationGuide ig : validator.getContext().allImplementationGuides()) {
+    for (ImplementationGuide ig : getContext().allImplementationGuides()) {
       if (ig.getUrl().contains("/ImplementationGuide") && !ig.getUrl().equals("http://hl7.org/fhir/ImplementationGuide/fhir"))
         urls.add(ig.getUrl());
     }
-    List<ScanOutputItem> res = validator.validateScan(cliContext.getSources(), urls);
-    genScanOutput(validator, cliContext.getOutput(), res);
-    System.out.println("Done. output in " + Utilities.path(cliContext.getOutput(), "scan.html"));
+    List<ScanOutputItem> res = validateScan(sources, urls);
+    genScanOutput(output, res);
+    System.out.println("Done. output in " + Utilities.path(output, "scan.html"));
   }
 
-  public static void genScanOutput(ValidationEngine validationEngine, String folder, List<ScanOutputItem> items) throws IOException, FHIRException, EOperationOutcome {
+  protected List<ScanOutputItem> validateScan(List<String> sources, Set<String> guides) throws FHIRException, IOException, EOperationOutcome {
+    List<String> refs = new ArrayList<>();
+    ValidatorUtils.parseSources(sources, refs, getContext());
+
+    List<ScanOutputItem> res = new ArrayList();
+
+    for (String ref : refs) {
+      Content cnt = getIgLoader().loadContent(ref, "validate", false);
+      List<ValidationMessage> messages = new ArrayList<>();
+      Element e = null;
+      try {
+        System.out.println("Validate " + ref);
+        messages.clear();
+        e = getValidator().validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+        res.add(new ScanOutputItem(ref, null, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
+      } catch (Exception ex) {
+        res.add(new ScanOutputItem(ref, null, null, exceptionToOutcome(ex)));
+      }
+      if (e != null) {
+        String rt = e.fhirType();
+        for (String u : guides) {
+          ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, u);
+          System.out.println("Check Guide " + ig.getUrl());
+          String canonical = ig.getUrl().contains("/Impl") ? ig.getUrl().substring(0, ig.getUrl().indexOf("/Impl")) : ig.getUrl();
+          String url = getGlobal(ig, rt);
+          if (url != null) {
+            try {
+              System.out.println("Validate " + ref + " against " + ig.getUrl());
+              messages.clear();
+              getValidator().validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, url);
+              res.add(new ScanOutputItem(ref, ig, null, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
+            } catch (Exception ex) {
+              res.add(new ScanOutputItem(ref, ig, null, exceptionToOutcome(ex)));
+            }
+          }
+          Set<String> done = new HashSet<>();
+          for (StructureDefinition sd : getContext().allStructures()) {
+            if (!done.contains(sd.getUrl())) {
+              done.add(sd.getUrl());
+              if (sd.getUrl().startsWith(canonical) && rt.equals(sd.getType())) {
+                try {
+                  System.out.println("Validate " + ref + " against " + sd.getUrl());
+                  messages.clear();
+                  validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, Collections.singletonList(sd));
+                  res.add(new ScanOutputItem(ref, ig, sd, ValidatorUtils.messagesToOutcome(messages, getContext(), getFhirPathEngine())));
+                } catch (Exception ex) {
+                  res.add(new ScanOutputItem(ref, ig, sd, exceptionToOutcome(ex)));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  protected void genScanOutput(String folder, List<ScanOutputItem> items) throws IOException, FHIRException, EOperationOutcome {
     String f = Utilities.path(folder, "comparison.zip");
     download("http://fhir.org/archive/comparison.zip", f);
     unzip(f, folder);
 
     for (int i = 0; i < items.size(); i++) {
       items.get(i).setId("c" + i);
-      genScanOutputItem(validationEngine.getContext(), items.get(i), Utilities.path(folder, items.get(i).getId() + ".html"));
+      genScanOutputItem(items.get(i), Utilities.path(folder, items.get(i).getId() + ".html"));
     }
 
     StringBuilder b = new StringBuilder();
@@ -97,16 +170,16 @@ public class ValidationScan {
     b.append("<table class=\"grid\">");
     b.append("<tr><th></th><th></th>");
     for (String s : sort(igs)) {
-      ImplementationGuide ig = validationEngine.getContext().fetchResource(ImplementationGuide.class, s);
+      ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, s);
       b.append("<th colspan=\"" + Integer.toString(profiles.get(s).size() + 1) + "\"><b title=\"" + s + "\">" + ig.present() + "</b></th>");
     }
     b.append("</tr>\r\n");
     b.append("<tr><th><b>Source</b></th><th><span>Core Spec</span></th>");
     for (String s : sort(igs)) {
-      ImplementationGuide ig = validationEngine.getContext().fetchResource(ImplementationGuide.class, s);
+      ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, s);
       b.append("<th><span>Global</span></th>");
       for (String sp : sort(profiles.get(s))) {
-        StructureDefinition sd = validationEngine.getContext().fetchResource(StructureDefinition.class, sp);
+        StructureDefinition sd = getContext().fetchResource(StructureDefinition.class, sp);
         b.append("<th><b title=\"" + sp + "\"><span>" + sd.present() + "</span></b></th>");
       }
     }
@@ -117,7 +190,7 @@ public class ValidationScan {
       b.append("<td>" + s + "</td>");
       b.append(genOutcome(items, s, null, null));
       for (String si : sort(igs)) {
-        ImplementationGuide ig = validationEngine.getContext().fetchResource(ImplementationGuide.class, si);
+        ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, si);
         b.append(genOutcome(items, s, si, null));
         for (String sp : sort(profiles.get(ig.getUrl()))) {
           b.append(genOutcome(items, s, si, sp));
@@ -141,7 +214,7 @@ public class ValidationScan {
     b.append("</tr>\r\n");
     for (String si : sort(igs)) {
       b.append("<tr>");
-      ImplementationGuide ig = validationEngine.getContext().fetchResource(ImplementationGuide.class, si);
+      ImplementationGuide ig = getContext().fetchResource(ImplementationGuide.class, si);
       b.append("<td><b title=\"" + si + "\">" + ig.present() + "</b></td>");
       b.append("<td>Global</td>");
       for (String s : sort(refs)) {
@@ -151,7 +224,7 @@ public class ValidationScan {
 
       for (String sp : sort(profiles.get(ig.getUrl()))) {
         b.append("<tr>");
-        StructureDefinition sd = validationEngine.getContext().fetchResource(StructureDefinition.class, sp);
+        StructureDefinition sd = getContext().fetchResource(StructureDefinition.class, sp);
         b.append("<td></td><td><b title=\"" + sp + "\">" + sd.present() + "</b></td>");
         for (String s : sort(refs)) {
           b.append(genOutcome(items, s, si, sp));
@@ -166,7 +239,29 @@ public class ValidationScan {
     TextFile.stringToFile(b.toString(), Utilities.path(folder, "scan.html"));
   }
 
-  public static String genOutcome(List<ScanOutputItem> items, String src, String ig, String profile) {
+  protected void genScanOutputItem(ScanOutputItem item, String filename) throws IOException, FHIRException, EOperationOutcome {
+    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.RESOURCE);
+    rc.setNoSlowLookup(true);
+    RendererFactory.factory(item.getOutcome(), rc).render(item.getOutcome());
+    String s = new XhtmlComposer(XhtmlComposer.HTML).compose(item.getOutcome().getText().getDiv());
+
+    String title = item.getTitle();
+
+    StringBuilder b = new StringBuilder();
+    b.append("<html>");
+    b.append("<head>");
+    b.append("<title>" + title + "</title>");
+    b.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");
+    b.append("</head>");
+    b.append("<body>");
+    b.append("<h2>" + title + "</h2>");
+    b.append(s);
+    b.append("</body>");
+    b.append("</html>");
+    TextFile.stringToFile(b.toString(), filename);
+  }
+
+  protected String genOutcome(List<ScanOutputItem> items, String src, String ig, String profile) {
     ScanOutputItem item = null;
     for (ScanOutputItem t : items) {
       boolean match = true;
@@ -196,29 +291,15 @@ public class ValidationScan {
       return "<td style=\"background-color: #ffe6e6\"><a href=\"" + item.getId() + ".html\">\u2716</a></td>";
   }
 
-  public static void genScanOutputItem(SimpleWorkerContext context, ScanOutputItem item, String filename) throws IOException, FHIRException, EOperationOutcome {
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.RESOURCE);
-    rc.setNoSlowLookup(true);
-    RendererFactory.factory(item.getOutcome(), rc).render(item.getOutcome());
-    String s = new XhtmlComposer(XhtmlComposer.HTML).compose(item.getOutcome().getText().getDiv());
-
-    String title = item.getTitle();
-
-    StringBuilder b = new StringBuilder();
-    b.append("<html>");
-    b.append("<head>");
-    b.append("<title>" + title + "</title>");
-    b.append("<link rel=\"stylesheet\" href=\"fhir.css\"/>\r\n");
-    b.append("</head>");
-    b.append("<body>");
-    b.append("<h2>" + title + "</h2>");
-    b.append(s);
-    b.append("</body>");
-    b.append("</html>");
-    TextFile.stringToFile(b.toString(), filename);
+  protected OperationOutcome exceptionToOutcome(Exception ex) throws IOException, FHIRException, EOperationOutcome {
+    OperationOutcome op = new OperationOutcome();
+    op.addIssue().setCode(OperationOutcome.IssueType.EXCEPTION).setSeverity(OperationOutcome.IssueSeverity.FATAL).getDetails().setText(ex.getMessage());
+    RenderingContext rc = new RenderingContext(getContext(), null, null, "http://hl7.org/fhir", "", null, RenderingContext.ResourceRendererMode.RESOURCE);
+    RendererFactory.factory(op, rc).render(op);
+    return op;
   }
 
-  public static void download(String address, String filename) throws IOException {
+  protected void download(String address, String filename) throws IOException {
     URL url = new URL(address);
     URLConnection c = url.openConnection();
     InputStream s = c.getInputStream();
@@ -227,17 +308,17 @@ public class ValidationScan {
     f.close();
   }
 
-  public static void transfer(InputStream in, OutputStream out, int buffer) throws IOException {
+  protected void transfer(InputStream in, OutputStream out, int buffer) throws IOException {
     byte[] read = new byte[buffer]; // Your buffer size.
     while (0 < (buffer = in.read(read)))
       out.write(read, 0, buffer);
   }
 
-  public static List<String> sort(Set<String> keys) {
+  protected List<String> sort(Set<String> keys) {
     return keys.stream().sorted().collect(Collectors.toList());
   }
 
-  public static void unzip(String zipFilePath, String destDirectory) throws IOException {
+  protected void unzip(String zipFilePath, String destDirectory) throws IOException {
     File destDir = new File(destDirectory);
     if (!destDir.exists()) {
       destDir.mkdir();
@@ -261,13 +342,21 @@ public class ValidationScan {
     zipIn.close();
   }
 
-  protected static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
+  protected void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
     byte[] bytesIn = new byte[BUFFER_SIZE];
-    int read = 0;
+    int read;
     while ((read = zipIn.read(bytesIn)) != -1) {
       bos.write(bytesIn, 0, read);
     }
     bos.close();
+  }
+
+  protected String getGlobal(ImplementationGuide ig, String rt) {
+    for (ImplementationGuide.ImplementationGuideGlobalComponent igg : ig.getGlobal()) {
+      if (rt.equals(igg.getType()))
+        return igg.getProfile();
+    }
+    return null;
   }
 }

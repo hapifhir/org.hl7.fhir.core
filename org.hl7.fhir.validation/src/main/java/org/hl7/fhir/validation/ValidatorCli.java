@@ -229,7 +229,8 @@ public class ValidatorCli {
         }
         System.out.println("Validating");
         if (cliContext.getMode() == EngineMode.SCAN) {
-          ValidationScan.validateScan(cliContext, validator);
+          Scanner validationScanner = new Scanner(validator.getContext(), validator.getValidator(), validator.getIgLoader(), validator.getFhirPathEngine());
+          validationScanner.validateScan(cliContext.getOutput(), cliContext.getSources());
         } else {
           ValidationService.validateSources(cliContext, validator);
         }

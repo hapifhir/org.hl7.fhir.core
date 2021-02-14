@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation;
 
+import lombok.Getter;
 import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -37,10 +38,10 @@ public class IgLoader {
   private static final String[] IGNORED_EXTENSIONS = {"md", "css", "js", "png", "gif", "jpg", "html", "tgz", "pack", "zip"};
   private static final String[] EXEMPT_FILES = {"spec.internals", "version.info", "schematron.zip", "package.json"};
 
-  FilesystemPackageCacheManager packageCacheManager;
-  SimpleWorkerContext context;
-  String theVersion;
-  boolean isDebug;
+  @Getter private final FilesystemPackageCacheManager packageCacheManager;
+  @Getter private final SimpleWorkerContext context;
+  @Getter private final String version;
+  @Getter private final boolean isDebug;
 
   public IgLoader(FilesystemPackageCacheManager packageCacheManager,
                   SimpleWorkerContext context,
@@ -54,7 +55,7 @@ public class IgLoader {
                   boolean isDebug) {
       this.packageCacheManager = packageCacheManager;
       this.context = context;
-      this.theVersion = theVersion;
+      this.version = theVersion;
       this.isDebug = isDebug;
   }
 
@@ -62,10 +63,10 @@ public class IgLoader {
                      Map<String, byte[]> binaries,
                      String src, 
                      boolean recursive) throws IOException, FHIRException {
-    NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !new File(src).exists() ? packageCacheManager.loadPackage(src, null) : null;
+    NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !new File(src).exists() ? getPackageCacheManager().loadPackage(src, null) : null;
     if (npm != null) {
       for (String s : npm.dependencies()) {
-        if (!context.getLoadedPackages().contains(s)) {
+        if (!getContext().getLoadedPackages().contains(s)) {
           if (!VersionUtilities.isCorePackage(s)) {
             loadIg(igs, binaries, s, false);
           }
@@ -75,16 +76,16 @@ public class IgLoader {
       if (!src.contains("#")) {
         System.out.print("#" + npm.version());
       }
-      int count = context.loadFromPackage(npm, ValidatorUtils.loaderForVersion(npm.fhirVersion()));
-      System.out.println(" - " + count + " resources (" + context.clock().milestone() + ")");
+      int count = getContext().loadFromPackage(npm, ValidatorUtils.loaderForVersion(npm.fhirVersion()));
+      System.out.println(" - " + count + " resources (" + getContext().clock().milestone() + ")");
     } else {
       System.out.print("  Load " + src);
       String canonical = null;
       int count = 0;
       Map<String, byte[]> source = loadIgSource(src, recursive, true);
       String version = Constants.VERSION;
-      if (theVersion != null) {
-        version = theVersion;
+      if (getVersion() != null) {
+        version = getVersion();
       }
       if (source.containsKey("version.info")) {
         version = readInfoVersion(source.get("version.info"));
@@ -95,14 +96,14 @@ public class IgLoader {
           Resource r = loadFileWithErrorChecking(version, t, fn);
           if (r != null) {
             count++;
-            context.cacheResource(r);
+            getContext().cacheResource(r);
             if (r instanceof ImplementationGuide) {
               canonical = ((ImplementationGuide) r).getUrl();
               igs.add((ImplementationGuide) r);
               if (canonical.contains("/ImplementationGuide/")) {
                 Resource r2 = r.copy();
                 ((ImplementationGuide) r2).setUrl(canonical.substring(0, canonical.indexOf("/ImplementationGuide/")));
-                context.cacheResource(r2);
+                getContext().cacheResource(r2);
               }
             }
           }
@@ -111,7 +112,7 @@ public class IgLoader {
       if (canonical != null) {
         ValidatorUtils.grabNatives(binaries, source, canonical);
       }
-      System.out.println(" - " + count + " resources (" + context.clock().milestone() + ")");
+      System.out.println(" - " + count + " resources (" + getContext().clock().milestone() + ")");
     }
   }
 
@@ -155,7 +156,7 @@ public class IgLoader {
         v = src.substring(src.indexOf("|") + 1);
         src = src.substring(0, src.indexOf("|"));
       }
-      String pid = explore ? packageCacheManager.getPackageId(src) : null;
+      String pid = explore ? getPackageCacheManager().getPackageId(src) : null;
       if (!Utilities.noString(pid))
         return fetchByPackage(pid + (v == null ? "" : "#" + v));
       else
@@ -178,7 +179,7 @@ public class IgLoader {
         return readZip(new FileInputStream(src));
       if (src.endsWith("igpack.zip"))
         return readZip(new FileInputStream(src));
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(context, isDebug, src);
+      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), src);
       if (fmt != null) {
         Map<String, byte[]> res = new HashMap<String, byte[]>();
         res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), TextFile.fileToBytesNCS(src));
@@ -217,7 +218,7 @@ public class IgLoader {
     return res;
   }
 
-  private String loadPackageForVersion(InputStream stream, String name) throws FHIRException, IOException {
+  private String loadPackageForVersion(InputStream stream) throws FHIRException, IOException {
     return NpmPackage.fromPackage(stream).fhirVersion();
   }
 
@@ -244,7 +245,7 @@ public class IgLoader {
         v = src.substring(src.indexOf("|") + 1);
         src = src.substring(0, src.indexOf("|"));
       }
-      String pid = packageCacheManager.getPackageId(src);
+      String pid = getPackageCacheManager().getPackageId(src);
       if (!Utilities.noString(pid)) {
         versions.see(fetchVersionByPackage(pid + (v == null ? "" : "#" + v)), "Package " + src);
         return null;
@@ -256,7 +257,7 @@ public class IgLoader {
     File f = new File(Utilities.path(src));
     if (f.exists()) {
       if (f.isDirectory() && new File(Utilities.path(src, "package.tgz")).exists()) {
-        versions.see(loadPackageForVersion(new FileInputStream(Utilities.path(src, "package.tgz")), Utilities.path(src, "package.tgz")), "Package " + src);
+        versions.see(loadPackageForVersion(new FileInputStream(Utilities.path(src, "package.tgz"))), "Package " + src);
         return null;
       }
       if (f.isDirectory() && new File(Utilities.path(src, "igpack.zip")).exists())
@@ -266,14 +267,14 @@ public class IgLoader {
       if (f.isDirectory())
         return scanDirectory(f, recursive);
       if (src.endsWith(".tgz")) {
-        versions.see(loadPackageForVersion(new FileInputStream(src), src), "Package " + src);
+        versions.see(loadPackageForVersion(new FileInputStream(src)), "Package " + src);
         return null;
       }
       if (src.endsWith(".pack"))
         return readZip(new FileInputStream(src));
       if (src.endsWith("igpack.zip"))
         return readZip(new FileInputStream(src));
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(context, isDebug, src);
+      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), src);
       if (fmt != null) {
         Map<String, byte[]> res = new HashMap<String, byte[]>();
         res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), TextFile.fileToBytesNCS(src));
@@ -295,15 +296,15 @@ public class IgLoader {
       version = src.substring(src.indexOf("#") + 1);
     }
     if (version == null) {
-      version = packageCacheManager.getLatestVersion(id);
+      version = getPackageCacheManager().getLatestVersion(id);
     }
     NpmPackage pi;
     if (version == null) {
-      pi = packageCacheManager.loadPackageFromCacheOnly(id);
+      pi = getPackageCacheManager().loadPackageFromCacheOnly(id);
       if (pi != null)
         System.out.println("   ... Using version " + pi.version());
     } else
-      pi = packageCacheManager.loadPackageFromCacheOnly(id, version);
+      pi = getPackageCacheManager().loadPackageFromCacheOnly(id, version);
     if (pi == null) {
       return resolvePackage(id, version);
     } else
@@ -315,14 +316,14 @@ public class IgLoader {
   }
 
   public Map<String, byte[]> loadPackage(NpmPackage pi) throws FHIRException, IOException {
-    context.getLoadedPackages().add(pi.name() + "#" + pi.version());
+    getContext().getLoadedPackages().add(pi.name() + "#" + pi.version());
     Map<String, byte[]> res = new HashMap<String, byte[]>();
     for (String s : pi.dependencies()) {
       if (s.endsWith(".x") && s.length() > 2) {
         String packageMajorMinor = s.substring(0, s.length() - 2);
         boolean found = false;
-        for (int i = 0; i < context.getLoadedPackages().size() && !found; ++i) {
-          String loadedPackage = context.getLoadedPackages().get(i);
+        for (int i = 0; i < getContext().getLoadedPackages().size() && !found; ++i) {
+          String loadedPackage = getContext().getLoadedPackages().get(i);
           if (loadedPackage.startsWith(packageMajorMinor)) {
             found = true;
           }
@@ -330,7 +331,7 @@ public class IgLoader {
         if (found)
           continue;
       }
-      if (!context.getLoadedPackages().contains(s)) {
+      if (!getContext().getLoadedPackages().contains(s)) {
         if (!VersionUtilities.isCorePackage(s)) {
           System.out.println("+  .. load IG from " + s);
           res.putAll(fetchByPackage(s));
@@ -347,7 +348,7 @@ public class IgLoader {
   }
 
   private Map<String, byte[]> resolvePackage(String id, String v) throws FHIRException, IOException {
-    NpmPackage pi = packageCacheManager.loadPackage(id, v);
+    NpmPackage pi = getPackageCacheManager().loadPackage(id, v);
     if (pi != null && v == null)
       System.out.println("   ... Using version " + pi.version());
     return loadPackage(pi);
@@ -389,7 +390,7 @@ public class IgLoader {
                                                   boolean explore,
                                                   VersionSourceInformation versions) throws FHIRException, IOException {
     if (src.endsWith(".tgz")) {
-      versions.see(loadPackageForVersion(fetchFromUrlSpecific(src, false), src), "From Package " + src);
+      versions.see(loadPackageForVersion(fetchFromUrlSpecific(src, false)), "From Package " + src);
       return null;
     }
     if (src.endsWith(".pack"))
@@ -401,7 +402,7 @@ public class IgLoader {
     if (explore) {
       stream = fetchFromUrlSpecific(Utilities.pathURL(src, "package.tgz"), true);
       if (stream != null) {
-        versions.see(loadPackageForVersion(stream, Utilities.pathURL(src, "package.tgz")), "From Package at " + src);
+        versions.see(loadPackageForVersion(stream), "From Package at " + src);
         return null;
       }
       // todo: these options are deprecated - remove once all IGs have been rebuilt post R4 technical correction
@@ -422,7 +423,7 @@ public class IgLoader {
     else
       cnt = TextFile.streamToBytes(stream);
 
-    Manager.FhirFormat fmt = ResourceChecker.checkIsResource(context, isDebug, cnt, src);
+    Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), cnt, src);
     if (fmt != null) {
       Map<String, byte[]> res = new HashMap<String, byte[]>();
       res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), cnt);
@@ -444,15 +445,15 @@ public class IgLoader {
       version = src.substring(src.indexOf("#") + 1);
     }
     if (version == null) {
-      version = packageCacheManager.getLatestVersion(id);
+      version = getPackageCacheManager().getLatestVersion(id);
     }
     NpmPackage pi = null;
     if (version == null) {
-      pi = packageCacheManager.loadPackageFromCacheOnly(id);
+      pi = getPackageCacheManager().loadPackageFromCacheOnly(id);
       if (pi != null)
         System.out.println("   ... Using version " + pi.version());
     } else
-      pi = packageCacheManager.loadPackageFromCacheOnly(id, version);
+      pi = getPackageCacheManager().loadPackageFromCacheOnly(id, version);
     if (pi == null) {
       return resolvePackageForVersion(id, version);
     } else {
@@ -521,7 +522,7 @@ public class IgLoader {
       if (ff.isDirectory() && recursive) {
         res.putAll(scanDirectory(ff, true));
       } else if (!isIgnoreFile(ff)) {
-        Manager.FhirFormat fmt = ResourceChecker.checkIsResource(context, isDebug, ff.getAbsolutePath());
+        Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), ff.getAbsolutePath());
         if (fmt != null) {
           res.put(Utilities.changeFileExt(ff.getName(), "." + fmt.getExtension()), TextFile.fileToBytes(ff.getAbsolutePath()));
         }
@@ -531,7 +532,7 @@ public class IgLoader {
   }
 
   private String resolvePackageForVersion(String id, String v) throws FHIRException, IOException {
-    NpmPackage pi = packageCacheManager.loadPackage(id, v);
+    NpmPackage pi = getPackageCacheManager().loadPackage(id, v);
     return pi.fhirVersion();
   }
 
@@ -549,36 +550,27 @@ public class IgLoader {
       JsonTrackingParser.parseJson(cnt);
       return Manager.FhirFormat.JSON;
     } catch (Exception e) {
-      if (isDebug) {
-        System.out.println("Not JSON: " + e.getMessage());
-      }
+      log("Not JSON: " + e.getMessage());
     }
     try {
       ValidatorUtils.parseXml(cnt);
       return Manager.FhirFormat.XML;
     } catch (Exception e) {
-      if (isDebug) {
-        System.out.println("Not XML: " + e.getMessage());
-      }
+      log("Not XML: " + e.getMessage());
     }
     try {
       new Turtle().parse(TextFile.bytesToString(cnt));
       return Manager.FhirFormat.TURTLE;
     } catch (Exception e) {
-      if (isDebug) {
-        System.out.println("Not Turtle: " + e.getMessage());
-      }
+      log("Not Turtle: " + e.getMessage());
     }
     try {
-      new StructureMapUtilities(context, null, null).parse(TextFile.bytesToString(cnt), null);
+      new StructureMapUtilities(getContext(), null, null).parse(TextFile.bytesToString(cnt), null);
       return Manager.FhirFormat.TEXT;
     } catch (Exception e) {
-      if (isDebug) {
-        System.out.println("Not Text: " + e.getMessage());
-      }
+      log("Not Text: " + e.getMessage());
     }
-    if (isDebug)
-      System.out.println("     .. not a resource: " + filename);
+    log("     .. not a resource: " + filename);
     return null;
   }
 
@@ -587,19 +579,17 @@ public class IgLoader {
   }
 
   private Resource loadFileWithErrorChecking(String version, Map.Entry<String, byte[]> t, String fn) {
-    if (isDebug)
-      System.out.print("* load file: " + fn);
+    log("* load file: " + fn);
     Resource r = null;
     try {
       r = loadResourceByVersion(version, t.getValue(), fn);
-      if (isDebug)
-        System.out.println(" .. success");
+      log(" .. success");
     } catch (Exception e) {
-      if (!isDebug) {
+      if (!isDebug()) {
         System.out.print("* load file: " + fn);
       }
       System.out.println(" - ignored due to error: " + (e.getMessage() == null ? " (null - NPE)" : e.getMessage()));
-      if (isDebug || ((e.getMessage() != null && e.getMessage().contains("cannot be cast")))) {
+      if (isDebug() || ((e.getMessage() != null && e.getMessage().contains("cannot be cast")))) {
         e.printStackTrace();
       }
     }
@@ -663,5 +653,9 @@ public class IgLoader {
     } else
       throw new FHIRException("Unsupported version " + fhirVersion);
     return r;
+  }
+
+  private void log(String s) {
+    if (isDebug()) System.out.println(s);
   }
 }

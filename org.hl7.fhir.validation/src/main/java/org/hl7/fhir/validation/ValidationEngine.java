@@ -1,6 +1,9 @@
 package org.hl7.fhir.validation;
 
 import com.google.gson.JsonObject;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
@@ -17,19 +20,16 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
 import org.hl7.fhir.r5.utils.EOperationOutcome;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.IResourceValidator.*;
-import org.hl7.fhir.r5.utils.OperationOutcomeUtilities;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.*;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
@@ -39,7 +39,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
-import org.hl7.fhir.validation.cli.model.ScanOutputItem;
 import org.hl7.fhir.validation.cli.services.IPackageInstaller;
 import org.hl7.fhir.validation.cli.utils.*;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -53,7 +52,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
-
 
 /*
 Copyright (c) 2011+, HL7, Inc
@@ -125,33 +123,49 @@ POSSIBILITY OF SUCH DAMAGE.
  *
  * @author Grahame Grieve
  */
+@Accessors(chain = true)
 public class ValidationEngine implements IValidatorResourceFetcher, IPackageInstaller {
 
-  private SimpleWorkerContext context;
-  private Map<String, byte[]> binaries = new HashMap<String, byte[]>();
-  private boolean doNative;
-  private boolean noInvariantChecks;
-  private boolean hintAboutNonMustSupport;
-  private boolean anyExtensionsAllowed = false;
-  private String version;
-  private String language;
-  private FilesystemPackageCacheManager pcm;
-  private PrintWriter mapLog;
-  private boolean debug = false;
-  private IValidatorResourceFetcher fetcher;
-  private boolean assumeValidRestReferences;
-  private boolean noExtensibleBindingMessages;
-  private boolean securityChecks;
-  private boolean crumbTrails;
-  private Locale locale;
-  private List<ImplementationGuide> igs = new ArrayList<>();
-  private boolean showTimes;
-  private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
-  private Map<String, ValidationControl> validationControl = new HashMap<>();
-  private QuestionnaireMode questionnaireMode;
+  @Getter @Setter private SimpleWorkerContext context;
+  @Getter @Setter private Map<String, byte[]> binaries = new HashMap<>();
+  @Getter @Setter private boolean doNative;
+  @Getter @Setter private boolean noInvariantChecks;
+  @Getter @Setter private boolean hintAboutNonMustSupport;
+  @Getter @Setter private boolean anyExtensionsAllowed = false;
+  @Getter @Setter private String version;
+  @Getter @Setter private String language;
+  @Setter private FilesystemPackageCacheManager pcm;
+  @Getter @Setter private PrintWriter mapLog;
+  @Getter @Setter private boolean debug = false;
+  @Getter @Setter private IValidatorResourceFetcher fetcher;
+  @Getter @Setter private boolean assumeValidRestReferences;
+  @Getter @Setter private boolean noExtensibleBindingMessages;
+  @Getter @Setter private boolean securityChecks;
+  @Getter @Setter private boolean crumbTrails;
+  @Getter @Setter private Locale locale;
+  @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
+  @Getter @Setter private boolean showTimes;
+  @Getter @Setter private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
+  @Getter @Setter private QuestionnaireMode questionnaireMode;
+  @Getter @Setter private FHIRPathEngine fhirPathEngine;
+  @Getter @Setter private IgLoader igLoader;
 
-  private FHIRPathEngine fpe;
-  private IgLoader igLoader;
+  /**
+   * Systems that host the ValidationEngine can use this to control what validation the validator performs.
+   * <p>
+   * Using this, you can turn particular kinds of validation on and off. In addition, you can override
+   * the error | warning | hint level and make it a different level.
+   * <p>
+   * Each entry has
+   * * 'allowed': a boolean flag. if this is false, the Validator will not report the error.
+   * * 'level' : set to error, warning, information
+   * <p>
+   * Entries are registered by ID, using the IDs in /org.hl7.fhir.utilities/src/main/resources/Messages.properties
+   * <p>
+   * This feature is not supported by the validator CLI - and won't be. It's for systems hosting
+   * the validation framework in their own implementation context
+   */
+  @Getter @Setter private Map<String, ValidationControl> validationControl = new HashMap<>();
 
   public ValidationEngine() throws IOException {
     setContext(SimpleWorkerContext.fromNothing());
@@ -187,7 +201,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
 
   public void scanForVersions(List<String> sources, VersionSourceInformation versions) throws FHIRException, IOException {
     List<String> refs = new ArrayList<String>();
-    parseSources(sources, refs);
+    ValidatorUtils.parseSources(sources, refs, context);
     for (String ref : refs) {
       Content cnt = igLoader.loadContent(ref, "validate", false);
       String s = TextFile.bytesToString(cnt.focus);
@@ -249,7 +263,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     NpmPackage npmX = getPcm().loadPackage("hl7.fhir.xver-extensions", "0.0.4");
     context.loadFromPackage(npmX, null);
 
-    this.fpe = new FHIRPathEngine(context);
+    this.fhirPathEngine = new FHIRPathEngine(context);
   }
 
   private String getVersionFromPack(Map<String, byte[]> source) {
@@ -310,7 +324,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
     InstanceValidator validator = getValidator();
     validator.validate(null, messages, stream, format, asSdList(profiles));
-    return messagesToOutcome(messages);
+    return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
   public List<StructureDefinition> asSdList(List<String> profiles) throws Error {
@@ -333,84 +347,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return (OperationOutcome) validate(l, profiles, null);
   }
 
-  public List<ScanOutputItem> validateScan(List<String> sources, Set<String> guides) throws FHIRException, IOException, EOperationOutcome {
-    List<String> refs = new ArrayList<String>();
-    parseSources(sources, refs);
-
-    List<ScanOutputItem> res = new ArrayList();
-    InstanceValidator validator = getValidator();
-
-    for (String ref : refs) {
-      Content cnt = igLoader.loadContent(ref, "validate", false);
-      List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-      Element e = null;
-      try {
-        System.out.println("Validate " + ref);
-        messages.clear();
-        e = validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType);
-        res.add(new ScanOutputItem(ref, null, null, messagesToOutcome(messages)));
-      } catch (Exception ex) {
-        res.add(new ScanOutputItem(ref, null, null, exceptionToOutcome(ex)));
-      }
-      if (e != null) {
-        String rt = e.fhirType();
-        for (String u : guides) {
-          ImplementationGuide ig = context.fetchResource(ImplementationGuide.class, u);
-          System.out.println("Check Guide " + ig.getUrl());
-          String canonical = ig.getUrl().contains("/Impl") ? ig.getUrl().substring(0, ig.getUrl().indexOf("/Impl")) : ig.getUrl();
-          String url = getGlobal(ig, rt);
-          if (url != null) {
-            try {
-              System.out.println("Validate " + ref + " against " + ig.getUrl());
-              messages.clear();
-              validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, url);
-              res.add(new ScanOutputItem(ref, ig, null, messagesToOutcome(messages)));
-            } catch (Exception ex) {
-              res.add(new ScanOutputItem(ref, ig, null, exceptionToOutcome(ex)));
-            }
-          }
-          Set<String> done = new HashSet<>();
-          for (StructureDefinition sd : context.allStructures()) {
-            if (!done.contains(sd.getUrl())) {
-              done.add(sd.getUrl());
-              if (sd.getUrl().startsWith(canonical) && rt.equals(sd.getType())) {
-                try {
-                  System.out.println("Validate " + ref + " against " + sd.getUrl());
-                  messages.clear();
-                  validator.validate(null, messages, new ByteArrayInputStream(cnt.focus), cnt.cntType, asSdList(sd));
-                  res.add(new ScanOutputItem(ref, ig, sd, messagesToOutcome(messages)));
-                } catch (Exception ex) {
-                  res.add(new ScanOutputItem(ref, ig, sd, exceptionToOutcome(ex)));
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    return res;
-  }
-
-  private List<StructureDefinition> asSdList(StructureDefinition sd) {
-    List<StructureDefinition> res = new ArrayList<StructureDefinition>();
-    res.add(sd);
-    return res;
-  }
-
-  private String getGlobal(ImplementationGuide ig, String rt) {
-    for (ImplementationGuideGlobalComponent igg : ig.getGlobal()) {
-      if (rt.equals(igg.getType()))
-        return igg.getProfile();
-    }
-    return null;
-  }
-
   public Resource validate(List<String> sources, List<String> profiles, List<ValidationRecord> record) throws FHIRException, IOException {
     if (profiles.size() > 0) {
       System.out.println("  Profiles: " + profiles);
     }
     List<String> refs = new ArrayList<String>();
-    boolean asBundle = parseSources(sources, refs);
+    boolean asBundle = ValidatorUtils.parseSources(sources, refs, context);
     Bundle results = new Bundle();
     results.setType(Bundle.BundleType.COLLECTION);
     for (String ref : refs) {
@@ -436,64 +378,12 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       return results.getEntryFirstRep().getResource();
   }
 
-  /**
-   * Iterates through the list of passed in sources, extracting all references and populated them in the passed in list.
-   *
-   * @return {@link Boolean#TRUE} if more than one reference is found.
-   */
-  public boolean parseSources(List<String> sources, List<String> refs) throws IOException {
-    boolean multipleRefsFound = sources.size() > 1;
-    for (String source : sources) {
-      multipleRefsFound |= extractReferences(source, refs);
-    }
-    return multipleRefsFound;
-  }
-
-  /**
-   * Parses passed in resource path, adding any found references to the passed in list.
-   *
-   * @return {@link Boolean#TRUE} if more than one reference is found.
-   */
-  private boolean extractReferences(String name, List<String> refs) throws IOException {
-    if (Common.isNetworkPath(name)) {
-      refs.add(name);
-    } else if (Common.isWildcardPath(name)) {
-      AsteriskFilter filter = new AsteriskFilter(name);
-      File[] files = new File(filter.getDir()).listFiles(filter);
-      for (File file : files) {
-        refs.add(file.getPath());
-      }
-    } else {
-      File file = new File(name);
-      if (!file.exists()) {
-        if (System.console() != null) {
-          System.console().printf(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
-        } else {
-          System.out.println(context.formatMessage(I18nConstants.BAD_FILE_PATH_ERROR, name));
-        }
-        throw new IOException("File " + name + " does not exist");
-      }
-
-      if (file.isFile()) {
-        refs.add(name);
-      } else {
-        for (int i = 0; i < file.listFiles().length; i++) {
-          File[] fileList = file.listFiles();
-          if (fileList[i].isFile())
-            refs.add(fileList[i].getPath());
-        }
-      }
-    }
-    return refs.size() > 1;
-  }
-
   public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
     InstanceValidator validator = getValidator();
 
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
-    return messagesToOutcome(messages);
+    return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
-
 
   public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationRecord> record) throws FHIRException, IOException, EOperationOutcome, SAXException {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
@@ -508,7 +398,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (record != null) {
       record.add(new ValidationRecord(location, messages));
     }
-    return messagesToOutcome(messages);
+    return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
   public OperationOutcome validate(String location, byte[] source, FhirFormat cntType, List<String> profiles, IdStatus resourceIdRule, boolean anyExtensionsAllowed, BestPracticeWarningLevel bpWarnings, CheckDisplayOption displayOption) throws FHIRException, IOException, EOperationOutcome, SAXException {
@@ -521,43 +411,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.setBestPracticeWarningLevel(bpWarnings);
     validator.setCheckDisplay(displayOption);
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
-    return messagesToOutcome(messages);
-  }
-
-  private List<ValidationMessage> filterMessages(List<ValidationMessage> messages) {
-    List<ValidationMessage> filteredValidation = new ArrayList<ValidationMessage>();
-    for (ValidationMessage e : messages) {
-      if (!filteredValidation.contains(e))
-        filteredValidation.add(e);
-    }
-    filteredValidation.sort(null);
-    return filteredValidation;
-  }
-
-  private OperationOutcome exceptionToOutcome(Exception ex) throws IOException, FHIRException, EOperationOutcome {
-    OperationOutcome op = new OperationOutcome();
-    op.addIssue().setCode(org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXCEPTION).setSeverity(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.FATAL).getDetails().setText(ex.getMessage());
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
-    RendererFactory.factory(op, rc).render(op);
-    return op;
-  }
-
-  private OperationOutcome messagesToOutcome(List<ValidationMessage> messages) throws IOException, FHIRException, EOperationOutcome {
-    OperationOutcome op = new OperationOutcome();
-    for (ValidationMessage vm : filterMessages(messages)) {
-      try {
-        fpe.parse(vm.getLocation());
-      } catch (Exception e) {
-        System.out.println("Internal error in location for message: '" + e.getMessage() + "', loc = '" + vm.getLocation() + "', err = '" + vm.getMessage() + "'");
-      }
-      op.getIssue().add(OperationOutcomeUtilities.convertToIssue(vm, op));
-    }
-    if (!op.hasIssue()) {
-      op.addIssue().setSeverity(OperationOutcome.IssueSeverity.INFORMATION).setCode(OperationOutcome.IssueType.INFORMATIONAL).getDetails().setText(context.formatMessage(I18nConstants.ALL_OK));
-    }
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
-    RendererFactory.factory(op, rc).render(op);
-    return op;
+    return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
 
   public org.hl7.fhir.r5.elementmodel.Element transform(String source, String map) throws FHIRException, IOException {
@@ -566,14 +420,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
 
   public org.hl7.fhir.r5.elementmodel.Element transform(byte[] source, FhirFormat cntType, String mapUri) throws FHIRException, IOException {
-    List<Base> outputs = new ArrayList<Base>();
-
+    List<Base> outputs = new ArrayList<>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
     org.hl7.fhir.r5.elementmodel.Element src = Manager.parse(context, new ByteArrayInputStream(source), cntType);
     StructureMap map = context.getTransform(mapUri);
-    if (map == null)
-      throw new Error("Unable to find map " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
-
+    if (map == null) throw new Error("Unable to find map " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
     scu.transform(null, src, map, resource);
     return resource;
@@ -588,8 +439,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       }
     }
 
-    if (targetTypeUrl == null)
-      throw new FHIRException("Unable to determine resource URL for target type");
+    if (targetTypeUrl == null) throw new FHIRException("Unable to determine resource URL for target type");
 
     StructureDefinition structureDefinition = null;
     for (StructureDefinition sd : this.context.getStructures()) {
@@ -599,8 +449,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       }
     }
 
-    if (structureDefinition == null)
-      throw new FHIRException("Unable to find StructureDefinition for target type ('" + targetTypeUrl + "')");
+    if (structureDefinition == null) throw new FHIRException("Unable to find StructureDefinition for target type ('" + targetTypeUrl + "')");
 
     return Manager.build(getContext(), structureDefinition);
   }
@@ -826,101 +675,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     throw new FHIRException("Source/Target version not supported: " + version + " -> " + targetVer);
   }
 
-  /**
-   * Systems that host the ValidationEngine can use this to control what validation the validator performs.
-   * <p>
-   * Using this, you can turn particular kinds of validation on and off. In addition, you can override
-   * the error | warning | hint level and make it a different level.
-   * <p>
-   * Each entry has
-   * * 'allowed': a boolean flag. if this is false, the Validator will not report the error.
-   * * 'level' : set to error, warning, information
-   * <p>
-   * Entries are registered by ID, using the IDs in /org.hl7.fhir.utilities/src/main/resources/Messages.properties
-   * <p>
-   * This feature is not supported by the validator CLI - and won't be. It's for systems hosting
-   * the validation framework in their own implementation context
-   */
-  public Map<String, ValidationControl> getValidationControl() {
-    return validationControl;
-  }
-
   public String setTerminologyServer(String src, String log, FhirPublication version) throws FHIRException, URISyntaxException {
     return connectToTSServer(src, log, version);
-  }
-
-  /*
-   * Accessors
-   */
-
-  public boolean isDoNative() {
-    return doNative;
-  }
-
-  public ValidationEngine setDoNative(boolean doNative) {
-    this.doNative = doNative;
-    return this;
-  }
-
-  public boolean isNoInvariantChecks() {
-    return noInvariantChecks;
-  }
-
-  public ValidationEngine setNoInvariantChecks(boolean value) {
-    this.noInvariantChecks = value;
-    return this;
-  }
-
-  public boolean isHintAboutNonMustSupport() {
-    return hintAboutNonMustSupport;
-  }
-
-  public ValidationEngine setHintAboutNonMustSupport(boolean hintAboutNonMustSupport) {
-    this.hintAboutNonMustSupport = hintAboutNonMustSupport;
-    return this;
-  }
-
-  public boolean isAnyExtensionsAllowed() {
-    return anyExtensionsAllowed;
-  }
-
-  public ValidationEngine setAnyExtensionsAllowed(boolean anyExtensionsAllowed) {
-    this.anyExtensionsAllowed = anyExtensionsAllowed;
-    return this;
-  }
-
-  public String getVersion() {
-    return version;
-  }
-
-  public ValidationEngine setVersion(String version) {
-    this.version = version;
-    return this;
-  }
-
-  public String getLanguage() {
-    return language;
-  }
-
-  public ValidationEngine setLanguage(String language) {
-    this.language = language;
-    return this;
-  }
-
-  private void setPcm(FilesystemPackageCacheManager pcm) {
-    this.pcm = pcm;
-  }
-
-  public FilesystemPackageCacheManager getPcm() throws IOException {
-    if (pcm == null) {
-      System.out.println("Creating Package manager?");
-      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-    }
-    return pcm;
-  }
-
-  public PrintWriter getMapLog() {
-    return mapLog;
   }
 
   public ValidationEngine setMapLog(String mapLog) throws FileNotFoundException {
@@ -930,106 +686,17 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return this;
   }
 
-  public boolean isDebug() {
-    return debug;
-  }
-
-  public ValidationEngine setDebug(boolean debug) {
-    this.debug = debug;
-    return this;
-  }
-
-  public IValidatorResourceFetcher getFetcher() {
-    return fetcher;
-  }
-
-  public ValidationEngine setFetcher(IValidatorResourceFetcher fetcher) {
-    this.fetcher = fetcher;
-    return this;
-  }
-
-  public boolean isAssumeValidRestReferences() {
-    return assumeValidRestReferences;
-  }
-
-  public ValidationEngine setAssumeValidRestReferences(boolean assumeValidRestReferences) {
-    this.assumeValidRestReferences = assumeValidRestReferences;
-    return this;
-  }
-
-  public boolean isNoExtensibleBindingMessages() {
-    return noExtensibleBindingMessages;
-  }
-
-  public ValidationEngine setNoExtensibleBindingMessages(boolean noExtensibleBindingMessages) {
-    this.noExtensibleBindingMessages = noExtensibleBindingMessages;
-    return this;
-  }
-
-  public boolean isSecurityChecks() {
-    return securityChecks;
-  }
-
-  public ValidationEngine setSecurityChecks(boolean securityChecks) {
-    this.securityChecks = securityChecks;
-    return this;
-  }
-
-  public boolean isCrumbTrails() {
-    return crumbTrails;
-  }
-
-  public ValidationEngine setCrumbTrails(boolean crumbTrails) {
-    this.crumbTrails = crumbTrails;
-    return this;
-  }
-
-  public boolean isShowTimes() {
-    return showTimes;
-  }
-
-  public ValidationEngine setShowTimes(boolean showTimes) {
-    this.showTimes = showTimes;
-    return this;
-  }
-
-  public List<BundleValidationRule> getBundleValidationRules() {
-    return bundleValidationRules;
-  }
-
-  public ValidationEngine setBundleValidationRules(List<BundleValidationRule> bundleValidationRules) {
-    this.bundleValidationRules = bundleValidationRules;
-    return this;
-  }
-
-  public QuestionnaireMode getQuestionnaireMode() {
-    return questionnaireMode;
-  }
-
-  public ValidationEngine setQuestionnaireMode(QuestionnaireMode questionnaireMode) {
-    this.questionnaireMode = questionnaireMode;
-    return this;
-  }
-
   public ValidationEngine setSnomedExtension(String sct) {
-    context.getExpansionParameters().addParameter("system-version", "http://snomed.info/sct|http://snomed.info/sct/" + sct);
+    getContext().getExpansionParameters().addParameter("system-version", "http://snomed.info/sct|http://snomed.info/sct/" + sct);
     return this;
   }
 
-  public Map<String, byte[]> getBinaries() {
-    return binaries;
-  }
-
-  public SimpleWorkerContext getContext() {
-    return context;
-  }
-
-  public void setContext(SimpleWorkerContext context) {
-    this.context = context;
-  }
-
-  public List<ImplementationGuide> getIgs() {
-    return igs;
+  public FilesystemPackageCacheManager getPcm() throws IOException {
+    if (pcm == null) {
+      System.out.println("Creating Package manager?");
+      pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    }
+    return pcm;
   }
 
   @Override
@@ -1098,11 +765,6 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
 
   @Override
-  public void setLocale(Locale locale) {
-    this.locale = locale;
-  }
-
-  @Override
   public CanonicalResource fetchCanonicalResource(String url) throws URISyntaxException {
     Resource res = context.fetchResource(Resource.class, url);
     if (res != null) {
@@ -1119,5 +781,4 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   public boolean fetchesCanonicalResource(String url) {
     return fetcher != null && fetcher.fetchesCanonicalResource(url);
   }
-
 }

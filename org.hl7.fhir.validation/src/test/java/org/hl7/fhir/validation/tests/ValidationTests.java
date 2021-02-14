@@ -497,8 +497,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public void setLocale(Locale locale) {
+  public IValidatorResourceFetcher setLocale(Locale locale) {
     //do nothing
+    return null;
   }
 
   @Override
