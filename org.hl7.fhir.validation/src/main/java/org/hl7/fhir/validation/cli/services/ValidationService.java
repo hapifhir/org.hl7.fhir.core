@@ -1,11 +1,8 @@
 package org.hl7.fhir.validation.cli.services;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -15,7 +12,6 @@ import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.FhirPublication;
-import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -26,6 +22,7 @@ import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidationRecord;
 import org.hl7.fhir.validation.cli.model.*;
@@ -62,8 +59,9 @@ public class ValidationService {
   public static VersionSourceInformation scanForVersions(CliContext cliContext) throws Exception {
     VersionSourceInformation versions = new VersionSourceInformation();
     ValidationEngine ve = new ValidationEngine();
+    IgLoader igLoader = new IgLoader(ve.getPcm(), ve.getContext(), ve.getVersion(), ve.isDebug());
     for (String src : cliContext.getIgs()) {
-      ve.scanForIgVersion(src, cliContext.isRecursive(), versions);
+      igLoader.scanForIgVersion(src, cliContext.isRecursive(), versions);
     }
     ve.scanForVersions(cliContext.getSources(), versions);
     return versions;
@@ -105,22 +103,6 @@ public class ValidationService {
       System.out.println("HTML Summary in "+cliContext.getHtmlOutput());
     }
     System.exit(ec > 0 ? 1 : 0);
-  }
-
-  public static void validateScan(CliContext cliContext, ValidationEngine validator) throws Exception {
-    if (Utilities.noString(cliContext.getOutput()))
-      throw new Exception("Output parameter required when scanning");
-    if (!(new File(cliContext.getOutput()).isDirectory()))
-      throw new Exception("Output '" + cliContext.getOutput() + "' must be a directory when scanning");
-    System.out.println("  .. scan " + cliContext.getSources() + " against loaded IGs");
-    Set<String> urls = new HashSet<>();
-    for (ImplementationGuide ig : validator.getContext().allImplementationGuides()) {
-      if (ig.getUrl().contains("/ImplementationGuide") && !ig.getUrl().equals("http://hl7.org/fhir/ImplementationGuide/fhir"))
-        urls.add(ig.getUrl());
-    }
-    List<ScanOutputItem> res = validator.validateScan(cliContext.getSources(), urls);
-    validator.genScanOutput(cliContext.getOutput(), res);
-    System.out.println("Done. output in " + Utilities.path(cliContext.getOutput(), "scan.html"));
   }
 
   public static void convertSources(CliContext cliContext, ValidationEngine validator) throws Exception {
@@ -212,18 +194,19 @@ public class ValidationService {
     System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
     FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
     ValidationEngine validator = new ValidationEngine(definitions, ver, cliContext.getSv(), tt);
+    IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
     System.out.println(" - "+validator.getContext().countAllCaches()+" resources ("+tt.milestone()+")");
-    validator.loadIg("hl7.terminology", false); 
+    igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);
     System.out.print("  Terminology server " + cliContext.getTxServer());
     String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver); 
     System.out.println(" - Version "+txver+" ("+tt.milestone()+")");
     validator.setDebug(cliContext.isDoDebug());
     for (String src : cliContext.getIgs()) {
-      validator.loadIg(src, cliContext.isRecursive());
+      igLoader.loadIg(validator.getIgs(), validator.getBinaries(), src, cliContext.isRecursive());
     }
     System.out.print("  Get set... ");
     validator.setQuestionnaireMode(cliContext.getQuestionnaireMode());
-    validator.setNative(cliContext.isDoNative());
+    validator.setDoNative(cliContext.isDoNative());
     validator.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
     validator.setAnyExtensionsAllowed(cliContext.isAnyExtensionsAllowed());
     validator.setLanguage(cliContext.getLang());

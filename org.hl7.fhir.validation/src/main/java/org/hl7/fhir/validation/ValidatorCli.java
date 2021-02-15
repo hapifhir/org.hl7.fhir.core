@@ -70,9 +70,6 @@ import org.hl7.fhir.validation.cli.utils.*;
 import java.io.File;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Base64;
 
 /**
  * A executable class that will validate one or more FHIR resources against
@@ -232,7 +229,8 @@ public class ValidatorCli {
         }
         System.out.println("Validating");
         if (cliContext.getMode() == EngineMode.SCAN) {
-          ValidationService.validateScan(cliContext, validator);
+          Scanner validationScanner = new Scanner(validator.getContext(), validator.getValidator(), validator.getIgLoader(), validator.getFhirPathEngine());
+          validationScanner.validateScan(cliContext.getOutput(), cliContext.getSources());
         } else {
           ValidationService.validateSources(cliContext, validator);
         }

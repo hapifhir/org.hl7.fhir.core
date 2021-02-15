@@ -110,7 +110,6 @@
                 <artifactId>hapi-fhir-validation-resources-r4</artifactId>
                 <version>${hapi_fhir_version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.atlassian.commonmark</groupId>
                 <artifactId>commonmark</artifactId>

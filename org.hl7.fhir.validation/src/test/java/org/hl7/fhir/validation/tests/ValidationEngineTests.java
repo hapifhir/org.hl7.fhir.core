@@ -9,6 +9,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
+import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.tests.utilities.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -157,9 +158,10 @@ public class ValidationEngineTests {
     if (!TestUtilities.silent)
       System.out.println("Test301USCore: Validate patient300.xml against US-Core");
     ValidationEngine ve = new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, null, FhirPublication.STU3, "3.0.2");
+    IgLoader igLoader = new IgLoader(ve.getPcm(), ve.getContext(), ve.getVersion(), true);
     if (!TestUtilities.silent)
       System.out.println("  .. load USCore");
-    ve.loadIg("hl7.fhir.us.core#1.0.1", false);
+    igLoader.loadIg(ve.getIgs(), ve.getBinaries(), "hl7.fhir.us.core#1.0.1", false);
     List<String> profiles = new ArrayList<>();
     profiles.add("http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient");
     OperationOutcome op = ve.validate(FhirFormat.XML, TestingUtilities.loadTestResourceStream("validator", "patient301.xml"), profiles);

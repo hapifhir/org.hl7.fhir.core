@@ -837,6 +837,5 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
    return xverManager;
   }
-  
 }
 
