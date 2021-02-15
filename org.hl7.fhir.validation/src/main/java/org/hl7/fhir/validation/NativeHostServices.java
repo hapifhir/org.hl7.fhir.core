@@ -141,6 +141,7 @@ public class NativeHostServices {
   }
 
   private ValidationEngine validator;
+  private IgLoader igLoader;
   private int validationCount = 0;
   private int resourceCount = 0;
   private int convertCount = 0;
@@ -167,6 +168,7 @@ public class NativeHostServices {
   public void init(String pack) throws Exception {
     validator = new ValidationEngine(pack);
     validator.getContext().setAllowLoadingDuplicates(true);
+    igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
   }
 
   /** 
@@ -177,7 +179,7 @@ public class NativeHostServices {
    * @throws Exception
    */
   public void load(String pack) throws Exception {
-    validator.loadIg(pack, false);
+    igLoader.loadIg(validator.getIgs(), validator.getBinaries(), pack, false);
   }
 
   /** 
