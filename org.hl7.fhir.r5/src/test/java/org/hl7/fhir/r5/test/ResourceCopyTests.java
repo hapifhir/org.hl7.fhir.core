@@ -14,7 +14,7 @@ public class ResourceCopyTests {
 
   @Test
   public void testCopyExtensionForEnumerationField() throws FHIRException {
-    // Create new Observation and set the Extension with field value without status field set .
+    // Create new Observation and set the Extension with field value without status field set.
     Observation obs = new Observation();
     obs.getStatusElement().getExtension().add(new Extension().setUrl("Sampleurl"));
     obs.getStatusElement().getExtension().add(new Extension().setUrl("Sampleurl2"));
