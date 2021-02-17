@@ -31,7 +31,14 @@ import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 
 public class ValidationService {
 
+  private static boolean sessionTokensEnabled = true;
+  private static SessionCache sessionCache = new SessionCache();
+
   public static ValidationResponse validateSources(ValidationRequest request) throws Exception {
+    return validateSources(request, null);
+  }
+
+  public static ValidationResponse validateSources(ValidationRequest request, String sessionToken) throws Exception {
     if (request.getCliContext().getSv() == null) {
       request.getCliContext().setSv(ValidationService.determineVersion(request.getCliContext()));
     }
@@ -188,12 +195,22 @@ public class ValidationService {
       e.printStackTrace();
     }
   }
-
   public static ValidationEngine getValidator(CliContext cliContext, String definitions, TimeTracker tt) throws Exception {
+    return getValidator(cliContext, definitions, tt, null);
+  }
+
+  public static ValidationEngine getValidator(CliContext cliContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
     tt.milestone();
     System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
     FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
-    ValidationEngine validator = new ValidationEngine(definitions, ver, cliContext.getSv(), tt);
+
+    ValidationEngine validator;
+    if (sessionId == null || !sessionCache.sessionExists()) {
+      validator = new ValidationEngine(definitions, ver, cliContext.getSv(), tt);
+    } else {
+      validator = sessionCache.resumeSession(sessionId);
+    }
+
     IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
     System.out.println(" - "+validator.getContext().countAllCaches()+" resources ("+tt.milestone()+")");
     igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);

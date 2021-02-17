@@ -18,11 +18,19 @@ public class ValidationRequest {
     return cliContext;
   }
 
+  @JsonProperty("sessionToken")
+  public String sessionToken;
+
   public ValidationRequest() {}
 
   public ValidationRequest(CliContext cliContext, List<FileInfo> filesToValidate) {
+    this(cliContext, filesToValidate, null);
+  }
+
+  public ValidationRequest(CliContext cliContext, List<FileInfo> filesToValidate, String sessionToken) {
     this.cliContext = cliContext;
     this.filesToValidate = filesToValidate;
+    this.sessionToken = sessionToken;
   }
 
   @JsonProperty("cliContext")
@@ -39,6 +47,17 @@ public class ValidationRequest {
   @JsonProperty("filesToValidate")
   public ValidationRequest setFilesToValidate(List<FileInfo> filesToValidate) {
     this.filesToValidate = filesToValidate;
+    return this;
+  }
+
+  @JsonProperty("sessionToken")
+  public String getSessionToken() {
+    return sessionToken;
+  }
+
+  @JsonProperty("sessionToken")
+  public ValidationRequest setSessionToken(String sessionToken) {
+    this.sessionToken = sessionToken;
     return this;
   }
 
