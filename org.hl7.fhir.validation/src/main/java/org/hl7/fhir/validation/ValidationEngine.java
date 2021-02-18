@@ -149,6 +149,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   @Getter @Setter private QuestionnaireMode questionnaireMode;
   @Getter @Setter private FHIRPathEngine fhirPathEngine;
   @Getter @Setter private IgLoader igLoader;
+  @Getter @Setter private String sessionId;
 
   /**
    * Systems that host the ValidationEngine can use this to control what validation the validator performs.
@@ -193,7 +194,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, FhirPublication version, String vString, TimeTracker tt) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String vString, TimeTracker tt) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, tt);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());

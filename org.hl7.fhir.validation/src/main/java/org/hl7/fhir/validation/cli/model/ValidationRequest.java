@@ -18,8 +18,8 @@ public class ValidationRequest {
     return cliContext;
   }
 
-  @JsonProperty("sessionToken")
-  public String sessionToken;
+  @JsonProperty("sessionId")
+  public String sessionId;
 
   public ValidationRequest() {}
 
@@ -30,7 +30,7 @@ public class ValidationRequest {
   public ValidationRequest(CliContext cliContext, List<FileInfo> filesToValidate, String sessionToken) {
     this.cliContext = cliContext;
     this.filesToValidate = filesToValidate;
-    this.sessionToken = sessionToken;
+    this.sessionId = sessionToken;
   }
 
   @JsonProperty("cliContext")
@@ -50,14 +50,14 @@ public class ValidationRequest {
     return this;
   }
 
-  @JsonProperty("sessionToken")
-  public String getSessionToken() {
-    return sessionToken;
+  @JsonProperty("sessionId")
+  public String getSessionId() {
+    return sessionId;
   }
 
-  @JsonProperty("sessionToken")
-  public ValidationRequest setSessionToken(String sessionToken) {
-    this.sessionToken = sessionToken;
+  @JsonProperty("sessionId")
+  public ValidationRequest setSessionId(String sessionId) {
+    this.sessionId = sessionId;
     return this;
   }
 
