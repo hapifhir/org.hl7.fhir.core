@@ -40,8 +40,6 @@ public class ValidationService {
   }
 
   public ValidationResponse validateSources(ValidationRequest request) throws Exception {
-    // have to consolidate the calls to validator engine init
-    // it's done twice, once in the scan and once more below
     if (request.getCliContext().getSv() == null) {
       String sv = determineVersion(request.getCliContext(), request.sessionId);
       request.getCliContext().setSv(sv);
@@ -247,7 +245,7 @@ public class ValidationService {
       validator.prepare(); // generate any missing snapshots
       System.out.println(" go (" + tt.milestone() + ")");
     } else {
-      System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator.");
+      System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator session id.");
     }
     return sessionId;
   }
