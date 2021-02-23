@@ -3,13 +3,14 @@ package org.hl7.fhir.validation.cli.services;
 import org.apache.commons.collections4.map.PassiveExpiringMap;
 import org.hl7.fhir.validation.ValidationEngine;
 
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class SessionCache {
 
-  private static final long TIME_TO_LIVE = 60;
-  private static final TimeUnit TIME_UNIT = TimeUnit.MINUTES;
+  protected static final long TIME_TO_LIVE = 60;
+  protected static final TimeUnit TIME_UNIT = TimeUnit.MINUTES;
 
   private final PassiveExpiringMap<String, ValidationEngine> cachedSessions;
 
@@ -42,6 +43,10 @@ public class SessionCache {
 
   public ValidationEngine fetchSessionValidatorEngine(String sessionId) {
     return cachedSessions.get(sessionId);
+  }
+
+  public Set<String> getSessionIds() {
+    return cachedSessions.keySet();
   }
 
   private String generateID() {

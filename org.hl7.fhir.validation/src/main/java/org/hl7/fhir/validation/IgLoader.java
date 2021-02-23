@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation;
 
+import com.google.gson.JsonObject;
 import lombok.Getter;
 import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -15,12 +16,15 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.turtle.Turtle;
+import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
+import org.w3c.dom.Document;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -197,6 +201,43 @@ public class IgLoader {
     Map<String, byte[]> source = loadIgSourceForVersion(src, recursive, true, versions);
     if (source != null && source.containsKey("version.info"))
       versions.see(readInfoVersion(source.get("version.info")), "version.info in " + src);
+  }
+
+  public void scanForVersions(List<String> sources, VersionSourceInformation versions) throws FHIRException, IOException {
+    List<String> refs = new ArrayList<String>();
+    ValidatorUtils.parseSources(sources, refs, context);
+    for (String ref : refs) {
+      Content cnt = loadContent(ref, "validate", false);
+      String s = TextFile.bytesToString(cnt.focus);
+      if (s.contains("http://hl7.org/fhir/3.0")) {
+        versions.see("3.0", "Profile in " + ref);
+      }
+      if (s.contains("http://hl7.org/fhir/1.0")) {
+        versions.see("1.0", "Profile in " + ref);
+      }
+      if (s.contains("http://hl7.org/fhir/4.0")) {
+        versions.see("4.0", "Profile in " + ref);
+      }
+      if (s.contains("http://hl7.org/fhir/1.4")) {
+        versions.see("1.4", "Profile in " + ref);
+      }
+      try {
+        if (s.startsWith("{")) {
+          JsonObject json = JsonTrackingParser.parse(s, null);
+          if (json.has("fhirVersion")) {
+            versions.see(VersionUtilities.getMajMin(JSONUtil.str(json, "fhirVersion")), "fhirVersion in " + ref);
+          }
+        } else {
+          Document doc = ValidatorUtils.parseXml(cnt.focus);
+          String v = XMLUtil.getNamedChildValue(doc.getDocumentElement(), "fhirVersion");
+          if (v != null) {
+            versions.see(VersionUtilities.getMajMin(v), "fhirVersion in " + ref);
+          }
+        }
+      } catch (Exception e) {
+        // nothing
+      }
+    }
   }
 
   protected Map<String, byte[]> readZip(InputStream stream) throws IOException {
@@ -645,7 +686,7 @@ public class IgLoader {
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         r = new JsonParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".txt"))
-        r = new StructureMapUtilities(context, null, null).parse(TextFile.bytesToString(content), fn);
+        r = new StructureMapUtilities(getContext(), null, null).parse(TextFile.bytesToString(content), fn);
       else if (fn.endsWith(".map"))
         r = new StructureMapUtilities(null).parse(new String(content), fn);
       else

@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.services;
 
+import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.formats.IParser;
@@ -12,6 +13,8 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
@@ -21,26 +24,32 @@ import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ValidationService {
 
-  private SessionCache sessionCache;
+  private final SessionCache sessionCache;
 
   public ValidationService() {
     sessionCache = new SessionCache();
   }
 
+  protected ValidationService(SessionCache cache) {
+    this.sessionCache = cache;
+  }
+
   public ValidationResponse validateSources(ValidationRequest request) throws Exception {
+    // have to consolidate the calls to validator engine init
+    // it's done twice, once in the scan and once more below
     if (request.getCliContext().getSv() == null) {
-      request.getCliContext().setSv(determineVersion(request.getCliContext(), request.sessionId));
+      String sv = determineVersion(request.getCliContext(), request.sessionId);
+      request.getCliContext().setSv(sv);
     }
+
     String definitions = VersionUtilities.packageForVersion(request.getCliContext().getSv()) + "#" + VersionUtilities.getCurrentVersion(request.getCliContext().getSv());
 
-    String sessionId = checkSession(request.getSessionId(), definitions, request.getCliContext().getSv(), new TimeTracker());
+    String sessionId = initializeValidator(request.getCliContext(), definitions, new TimeTracker(), request.sessionId);
     ValidationEngine validator = sessionCache.fetchSessionValidatorEngine(sessionId);
 
     if (request.getCliContext().getProfiles().size() > 0) {
@@ -62,20 +71,15 @@ public class ValidationService {
   }
 
   public VersionSourceInformation scanForVersions(CliContext cliContext) throws Exception {
-    return scanForVersions(cliContext, null);
-  }
-
-  public VersionSourceInformation scanForVersions(CliContext cliContext, String sessionId) throws Exception {
     VersionSourceInformation versions = new VersionSourceInformation();
-
-    sessionId = checkSession(sessionId);
-    ValidationEngine ve = sessionCache.fetchSessionValidatorEngine(sessionId);
-
-    IgLoader igLoader = new IgLoader(ve.getPcm(), ve.getContext(), ve.getVersion(), ve.isDebug());
+    IgLoader igLoader = new IgLoader(
+      new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION),
+      SimpleWorkerContext.fromNothing(),
+      null);
     for (String src : cliContext.getIgs()) {
       igLoader.scanForIgVersion(src, cliContext.isRecursive(), versions);
     }
-    ve.scanForVersions(cliContext.getSources(), versions);
+    igLoader.scanForVersions(cliContext.getSources(), versions);
     return versions;
   }
 
@@ -201,78 +205,50 @@ public class ValidationService {
     }
   }
 
-  public ValidationEngine getValidator(CliContext cliContext, String definitions, TimeTracker tt) throws Exception {
-    return getValidator(cliContext, definitions, tt, null);
+  public ValidationEngine initializeValidator(CliContext cliContext, String definitions, TimeTracker tt) throws Exception {
+    return sessionCache.fetchSessionValidatorEngine(initializeValidator(cliContext, definitions, tt, null));
   }
 
-  public ValidationEngine getValidator(CliContext cliContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
+  public String initializeValidator(CliContext cliContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
     tt.milestone();
-    System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
-    FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
+    if (!sessionCache.sessionExists(sessionId)) {
+      System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
+      System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
+      ValidationEngine validator = new ValidationEngine(definitions, cliContext.getSv(), tt);
+      sessionId = sessionCache.cacheSession(validator);
 
-    sessionId = checkSession(sessionId, definitions, cliContext.getSv(), tt);
-    ValidationEngine validator = sessionCache.fetchSessionValidatorEngine(sessionId);
-
-    IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
-    System.out.println(" - " + validator.getContext().countAllCaches() + " resources (" + tt.milestone() + ")");
-    igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);
-    System.out.print("  Terminology server " + cliContext.getTxServer());
-    String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
-    System.out.println(" - Version " + txver + " (" + tt.milestone() + ")");
-    validator.setDebug(cliContext.isDoDebug());
-    for (String src : cliContext.getIgs()) {
-      igLoader.loadIg(validator.getIgs(), validator.getBinaries(), src, cliContext.isRecursive());
+      FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
+      IgLoader igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
+      System.out.println(" - " + validator.getContext().countAllCaches() + " resources (" + tt.milestone() + ")");
+      igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);
+      System.out.print("  Terminology server " + cliContext.getTxServer());
+      String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
+      System.out.println(" - Version " + txver + " (" + tt.milestone() + ")");
+      validator.setDebug(cliContext.isDoDebug());
+      for (String src : cliContext.getIgs()) {
+        igLoader.loadIg(validator.getIgs(), validator.getBinaries(), src, cliContext.isRecursive());
+      }
+      System.out.print("  Get set... ");
+      validator.setQuestionnaireMode(cliContext.getQuestionnaireMode());
+      validator.setDoNative(cliContext.isDoNative());
+      validator.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
+      validator.setAnyExtensionsAllowed(cliContext.isAnyExtensionsAllowed());
+      validator.setLanguage(cliContext.getLang());
+      validator.setLocale(cliContext.getLocale());
+      validator.setSnomedExtension(cliContext.getSnomedCTCode());
+      validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
+      validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
+      validator.setSecurityChecks(cliContext.isSecurityChecks());
+      validator.setCrumbTrails(cliContext.isCrumbTrails());
+      validator.setShowTimes(cliContext.isShowTimes());
+      validator.setFetcher(new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator));
+      validator.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
+      TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
+      validator.prepare(); // generate any missing snapshots
+      System.out.println(" go (" + tt.milestone() + ")");
+    } else {
+      System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator.");
     }
-    System.out.print("  Get set... ");
-    validator.setQuestionnaireMode(cliContext.getQuestionnaireMode());
-    validator.setDoNative(cliContext.isDoNative());
-    validator.setHintAboutNonMustSupport(cliContext.isHintAboutNonMustSupport());
-    validator.setAnyExtensionsAllowed(cliContext.isAnyExtensionsAllowed());
-    validator.setLanguage(cliContext.getLang());
-    validator.setLocale(cliContext.getLocale());
-    validator.setSnomedExtension(cliContext.getSnomedCTCode());
-    validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
-    validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
-    validator.setSecurityChecks(cliContext.isSecurityChecks());
-    validator.setCrumbTrails(cliContext.isCrumbTrails());
-    validator.setShowTimes(cliContext.isShowTimes());
-    validator.setFetcher(new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator));
-    validator.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
-    TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
-    validator.prepare(); // generate any missing snapshots
-    System.out.println(" go (" + tt.milestone() + ")");
-
-    return validator;
-  }
-
-  /**
-   * Checks the session cache for any existing validator that matches the session id. If no such entry exists, or if
-   * that entry has expired, and new entry is instantiated and cached. Returns the sessionId.
-   */
-  private String checkSession(String sessionId) throws IOException {
-    ValidationEngine validator = sessionCache.fetchSessionValidatorEngine(sessionId);
-    if (validator == null) {
-      validator = new ValidationEngine();
-    }
-    sessionId = sessionCache.cacheSession(sessionId, validator);
-    validator.setSessionId(sessionId);
-    return sessionId;
-  }
-
-  /**
-   * Checks the session cache for any existing validator that matches the session id. If no such entry exists, or if
-   * that entry has expired, and new entry is instantiated and cached. Returns the sessionId.
-   */
-  private String checkSession(String sessionId,
-                              String definitions,
-                              String sv,
-                              TimeTracker tt) throws IOException, URISyntaxException {
-    ValidationEngine validator = sessionCache.fetchSessionValidatorEngine(sessionId);
-    if (validator == null) {
-      validator = new ValidationEngine(definitions, sv, tt);
-    }
-    sessionId = sessionCache.cacheSession(sessionId, validator);
-    validator.setSessionId(sessionId);
     return sessionId;
   }
 
@@ -336,7 +312,7 @@ public class ValidationService {
       return "current";
     }
     System.out.println("Scanning for versions (no -version parameter):");
-    VersionSourceInformation versions = scanForVersions(cliContext, sessionId);
+    VersionSourceInformation versions = scanForVersions(cliContext);
     for (String s : versions.getReport()) {
       if (!s.equals("(nothing found)")) {
         System.out.println("  " + s);

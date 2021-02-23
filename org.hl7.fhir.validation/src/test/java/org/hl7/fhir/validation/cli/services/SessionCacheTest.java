@@ -1,32 +1,51 @@
 package org.hl7.fhir.validation.cli.services;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.hl7.fhir.validation.ValidationEngine;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import sun.security.validator.ValidatorException;
 
+import java.io.IOException;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SessionCacheTest {
 
-  @BeforeEach
-  void setUp() {
-  }
-
-  @AfterEach
-  void tearDown() {
+  @Test
+  @DisplayName("test session expiration works")
+  void expiredSession() throws IOException, InterruptedException {
+    final long EXPIRE_TIME = 5L;
+    SessionCache cache = new SessionCache(EXPIRE_TIME, TimeUnit.SECONDS);
+    ValidationEngine testEngine = new ValidationEngine();
+    String sessionId = cache.cacheSession(testEngine);
+    TimeUnit.SECONDS.sleep(EXPIRE_TIME + 1L);
+    Assertions.assertNull(cache.fetchSessionValidatorEngine(sessionId));
   }
 
   @Test
-  @DisplayName("Test session expiration works.")
-  void expiredSession() {
-    SessionCache cache = new SessionCache(5L, TimeUnit.SECONDS);
+  @DisplayName("test session caching works")
+  void cachedSession() throws IOException {
+    final long EXPIRE_TIME = 5L;
+    SessionCache cache = new SessionCache(EXPIRE_TIME, TimeUnit.SECONDS);
+    ValidationEngine testEngine = new ValidationEngine();
+    String sessionId = cache.cacheSession(testEngine);
+    Assertions.assertEquals(testEngine, cache.fetchSessionValidatorEngine(sessionId));
   }
 
   @Test
-  void fetchSessionValidatorEngine() {
+  @DisplayName("test session exists")
+  void sessionExists() throws IOException {
+    SessionCache cache = new SessionCache();
+    ValidationEngine testEngine = new ValidationEngine();
+    String sessionId = cache.cacheSession(testEngine);
+    Assertions.assertTrue(cache.sessionExists(sessionId));
+    Assertions.assertFalse(cache.sessionExists(UUID.randomUUID().toString()));
+  }
+
+  @Test
+  @DisplayName("test null session test id returns false")
+  void testNullSessionExists() {
+    SessionCache cache = new SessionCache();
+    Assertions.assertFalse(cache.sessionExists(null));
   }
 }

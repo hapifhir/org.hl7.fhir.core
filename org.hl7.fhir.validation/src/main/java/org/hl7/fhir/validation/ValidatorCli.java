@@ -187,7 +187,7 @@ public class ValidatorCli {
     }
     String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
-    ValidationEngine validator = validationService.getValidator(cliContext, definitions, tt);
+    ValidationEngine validator = validationService.initializeValidator(cliContext, definitions, tt);
     ComparisonService.doLeftRightComparison(args, Params.getParam(args, Params.DESTINATION), validator);
   }
 
@@ -199,7 +199,7 @@ public class ValidatorCli {
     // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).
     // Version gets spit out a couple of lines later after we've loaded the context
     String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
-    ValidationEngine validator = validationService.getValidator(cliContext, definitions, tt);
+    ValidationEngine validator = validationService.initializeValidator(cliContext, definitions, tt);
     tts.end();
     switch (cliContext.getMode()) {
       case TRANSFORM:
