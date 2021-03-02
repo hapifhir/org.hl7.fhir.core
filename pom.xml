@@ -2,17 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>ca.uhn.hapi.fhir</groupId>
-        <artifactId>hapi-deployable-pom</artifactId>
-        <version>5.1.0</version>
-    </parent>
-
     <!--
     Note: Version of this project and the version of HAPI FHIR are not locked to
     each other. It is fine to bump the point version of this POM without affecting
     HAPI FHIR
     -->
+    <groupId>ca.uhn.hapi.fhir</groupId>
     <artifactId>org.hl7.fhir.core</artifactId>
     <version>5.3.3-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -24,6 +19,27 @@
         <maven_surefire_version>3.0.0-M4</maven_surefire_version>
         <jacoco_version>0.8.5</jacoco_version>
         <info_cqframework_version>1.5.1</info_cqframework_version>
+
+        <gson_version>2.8.5</gson_version>
+        <servicemix_saxon_version>9.8.0-15</servicemix_saxon_version>
+        <commons_compress_version>1.20</commons_compress_version>
+        <xpp3_version>1.1.4c</xpp3_version>
+        <httpclient_version>4.5.13</httpclient_version>
+        <jackson_databind_version>2.11.3</jackson_databind_version>
+        <guava_version>30.1-jre</guava_version>
+        <commons_compress_version>1.20</commons_compress_version>
+        <logback_classic_version>1.2.3</logback_classic_version>
+        <ph_schematron_version>5.6.5</ph_schematron_version>
+        <ph_commons_version>9.5.4</ph_commons_version>
+        <commons_lang3_version>3.9</commons_lang3_version>
+        <jena_version>3.16.0</jena_version>
+        <commons_text_version>1.7</commons_text_version>
+        <commons_codec_version>1.14</commons_codec_version>
+        <commons_io_version>2.6</commons_io_version>
+        <slf4j_version>1.7.30</slf4j_version>
+        <google_findbugs_version>3.0.2</google_findbugs_version>
+        <awaitility_version>4.0.3</awaitility_version>
+        <woodstox_core_version>6.2.3</woodstox_core_version>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -45,6 +61,7 @@
         <module>org.hl7.fhir.validation.cli</module>
         <!-- The report project exists only to aggregate the test results from the other projects into a central report. -->
         <module>org.hl7.fhir.report</module>
+        <module>org.hl7.fhir.model</module>
     </modules>
 
     <repositories>
@@ -129,14 +146,80 @@
     </dependencyManagement>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.basepom.maven</groupId>
+                    <artifactId>duplicate-finder-maven-plugin</artifactId>
+                    <version>1.4.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>3.5.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>animal-sniffer-maven-plugin</artifactId>
+                    <version>1.20</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>2.0.0</version>
+                    <configuration>
+                        <verbose>true</verbose>
+                        <addSvnKeyWords>false</addSvnKeyWords>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-enforcer-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <skip>true</skip>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-enforcer-plugin</artifactId>-->
+<!--                <version>3.0.0-M2</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>enforce-maven</id>-->
+<!--                        <goals>-->
+<!--                            <goal>enforce</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <rules>-->
+<!--                                <requireMavenVersion>-->
+<!--                                    <version>3.3.9</version>-->
+<!--                                </requireMavenVersion>-->
+<!--                                <requireJavaVersion>-->
+<!--                                    <version>11</version>-->
+<!--                                    <message>-->
+<!--                                        HAPI FHIR is still targeting JDK 8 for published binaries, but we require JDK 11-->
+<!--                                        to build and test this library.-->
+<!--                                    </message>-->
+<!--                                </requireJavaVersion>-->
+<!--                            </rules>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

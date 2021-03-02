@@ -15,7 +15,8 @@
     <dependencies>
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>hapi-fhir-base</artifactId>
+            <artifactId>org.hl7.fhir.model</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- Commons -->
@@ -23,6 +24,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <optional>true</optional>
+            <version>${commons_compress_version}</version>
         </dependency>
 
         <!-- Markdown Utilities -->
@@ -47,6 +49,7 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <optional>true</optional>
+            <version>${gson_version}</version>
         </dependency>
 
         <!-- XML Utilities -->
@@ -54,16 +57,19 @@
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>
             <optional>true</optional>
+            <version>${servicemix_saxon_version}</version>
         </dependency>
         <dependency>
             <groupId>xpp3</groupId>
             <artifactId>xpp3</artifactId>
             <optional>true</optional>
+            <version>${xpp3_version}</version>
         </dependency>
         <dependency>
             <groupId>xpp3</groupId>
             <artifactId>xpp3_xpath</artifactId>
             <optional>true</optional>
+            <version>${xpp3_version}</version>
         </dependency>
 
         <!-- JUnit Jupiter -->
@@ -89,37 +95,37 @@
     </dependencies>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <inherited>true</inherited>
-                <executions>
-                    <execution>
-                        <id>standard</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>downstream</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create-metadata</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/generated-sources/properties</outputDirectory>
-                            <outputName>fhir-build.properties</outputName>
-                            <revisionPropertyName>orgfhir.buildnumber</revisionPropertyName>
-                            <timestampPropertyName>orgfhir.timestamp</timestampPropertyName>
-                            <timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SXXX</timestampFormat>
-                            <versionPropertyName>orgfhir.version</versionPropertyName>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>buildnumber-maven-plugin</artifactId>-->
+<!--                <inherited>true</inherited>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>standard</id>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>create</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>downstream</id>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>create-metadata</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputDirectory>${project.build.directory}/generated-sources/properties</outputDirectory>-->
+<!--                            <outputName>fhir-build.properties</outputName>-->
+<!--                            <revisionPropertyName>orgfhir.buildnumber</revisionPropertyName>-->
+<!--                            <timestampPropertyName>orgfhir.timestamp</timestampPropertyName>-->
+<!--                            <timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SXXX</timestampFormat>-->
+<!--                            <versionPropertyName>orgfhir.version</versionPropertyName>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -130,41 +136,41 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
-        <pluginManagement>
-        	<plugins>
-        		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-        		<plugin>
-        			<groupId>org.eclipse.m2e</groupId>
-        			<artifactId>lifecycle-mapping</artifactId>
-        			<version>1.0.0</version>
-        			<configuration>
-        				<lifecycleMappingMetadata>
-        					<pluginExecutions>
-        						<pluginExecution>
-        							<pluginExecutionFilter>
-        								<groupId>
-        									org.codehaus.mojo
-        								</groupId>
-        								<artifactId>
-        									buildnumber-maven-plugin
-        								</artifactId>
-        								<versionRange>
-        									[1.4,)
-        								</versionRange>
-        								<goals>
-        									<goal>create-metadata</goal>
-        								</goals>
-        							</pluginExecutionFilter>
-        							<action>
-        								<ignore></ignore>
-        							</action>
-        						</pluginExecution>
-        					</pluginExecutions>
-        				</lifecycleMappingMetadata>
-        			</configuration>
-        		</plugin>
-        	</plugins>
-        </pluginManagement>
+<!--        <pluginManagement>-->
+<!--        	<plugins>-->
+<!--        		&lt;!&ndash;This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.&ndash;&gt;-->
+<!--        		<plugin>-->
+<!--        			<groupId>org.eclipse.m2e</groupId>-->
+<!--        			<artifactId>lifecycle-mapping</artifactId>-->
+<!--        			<version>1.0.0</version>-->
+<!--        			<configuration>-->
+<!--        				<lifecycleMappingMetadata>-->
+<!--        					<pluginExecutions>-->
+<!--        						<pluginExecution>-->
+<!--        							<pluginExecutionFilter>-->
+<!--        								<groupId>-->
+<!--        									org.codehaus.mojo-->
+<!--        								</groupId>-->
+<!--        								<artifactId>-->
+<!--        									buildnumber-maven-plugin-->
+<!--        								</artifactId>-->
+<!--        								<versionRange>-->
+<!--        									[1.4,)-->
+<!--        								</versionRange>-->
+<!--        								<goals>-->
+<!--        									<goal>create-metadata</goal>-->
+<!--        								</goals>-->
+<!--        							</pluginExecutionFilter>-->
+<!--        							<action>-->
+<!--        								<ignore></ignore>-->
+<!--        							</action>-->
+<!--        						</pluginExecution>-->
+<!--        					</pluginExecutions>-->
+<!--        				</lifecycleMappingMetadata>-->
+<!--        			</configuration>-->
+<!--        		</plugin>-->
+<!--        	</plugins>-->
+<!--        </pluginManagement>-->
     </build>
 
 </project>

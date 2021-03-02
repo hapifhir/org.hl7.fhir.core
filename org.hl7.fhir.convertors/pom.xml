@@ -19,13 +19,14 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <optional>true</optional>
+            <version>${commons_compress_version}</version>
         </dependency>
         
         <!-- HAPI Dependencies -->
-        <dependency>
-            <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>hapi-fhir-base</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>ca.uhn.hapi.fhir</groupId>-->
+<!--            <artifactId>hapi-fhir-base</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.utilities</artifactId>
@@ -36,6 +37,7 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <optional>true</optional>
+            <version>${gson_version}</version>
         </dependency>
 
         <!-- FHIR Versions -->

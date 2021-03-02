@@ -1935,7 +1935,7 @@ public class NarrativeGenerator implements INarrativeGenerator {
    * the purposes of the build. This is to be reviewed in the future.
    *
    * @param vs
-   * @param codeSystems
+   * @param header
    * @throws Exception
    */
   public void generate(ValueSet vs, boolean header) {
@@ -2673,9 +2673,8 @@ public class NarrativeGenerator implements INarrativeGenerator {
    * This generate is optimised for the build tool in that it tracks the source extension.
    * But it can be used for any other use.
    *
-   * @param vs
-   * @param codeSystems
-   * @throws DefinitionException 
+   * @param op
+   * @throws DefinitionException
    * @throws Exception
    */
   public void generate(OperationOutcome op) throws DefinitionException {

@@ -13,21 +13,16 @@
 	<packaging>bundle</packaging>
 
 	<dependencies>
-		<!-- HAPI Dependencies -->
+
+		<dependency>
+			<groupId>ca.uhn.hapi.fhir</groupId>
+			<artifactId>org.hl7.fhir.model</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>ca.uhn.hapi.fhir</groupId>
 			<artifactId>org.hl7.fhir.utilities</artifactId>
-		</dependency>
-
-		<dependency>
-		 <groupId>ca.uhn.hapi.fhir</groupId>
-			<artifactId>hapi-fhir-base</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>ca.uhn.hapi.fhir</groupId>
-					<artifactId>hapi-fhir-utilities</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>${project.version}</version>
 		</dependency>
 
 		<!-- UCUM -->
@@ -43,11 +38,13 @@
 			<groupId>xpp3</groupId>
 			<artifactId>xpp3</artifactId>
 			<optional>true</optional>
+			<version>${xpp3_version}</version>
 		</dependency>
 		<dependency>
 			<groupId>xpp3</groupId>
 			<artifactId>xpp3_xpath</artifactId>
 			<optional>true</optional>
+			<version>${xpp3_version}</version>
 		</dependency>
 
 		<!-- JSON Parsers -->
@@ -55,6 +52,7 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<optional>true</optional>
+			<version>${gson_version}</version>
 		</dependency>
 
 		<!-- Apache POI -->
@@ -93,6 +91,7 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<optional>true</optional>
+			<version>${guava_version}</version>
 		</dependency>
 
 		<!-- HTTP Client -->
@@ -100,6 +99,7 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<optional>true</optional>
+			<version>${httpclient_version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
@@ -113,11 +113,13 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<scope>test</scope>
+			<version>${jackson_databind_version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>Saxon-HE</artifactId>
 			<scope>test</scope>
+			<version>${servicemix_saxon_version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hl7.fhir.testcases</groupId>

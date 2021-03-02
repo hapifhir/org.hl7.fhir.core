@@ -568,7 +568,7 @@ public class SpecDifferenceEvaluator {
    * change from rev to original. TODO: make this a config file somewhere?
    * 
    * @param tn
-   * @param name
+   * @param path
    * @return
    */
   private String mapPath(String tn, String path) {

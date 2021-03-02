@@ -14,15 +14,10 @@
 
     <dependencies>
 
-        <!-- HAPI Dependencies -->
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>hapi-fhir-base</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>ca.uhn.hapi.fhir</groupId>
-            <artifactId>org.hl7.fhir.utilities</artifactId>
+            <artifactId>org.hl7.fhir.model</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- FHIR Versions -->
@@ -68,20 +63,24 @@
         <dependency>
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>
+            <version>${servicemix_saxon_version}</version>
         </dependency>
         <dependency>
             <groupId>xpp3</groupId>
             <artifactId>xpp3</artifactId>
+            <version>${xpp3_version}</version>
         </dependency>
         <dependency>
             <groupId>xpp3</groupId>
             <artifactId>xpp3_xpath</artifactId>
+            <version>${xpp3_version}</version>
         </dependency>
 
         <!-- JSON Utilities -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
+            <version>${gson_version}</version>
         </dependency>
 
         <!-- JSON Schema -->
@@ -95,10 +94,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
+            <version>${commons_compress_version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
+            <version>${httpclient_version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

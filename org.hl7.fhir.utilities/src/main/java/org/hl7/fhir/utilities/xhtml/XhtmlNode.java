@@ -38,25 +38,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
-import org.hl7.fhir.instance.model.api.IBaseXhtml;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
-import org.hl7.fhir.utilities.i18n.I18nConstants;
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-
-import ca.uhn.fhir.model.api.annotation.ChildOrder;
-import ca.uhn.fhir.model.primitive.XhtmlDt;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
+// FIXME IANTORNO JAMES
 @ca.uhn.fhir.model.api.annotation.DatatypeDef(name="xhtml")
-public class XhtmlNode implements IBaseXhtml {
-  private static final long serialVersionUID = -4362547161441436492L;
-
+public class XhtmlNode {//implements IBaseXhtml {
 
   public static class Location implements Serializable {
     private static final long serialVersionUID = -4079302502900219721L;
@@ -79,9 +70,11 @@ public class XhtmlNode implements IBaseXhtml {
     }
   }
 
+  private static final long serialVersionUID = -4362547161441436492L;
   public static final String NBSP = Character.toString((char)0xa0);
   public static final String XMLNS = "http://www.w3.org/1999/xhtml";
   private static final String DECL_XMLNS = " xmlns=\""+XMLNS+"\"";
+  public static final String DIV_OPEN_FIRST = "<div" + DECL_XMLNS + ">";
 
   private Location location;
   private NodeType nodeType;
@@ -199,13 +192,7 @@ public class XhtmlNode implements IBaseXhtml {
     if (!(nodeType == NodeType.Element || nodeType == NodeType.Document))  {
       throw new Error("Wrong node type - node is "+nodeType.toString()+" ('"+getName()+"/"+getContent()+"')");
     }
-    
-//    if (inPara && name.equals("p")) {
-//      throw new FHIRException("nested Para");
-//    }
-//    if (inLink && name.equals("a")) {
-//      throw new FHIRException("Nested Link");
-//    }
+
     XhtmlNode node = new XhtmlNode(NodeType.Element);
     node.setName(name);
     if (inPara || name.equals("p")) {
@@ -364,7 +351,6 @@ public class XhtmlNode implements IBaseXhtml {
     return dst;
   }
 
-  @Override
   public boolean isEmpty() {
     return (childNodes == null || childNodes.isEmpty()) && content == null;
   }
@@ -415,15 +401,13 @@ public class XhtmlNode implements IBaseXhtml {
     return null;
   }
 
-
-  @Override
   public String getValueAsString() {
     if (isEmpty()) {
       return null;
     }
     try {
       String retVal = new XhtmlComposer(XhtmlComposer.XML).compose(this);
-      retVal = XhtmlDt.preprocessXhtmlNamespaceDeclaration(retVal);
+      retVal = preprocessXhtmlNamespaceDeclaration(retVal);
       return retVal;
     } catch (Exception e) {
       // TODO: composer shouldn't throw exception like this
@@ -431,7 +415,6 @@ public class XhtmlNode implements IBaseXhtml {
     }
   }
 
-  @Override
   public void setValueAsString(String theValue) throws IllegalArgumentException {
     this.attributes = null;
     this.childNodes = null;
@@ -451,7 +434,7 @@ public class XhtmlNode implements IBaseXhtml {
       return;
     }
 
-    val = XhtmlDt.preprocessXhtmlNamespaceDeclaration(val);
+    val = preprocessXhtmlNamespaceDeclaration(val);
 
     try {
       XhtmlDocument fragment = new XhtmlParser().parse(val, "div");
@@ -483,19 +466,17 @@ public class XhtmlNode implements IBaseXhtml {
     return null;
   }
 
-  @Override
   public String getValue() {
     return getValueAsString();
   }
 
-  public boolean hasValue() {
-    return isNotBlank(getValueAsString());
-  }
-
-  @Override
   public XhtmlNode setValue(String theValue) throws IllegalArgumentException {
     setValueAsString(theValue);
     return this;
+  }
+
+  public boolean hasValue() {
+    return isNotBlank(getValueAsString());
   }
 
   /**
@@ -851,10 +832,25 @@ public class XhtmlNode implements IBaseXhtml {
     return tx(separator);
   }
 
+  public static String preprocessXhtmlNamespaceDeclaration(String value) {
+    if (value.charAt(0) != '<') {
+      value = DIV_OPEN_FIRST + value + "</div>";
+    }
 
-
-  
-
-  
-  
+    boolean hasProcessingInstruction = value.startsWith("<?");
+    int firstTagIndex = value.indexOf("<", hasProcessingInstruction ? 1 : 0);
+    if (firstTagIndex != -1) {
+      int firstTagEnd = value.indexOf(">", firstTagIndex);
+      int firstSlash = value.indexOf("/", firstTagIndex);
+      if (firstTagEnd != -1) {
+        if (firstSlash > firstTagEnd) {
+          String firstTag = value.substring(firstTagIndex, firstTagEnd);
+          if (!firstTag.contains(" xmlns")) {
+            value = value.substring(0, firstTagEnd) + DECL_XMLNS + value.substring(firstTagEnd);
+          }
+        }
+      }
+    }
+    return value;
+  }
 }

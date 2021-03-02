@@ -11,7 +11,6 @@ public class DateTimeUtil {
   private static final FastDateFormat ourHumanDateFormat = FastDateFormat.getDateInstance(FastDateFormat.MEDIUM);
   private static final FastDateFormat ourHumanDateTimeFormat = FastDateFormat.getDateTimeInstance(FastDateFormat.MEDIUM, FastDateFormat.MEDIUM);
 
-
   public static String toHumanDisplay(TimeZone theTimeZone, TemporalPrecisionEnum thePrecision, Date theValue, String theValueAsString) {
     Calendar value = theTimeZone != null ? Calendar.getInstance(theTimeZone) : Calendar.getInstance();
     value.setTime(theValue);
@@ -26,7 +25,6 @@ public class DateTimeUtil {
       default:
         return ourHumanDateTimeFormat.format(value);
     }
-
   }
 
   public static String toHumanDisplayLocalTimezone(TemporalPrecisionEnum thePrecision, Date theValue, String theValueAsString) {

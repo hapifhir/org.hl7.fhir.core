@@ -329,7 +329,6 @@ public class CDANarrativeFormat {
 
   /**
    * For XHTML return the matching CDA narrative. This is only guaranteed to work for XML produced from CDA, but will try whatever
-   * @param node
    * @return
    * @throws IOException 
    * @throws FHIRException 
