@@ -361,6 +361,8 @@ public class I18nConstants {
   public static final String SD_ED_BIND_UNKNOWN_VS = "SD_ED_BIND_UNKNOWN_VS";
   public static final String SD_ED_BIND_NOT_VS = "SD_ED_BIND_NOT_VS";
   public static final String SD_ED_BIND_NO_BINDABLE = "SD_ED_BIND_NO_BINDABLE";
+  public static final String SD_VALUE_TYPE_IILEGAL = "SD_VALUE_TYPE_IILEGAL";
+  public static final String SD_NO_TYPES = "SD_NO_TYPES";
   public static final String SEARCHPARAMETER_BASE_WRONG = "SEARCHPARAMETER_BASE_WRONG";
   public static final String SEARCHPARAMETER_EXP_WRONG = "SEARCHPARAMETER_EXP_WRONG";
   public static final String SEARCHPARAMETER_NOTFOUND = "SEARCHPARAMETER_NOTFOUND";
@@ -386,9 +388,9 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_CODE_VALUESETMAX = "Terminology_TX_Code_ValueSetMax";
   public static final String TERMINOLOGY_TX_CODE_VALUESET_EXT = "Terminology_TX_Code_ValueSet_Ext";
   public static final String TERMINOLOGY_TX_CODING_COUNT = "Terminology_TX_Coding_Count";
-  public static final String TERMINOLOGY_TX_CONFIRM_1 = "Terminology_TX_Confirm_1";
-  public static final String TERMINOLOGY_TX_CONFIRM_2 = "Terminology_TX_Confirm_2";
-  public static final String TERMINOLOGY_TX_CONFIRM_3 = "Terminology_TX_Confirm_3";
+  public static final String TERMINOLOGY_TX_CONFIRM_1_CC = "Terminology_TX_Confirm_1_CC";
+  public static final String TERMINOLOGY_TX_CONFIRM_2_CC = "Terminology_TX_Confirm_2_CC";
+  public static final String TERMINOLOGY_TX_CONFIRM_3_CC = "Terminology_TX_Confirm_3_CC";
   public static final String TERMINOLOGY_TX_CONFIRM_4a = "Terminology_TX_Confirm_4a";
   public static final String TERMINOLOGY_TX_CONFIRM_4b = "Terminology_TX_Confirm_4b";
   public static final String TERMINOLOGY_TX_CONFIRM_5 = "Terminology_TX_Confirm_5";
@@ -398,7 +400,7 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX = "Terminology_TX_Error_CodeableConcept_Max";
   public static final String TERMINOLOGY_TX_ERROR_CODING1 = "Terminology_TX_Error_Coding1";
   public static final String TERMINOLOGY_TX_ERROR_CODING2 = "Terminology_TX_Error_Coding2";
-  public static final String TERMINOLOGY_TX_NOVALID_1 = "Terminology_TX_NoValid_1";
+  public static final String TERMINOLOGY_TX_NOVALID_1_CC = "Terminology_TX_NoValid_1_CC";
   public static final String TERMINOLOGY_TX_NOVALID_10 = "Terminology_TX_NoValid_10";
   public static final String TERMINOLOGY_TX_NOVALID_11 = "Terminology_TX_NoValid_11";
   public static final String TERMINOLOGY_TX_NOVALID_12 = "Terminology_TX_NoValid_12";
@@ -408,8 +410,8 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_NOVALID_16 = "Terminology_TX_NoValid_16";
   public static final String TERMINOLOGY_TX_NOVALID_17 = "Terminology_TX_NoValid_17";
   public static final String TERMINOLOGY_TX_NOVALID_18 = "Terminology_TX_NoValid_18";
-  public static final String TERMINOLOGY_TX_NOVALID_2 = "Terminology_TX_NoValid_2";
-  public static final String TERMINOLOGY_TX_NOVALID_3 = "Terminology_TX_NoValid_3";
+  public static final String TERMINOLOGY_TX_NOVALID_2_CC = "Terminology_TX_NoValid_2_CC";
+  public static final String TERMINOLOGY_TX_NOVALID_3_CC = "Terminology_TX_NoValid_3_CC";
   public static final String TERMINOLOGY_TX_NOVALID_4 = "Terminology_TX_NoValid_4";
   public static final String TERMINOLOGY_TX_NOVALID_5 = "Terminology_TX_NoValid_5";
   public static final String TERMINOLOGY_TX_NOVALID_6 = "Terminology_TX_NoValid_6";
