@@ -167,11 +167,14 @@ public class ConceptMap40_50 extends VersionConvertor_40_50 {
         if (src.hasCode())
             tgt.setCodeElement(convertCode(src.getCodeElement()));
         if (src.hasDisplay())
-            tgt.setDisplayElement(convertString(src.getDisplayElement()));
-        for (org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent t : src.getTarget()) if (t.getEquivalence() == org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED) {
+          tgt.setDisplayElement(convertString(src.getDisplayElement()));
+        for (org.hl7.fhir.r4.model.ConceptMap.TargetElementComponent t : src.getTarget()) {
+          if (t.getEquivalence() == org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence.UNMATCHED) {
             tgt.setNoMap(true);
-        } else {
+          }
+          else {
             tgt.addTarget(convertTargetElementComponent(t));
+          }
         }
         return tgt;
     }
@@ -222,6 +225,8 @@ public class ConceptMap40_50 extends VersionConvertor_40_50 {
             tgt.setDisplayElement(convertString(src.getDisplayElement()));
         if (src.hasRelationship())
             tgt.setEquivalenceElement(convertConceptMapEquivalence(src.getRelationshipElement()));
+        else
+          tgt.setEquivalence(ConceptMapEquivalence.RELATEDTO);
         if (src.hasComment())
             tgt.setCommentElement(convertString(src.getCommentElement()));
         for (org.hl7.fhir.r5.model.ConceptMap.OtherElementComponent t : src.getDependsOn()) tgt.addDependsOn(convertOtherElementComponent(t));

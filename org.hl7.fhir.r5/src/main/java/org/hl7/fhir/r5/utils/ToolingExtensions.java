@@ -183,6 +183,7 @@ public class ToolingExtensions {
   public static final String EXT_MUST_SUPPORT = "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support";
   public static final String EXT_TRANSLATABLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable";
   public static final String EXT_PATTERN = "http://hl7.org/fhir/StructureDefinition/elementdefinition-pattern";
+  public static final String EXT_BINDING_METHOD = "http://hl7.org/fhir/StructureDefinition/elementdefinition-binding-method";
   
   // specific extension helpers
 
