@@ -967,7 +967,7 @@ public class VersionConvertor_40_50 {
     if (src == null) return null;
     org.hl7.fhir.r5.model.DataRequirement tgt = new org.hl7.fhir.r5.model.DataRequirement();
     copyElement(src, tgt);
-    if (src.hasType()) tgt.setType(org.hl7.fhir.r5.model.Enumerations.FHIRAllTypes.fromCode(src.getType()));
+    if (src.hasType()) tgt.setType(org.hl7.fhir.r5.model.Enumerations.FHIRAllTypes.fromCode(convertResourceName4to5(src.getType())));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getProfile()) tgt.getProfile().add(convertCanonical(t));
     if (src.hasSubject()) tgt.setSubject(convertType(src.getSubject()));
     for (org.hl7.fhir.r4.model.StringType t : src.getMustSupport()) tgt.getMustSupport().add(convertString(t));
@@ -981,11 +981,12 @@ public class VersionConvertor_40_50 {
     return tgt;
   }
 
+
   public static org.hl7.fhir.r4.model.DataRequirement convertDataRequirement(org.hl7.fhir.r5.model.DataRequirement src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.DataRequirement tgt = new org.hl7.fhir.r4.model.DataRequirement();
     copyElement(src, tgt);
-    if (src.hasType()) tgt.setType(src.getType().toCode());
+    if (src.hasType()) tgt.setType(convertResourceName5to4(src.getType().toCode()));
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getProfile()) tgt.getProfile().add(convertCanonical(t));
     if (src.hasSubject()) tgt.setSubject(convertType(src.getSubject()));
     for (org.hl7.fhir.r5.model.StringType t : src.getMustSupport()) tgt.getMustSupport().add(convertString(t));
@@ -997,6 +998,22 @@ public class VersionConvertor_40_50 {
     for (org.hl7.fhir.r5.model.DataRequirement.DataRequirementSortComponent t : src.getSort())
       tgt.addSort(convertDataRequirementSortComponent(t));
     return tgt;
+  }
+
+  private static String convertResourceName4to5(String name) {
+    if (name == null) return null;
+    if (name.equals("MedicationStatement")) {
+      return "MedicationUsage";
+    }
+    return name;
+  }
+
+  private static String convertResourceName5to4(String name) {
+    if (name == null) return null;
+    if (name.equals("MedicationUsage")) {
+      return "MedicationStatement";
+    }
+    return name;
   }
 
   public static org.hl7.fhir.r5.model.DataRequirement.DataRequirementCodeFilterComponent convertDataRequirementCodeFilterComponent(org.hl7.fhir.r4.model.DataRequirement.DataRequirementCodeFilterComponent src) throws FHIRException {
