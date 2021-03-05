@@ -1,7 +1,7 @@
 package org.hl7.fhir.utilities.tests;
 
 import org.hl7.fhir.utilities.npm.CachingPackageClient;
-import org.hl7.fhir.utilities.npm.PackageClient.PackageInfo;
+import org.hl7.fhir.utilities.npm.PackageInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
