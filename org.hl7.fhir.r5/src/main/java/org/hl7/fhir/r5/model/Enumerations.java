@@ -6568,7 +6568,7 @@ The primary difference between a medicationusage and a medicationadministration 
          */
         NULL;
       
-      public static final FHIRVersion R4B = FHIRVersion._4_0_1; 
+      public static final FHIRVersion R4B = FHIRVersion._4_1_0; 
 
         public static FHIRVersion fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
@@ -6826,7 +6826,7 @@ public String toCode(int len) {
         }
         
         public boolean isR4B() {
-          return toCode().startsWith("4.0");
+          return toCode().startsWith("4.1");
         }
 // end addition
     }
