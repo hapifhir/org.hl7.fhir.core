@@ -56,7 +56,8 @@ public class ValidationService {
       System.out.println("  .. validate " + request.listSourceFiles());
     }
 
-    ValidationResponse response = new ValidationResponse();
+    ValidationResponse response = new ValidationResponse().setSessionId(sessionId);
+
     for (FileInfo fp : request.getFilesToValidate()) {
       List<ValidationMessage> messages = new ArrayList<>();
       validator.validate(fp.getFileContent().getBytes(), Manager.FhirFormat.getFhirFormat(fp.getFileType()),
