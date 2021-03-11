@@ -35,12 +35,12 @@ public class ValidationResponse {
     return this;
   }
 
-  @JsonProperty("sessionToken")
+  @JsonProperty("sessionId")
   public String getSessionId() {
     return sessionId;
   }
 
-  @JsonProperty("sessionToken")
+  @JsonProperty("sessionId")
   public ValidationResponse setSessionId(String sessionId) {
     this.sessionId = sessionId;
     return this;
