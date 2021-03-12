@@ -146,6 +146,23 @@ public class StructureDefinitionValidator extends BaseValidator {
 //      String bt = boundType(typeCodes);
 //      hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bt == null, I18nConstants.SD_ED_SHOULD_BIND, element.getNamedChildValue("path"), bt);              
     }
+    // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
+    if (snapshot && element.getIdBase().contains(".")) {
+      if (rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !typeCodes.isEmpty() || element.hasChild("contentReference"), I18nConstants.SD_NO_TYPES_OR_CONTENTREF, element.getIdBase())) {
+        Element v = element.getNamedChild("defaultValue");
+        if (v != null) {
+          rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "defaultValue", v.fhirType(), typeCodes);
+        }
+        v = element.getNamedChild("fixed");
+        if (v != null) {
+          rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "fixed", v.fhirType(), typeCodes);
+        }
+        v = element.getNamedChild("pattern");
+        if (v != null) {
+          rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "pattern", v.fhirType(), typeCodes);
+        }
+      }
+    }
   }
 
   private String boundType(Set<String> typeCodes) {
@@ -165,6 +182,12 @@ public class StructureDefinitionValidator extends BaseValidator {
     for (String tc : typeCodes) {
       if (Utilities.existsInList(tc, "string", "uri", "CodeableConcept", "Quantity", "CodeableReference")) {
         return tc;
+      }
+      StructureDefinition sd = context.fetchTypeDefinition(tc);
+      if (sd != null) {
+        if (sd.hasExtension(ToolingExtensions.EXT_BINDING_METHOD)) {
+          return tc;          
+        }
       }
     }
     return null;

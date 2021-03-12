@@ -67,10 +67,12 @@ public class GraphQLSchemaGenerator {
   private static final String INNER_TYPE_NAME = "gql.type.name";
   IWorkerContext context;
   private ProfileUtilities profileUtilities;
+  private String version;
 
-  public GraphQLSchemaGenerator(IWorkerContext context) {
+  public GraphQLSchemaGenerator(IWorkerContext context, String version) {
     super();
     this.context = context;
+    this.version = version;
     profileUtilities = new ProfileUtilities(context, null, null); 
   }
   
@@ -87,7 +89,7 @@ public class GraphQLSchemaGenerator {
         tl.put(sd.getName(), sd);
       }
     }
-    writer.write("# FHIR GraphQL Schema. Version "+Constants.VERSION+"\r\n\r\n");
+    writer.write("# FHIR GraphQL Schema. Version "+version+"\r\n\r\n");
     writer.write("# FHIR Defined Primitive types\r\n");
     for (String n : sorted(pl.keySet()))
       generatePrimitive(writer, pl.get(n));
@@ -107,7 +109,7 @@ public class GraphQLSchemaGenerator {
 
   public void generateResource(OutputStream stream, StructureDefinition sd, List<SearchParameter> parameters, EnumSet<FHIROperationType> operations) throws IOException, FHIRException {
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
-    writer.write("# FHIR GraphQL Schema. Version "+Constants.VERSION+"\r\n\r\n");
+    writer.write("# FHIR GraphQL Schema. Version "+version+"\r\n\r\n");
     writer.write("# import the types from 'types.graphql'\r\n\r\n");
     generateType(writer, sd);
     if (operations.contains(FHIROperationType.READ))

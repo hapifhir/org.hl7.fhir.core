@@ -9,7 +9,7 @@
     -->
     <groupId>ca.uhn.hapi.fhir</groupId>
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>5.3.3-SNAPSHOT</version>
+    <version>5.3.6-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -130,6 +130,24 @@
                 <artifactId>txtmark</artifactId>
                 <version>0.13</version>
             </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-launcher</artifactId>
+                <version>${junit_platform_launcher_version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit_jupiter_version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>${junit_jupiter_version}</artifactId>
+                <version>5.7.1</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -174,40 +192,6 @@
             </plugins>
         </pluginManagement>
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-enforcer-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <skip>true</skip>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-enforcer-plugin</artifactId>-->
-<!--                <version>3.0.0-M2</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>enforce-maven</id>-->
-<!--                        <goals>-->
-<!--                            <goal>enforce</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <rules>-->
-<!--                                <requireMavenVersion>-->
-<!--                                    <version>3.3.9</version>-->
-<!--                                </requireMavenVersion>-->
-<!--                                <requireJavaVersion>-->
-<!--                                    <version>11</version>-->
-<!--                                    <message>-->
-<!--                                        HAPI FHIR is still targeting JDK 8 for published binaries, but we require JDK 11-->
-<!--                                        to build and test this library.-->
-<!--                                    </message>-->
-<!--                                </requireJavaVersion>-->
-<!--                            </rules>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
