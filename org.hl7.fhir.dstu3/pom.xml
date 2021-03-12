@@ -110,26 +110,6 @@
             <scope>test</scope>
             <version>${servicemix_saxon_version}</version>
         </dependency>
-
-        <!-- JUnit Jupiter -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit_jupiter_version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit_jupiter_version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hl7.fhir.testcases</groupId>
-            <artifactId>fhir-test-cases</artifactId>
-            <version>${validator_test_case_version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>

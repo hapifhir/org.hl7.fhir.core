@@ -23,10 +23,6 @@
         </dependency>
         
         <!-- HAPI Dependencies -->
-<!--        <dependency>-->
-<!--            <groupId>ca.uhn.hapi.fhir</groupId>-->
-<!--            <artifactId>hapi-fhir-base</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>ca.uhn.hapi.fhir</groupId>
             <artifactId>org.hl7.fhir.utilities</artifactId>
@@ -73,20 +69,6 @@
             <artifactId>ucum</artifactId>
             <version>1.0.3</version>
             <optional>true</optional>
-        </dependency>
-
-        <!-- JUnit Jupiter -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit_jupiter_version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit_jupiter_version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

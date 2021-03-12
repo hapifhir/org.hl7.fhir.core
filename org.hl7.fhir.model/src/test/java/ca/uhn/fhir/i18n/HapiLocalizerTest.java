@@ -34,7 +34,7 @@ public class HapiLocalizerTest {
 	@Test
 	public void testGetVersion() {
 		HapiLocalizer svc = new HapiLocalizer();
-		String version = svc.getMessage("hapi.version");
+		String version = svc.getMessage("core.version");
 		assertThat(version, matchesPattern("[0-9]+.*"));
 	}
 	

@@ -68,7 +68,14 @@ public enum VersionEnum {
 	V5_2_0,
 	V5_2_1,
 	V5_3_0,
-	V5_4_0;
+	V5_4_0,
+
+  /*
+   * At this point in history, we migrated the hapi-fhir-base package to the core libraries, so we move to version
+   * numbers that align with the core
+   */
+  V5_3_6
+  ;
 
 	public static VersionEnum latestVersion() {
 		VersionEnum[] values = VersionEnum.values();

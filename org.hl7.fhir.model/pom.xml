@@ -5,11 +5,13 @@
     <parent>
         <artifactId>org.hl7.fhir.core</artifactId>
         <groupId>ca.uhn.hapi.fhir</groupId>
-        <version>5.3.3-SNAPSHOT</version>
+        <version>5.3.6-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>org.hl7.fhir.model</artifactId>
+    <packaging>bundle</packaging>
 
     <dependencies>
         <!-- JSON -->
@@ -26,18 +28,6 @@
             <optional>true</optional>
             <version>${woodstox_core_version}</version>
         </dependency>
-
-        <!-- Only required for narrative generator support -->
-<!--        <dependency>-->
-<!--            <groupId>org.thymeleaf</groupId>-->
-<!--            <artifactId>thymeleaf</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.javassist</groupId>-->
-<!--            <artifactId>javassist</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
 
         <!-- Only required for Schematron Validator Support -->
         <dependency>
@@ -139,40 +129,50 @@
             <scope>test</scope>
             <version>${awaitility_version}</version>
         </dependency>
-
-        <!-- JUnit Jupiter -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit_jupiter_version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit_jupiter_version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <version>5.6.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- mockito -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>3.8.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>3.8.0</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>standard</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>downstream</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create-metadata</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/generated-sources/properties</outputDirectory>
+                            <outputName>ca/uhn/fhir/core-fhir-base-build.properties</outputName>
+                            <revisionPropertyName>core.buildnumber</revisionPropertyName>
+                            <timestampPropertyName>core.timestamp</timestampPropertyName>
+                            <timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SXXX</timestampFormat>
+                            <versionPropertyName>core.version</versionPropertyName>
+                            <revisionOnScmFailure>UNKNOWN</revisionOnScmFailure>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>${project.build.directory}/generated-sources/properties</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>

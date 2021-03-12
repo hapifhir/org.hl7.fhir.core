@@ -50,7 +50,7 @@ public class HapiLocalizer {
 
 	public HapiLocalizer(String... theBundleNames) {
 		init(theBundleNames);
-		addMessage("hapi.version", VersionUtil.getVersion());
+		addMessage("core.version", VersionUtil.getVersion());
 	}
 
 	/**
