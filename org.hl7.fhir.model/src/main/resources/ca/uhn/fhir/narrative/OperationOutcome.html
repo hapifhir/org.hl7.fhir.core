@@ -1,0 +1,29 @@
+<!--/*-->
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="narrative.css"/>
+	</head>
+	<body>
+<!--*/-->
+	<div>
+		<h1>Operation Outcome</h1>
+		<table border="0">
+			<tr th:each="issue : ${resource.issue}">
+				<td th:text="${issue.severityElement.value}" style="font-weight: bold;"></td>
+				<td th:text="${issue.location}"></td>
+				<th:block th:switch="${fhirVersion}">
+					<th:block th:case="'DSTU1'">
+						<td><pre th:text="${issue.details}"/></td>
+					</th:block>
+					<th:block th:case="*">
+						<td><pre th:text="${issue.diagnostics}"/></td>
+					</th:block>
+				</th:block>
+			</tr>
+		</table>
+	</div>
+
+<!--/*-->
+	</body>
+</html>
+<!--*/-->

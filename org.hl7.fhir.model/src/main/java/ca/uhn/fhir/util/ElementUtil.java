@@ -20,12 +20,13 @@ package ca.uhn.fhir.util;
  * #L%
  */
 
-import ca.uhn.fhir.model.api.ICompositeElement;
-import ca.uhn.fhir.model.api.IElement;
-import org.hl7.fhir.instance.model.api.IBase;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hl7.fhir.instance.model.api.IBase;
+
+import ca.uhn.fhir.model.api.ICompositeElement;
+import ca.uhn.fhir.model.api.IElement;
 
 public class ElementUtil {
 

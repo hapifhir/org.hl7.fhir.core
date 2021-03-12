@@ -20,12 +20,15 @@ package ca.uhn.fhir.model.api.annotation;
  * #L%
  */
 
-import org.hl7.fhir.instance.model.api.IBaseDatatype;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import org.hl7.fhir.instance.model.api.IBaseDatatype;
+
+import ca.uhn.fhir.model.primitive.BoundCodeDt;
+import ca.uhn.fhir.model.primitive.CodeDt;
 
 /**
  * Class annotation to note a class which defines a datatype
@@ -41,7 +44,10 @@ public @interface DatatypeDef {
 	
 	/**
 	 * Set this to true (default is false) for any types that are
-	 * really only a specialization of another type.
+	 * really only a specialization of another type. For example,
+	 * {@link BoundCodeDt} is really just a specific type of 
+	 * {@link CodeDt} and not a separate datatype, so it should
+	 * have this set to true.
 	 */
 	boolean isSpecialization() default false;
 	

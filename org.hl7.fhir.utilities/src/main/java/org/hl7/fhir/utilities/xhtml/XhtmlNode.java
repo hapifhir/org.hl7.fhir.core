@@ -40,6 +40,7 @@ import java.util.Map;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
+import org.hl7.fhir.instance.model.api.IBaseXhtml;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
@@ -47,7 +48,7 @@ import org.hl7.fhir.utilities.MarkDownProcessor.Dialect;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 // FIXME IANTORNO JAMES
 @ca.uhn.fhir.model.api.annotation.DatatypeDef(name="xhtml")
-public class XhtmlNode {//implements IBaseXhtml {
+public class XhtmlNode implements IBaseXhtml {
 
   public static class Location implements Serializable {
     private static final long serialVersionUID = -4079302502900219721L;
