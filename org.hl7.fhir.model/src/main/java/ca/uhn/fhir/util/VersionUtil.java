@@ -60,20 +60,20 @@ public class VersionUtil {
 	}
 
 	private static void initialize() {
-		try (InputStream is = VersionUtil.class.getResourceAsStream("/ca/uhn/fhir/hapi-fhir-base-build.properties")) {
+		try (InputStream is = VersionUtil.class.getResourceAsStream("/ca/uhn/fhir/core-fhir-base-build.properties")) {
 
 			Properties p = new Properties();
 			if (is != null) {
 				p.load(is);
 			}
 
-			ourVersion = p.getProperty("hapifhir.version");
+			ourVersion = p.getProperty("core.version");
 			ourVersion = defaultIfBlank(ourVersion, "(unknown)");
 
 			ourSnapshot = ourVersion.contains("SNAPSHOT");
 
-			ourBuildNumber = StringUtils.left(p.getProperty("hapifhir.buildnumber"), 10);
-			ourBuildTime = p.getProperty("hapifhir.timestamp");
+			ourBuildNumber = StringUtils.left(p.getProperty("core.buildnumber"), 10);
+			ourBuildTime = p.getProperty("core.timestamp");
 
 			if (System.getProperty("suppress_hapi_fhir_version_log") == null) {
 				String buildNumber = ourBuildNumber;
@@ -81,11 +81,11 @@ public class VersionUtil {
 					buildNumber = buildNumber + "/" + getBuildDate();
 				}
 
-				ourLog.info("HAPI FHIR version {} - Rev {}", ourVersion, buildNumber);
+				ourLog.info("CORE FHIR version {} - Rev {}", ourVersion, buildNumber);
 			}
 
 		} catch (Exception e) {
-			ourLog.warn("Unable to determine HAPI version information", e);
+			ourLog.warn("Unable to determine CORE version information", e);
 		}
 	}
 
