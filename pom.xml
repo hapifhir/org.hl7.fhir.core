@@ -42,7 +42,7 @@
         <servicemix_saxon_version>9.8.0-15</servicemix_saxon_version>
         <slf4j_version>1.7.30</slf4j_version>
         <thymeleaf-version>3.0.11.RELEASE</thymeleaf-version>
-        <validator_test_case_version>1.1.57-SNAPSHOT</validator_test_case_version>
+        <validator_test_case_version>1.1.56</validator_test_case_version>
         <woodstox_core_version>6.2.3</woodstox_core_version>
         <xpp3_version>1.1.4c</xpp3_version>
     </properties>
