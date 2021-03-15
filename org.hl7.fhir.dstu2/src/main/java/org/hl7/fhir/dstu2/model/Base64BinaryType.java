@@ -35,6 +35,8 @@ import ca.uhn.fhir.parser.DataFormatException;
 import org.apache.commons.codec.binary.Base64;
 import ca.uhn.fhir.model.api.annotation.DatatypeDef;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in base64
  */
@@ -64,7 +66,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]> {
 
   protected byte[] parse(String theValue) {
     if (theValue != null) {
-      return Base64.decodeBase64(theValue.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
+      return Base64.decodeBase64(theValue.getBytes(StandardCharsets.UTF_8));
     } else {
       return null;
     }
@@ -74,7 +76,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]> {
     if (theValue == null) {
       return null;
     }
-    return new String(Base64.encodeBase64(theValue), ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8);
+    return new String(Base64.encodeBase64(theValue), StandardCharsets.UTF_8);
   }
 
 	@Override

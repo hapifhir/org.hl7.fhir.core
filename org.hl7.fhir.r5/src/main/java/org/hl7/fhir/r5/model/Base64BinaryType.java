@@ -42,6 +42,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Primitive type "base64Binary" in FHIR: a sequence of bytes represented in base64
@@ -73,7 +74,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
 
   protected byte[] parse(String theValue) {
     if (theValue != null) {
-      return Base64.decodeBase64(theValue.getBytes(ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8));
+      return Base64.decodeBase64(theValue.getBytes(StandardCharsets.UTF_8));
     } else {
       return null;
     }
@@ -83,7 +84,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
     if (theValue == null) {
       return null;
     }
-    return new String(Base64.encodeBase64(theValue), ca.uhn.fhir.rest.api.Constants.CHARSET_UTF8);
+    return new String(Base64.encodeBase64(theValue), StandardCharsets.UTF_8);
   }
 
   @Override

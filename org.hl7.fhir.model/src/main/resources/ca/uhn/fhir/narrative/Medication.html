@@ -1,0 +1,27 @@
+<!--/* 
+This top section is not exported as a part of the Narrative,
+it is only present so that this template can be viewed in 
+a browser. 
+-->
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="narrative.css"/>
+	</head>
+	<body>
+<!--*/-->
+
+<div>
+	<th:block th:switch="${fhirVersion}">
+		<th:block th:case="'DSTU1'">
+			<div class="hapiHeaderText" th:if="${not resource.nameElement.empty}" th:narrative="${resource.name}"></div>	
+		</th:block>
+		<th:block th:case="*">
+			<div class="hapiHeaderText" th:if="${not resource.code.empty}" th:narrative="${resource.code}"></div>	
+		</th:block>
+	</th:block>
+</div>
+
+<!--/*-->
+	</body>
+</html>
+<!--*/-->

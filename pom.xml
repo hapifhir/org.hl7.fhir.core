@@ -2,29 +2,49 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>ca.uhn.hapi.fhir</groupId>
-        <artifactId>hapi-deployable-pom</artifactId>
-        <version>5.1.0</version>
-    </parent>
-
     <!--
     Note: Version of this project and the version of HAPI FHIR are not locked to
     each other. It is fine to bump the point version of this POM without affecting
     HAPI FHIR
     -->
+    <groupId>ca.uhn.hapi.fhir</groupId>
     <artifactId>org.hl7.fhir.core</artifactId>
     <version>5.3.6-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <scm>
+        <connection>scm:git:git@github.com:hapifhir/org.hl7.fhir.core.git</connection>
+        <url>scm:git:git@github.com:hapifhir/org.hl7.fhir.core.git</url>
+        <developerConnection>scm:git:git@github.com:hapifhir/org.hl7.fhir.core.git</developerConnection>
+    </scm>
+
     <properties>
+        <awaitility_version>4.0.3</awaitility_version>
+        <commons_codec_version>1.14</commons_codec_version>
+        <commons_compress_version>1.20</commons_compress_version>
+        <commons_io_version>2.6</commons_io_version>
+        <commons_lang3_version>3.9</commons_lang3_version>
+        <commons_text_version>1.7</commons_text_version>
+        <google_findbugs_version>3.0.2</google_findbugs_version>
+        <gson_version>2.8.5</gson_version>
+        <guava_version>30.1-jre</guava_version>
         <hapi_fhir_version>5.1.0</hapi_fhir_version>
-        <validator_test_case_version>1.1.57</validator_test_case_version>
-        <junit_jupiter_version>5.7.1</junit_jupiter_version>
-        <junit_platform_launcher_version>1.7.1</junit_platform_launcher_version>
-        <maven_surefire_version>3.0.0-M4</maven_surefire_version>
-        <jacoco_version>0.8.5</jacoco_version>
+        <httpclient_version>4.5.13</httpclient_version>
         <info_cqframework_version>1.5.1</info_cqframework_version>
+        <jackson_databind_version>2.11.3</jackson_databind_version>
+        <jacoco_version>0.8.5</jacoco_version>
+        <jena_version>3.16.0</jena_version>
+        <junit_jupiter_version>5.7.0</junit_jupiter_version>
+        <logback_classic_version>1.2.3</logback_classic_version>
+        <maven_surefire_version>3.0.0-M4</maven_surefire_version>
+        <ph_commons_version>9.5.4</ph_commons_version>
+        <ph_schematron_version>5.6.5</ph_schematron_version>
+        <servicemix_saxon_version>9.8.0-15</servicemix_saxon_version>
+        <slf4j_version>1.7.30</slf4j_version>
+        <thymeleaf-version>3.0.11.RELEASE</thymeleaf-version>
+        <validator_test_case_version>1.1.57</validator_test_case_version>
+        <woodstox_core_version>6.2.3</woodstox_core_version>
+        <xpp3_version>1.1.4c</xpp3_version>
     </properties>
 
     <name>HL7 Core Artifacts</name>
@@ -44,6 +64,7 @@
         <module>org.hl7.fhir.convertors</module>
         <module>org.hl7.fhir.validation</module>
         <module>org.hl7.fhir.validation.cli</module>
+        <module>org.hl7.fhir.model</module>
         <!-- The report project exists only to aggregate the test results from the other projects into a central report. -->
         <module>org.hl7.fhir.report</module>
     </modules>
@@ -56,6 +77,13 @@
             <id>bintray-dnault-maven</id>
             <name>bintray</name>
             <url>https://dl.bintray.com/dnault/maven</url>
+        </repository>
+        <repository>
+            <id>oss-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>jitpack.io</id>
@@ -81,21 +109,58 @@
             <version>1.2.3</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- JUnit Jupiter -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit_jupiter_version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit_jupiter_version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit_jupiter_version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit_jupiter_version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.8.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>3.8.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- test case data -->
+        <dependency>
+            <groupId>org.hl7.fhir.testcases</groupId>
+            <artifactId>fhir-test-cases</artifactId>
+            <version>${validator_test_case_version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>ca.uhn.hapi.fhir</groupId>
-                <artifactId>hapi-fhir-base</artifactId>
-                <version>${hapi_fhir_version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>ca.uhn.hapi.fhir</groupId>
-                        <artifactId>hapi-fhir-utilities</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
             <dependency>
                 <groupId>ca.uhn.hapi.fhir</groupId>
                 <artifactId>org.hl7.fhir.utilities</artifactId>
@@ -103,13 +168,8 @@
             </dependency>
             <dependency>
                 <groupId>ca.uhn.hapi.fhir</groupId>
-                <artifactId>hapi-fhir-structures-r4</artifactId>
-                <version>${hapi_fhir_version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ca.uhn.hapi.fhir</groupId>
-                <artifactId>hapi-fhir-validation-resources-r4</artifactId>
-                <version>${hapi_fhir_version}</version>
+                <artifactId>org.hl7.fhir.model</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.atlassian.commonmark</groupId>
@@ -127,35 +187,60 @@
                 <version>0.13</version>
             </dependency>
             <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-launcher</artifactId>
-                <version>${junit_platform_launcher_version}</version>
-                <scope>test</scope>
+                <groupId>ca.uhn.hapi.fhir</groupId>
+                <artifactId>hapi-fhir-structures-r4</artifactId>
+                <version>${hapi_fhir_version}</version>
             </dependency>
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit_jupiter_version}</version>
-                <scope>test</scope>
+                <groupId>ca.uhn.hapi.fhir</groupId>
+                <artifactId>hapi-fhir-validation-resources-r4</artifactId>
+                <version>${hapi_fhir_version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.junit.vintage</groupId>
-                <artifactId>${junit_jupiter_version}</artifactId>
-                <version>5.7.1</version>
-                <scope>test</scope>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.basepom.maven</groupId>
+                    <artifactId>duplicate-finder-maven-plugin</artifactId>
+                    <version>1.4.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>3.5.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>animal-sniffer-maven-plugin</artifactId>
+                    <version>1.20</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>2.0.0</version>
+                    <configuration>
+                        <verbose>true</verbose>
+                        <addSvnKeyWords>false</addSvnKeyWords>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
