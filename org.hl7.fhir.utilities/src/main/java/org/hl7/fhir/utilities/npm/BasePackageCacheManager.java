@@ -107,7 +107,7 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
 
   private String getPackageUrl(String packageId, String server) throws IOException {
     PackageClient pc = myClientFactory.apply(server);
-    List<PackageClient.PackageInfo> res = pc.search(packageId, null, null, false);
+    List<PackageInfo> res = pc.search(packageId, null, null, false);
     if (res.size() == 0) {
       return null;
     } else {
@@ -135,12 +135,12 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
       return null;
     }
     PackageClient pc = myClientFactory.apply(server);
-    List<PackageClient.PackageInfo> res = pc.search(null, canonical, null, false);
+    List<PackageInfo> res = pc.search(null, canonical, null, false);
     if (res.size() == 0) {
       return null;
     } else {
       // this is driven by HL7 Australia (http://hl7.org.au/fhir/ is the canonical url for the base package, and the root for all the others)
-      for (PackageClient.PackageInfo pi : res) {
+      for (PackageInfo pi : res) {
         if (canonical.equals(pi.getCanonical())) {
           return pi.getId();
         }

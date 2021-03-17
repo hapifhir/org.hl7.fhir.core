@@ -53,12 +53,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -207,8 +205,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private void listSpecs(Map<String, String> specList, String server) throws IOException {
     CachingPackageClient pc = new CachingPackageClient(server);
-    List<PackageClient.PackageInfo> matches = pc.search(null, null, null, false);
-    for (PackageClient.PackageInfo m : matches) {
+    List<PackageInfo> matches = pc.search(null, null, null, false);
+    for (PackageInfo m : matches) {
       if (!specList.containsKey(m.getId())) {
         specList.put(m.getId(), m.getUrl());
       }
