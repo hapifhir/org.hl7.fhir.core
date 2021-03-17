@@ -35,6 +35,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.List;
 
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -109,20 +111,29 @@ public class PackageGenerator {
     object.addProperty("version", value);
     return this;
   }
-  
+
   public PackageGenerator toolsVersion(int value) {
     object.addProperty("tools-version", value);
+    return this;
+  }
+
+  public PackageGenerator fhirVersions(List<String> versions) {
+    JsonArray fhirVersionsArray = new JsonArray();
+    for (String version : versions) {
+      fhirVersionsArray.add(version);
+    }
+    object.add("fhirVersions", fhirVersionsArray);
     return this;
   }
   
   public PackageGenerator description(String value) {
     object.addProperty("description", value);
-    return this;    
+    return this;
   }
   
   public PackageGenerator license(String value) {
     object.addProperty("license", value);
-    return this;        
+    return this;
   }
   
   public PackageGenerator homepage(String value) {
