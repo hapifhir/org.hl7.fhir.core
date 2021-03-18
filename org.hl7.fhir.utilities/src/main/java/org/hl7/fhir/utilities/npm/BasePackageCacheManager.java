@@ -64,24 +64,32 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   protected InputStreamWithSrc loadFromPackageServer(String id, String version) {
 
     for (String nextPackageServer : getPackageServers()) {
-      PackageClient packageClient = myClientFactory.apply(nextPackageServer);
-      try {
-        if (Utilities.noString(version)) {
-          version = packageClient.getLatestVersion(id);
+      if (okToUsePackageServer(nextPackageServer, id)) {
+        PackageClient packageClient = myClientFactory.apply(nextPackageServer);
+        try {
+          if (Utilities.noString(version)) {
+            version = packageClient.getLatestVersion(id);
+          }
+          if (version.endsWith(".x")) {
+            version = packageClient.getLatestVersion(id, version);
+          }
+          InputStream stream = packageClient.fetch(id, version);
+          String url = packageClient.url(id, version);
+          return new InputStreamWithSrc(stream, url, version);
+        } catch (IOException e) {
+          ourLog.info("Failed to resolve package {}#{} from server: {}", id, version, nextPackageServer);
         }
-        if (version.endsWith(".x")) {
-          version = packageClient.getLatestVersion(id, version);
-        }
-        InputStream stream = packageClient.fetch(id, version);
-        String url = packageClient.url(id, version);
-        return new InputStreamWithSrc(stream, url, version);
-      } catch (IOException e) {
-        ourLog.info("Failed to resolve package {}#{} from server: {}", id, version, nextPackageServer);
       }
-
     }
 
     return null;
+  }
+
+  private boolean okToUsePackageServer(String server, String id) {
+    if ("http://packages.fhir.org".equals(server) && "hl7.fhir.r2b.core".equals(id)) {
+      return false;
+    }
+    return true;
   }
 
   public abstract NpmPackage loadPackageFromCacheOnly(String id, @Nullable String version) throws IOException;
