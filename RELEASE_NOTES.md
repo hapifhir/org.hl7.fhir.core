@@ -1,0 +1,1 @@
+* URI type issue temporary fix for github issue #240 (QA Error related Extension.url)
