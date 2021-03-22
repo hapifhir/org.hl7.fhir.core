@@ -86,7 +86,8 @@ public abstract class BasePackageCacheManager implements IPackageCacheManager {
   }
 
   // hack - we have a hacked 1.4.0 out there. Only packages2.fhir.org has it.
-  // this is not a long term thing
+  // this is not a long term thing, but it's not clear how to release patches for 
+  // 1.4.0
   private boolean okToUsePackageServer(String server, String id) {
     if ("http://packages.fhir.org".equals(server) && "hl7.fhir.r2b.core".equals(id)) {
       return false;
