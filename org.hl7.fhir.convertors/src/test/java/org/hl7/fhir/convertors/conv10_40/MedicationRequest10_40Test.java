@@ -6,16 +6,28 @@ import org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.stream.Stream;
 
 public class MedicationRequest10_40Test {
-    @Test
+    private static Stream<Arguments> filesPaths() {
+        return Stream.of(
+                Arguments.of("/0_medication_request_10.json", "/0_medication_request_40.json"),
+                Arguments.of("/1_medication_request_10.json", "/1_medication_request_40.json")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("filesPaths")
     @DisplayName("Test 10_40 MedicationRequest conversion")
-    public void testMedicationRequestConversion() throws IOException {
-        InputStream dstu2_input = this.getClass().getResourceAsStream("/0_medication_request_10.json");
-        InputStream r4_exepected_input = this.getClass().getResourceAsStream("/0_medication_request_40.json");
+    public void testMedicationRequestConversion(String dstu2_path, String r4_path) throws IOException {
+        InputStream dstu2_input = this.getClass().getResourceAsStream(dstu2_path);
+        InputStream r4_exepected_input = this.getClass().getResourceAsStream(r4_path);
 
         org.hl7.fhir.dstu2.model.MedicationOrder dstu2 = (org.hl7.fhir.dstu2.model.MedicationOrder) new org.hl7.fhir.dstu2.formats.JsonParser().parse(dstu2_input);
         VersionConvertorAdvisor40 advisor = new IGR2ConvertorAdvisor();

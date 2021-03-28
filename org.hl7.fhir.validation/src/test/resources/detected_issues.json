@@ -1,0 +1,18 @@
+{
+  "resourceType": "DetectedIssue",
+  "identifier": [ {
+    "system": "http://covidcare.au/app/checkin",
+    "value": "7"
+  } ],
+  "status": "final",
+  "patient": "Patient/4912",
+  "identifiedDateTime": "3020-10-27T13:33:15+11:00",
+  "code": {
+    "coding": [ {
+      "system": "http://covidcare.au/app/alert",
+      "code": "trendNegative",
+      "display": "CovidCare: Vital signs trend negative alert: re-check recommended"
+    } ],
+    "text": "CovidCare alert"
+  }
+}

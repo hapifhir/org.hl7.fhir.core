@@ -193,47 +193,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, FhirPublication version, String vString, TimeTracker tt) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String vString, TimeTracker tt) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, tt);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
-  }
-
-  public void scanForVersions(List<String> sources, VersionSourceInformation versions) throws FHIRException, IOException {
-    List<String> refs = new ArrayList<String>();
-    ValidatorUtils.parseSources(sources, refs, context);
-    for (String ref : refs) {
-      Content cnt = igLoader.loadContent(ref, "validate", false);
-      String s = TextFile.bytesToString(cnt.focus);
-      if (s.contains("http://hl7.org/fhir/3.0")) {
-        versions.see("3.0", "Profile in " + ref);
-      }
-      if (s.contains("http://hl7.org/fhir/1.0")) {
-        versions.see("1.0", "Profile in " + ref);
-      }
-      if (s.contains("http://hl7.org/fhir/4.0")) {
-        versions.see("4.0", "Profile in " + ref);
-      }
-      if (s.contains("http://hl7.org/fhir/1.4")) {
-        versions.see("1.4", "Profile in " + ref);
-      }
-      try {
-        if (s.startsWith("{")) {
-          JsonObject json = JsonTrackingParser.parse(s, null);
-          if (json.has("fhirVersion")) {
-            versions.see(VersionUtilities.getMajMin(JSONUtil.str(json, "fhirVersion")), "fhirVersion in " + ref);
-          }
-        } else {
-          Document doc = ValidatorUtils.parseXml(cnt.focus);
-          String v = XMLUtil.getNamedChildValue(doc.getDocumentElement(), "fhirVersion");
-          if (v != null) {
-            versions.see(VersionUtilities.getMajMin(v), "fhirVersion in " + ref);
-          }
-        }
-      } catch (Exception e) {
-        // nothing
-      }
-    }
   }
 
   private void loadCoreDefinitions(String src, boolean recursive, TimeTracker tt) throws FHIRException, IOException {
@@ -252,7 +215,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     initContext(tt);
   }
 
-  public void initContext(TimeTracker tt) throws IOException, FileNotFoundException {
+  public void initContext(TimeTracker tt) throws IOException {
     context.setCanNoTS(true);
     context.setCacheId(UUID.randomUUID().toString());
     context.setAllowLoadingDuplicates(true); // because of Forge
