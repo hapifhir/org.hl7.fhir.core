@@ -18,6 +18,8 @@ public class MedicationRequest10_40 {
             tgt.setAuthoredOnElement(VersionConvertor_10_40.convertDateTime(src.getDateWrittenElement()));
         if (src.hasStatus())
             tgt.setStatus(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.fromCode(src.getStatus().toCode()));
+        else
+            tgt.setStatus(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestStatus.UNKNOWN);
         if (src.hasPatient())
             tgt.setSubject(VersionConvertor_10_40.convertReference(src.getPatient()));
         if (src.hasPrescriber())
