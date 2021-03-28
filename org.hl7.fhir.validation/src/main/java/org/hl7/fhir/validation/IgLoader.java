@@ -65,7 +65,7 @@ public class IgLoader {
 
   public void loadIg(List<ImplementationGuide> igs,
                      Map<String, byte[]> binaries,
-                     String src, 
+                     String src,
                      boolean recursive) throws IOException, FHIRException {
     NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !new File(src).exists() ? getPackageCacheManager().loadPackage(src, null) : null;
     if (npm != null) {
@@ -147,7 +147,7 @@ public class IgLoader {
    * @throws IOException
    **/
   public Map<String, byte[]> loadIgSource(String src,
-                                          boolean recursive, 
+                                          boolean recursive,
                                           boolean explore) throws FHIRException, IOException {
     // src can be one of the following:
     // - a canonical url for an ig - this will be converted to a package id and loaded into the cache
@@ -562,7 +562,7 @@ public class IgLoader {
     for (File ff : f.listFiles()) {
       if (ff.isDirectory() && recursive) {
         res.putAll(scanDirectory(ff, true));
-      } else if (!isIgnoreFile(ff)) {
+      } else if (!ff.isDirectory() && !isIgnoreFile(ff)) {
         Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), ff.getAbsolutePath());
         if (fmt != null) {
           res.put(Utilities.changeFileExt(ff.getName(), "." + fmt.getExtension()), TextFile.fileToBytes(ff.getAbsolutePath()));
