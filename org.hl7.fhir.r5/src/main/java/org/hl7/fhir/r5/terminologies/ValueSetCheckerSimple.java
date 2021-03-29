@@ -170,7 +170,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
         res = validateCode(code, cs);
       } else if (cs == null && valueset.hasExpansion() && inExpansion) {
         // we just take the value set as face value then
-        res = new ValidationResult(IssueSeverity.INFORMATION, null);
+        res = new ValidationResult(new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()));
       } else {
         // well, we didn't find a code system - try the expansion? 
         // disabled waiting for discussion

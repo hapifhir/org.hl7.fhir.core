@@ -786,7 +786,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     List<ElementDefinition> children = getChildren(derived, element);
     List<ElementChoiceGroup> groups = readChoices(element, children);
     for (ElementChoiceGroup group : groups) {
-      System.out.println(children);
+//      System.out.println(children);
       String mandated = null;
       Set<String> names = new HashSet<>();
       for (ElementDefinition ed : children) {

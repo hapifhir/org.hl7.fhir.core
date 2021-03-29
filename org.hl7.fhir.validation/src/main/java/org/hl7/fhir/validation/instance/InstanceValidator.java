@@ -1059,18 +1059,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                   // to validate, we'll validate that the codes actually exist
                   if (bindingsOk) {
                     for (Coding nextCoding : cc.getCoding()) {
-                      if (isNotBlank(nextCoding.getCode()) && isNotBlank(nextCoding.getSystem()) && context.supportsSystem(nextCoding.getSystem())) {
-                        ValidationResult vr = checkCodeOnServer(stack, valueset, nextCoding, false);
-                        if (vr.getSeverity() != null) {
-                          if (vr.getSeverity() == IssueSeverity.INFORMATION) {
-                            txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
-                          } else if (vr.getSeverity() == IssueSeverity.WARNING) {
-                            txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
-                          } else {
-                            txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
-                          }
-                        }
-                      }
+                      checkBindings(errors, path, element, stack, valueset, nextCoding);
                     }
                   }
                   timeTracker.tx(t);
@@ -1088,6 +1077,21 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return res;
+  }
+
+  public void checkBindings(List<ValidationMessage> errors, String path, Element element, NodeStack stack, ValueSet valueset, Coding nextCoding) {
+    if (isNotBlank(nextCoding.getCode()) && isNotBlank(nextCoding.getSystem()) && context.supportsSystem(nextCoding.getSystem())) {
+      ValidationResult vr = checkCodeOnServer(stack, valueset, nextCoding, false);
+      if (vr.getSeverity() != null/* && vr.hasMessage()*/) {
+        if (vr.getSeverity() == IssueSeverity.INFORMATION) {
+          txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+        } else if (vr.getSeverity() == IssueSeverity.WARNING) {
+          txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+        } else {
+          txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
+        }
+      }
+    }
   }
 
 
@@ -2583,7 +2587,8 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           }
         }
       }
-      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, (allowExamples && (ref.contains("example.org") || ref.contains("acme.com"))) || (we != null || pol == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS), I18nConstants.REFERENCE_REF_CANTRESOLVE, ref);
+      boolean ok = (allowExamples && (ref.contains("example.org") || ref.contains("acme.com"))) || (we != null || pol == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS);
+      rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, ok, I18nConstants.REFERENCE_REF_CANTRESOLVE, ref);
     }
 
     String ft;
