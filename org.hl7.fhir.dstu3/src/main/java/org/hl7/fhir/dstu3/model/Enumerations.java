@@ -171,15 +171,15 @@ public class Enumerations {
         public static AdministrativeGender fromCode(String codeString) throws FHIRException {
             if (codeString == null || "".equals(codeString))
                 return null;
-        if ("male".equals(codeString))
-          return MALE;
-        if ("female".equals(codeString))
-          return FEMALE;
-        if ("other".equals(codeString))
-          return OTHER;
-        if ("unknown".equals(codeString))
-          return UNKNOWN;
-        throw new FHIRException("Unknown AdministrativeGender code '"+codeString+"'");
+            if ("male".equals(codeString) || "M".equals(codeString))
+              return MALE;
+            if ("female".equals(codeString) || "F".equals(codeString))
+              return FEMALE;
+            if ("other".equals(codeString) || "UN".equals(codeString))
+              return OTHER;
+            if ("unknown".equals(codeString) || "UNK".equals(codeString))
+              return UNKNOWN;
+            throw new FHIRException("Unknown AdministrativeGender code '"+codeString+"'");
         }
         public String toCode() {
           switch (this) {
@@ -225,37 +225,16 @@ public class Enumerations {
 
   public static class AdministrativeGenderEnumFactory implements EnumFactory<AdministrativeGender> {
     public AdministrativeGender fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("male".equals(codeString))
-          return AdministrativeGender.MALE;
-        if ("female".equals(codeString))
-          return AdministrativeGender.FEMALE;
-        if ("other".equals(codeString))
-          return AdministrativeGender.OTHER;
-        if ("unknown".equals(codeString))
-          return AdministrativeGender.UNKNOWN;
-        throw new IllegalArgumentException("Unknown AdministrativeGender code '"+codeString+"'");
-        }
-        public Enumeration<AdministrativeGender> fromType(Base code) throws FHIRException {
+        return AdministrativeGender.fromCode(codeString);
+    }
+    public Enumeration<AdministrativeGender> fromType(Base code) throws FHIRException {
           if (code == null)
             return null;
           if (code.isEmpty())
             return new Enumeration<AdministrativeGender>(this);
           String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("male".equals(codeString))
-          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.MALE);
-        if ("female".equals(codeString))
-          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.FEMALE);
-        if ("other".equals(codeString))
-          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.OTHER);
-        if ("unknown".equals(codeString))
-          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.UNKNOWN);
-        throw new FHIRException("Unknown AdministrativeGender code '"+codeString+"'");
-        }
+          return new Enumeration<AdministrativeGender>(this, AdministrativeGender.fromCode(codeString));
+      }
     public String toCode(AdministrativeGender code) {
       if (code == AdministrativeGender.MALE)
         return "male";
