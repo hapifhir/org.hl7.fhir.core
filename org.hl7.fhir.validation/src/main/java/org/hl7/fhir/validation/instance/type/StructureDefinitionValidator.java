@@ -125,7 +125,16 @@ public class StructureDefinitionValidator extends BaseValidator {
       if (hasMustSupportExtension(type)) {
         typeMustSupport = true;
       }
-      typeCodes.add(type.getChildValue("code"));
+      String tc = type.getChildValue("code");
+      if (type.hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type")) {
+        tc = type.getExtensionValue("http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type").primitiveValue();
+      }
+      if (Utilities.noString(tc) && type.hasChild("code")) {
+        if (type.getNamedChild("code").hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type")) {
+          tc = "*";
+        }
+      }
+      typeCodes.add(tc);
       // check the stated profile - must be a constraint on the type 
       if (snapshot || sd != null) {
         validateElementType(errors, type, stack.push(type, -1, null, null), sd, element.getChildValue("path"));
@@ -148,27 +157,19 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
     if (snapshot && element.getIdBase().contains(".")) {
-      if (rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !typeCodes.isEmpty() || element.hasChild("contentReference"), I18nConstants.SD_NO_TYPES_OR_CONTENTREF, element.getIdBase())) {
-      /*
-       TODO Grahame, this is breaking the ig publisher for implementers
-       https://chat.fhir.org/#narrow/stream/215610-shorthand/topic/The.20element.20Extension.2Eurl.20has.20a.20fixed.20of.20type.20uri
-       https://chat.fhir.org/#narrow/stream/179252-IG-creation/topic/BUG.3A.20The.20element.20Extension.2Eurl.20has.20a.20fixed.20of.20type.20uri
-       https://github.com/HL7/fhir-ig-publisher/issues/240
-       This was brought up to Wayne, so I'm commenting it out for now. When you get back we can discuss how to
-       put the changes back in.
-       */
-//        Element v = element.getNamedChild("defaultValue");
-//        if (v != null) {
-//          rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "defaultValue", v.fhirType(), typeCodes);
-//        }
-//        v = element.getNamedChild("fixed");
-//        if (v != null) {
-//          rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "fixed", v.fhirType(), typeCodes);
-//        }
-//        v = element.getNamedChild("pattern");
-//        if (v != null) {
-//          rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "pattern", v.fhirType(), typeCodes);
-//        }
+      if (rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !typeCodes.isEmpty() || element.hasChild("contentReference"), I18nConstants.SD_NO_TYPES_OR_CONTENTREF, element.getIdBase())) {     
+        Element v = element.getNamedChild("defaultValue");
+        if (v != null) {
+          rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "defaultValue", v.fhirType(), typeCodes);
+        }
+        v = element.getNamedChild("fixed");
+        if (v != null) {
+          rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "fixed", v.fhirType(), typeCodes);
+        }
+        v = element.getNamedChild("pattern");
+        if (v != null) {
+          rule(errors, IssueType.EXCEPTION, stack.push(v, -1, null, null).getLiteralPath(), typeCodes.contains(v.fhirType()), I18nConstants.SD_VALUE_TYPE_IILEGAL, element.getIdBase(), "pattern", v.fhirType(), typeCodes);
+        }
       }
     }
   }
