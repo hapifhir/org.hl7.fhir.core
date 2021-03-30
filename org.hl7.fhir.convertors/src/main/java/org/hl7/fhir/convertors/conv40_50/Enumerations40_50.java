@@ -210,9 +210,9 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
             case _4_0_1:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_0_1);
                 break;
-            case _4_1_0:
-              tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_1_0);
-              break;
+            // case _4_1_0:
+            //   tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion._4_1_0);
+            //   break;
             default:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FHIRVersion.NULL);
                 break;
@@ -295,9 +295,9 @@ public class Enumerations40_50 extends VersionConvertor_40_50 {
             case _4_0_1:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_0_1);
                 break;
-            case _4_1_0:
-              tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_1_0);
-              break;
+            // case _4_1_0:
+            //   tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion._4_1_0);
+            //   break;
             default:
                 tgt.setValue(org.hl7.fhir.r4.model.Enumerations.FHIRVersion.NULL);
                 break;
