@@ -50,6 +50,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,6 +61,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -1397,6 +1400,50 @@ public class Utilities {
 //      res = String.format("%02d.%04d", seconds, millis);
     return res;
   }
+
+  public static void unzip(InputStream zip, Path target) throws IOException {
+    try (ZipInputStream zis = new ZipInputStream(zip)) {
+      ZipEntry zipEntry = zis.getNextEntry();
+      while (zipEntry != null) {
+        boolean isDirectory = false;
+        if (zipEntry.getName().endsWith("/") || zipEntry.getName().endsWith("\\")) {
+          isDirectory = true;
+        }
+        Path newPath = zipSlipProtect(zipEntry, target);
+        if (isDirectory) {
+          Files.createDirectories(newPath);
+        } else {
+          if (newPath.getParent() != null) {
+            if (Files.notExists(newPath.getParent())) {
+              Files.createDirectories(newPath.getParent());
+            }
+          }
+          Files.copy(zis, newPath, StandardCopyOption.REPLACE_EXISTING);
+        }
+        zipEntry = zis.getNextEntry();
+      }
+      zis.closeEntry();
+    }
+  }
+
+  private static Path zipSlipProtect(ZipEntry zipEntry, Path targetDir)
+      throws IOException {
+
+    // test zip slip vulnerability
+    // Path targetDirResolved = targetDir.resolve("../../" + zipEntry.getName());
+
+    Path targetDirResolved = targetDir.resolve(zipEntry.getName());
+
+    // make sure normalized file still has targetDir as its prefix
+    // else throws exception
+    Path normalizePath = targetDirResolved.normalize();
+    if (!normalizePath.startsWith(targetDir)) {
+      throw new IOException("Bad zip entry: " + zipEntry.getName());
+    }
+
+    return normalizePath;
+  }
+
 
 
 }

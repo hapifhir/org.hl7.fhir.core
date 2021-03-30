@@ -587,6 +587,10 @@ public interface IWorkerContext {
       this.txLink = txLink;
       return this;
     }
+
+    public boolean hasMessage() {
+      return message != null;
+    }
     
     
   }

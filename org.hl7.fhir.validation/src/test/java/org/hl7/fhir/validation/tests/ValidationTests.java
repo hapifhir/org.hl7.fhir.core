@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -56,6 +55,7 @@ import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.instance.InstanceValidator;
@@ -108,6 +108,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 //  private static final String DEF_TX = "http://local.fhir.org:960";
   private static Map<String, ValidationEngine> ve = new HashMap<>();
   private static ValidationEngine vCurr;
+  private static IgLoader igLoader;
 
   public ValidationTests(String name, JsonObject content) {
     this.name = name;
@@ -148,6 +149,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         throw new Exception("unknown version " + version);
     }
     vCurr = ve.get(version);
+    igLoader = new IgLoader(vCurr.getPcm(), vCurr.getContext(), vCurr.getVersion(), true);
     if (TestingUtilities.fcontexts == null) {
       TestingUtilities.fcontexts = new HashMap<>();
     }
@@ -181,9 +183,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         String n = e.getAsString();
         InputStream cnt = n.endsWith(".tgz") ? TestingUtilities.loadTestResourceStream("validator", n) : null;
         if (cnt != null) {
-          vCurr.loadPackage(NpmPackage.fromPackage(cnt));
+          igLoader.loadPackage(NpmPackage.fromPackage(cnt));
         } else {
-          vCurr.loadIg(n, true);
+          igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), n, true);
         }
       }
     }
@@ -289,7 +291,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       }
       if (logical.has("packages")) {
         for (JsonElement e : logical.getAsJsonArray("packages")) {
-          vCurr.loadIg(e.getAsString(), true);
+          igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), e.getAsString(), true);
         }
       }
       List<ValidationMessage> errorsLogical = new ArrayList<ValidationMessage>();
@@ -495,8 +497,9 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public void setLocale(Locale locale) {
+  public IValidatorResourceFetcher setLocale(Locale locale) {
     //do nothing
+    return null;
   }
 
   @Override

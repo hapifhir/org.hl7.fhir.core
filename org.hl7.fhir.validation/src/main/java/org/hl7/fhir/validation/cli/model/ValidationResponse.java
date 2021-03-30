@@ -10,10 +10,18 @@ public class ValidationResponse {
   @JsonProperty("outcomes")
   public List<ValidationOutcome> outcomes = new ArrayList<>();
 
+  @JsonProperty("sessionId")
+  public String sessionId;
+
   public ValidationResponse() {}
 
   public ValidationResponse(List<ValidationOutcome> outcomes) {
+    this(outcomes, null);
+  }
+
+  public ValidationResponse(List<ValidationOutcome> outcomes, String sessionId) {
     this.outcomes = outcomes;
+    this.sessionId = sessionId;
   }
 
   @JsonProperty("outcomes")
@@ -24,6 +32,17 @@ public class ValidationResponse {
   @JsonProperty("outcomes")
   public ValidationResponse setOutcomes(List<ValidationOutcome> outcomes) {
     this.outcomes = outcomes;
+    return this;
+  }
+
+  @JsonProperty("sessionId")
+  public String getSessionId() {
+    return sessionId;
+  }
+
+  @JsonProperty("sessionId")
+  public ValidationResponse setSessionId(String sessionId) {
+    this.sessionId = sessionId;
     return this;
   }
 
