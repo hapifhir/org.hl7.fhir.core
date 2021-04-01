@@ -2602,7 +2602,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       // the type has to match the specified
       String tu = isAbsolute(reference.getType()) ? reference.getType() : "http://hl7.org/fhir/StructureDefinition/" + reference.getType();
       TypeRefComponent containerType = container.getType("Reference");
-      if (!containerType.hasTargetProfile(tu) && !containerType.hasTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource")) {
+      if (!containerType.hasTargetProfile(tu)
+        && !containerType.hasTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource")
+        && !containerType.getTargetProfile().isEmpty()
+      ) {
         boolean matchingResource = false;
         for (CanonicalType target : containerType.getTargetProfile()) {
           StructureDefinition sd = resolveProfile(profile, target.asStringValue());

@@ -1,0 +1,1 @@
+* adding fix for R4 when target profile is a reference, and that reference returns an empty list of target profiles
