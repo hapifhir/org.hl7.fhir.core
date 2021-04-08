@@ -73,6 +73,19 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- HTTP Client -->
+        <dependency>
+          <groupId>org.apache.httpcomponents</groupId>
+          <artifactId>httpclient</artifactId>
+          <optional>true</optional>
+        </dependency>
+        <dependency>
+          <groupId>com.squareup.okhttp3</groupId>
+          <artifactId>okhttp</artifactId>
+          <version>4.9.0</version>
+          <optional>true</optional>
+        </dependency>
+
         <!-- JUnit Jupiter -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

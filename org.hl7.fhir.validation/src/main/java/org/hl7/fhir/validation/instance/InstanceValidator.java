@@ -2002,7 +2002,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (type.equals(ID)) {
       // work around an old issue with ElementDefinition.id
-      if (!context.getPath().equals("ElementDefinition.id") && !VersionUtilities.versionsCompatible("1.4", this.context.getVersion())) {
+      if (!context.getPath().equals("ElementDefinition.id") || VersionUtilities.versionsCompatible("1.4", this.context.getVersion())) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.isValidId(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ID_VALID, e.primitiveValue());
       }
     }
@@ -4330,7 +4330,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (ei.definition != null) {
       if (debug) {
-        System.out.println(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against defn "+ei.definition.getId());
+        System.out.println(Utilities.padLeft("", ' ', stack.depth())+ "Check "+ei.getPath()+" against defn "+ei.definition.getId()+" from "+profile.getUrl());
       }
       checkChildByDefinition(hostContext, errors, profile, definition, resource, element, actualType, stack, inCodeableConcept, checkDisplayInContext, ei, extensionUrl, ei.definition, false);
     }

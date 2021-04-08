@@ -149,7 +149,11 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       if (cs == null) {
         warningMessage = "Unable to resolve system "+system;
         if (!inExpansion) {
-          throw new FHIRException(warningMessage);
+          if (valueset.hasExpansion()) {
+            return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.CODESYSTEM_CS_UNK_EXPANSION, valueset.getUrl(), code.getCode().toString(), code.getSystem()));
+          } else {
+            throw new FHIRException(warningMessage);
+          }
         }
       }
       if (cs != null && cs.hasSupplements()) {
