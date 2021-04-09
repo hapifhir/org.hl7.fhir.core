@@ -43,10 +43,10 @@ public class ConceptMap30_50 {
             tgt.setPurposeElement(VersionConvertor_30_50.convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
             tgt.setCopyrightElement(VersionConvertor_30_50.convertMarkdown(src.getCopyrightElement()));
-        if (src.hasSource())
-            tgt.setSource(VersionConvertor_30_50.convertType(src.getSource()));
-        if (src.hasTarget())
-            tgt.setTarget(VersionConvertor_30_50.convertType(src.getTarget()));
+        if (src.hasSourceScope())
+            tgt.setSource(VersionConvertor_30_50.convertType(src.getSourceScope()));
+        if (src.hasTargetScope())
+            tgt.setTarget(VersionConvertor_30_50.convertType(src.getTargetScope()));
         for (org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup()) tgt.addGroup(convertConceptMapGroupComponent(t));
         return tgt;
     }
@@ -85,11 +85,11 @@ public class ConceptMap30_50 {
             tgt.setCopyrightElement(VersionConvertor_30_50.convertMarkdown(src.getCopyrightElement()));
         if (src.hasSource()) {
             org.hl7.fhir.r5.model.DataType t = VersionConvertor_30_50.convertType(src.getSource());
-            tgt.setSource(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
+            tgt.setSourceScope(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
         }
         if (src.hasTarget()) {
             org.hl7.fhir.r5.model.DataType t = VersionConvertor_30_50.convertType(src.getTarget());
-            tgt.setTarget(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
+            tgt.setTargetScope(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
         }
         for (org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup()) tgt.addGroup(convertConceptMapGroupComponent(t));
         return tgt;

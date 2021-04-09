@@ -49,9 +49,9 @@ public class ConceptMap10_50 {
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
         org.hl7.fhir.r5.model.DataType r = VersionConvertor_10_50.convertType(src.getSource());
-        tgt.setSource(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
+        tgt.setSourceScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
         r = VersionConvertor_10_50.convertType(src.getTarget());
-        tgt.setTarget(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
+        tgt.setTargetScope(r instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) r).getReference()) : r);
         for (org.hl7.fhir.dstu2.model.ConceptMap.SourceElementComponent t : src.getElement()) {
             List<VersionConvertor_10_50.SourceElementComponentWrapper> ws = convertSourceElementComponent(t);
             for (VersionConvertor_10_50.SourceElementComponentWrapper w : ws) getGroup(tgt, w.source, w.target).addElement(w.comp);
@@ -92,10 +92,10 @@ public class ConceptMap10_50 {
             tgt.setRequirements(src.getPurpose());
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
-        if (src.hasSource())
-            tgt.setSource(VersionConvertor_10_50.convertType(src.getSource()));
-        if (src.hasTarget())
-            tgt.setTarget(VersionConvertor_10_50.convertType(src.getTarget()));
+        if (src.hasSourceScope())
+            tgt.setSource(VersionConvertor_10_50.convertType(src.getSourceScope()));
+        if (src.hasTargetScope())
+            tgt.setTarget(VersionConvertor_10_50.convertType(src.getTargetScope()));
         for (org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent g : src.getGroup()) for (org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent t : g.getElement()) tgt.addElement(convertSourceElementComponent(t, g));
         return tgt;
     }

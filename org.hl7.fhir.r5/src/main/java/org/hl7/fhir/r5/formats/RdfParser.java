@@ -7212,11 +7212,11 @@ public class RdfParser extends RdfParserBase {
     if (element.hasCopyrightElement()) {
       composeMarkdown(t, "ConceptMap", "copyright", element.getCopyrightElement(), -1);
     }
-    if (element.hasSource()) {
-      composeType(t, "ConceptMap", "source", element.getSource(), -1);
+    if (element.hasSourceScope()) {
+      composeType(t, "ConceptMap", "sourceScope", element.getSourceScope(), -1);
     }
-    if (element.hasTarget()) {
-      composeType(t, "ConceptMap", "target", element.getTarget(), -1);
+    if (element.hasTargetScope()) {
+      composeType(t, "ConceptMap", "targetScope", element.getTargetScope(), -1);
     }
     for (int i = 0; i < element.getGroup().size(); i++) {
       composeConceptMapGroupComponent(t, "ConceptMap", "group", element.getGroup().get(i), i);

@@ -49,9 +49,9 @@ public class ConceptMap14_50 {
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
         org.hl7.fhir.r5.model.DataType tt = VersionConvertor_14_50.convertType(src.getSource());
-        tgt.setSource(tt instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) tt).getReference()) : tt);
+        tgt.setSourceScope(tt instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) tt).getReference()) : tt);
         tt = VersionConvertor_14_50.convertType(src.getTarget());
-        tgt.setTarget(tt instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) tt).getReference()) : tt);
+        tgt.setTargetScope(tt instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) tt).getReference()) : tt);
         for (org.hl7.fhir.dstu2016may.model.ConceptMap.SourceElementComponent t : src.getElement()) {
             List<VersionConvertor_14_50.SourceElementComponentWrapper> ws = convertSourceElementComponent(t);
             for (VersionConvertor_14_50.SourceElementComponentWrapper w : ws) getGroup(tgt, w.source, w.target).addElement(w.comp);
@@ -92,18 +92,18 @@ public class ConceptMap14_50 {
             tgt.setRequirements(src.getPurpose());
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
-        if (src.getSource() instanceof CanonicalType)
-            tgt.setSource(VersionConvertor_14_50.convertCanonicalToReference((CanonicalType) src.getSource()));
-        else if (src.hasSource())
-            tgt.setSource(VersionConvertor_14_50.convertType(src.getSource()));
-        if (src.getTarget() instanceof CanonicalType)
-            tgt.setTarget(VersionConvertor_14_50.convertCanonicalToReference((CanonicalType) src.getTarget()));
-        else if (src.hasTarget())
-            tgt.setTarget(VersionConvertor_14_50.convertType(src.getTarget()));
-        if (src.hasSource())
-            tgt.setSource(VersionConvertor_14_50.convertType(src.getSource()));
-        if (src.hasTarget())
-            tgt.setTarget(VersionConvertor_14_50.convertType(src.getTarget()));
+        if (src.getSourceScope() instanceof CanonicalType)
+            tgt.setSource(VersionConvertor_14_50.convertCanonicalToReference((CanonicalType) src.getSourceScope()));
+        else if (src.hasSourceScope())
+            tgt.setSource(VersionConvertor_14_50.convertType(src.getSourceScope()));
+        if (src.getTargetScope() instanceof CanonicalType)
+            tgt.setTarget(VersionConvertor_14_50.convertCanonicalToReference((CanonicalType) src.getTargetScope()));
+        else if (src.hasTargetScope())
+            tgt.setTarget(VersionConvertor_14_50.convertType(src.getTargetScope()));
+        if (src.hasSourceScope())
+            tgt.setSource(VersionConvertor_14_50.convertType(src.getSourceScope()));
+        if (src.hasTargetScope())
+            tgt.setTarget(VersionConvertor_14_50.convertType(src.getTargetScope()));
         for (org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent g : src.getGroup()) for (org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent t : g.getElement()) tgt.addElement(convertSourceElementComponent(t, g));
         return tgt;
     }

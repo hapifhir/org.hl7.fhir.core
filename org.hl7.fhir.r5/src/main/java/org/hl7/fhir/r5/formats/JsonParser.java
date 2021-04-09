@@ -8954,12 +8954,12 @@ public class JsonParser extends JsonParserBase {
       res.setCopyrightElement(parseMarkdown(json.get("copyright").getAsString()));
     if (json.has("_copyright"))
       parseElementProperties(getJObject(json, "_copyright"), res.getCopyrightElement());
-    DataType source = parseType("source", json);
-    if (source != null)
-      res.setSource(source);
-    DataType target = parseType("target", json);
-    if (target != null)
-      res.setTarget(target);
+    DataType sourceScope = parseType("sourceScope", json);
+    if (sourceScope != null)
+      res.setSourceScope(sourceScope);
+    DataType targetScope = parseType("targetScope", json);
+    if (targetScope != null)
+      res.setTargetScope(targetScope);
     if (json.has("group")) {
       JsonArray array = json.getAsJsonArray("group");
       for (int i = 0; i < array.size(); i++) {
@@ -41283,11 +41283,11 @@ public class JsonParser extends JsonParserBase {
         composeMarkdownCore("copyright", element.getCopyrightElement(), false);
         composeMarkdownExtras("copyright", element.getCopyrightElement(), false);
       }
-      if (element.hasSource()) {
-        composeType("source", element.getSource());
+      if (element.hasSourceScope()) {
+        composeType("sourceScope", element.getSourceScope());
       }
-      if (element.hasTarget()) {
-        composeType("target", element.getTarget());
+      if (element.hasTargetScope()) {
+        composeType("targetScope", element.getTargetScope());
       }
       if (element.hasGroup()) {
         openArray("group");

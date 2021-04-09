@@ -41,7 +41,6 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
-import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
 import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
@@ -2542,18 +2541,18 @@ public class ConceptMap extends CanonicalResource {
     protected MarkdownType copyright;
 
     /**
-     * Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.
+     * Identifier for the source scope value set that contains the concepts that are being mapped and provides context for the mappings.
      */
-    @Child(name = "source", type = {UriType.class, CanonicalType.class}, order=15, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The source value set that contains the concepts that are being mapped", formalDefinition="Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings." )
-    protected DataType source;
+    @Child(name = "sourceScope", type = {UriType.class, CanonicalType.class}, order=15, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The source scope value set that contains the concepts that are being mapped", formalDefinition="Identifier for the source scope value set that contains the concepts that are being mapped and provides context for the mappings." )
+    protected DataType sourceScope;
 
     /**
-     * The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.
+     * The target scope value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.
      */
-    @Child(name = "target", type = {UriType.class, CanonicalType.class}, order=16, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The target value set which provides context for the mappings", formalDefinition="The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made." )
-    protected DataType target;
+    @Child(name = "targetScope", type = {UriType.class, CanonicalType.class}, order=16, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The target scope value set which provides context for the mappings", formalDefinition="The target scope value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made." )
+    protected DataType targetScope;
 
     /**
      * A group of mappings that all have the same source and target system.
@@ -3334,104 +3333,104 @@ public class ConceptMap extends CanonicalResource {
     }
 
     /**
-     * @return {@link #source} (Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.)
+     * @return {@link #sourceScope} (Identifier for the sourceScope value set that contains the concepts that are being mapped and provides context for the mappings.)
      */
-    public DataType getSource() { 
-      return this.source;
+    public DataType getSourceScope() { 
+      return this.sourceScope;
     }
 
     /**
-     * @return {@link #source} (Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.)
+     * @return {@link #sourceScope} (Identifier for the sourceScope value set that contains the concepts that are being mapped and provides context for the mappings.)
      */
-    public UriType getSourceUriType() throws FHIRException { 
-      if (this.source == null)
-        this.source = new UriType();
-      if (!(this.source instanceof UriType))
-        throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.source.getClass().getName()+" was encountered");
-      return (UriType) this.source;
+    public UriType getSourceScopeUriType() throws FHIRException { 
+      if (this.sourceScope == null)
+        this.sourceScope = new UriType();
+      if (!(this.sourceScope instanceof UriType))
+        throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.sourceScope.getClass().getName()+" was encountered");
+      return (UriType) this.sourceScope;
     }
 
-    public boolean hasSourceUriType() { 
-      return this != null && this.source instanceof UriType;
+    public boolean hasSourceScopeUriType() { 
+      return this != null && this.sourceScope instanceof UriType;
     }
 
     /**
-     * @return {@link #source} (Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.)
+     * @return {@link #sourceScope} (Identifier for the sourceScope value set that contains the concepts that are being mapped and provides context for the mappings.)
      */
-    public CanonicalType getSourceCanonicalType() throws FHIRException { 
-      if (this.source == null)
-        this.source = new CanonicalType();
-      if (!(this.source instanceof CanonicalType))
-        throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.source.getClass().getName()+" was encountered");
-      return (CanonicalType) this.source;
+    public CanonicalType getSourceScopeCanonicalType() throws FHIRException { 
+      if (this.sourceScope == null)
+        this.sourceScope = new CanonicalType();
+      if (!(this.sourceScope instanceof CanonicalType))
+        throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.sourceScope.getClass().getName()+" was encountered");
+      return (CanonicalType) this.sourceScope;
     }
 
-    public boolean hasSourceCanonicalType() { 
-      return this != null && this.source instanceof CanonicalType;
+    public boolean hasSourceScopeCanonicalType() { 
+      return this != null && this.sourceScope instanceof CanonicalType;
     }
 
-    public boolean hasSource() { 
-      return this.source != null && !this.source.isEmpty();
+    public boolean hasSourceScope() { 
+      return this.sourceScope != null && !this.sourceScope.isEmpty();
     }
 
     /**
-     * @param value {@link #source} (Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.)
+     * @param value {@link #sourceScope} (Identifier for the sourceScope value set that contains the concepts that are being mapped and provides context for the mappings.)
      */
-    public ConceptMap setSource(DataType value) { 
+    public ConceptMap setSourceScope(DataType value) { 
       if (value != null && !(value instanceof UriType || value instanceof CanonicalType))
-        throw new Error("Not the right type for ConceptMap.source[x]: "+value.fhirType());
-      this.source = value;
+        throw new Error("Not the right type for ConceptMap.sourceScope[x]: "+value.fhirType());
+      this.sourceScope = value;
       return this;
     }
 
     /**
-     * @return {@link #target} (The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.)
+     * @return {@link #targetScope} (The targetScope value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.)
      */
-    public DataType getTarget() { 
-      return this.target;
+    public DataType getTargetScope() { 
+      return this.targetScope;
     }
 
     /**
-     * @return {@link #target} (The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.)
+     * @return {@link #targetScope} (The targetScope value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.)
      */
-    public UriType getTargetUriType() throws FHIRException { 
-      if (this.target == null)
-        this.target = new UriType();
-      if (!(this.target instanceof UriType))
-        throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.target.getClass().getName()+" was encountered");
-      return (UriType) this.target;
+    public UriType getTargetScopeUriType() throws FHIRException { 
+      if (this.targetScope == null)
+        this.targetScope = new UriType();
+      if (!(this.targetScope instanceof UriType))
+        throw new FHIRException("Type mismatch: the type UriType was expected, but "+this.targetScope.getClass().getName()+" was encountered");
+      return (UriType) this.targetScope;
     }
 
-    public boolean hasTargetUriType() { 
-      return this != null && this.target instanceof UriType;
+    public boolean hasTargetScopeUriType() { 
+      return this != null && this.targetScope instanceof UriType;
     }
 
     /**
-     * @return {@link #target} (The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.)
+     * @return {@link #targetScope} (The targetScope value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.)
      */
-    public CanonicalType getTargetCanonicalType() throws FHIRException { 
-      if (this.target == null)
-        this.target = new CanonicalType();
-      if (!(this.target instanceof CanonicalType))
-        throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.target.getClass().getName()+" was encountered");
-      return (CanonicalType) this.target;
+    public CanonicalType getTargetScopeCanonicalType() throws FHIRException { 
+      if (this.targetScope == null)
+        this.targetScope = new CanonicalType();
+      if (!(this.targetScope instanceof CanonicalType))
+        throw new FHIRException("Type mismatch: the type CanonicalType was expected, but "+this.targetScope.getClass().getName()+" was encountered");
+      return (CanonicalType) this.targetScope;
     }
 
-    public boolean hasTargetCanonicalType() { 
-      return this != null && this.target instanceof CanonicalType;
+    public boolean hasTargetScopeCanonicalType() { 
+      return this != null && this.targetScope instanceof CanonicalType;
     }
 
-    public boolean hasTarget() { 
-      return this.target != null && !this.target.isEmpty();
+    public boolean hasTargetScope() { 
+      return this.targetScope != null && !this.targetScope.isEmpty();
     }
 
     /**
-     * @param value {@link #target} (The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.)
+     * @param value {@link #targetScope} (The targetScope value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.)
      */
-    public ConceptMap setTarget(DataType value) { 
+    public ConceptMap setTargetScope(DataType value) { 
       if (value != null && !(value instanceof UriType || value instanceof CanonicalType))
-        throw new Error("Not the right type for ConceptMap.target[x]: "+value.fhirType());
-      this.target = value;
+        throw new Error("Not the right type for ConceptMap.targetScope[x]: "+value.fhirType());
+      this.targetScope = value;
       return this;
     }
 
@@ -3505,8 +3504,8 @@ public class ConceptMap extends CanonicalResource {
         children.add(new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the concept map is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction));
         children.add(new Property("purpose", "markdown", "Explanation of why this concept map is needed and why it has been designed as it has.", 0, 1, purpose));
         children.add(new Property("copyright", "markdown", "A copyright statement relating to the concept map and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the concept map.", 0, 1, copyright));
-        children.add(new Property("source[x]", "uri|canonical(ValueSet)", "Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.", 0, 1, source));
-        children.add(new Property("target[x]", "uri|canonical(ValueSet)", "The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.", 0, 1, target));
+        children.add(new Property("sourceScope[x]", "uri|canonical(ValueSet)", "Identifier for the source scope value set that contains the concepts that are being mapped and provides context for the mappings.", 0, 1, sourceScope));
+        children.add(new Property("targetScope[x]", "uri|canonical(ValueSet)", "The target scope value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.", 0, 1, targetScope));
         children.add(new Property("group", "", "A group of mappings that all have the same source and target system.", 0, java.lang.Integer.MAX_VALUE, group));
       }
 
@@ -3528,14 +3527,14 @@ public class ConceptMap extends CanonicalResource {
         case -507075711: /*jurisdiction*/  return new Property("jurisdiction", "CodeableConcept", "A legal or geographic region in which the concept map is intended to be used.", 0, java.lang.Integer.MAX_VALUE, jurisdiction);
         case -220463842: /*purpose*/  return new Property("purpose", "markdown", "Explanation of why this concept map is needed and why it has been designed as it has.", 0, 1, purpose);
         case 1522889671: /*copyright*/  return new Property("copyright", "markdown", "A copyright statement relating to the concept map and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the concept map.", 0, 1, copyright);
-        case -1698413947: /*source[x]*/  return new Property("source[x]", "uri|canonical(ValueSet)", "Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.", 0, 1, source);
-        case -896505829: /*source*/  return new Property("source[x]", "uri|canonical(ValueSet)", "Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.", 0, 1, source);
-        case -1698419887: /*sourceUri*/  return new Property("source[x]", "uri", "Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.", 0, 1, source);
-        case 1509247769: /*sourceCanonical*/  return new Property("source[x]", "canonical(ValueSet)", "Identifier for the source value set that contains the concepts that are being mapped and provides context for the mappings.", 0, 1, source);
-        case -815579825: /*target[x]*/  return new Property("target[x]", "uri|canonical(ValueSet)", "The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.", 0, 1, target);
-        case -880905839: /*target*/  return new Property("target[x]", "uri|canonical(ValueSet)", "The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.", 0, 1, target);
-        case -815585765: /*targetUri*/  return new Property("target[x]", "uri", "The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.", 0, 1, target);
-        case -1281653149: /*targetCanonical*/  return new Property("target[x]", "canonical(ValueSet)", "The target value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.", 0, 1, target);
+        case -1698413947: /*sourceScope[x]*/  return new Property("sourceScope[x]", "uri|canonical(ValueSet)", "Identifier for the source scope value set that contains the concepts that are being mapped and provides context for the mappings.", 0, 1, sourceScope);
+        case -896505829: /*sourceScope*/  return new Property("sourceScope[x]", "uri|canonical(ValueSet)", "Identifier for the source scope value set that contains the concepts that are being mapped and provides context for the mappings.", 0, 1, sourceScope);
+        case -1698419887: /*sourceScopeUri*/  return new Property("sourceScope[x]", "uri", "Identifier for the source scope value set that contains the concepts that are being mapped and provides context for the mappings.", 0, 1, sourceScope);
+        case 1509247769: /*sourceScopeCanonical*/  return new Property("sourceScope[x]", "canonical(ValueSet)", "Identifier for the source scope value set that contains the concepts that are being mapped and provides context for the mappings.", 0, 1, sourceScope);
+        case -815579825: /*targetScope[x]*/  return new Property("targetScope[x]", "uri|canonical(ValueSet)", "The target scope value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.", 0, 1, targetScope);
+        case -880905839: /*targetScope*/  return new Property("targetScope[x]", "uri|canonical(ValueSet)", "The target scope value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.", 0, 1, targetScope);
+        case -815585765: /*targetScopeUri*/  return new Property("targetScope[x]", "uri", "The target scope value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.", 0, 1, targetScope);
+        case -1281653149: /*targetScopeCanonical*/  return new Property("targetScope[x]", "canonical(ValueSet)", "The target scope value set provides context for the mappings. Note that the mapping is made between concepts, not between value sets, but the value set provides important context about how the concept mapping choices are made.", 0, 1, targetScope);
         case 98629247: /*group*/  return new Property("group", "", "A group of mappings that all have the same source and target system.", 0, java.lang.Integer.MAX_VALUE, group);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -3560,8 +3559,8 @@ public class ConceptMap extends CanonicalResource {
         case -507075711: /*jurisdiction*/ return this.jurisdiction == null ? new Base[0] : this.jurisdiction.toArray(new Base[this.jurisdiction.size()]); // CodeableConcept
         case -220463842: /*purpose*/ return this.purpose == null ? new Base[0] : new Base[] {this.purpose}; // MarkdownType
         case 1522889671: /*copyright*/ return this.copyright == null ? new Base[0] : new Base[] {this.copyright}; // MarkdownType
-        case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // DataType
-        case -880905839: /*target*/ return this.target == null ? new Base[0] : new Base[] {this.target}; // DataType
+        case -896505829: /*sourceScope*/ return this.sourceScope == null ? new Base[0] : new Base[] {this.sourceScope}; // DataType
+        case -880905839: /*targetScope*/ return this.targetScope == null ? new Base[0] : new Base[] {this.targetScope}; // DataType
         case 98629247: /*group*/ return this.group == null ? new Base[0] : this.group.toArray(new Base[this.group.size()]); // ConceptMapGroupComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -3618,10 +3617,10 @@ public class ConceptMap extends CanonicalResource {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
         case -896505829: // source
-          this.source = TypeConvertor.castToType(value); // DataType
+          this.sourceScope = TypeConvertor.castToType(value); // DataType
           return value;
         case -880905839: // target
-          this.target = TypeConvertor.castToType(value); // DataType
+          this.targetScope = TypeConvertor.castToType(value); // DataType
           return value;
         case 98629247: // group
           this.getGroup().add((ConceptMapGroupComponent) value); // ConceptMapGroupComponent
@@ -3664,10 +3663,10 @@ public class ConceptMap extends CanonicalResource {
           this.purpose = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("copyright")) {
           this.copyright = TypeConvertor.castToMarkdown(value); // MarkdownType
-        } else if (name.equals("source[x]")) {
-          this.source = TypeConvertor.castToType(value); // DataType
-        } else if (name.equals("target[x]")) {
-          this.target = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("sourceScope[x]")) {
+          this.sourceScope = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("targetScope[x]")) {
+          this.targetScope = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("group")) {
           this.getGroup().add((ConceptMapGroupComponent) value);
         } else
@@ -3693,10 +3692,10 @@ public class ConceptMap extends CanonicalResource {
         case -507075711:  return addJurisdiction(); 
         case -220463842:  return getPurposeElement();
         case 1522889671:  return getCopyrightElement();
-        case -1698413947:  return getSource();
-        case -896505829:  return getSource();
-        case -815579825:  return getTarget();
-        case -880905839:  return getTarget();
+        case -1698413947:  return getSourceScope();
+        case -896505829:  return getSourceScope();
+        case -815579825:  return getTargetScope();
+        case -880905839:  return getTargetScope();
         case 98629247:  return addGroup(); 
         default: return super.makeProperty(hash, name);
         }
@@ -3777,21 +3776,21 @@ public class ConceptMap extends CanonicalResource {
         else if (name.equals("copyright")) {
           throw new FHIRException("Cannot call addChild on a primitive type ConceptMap.copyright");
         }
-        else if (name.equals("sourceUri")) {
-          this.source = new UriType();
-          return this.source;
+        else if (name.equals("sourceScopeUri")) {
+          this.sourceScope = new UriType();
+          return this.sourceScope;
         }
-        else if (name.equals("sourceCanonical")) {
-          this.source = new CanonicalType();
-          return this.source;
+        else if (name.equals("sourceScopeCanonical")) {
+          this.sourceScope = new CanonicalType();
+          return this.sourceScope;
         }
-        else if (name.equals("targetUri")) {
-          this.target = new UriType();
-          return this.target;
+        else if (name.equals("targetScopeUri")) {
+          this.targetScope = new UriType();
+          return this.targetScope;
         }
-        else if (name.equals("targetCanonical")) {
-          this.target = new CanonicalType();
-          return this.target;
+        else if (name.equals("targetScopeCanonical")) {
+          this.targetScope = new CanonicalType();
+          return this.targetScope;
         }
         else if (name.equals("group")) {
           return addGroup();
@@ -3840,8 +3839,8 @@ public class ConceptMap extends CanonicalResource {
         };
         dst.purpose = purpose == null ? null : purpose.copy();
         dst.copyright = copyright == null ? null : copyright.copy();
-        dst.source = source == null ? null : source.copy();
-        dst.target = target == null ? null : target.copy();
+        dst.sourceScope = sourceScope == null ? null : sourceScope.copy();
+        dst.targetScope = targetScope == null ? null : targetScope.copy();
         if (group != null) {
           dst.group = new ArrayList<ConceptMapGroupComponent>();
           for (ConceptMapGroupComponent i : group)
@@ -3865,7 +3864,7 @@ public class ConceptMap extends CanonicalResource {
            && compareDeep(experimental, o.experimental, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
            && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
            && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(copyright, o.copyright, true)
-           && compareDeep(source, o.source, true) && compareDeep(target, o.target, true) && compareDeep(group, o.group, true)
+           && compareDeep(sourceScope, o.sourceScope, true) && compareDeep(targetScope, o.targetScope, true) && compareDeep(group, o.group, true)
           ;
       }
 
@@ -3885,7 +3884,7 @@ public class ConceptMap extends CanonicalResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
           , name, title, status, experimental, date, publisher, contact, description, useContext
-          , jurisdiction, purpose, copyright, source, target, group);
+          , jurisdiction, purpose, copyright, sourceScope, targetScope, group);
       }
 
   @Override
@@ -4007,49 +4006,49 @@ public class ConceptMap extends CanonicalResource {
    * Path: <b>(ConceptMap.source as uri)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="source-uri", path="(ConceptMap.source as uri)", description="The source value set that contains the concepts that are being mapped", type="reference", target={ValueSet.class } )
-  public static final String SP_SOURCE_URI = "source-uri";
+  @SearchParamDefinition(name="source-scope-uri", path="(ConceptMap.sourceScope as uri)", description="The source scope value set that contains the concepts that are being mapped", type="reference", target={ValueSet.class } )
+  public static final String SP_SOURCE_SCOPE_URI = "source-scope-uri";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>source-uri</b>
+   * <b>Fluent Client</b> search parameter constant for <b>source-scope-uri</b>
    * <p>
-   * Description: <b>The source value set that contains the concepts that are being mapped</b><br>
+   * Description: <b>The source scope value set that contains the concepts that are being mapped</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>(ConceptMap.source as uri)</b><br>
+   * Path: <b>(ConceptMap.sourceScope as uri)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SOURCE_URI = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SOURCE_URI);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SOURCE_SCOPE_URI = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SOURCE_SCOPE_URI);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ConceptMap:source-uri</b>".
+   * the path value of "<b>ConceptMap:source-scope-uri</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SOURCE_URI = new ca.uhn.fhir.model.api.Include("ConceptMap:source-uri").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SOURCE_SCOPE_URI = new ca.uhn.fhir.model.api.Include("ConceptMap:source-scope-uri").toLocked();
 
  /**
-   * Search parameter: <b>source</b>
+   * Search parameter: <b>source-scope</b>
    * <p>
-   * Description: <b>The source value set that contains the concepts that are being mapped</b><br>
+   * Description: <b>The source scope value set that contains the concepts that are being mapped</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>(ConceptMap.source as canonical)</b><br>
+   * Path: <b>(ConceptMap.sourceScope as canonical)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="source", path="(ConceptMap.source as canonical)", description="The source value set that contains the concepts that are being mapped", type="reference", target={ValueSet.class } )
-  public static final String SP_SOURCE = "source";
+  @SearchParamDefinition(name="source-scope", path="(ConceptMap.sourceScope as canonical)", description="The source scope value set that contains the concepts that are being mapped", type="reference", target={ValueSet.class } )
+  public static final String SP_SOURCE_SCOPE = "source-scope";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>source</b>
+   * <b>Fluent Client</b> search parameter constant for <b>sourceScope</b>
    * <p>
-   * Description: <b>The source value set that contains the concepts that are being mapped</b><br>
+   * Description: <b>The source scope value set that contains the concepts that are being mapped</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>(ConceptMap.source as canonical)</b><br>
+   * Path: <b>(ConceptMap.sourceScope as canonical)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SOURCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SOURCE);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SOURCE_SCOPE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SOURCE_SCOPE);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ConceptMap:source</b>".
+   * the path value of "<b>ConceptMap:sourceScope</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_SOURCE = new ca.uhn.fhir.model.api.Include("ConceptMap:source").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SOURCE_SCOPE = new ca.uhn.fhir.model.api.Include("ConceptMap:sourceScope").toLocked();
 
  /**
    * Search parameter: <b>target-code</b>
@@ -4099,49 +4098,49 @@ public class ConceptMap extends CanonicalResource {
    * Path: <b>(ConceptMap.target as uri)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="target-uri", path="(ConceptMap.target as uri)", description="The target value set which provides context for the mappings", type="reference", target={ValueSet.class } )
-  public static final String SP_TARGET_URI = "target-uri";
+  @SearchParamDefinition(name="target-scope-uri", path="(ConceptMap.targetScope as uri)", description="The target scope value set which provides context for the mappings", type="reference", target={ValueSet.class } )
+  public static final String SP_TARGET_SCOPE_URI = "target-scope-uri";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>target-uri</b>
+   * <b>Fluent Client</b> search parameter constant for <b>target-scope-uri</b>
    * <p>
-   * Description: <b>The target value set which provides context for the mappings</b><br>
+   * Description: <b>The target scope value set which provides context for the mappings</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>(ConceptMap.target as uri)</b><br>
+   * Path: <b>(ConceptMap.targetScope as uri)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam TARGET_URI = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_TARGET_URI);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam TARGET_SCOPE_URI = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_TARGET_SCOPE_URI);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ConceptMap:target-uri</b>".
+   * the path value of "<b>ConceptMap:target-scope-uri</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_TARGET_URI = new ca.uhn.fhir.model.api.Include("ConceptMap:target-uri").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_TARGET_SCOPE_URI = new ca.uhn.fhir.model.api.Include("ConceptMap:target-scope-uri").toLocked();
 
  /**
-   * Search parameter: <b>target</b>
+   * Search parameter: <b>target-scope</b>
    * <p>
-   * Description: <b>The target value set which provides context for the mappings</b><br>
+   * Description: <b>The target scope value set which provides context for the mappings</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>(ConceptMap.target as canonical)</b><br>
+   * Path: <b>(ConceptMap.targetScope as canonical)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="target", path="(ConceptMap.target as canonical)", description="The target value set which provides context for the mappings", type="reference", target={ValueSet.class } )
-  public static final String SP_TARGET = "target";
+  @SearchParamDefinition(name="target-scope", path="(ConceptMap.targetScope as canonical)", description="The target scope value set which provides context for the mappings", type="reference", target={ValueSet.class } )
+  public static final String SP_TARGET_SCOPE = "target-scope";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>target</b>
+   * <b>Fluent Client</b> search parameter constant for <b>targetScope</b>
    * <p>
-   * Description: <b>The target value set which provides context for the mappings</b><br>
+   * Description: <b>The target scope value set which provides context for the mappings</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>(ConceptMap.target as canonical)</b><br>
+   * Path: <b>(ConceptMap.targetScope as canonical)</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam TARGET = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_TARGET);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam TARGET_SCOPE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_TARGET_SCOPE);
 
 /**
    * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ConceptMap:target</b>".
+   * the path value of "<b>ConceptMap:targetScope</b>".
    */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_TARGET = new ca.uhn.fhir.model.api.Include("ConceptMap:target").toLocked();
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_TARGET_SCOPE = new ca.uhn.fhir.model.api.Include("ConceptMap:targetScope").toLocked();
 
  /**
    * Search parameter: <b>context-quantity</b>

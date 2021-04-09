@@ -74,9 +74,9 @@ public class ConceptMap40_50 extends VersionConvertor_40_50 {
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
         if (src.hasSource())
-            tgt.setSource(convertType(src.getSource()));
+            tgt.setSourceScope(convertType(src.getSource()));
         if (src.hasTarget())
-            tgt.setTarget(convertType(src.getTarget()));
+            tgt.setTargetScope(convertType(src.getTarget()));
         for (org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup()) tgt.addGroup(convertConceptMapGroupComponent(t));
         return tgt;
     }
@@ -113,10 +113,10 @@ public class ConceptMap40_50 extends VersionConvertor_40_50 {
             tgt.setPurposeElement(convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
             tgt.setCopyrightElement(convertMarkdown(src.getCopyrightElement()));
-        if (src.hasSource())
-            tgt.setSource(convertType(src.getSource()));
-        if (src.hasTarget())
-            tgt.setTarget(convertType(src.getTarget()));
+        if (src.hasSourceScope())
+            tgt.setSource(convertType(src.getSourceScope()));
+        if (src.hasTargetScope())
+            tgt.setTarget(convertType(src.getTargetScope()));
         for (org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup()) tgt.addGroup(convertConceptMapGroupComponent(t));
         return tgt;
     }

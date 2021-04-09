@@ -8090,10 +8090,10 @@ public class XmlParser extends XmlParserBase {
       res.setPurposeElement(parseMarkdown(xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("copyright")) {
       res.setCopyrightElement(parseMarkdown(xpp));
-    } else if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "source")) {
-      res.setSource(parseType("source", xpp));
-    } else if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "target")) {
-      res.setTarget(parseType("target", xpp));
+    } else if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "sourceScope")) {
+      res.setSourceScope(parseType("sourceScope", xpp));
+    } else if (eventType == XmlPullParser.START_TAG && nameIsTypeName(xpp, "targetScope")) {
+      res.setTargetScope(parseType("targetScope", xpp));
     } else if (eventType == XmlPullParser.START_TAG && xpp.getName().equals("group")) {
       res.getGroup().add(parseConceptMapGroupComponent(xpp));
     } else if (!parseCanonicalResourceContent(eventType, xpp, res)){ 
@@ -35983,10 +35983,10 @@ public class XmlParser extends XmlParserBase {
     if (element.hasCopyrightElement()) {
       composeMarkdown("copyright", element.getCopyrightElement());
     }
-    if (element.hasSource()) {
-      composeType("source", element.getSource());
-    }    if (element.hasTarget()) {
-      composeType("target", element.getTarget());
+    if (element.hasSourceScope()) {
+      composeType("sourceScope", element.getSourceScope());
+    }    if (element.hasTargetScope()) {
+      composeType("targetScope", element.getTargetScope());
     }    if (element.hasGroup()) { 
       for (ConceptMap.ConceptMapGroupComponent e : element.getGroup()) 
           composeConceptMapGroupComponent("group", e);

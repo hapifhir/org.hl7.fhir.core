@@ -468,12 +468,12 @@ public interface IWorkerContext {
   public boolean supportsSystem(String system) throws TerminologyServiceException;
 
   /**
-   * find concept maps for a source
+   * find concept maps for a source scope
    * @param url
    * @return
    * @throws FHIRException 
    */
-  public List<ConceptMap> findMapsForSource(String url) throws FHIRException;  
+  public List<ConceptMap> findMapsForSourceScope(String url) throws FHIRException;  
 
   /**
    * ValueSet Expansion - see $expand
