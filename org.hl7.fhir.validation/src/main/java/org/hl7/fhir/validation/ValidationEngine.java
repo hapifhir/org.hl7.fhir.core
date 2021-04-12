@@ -722,7 +722,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       return true;
     }
     if (fetcher != null) {
-      return fetcher.resolveURL(appContext, path, url, type);
+      try {
+        return fetcher.resolveURL(appContext, path, url, type);
+      } catch (Exception e) {
+        return false;
+      }
     }
     return false;
   }
