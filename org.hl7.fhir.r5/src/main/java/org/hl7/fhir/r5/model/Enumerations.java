@@ -6563,6 +6563,7 @@ The primary difference between a medicationusage and a medicationadministration 
          * R5 Preview #3.
          */
         _4_5_0, 
+        _4_6_0, 
         /**
          * added to help the parsers
          */
@@ -6627,6 +6628,8 @@ The primary difference between a medicationusage and a medicationadministration 
           return _4_4_0;
         if ("4.5.0".equals(codeString))
           return _4_5_0;
+        if ("4.6.0".equals(codeString))
+          return _4_6_0;
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public String toCode() {
@@ -6658,6 +6661,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "4.2.0";
             case _4_4_0: return "4.4.0";
             case _4_5_0: return "4.5.0";
+            case _4_6_0: return "4.6.0";
             case NULL: return null;
             default: return "?";
           }
@@ -6691,6 +6695,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_4_0: return "http://hl7.org/fhir/FHIR-version";
             case _4_5_0: return "http://hl7.org/fhir/FHIR-version";
+            case _4_6_0: return "http://hl7.org/fhir/FHIR-version";
             case NULL: return null;
             default: return "?";
           }
@@ -6724,6 +6729,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "R5 Preview #1.";
             case _4_4_0: return "R5 Preview #2.";
             case _4_5_0: return "R5 Preview #3.";
+            case _4_6_0: return "R5 Draft Ballot.";
             case NULL: return null;
             default: return "?";
           }
@@ -6757,6 +6763,7 @@ The primary difference between a medicationusage and a medicationadministration 
             case _4_2_0: return "4.2.0";
             case _4_4_0: return "4.4.0";
             case _4_5_0: return "4.5.0";
+            case _4_6_0: return "4.6.0";
             case NULL: return null;
             default: return "?";
           }
@@ -6890,6 +6897,8 @@ public String toCode(int len) {
           return FHIRVersion._4_4_0;
         if ("4.5.0".equals(codeString))
           return FHIRVersion._4_5_0;
+        if ("4.6.0".equals(codeString))
+          return FHIRVersion._4_6_0;
         throw new IllegalArgumentException("Unknown FHIRVersion code '"+codeString+"'");
         }
         public Enumeration<FHIRVersion> fromType(Base code) throws FHIRException {
@@ -6954,6 +6963,8 @@ public String toCode(int len) {
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_4_0);
         if ("4.5.0".equals(codeString))
           return new Enumeration<FHIRVersion>(this, FHIRVersion._4_5_0);
+        if ("4.6.0".equals(codeString))
+          return new Enumeration<FHIRVersion>(this, FHIRVersion._4_6_0);
         throw new FHIRException("Unknown FHIRVersion code '"+codeString+"'");
         }
     public String toCode(FHIRVersion code) {
@@ -7011,6 +7022,8 @@ public String toCode(int len) {
         return "4.4.0";
       if (code == FHIRVersion._4_5_0)
         return "4.5.0";
+      if (code == FHIRVersion._4_6_0)
+        return "4.6.0";
       return "?";
       }
     public String toSystem(FHIRVersion code) {
