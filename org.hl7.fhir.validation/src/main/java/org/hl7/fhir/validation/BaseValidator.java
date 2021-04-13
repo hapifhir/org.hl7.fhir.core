@@ -831,7 +831,7 @@ public class BaseValidator {
     String targetUrl = null;
     String version = "";
     String resourceType = null;
-    if (ref.startsWith("http") || ref.startsWith("urn")) {
+    if (ref.startsWith("http") || ref.startsWith("urn") || ref.startsWith("resource")) {
       // We've got an absolute reference, no need to calculate
       if (ref.contains("/_history/")) {
         targetUrl = ref.substring(0, ref.indexOf("/_history/") - 1);
