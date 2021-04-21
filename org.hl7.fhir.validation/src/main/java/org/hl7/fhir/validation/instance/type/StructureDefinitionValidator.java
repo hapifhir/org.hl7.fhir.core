@@ -156,7 +156,7 @@ public class StructureDefinitionValidator extends BaseValidator {
 //      hint(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), !snapshot || bt == null, I18nConstants.SD_ED_SHOULD_BIND, element.getNamedChildValue("path"), bt);              
     }
     // in a snapshot, we validate that fixedValue, pattern, and defaultValue, if present, are all of the right type
-    if (snapshot && element.getIdBase().contains(".")) {
+    if (snapshot && (element.getIdBase() != null) && (element.getIdBase().contains("."))) {
       if (rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), !typeCodes.isEmpty() || element.hasChild("contentReference"), I18nConstants.SD_NO_TYPES_OR_CONTENTREF, element.getIdBase())) {     
         Element v = element.getNamedChild("defaultValue");
         if (v != null) {
