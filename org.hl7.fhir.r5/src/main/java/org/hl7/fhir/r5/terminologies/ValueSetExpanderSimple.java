@@ -510,8 +510,29 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       if (!existsInParams(exp.getParameter(), p.getName(), p.getValue()))
         exp.getParameter().add(p);
     }
+    copyExpansion(vso.getValueset().getExpansion().getContains());
     canBeHeirarchy = false; // if we're importing a value set, we have to be combining, so we won't try for a heirarchy
     return vso.getValueset();
+  }
+
+  public void copyExpansion(List<ValueSetExpansionContainsComponent> list) {
+    for (ValueSetExpansionContainsComponent cc : list) {
+       ValueSetExpansionContainsComponent n = new ValueSet.ValueSetExpansionContainsComponent();
+       n.setSystem(cc.getSystem());
+       n.setCode(cc.getCode());
+       n.setAbstract(cc.getAbstract());
+       n.setInactive(cc.getInactive());
+       n.setDisplay(cc.getDisplay());
+       n.getDesignation().addAll(cc.getDesignation());
+
+       String s = key(n);
+       if (!map.containsKey(s) && !excludeKeys.contains(s)) {
+         codes.add(n);
+         map.put(s, n);
+         total++;
+       }
+       copyExpansion(cc.getContains());
+    }
   }
 
   private void addErrors(List<String> errs) {
