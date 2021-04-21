@@ -24,6 +24,8 @@ import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 
 import java.io.FileOutputStream;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +68,7 @@ public class ValidationService {
       messages.forEach(outcome::addMessage);
       response.addOutcome(outcome);
     }
+    System.out.println("  Max Memory: "+Runtime.getRuntime().maxMemory());
     return response;
   }
 
@@ -87,7 +90,8 @@ public class ValidationService {
     List<ValidationRecord> records = new ArrayList<>();
     Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles(), records);
     int ec = 0;
-    System.out.println("Done. " + validator.getContext().clock().report());
+    MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
+    System.out.println("Done. " + validator.getContext().clock().report()+". Memory = "+Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed()+mbean.getNonHeapMemoryUsage().getUsed()));
     System.out.println();
 
     if (cliContext.getOutput() == null) {
@@ -211,7 +215,9 @@ public class ValidationService {
   public String initializeValidator(CliContext cliContext, String definitions, TimeTracker tt, String sessionId) throws Exception {
     tt.milestone();
     if (!sessionCache.sessionExists(sessionId)) {
-      System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
+      if (sessionId != null) {
+        System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
+      }
       System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
       ValidationEngine validator = new ValidationEngine(definitions, cliContext.getSv(), tt);
       sessionId = sessionCache.cacheSession(validator);

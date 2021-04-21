@@ -1346,6 +1346,21 @@ public class Utilities {
     return length + BT;
   }
 
+  public static String describeSize(long length) {
+    if (length < 0) throw new IllegalArgumentException("File length of < 0  passed in...");
+
+    if (length > Math.pow(ONE_MB, 3)) {
+      return length / ((long) Math.pow(ONE_MB, 3)) + GB;
+    }
+    if (length > Math.pow(ONE_MB, 2)) {
+      return length / ((long) Math.pow(ONE_MB, 2)) + MB;
+    }
+    if (length > ONE_MB) {
+      return length / (ONE_MB) + KB;
+    }
+    return length + BT;
+  }
+
   public static List<byte[]> splitBytes(byte[] array, byte[] delimiter) {
     List<byte[]> byteArrays = new LinkedList<byte[]>();
     if (delimiter.length == 0)
