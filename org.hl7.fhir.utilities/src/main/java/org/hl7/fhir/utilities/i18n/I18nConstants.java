@@ -386,6 +386,7 @@ public class I18nConstants {
   public static final String TERMINOLOGY_TX_CODE_NOTVALID = "Terminology_TX_Code_NotValid";
   public static final String TERMINOLOGY_TX_CODE_UNKNOWN = "Terminology_TX_Code_Unknown";
   public static final String TERMINOLOGY_TX_CODE_VALUESET = "Terminology_TX_Code_ValueSet";
+  public static final String Terminology_TX_Code_ValueSet_MISSING = "Terminology_TX_Code_ValueSet_MISSING";
   public static final String TERMINOLOGY_TX_CODE_VALUESETMAX = "Terminology_TX_Code_ValueSetMax";
   public static final String TERMINOLOGY_TX_CODE_VALUESET_EXT = "Terminology_TX_Code_ValueSet_Ext";
   public static final String TERMINOLOGY_TX_CODING_COUNT = "Terminology_TX_Coding_Count";

@@ -61,6 +61,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
@@ -238,6 +239,6 @@ public class ValidatorCli {
         }
         break;
     }
-    System.out.println("Done. " + tt.report());
+    System.out.println("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
   }
 }
