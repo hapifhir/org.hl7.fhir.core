@@ -996,7 +996,7 @@ private void generatePropertyMaker(Analysis analysis, TypeInfo ti, String indent
   private List<TypeRefComponent> getTypes(List<TypeRefComponent> types) {
     if (types.size() == 1 && types.get(0).getName().equals("*")) {
       List<TypeRefComponent> t = new ArrayList<TypeRefComponent>();
-      for (String s : TypesUtilities.wildcardTypes()) {
+      for (String s : TypesUtilities.wildcardTypes("5.0")) {
         t.add(new TypeRefComponent(s));
       }
       return t;

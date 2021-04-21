@@ -2989,7 +2989,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
       if (!ok) {
         StructureDefinition sdt = context.fetchTypeDefinition(tt);
-        if (sdt != null && sdt.getAbstract()) {
+        if (sdt != null && (sdt.getAbstract() || sdt.getKind() == StructureDefinitionKind.LOGICAL)) {
           StructureDefinition sdb = context.fetchTypeDefinition(t);
           while (sdb != null && !ok) {
             ok = sdb.getType().equals(sdt.getType());
