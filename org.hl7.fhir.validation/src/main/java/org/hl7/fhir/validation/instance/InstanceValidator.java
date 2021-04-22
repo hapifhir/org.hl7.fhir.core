@@ -2005,7 +2005,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (type.equals(ID)) {
       // work around an old issue with ElementDefinition.id
-      if (!context.getPath().equals("ElementDefinition.id") || VersionUtilities.versionsCompatible("1.4", this.context.getVersion())) {
+      if (!context.getPath().equals("ElementDefinition.id")) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.isValidId(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ID_VALID, e.primitiveValue());
       }
     }
@@ -4166,6 +4166,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         hc = hostContext.forContained(element);
       }
       stack.resetIds();
+      if (element.getSpecial() != null) {
+        switch (element.getSpecial()) {
+        case BUNDLE_ENTRY:
+          idstatus = IdStatus.OPTIONAL;
+          break;
+        case BUNDLE_OUTCOME:
+          idstatus = IdStatus.OPTIONAL;
+          break;
+        case CONTAINED:
+          idstatus = IdStatus.REQUIRED;
+          break;
+        case PARAMETER:
+          idstatus = IdStatus.OPTIONAL;
+          break;
+        default:
+          break;        
+        }
+      }
       if (trr.getProfile().size() == 1) {
         long t = System.nanoTime();
         StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, trr.getProfile().get(0).asStringValue());
