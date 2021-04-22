@@ -108,7 +108,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionParameterComponent;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.Utilities;
 
-public class ValueSetExpanderSimple implements ValueSetExpander {
+public class ValueSetExpanderSimple extends ValueSetWorker implements ValueSetExpander {
 
   public class PropertyFilter implements IConceptFilter {
 
@@ -567,7 +567,7 @@ public class ValueSetExpanderSimple implements ValueSetExpander {
       copyImportContains(base.getExpansion().getContains(), null, expParams, imports);
     } else {
       CodeSystem cs = context.fetchCodeSystem(inc.getSystem());
-      if ((cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT))) {
+      if (isServerSide(inc.getSystem()) || (cs == null || (cs.getContent() != CodeSystemContentMode.COMPLETE && cs.getContent() != CodeSystemContentMode.FRAGMENT))) {
         doServerIncludeCodes(inc, heirarchical, exp, imports, expParams, extensions);
       } else {
         doInternalIncludeCodes(inc, exp, expParams, imports, cs);
