@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +96,6 @@ public class CatalogEntry extends DomainResource {
             case ISREPLACEDBY: return "is-replaced-by";
             case EXCLUDES: return "excludes";
             case INCLUDES: return "includes";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +105,6 @@ public class CatalogEntry extends DomainResource {
             case ISREPLACEDBY: return "http://hl7.org/fhir/catalogentry-relation-type";
             case EXCLUDES: return "http://hl7.org/fhir/catalogentry-relation-type";
             case INCLUDES: return "http://hl7.org/fhir/catalogentry-relation-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +114,6 @@ public class CatalogEntry extends DomainResource {
             case ISREPLACEDBY: return "the related catalog entry supersedes this one when it is not active.";
             case EXCLUDES: return "The related catalog entry is excluded by this one.";
             case INCLUDES: return "The item of the related catalog entry  will be part of the orders containing the current item.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,7 +123,6 @@ public class CatalogEntry extends DomainResource {
             case ISREPLACEDBY: return "Is replaced by";
             case EXCLUDES: return "Excludes";
             case INCLUDES: return "Includes";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -217,7 +213,6 @@ public class CatalogEntry extends DomainResource {
             case DRAFT: return "draft";
             case ACTIVE: return "active";
             case RETIRED: return "retired";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -226,7 +221,6 @@ public class CatalogEntry extends DomainResource {
             case DRAFT: return "http://hl7.org/fhir/catalogentry-status";
             case ACTIVE: return "http://hl7.org/fhir/catalogentry-status";
             case RETIRED: return "http://hl7.org/fhir/catalogentry-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -235,7 +229,6 @@ public class CatalogEntry extends DomainResource {
             case DRAFT: return "";
             case ACTIVE: return "";
             case RETIRED: return "";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -244,7 +237,6 @@ public class CatalogEntry extends DomainResource {
             case DRAFT: return "Draft";
             case ACTIVE: return "Active";
             case RETIRED: return "Retired";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -399,7 +391,6 @@ public class CatalogEntry extends DomainResource {
             case MEDICATION: return "Medication";
             case SUBSTANCE: return "Substance";
             case LOCATION: return "Location";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -418,7 +409,6 @@ public class CatalogEntry extends DomainResource {
             case MEDICATION: return "http://hl7.org/fhir/catalogentry-type";
             case SUBSTANCE: return "http://hl7.org/fhir/catalogentry-type";
             case LOCATION: return "http://hl7.org/fhir/catalogentry-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -437,7 +427,6 @@ public class CatalogEntry extends DomainResource {
             case MEDICATION: return "";
             case SUBSTANCE: return "";
             case LOCATION: return "";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -456,7 +445,6 @@ public class CatalogEntry extends DomainResource {
             case MEDICATION: return "Medication";
             case SUBSTANCE: return "Substance";
             case LOCATION: return "Location";
-            case NULL: return null;
             default: return "?";
           }
         }

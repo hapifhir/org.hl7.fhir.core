@@ -432,8 +432,8 @@ public class Device40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
-        for (org.hl7.fhir.r4.model.Quantity t : src.getValueQuantity()) tgt.addValueQuantity(convertQuantity(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getValueCode()) tgt.addValueCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Quantity t : src.getValueQuantity()) tgt.setValue(convertQuantity(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getValueCode()) tgt.setValue(convertCodeableConcept(t));
         return tgt;
     }
 
@@ -444,8 +444,8 @@ public class Device40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasType())
             tgt.setType(convertCodeableConcept(src.getType()));
-        for (org.hl7.fhir.r5.model.Quantity t : src.getValueQuantity()) tgt.addValueQuantity(convertQuantity(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getValueCode()) tgt.addValueCode(convertCodeableConcept(t));
+        if (src.hasValueQuantity()) tgt.addValueQuantity(convertQuantity(src.getValueQuantity()));
+        if (src.hasValueCodeableConcept()) tgt.addValueCode(convertCodeableConcept(src.getValueCodeableConcept()));
         return tgt;
     }
 }

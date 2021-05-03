@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4361,10 +4361,10 @@ public class SubstanceDefinition extends DomainResource {
         protected DataType substanceDefinition;
 
         /**
-         * For example "salt to parent", "active moiety", "starting material", "polymorph".
+         * For example "salt to parent", "active moiety", "starting material", "polymorph", "impurity of".
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\"", formalDefinition="For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\"." )
+        @Description(shortDefinition="For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\", \"impurity of\"", formalDefinition="For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\", \"impurity of\"." )
         protected CodeableConcept type;
 
         /**
@@ -4463,7 +4463,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #type} (For example "salt to parent", "active moiety", "starting material", "polymorph".)
+         * @return {@link #type} (For example "salt to parent", "active moiety", "starting material", "polymorph", "impurity of".)
          */
         public CodeableConcept getType() { 
           if (this.type == null)
@@ -4479,7 +4479,7 @@ public class SubstanceDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #type} (For example "salt to parent", "active moiety", "starting material", "polymorph".)
+         * @param value {@link #type} (For example "salt to parent", "active moiety", "starting material", "polymorph", "impurity of".)
          */
         public SubstanceDefinitionRelationshipComponent setType(CodeableConcept value) { 
           this.type = value;
@@ -4716,7 +4716,7 @@ public class SubstanceDefinition extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("substanceDefinition[x]", "Reference(SubstanceDefinition)|CodeableConcept", "A pointer to another substance, as a resource or just a representational code.", 0, 1, substanceDefinition));
-          children.add(new Property("type", "CodeableConcept", "For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\".", 0, 1, type));
+          children.add(new Property("type", "CodeableConcept", "For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\", \"impurity of\".", 0, 1, type));
           children.add(new Property("isDefining", "boolean", "For example where an enzyme strongly bonds with a particular substance, this is a defining relationship for that enzyme, out of several possible substance relationships.", 0, 1, isDefining));
           children.add(new Property("amount[x]", "Quantity|Range|Ratio|string", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount));
           children.add(new Property("amountRatioHighLimit", "Ratio", "For use when the numeric has an uncertain range.", 0, 1, amountRatioHighLimit));
@@ -4731,7 +4731,7 @@ public class SubstanceDefinition extends DomainResource {
           case 718195427: /*substanceDefinition*/  return new Property("substanceDefinition[x]", "Reference(SubstanceDefinition)|CodeableConcept", "A pointer to another substance, as a resource or just a representational code.", 0, 1, substanceDefinition);
           case -308206680: /*substanceDefinitionReference*/  return new Property("substanceDefinition[x]", "Reference(SubstanceDefinition)", "A pointer to another substance, as a resource or just a representational code.", 0, 1, substanceDefinition);
           case -132490690: /*substanceDefinitionCodeableConcept*/  return new Property("substanceDefinition[x]", "CodeableConcept", "A pointer to another substance, as a resource or just a representational code.", 0, 1, substanceDefinition);
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\".", 0, 1, type);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "For example \"salt to parent\", \"active moiety\", \"starting material\", \"polymorph\", \"impurity of\".", 0, 1, type);
           case -141812990: /*isDefining*/  return new Property("isDefining", "boolean", "For example where an enzyme strongly bonds with a particular substance, this is a defining relationship for that enzyme, out of several possible substance relationships.", 0, 1, isDefining);
           case 646780200: /*amount[x]*/  return new Property("amount[x]", "Quantity|Range|Ratio|string", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount);
           case -1413853096: /*amount*/  return new Property("amount[x]", "Quantity|Range|Ratio|string", "A numeric factor for the relationship, for instance to express that the salt of a substance has some percentage of the active substance in relation to some other.", 0, 1, amount);
@@ -4947,6 +4947,379 @@ public class SubstanceDefinition extends DomainResource {
 
   }
 
+    @Block()
+    public static class SubstanceDefinitionSourceMaterialComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A classification that provides the origin of the raw material. Example: cat hair would be an Animal source type.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="A classification that provides the origin of the raw material. Example: cat hair would be an Animal source type", formalDefinition="A classification that provides the origin of the raw material. Example: cat hair would be an Animal source type." )
+        protected CodeableConcept type;
+
+        /**
+         * The genus of an organism, typically referring to the Latin epithet of the genus element of the plant/animal scientific name.
+         */
+        @Child(name = "genus", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The genus of an organism, typically referring to the Latin epithet of the genus element of the plant/animal scientific name", formalDefinition="The genus of an organism, typically referring to the Latin epithet of the genus element of the plant/animal scientific name." )
+        protected CodeableConcept genus;
+
+        /**
+         * The species of an organism, typically referring to the Latin epithet of the species of the plant/animal.
+         */
+        @Child(name = "species", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The species of an organism, typically referring to the Latin epithet of the species of the plant/animal", formalDefinition="The species of an organism, typically referring to the Latin epithet of the species of the plant/animal." )
+        protected CodeableConcept species;
+
+        /**
+         * An anatomical origin of the source material within an organism.
+         */
+        @Child(name = "part", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="An anatomical origin of the source material within an organism", formalDefinition="An anatomical origin of the source material within an organism." )
+        protected CodeableConcept part;
+
+        /**
+         * The country or countries where the material is harvested.
+         */
+        @Child(name = "countryOfOrigin", type = {CodeableConcept.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="The country or countries where the material is harvested", formalDefinition="The country or countries where the material is harvested." )
+        protected List<CodeableConcept> countryOfOrigin;
+
+        private static final long serialVersionUID = 569352795L;
+
+    /**
+     * Constructor
+     */
+      public SubstanceDefinitionSourceMaterialComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #type} (A classification that provides the origin of the raw material. Example: cat hair would be an Animal source type.)
+         */
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstanceDefinitionSourceMaterialComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (A classification that provides the origin of the raw material. Example: cat hair would be an Animal source type.)
+         */
+        public SubstanceDefinitionSourceMaterialComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #genus} (The genus of an organism, typically referring to the Latin epithet of the genus element of the plant/animal scientific name.)
+         */
+        public CodeableConcept getGenus() { 
+          if (this.genus == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstanceDefinitionSourceMaterialComponent.genus");
+            else if (Configuration.doAutoCreate())
+              this.genus = new CodeableConcept(); // cc
+          return this.genus;
+        }
+
+        public boolean hasGenus() { 
+          return this.genus != null && !this.genus.isEmpty();
+        }
+
+        /**
+         * @param value {@link #genus} (The genus of an organism, typically referring to the Latin epithet of the genus element of the plant/animal scientific name.)
+         */
+        public SubstanceDefinitionSourceMaterialComponent setGenus(CodeableConcept value) { 
+          this.genus = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #species} (The species of an organism, typically referring to the Latin epithet of the species of the plant/animal.)
+         */
+        public CodeableConcept getSpecies() { 
+          if (this.species == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstanceDefinitionSourceMaterialComponent.species");
+            else if (Configuration.doAutoCreate())
+              this.species = new CodeableConcept(); // cc
+          return this.species;
+        }
+
+        public boolean hasSpecies() { 
+          return this.species != null && !this.species.isEmpty();
+        }
+
+        /**
+         * @param value {@link #species} (The species of an organism, typically referring to the Latin epithet of the species of the plant/animal.)
+         */
+        public SubstanceDefinitionSourceMaterialComponent setSpecies(CodeableConcept value) { 
+          this.species = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #part} (An anatomical origin of the source material within an organism.)
+         */
+        public CodeableConcept getPart() { 
+          if (this.part == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create SubstanceDefinitionSourceMaterialComponent.part");
+            else if (Configuration.doAutoCreate())
+              this.part = new CodeableConcept(); // cc
+          return this.part;
+        }
+
+        public boolean hasPart() { 
+          return this.part != null && !this.part.isEmpty();
+        }
+
+        /**
+         * @param value {@link #part} (An anatomical origin of the source material within an organism.)
+         */
+        public SubstanceDefinitionSourceMaterialComponent setPart(CodeableConcept value) { 
+          this.part = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #countryOfOrigin} (The country or countries where the material is harvested.)
+         */
+        public List<CodeableConcept> getCountryOfOrigin() { 
+          if (this.countryOfOrigin == null)
+            this.countryOfOrigin = new ArrayList<CodeableConcept>();
+          return this.countryOfOrigin;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public SubstanceDefinitionSourceMaterialComponent setCountryOfOrigin(List<CodeableConcept> theCountryOfOrigin) { 
+          this.countryOfOrigin = theCountryOfOrigin;
+          return this;
+        }
+
+        public boolean hasCountryOfOrigin() { 
+          if (this.countryOfOrigin == null)
+            return false;
+          for (CodeableConcept item : this.countryOfOrigin)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addCountryOfOrigin() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.countryOfOrigin == null)
+            this.countryOfOrigin = new ArrayList<CodeableConcept>();
+          this.countryOfOrigin.add(t);
+          return t;
+        }
+
+        public SubstanceDefinitionSourceMaterialComponent addCountryOfOrigin(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.countryOfOrigin == null)
+            this.countryOfOrigin = new ArrayList<CodeableConcept>();
+          this.countryOfOrigin.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #countryOfOrigin}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getCountryOfOriginFirstRep() { 
+          if (getCountryOfOrigin().isEmpty()) {
+            addCountryOfOrigin();
+          }
+          return getCountryOfOrigin().get(0);
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("type", "CodeableConcept", "A classification that provides the origin of the raw material. Example: cat hair would be an Animal source type.", 0, 1, type));
+          children.add(new Property("genus", "CodeableConcept", "The genus of an organism, typically referring to the Latin epithet of the genus element of the plant/animal scientific name.", 0, 1, genus));
+          children.add(new Property("species", "CodeableConcept", "The species of an organism, typically referring to the Latin epithet of the species of the plant/animal.", 0, 1, species));
+          children.add(new Property("part", "CodeableConcept", "An anatomical origin of the source material within an organism.", 0, 1, part));
+          children.add(new Property("countryOfOrigin", "CodeableConcept", "The country or countries where the material is harvested.", 0, java.lang.Integer.MAX_VALUE, countryOfOrigin));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "A classification that provides the origin of the raw material. Example: cat hair would be an Animal source type.", 0, 1, type);
+          case 98241006: /*genus*/  return new Property("genus", "CodeableConcept", "The genus of an organism, typically referring to the Latin epithet of the genus element of the plant/animal scientific name.", 0, 1, genus);
+          case -2008465092: /*species*/  return new Property("species", "CodeableConcept", "The species of an organism, typically referring to the Latin epithet of the species of the plant/animal.", 0, 1, species);
+          case 3433459: /*part*/  return new Property("part", "CodeableConcept", "An anatomical origin of the source material within an organism.", 0, 1, part);
+          case 57176467: /*countryOfOrigin*/  return new Property("countryOfOrigin", "CodeableConcept", "The country or countries where the material is harvested.", 0, java.lang.Integer.MAX_VALUE, countryOfOrigin);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case 98241006: /*genus*/ return this.genus == null ? new Base[0] : new Base[] {this.genus}; // CodeableConcept
+        case -2008465092: /*species*/ return this.species == null ? new Base[0] : new Base[] {this.species}; // CodeableConcept
+        case 3433459: /*part*/ return this.part == null ? new Base[0] : new Base[] {this.part}; // CodeableConcept
+        case 57176467: /*countryOfOrigin*/ return this.countryOfOrigin == null ? new Base[0] : this.countryOfOrigin.toArray(new Base[this.countryOfOrigin.size()]); // CodeableConcept
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 98241006: // genus
+          this.genus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -2008465092: // species
+          this.species = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 3433459: // part
+          this.part = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 57176467: // countryOfOrigin
+          this.getCountryOfOrigin().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("genus")) {
+          this.genus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("species")) {
+          this.species = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("part")) {
+          this.part = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("countryOfOrigin")) {
+          this.getCountryOfOrigin().add(TypeConvertor.castToCodeableConcept(value));
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610:  return getType();
+        case 98241006:  return getGenus();
+        case -2008465092:  return getSpecies();
+        case 3433459:  return getPart();
+        case 57176467:  return addCountryOfOrigin(); 
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 98241006: /*genus*/ return new String[] {"CodeableConcept"};
+        case -2008465092: /*species*/ return new String[] {"CodeableConcept"};
+        case 3433459: /*part*/ return new String[] {"CodeableConcept"};
+        case 57176467: /*countryOfOrigin*/ return new String[] {"CodeableConcept"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
+        }
+        else if (name.equals("genus")) {
+          this.genus = new CodeableConcept();
+          return this.genus;
+        }
+        else if (name.equals("species")) {
+          this.species = new CodeableConcept();
+          return this.species;
+        }
+        else if (name.equals("part")) {
+          this.part = new CodeableConcept();
+          return this.part;
+        }
+        else if (name.equals("countryOfOrigin")) {
+          return addCountryOfOrigin();
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public SubstanceDefinitionSourceMaterialComponent copy() {
+        SubstanceDefinitionSourceMaterialComponent dst = new SubstanceDefinitionSourceMaterialComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(SubstanceDefinitionSourceMaterialComponent dst) {
+        super.copyValues(dst);
+        dst.type = type == null ? null : type.copy();
+        dst.genus = genus == null ? null : genus.copy();
+        dst.species = species == null ? null : species.copy();
+        dst.part = part == null ? null : part.copy();
+        if (countryOfOrigin != null) {
+          dst.countryOfOrigin = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : countryOfOrigin)
+            dst.countryOfOrigin.add(i.copy());
+        };
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof SubstanceDefinitionSourceMaterialComponent))
+          return false;
+        SubstanceDefinitionSourceMaterialComponent o = (SubstanceDefinitionSourceMaterialComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(genus, o.genus, true) && compareDeep(species, o.species, true)
+           && compareDeep(part, o.part, true) && compareDeep(countryOfOrigin, o.countryOfOrigin, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof SubstanceDefinitionSourceMaterialComponent))
+          return false;
+        SubstanceDefinitionSourceMaterialComponent o = (SubstanceDefinitionSourceMaterialComponent) other_;
+        return true;
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, genus, species, part
+          , countryOfOrigin);
+      }
+
+  public String fhirType() {
+    return "SubstanceDefinition.sourceMaterial";
+
+  }
+
+  }
+
     /**
      * Identifier by which this substance is known.
      */
@@ -4990,125 +5363,132 @@ public class SubstanceDefinition extends DomainResource {
     protected CodeableConcept domain;
 
     /**
+     * The quality standard, established benchmark, to which substance complies (e.g. USP/NF, Ph. Eur, JP, BP, Company Standard).
+     */
+    @Child(name = "grade", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="The quality standard, established benchmark, to which substance complies (e.g. USP/NF, Ph. Eur, JP, BP, Company Standard)", formalDefinition="The quality standard, established benchmark, to which substance complies (e.g. USP/NF, Ph. Eur, JP, BP, Company Standard)." )
+    protected List<CodeableConcept> grade;
+
+    /**
      * Textual description of the substance.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Textual description of the substance", formalDefinition="Textual description of the substance." )
     protected MarkdownType description;
 
     /**
      * Supporting literature.
      */
-    @Child(name = "source", type = {DocumentReference.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "source", type = {DocumentReference.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Supporting literature", formalDefinition="Supporting literature." )
     protected List<Reference> source;
 
     /**
-     * Textual comment about this record of a substance.
+     * Textual comment about the substance's catalogue or registry record.
      */
-    @Child(name = "note", type = {Annotation.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Textual comment about this record of a substance", formalDefinition="Textual comment about this record of a substance." )
+    @Child(name = "note", type = {Annotation.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Description(shortDefinition="Textual comment about the substance's catalogue or registry record", formalDefinition="Textual comment about the substance's catalogue or registry record." )
     protected List<Annotation> note;
 
     /**
      * A company that makes this substance.
      */
-    @Child(name = "manufacturer", type = {Organization.class}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "manufacturer", type = {Organization.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A company that makes this substance", formalDefinition="A company that makes this substance." )
     protected List<Reference> manufacturer;
 
     /**
      * A company that supplies this substance.
      */
-    @Child(name = "supplier", type = {Organization.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "supplier", type = {Organization.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A company that supplies this substance", formalDefinition="A company that supplies this substance." )
     protected List<Reference> supplier;
 
     /**
      * Moiety, for structural modifications.
      */
-    @Child(name = "moiety", type = {}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "moiety", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Moiety, for structural modifications", formalDefinition="Moiety, for structural modifications." )
     protected List<SubstanceDefinitionMoietyComponent> moiety;
 
     /**
      * General specifications for this substance, including how it is related to other substances.
      */
-    @Child(name = "property", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "property", type = {}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="General specifications for this substance, including how it is related to other substances", formalDefinition="General specifications for this substance, including how it is related to other substances." )
     protected List<SubstanceDefinitionPropertyComponent> property;
 
     /**
      * General information detailing this substance.
      */
-    @Child(name = "referenceInformation", type = {SubstanceReferenceInformation.class}, order=13, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "referenceInformation", type = {SubstanceReferenceInformation.class}, order=14, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="General information detailing this substance", formalDefinition="General information detailing this substance." )
     protected Reference referenceInformation;
 
     /**
      * Structural information.
      */
-    @Child(name = "structure", type = {}, order=14, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "structure", type = {}, order=15, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Structural information", formalDefinition="Structural information." )
     protected SubstanceDefinitionStructureComponent structure;
 
     /**
      * Codes associated with the substance.
      */
-    @Child(name = "code", type = {}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "code", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Codes associated with the substance", formalDefinition="Codes associated with the substance." )
     protected List<SubstanceDefinitionCodeComponent> code;
 
     /**
      * Names applicable to this substance.
      */
-    @Child(name = "name", type = {}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "name", type = {}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Names applicable to this substance", formalDefinition="Names applicable to this substance." )
     protected List<SubstanceDefinitionNameComponent> name;
 
     /**
      * The molecular weight or weight range (for proteins, polymers or nucleic acids).
      */
-    @Child(name = "molecularWeight", type = {SubstanceDefinitionStructureIsotopeMolecularWeightComponent.class}, order=17, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "molecularWeight", type = {SubstanceDefinitionStructureIsotopeMolecularWeightComponent.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)", formalDefinition="The molecular weight or weight range (for proteins, polymers or nucleic acids)." )
     protected List<SubstanceDefinitionStructureIsotopeMolecularWeightComponent> molecularWeight;
 
     /**
      * A link between this substance and another, with details of the relationship.
      */
-    @Child(name = "relationship", type = {}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "relationship", type = {}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="A link between this substance and another, with details of the relationship", formalDefinition="A link between this substance and another, with details of the relationship." )
     protected List<SubstanceDefinitionRelationshipComponent> relationship;
 
     /**
      * Data items specific to nucleic acids.
      */
-    @Child(name = "nucleicAcid", type = {SubstanceNucleicAcid.class}, order=19, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "nucleicAcid", type = {SubstanceNucleicAcid.class}, order=20, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to nucleic acids", formalDefinition="Data items specific to nucleic acids." )
     protected Reference nucleicAcid;
 
     /**
      * Data items specific to polymers.
      */
-    @Child(name = "polymer", type = {SubstancePolymer.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "polymer", type = {SubstancePolymer.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to polymers", formalDefinition="Data items specific to polymers." )
     protected Reference polymer;
 
     /**
      * Data items specific to proteins.
      */
-    @Child(name = "protein", type = {SubstanceProtein.class}, order=21, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "protein", type = {SubstanceProtein.class}, order=22, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Data items specific to proteins", formalDefinition="Data items specific to proteins." )
     protected Reference protein;
 
     /**
      * Material or taxonomic/anatomical source for the substance.
      */
-    @Child(name = "sourceMaterial", type = {SubstanceSourceMaterial.class}, order=22, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "sourceMaterial", type = {}, order=23, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Material or taxonomic/anatomical source for the substance", formalDefinition="Material or taxonomic/anatomical source for the substance." )
-    protected Reference sourceMaterial;
+    protected SubstanceDefinitionSourceMaterialComponent sourceMaterial;
 
-    private static final long serialVersionUID = 1928000355L;
+    private static final long serialVersionUID = 1189421044L;
 
   /**
    * Constructor
@@ -5316,6 +5696,59 @@ public class SubstanceDefinition extends DomainResource {
     }
 
     /**
+     * @return {@link #grade} (The quality standard, established benchmark, to which substance complies (e.g. USP/NF, Ph. Eur, JP, BP, Company Standard).)
+     */
+    public List<CodeableConcept> getGrade() { 
+      if (this.grade == null)
+        this.grade = new ArrayList<CodeableConcept>();
+      return this.grade;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public SubstanceDefinition setGrade(List<CodeableConcept> theGrade) { 
+      this.grade = theGrade;
+      return this;
+    }
+
+    public boolean hasGrade() { 
+      if (this.grade == null)
+        return false;
+      for (CodeableConcept item : this.grade)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public CodeableConcept addGrade() { //3
+      CodeableConcept t = new CodeableConcept();
+      if (this.grade == null)
+        this.grade = new ArrayList<CodeableConcept>();
+      this.grade.add(t);
+      return t;
+    }
+
+    public SubstanceDefinition addGrade(CodeableConcept t) { //3
+      if (t == null)
+        return this;
+      if (this.grade == null)
+        this.grade = new ArrayList<CodeableConcept>();
+      this.grade.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #grade}, creating it if it does not already exist {3}
+     */
+    public CodeableConcept getGradeFirstRep() { 
+      if (getGrade().isEmpty()) {
+        addGrade();
+      }
+      return getGrade().get(0);
+    }
+
+    /**
      * @return {@link #description} (Textual description of the substance.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
      */
     public MarkdownType getDescriptionElement() { 
@@ -5418,7 +5851,7 @@ public class SubstanceDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #note} (Textual comment about this record of a substance.)
+     * @return {@link #note} (Textual comment about the substance's catalogue or registry record.)
      */
     public List<Annotation> getNote() { 
       if (this.note == null)
@@ -6017,12 +6450,12 @@ public class SubstanceDefinition extends DomainResource {
     /**
      * @return {@link #sourceMaterial} (Material or taxonomic/anatomical source for the substance.)
      */
-    public Reference getSourceMaterial() { 
+    public SubstanceDefinitionSourceMaterialComponent getSourceMaterial() { 
       if (this.sourceMaterial == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create SubstanceDefinition.sourceMaterial");
         else if (Configuration.doAutoCreate())
-          this.sourceMaterial = new Reference(); // cc
+          this.sourceMaterial = new SubstanceDefinitionSourceMaterialComponent(); // cc
       return this.sourceMaterial;
     }
 
@@ -6033,7 +6466,7 @@ public class SubstanceDefinition extends DomainResource {
     /**
      * @param value {@link #sourceMaterial} (Material or taxonomic/anatomical source for the substance.)
      */
-    public SubstanceDefinition setSourceMaterial(Reference value) { 
+    public SubstanceDefinition setSourceMaterial(SubstanceDefinitionSourceMaterialComponent value) { 
       this.sourceMaterial = value;
       return this;
     }
@@ -6046,9 +6479,10 @@ public class SubstanceDefinition extends DomainResource {
         children.add(new Property("category", "CodeableConcept", "High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological.", 0, 1, category));
         children.add(new Property("classification", "CodeableConcept", "A lower level classification than category, such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant).", 0, java.lang.Integer.MAX_VALUE, classification));
         children.add(new Property("domain", "CodeableConcept", "If the substance applies to only human or veterinary use.", 0, 1, domain));
+        children.add(new Property("grade", "CodeableConcept", "The quality standard, established benchmark, to which substance complies (e.g. USP/NF, Ph. Eur, JP, BP, Company Standard).", 0, java.lang.Integer.MAX_VALUE, grade));
         children.add(new Property("description", "markdown", "Textual description of the substance.", 0, 1, description));
         children.add(new Property("source", "Reference(DocumentReference)", "Supporting literature.", 0, java.lang.Integer.MAX_VALUE, source));
-        children.add(new Property("note", "Annotation", "Textual comment about this record of a substance.", 0, java.lang.Integer.MAX_VALUE, note));
+        children.add(new Property("note", "Annotation", "Textual comment about the substance's catalogue or registry record.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("manufacturer", "Reference(Organization)", "A company that makes this substance.", 0, java.lang.Integer.MAX_VALUE, manufacturer));
         children.add(new Property("supplier", "Reference(Organization)", "A company that supplies this substance.", 0, java.lang.Integer.MAX_VALUE, supplier));
         children.add(new Property("moiety", "", "Moiety, for structural modifications.", 0, java.lang.Integer.MAX_VALUE, moiety));
@@ -6062,7 +6496,7 @@ public class SubstanceDefinition extends DomainResource {
         children.add(new Property("nucleicAcid", "Reference(SubstanceNucleicAcid)", "Data items specific to nucleic acids.", 0, 1, nucleicAcid));
         children.add(new Property("polymer", "Reference(SubstancePolymer)", "Data items specific to polymers.", 0, 1, polymer));
         children.add(new Property("protein", "Reference(SubstanceProtein)", "Data items specific to proteins.", 0, 1, protein));
-        children.add(new Property("sourceMaterial", "Reference(SubstanceSourceMaterial)", "Material or taxonomic/anatomical source for the substance.", 0, 1, sourceMaterial));
+        children.add(new Property("sourceMaterial", "", "Material or taxonomic/anatomical source for the substance.", 0, 1, sourceMaterial));
       }
 
       @Override
@@ -6074,9 +6508,10 @@ public class SubstanceDefinition extends DomainResource {
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "High level categorization, e.g. polymer or nucleic acid, or food, chemical, biological.", 0, 1, category);
         case 382350310: /*classification*/  return new Property("classification", "CodeableConcept", "A lower level classification than category, such as the general types of polymer (linear or branch chain) or type of impurity (process related or contaminant).", 0, java.lang.Integer.MAX_VALUE, classification);
         case -1326197564: /*domain*/  return new Property("domain", "CodeableConcept", "If the substance applies to only human or veterinary use.", 0, 1, domain);
+        case 98615255: /*grade*/  return new Property("grade", "CodeableConcept", "The quality standard, established benchmark, to which substance complies (e.g. USP/NF, Ph. Eur, JP, BP, Company Standard).", 0, java.lang.Integer.MAX_VALUE, grade);
         case -1724546052: /*description*/  return new Property("description", "markdown", "Textual description of the substance.", 0, 1, description);
         case -896505829: /*source*/  return new Property("source", "Reference(DocumentReference)", "Supporting literature.", 0, java.lang.Integer.MAX_VALUE, source);
-        case 3387378: /*note*/  return new Property("note", "Annotation", "Textual comment about this record of a substance.", 0, java.lang.Integer.MAX_VALUE, note);
+        case 3387378: /*note*/  return new Property("note", "Annotation", "Textual comment about the substance's catalogue or registry record.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1969347631: /*manufacturer*/  return new Property("manufacturer", "Reference(Organization)", "A company that makes this substance.", 0, java.lang.Integer.MAX_VALUE, manufacturer);
         case -1663305268: /*supplier*/  return new Property("supplier", "Reference(Organization)", "A company that supplies this substance.", 0, java.lang.Integer.MAX_VALUE, supplier);
         case -1068650173: /*moiety*/  return new Property("moiety", "", "Moiety, for structural modifications.", 0, java.lang.Integer.MAX_VALUE, moiety);
@@ -6090,7 +6525,7 @@ public class SubstanceDefinition extends DomainResource {
         case 1625275180: /*nucleicAcid*/  return new Property("nucleicAcid", "Reference(SubstanceNucleicAcid)", "Data items specific to nucleic acids.", 0, 1, nucleicAcid);
         case -397514098: /*polymer*/  return new Property("polymer", "Reference(SubstancePolymer)", "Data items specific to polymers.", 0, 1, polymer);
         case -309012605: /*protein*/  return new Property("protein", "Reference(SubstanceProtein)", "Data items specific to proteins.", 0, 1, protein);
-        case -1064442270: /*sourceMaterial*/  return new Property("sourceMaterial", "Reference(SubstanceSourceMaterial)", "Material or taxonomic/anatomical source for the substance.", 0, 1, sourceMaterial);
+        case -1064442270: /*sourceMaterial*/  return new Property("sourceMaterial", "", "Material or taxonomic/anatomical source for the substance.", 0, 1, sourceMaterial);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -6105,6 +6540,7 @@ public class SubstanceDefinition extends DomainResource {
         case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case 382350310: /*classification*/ return this.classification == null ? new Base[0] : this.classification.toArray(new Base[this.classification.size()]); // CodeableConcept
         case -1326197564: /*domain*/ return this.domain == null ? new Base[0] : new Base[] {this.domain}; // CodeableConcept
+        case 98615255: /*grade*/ return this.grade == null ? new Base[0] : this.grade.toArray(new Base[this.grade.size()]); // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // MarkdownType
         case -896505829: /*source*/ return this.source == null ? new Base[0] : this.source.toArray(new Base[this.source.size()]); // Reference
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
@@ -6121,7 +6557,7 @@ public class SubstanceDefinition extends DomainResource {
         case 1625275180: /*nucleicAcid*/ return this.nucleicAcid == null ? new Base[0] : new Base[] {this.nucleicAcid}; // Reference
         case -397514098: /*polymer*/ return this.polymer == null ? new Base[0] : new Base[] {this.polymer}; // Reference
         case -309012605: /*protein*/ return this.protein == null ? new Base[0] : new Base[] {this.protein}; // Reference
-        case -1064442270: /*sourceMaterial*/ return this.sourceMaterial == null ? new Base[0] : new Base[] {this.sourceMaterial}; // Reference
+        case -1064442270: /*sourceMaterial*/ return this.sourceMaterial == null ? new Base[0] : new Base[] {this.sourceMaterial}; // SubstanceDefinitionSourceMaterialComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -6147,6 +6583,9 @@ public class SubstanceDefinition extends DomainResource {
           return value;
         case -1326197564: // domain
           this.domain = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 98615255: // grade
+          this.getGrade().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case -1724546052: // description
           this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
@@ -6197,7 +6636,7 @@ public class SubstanceDefinition extends DomainResource {
           this.protein = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1064442270: // sourceMaterial
-          this.sourceMaterial = TypeConvertor.castToReference(value); // Reference
+          this.sourceMaterial = (SubstanceDefinitionSourceMaterialComponent) value; // SubstanceDefinitionSourceMaterialComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -6218,6 +6657,8 @@ public class SubstanceDefinition extends DomainResource {
           this.getClassification().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("domain")) {
           this.domain = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("grade")) {
+          this.getGrade().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("description")) {
           this.description = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("source")) {
@@ -6251,7 +6692,7 @@ public class SubstanceDefinition extends DomainResource {
         } else if (name.equals("protein")) {
           this.protein = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("sourceMaterial")) {
-          this.sourceMaterial = TypeConvertor.castToReference(value); // Reference
+          this.sourceMaterial = (SubstanceDefinitionSourceMaterialComponent) value; // SubstanceDefinitionSourceMaterialComponent
         } else
           return super.setProperty(name, value);
         return value;
@@ -6266,6 +6707,7 @@ public class SubstanceDefinition extends DomainResource {
         case 50511102:  return getCategory();
         case 382350310:  return addClassification(); 
         case -1326197564:  return getDomain();
+        case 98615255:  return addGrade(); 
         case -1724546052:  return getDescriptionElement();
         case -896505829:  return addSource(); 
         case 3387378:  return addNote(); 
@@ -6297,6 +6739,7 @@ public class SubstanceDefinition extends DomainResource {
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case 382350310: /*classification*/ return new String[] {"CodeableConcept"};
         case -1326197564: /*domain*/ return new String[] {"CodeableConcept"};
+        case 98615255: /*grade*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"markdown"};
         case -896505829: /*source*/ return new String[] {"Reference"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
@@ -6313,7 +6756,7 @@ public class SubstanceDefinition extends DomainResource {
         case 1625275180: /*nucleicAcid*/ return new String[] {"Reference"};
         case -397514098: /*polymer*/ return new String[] {"Reference"};
         case -309012605: /*protein*/ return new String[] {"Reference"};
-        case -1064442270: /*sourceMaterial*/ return new String[] {"Reference"};
+        case -1064442270: /*sourceMaterial*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -6342,6 +6785,9 @@ public class SubstanceDefinition extends DomainResource {
         else if (name.equals("domain")) {
           this.domain = new CodeableConcept();
           return this.domain;
+        }
+        else if (name.equals("grade")) {
+          return addGrade();
         }
         else if (name.equals("description")) {
           throw new FHIRException("Cannot call addChild on a primitive type SubstanceDefinition.description");
@@ -6397,7 +6843,7 @@ public class SubstanceDefinition extends DomainResource {
           return this.protein;
         }
         else if (name.equals("sourceMaterial")) {
-          this.sourceMaterial = new Reference();
+          this.sourceMaterial = new SubstanceDefinitionSourceMaterialComponent();
           return this.sourceMaterial;
         }
         else
@@ -6427,6 +6873,11 @@ public class SubstanceDefinition extends DomainResource {
             dst.classification.add(i.copy());
         };
         dst.domain = domain == null ? null : domain.copy();
+        if (grade != null) {
+          dst.grade = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : grade)
+            dst.grade.add(i.copy());
+        };
         dst.description = description == null ? null : description.copy();
         if (source != null) {
           dst.source = new ArrayList<Reference>();
@@ -6499,13 +6950,14 @@ public class SubstanceDefinition extends DomainResource {
         SubstanceDefinition o = (SubstanceDefinition) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true) && compareDeep(status, o.status, true)
            && compareDeep(category, o.category, true) && compareDeep(classification, o.classification, true)
-           && compareDeep(domain, o.domain, true) && compareDeep(description, o.description, true) && compareDeep(source, o.source, true)
-           && compareDeep(note, o.note, true) && compareDeep(manufacturer, o.manufacturer, true) && compareDeep(supplier, o.supplier, true)
-           && compareDeep(moiety, o.moiety, true) && compareDeep(property, o.property, true) && compareDeep(referenceInformation, o.referenceInformation, true)
-           && compareDeep(structure, o.structure, true) && compareDeep(code, o.code, true) && compareDeep(name, o.name, true)
-           && compareDeep(molecularWeight, o.molecularWeight, true) && compareDeep(relationship, o.relationship, true)
-           && compareDeep(nucleicAcid, o.nucleicAcid, true) && compareDeep(polymer, o.polymer, true) && compareDeep(protein, o.protein, true)
-           && compareDeep(sourceMaterial, o.sourceMaterial, true);
+           && compareDeep(domain, o.domain, true) && compareDeep(grade, o.grade, true) && compareDeep(description, o.description, true)
+           && compareDeep(source, o.source, true) && compareDeep(note, o.note, true) && compareDeep(manufacturer, o.manufacturer, true)
+           && compareDeep(supplier, o.supplier, true) && compareDeep(moiety, o.moiety, true) && compareDeep(property, o.property, true)
+           && compareDeep(referenceInformation, o.referenceInformation, true) && compareDeep(structure, o.structure, true)
+           && compareDeep(code, o.code, true) && compareDeep(name, o.name, true) && compareDeep(molecularWeight, o.molecularWeight, true)
+           && compareDeep(relationship, o.relationship, true) && compareDeep(nucleicAcid, o.nucleicAcid, true)
+           && compareDeep(polymer, o.polymer, true) && compareDeep(protein, o.protein, true) && compareDeep(sourceMaterial, o.sourceMaterial, true)
+          ;
       }
 
       @Override
@@ -6520,8 +6972,8 @@ public class SubstanceDefinition extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, version, status
-          , category, classification, domain, description, source, note, manufacturer, supplier
-          , moiety, property, referenceInformation, structure, code, name, molecularWeight
+          , category, classification, domain, grade, description, source, note, manufacturer
+          , supplier, moiety, property, referenceInformation, structure, code, name, molecularWeight
           , relationship, nucleicAcid, polymer, protein, sourceMaterial);
       }
 

@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_10_30 {
+public class VersionConvertor_10_30 extends VersionConvertor_Base {
   public static void copyElement(org.hl7.fhir.dstu2.model.Element src, org.hl7.fhir.dstu3.model.Element tgt) throws FHIRException {
     tgt.setId(src.getId());
     for (org.hl7.fhir.dstu2.model.Extension e : src.getExtension()) {

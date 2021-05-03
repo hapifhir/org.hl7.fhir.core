@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +96,6 @@ public class Permission extends DomainResource {
             case ENTEREDINERROR: return "entered-in-error";
             case DRAFT: return "draft";
             case REJECTED: return "rejected";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +105,6 @@ public class Permission extends DomainResource {
             case ENTEREDINERROR: return "http://hl7.org/fhir/permission-status";
             case DRAFT: return "http://hl7.org/fhir/permission-status";
             case REJECTED: return "http://hl7.org/fhir/permission-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +114,6 @@ public class Permission extends DomainResource {
             case ENTEREDINERROR: return "Permission was entered in error and is not active.";
             case DRAFT: return "Permission is being defined.";
             case REJECTED: return "Permission not granted.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,7 +123,6 @@ public class Permission extends DomainResource {
             case ENTEREDINERROR: return "Entered in Error";
             case DRAFT: return "Draft";
             case REJECTED: return "Rejected";
-            case NULL: return null;
             default: return "?";
           }
         }

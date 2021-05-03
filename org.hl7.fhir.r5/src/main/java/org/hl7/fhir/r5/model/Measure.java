@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +60,7 @@ public class Measure extends MetadataResource {
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Meaning of the group", formalDefinition="Indicates a meaning for the group. This can be as simple as a unique identifier, or it can establish meaning in a broader context by drawing from a terminology, allowing groups to be correlated across measures." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-group-example")
         protected CodeableConcept code;
 
         /**
@@ -70,20 +71,60 @@ public class Measure extends MetadataResource {
         protected StringType description;
 
         /**
+         * Indicates whether the measure is used to examine a process, an outcome over time, a patient-reported outcome, or a structure measure such as utilization.
+         */
+        @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Description(shortDefinition="process | outcome | structure | patient-reported-outcome | composite", formalDefinition="Indicates whether the measure is used to examine a process, an outcome over time, a patient-reported outcome, or a structure measure such as utilization." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-type")
+        protected List<CodeableConcept> type;
+
+        /**
+         * The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.
+         */
+        @Child(name = "basis", type = {CodeType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Population basis", formalDefinition="The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-types")
+        protected Enumeration<FHIRAllTypes> basis;
+
+        /**
+         * Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented.
+         */
+        @Child(name = "scoring", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="proportion | ratio | continuous-variable | cohort", formalDefinition="Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-scoring")
+        protected CodeableConcept scoring;
+
+        /**
+         * Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit.
+         */
+        @Child(name = "scoringUnit", type = {CodeableConcept.class}, order=6, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="What units?", formalDefinition="Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-scoring-unit")
+        protected CodeableConcept scoringUnit;
+
+        /**
+         * Information on whether an increase or decrease in score is the preferred result (e.g., a higher score indicates better quality OR a lower score indicates better quality OR quality is within a range).
+         */
+        @Child(name = "improvementNotation", type = {CodeableConcept.class}, order=7, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="increase | decrease", formalDefinition="Information on whether an increase or decrease in score is the preferred result (e.g., a higher score indicates better quality OR a lower score indicates better quality OR quality is within a range)." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-improvement-notation")
+        protected CodeableConcept improvementNotation;
+
+        /**
          * A population criteria for the measure.
          */
-        @Child(name = "population", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "population", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Population criteria", formalDefinition="A population criteria for the measure." )
         protected List<MeasureGroupPopulationComponent> population;
 
         /**
          * The stratifier criteria for the measure report, specified as either the name of a valid CQL expression defined within a referenced library or a valid FHIR Resource Path.
          */
-        @Child(name = "stratifier", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "stratifier", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Stratifier criteria for the measure", formalDefinition="The stratifier criteria for the measure report, specified as either the name of a valid CQL expression defined within a referenced library or a valid FHIR Resource Path." )
         protected List<MeasureGroupStratifierComponent> stratifier;
 
-        private static final long serialVersionUID = -1797567579L;
+        private static final long serialVersionUID = 693617289L;
 
     /**
      * Constructor
@@ -162,6 +203,180 @@ public class Measure extends MetadataResource {
               this.description = new StringType();
             this.description.setValue(value);
           }
+          return this;
+        }
+
+        /**
+         * @return {@link #type} (Indicates whether the measure is used to examine a process, an outcome over time, a patient-reported outcome, or a structure measure such as utilization.)
+         */
+        public List<CodeableConcept> getType() { 
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          return this.type;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public MeasureGroupComponent setType(List<CodeableConcept> theType) { 
+          this.type = theType;
+          return this;
+        }
+
+        public boolean hasType() { 
+          if (this.type == null)
+            return false;
+          for (CodeableConcept item : this.type)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CodeableConcept addType() { //3
+          CodeableConcept t = new CodeableConcept();
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          this.type.add(t);
+          return t;
+        }
+
+        public MeasureGroupComponent addType(CodeableConcept t) { //3
+          if (t == null)
+            return this;
+          if (this.type == null)
+            this.type = new ArrayList<CodeableConcept>();
+          this.type.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
+         */
+        public CodeableConcept getTypeFirstRep() { 
+          if (getType().isEmpty()) {
+            addType();
+          }
+          return getType().get(0);
+        }
+
+        /**
+         * @return {@link #basis} (The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.). This is the underlying object with id, value and extensions. The accessor "getBasis" gives direct access to the value
+         */
+        public Enumeration<FHIRAllTypes> getBasisElement() { 
+          if (this.basis == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MeasureGroupComponent.basis");
+            else if (Configuration.doAutoCreate())
+              this.basis = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory()); // bb
+          return this.basis;
+        }
+
+        public boolean hasBasisElement() { 
+          return this.basis != null && !this.basis.isEmpty();
+        }
+
+        public boolean hasBasis() { 
+          return this.basis != null && !this.basis.isEmpty();
+        }
+
+        /**
+         * @param value {@link #basis} (The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.). This is the underlying object with id, value and extensions. The accessor "getBasis" gives direct access to the value
+         */
+        public MeasureGroupComponent setBasisElement(Enumeration<FHIRAllTypes> value) { 
+          this.basis = value;
+          return this;
+        }
+
+        /**
+         * @return The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.
+         */
+        public FHIRAllTypes getBasis() { 
+          return this.basis == null ? null : this.basis.getValue();
+        }
+
+        /**
+         * @param value The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.
+         */
+        public MeasureGroupComponent setBasis(FHIRAllTypes value) { 
+          if (value == null)
+            this.basis = null;
+          else {
+            if (this.basis == null)
+              this.basis = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory());
+            this.basis.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #scoring} (Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented.)
+         */
+        public CodeableConcept getScoring() { 
+          if (this.scoring == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MeasureGroupComponent.scoring");
+            else if (Configuration.doAutoCreate())
+              this.scoring = new CodeableConcept(); // cc
+          return this.scoring;
+        }
+
+        public boolean hasScoring() { 
+          return this.scoring != null && !this.scoring.isEmpty();
+        }
+
+        /**
+         * @param value {@link #scoring} (Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented.)
+         */
+        public MeasureGroupComponent setScoring(CodeableConcept value) { 
+          this.scoring = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #scoringUnit} (Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit.)
+         */
+        public CodeableConcept getScoringUnit() { 
+          if (this.scoringUnit == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MeasureGroupComponent.scoringUnit");
+            else if (Configuration.doAutoCreate())
+              this.scoringUnit = new CodeableConcept(); // cc
+          return this.scoringUnit;
+        }
+
+        public boolean hasScoringUnit() { 
+          return this.scoringUnit != null && !this.scoringUnit.isEmpty();
+        }
+
+        /**
+         * @param value {@link #scoringUnit} (Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit.)
+         */
+        public MeasureGroupComponent setScoringUnit(CodeableConcept value) { 
+          this.scoringUnit = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #improvementNotation} (Information on whether an increase or decrease in score is the preferred result (e.g., a higher score indicates better quality OR a lower score indicates better quality OR quality is within a range).)
+         */
+        public CodeableConcept getImprovementNotation() { 
+          if (this.improvementNotation == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MeasureGroupComponent.improvementNotation");
+            else if (Configuration.doAutoCreate())
+              this.improvementNotation = new CodeableConcept(); // cc
+          return this.improvementNotation;
+        }
+
+        public boolean hasImprovementNotation() { 
+          return this.improvementNotation != null && !this.improvementNotation.isEmpty();
+        }
+
+        /**
+         * @param value {@link #improvementNotation} (Information on whether an increase or decrease in score is the preferred result (e.g., a higher score indicates better quality OR a lower score indicates better quality OR quality is within a range).)
+         */
+        public MeasureGroupComponent setImprovementNotation(CodeableConcept value) { 
+          this.improvementNotation = value;
           return this;
         }
 
@@ -275,6 +490,11 @@ public class Measure extends MetadataResource {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "Indicates a meaning for the group. This can be as simple as a unique identifier, or it can establish meaning in a broader context by drawing from a terminology, allowing groups to be correlated across measures.", 0, 1, code));
           children.add(new Property("description", "string", "The human readable description of this population group.", 0, 1, description));
+          children.add(new Property("type", "CodeableConcept", "Indicates whether the measure is used to examine a process, an outcome over time, a patient-reported outcome, or a structure measure such as utilization.", 0, java.lang.Integer.MAX_VALUE, type));
+          children.add(new Property("basis", "code", "The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.", 0, 1, basis));
+          children.add(new Property("scoring", "CodeableConcept", "Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented.", 0, 1, scoring));
+          children.add(new Property("scoringUnit", "CodeableConcept", "Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit.", 0, 1, scoringUnit));
+          children.add(new Property("improvementNotation", "CodeableConcept", "Information on whether an increase or decrease in score is the preferred result (e.g., a higher score indicates better quality OR a lower score indicates better quality OR quality is within a range).", 0, 1, improvementNotation));
           children.add(new Property("population", "", "A population criteria for the measure.", 0, java.lang.Integer.MAX_VALUE, population));
           children.add(new Property("stratifier", "", "The stratifier criteria for the measure report, specified as either the name of a valid CQL expression defined within a referenced library or a valid FHIR Resource Path.", 0, java.lang.Integer.MAX_VALUE, stratifier));
         }
@@ -284,6 +504,11 @@ public class Measure extends MetadataResource {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Indicates a meaning for the group. This can be as simple as a unique identifier, or it can establish meaning in a broader context by drawing from a terminology, allowing groups to be correlated across measures.", 0, 1, code);
           case -1724546052: /*description*/  return new Property("description", "string", "The human readable description of this population group.", 0, 1, description);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Indicates whether the measure is used to examine a process, an outcome over time, a patient-reported outcome, or a structure measure such as utilization.", 0, java.lang.Integer.MAX_VALUE, type);
+          case 93508670: /*basis*/  return new Property("basis", "code", "The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.", 0, 1, basis);
+          case 1924005583: /*scoring*/  return new Property("scoring", "CodeableConcept", "Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented.", 0, 1, scoring);
+          case 1527532787: /*scoringUnit*/  return new Property("scoringUnit", "CodeableConcept", "Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit.", 0, 1, scoringUnit);
+          case -2085456136: /*improvementNotation*/  return new Property("improvementNotation", "CodeableConcept", "Information on whether an increase or decrease in score is the preferred result (e.g., a higher score indicates better quality OR a lower score indicates better quality OR quality is within a range).", 0, 1, improvementNotation);
           case -2023558323: /*population*/  return new Property("population", "", "A population criteria for the measure.", 0, java.lang.Integer.MAX_VALUE, population);
           case 90983669: /*stratifier*/  return new Property("stratifier", "", "The stratifier criteria for the measure report, specified as either the name of a valid CQL expression defined within a referenced library or a valid FHIR Resource Path.", 0, java.lang.Integer.MAX_VALUE, stratifier);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -296,6 +521,11 @@ public class Measure extends MetadataResource {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
+        case 93508670: /*basis*/ return this.basis == null ? new Base[0] : new Base[] {this.basis}; // Enumeration<FHIRAllTypes>
+        case 1924005583: /*scoring*/ return this.scoring == null ? new Base[0] : new Base[] {this.scoring}; // CodeableConcept
+        case 1527532787: /*scoringUnit*/ return this.scoringUnit == null ? new Base[0] : new Base[] {this.scoringUnit}; // CodeableConcept
+        case -2085456136: /*improvementNotation*/ return this.improvementNotation == null ? new Base[0] : new Base[] {this.improvementNotation}; // CodeableConcept
         case -2023558323: /*population*/ return this.population == null ? new Base[0] : this.population.toArray(new Base[this.population.size()]); // MeasureGroupPopulationComponent
         case 90983669: /*stratifier*/ return this.stratifier == null ? new Base[0] : this.stratifier.toArray(new Base[this.stratifier.size()]); // MeasureGroupStratifierComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -311,6 +541,22 @@ public class Measure extends MetadataResource {
           return value;
         case -1724546052: // description
           this.description = TypeConvertor.castToString(value); // StringType
+          return value;
+        case 3575610: // type
+          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          return value;
+        case 93508670: // basis
+          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.basis = (Enumeration) value; // Enumeration<FHIRAllTypes>
+          return value;
+        case 1924005583: // scoring
+          this.scoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 1527532787: // scoringUnit
+          this.scoringUnit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case -2085456136: // improvementNotation
+          this.improvementNotation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -2023558323: // population
           this.getPopulation().add((MeasureGroupPopulationComponent) value); // MeasureGroupPopulationComponent
@@ -329,6 +575,17 @@ public class Measure extends MetadataResource {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("description")) {
           this.description = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("type")) {
+          this.getType().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("basis")) {
+          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.basis = (Enumeration) value; // Enumeration<FHIRAllTypes>
+        } else if (name.equals("scoring")) {
+          this.scoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("scoringUnit")) {
+          this.scoringUnit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("improvementNotation")) {
+          this.improvementNotation = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("population")) {
           this.getPopulation().add((MeasureGroupPopulationComponent) value);
         } else if (name.equals("stratifier")) {
@@ -343,6 +600,11 @@ public class Measure extends MetadataResource {
         switch (hash) {
         case 3059181:  return getCode();
         case -1724546052:  return getDescriptionElement();
+        case 3575610:  return addType(); 
+        case 93508670:  return getBasisElement();
+        case 1924005583:  return getScoring();
+        case 1527532787:  return getScoringUnit();
+        case -2085456136:  return getImprovementNotation();
         case -2023558323:  return addPopulation(); 
         case 90983669:  return addStratifier(); 
         default: return super.makeProperty(hash, name);
@@ -355,6 +617,11 @@ public class Measure extends MetadataResource {
         switch (hash) {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"string"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
+        case 93508670: /*basis*/ return new String[] {"code"};
+        case 1924005583: /*scoring*/ return new String[] {"CodeableConcept"};
+        case 1527532787: /*scoringUnit*/ return new String[] {"CodeableConcept"};
+        case -2085456136: /*improvementNotation*/ return new String[] {"CodeableConcept"};
         case -2023558323: /*population*/ return new String[] {};
         case 90983669: /*stratifier*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -370,6 +637,24 @@ public class Measure extends MetadataResource {
         }
         else if (name.equals("description")) {
           throw new FHIRException("Cannot call addChild on a primitive type Measure.group.description");
+        }
+        else if (name.equals("type")) {
+          return addType();
+        }
+        else if (name.equals("basis")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Measure.group.basis");
+        }
+        else if (name.equals("scoring")) {
+          this.scoring = new CodeableConcept();
+          return this.scoring;
+        }
+        else if (name.equals("scoringUnit")) {
+          this.scoringUnit = new CodeableConcept();
+          return this.scoringUnit;
+        }
+        else if (name.equals("improvementNotation")) {
+          this.improvementNotation = new CodeableConcept();
+          return this.improvementNotation;
         }
         else if (name.equals("population")) {
           return addPopulation();
@@ -391,6 +676,15 @@ public class Measure extends MetadataResource {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
+        if (type != null) {
+          dst.type = new ArrayList<CodeableConcept>();
+          for (CodeableConcept i : type)
+            dst.type.add(i.copy());
+        };
+        dst.basis = basis == null ? null : basis.copy();
+        dst.scoring = scoring == null ? null : scoring.copy();
+        dst.scoringUnit = scoringUnit == null ? null : scoringUnit.copy();
+        dst.improvementNotation = improvementNotation == null ? null : improvementNotation.copy();
         if (population != null) {
           dst.population = new ArrayList<MeasureGroupPopulationComponent>();
           for (MeasureGroupPopulationComponent i : population)
@@ -410,7 +704,9 @@ public class Measure extends MetadataResource {
         if (!(other_ instanceof MeasureGroupComponent))
           return false;
         MeasureGroupComponent o = (MeasureGroupComponent) other_;
-        return compareDeep(code, o.code, true) && compareDeep(description, o.description, true) && compareDeep(population, o.population, true)
+        return compareDeep(code, o.code, true) && compareDeep(description, o.description, true) && compareDeep(type, o.type, true)
+           && compareDeep(basis, o.basis, true) && compareDeep(scoring, o.scoring, true) && compareDeep(scoringUnit, o.scoringUnit, true)
+           && compareDeep(improvementNotation, o.improvementNotation, true) && compareDeep(population, o.population, true)
            && compareDeep(stratifier, o.stratifier, true);
       }
 
@@ -421,12 +717,12 @@ public class Measure extends MetadataResource {
         if (!(other_ instanceof MeasureGroupComponent))
           return false;
         MeasureGroupComponent o = (MeasureGroupComponent) other_;
-        return compareValues(description, o.description, true);
+        return compareValues(description, o.description, true) && compareValues(basis, o.basis, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, description, population
-          , stratifier);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, description, type
+          , basis, scoring, scoringUnit, improvementNotation, population, stratifier);
       }
 
   public String fhirType() {
@@ -460,7 +756,22 @@ public class Measure extends MetadataResource {
         @Description(shortDefinition="The criteria that defines this population", formalDefinition="An expression that specifies the criteria for the population, typically the name of an expression in a library." )
         protected Expression criteria;
 
-        private static final long serialVersionUID = 2107514056L;
+        /**
+         * The id of a population element in this measure that provides the input for this population criteria. In most cases, the scoring structure of the measure implies specific relationships (e.g. the Numerator uses the Denominator as the source in a proportion scoring). In some cases, however, multiple possible choices exist and must be resolved explicitly. For example in a ratio measure with multiple initial populations, the denominator must specify which population should be used as the starting point.
+         */
+        @Child(name = "inputPopulationId", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Which population", formalDefinition="The id of a population element in this measure that provides the input for this population criteria. In most cases, the scoring structure of the measure implies specific relationships (e.g. the Numerator uses the Denominator as the source in a proportion scoring). In some cases, however, multiple possible choices exist and must be resolved explicitly. For example in a ratio measure with multiple initial populations, the denominator must specify which population should be used as the starting point." )
+        protected StringType inputPopulationId;
+
+        /**
+         * Specifies which method should be used to aggregate measure observation values. For most scoring types, this is implied by scoring (e.g. a proportion measure counts members of the populations). For continuous variables, however, this information must be specified to ensure correct calculation.
+         */
+        @Child(name = "aggregateMethod", type = {CodeableConcept.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Aggregation method for a measure score (e.g. sum, average, median, minimum, maximum, count)", formalDefinition="Specifies which method should be used to aggregate measure observation values. For most scoring types, this is implied by scoring (e.g. a proportion measure counts members of the populations). For continuous variables, however, this information must be specified to ensure correct calculation." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-aggregate-method")
+        protected CodeableConcept aggregateMethod;
+
+        private static final long serialVersionUID = 119326506L;
 
     /**
      * Constructor
@@ -574,11 +885,86 @@ public class Measure extends MetadataResource {
           return this;
         }
 
+        /**
+         * @return {@link #inputPopulationId} (The id of a population element in this measure that provides the input for this population criteria. In most cases, the scoring structure of the measure implies specific relationships (e.g. the Numerator uses the Denominator as the source in a proportion scoring). In some cases, however, multiple possible choices exist and must be resolved explicitly. For example in a ratio measure with multiple initial populations, the denominator must specify which population should be used as the starting point.). This is the underlying object with id, value and extensions. The accessor "getInputPopulationId" gives direct access to the value
+         */
+        public StringType getInputPopulationIdElement() { 
+          if (this.inputPopulationId == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MeasureGroupPopulationComponent.inputPopulationId");
+            else if (Configuration.doAutoCreate())
+              this.inputPopulationId = new StringType(); // bb
+          return this.inputPopulationId;
+        }
+
+        public boolean hasInputPopulationIdElement() { 
+          return this.inputPopulationId != null && !this.inputPopulationId.isEmpty();
+        }
+
+        public boolean hasInputPopulationId() { 
+          return this.inputPopulationId != null && !this.inputPopulationId.isEmpty();
+        }
+
+        /**
+         * @param value {@link #inputPopulationId} (The id of a population element in this measure that provides the input for this population criteria. In most cases, the scoring structure of the measure implies specific relationships (e.g. the Numerator uses the Denominator as the source in a proportion scoring). In some cases, however, multiple possible choices exist and must be resolved explicitly. For example in a ratio measure with multiple initial populations, the denominator must specify which population should be used as the starting point.). This is the underlying object with id, value and extensions. The accessor "getInputPopulationId" gives direct access to the value
+         */
+        public MeasureGroupPopulationComponent setInputPopulationIdElement(StringType value) { 
+          this.inputPopulationId = value;
+          return this;
+        }
+
+        /**
+         * @return The id of a population element in this measure that provides the input for this population criteria. In most cases, the scoring structure of the measure implies specific relationships (e.g. the Numerator uses the Denominator as the source in a proportion scoring). In some cases, however, multiple possible choices exist and must be resolved explicitly. For example in a ratio measure with multiple initial populations, the denominator must specify which population should be used as the starting point.
+         */
+        public String getInputPopulationId() { 
+          return this.inputPopulationId == null ? null : this.inputPopulationId.getValue();
+        }
+
+        /**
+         * @param value The id of a population element in this measure that provides the input for this population criteria. In most cases, the scoring structure of the measure implies specific relationships (e.g. the Numerator uses the Denominator as the source in a proportion scoring). In some cases, however, multiple possible choices exist and must be resolved explicitly. For example in a ratio measure with multiple initial populations, the denominator must specify which population should be used as the starting point.
+         */
+        public MeasureGroupPopulationComponent setInputPopulationId(String value) { 
+          if (Utilities.noString(value))
+            this.inputPopulationId = null;
+          else {
+            if (this.inputPopulationId == null)
+              this.inputPopulationId = new StringType();
+            this.inputPopulationId.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #aggregateMethod} (Specifies which method should be used to aggregate measure observation values. For most scoring types, this is implied by scoring (e.g. a proportion measure counts members of the populations). For continuous variables, however, this information must be specified to ensure correct calculation.)
+         */
+        public CodeableConcept getAggregateMethod() { 
+          if (this.aggregateMethod == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MeasureGroupPopulationComponent.aggregateMethod");
+            else if (Configuration.doAutoCreate())
+              this.aggregateMethod = new CodeableConcept(); // cc
+          return this.aggregateMethod;
+        }
+
+        public boolean hasAggregateMethod() { 
+          return this.aggregateMethod != null && !this.aggregateMethod.isEmpty();
+        }
+
+        /**
+         * @param value {@link #aggregateMethod} (Specifies which method should be used to aggregate measure observation values. For most scoring types, this is implied by scoring (e.g. a proportion measure counts members of the populations). For continuous variables, however, this information must be specified to ensure correct calculation.)
+         */
+        public MeasureGroupPopulationComponent setAggregateMethod(CodeableConcept value) { 
+          this.aggregateMethod = value;
+          return this;
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "The type of population criteria.", 0, 1, code));
           children.add(new Property("description", "string", "The human readable description of this population criteria.", 0, 1, description));
           children.add(new Property("criteria", "Expression", "An expression that specifies the criteria for the population, typically the name of an expression in a library.", 0, 1, criteria));
+          children.add(new Property("inputPopulationId", "string", "The id of a population element in this measure that provides the input for this population criteria. In most cases, the scoring structure of the measure implies specific relationships (e.g. the Numerator uses the Denominator as the source in a proportion scoring). In some cases, however, multiple possible choices exist and must be resolved explicitly. For example in a ratio measure with multiple initial populations, the denominator must specify which population should be used as the starting point.", 0, 1, inputPopulationId));
+          children.add(new Property("aggregateMethod", "CodeableConcept", "Specifies which method should be used to aggregate measure observation values. For most scoring types, this is implied by scoring (e.g. a proportion measure counts members of the populations). For continuous variables, however, this information must be specified to ensure correct calculation.", 0, 1, aggregateMethod));
         }
 
         @Override
@@ -587,6 +973,8 @@ public class Measure extends MetadataResource {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "The type of population criteria.", 0, 1, code);
           case -1724546052: /*description*/  return new Property("description", "string", "The human readable description of this population criteria.", 0, 1, description);
           case 1952046943: /*criteria*/  return new Property("criteria", "Expression", "An expression that specifies the criteria for the population, typically the name of an expression in a library.", 0, 1, criteria);
+          case -464344526: /*inputPopulationId*/  return new Property("inputPopulationId", "string", "The id of a population element in this measure that provides the input for this population criteria. In most cases, the scoring structure of the measure implies specific relationships (e.g. the Numerator uses the Denominator as the source in a proportion scoring). In some cases, however, multiple possible choices exist and must be resolved explicitly. For example in a ratio measure with multiple initial populations, the denominator must specify which population should be used as the starting point.", 0, 1, inputPopulationId);
+          case -1036416: /*aggregateMethod*/  return new Property("aggregateMethod", "CodeableConcept", "Specifies which method should be used to aggregate measure observation values. For most scoring types, this is implied by scoring (e.g. a proportion measure counts members of the populations). For continuous variables, however, this information must be specified to ensure correct calculation.", 0, 1, aggregateMethod);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -598,6 +986,8 @@ public class Measure extends MetadataResource {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 1952046943: /*criteria*/ return this.criteria == null ? new Base[0] : new Base[] {this.criteria}; // Expression
+        case -464344526: /*inputPopulationId*/ return this.inputPopulationId == null ? new Base[0] : new Base[] {this.inputPopulationId}; // StringType
+        case -1036416: /*aggregateMethod*/ return this.aggregateMethod == null ? new Base[0] : new Base[] {this.aggregateMethod}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -615,6 +1005,12 @@ public class Measure extends MetadataResource {
         case 1952046943: // criteria
           this.criteria = TypeConvertor.castToExpression(value); // Expression
           return value;
+        case -464344526: // inputPopulationId
+          this.inputPopulationId = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -1036416: // aggregateMethod
+          this.aggregateMethod = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -628,6 +1024,10 @@ public class Measure extends MetadataResource {
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("criteria")) {
           this.criteria = TypeConvertor.castToExpression(value); // Expression
+        } else if (name.equals("inputPopulationId")) {
+          this.inputPopulationId = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("aggregateMethod")) {
+          this.aggregateMethod = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -639,6 +1039,8 @@ public class Measure extends MetadataResource {
         case 3059181:  return getCode();
         case -1724546052:  return getDescriptionElement();
         case 1952046943:  return getCriteria();
+        case -464344526:  return getInputPopulationIdElement();
+        case -1036416:  return getAggregateMethod();
         default: return super.makeProperty(hash, name);
         }
 
@@ -650,6 +1052,8 @@ public class Measure extends MetadataResource {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
         case -1724546052: /*description*/ return new String[] {"string"};
         case 1952046943: /*criteria*/ return new String[] {"Expression"};
+        case -464344526: /*inputPopulationId*/ return new String[] {"string"};
+        case -1036416: /*aggregateMethod*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -668,6 +1072,13 @@ public class Measure extends MetadataResource {
           this.criteria = new Expression();
           return this.criteria;
         }
+        else if (name.equals("inputPopulationId")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Measure.group.population.inputPopulationId");
+        }
+        else if (name.equals("aggregateMethod")) {
+          this.aggregateMethod = new CodeableConcept();
+          return this.aggregateMethod;
+        }
         else
           return super.addChild(name);
       }
@@ -683,6 +1094,8 @@ public class Measure extends MetadataResource {
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
         dst.criteria = criteria == null ? null : criteria.copy();
+        dst.inputPopulationId = inputPopulationId == null ? null : inputPopulationId.copy();
+        dst.aggregateMethod = aggregateMethod == null ? null : aggregateMethod.copy();
       }
 
       @Override
@@ -693,6 +1106,7 @@ public class Measure extends MetadataResource {
           return false;
         MeasureGroupPopulationComponent o = (MeasureGroupPopulationComponent) other_;
         return compareDeep(code, o.code, true) && compareDeep(description, o.description, true) && compareDeep(criteria, o.criteria, true)
+           && compareDeep(inputPopulationId, o.inputPopulationId, true) && compareDeep(aggregateMethod, o.aggregateMethod, true)
           ;
       }
 
@@ -703,12 +1117,13 @@ public class Measure extends MetadataResource {
         if (!(other_ instanceof MeasureGroupPopulationComponent))
           return false;
         MeasureGroupPopulationComponent o = (MeasureGroupPopulationComponent) other_;
-        return compareValues(description, o.description, true);
+        return compareValues(description, o.description, true) && compareValues(inputPopulationId, o.inputPopulationId, true)
+          ;
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, description, criteria
-          );
+          , inputPopulationId, aggregateMethod);
       }
 
   public String fhirType() {
@@ -725,6 +1140,7 @@ public class Measure extends MetadataResource {
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Meaning of the stratifier", formalDefinition="Indicates a meaning for the stratifier. This can be as simple as a unique identifier, or it can establish meaning in a broader context by drawing from a terminology, allowing stratifiers to be correlated across measures." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-stratifier-example")
         protected CodeableConcept code;
 
         /**
@@ -1076,6 +1492,7 @@ public class Measure extends MetadataResource {
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Meaning of the stratifier component", formalDefinition="Indicates a meaning for the stratifier component. This can be as simple as a unique identifier, or it can establish meaning in a broader context by drawing from a terminology, allowing stratifiers to be correlated across measures." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-stratifier-example")
         protected CodeableConcept code;
 
         /**
@@ -1357,6 +1774,7 @@ public class Measure extends MetadataResource {
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="Meaning of the supplemental data", formalDefinition="Indicates a meaning for the supplemental data. This can be as simple as a unique identifier, or it can establish meaning in a broader context by drawing from a terminology, allowing supplemental data to be correlated across measures." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-supplemental-data-example")
         protected CodeableConcept code;
 
         /**
@@ -1776,44 +2194,52 @@ public class Measure extends MetadataResource {
     protected DataType subject;
 
     /**
+     * The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.
+     */
+    @Child(name = "basis", type = {CodeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Population basis", formalDefinition="The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/all-types")
+    protected Enumeration<FHIRAllTypes> basis;
+
+    /**
      * The date  (and optionally time) when the measure was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the measure changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the measure was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the measure changes." )
     protected DateTimeType date;
 
     /**
      * The name of the organization or individual that published the measure.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "publisher", type = {StringType.class}, order=11, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the measure." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * A free text natural language description of the measure from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=12, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {MarkdownType.class}, order=13, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Natural language description of the measure", formalDefinition="A free text natural language description of the measure from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate measure instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate measure instances." )
     protected List<UsageContext> useContext;
 
     /**
      * A legal or geographic region in which the measure is intended to be used.
      */
-    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "jurisdiction", type = {CodeableConcept.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Intended jurisdiction for measure (if applicable)", formalDefinition="A legal or geographic region in which the measure is intended to be used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/jurisdiction")
     protected List<CodeableConcept> jurisdiction;
@@ -1821,49 +2247,49 @@ public class Measure extends MetadataResource {
     /**
      * Explanation of why this measure is needed and why it has been designed as it has.
      */
-    @Child(name = "purpose", type = {MarkdownType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "purpose", type = {MarkdownType.class}, order=16, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Why this measure is defined", formalDefinition="Explanation of why this measure is needed and why it has been designed as it has." )
     protected MarkdownType purpose;
 
     /**
      * A detailed description, from a clinical perspective, of how the measure is used.
      */
-    @Child(name = "usage", type = {StringType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "usage", type = {StringType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Describes the clinical usage of the measure", formalDefinition="A detailed description, from a clinical perspective, of how the measure is used." )
     protected StringType usage;
 
     /**
      * A copyright statement relating to the measure and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the measure.
      */
-    @Child(name = "copyright", type = {MarkdownType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "copyright", type = {MarkdownType.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Use and/or publishing restrictions", formalDefinition="A copyright statement relating to the measure and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the measure." )
     protected MarkdownType copyright;
 
     /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=18, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=19, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the measure was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=19, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=20, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the measure was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The period during which the measure content was or is planned to be in active use.
      */
-    @Child(name = "effectivePeriod", type = {Period.class}, order=20, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "effectivePeriod", type = {Period.class}, order=21, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="When the measure is expected to be used", formalDefinition="The period during which the measure content was or is planned to be in active use." )
     protected Period effectivePeriod;
 
     /**
      * Descriptive topics related to the content of the measure. Topics provide a high-level categorization grouping types of measures that can be useful for filtering and searching.
      */
-    @Child(name = "topic", type = {CodeableConcept.class}, order=21, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "topic", type = {CodeableConcept.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="The category of the measure, such as Education, Treatment, Assessment, etc.", formalDefinition="Descriptive topics related to the content of the measure. Topics provide a high-level categorization grouping types of measures that can be useful for filtering and searching." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/definition-topic")
     protected List<CodeableConcept> topic;
@@ -1871,64 +2297,72 @@ public class Measure extends MetadataResource {
     /**
      * An individiual or organization primarily involved in the creation and maintenance of the content.
      */
-    @Child(name = "author", type = {ContactDetail.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "author", type = {ContactDetail.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who authored the content", formalDefinition="An individiual or organization primarily involved in the creation and maintenance of the content." )
     protected List<ContactDetail> author;
 
     /**
      * An individual or organization primarily responsible for internal coherence of the content.
      */
-    @Child(name = "editor", type = {ContactDetail.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "editor", type = {ContactDetail.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who edited the content", formalDefinition="An individual or organization primarily responsible for internal coherence of the content." )
     protected List<ContactDetail> editor;
 
     /**
      * An individual or organization primarily responsible for review of some aspect of the content.
      */
-    @Child(name = "reviewer", type = {ContactDetail.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who reviewed the content", formalDefinition="An individual or organization primarily responsible for review of some aspect of the content." )
     protected List<ContactDetail> reviewer;
 
     /**
      * An individual or organization responsible for officially endorsing the content for use in some setting.
      */
-    @Child(name = "endorser", type = {ContactDetail.class}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "endorser", type = {ContactDetail.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who endorsed the content", formalDefinition="An individual or organization responsible for officially endorsing the content for use in some setting." )
     protected List<ContactDetail> endorser;
 
     /**
      * Related artifacts such as additional documentation, justification, or bibliographic references.
      */
-    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=26, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Additional documentation, citations, etc.", formalDefinition="Related artifacts such as additional documentation, justification, or bibliographic references." )
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
      * A reference to a Library resource containing the formal logic used by the measure.
      */
-    @Child(name = "library", type = {CanonicalType.class}, order=27, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "library", type = {CanonicalType.class}, order=28, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Logic used by the measure", formalDefinition="A reference to a Library resource containing the formal logic used by the measure." )
     protected List<CanonicalType> library;
 
     /**
      * Notices and disclaimers regarding the use of the measure or related to intellectual property (such as code systems) referenced by the measure.
      */
-    @Child(name = "disclaimer", type = {MarkdownType.class}, order=28, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "disclaimer", type = {MarkdownType.class}, order=29, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Disclaimer for use of the measure or its referenced content", formalDefinition="Notices and disclaimers regarding the use of the measure or related to intellectual property (such as code systems) referenced by the measure." )
     protected MarkdownType disclaimer;
 
     /**
      * Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented.
      */
-    @Child(name = "scoring", type = {CodeableConcept.class}, order=29, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "scoring", type = {CodeableConcept.class}, order=30, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="proportion | ratio | continuous-variable | cohort", formalDefinition="Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-scoring")
     protected CodeableConcept scoring;
 
     /**
+     * Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit.
+     */
+    @Child(name = "scoringUnit", type = {CodeableConcept.class}, order=31, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="What units?", formalDefinition="Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-scoring-unit")
+    protected CodeableConcept scoringUnit;
+
+    /**
      * If this is a composite measure, the scoring method used to combine the component measures to determine the composite score.
      */
-    @Child(name = "compositeScoring", type = {CodeableConcept.class}, order=30, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "compositeScoring", type = {CodeableConcept.class}, order=32, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="opportunity | all-or-nothing | linear | weighted", formalDefinition="If this is a composite measure, the scoring method used to combine the component measures to determine the composite score." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/composite-measure-scoring")
     protected CodeableConcept compositeScoring;
@@ -1936,7 +2370,7 @@ public class Measure extends MetadataResource {
     /**
      * Indicates whether the measure is used to examine a process, an outcome over time, a patient-reported outcome, or a structure measure such as utilization.
      */
-    @Child(name = "type", type = {CodeableConcept.class}, order=31, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "type", type = {CodeableConcept.class}, order=33, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="process | outcome | structure | patient-reported-outcome | composite", formalDefinition="Indicates whether the measure is used to examine a process, an outcome over time, a patient-reported outcome, or a structure measure such as utilization." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-type")
     protected List<CodeableConcept> type;
@@ -1944,35 +2378,35 @@ public class Measure extends MetadataResource {
     /**
      * A description of the risk adjustment factors that may impact the resulting score for the measure and how they may be accounted for when computing and reporting measure results.
      */
-    @Child(name = "riskAdjustment", type = {StringType.class}, order=32, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "riskAdjustment", type = {StringType.class}, order=34, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="How risk adjustment is applied for this measure", formalDefinition="A description of the risk adjustment factors that may impact the resulting score for the measure and how they may be accounted for when computing and reporting measure results." )
     protected StringType riskAdjustment;
 
     /**
      * Describes how to combine the information calculated, based on logic in each of several populations, into one summarized result.
      */
-    @Child(name = "rateAggregation", type = {StringType.class}, order=33, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "rateAggregation", type = {StringType.class}, order=35, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="How is rate aggregation performed for this measure", formalDefinition="Describes how to combine the information calculated, based on logic in each of several populations, into one summarized result." )
     protected StringType rateAggregation;
 
     /**
      * Provides a succinct statement of the need for the measure. Usually includes statements pertaining to importance criterion: impact, gap in care, and evidence.
      */
-    @Child(name = "rationale", type = {MarkdownType.class}, order=34, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "rationale", type = {MarkdownType.class}, order=36, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Detailed description of why the measure exists", formalDefinition="Provides a succinct statement of the need for the measure. Usually includes statements pertaining to importance criterion: impact, gap in care, and evidence." )
     protected MarkdownType rationale;
 
     /**
      * Provides a summary of relevant clinical guidelines or other clinical recommendations supporting the measure.
      */
-    @Child(name = "clinicalRecommendationStatement", type = {MarkdownType.class}, order=35, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "clinicalRecommendationStatement", type = {MarkdownType.class}, order=37, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Summary of clinical guidelines", formalDefinition="Provides a summary of relevant clinical guidelines or other clinical recommendations supporting the measure." )
     protected MarkdownType clinicalRecommendationStatement;
 
     /**
      * Information on whether an increase or decrease in score is the preferred result (e.g., a higher score indicates better quality OR a lower score indicates better quality OR quality is within a range).
      */
-    @Child(name = "improvementNotation", type = {CodeableConcept.class}, order=36, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "improvementNotation", type = {CodeableConcept.class}, order=38, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="increase | decrease", formalDefinition="Information on whether an increase or decrease in score is the preferred result (e.g., a higher score indicates better quality OR a lower score indicates better quality OR quality is within a range)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/measure-improvement-notation")
     protected CodeableConcept improvementNotation;
@@ -1980,32 +2414,32 @@ public class Measure extends MetadataResource {
     /**
      * Provides a description of an individual term used within the measure.
      */
-    @Child(name = "definition", type = {MarkdownType.class}, order=37, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "definition", type = {MarkdownType.class}, order=39, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Defined terms used in the measure documentation", formalDefinition="Provides a description of an individual term used within the measure." )
     protected List<MarkdownType> definition;
 
     /**
      * Additional guidance for the measure including how it can be used in a clinical context, and the intent of the measure.
      */
-    @Child(name = "guidance", type = {MarkdownType.class}, order=38, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "guidance", type = {MarkdownType.class}, order=40, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Additional guidance for implementers", formalDefinition="Additional guidance for the measure including how it can be used in a clinical context, and the intent of the measure." )
     protected MarkdownType guidance;
 
     /**
      * A group of population criteria for the measure.
      */
-    @Child(name = "group", type = {}, order=39, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "group", type = {}, order=41, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Population criteria group", formalDefinition="A group of population criteria for the measure." )
     protected List<MeasureGroupComponent> group;
 
     /**
      * The supplemental data criteria for the measure report, specified as either the name of a valid CQL expression within a referenced library, or a valid FHIR Resource Path.
      */
-    @Child(name = "supplementalData", type = {}, order=40, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "supplementalData", type = {}, order=42, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="What other data should be reported with the measure", formalDefinition="The supplemental data criteria for the measure report, specified as either the name of a valid CQL expression within a referenced library, or a valid FHIR Resource Path." )
     protected List<MeasureSupplementalDataComponent> supplementalData;
 
-    private static final long serialVersionUID = -994119782L;
+    private static final long serialVersionUID = -345540054L;
 
   /**
    * Constructor
@@ -2458,6 +2892,55 @@ public class Measure extends MetadataResource {
       if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
         throw new Error("Not the right type for Measure.subject[x]: "+value.fhirType());
       this.subject = value;
+      return this;
+    }
+
+    /**
+     * @return {@link #basis} (The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.). This is the underlying object with id, value and extensions. The accessor "getBasis" gives direct access to the value
+     */
+    public Enumeration<FHIRAllTypes> getBasisElement() { 
+      if (this.basis == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Measure.basis");
+        else if (Configuration.doAutoCreate())
+          this.basis = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory()); // bb
+      return this.basis;
+    }
+
+    public boolean hasBasisElement() { 
+      return this.basis != null && !this.basis.isEmpty();
+    }
+
+    public boolean hasBasis() { 
+      return this.basis != null && !this.basis.isEmpty();
+    }
+
+    /**
+     * @param value {@link #basis} (The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.). This is the underlying object with id, value and extensions. The accessor "getBasis" gives direct access to the value
+     */
+    public Measure setBasisElement(Enumeration<FHIRAllTypes> value) { 
+      this.basis = value;
+      return this;
+    }
+
+    /**
+     * @return The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.
+     */
+    public FHIRAllTypes getBasis() { 
+      return this.basis == null ? null : this.basis.getValue();
+    }
+
+    /**
+     * @param value The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.
+     */
+    public Measure setBasis(FHIRAllTypes value) { 
+      if (value == null)
+        this.basis = null;
+      else {
+        if (this.basis == null)
+          this.basis = new Enumeration<FHIRAllTypes>(new FHIRAllTypesEnumFactory());
+        this.basis.setValue(value);
+      }
       return this;
     }
 
@@ -3489,6 +3972,30 @@ public class Measure extends MetadataResource {
     }
 
     /**
+     * @return {@link #scoringUnit} (Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit.)
+     */
+    public CodeableConcept getScoringUnit() { 
+      if (this.scoringUnit == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Measure.scoringUnit");
+        else if (Configuration.doAutoCreate())
+          this.scoringUnit = new CodeableConcept(); // cc
+      return this.scoringUnit;
+    }
+
+    public boolean hasScoringUnit() { 
+      return this.scoringUnit != null && !this.scoringUnit.isEmpty();
+    }
+
+    /**
+     * @param value {@link #scoringUnit} (Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit.)
+     */
+    public Measure setScoringUnit(CodeableConcept value) { 
+      this.scoringUnit = value;
+      return this;
+    }
+
+    /**
      * @return {@link #compositeScoring} (If this is a composite measure, the scoring method used to combine the component measures to determine the composite score.)
      */
     public CodeableConcept getCompositeScoring() { 
@@ -4012,6 +4519,7 @@ public class Measure extends MetadataResource {
         children.add(new Property("status", "code", "The status of this measure. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("experimental", "boolean", "A Boolean value to indicate that this measure is authored for testing purposes (or education/evaluation/marketing) and is not intended to be used for genuine usage.", 0, 1, experimental));
         children.add(new Property("subject[x]", "CodeableConcept|Reference(Group)", "The intended subjects for the measure. If this element is not provided, a Patient subject is assumed, but the subject of the measure can be anything.", 0, 1, subject));
+        children.add(new Property("basis", "code", "The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.", 0, 1, basis));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the measure was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the measure changes.", 0, 1, date));
         children.add(new Property("publisher", "string", "The name of the organization or individual that published the measure.", 0, 1, publisher));
         children.add(new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact));
@@ -4033,6 +4541,7 @@ public class Measure extends MetadataResource {
         children.add(new Property("library", "canonical(Library)", "A reference to a Library resource containing the formal logic used by the measure.", 0, java.lang.Integer.MAX_VALUE, library));
         children.add(new Property("disclaimer", "markdown", "Notices and disclaimers regarding the use of the measure or related to intellectual property (such as code systems) referenced by the measure.", 0, 1, disclaimer));
         children.add(new Property("scoring", "CodeableConcept", "Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented.", 0, 1, scoring));
+        children.add(new Property("scoringUnit", "CodeableConcept", "Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit.", 0, 1, scoringUnit));
         children.add(new Property("compositeScoring", "CodeableConcept", "If this is a composite measure, the scoring method used to combine the component measures to determine the composite score.", 0, 1, compositeScoring));
         children.add(new Property("type", "CodeableConcept", "Indicates whether the measure is used to examine a process, an outcome over time, a patient-reported outcome, or a structure measure such as utilization.", 0, java.lang.Integer.MAX_VALUE, type));
         children.add(new Property("riskAdjustment", "string", "A description of the risk adjustment factors that may impact the resulting score for the measure and how they may be accounted for when computing and reporting measure results.", 0, 1, riskAdjustment));
@@ -4061,6 +4570,7 @@ public class Measure extends MetadataResource {
         case -1867885268: /*subject*/  return new Property("subject[x]", "CodeableConcept|Reference(Group)", "The intended subjects for the measure. If this element is not provided, a Patient subject is assumed, but the subject of the measure can be anything.", 0, 1, subject);
         case -1257122603: /*subjectCodeableConcept*/  return new Property("subject[x]", "CodeableConcept", "The intended subjects for the measure. If this element is not provided, a Patient subject is assumed, but the subject of the measure can be anything.", 0, 1, subject);
         case 772938623: /*subjectReference*/  return new Property("subject[x]", "Reference(Group)", "The intended subjects for the measure. If this element is not provided, a Patient subject is assumed, but the subject of the measure can be anything.", 0, 1, subject);
+        case 93508670: /*basis*/  return new Property("basis", "code", "The population basis specifies the type of elements in the population. For a subject-based measure, this is boolean (because the subject and the population basis are the same, and the population criteria define yes/no values for each individual in the population). For measures that have a population basis that is different than the subject, this element specifies the type of the population basis. For example, an encounter-based measure has a subject of Patient and a population basis of Encounter, and the population criteria all return lists of Encounters.", 0, 1, basis);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the measure was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the measure changes.", 0, 1, date);
         case 1447404028: /*publisher*/  return new Property("publisher", "string", "The name of the organization or individual that published the measure.", 0, 1, publisher);
         case 951526432: /*contact*/  return new Property("contact", "ContactDetail", "Contact details to assist a user in finding and communicating with the publisher.", 0, java.lang.Integer.MAX_VALUE, contact);
@@ -4082,6 +4592,7 @@ public class Measure extends MetadataResource {
         case 166208699: /*library*/  return new Property("library", "canonical(Library)", "A reference to a Library resource containing the formal logic used by the measure.", 0, java.lang.Integer.MAX_VALUE, library);
         case 432371099: /*disclaimer*/  return new Property("disclaimer", "markdown", "Notices and disclaimers regarding the use of the measure or related to intellectual property (such as code systems) referenced by the measure.", 0, 1, disclaimer);
         case 1924005583: /*scoring*/  return new Property("scoring", "CodeableConcept", "Indicates how the calculation is performed for the measure, including proportion, ratio, continuous-variable, and cohort. The value set is extensible, allowing additional measure scoring types to be represented.", 0, 1, scoring);
+        case 1527532787: /*scoringUnit*/  return new Property("scoringUnit", "CodeableConcept", "Defines the expected units of measure for the measure score. This element SHOULD be specified as a UCUM unit.", 0, 1, scoringUnit);
         case 569347656: /*compositeScoring*/  return new Property("compositeScoring", "CodeableConcept", "If this is a composite measure, the scoring method used to combine the component measures to determine the composite score.", 0, 1, compositeScoring);
         case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Indicates whether the measure is used to examine a process, an outcome over time, a patient-reported outcome, or a structure measure such as utilization.", 0, java.lang.Integer.MAX_VALUE, type);
         case 93273500: /*riskAdjustment*/  return new Property("riskAdjustment", "string", "A description of the risk adjustment factors that may impact the resulting score for the measure and how they may be accounted for when computing and reporting measure results.", 0, 1, riskAdjustment);
@@ -4110,6 +4621,7 @@ public class Measure extends MetadataResource {
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case -404562712: /*experimental*/ return this.experimental == null ? new Base[0] : new Base[] {this.experimental}; // BooleanType
         case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // DataType
+        case 93508670: /*basis*/ return this.basis == null ? new Base[0] : new Base[] {this.basis}; // Enumeration<FHIRAllTypes>
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case 1447404028: /*publisher*/ return this.publisher == null ? new Base[0] : new Base[] {this.publisher}; // StringType
         case 951526432: /*contact*/ return this.contact == null ? new Base[0] : this.contact.toArray(new Base[this.contact.size()]); // ContactDetail
@@ -4131,6 +4643,7 @@ public class Measure extends MetadataResource {
         case 166208699: /*library*/ return this.library == null ? new Base[0] : this.library.toArray(new Base[this.library.size()]); // CanonicalType
         case 432371099: /*disclaimer*/ return this.disclaimer == null ? new Base[0] : new Base[] {this.disclaimer}; // MarkdownType
         case 1924005583: /*scoring*/ return this.scoring == null ? new Base[0] : new Base[] {this.scoring}; // CodeableConcept
+        case 1527532787: /*scoringUnit*/ return this.scoringUnit == null ? new Base[0] : new Base[] {this.scoringUnit}; // CodeableConcept
         case 569347656: /*compositeScoring*/ return this.compositeScoring == null ? new Base[0] : new Base[] {this.compositeScoring}; // CodeableConcept
         case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
         case 93273500: /*riskAdjustment*/ return this.riskAdjustment == null ? new Base[0] : new Base[] {this.riskAdjustment}; // StringType
@@ -4177,6 +4690,10 @@ public class Measure extends MetadataResource {
           return value;
         case -1867885268: // subject
           this.subject = TypeConvertor.castToType(value); // DataType
+          return value;
+        case 93508670: // basis
+          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.basis = (Enumeration) value; // Enumeration<FHIRAllTypes>
           return value;
         case 3076014: // date
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
@@ -4241,6 +4758,9 @@ public class Measure extends MetadataResource {
         case 1924005583: // scoring
           this.scoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
+        case 1527532787: // scoringUnit
+          this.scoringUnit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case 569347656: // compositeScoring
           this.compositeScoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
@@ -4300,6 +4820,9 @@ public class Measure extends MetadataResource {
           this.experimental = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("subject[x]")) {
           this.subject = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("basis")) {
+          value = new FHIRAllTypesEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.basis = (Enumeration) value; // Enumeration<FHIRAllTypes>
         } else if (name.equals("date")) {
           this.date = TypeConvertor.castToDateTime(value); // DateTimeType
         } else if (name.equals("publisher")) {
@@ -4342,6 +4865,8 @@ public class Measure extends MetadataResource {
           this.disclaimer = TypeConvertor.castToMarkdown(value); // MarkdownType
         } else if (name.equals("scoring")) {
           this.scoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("scoringUnit")) {
+          this.scoringUnit = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("compositeScoring")) {
           this.compositeScoring = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("type")) {
@@ -4382,6 +4907,7 @@ public class Measure extends MetadataResource {
         case -404562712:  return getExperimentalElement();
         case -573640748:  return getSubject();
         case -1867885268:  return getSubject();
+        case 93508670:  return getBasisElement();
         case 3076014:  return getDateElement();
         case 1447404028:  return getPublisherElement();
         case 951526432:  return addContact(); 
@@ -4403,6 +4929,7 @@ public class Measure extends MetadataResource {
         case 166208699:  return addLibraryElement();
         case 432371099:  return getDisclaimerElement();
         case 1924005583:  return getScoring();
+        case 1527532787:  return getScoringUnit();
         case 569347656:  return getCompositeScoring();
         case 3575610:  return addType(); 
         case 93273500:  return getRiskAdjustmentElement();
@@ -4431,6 +4958,7 @@ public class Measure extends MetadataResource {
         case -892481550: /*status*/ return new String[] {"code"};
         case -404562712: /*experimental*/ return new String[] {"boolean"};
         case -1867885268: /*subject*/ return new String[] {"CodeableConcept", "Reference"};
+        case 93508670: /*basis*/ return new String[] {"code"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
         case 1447404028: /*publisher*/ return new String[] {"string"};
         case 951526432: /*contact*/ return new String[] {"ContactDetail"};
@@ -4452,6 +4980,7 @@ public class Measure extends MetadataResource {
         case 166208699: /*library*/ return new String[] {"canonical"};
         case 432371099: /*disclaimer*/ return new String[] {"markdown"};
         case 1924005583: /*scoring*/ return new String[] {"CodeableConcept"};
+        case 1527532787: /*scoringUnit*/ return new String[] {"CodeableConcept"};
         case 569347656: /*compositeScoring*/ return new String[] {"CodeableConcept"};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 93273500: /*riskAdjustment*/ return new String[] {"string"};
@@ -4501,6 +5030,9 @@ public class Measure extends MetadataResource {
         else if (name.equals("subjectReference")) {
           this.subject = new Reference();
           return this.subject;
+        }
+        else if (name.equals("basis")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Measure.basis");
         }
         else if (name.equals("date")) {
           throw new FHIRException("Cannot call addChild on a primitive type Measure.date");
@@ -4567,6 +5099,10 @@ public class Measure extends MetadataResource {
           this.scoring = new CodeableConcept();
           return this.scoring;
         }
+        else if (name.equals("scoringUnit")) {
+          this.scoringUnit = new CodeableConcept();
+          return this.scoringUnit;
+        }
         else if (name.equals("compositeScoring")) {
           this.compositeScoring = new CodeableConcept();
           return this.compositeScoring;
@@ -4632,6 +5168,7 @@ public class Measure extends MetadataResource {
         dst.status = status == null ? null : status.copy();
         dst.experimental = experimental == null ? null : experimental.copy();
         dst.subject = subject == null ? null : subject.copy();
+        dst.basis = basis == null ? null : basis.copy();
         dst.date = date == null ? null : date.copy();
         dst.publisher = publisher == null ? null : publisher.copy();
         if (contact != null) {
@@ -4693,6 +5230,7 @@ public class Measure extends MetadataResource {
         };
         dst.disclaimer = disclaimer == null ? null : disclaimer.copy();
         dst.scoring = scoring == null ? null : scoring.copy();
+        dst.scoringUnit = scoringUnit == null ? null : scoringUnit.copy();
         dst.compositeScoring = compositeScoring == null ? null : compositeScoring.copy();
         if (type != null) {
           dst.type = new ArrayList<CodeableConcept>();
@@ -4736,19 +5274,20 @@ public class Measure extends MetadataResource {
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
            && compareDeep(name, o.name, true) && compareDeep(title, o.title, true) && compareDeep(subtitle, o.subtitle, true)
            && compareDeep(status, o.status, true) && compareDeep(experimental, o.experimental, true) && compareDeep(subject, o.subject, true)
-           && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true) && compareDeep(contact, o.contact, true)
-           && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
+           && compareDeep(basis, o.basis, true) && compareDeep(date, o.date, true) && compareDeep(publisher, o.publisher, true)
+           && compareDeep(contact, o.contact, true) && compareDeep(description, o.description, true) && compareDeep(useContext, o.useContext, true)
            && compareDeep(jurisdiction, o.jurisdiction, true) && compareDeep(purpose, o.purpose, true) && compareDeep(usage, o.usage, true)
            && compareDeep(copyright, o.copyright, true) && compareDeep(approvalDate, o.approvalDate, true)
            && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(effectivePeriod, o.effectivePeriod, true)
            && compareDeep(topic, o.topic, true) && compareDeep(author, o.author, true) && compareDeep(editor, o.editor, true)
            && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true) && compareDeep(relatedArtifact, o.relatedArtifact, true)
            && compareDeep(library, o.library, true) && compareDeep(disclaimer, o.disclaimer, true) && compareDeep(scoring, o.scoring, true)
-           && compareDeep(compositeScoring, o.compositeScoring, true) && compareDeep(type, o.type, true) && compareDeep(riskAdjustment, o.riskAdjustment, true)
-           && compareDeep(rateAggregation, o.rateAggregation, true) && compareDeep(rationale, o.rationale, true)
-           && compareDeep(clinicalRecommendationStatement, o.clinicalRecommendationStatement, true) && compareDeep(improvementNotation, o.improvementNotation, true)
-           && compareDeep(definition, o.definition, true) && compareDeep(guidance, o.guidance, true) && compareDeep(group, o.group, true)
-           && compareDeep(supplementalData, o.supplementalData, true);
+           && compareDeep(scoringUnit, o.scoringUnit, true) && compareDeep(compositeScoring, o.compositeScoring, true)
+           && compareDeep(type, o.type, true) && compareDeep(riskAdjustment, o.riskAdjustment, true) && compareDeep(rateAggregation, o.rateAggregation, true)
+           && compareDeep(rationale, o.rationale, true) && compareDeep(clinicalRecommendationStatement, o.clinicalRecommendationStatement, true)
+           && compareDeep(improvementNotation, o.improvementNotation, true) && compareDeep(definition, o.definition, true)
+           && compareDeep(guidance, o.guidance, true) && compareDeep(group, o.group, true) && compareDeep(supplementalData, o.supplementalData, true)
+          ;
       }
 
       @Override
@@ -4760,9 +5299,9 @@ public class Measure extends MetadataResource {
         Measure o = (Measure) other_;
         return compareValues(url, o.url, true) && compareValues(version, o.version, true) && compareValues(name, o.name, true)
            && compareValues(title, o.title, true) && compareValues(subtitle, o.subtitle, true) && compareValues(status, o.status, true)
-           && compareValues(experimental, o.experimental, true) && compareValues(date, o.date, true) && compareValues(publisher, o.publisher, true)
-           && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true) && compareValues(usage, o.usage, true)
-           && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
+           && compareValues(experimental, o.experimental, true) && compareValues(basis, o.basis, true) && compareValues(date, o.date, true)
+           && compareValues(publisher, o.publisher, true) && compareValues(description, o.description, true) && compareValues(purpose, o.purpose, true)
+           && compareValues(usage, o.usage, true) && compareValues(copyright, o.copyright, true) && compareValues(approvalDate, o.approvalDate, true)
            && compareValues(lastReviewDate, o.lastReviewDate, true) && compareValues(library, o.library, true)
            && compareValues(disclaimer, o.disclaimer, true) && compareValues(riskAdjustment, o.riskAdjustment, true)
            && compareValues(rateAggregation, o.rateAggregation, true) && compareValues(rationale, o.rationale, true)
@@ -4772,12 +5311,12 @@ public class Measure extends MetadataResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , name, title, subtitle, status, experimental, subject, date, publisher, contact
-          , description, useContext, jurisdiction, purpose, usage, copyright, approvalDate
+          , name, title, subtitle, status, experimental, subject, basis, date, publisher
+          , contact, description, useContext, jurisdiction, purpose, usage, copyright, approvalDate
           , lastReviewDate, effectivePeriod, topic, author, editor, reviewer, endorser, relatedArtifact
-          , library, disclaimer, scoring, compositeScoring, type, riskAdjustment, rateAggregation
-          , rationale, clinicalRecommendationStatement, improvementNotation, definition, guidance
-          , group, supplementalData);
+          , library, disclaimer, scoring, scoringUnit, compositeScoring, type, riskAdjustment
+          , rateAggregation, rationale, clinicalRecommendationStatement, improvementNotation, definition
+          , guidance, group, supplementalData);
       }
 
   @Override
@@ -4793,7 +5332,7 @@ public class Measure extends MetadataResource {
    * Path: <b>Measure.relatedArtifact.where(type='composed-of').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="composed-of", path="Measure.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="composed-of", path="Measure.relatedArtifact.where(type='composed-of').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_COMPOSED_OF = "composed-of";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>composed-of</b>
@@ -4810,6 +5349,26 @@ public class Measure extends MetadataResource {
    * the path value of "<b>Measure:composed-of</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_COMPOSED_OF = new ca.uhn.fhir.model.api.Include("Measure:composed-of").toLocked();
+
+ /**
+   * Search parameter: <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the measure</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Measure.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context", path="(Measure.useContext.value as CodeableConcept)", description="A use context assigned to the measure", type="token" )
+  public static final String SP_CONTEXT = "context";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the measure</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Measure.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
 
  /**
    * Search parameter: <b>context-quantity</b>
@@ -4832,46 +5391,6 @@ public class Measure extends MetadataResource {
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
 
  /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the measure</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Measure.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="Measure.useContext", description="A use context type and quantity- or range-based value assigned to the measure", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the measure</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Measure.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the measure</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Measure.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="Measure.useContext", description="A use context type and value assigned to the measure", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the measure</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Measure.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
    * Search parameter: <b>context-type</b>
    * <p>
    * Description: <b>A type of use context assigned to the measure</b><br>
@@ -4890,26 +5409,6 @@ public class Measure extends MetadataResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the measure</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(Measure.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(Measure.useContext.value as CodeableConcept)", description="A use context assigned to the measure", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the measure</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(Measure.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
 
  /**
    * Search parameter: <b>date</b>
@@ -4939,7 +5438,7 @@ public class Measure extends MetadataResource {
    * Path: <b>Measure.relatedArtifact.where(type='depends-on').resource | Measure.library</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="depends-on", path="Measure.relatedArtifact.where(type='depends-on').resource | Measure.library", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="depends-on", path="Measure.relatedArtifact.where(type='depends-on').resource | Measure.library", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DEPENDS_ON = "depends-on";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>depends-on</b>
@@ -4965,7 +5464,7 @@ public class Measure extends MetadataResource {
    * Path: <b>Measure.relatedArtifact.where(type='derived-from').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="derived-from", path="Measure.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="derived-from", path="Measure.relatedArtifact.where(type='derived-from').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_DERIVED_FROM = "derived-from";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>derived-from</b>
@@ -5091,7 +5590,7 @@ public class Measure extends MetadataResource {
    * Path: <b>Measure.relatedArtifact.where(type='predecessor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="predecessor", path="Measure.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="predecessor", path="Measure.relatedArtifact.where(type='predecessor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PREDECESSOR = "predecessor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>predecessor</b>
@@ -5157,7 +5656,7 @@ public class Measure extends MetadataResource {
    * Path: <b>Measure.relatedArtifact.where(type='successor').resource</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="successor", path="Measure.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  @SearchParamDefinition(name="successor", path="Measure.relatedArtifact.where(type='successor').resource", description="What resource is being referenced", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_SUCCESSOR = "successor";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>successor</b>
@@ -5254,6 +5753,46 @@ public class Measure extends MetadataResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
+
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the measure</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Measure.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="Measure.useContext", description="A use context type and quantity- or range-based value assigned to the measure", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the measure</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Measure.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the measure</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Measure.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-value", path="Measure.useContext", description="A use context type and value assigned to the measure", type="composite", compositeOf={"context-type", "context"} )
+  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the measure</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Measure.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
 
 
 }

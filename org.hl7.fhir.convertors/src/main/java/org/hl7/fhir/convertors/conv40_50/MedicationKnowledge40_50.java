@@ -4,6 +4,8 @@ package org.hl7.fhir.convertors.conv40_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeType;
+import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgeStatusCodesEnumFactory;
 import org.hl7.fhir.r5.model.MedicationKnowledge.MedicationKnowledgePackagingComponent;
@@ -51,7 +53,7 @@ public class MedicationKnowledge40_50 extends VersionConvertor_40_50 {
         if (src.hasStatus())
             tgt.setStatusElement(convertMedicationKnowledgeStatus(src.getStatusElement()));
         if (src.hasManufacturer())
-            tgt.setManufacturer(convertReference(src.getManufacturer()));
+            tgt.setSponsor(convertReference(src.getManufacturer()));
         if (src.hasDoseForm())
             tgt.setDoseForm(convertCodeableConcept(src.getDoseForm()));
         if (src.hasAmount())
@@ -90,8 +92,8 @@ public class MedicationKnowledge40_50 extends VersionConvertor_40_50 {
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasStatus())
             tgt.setStatusElement(convertMedicationKnowledgeStatus(src.getStatusElement()));
-        if (src.hasManufacturer())
-            tgt.setManufacturer(convertReference(src.getManufacturer()));
+        if (src.hasSponsor())
+            tgt.setManufacturer(convertReference(src.getSponsor()));
         if (src.hasDoseForm())
             tgt.setDoseForm(convertCodeableConcept(src.getDoseForm()));
         if (src.hasAmount())
@@ -221,8 +223,8 @@ public class MedicationKnowledge40_50 extends VersionConvertor_40_50 {
             tgt.getItem().setConcept(convertCodeableConcept(src.getItemCodeableConcept()));
         if (src.hasItemReference())
           tgt.getItem().setReference(convertReference(src.getItemReference()));
-        if (src.hasIsActive())
-            tgt.setIsActiveElement(convertBoolean(src.getIsActiveElement()));
+        if (src.getIsActive())
+            tgt.setIsActive(new CodeableConcept(new Coding("ttp://terminology.hl7.org/CodeSystem/v3-RoleClass", "ACTI", "active ingredient ")));
         if (src.hasStrength())
             tgt.setStrength(convertRatio(src.getStrength()));
         return tgt;
@@ -238,7 +240,7 @@ public class MedicationKnowledge40_50 extends VersionConvertor_40_50 {
         if (src.getItem().hasReference())
           tgt.setItem(convertType(src.getItem().getReference()));
         if (src.hasIsActive())
-            tgt.setIsActiveElement(convertBoolean(src.getIsActiveElement()));
+            tgt.setIsActive(src.getIsActive().hasCoding("http://terminology.hl7.org/CodeSystem/v3-RoleClass", "ACTI"));
         if (src.hasStrengthRatio())
             tgt.setStrength(convertRatio(src.getStrengthRatio()));
         return tgt;

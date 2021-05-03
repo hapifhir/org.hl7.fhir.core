@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -101,6 +101,10 @@ public class Timing extends BackboneType implements ICompositeType {
          * Event occurs [offset] after subject goes to sleep. The exact time is unspecified and established by institution convention or patient interpretation.
          */
         PHS, 
+        /**
+         * Event occurs a single time (with no repetitions) as soon as possible after the scheduled or actual start of the overall event.
+         */
+        IMD, 
         /**
          * 
          */
@@ -188,6 +192,8 @@ public class Timing extends BackboneType implements ICompositeType {
           return NIGHT;
         if ("PHS".equals(codeString))
           return PHS;
+        if ("IMD".equals(codeString))
+          return IMD;
         if ("HS".equals(codeString))
           return HS;
         if ("WAKE".equals(codeString))
@@ -235,6 +241,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case EVE_LATE: return "EVE.late";
             case NIGHT: return "NIGHT";
             case PHS: return "PHS";
+            case IMD: return "IMD";
             case HS: return "HS";
             case WAKE: return "WAKE";
             case C: return "C";
@@ -249,7 +256,6 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "PCM";
             case PCD: return "PCD";
             case PCV: return "PCV";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -267,6 +273,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case EVE_LATE: return "http://hl7.org/fhir/event-timing";
             case NIGHT: return "http://hl7.org/fhir/event-timing";
             case PHS: return "http://hl7.org/fhir/event-timing";
+            case IMD: return "http://hl7.org/fhir/event-timing";
             case HS: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
             case WAKE: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
             case C: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
@@ -281,7 +288,6 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
             case PCD: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
             case PCV: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -299,6 +305,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case EVE_LATE: return "Event occurs during the late evening. The exact time is unspecified and established by institution convention or patient interpretation.";
             case NIGHT: return "Event occurs during the night. The exact time is unspecified and established by institution convention or patient interpretation.";
             case PHS: return "Event occurs [offset] after subject goes to sleep. The exact time is unspecified and established by institution convention or patient interpretation.";
+            case IMD: return "Event occurs a single time (with no repetitions) as soon as possible after the scheduled or actual start of the overall event.";
             case HS: return "";
             case WAKE: return "";
             case C: return "";
@@ -313,7 +320,6 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "";
             case PCD: return "";
             case PCV: return "";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -331,6 +337,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case EVE_LATE: return "Late Evening";
             case NIGHT: return "Night";
             case PHS: return "After Sleep";
+            case IMD: return "Immediate";
             case HS: return "HS";
             case WAKE: return "WAKE";
             case C: return "C";
@@ -345,7 +352,6 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "PCM";
             case PCD: return "PCD";
             case PCV: return "PCV";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -380,6 +386,8 @@ public class Timing extends BackboneType implements ICompositeType {
           return EventTiming.NIGHT;
         if ("PHS".equals(codeString))
           return EventTiming.PHS;
+        if ("IMD".equals(codeString))
+          return EventTiming.IMD;
         if ("HS".equals(codeString))
           return EventTiming.HS;
         if ("WAKE".equals(codeString))
@@ -442,6 +450,8 @@ public class Timing extends BackboneType implements ICompositeType {
           return new Enumeration<EventTiming>(this, EventTiming.NIGHT);
         if ("PHS".equals(codeString))
           return new Enumeration<EventTiming>(this, EventTiming.PHS);
+        if ("IMD".equals(codeString))
+          return new Enumeration<EventTiming>(this, EventTiming.IMD);
         if ("HS".equals(codeString))
           return new Enumeration<EventTiming>(this, EventTiming.HS);
         if ("WAKE".equals(codeString))
@@ -497,6 +507,8 @@ public class Timing extends BackboneType implements ICompositeType {
         return "NIGHT";
       if (code == EventTiming.PHS)
         return "PHS";
+      if (code == EventTiming.IMD)
+        return "IMD";
       if (code == EventTiming.HS)
         return "HS";
       if (code == EventTiming.WAKE)
@@ -596,7 +608,6 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "wk";
             case MO: return "mo";
             case A: return "a";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -609,7 +620,6 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "http://unitsofmeasure.org";
             case MO: return "http://unitsofmeasure.org";
             case A: return "http://unitsofmeasure.org";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -622,7 +632,6 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "";
             case MO: return "";
             case A: return "";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -635,7 +644,6 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "week";
             case MO: return "month";
             case A: return "year";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -746,10 +754,11 @@ public class Timing extends BackboneType implements ICompositeType {
         protected DecimalType durationMax;
 
         /**
-         * The units of time for the duration, in UCUM units.
+         * The units of time for the duration, in UCUM units
+Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.
          */
         @Child(name = "durationUnit", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="s | min | h | d | wk | mo | a - unit of time (UCUM)", formalDefinition="The units of time for the duration, in UCUM units." )
+        @Description(shortDefinition="s | min | h | d | wk | mo | a - unit of time (UCUM)", formalDefinition="The units of time for the duration, in UCUM units\nNormal practice is to use the 'mo' code as a calendar month when calculating the next occurrence." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/units-of-time")
         protected Enumeration<UnitsOfTime> durationUnit;
 
@@ -757,7 +766,7 @@ public class Timing extends BackboneType implements ICompositeType {
          * The number of times to repeat the action within the specified period. If frequencyMax is present, this element indicates the lower bound of the allowed range of the frequency.
          */
         @Child(name = "frequency", type = {PositiveIntType.class}, order=7, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Event occurs frequency times per period", formalDefinition="The number of times to repeat the action within the specified period. If frequencyMax is present, this element indicates the lower bound of the allowed range of the frequency." )
+        @Description(shortDefinition="Indicates the number of repetitions that should occur within a period. I.e. Event occurs frequency times per period", formalDefinition="The number of times to repeat the action within the specified period. If frequencyMax is present, this element indicates the lower bound of the allowed range of the frequency." )
         protected PositiveIntType frequency;
 
         /**
@@ -771,7 +780,7 @@ public class Timing extends BackboneType implements ICompositeType {
          * Indicates the duration of time over which repetitions are to occur; e.g. to express "3 times per day", 3 would be the frequency and "1 day" would be the period. If periodMax is present, this element indicates the lower bound of the allowed range of the period length.
          */
         @Child(name = "period", type = {DecimalType.class}, order=9, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Event occurs frequency times per period", formalDefinition="Indicates the duration of time over which repetitions are to occur; e.g. to express \"3 times per day\", 3 would be the frequency and \"1 day\" would be the period. If periodMax is present, this element indicates the lower bound of the allowed range of the period length." )
+        @Description(shortDefinition="The duration to which the frequency applies. I.e. Event occurs frequency times per period", formalDefinition="Indicates the duration of time over which repetitions are to occur; e.g. to express \"3 times per day\", 3 would be the frequency and \"1 day\" would be the period. If periodMax is present, this element indicates the lower bound of the allowed range of the period length." )
         protected DecimalType period;
 
         /**
@@ -782,10 +791,11 @@ public class Timing extends BackboneType implements ICompositeType {
         protected DecimalType periodMax;
 
         /**
-         * The units of time for the period in UCUM units.
+         * The units of time for the period in UCUM units
+Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.
          */
         @Child(name = "periodUnit", type = {CodeType.class}, order=11, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="s | min | h | d | wk | mo | a - unit of time (UCUM)", formalDefinition="The units of time for the period in UCUM units." )
+        @Description(shortDefinition="s | min | h | d | wk | mo | a - unit of time (UCUM)", formalDefinition="The units of time for the period in UCUM units\nNormal practice is to use the 'mo' code as a calendar month when calculating the next occurrence." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/units-of-time")
         protected Enumeration<UnitsOfTime> periodUnit;
 
@@ -1119,7 +1129,8 @@ public class Timing extends BackboneType implements ICompositeType {
         }
 
         /**
-         * @return {@link #durationUnit} (The units of time for the duration, in UCUM units.). This is the underlying object with id, value and extensions. The accessor "getDurationUnit" gives direct access to the value
+         * @return {@link #durationUnit} (The units of time for the duration, in UCUM units
+Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.). This is the underlying object with id, value and extensions. The accessor "getDurationUnit" gives direct access to the value
          */
         public Enumeration<UnitsOfTime> getDurationUnitElement() { 
           if (this.durationUnit == null)
@@ -1139,7 +1150,8 @@ public class Timing extends BackboneType implements ICompositeType {
         }
 
         /**
-         * @param value {@link #durationUnit} (The units of time for the duration, in UCUM units.). This is the underlying object with id, value and extensions. The accessor "getDurationUnit" gives direct access to the value
+         * @param value {@link #durationUnit} (The units of time for the duration, in UCUM units
+Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.). This is the underlying object with id, value and extensions. The accessor "getDurationUnit" gives direct access to the value
          */
         public TimingRepeatComponent setDurationUnitElement(Enumeration<UnitsOfTime> value) { 
           this.durationUnit = value;
@@ -1147,14 +1159,16 @@ public class Timing extends BackboneType implements ICompositeType {
         }
 
         /**
-         * @return The units of time for the duration, in UCUM units.
+         * @return The units of time for the duration, in UCUM units
+Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.
          */
         public UnitsOfTime getDurationUnit() { 
           return this.durationUnit == null ? null : this.durationUnit.getValue();
         }
 
         /**
-         * @param value The units of time for the duration, in UCUM units.
+         * @param value The units of time for the duration, in UCUM units
+Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.
          */
         public TimingRepeatComponent setDurationUnit(UnitsOfTime value) { 
           if (value == null)
@@ -1392,7 +1406,8 @@ public class Timing extends BackboneType implements ICompositeType {
         }
 
         /**
-         * @return {@link #periodUnit} (The units of time for the period in UCUM units.). This is the underlying object with id, value and extensions. The accessor "getPeriodUnit" gives direct access to the value
+         * @return {@link #periodUnit} (The units of time for the period in UCUM units
+Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.). This is the underlying object with id, value and extensions. The accessor "getPeriodUnit" gives direct access to the value
          */
         public Enumeration<UnitsOfTime> getPeriodUnitElement() { 
           if (this.periodUnit == null)
@@ -1412,7 +1427,8 @@ public class Timing extends BackboneType implements ICompositeType {
         }
 
         /**
-         * @param value {@link #periodUnit} (The units of time for the period in UCUM units.). This is the underlying object with id, value and extensions. The accessor "getPeriodUnit" gives direct access to the value
+         * @param value {@link #periodUnit} (The units of time for the period in UCUM units
+Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.). This is the underlying object with id, value and extensions. The accessor "getPeriodUnit" gives direct access to the value
          */
         public TimingRepeatComponent setPeriodUnitElement(Enumeration<UnitsOfTime> value) { 
           this.periodUnit = value;
@@ -1420,14 +1436,16 @@ public class Timing extends BackboneType implements ICompositeType {
         }
 
         /**
-         * @return The units of time for the period in UCUM units.
+         * @return The units of time for the period in UCUM units
+Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.
          */
         public UnitsOfTime getPeriodUnit() { 
           return this.periodUnit == null ? null : this.periodUnit.getValue();
         }
 
         /**
-         * @param value The units of time for the period in UCUM units.
+         * @param value The units of time for the period in UCUM units
+Normal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.
          */
         public TimingRepeatComponent setPeriodUnit(UnitsOfTime value) { 
           if (value == null)
@@ -1675,12 +1693,12 @@ public class Timing extends BackboneType implements ICompositeType {
           children.add(new Property("countMax", "positiveInt", "If present, indicates that the count is a range - so to perform the action between [count] and [countMax] times.", 0, 1, countMax));
           children.add(new Property("duration", "decimal", "How long this thing happens for when it happens. If durationMax is present, this element indicates the lower bound of the allowed range of the duration.", 0, 1, duration));
           children.add(new Property("durationMax", "decimal", "If present, indicates that the duration is a range - so to perform the action between [duration] and [durationMax] time length.", 0, 1, durationMax));
-          children.add(new Property("durationUnit", "code", "The units of time for the duration, in UCUM units.", 0, 1, durationUnit));
+          children.add(new Property("durationUnit", "code", "The units of time for the duration, in UCUM units\nNormal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.", 0, 1, durationUnit));
           children.add(new Property("frequency", "positiveInt", "The number of times to repeat the action within the specified period. If frequencyMax is present, this element indicates the lower bound of the allowed range of the frequency.", 0, 1, frequency));
           children.add(new Property("frequencyMax", "positiveInt", "If present, indicates that the frequency is a range - so to repeat between [frequency] and [frequencyMax] times within the period or period range.", 0, 1, frequencyMax));
           children.add(new Property("period", "decimal", "Indicates the duration of time over which repetitions are to occur; e.g. to express \"3 times per day\", 3 would be the frequency and \"1 day\" would be the period. If periodMax is present, this element indicates the lower bound of the allowed range of the period length.", 0, 1, period));
           children.add(new Property("periodMax", "decimal", "If present, indicates that the period is a range from [period] to [periodMax], allowing expressing concepts such as \"do this once every 3-5 days.", 0, 1, periodMax));
-          children.add(new Property("periodUnit", "code", "The units of time for the period in UCUM units.", 0, 1, periodUnit));
+          children.add(new Property("periodUnit", "code", "The units of time for the period in UCUM units\nNormal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.", 0, 1, periodUnit));
           children.add(new Property("dayOfWeek", "code", "If one or more days of week is provided, then the action happens only on the specified day(s).", 0, java.lang.Integer.MAX_VALUE, dayOfWeek));
           children.add(new Property("timeOfDay", "time", "Specified time of day for action to take place.", 0, java.lang.Integer.MAX_VALUE, timeOfDay));
           children.add(new Property("when", "code", "An approximate time period during the day, potentially linked to an event of daily living that indicates when the action should occur.", 0, java.lang.Integer.MAX_VALUE, when));
@@ -1699,12 +1717,12 @@ public class Timing extends BackboneType implements ICompositeType {
           case -372044331: /*countMax*/  return new Property("countMax", "positiveInt", "If present, indicates that the count is a range - so to perform the action between [count] and [countMax] times.", 0, 1, countMax);
           case -1992012396: /*duration*/  return new Property("duration", "decimal", "How long this thing happens for when it happens. If durationMax is present, this element indicates the lower bound of the allowed range of the duration.", 0, 1, duration);
           case -478083280: /*durationMax*/  return new Property("durationMax", "decimal", "If present, indicates that the duration is a range - so to perform the action between [duration] and [durationMax] time length.", 0, 1, durationMax);
-          case -1935429320: /*durationUnit*/  return new Property("durationUnit", "code", "The units of time for the duration, in UCUM units.", 0, 1, durationUnit);
+          case -1935429320: /*durationUnit*/  return new Property("durationUnit", "code", "The units of time for the duration, in UCUM units\nNormal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.", 0, 1, durationUnit);
           case -70023844: /*frequency*/  return new Property("frequency", "positiveInt", "The number of times to repeat the action within the specified period. If frequencyMax is present, this element indicates the lower bound of the allowed range of the frequency.", 0, 1, frequency);
           case 1273846376: /*frequencyMax*/  return new Property("frequencyMax", "positiveInt", "If present, indicates that the frequency is a range - so to repeat between [frequency] and [frequencyMax] times within the period or period range.", 0, 1, frequencyMax);
           case -991726143: /*period*/  return new Property("period", "decimal", "Indicates the duration of time over which repetitions are to occur; e.g. to express \"3 times per day\", 3 would be the frequency and \"1 day\" would be the period. If periodMax is present, this element indicates the lower bound of the allowed range of the period length.", 0, 1, period);
           case 566580195: /*periodMax*/  return new Property("periodMax", "decimal", "If present, indicates that the period is a range from [period] to [periodMax], allowing expressing concepts such as \"do this once every 3-5 days.", 0, 1, periodMax);
-          case 384367333: /*periodUnit*/  return new Property("periodUnit", "code", "The units of time for the period in UCUM units.", 0, 1, periodUnit);
+          case 384367333: /*periodUnit*/  return new Property("periodUnit", "code", "The units of time for the period in UCUM units\nNormal practice is to use the 'mo' code as a calendar month when calculating the next occurrence.", 0, 1, periodUnit);
           case -730552025: /*dayOfWeek*/  return new Property("dayOfWeek", "code", "If one or more days of week is provided, then the action happens only on the specified day(s).", 0, java.lang.Integer.MAX_VALUE, dayOfWeek);
           case 21434232: /*timeOfDay*/  return new Property("timeOfDay", "time", "Specified time of day for action to take place.", 0, java.lang.Integer.MAX_VALUE, timeOfDay);
           case 3648314: /*when*/  return new Property("when", "code", "An approximate time period during the day, potentially linked to an event of daily living that indicates when the action should occur.", 0, java.lang.Integer.MAX_VALUE, when);
@@ -2040,7 +2058,7 @@ public class Timing extends BackboneType implements ICompositeType {
      * A code for the timing schedule (or just text in code.text). Some codes such as BID are ubiquitous, but many institutions define their own additional codes. If a code is provided, the code is understood to be a complete statement of whatever is specified in the structured timing data, and either the code or the data may be used to interpret the Timing, with the exception that .repeat.bounds still applies over the code (and is not contained in the code).
      */
     @Child(name = "code", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="BID | TID | QID | AM | PM | QD | QOD | +", formalDefinition="A code for the timing schedule (or just text in code.text). Some codes such as BID are ubiquitous, but many institutions define their own additional codes. If a code is provided, the code is understood to be a complete statement of whatever is specified in the structured timing data, and either the code or the data may be used to interpret the Timing, with the exception that .repeat.bounds still applies over the code (and is not contained in the code)." )
+    @Description(shortDefinition="C | BID | TID | QID | AM | PM | QD | QOD | +", formalDefinition="A code for the timing schedule (or just text in code.text). Some codes such as BID are ubiquitous, but many institutions define their own additional codes. If a code is provided, the code is understood to be a complete statement of whatever is specified in the structured timing data, and either the code or the data may be used to interpret the Timing, with the exception that .repeat.bounds still applies over the code (and is not contained in the code)." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/timing-abbreviation")
     protected CodeableConcept code;
 

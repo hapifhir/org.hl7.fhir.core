@@ -25,7 +25,6 @@ import org.hl7.fhir.r5.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.r5.model.IdType;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureMap;
-import org.hl7.fhir.r5.model.StructureMap.StructureMapContextType;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupComponent;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleComponent;
 import org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleDependentComponent;
@@ -263,7 +262,6 @@ public class MappingSheetParser {
       }
       StructureMapGroupRuleTargetComponent tgt = rule.getTargetFirstRep();
       tgt.setContext("tgt");
-      tgt.setContextType(StructureMapContextType.VARIABLE);
       tgt.setElement(row.getAttribute());
       tgt.addExtension(ToolingExtensions.EXT_MAPPING_TGTTYPE, new StringType(row.getType()));
       tgt.addExtension(ToolingExtensions.EXT_MAPPING_TGTCARD, new StringType(row.getMinMax()));
@@ -286,7 +284,6 @@ public class MappingSheetParser {
       if (row.getDerived() != null) { 
         tgt = rule.addTarget();
         tgt.setContext("tgt");
-        tgt.setContextType(StructureMapContextType.VARIABLE);
         tgt.setElement(row.getDerived());
         tgt.setTransform(StructureMapTransform.COPY);
         tgt.addParameter().setValue(new StringType(row.getDerivedMapping()));

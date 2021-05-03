@@ -204,11 +204,13 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
   }
 
   public void see(T r, PackageVersion packgeInfo) {
-    if (!r.hasId()) {
-      r.setId(UUID.randomUUID().toString());
+    if (r != null) {
+      if (!r.hasId()) {
+        r.setId(UUID.randomUUID().toString());
+      }
+      CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = new CachedCanonicalResource<T>(r, packgeInfo);
+      see(cr);
     }
-    CanonicalResourceManager<T>.CachedCanonicalResource<T> cr = new CachedCanonicalResource<T>(r, packgeInfo);
-    see(cr);
   }
 
   public void see(CachedCanonicalResource<T> cr) {

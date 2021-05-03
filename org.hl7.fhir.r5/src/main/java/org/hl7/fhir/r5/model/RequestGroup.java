@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,6 +96,7 @@ public class RequestGroup extends DomainResource {
          */
         @Child(name = "code", type = {CodeableConcept.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Code representing the meaning of the action or sub-actions", formalDefinition="A code that provides meaning for the action or action group. For example, a section may have a LOINC code for a section of a documentation template." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-code")
         protected List<CodeableConcept> code;
 
         /**
@@ -127,16 +128,23 @@ public class RequestGroup extends DomainResource {
         protected DataType timing;
 
         /**
+         * Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc.
+         */
+        @Child(name = "location", type = {CodeableReference.class}, order=11, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Where it should happen", formalDefinition="Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc." )
+        protected CodeableReference location;
+
+        /**
          * The participant that should perform or be responsible for this action.
          */
-        @Child(name = "participant", type = {Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class, Device.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "participant", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Who should perform the action", formalDefinition="The participant that should perform or be responsible for this action." )
-        protected List<Reference> participant;
+        protected List<RequestGroupActionParticipantComponent> participant;
 
         /**
          * The type of action to perform (create, update, remove).
          */
-        @Child(name = "type", type = {CodeableConcept.class}, order=12, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "type", type = {CodeableConcept.class}, order=13, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="create | update | remove | fire-event", formalDefinition="The type of action to perform (create, update, remove)." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-type")
         protected CodeableConcept type;
@@ -144,7 +152,7 @@ public class RequestGroup extends DomainResource {
         /**
          * Defines the grouping behavior for the action and its children.
          */
-        @Child(name = "groupingBehavior", type = {CodeType.class}, order=13, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "groupingBehavior", type = {CodeType.class}, order=14, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="visual-group | logical-group | sentence-group", formalDefinition="Defines the grouping behavior for the action and its children." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-grouping-behavior")
         protected Enumeration<ActionGroupingBehavior> groupingBehavior;
@@ -152,7 +160,7 @@ public class RequestGroup extends DomainResource {
         /**
          * Defines the selection behavior for the action and its children.
          */
-        @Child(name = "selectionBehavior", type = {CodeType.class}, order=14, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "selectionBehavior", type = {CodeType.class}, order=15, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="any | all | all-or-none | exactly-one | at-most-one | one-or-more", formalDefinition="Defines the selection behavior for the action and its children." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-selection-behavior")
         protected Enumeration<ActionSelectionBehavior> selectionBehavior;
@@ -160,7 +168,7 @@ public class RequestGroup extends DomainResource {
         /**
          * Defines expectations around whether an action is required.
          */
-        @Child(name = "requiredBehavior", type = {CodeType.class}, order=15, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "requiredBehavior", type = {CodeType.class}, order=16, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="must | could | must-unless-documented", formalDefinition="Defines expectations around whether an action is required." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-required-behavior")
         protected Enumeration<ActionRequiredBehavior> requiredBehavior;
@@ -168,7 +176,7 @@ public class RequestGroup extends DomainResource {
         /**
          * Defines whether the action should usually be preselected.
          */
-        @Child(name = "precheckBehavior", type = {CodeType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "precheckBehavior", type = {CodeType.class}, order=17, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="yes | no", formalDefinition="Defines whether the action should usually be preselected." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-precheck-behavior")
         protected Enumeration<ActionPrecheckBehavior> precheckBehavior;
@@ -176,7 +184,7 @@ public class RequestGroup extends DomainResource {
         /**
          * Defines whether the action can be selected multiple times.
          */
-        @Child(name = "cardinalityBehavior", type = {CodeType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "cardinalityBehavior", type = {CodeType.class}, order=18, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="single | multiple", formalDefinition="Defines whether the action can be selected multiple times." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-cardinality-behavior")
         protected Enumeration<ActionCardinalityBehavior> cardinalityBehavior;
@@ -184,18 +192,18 @@ public class RequestGroup extends DomainResource {
         /**
          * The resource that is the target of the action (e.g. CommunicationRequest).
          */
-        @Child(name = "resource", type = {Reference.class}, order=18, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "resource", type = {Reference.class}, order=19, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="The target of the action", formalDefinition="The resource that is the target of the action (e.g. CommunicationRequest)." )
         protected Reference resource;
 
         /**
          * Sub actions.
          */
-        @Child(name = "action", type = {RequestGroupActionComponent.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "action", type = {RequestGroupActionComponent.class}, order=20, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Sub action", formalDefinition="Sub actions." )
         protected List<RequestGroupActionComponent> action;
 
-        private static final long serialVersionUID = -919880448L;
+        private static final long serialVersionUID = -1065764728L;
 
     /**
      * Constructor
@@ -773,18 +781,42 @@ public class RequestGroup extends DomainResource {
         }
 
         /**
+         * @return {@link #location} (Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc.)
+         */
+        public CodeableReference getLocation() { 
+          if (this.location == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create RequestGroupActionComponent.location");
+            else if (Configuration.doAutoCreate())
+              this.location = new CodeableReference(); // cc
+          return this.location;
+        }
+
+        public boolean hasLocation() { 
+          return this.location != null && !this.location.isEmpty();
+        }
+
+        /**
+         * @param value {@link #location} (Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc.)
+         */
+        public RequestGroupActionComponent setLocation(CodeableReference value) { 
+          this.location = value;
+          return this;
+        }
+
+        /**
          * @return {@link #participant} (The participant that should perform or be responsible for this action.)
          */
-        public List<Reference> getParticipant() { 
+        public List<RequestGroupActionParticipantComponent> getParticipant() { 
           if (this.participant == null)
-            this.participant = new ArrayList<Reference>();
+            this.participant = new ArrayList<RequestGroupActionParticipantComponent>();
           return this.participant;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public RequestGroupActionComponent setParticipant(List<Reference> theParticipant) { 
+        public RequestGroupActionComponent setParticipant(List<RequestGroupActionParticipantComponent> theParticipant) { 
           this.participant = theParticipant;
           return this;
         }
@@ -792,25 +824,25 @@ public class RequestGroup extends DomainResource {
         public boolean hasParticipant() { 
           if (this.participant == null)
             return false;
-          for (Reference item : this.participant)
+          for (RequestGroupActionParticipantComponent item : this.participant)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public Reference addParticipant() { //3
-          Reference t = new Reference();
+        public RequestGroupActionParticipantComponent addParticipant() { //3
+          RequestGroupActionParticipantComponent t = new RequestGroupActionParticipantComponent();
           if (this.participant == null)
-            this.participant = new ArrayList<Reference>();
+            this.participant = new ArrayList<RequestGroupActionParticipantComponent>();
           this.participant.add(t);
           return t;
         }
 
-        public RequestGroupActionComponent addParticipant(Reference t) { //3
+        public RequestGroupActionComponent addParticipant(RequestGroupActionParticipantComponent t) { //3
           if (t == null)
             return this;
           if (this.participant == null)
-            this.participant = new ArrayList<Reference>();
+            this.participant = new ArrayList<RequestGroupActionParticipantComponent>();
           this.participant.add(t);
           return this;
         }
@@ -818,7 +850,7 @@ public class RequestGroup extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #participant}, creating it if it does not already exist {3}
          */
-        public Reference getParticipantFirstRep() { 
+        public RequestGroupActionParticipantComponent getParticipantFirstRep() { 
           if (getParticipant().isEmpty()) {
             addParticipant();
           }
@@ -1183,7 +1215,8 @@ public class RequestGroup extends DomainResource {
           children.add(new Property("condition", "", "An expression that describes applicability criteria, or start/stop conditions for the action.", 0, java.lang.Integer.MAX_VALUE, condition));
           children.add(new Property("relatedAction", "", "A relationship to another action such as \"before\" or \"30-60 minutes after start of\".", 0, java.lang.Integer.MAX_VALUE, relatedAction));
           children.add(new Property("timing[x]", "dateTime|Age|Period|Duration|Range|Timing", "An optional value describing when the action should be performed.", 0, 1, timing));
-          children.add(new Property("participant", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Device)", "The participant that should perform or be responsible for this action.", 0, java.lang.Integer.MAX_VALUE, participant));
+          children.add(new Property("location", "CodeableReference(Location)", "Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc.", 0, 1, location));
+          children.add(new Property("participant", "", "The participant that should perform or be responsible for this action.", 0, java.lang.Integer.MAX_VALUE, participant));
           children.add(new Property("type", "CodeableConcept", "The type of action to perform (create, update, remove).", 0, 1, type));
           children.add(new Property("groupingBehavior", "code", "Defines the grouping behavior for the action and its children.", 0, 1, groupingBehavior));
           children.add(new Property("selectionBehavior", "code", "Defines the selection behavior for the action and its children.", 0, 1, selectionBehavior));
@@ -1214,7 +1247,8 @@ public class RequestGroup extends DomainResource {
           case -1327253506: /*timingDuration*/  return new Property("timing[x]", "Duration", "An optional value describing when the action should be performed.", 0, 1, timing);
           case -710871277: /*timingRange*/  return new Property("timing[x]", "Range", "An optional value describing when the action should be performed.", 0, 1, timing);
           case -497554124: /*timingTiming*/  return new Property("timing[x]", "Timing", "An optional value describing when the action should be performed.", 0, 1, timing);
-          case 767422259: /*participant*/  return new Property("participant", "Reference(Patient|Practitioner|PractitionerRole|RelatedPerson|Device)", "The participant that should perform or be responsible for this action.", 0, java.lang.Integer.MAX_VALUE, participant);
+          case 1901043637: /*location*/  return new Property("location", "CodeableReference(Location)", "Identifies the facility where the action will occur; e.g. home, hospital, specific clinic, etc.", 0, 1, location);
+          case 767422259: /*participant*/  return new Property("participant", "", "The participant that should perform or be responsible for this action.", 0, java.lang.Integer.MAX_VALUE, participant);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of action to perform (create, update, remove).", 0, 1, type);
           case 586678389: /*groupingBehavior*/  return new Property("groupingBehavior", "code", "Defines the grouping behavior for the action and its children.", 0, 1, groupingBehavior);
           case 168639486: /*selectionBehavior*/  return new Property("selectionBehavior", "code", "Defines the selection behavior for the action and its children.", 0, 1, selectionBehavior);
@@ -1241,7 +1275,8 @@ public class RequestGroup extends DomainResource {
         case -861311717: /*condition*/ return this.condition == null ? new Base[0] : this.condition.toArray(new Base[this.condition.size()]); // RequestGroupActionConditionComponent
         case -384107967: /*relatedAction*/ return this.relatedAction == null ? new Base[0] : this.relatedAction.toArray(new Base[this.relatedAction.size()]); // RequestGroupActionRelatedActionComponent
         case -873664438: /*timing*/ return this.timing == null ? new Base[0] : new Base[] {this.timing}; // DataType
-        case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // Reference
+        case 1901043637: /*location*/ return this.location == null ? new Base[0] : new Base[] {this.location}; // CodeableReference
+        case 767422259: /*participant*/ return this.participant == null ? new Base[0] : this.participant.toArray(new Base[this.participant.size()]); // RequestGroupActionParticipantComponent
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
         case 586678389: /*groupingBehavior*/ return this.groupingBehavior == null ? new Base[0] : new Base[] {this.groupingBehavior}; // Enumeration<ActionGroupingBehavior>
         case 168639486: /*selectionBehavior*/ return this.selectionBehavior == null ? new Base[0] : new Base[] {this.selectionBehavior}; // Enumeration<ActionSelectionBehavior>
@@ -1289,8 +1324,11 @@ public class RequestGroup extends DomainResource {
         case -873664438: // timing
           this.timing = TypeConvertor.castToType(value); // DataType
           return value;
+        case 1901043637: // location
+          this.location = TypeConvertor.castToCodeableReference(value); // CodeableReference
+          return value;
         case 767422259: // participant
-          this.getParticipant().add(TypeConvertor.castToReference(value)); // Reference
+          this.getParticipant().add((RequestGroupActionParticipantComponent) value); // RequestGroupActionParticipantComponent
           return value;
         case 3575610: // type
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1349,8 +1387,10 @@ public class RequestGroup extends DomainResource {
           this.getRelatedAction().add((RequestGroupActionRelatedActionComponent) value);
         } else if (name.equals("timing[x]")) {
           this.timing = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("location")) {
+          this.location = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("participant")) {
-          this.getParticipant().add(TypeConvertor.castToReference(value));
+          this.getParticipant().add((RequestGroupActionParticipantComponent) value);
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("groupingBehavior")) {
@@ -1391,6 +1431,7 @@ public class RequestGroup extends DomainResource {
         case -384107967:  return addRelatedAction(); 
         case 164632566:  return getTiming();
         case -873664438:  return getTiming();
+        case 1901043637:  return getLocation();
         case 767422259:  return addParticipant(); 
         case 3575610:  return getType();
         case 586678389:  return getGroupingBehaviorElement();
@@ -1418,7 +1459,8 @@ public class RequestGroup extends DomainResource {
         case -861311717: /*condition*/ return new String[] {};
         case -384107967: /*relatedAction*/ return new String[] {};
         case -873664438: /*timing*/ return new String[] {"dateTime", "Age", "Period", "Duration", "Range", "Timing"};
-        case 767422259: /*participant*/ return new String[] {"Reference"};
+        case 1901043637: /*location*/ return new String[] {"CodeableReference"};
+        case 767422259: /*participant*/ return new String[] {};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case 586678389: /*groupingBehavior*/ return new String[] {"code"};
         case 168639486: /*selectionBehavior*/ return new String[] {"code"};
@@ -1484,6 +1526,10 @@ public class RequestGroup extends DomainResource {
         else if (name.equals("timingTiming")) {
           this.timing = new Timing();
           return this.timing;
+        }
+        else if (name.equals("location")) {
+          this.location = new CodeableReference();
+          return this.location;
         }
         else if (name.equals("participant")) {
           return addParticipant();
@@ -1552,9 +1598,10 @@ public class RequestGroup extends DomainResource {
             dst.relatedAction.add(i.copy());
         };
         dst.timing = timing == null ? null : timing.copy();
+        dst.location = location == null ? null : location.copy();
         if (participant != null) {
-          dst.participant = new ArrayList<Reference>();
-          for (Reference i : participant)
+          dst.participant = new ArrayList<RequestGroupActionParticipantComponent>();
+          for (RequestGroupActionParticipantComponent i : participant)
             dst.participant.add(i.copy());
         };
         dst.type = type == null ? null : type.copy();
@@ -1581,11 +1628,11 @@ public class RequestGroup extends DomainResource {
         return compareDeep(prefix, o.prefix, true) && compareDeep(title, o.title, true) && compareDeep(description, o.description, true)
            && compareDeep(textEquivalent, o.textEquivalent, true) && compareDeep(priority, o.priority, true)
            && compareDeep(code, o.code, true) && compareDeep(documentation, o.documentation, true) && compareDeep(condition, o.condition, true)
-           && compareDeep(relatedAction, o.relatedAction, true) && compareDeep(timing, o.timing, true) && compareDeep(participant, o.participant, true)
-           && compareDeep(type, o.type, true) && compareDeep(groupingBehavior, o.groupingBehavior, true) && compareDeep(selectionBehavior, o.selectionBehavior, true)
-           && compareDeep(requiredBehavior, o.requiredBehavior, true) && compareDeep(precheckBehavior, o.precheckBehavior, true)
-           && compareDeep(cardinalityBehavior, o.cardinalityBehavior, true) && compareDeep(resource, o.resource, true)
-           && compareDeep(action, o.action, true);
+           && compareDeep(relatedAction, o.relatedAction, true) && compareDeep(timing, o.timing, true) && compareDeep(location, o.location, true)
+           && compareDeep(participant, o.participant, true) && compareDeep(type, o.type, true) && compareDeep(groupingBehavior, o.groupingBehavior, true)
+           && compareDeep(selectionBehavior, o.selectionBehavior, true) && compareDeep(requiredBehavior, o.requiredBehavior, true)
+           && compareDeep(precheckBehavior, o.precheckBehavior, true) && compareDeep(cardinalityBehavior, o.cardinalityBehavior, true)
+           && compareDeep(resource, o.resource, true) && compareDeep(action, o.action, true);
       }
 
       @Override
@@ -1605,8 +1652,8 @@ public class RequestGroup extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(prefix, title, description
           , textEquivalent, priority, code, documentation, condition, relatedAction, timing
-          , participant, type, groupingBehavior, selectionBehavior, requiredBehavior, precheckBehavior
-          , cardinalityBehavior, resource, action);
+          , location, participant, type, groupingBehavior, selectionBehavior, requiredBehavior
+          , precheckBehavior, cardinalityBehavior, resource, action);
       }
 
   public String fhirType() {
@@ -1851,11 +1898,11 @@ public class RequestGroup extends DomainResource {
     @Block()
     public static class RequestGroupActionRelatedActionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The element id of the action this is related to.
+         * The element id of the target related action.
          */
-        @Child(name = "actionId", type = {IdType.class}, order=1, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="What action this is related to", formalDefinition="The element id of the action this is related to." )
-        protected IdType actionId;
+        @Child(name = "targetId", type = {IdType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="What action this is related to", formalDefinition="The element id of the target related action." )
+        protected IdType targetId;
 
         /**
          * The relationship of this action to the related action.
@@ -1872,7 +1919,7 @@ public class RequestGroup extends DomainResource {
         @Description(shortDefinition="Time offset for the relationship", formalDefinition="A duration or range of durations to apply to the relationship. For example, 30-60 minutes before." )
         protected DataType offset;
 
-        private static final long serialVersionUID = 621784796L;
+        private static final long serialVersionUID = -462773513L;
 
     /**
      * Constructor
@@ -1884,54 +1931,54 @@ public class RequestGroup extends DomainResource {
     /**
      * Constructor
      */
-      public RequestGroupActionRelatedActionComponent(String actionId, ActionRelationshipType relationship) {
+      public RequestGroupActionRelatedActionComponent(String targetId, ActionRelationshipType relationship) {
         super();
-        this.setActionId(actionId);
+        this.setTargetId(targetId);
         this.setRelationship(relationship);
       }
 
         /**
-         * @return {@link #actionId} (The element id of the action this is related to.). This is the underlying object with id, value and extensions. The accessor "getActionId" gives direct access to the value
+         * @return {@link #targetId} (The element id of the target related action.). This is the underlying object with id, value and extensions. The accessor "getTargetId" gives direct access to the value
          */
-        public IdType getActionIdElement() { 
-          if (this.actionId == null)
+        public IdType getTargetIdElement() { 
+          if (this.targetId == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create RequestGroupActionRelatedActionComponent.actionId");
+              throw new Error("Attempt to auto-create RequestGroupActionRelatedActionComponent.targetId");
             else if (Configuration.doAutoCreate())
-              this.actionId = new IdType(); // bb
-          return this.actionId;
+              this.targetId = new IdType(); // bb
+          return this.targetId;
         }
 
-        public boolean hasActionIdElement() { 
-          return this.actionId != null && !this.actionId.isEmpty();
+        public boolean hasTargetIdElement() { 
+          return this.targetId != null && !this.targetId.isEmpty();
         }
 
-        public boolean hasActionId() { 
-          return this.actionId != null && !this.actionId.isEmpty();
+        public boolean hasTargetId() { 
+          return this.targetId != null && !this.targetId.isEmpty();
         }
 
         /**
-         * @param value {@link #actionId} (The element id of the action this is related to.). This is the underlying object with id, value and extensions. The accessor "getActionId" gives direct access to the value
+         * @param value {@link #targetId} (The element id of the target related action.). This is the underlying object with id, value and extensions. The accessor "getTargetId" gives direct access to the value
          */
-        public RequestGroupActionRelatedActionComponent setActionIdElement(IdType value) { 
-          this.actionId = value;
+        public RequestGroupActionRelatedActionComponent setTargetIdElement(IdType value) { 
+          this.targetId = value;
           return this;
         }
 
         /**
-         * @return The element id of the action this is related to.
+         * @return The element id of the target related action.
          */
-        public String getActionId() { 
-          return this.actionId == null ? null : this.actionId.getValue();
+        public String getTargetId() { 
+          return this.targetId == null ? null : this.targetId.getValue();
         }
 
         /**
-         * @param value The element id of the action this is related to.
+         * @param value The element id of the target related action.
          */
-        public RequestGroupActionRelatedActionComponent setActionId(String value) { 
-            if (this.actionId == null)
-              this.actionId = new IdType();
-            this.actionId.setValue(value);
+        public RequestGroupActionRelatedActionComponent setTargetId(String value) { 
+            if (this.targetId == null)
+              this.targetId = new IdType();
+            this.targetId.setValue(value);
           return this;
         }
 
@@ -2033,7 +2080,7 @@ public class RequestGroup extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("actionId", "id", "The element id of the action this is related to.", 0, 1, actionId));
+          children.add(new Property("targetId", "id", "The element id of the target related action.", 0, 1, targetId));
           children.add(new Property("relationship", "code", "The relationship of this action to the related action.", 0, 1, relationship));
           children.add(new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset));
         }
@@ -2041,7 +2088,7 @@ public class RequestGroup extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1656172047: /*actionId*/  return new Property("actionId", "id", "The element id of the action this is related to.", 0, 1, actionId);
+          case -441951604: /*targetId*/  return new Property("targetId", "id", "The element id of the target related action.", 0, 1, targetId);
           case -261851592: /*relationship*/  return new Property("relationship", "code", "The relationship of this action to the related action.", 0, 1, relationship);
           case -1960684787: /*offset[x]*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
           case -1019779949: /*offset*/  return new Property("offset[x]", "Duration|Range", "A duration or range of durations to apply to the relationship. For example, 30-60 minutes before.", 0, 1, offset);
@@ -2055,7 +2102,7 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1656172047: /*actionId*/ return this.actionId == null ? new Base[0] : new Base[] {this.actionId}; // IdType
+        case -441951604: /*targetId*/ return this.targetId == null ? new Base[0] : new Base[] {this.targetId}; // IdType
         case -261851592: /*relationship*/ return this.relationship == null ? new Base[0] : new Base[] {this.relationship}; // Enumeration<ActionRelationshipType>
         case -1019779949: /*offset*/ return this.offset == null ? new Base[0] : new Base[] {this.offset}; // DataType
         default: return super.getProperty(hash, name, checkValid);
@@ -2066,8 +2113,8 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -1656172047: // actionId
-          this.actionId = TypeConvertor.castToId(value); // IdType
+        case -441951604: // targetId
+          this.targetId = TypeConvertor.castToId(value); // IdType
           return value;
         case -261851592: // relationship
           value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -2083,8 +2130,8 @@ public class RequestGroup extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("actionId")) {
-          this.actionId = TypeConvertor.castToId(value); // IdType
+        if (name.equals("targetId")) {
+          this.targetId = TypeConvertor.castToId(value); // IdType
         } else if (name.equals("relationship")) {
           value = new ActionRelationshipTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.relationship = (Enumeration) value; // Enumeration<ActionRelationshipType>
@@ -2098,7 +2145,7 @@ public class RequestGroup extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1656172047:  return getActionIdElement();
+        case -441951604:  return getTargetIdElement();
         case -261851592:  return getRelationshipElement();
         case -1960684787:  return getOffset();
         case -1019779949:  return getOffset();
@@ -2110,7 +2157,7 @@ public class RequestGroup extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1656172047: /*actionId*/ return new String[] {"id"};
+        case -441951604: /*targetId*/ return new String[] {"id"};
         case -261851592: /*relationship*/ return new String[] {"code"};
         case -1019779949: /*offset*/ return new String[] {"Duration", "Range"};
         default: return super.getTypesForProperty(hash, name);
@@ -2120,8 +2167,8 @@ public class RequestGroup extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("actionId")) {
-          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.relatedAction.actionId");
+        if (name.equals("targetId")) {
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.relatedAction.targetId");
         }
         else if (name.equals("relationship")) {
           throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.relatedAction.relationship");
@@ -2146,7 +2193,7 @@ public class RequestGroup extends DomainResource {
 
       public void copyValues(RequestGroupActionRelatedActionComponent dst) {
         super.copyValues(dst);
-        dst.actionId = actionId == null ? null : actionId.copy();
+        dst.targetId = targetId == null ? null : targetId.copy();
         dst.relationship = relationship == null ? null : relationship.copy();
         dst.offset = offset == null ? null : offset.copy();
       }
@@ -2158,7 +2205,7 @@ public class RequestGroup extends DomainResource {
         if (!(other_ instanceof RequestGroupActionRelatedActionComponent))
           return false;
         RequestGroupActionRelatedActionComponent o = (RequestGroupActionRelatedActionComponent) other_;
-        return compareDeep(actionId, o.actionId, true) && compareDeep(relationship, o.relationship, true)
+        return compareDeep(targetId, o.targetId, true) && compareDeep(relationship, o.relationship, true)
            && compareDeep(offset, o.offset, true);
       }
 
@@ -2169,17 +2216,387 @@ public class RequestGroup extends DomainResource {
         if (!(other_ instanceof RequestGroupActionRelatedActionComponent))
           return false;
         RequestGroupActionRelatedActionComponent o = (RequestGroupActionRelatedActionComponent) other_;
-        return compareValues(actionId, o.actionId, true) && compareValues(relationship, o.relationship, true)
+        return compareValues(targetId, o.targetId, true) && compareValues(relationship, o.relationship, true)
           ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(actionId, relationship, offset
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(targetId, relationship, offset
           );
       }
 
   public String fhirType() {
     return "RequestGroup.action.relatedAction";
+
+  }
+
+  }
+
+    @Block()
+    public static class RequestGroupActionParticipantComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * The type of participant in the action.
+         */
+        @Child(name = "type", type = {CodeType.class}, order=1, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="careteam | device | group | healthcareservice | location | organization | patient | practitioner | practitionerrole | relatedperson", formalDefinition="The type of participant in the action." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-participant-type")
+        protected Enumeration<ActionParticipantType> type;
+
+        /**
+         * The type of participant in the action.
+         */
+        @Child(name = "typeReference", type = {CareTeam.class, Device.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Who or what can participate", formalDefinition="The type of participant in the action." )
+        protected Reference typeReference;
+
+        /**
+         * The role the participant should play in performing the described action.
+         */
+        @Child(name = "role", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="E.g. Nurse, Surgeon, Parent, etc.", formalDefinition="The role the participant should play in performing the described action." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://terminology.hl7.org/ValueSet/action-participant-role")
+        protected CodeableConcept role;
+
+        /**
+         * Indicates how the actor will be involved in the action - author, reviewer, witness, etc.
+         */
+        @Child(name = "function", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="E.g. Author, Reviewer, Witness, etc.", formalDefinition="Indicates how the actor will be involved in the action - author, reviewer, witness, etc." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-participant-function")
+        protected CodeableConcept function;
+
+        /**
+         * A reference to the actual participant.
+         */
+        @Child(name = "actor", type = {CareTeam.class, Device.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Who/what is participating?", formalDefinition="A reference to the actual participant." )
+        protected Reference actor;
+
+        private static final long serialVersionUID = -2026277374L;
+
+    /**
+     * Constructor
+     */
+      public RequestGroupActionParticipantComponent() {
+        super();
+      }
+
+        /**
+         * @return {@link #type} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         */
+        public Enumeration<ActionParticipantType> getTypeElement() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create RequestGroupActionParticipantComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new Enumeration<ActionParticipantType>(new ActionParticipantTypeEnumFactory()); // bb
+          return this.type;
+        }
+
+        public boolean hasTypeElement() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (The type of participant in the action.). This is the underlying object with id, value and extensions. The accessor "getType" gives direct access to the value
+         */
+        public RequestGroupActionParticipantComponent setTypeElement(Enumeration<ActionParticipantType> value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return The type of participant in the action.
+         */
+        public ActionParticipantType getType() { 
+          return this.type == null ? null : this.type.getValue();
+        }
+
+        /**
+         * @param value The type of participant in the action.
+         */
+        public RequestGroupActionParticipantComponent setType(ActionParticipantType value) { 
+          if (value == null)
+            this.type = null;
+          else {
+            if (this.type == null)
+              this.type = new Enumeration<ActionParticipantType>(new ActionParticipantTypeEnumFactory());
+            this.type.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #typeReference} (The type of participant in the action.)
+         */
+        public Reference getTypeReference() { 
+          if (this.typeReference == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create RequestGroupActionParticipantComponent.typeReference");
+            else if (Configuration.doAutoCreate())
+              this.typeReference = new Reference(); // cc
+          return this.typeReference;
+        }
+
+        public boolean hasTypeReference() { 
+          return this.typeReference != null && !this.typeReference.isEmpty();
+        }
+
+        /**
+         * @param value {@link #typeReference} (The type of participant in the action.)
+         */
+        public RequestGroupActionParticipantComponent setTypeReference(Reference value) { 
+          this.typeReference = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #role} (The role the participant should play in performing the described action.)
+         */
+        public CodeableConcept getRole() { 
+          if (this.role == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create RequestGroupActionParticipantComponent.role");
+            else if (Configuration.doAutoCreate())
+              this.role = new CodeableConcept(); // cc
+          return this.role;
+        }
+
+        public boolean hasRole() { 
+          return this.role != null && !this.role.isEmpty();
+        }
+
+        /**
+         * @param value {@link #role} (The role the participant should play in performing the described action.)
+         */
+        public RequestGroupActionParticipantComponent setRole(CodeableConcept value) { 
+          this.role = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #function} (Indicates how the actor will be involved in the action - author, reviewer, witness, etc.)
+         */
+        public CodeableConcept getFunction() { 
+          if (this.function == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create RequestGroupActionParticipantComponent.function");
+            else if (Configuration.doAutoCreate())
+              this.function = new CodeableConcept(); // cc
+          return this.function;
+        }
+
+        public boolean hasFunction() { 
+          return this.function != null && !this.function.isEmpty();
+        }
+
+        /**
+         * @param value {@link #function} (Indicates how the actor will be involved in the action - author, reviewer, witness, etc.)
+         */
+        public RequestGroupActionParticipantComponent setFunction(CodeableConcept value) { 
+          this.function = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #actor} (A reference to the actual participant.)
+         */
+        public Reference getActor() { 
+          if (this.actor == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create RequestGroupActionParticipantComponent.actor");
+            else if (Configuration.doAutoCreate())
+              this.actor = new Reference(); // cc
+          return this.actor;
+        }
+
+        public boolean hasActor() { 
+          return this.actor != null && !this.actor.isEmpty();
+        }
+
+        /**
+         * @param value {@link #actor} (A reference to the actual participant.)
+         */
+        public RequestGroupActionParticipantComponent setActor(Reference value) { 
+          this.actor = value;
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("type", "code", "The type of participant in the action.", 0, 1, type));
+          children.add(new Property("typeReference", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference));
+          children.add(new Property("role", "CodeableConcept", "The role the participant should play in performing the described action.", 0, 1, role));
+          children.add(new Property("function", "CodeableConcept", "Indicates how the actor will be involved in the action - author, reviewer, witness, etc.", 0, 1, function));
+          children.add(new Property("actor", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "A reference to the actual participant.", 0, 1, actor));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3575610: /*type*/  return new Property("type", "code", "The type of participant in the action.", 0, 1, type);
+          case 2074825009: /*typeReference*/  return new Property("typeReference", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "The type of participant in the action.", 0, 1, typeReference);
+          case 3506294: /*role*/  return new Property("role", "CodeableConcept", "The role the participant should play in performing the described action.", 0, 1, role);
+          case 1380938712: /*function*/  return new Property("function", "CodeableConcept", "Indicates how the actor will be involved in the action - author, reviewer, witness, etc.", 0, 1, function);
+          case 92645877: /*actor*/  return new Property("actor", "Reference(CareTeam|Device|Group|HealthcareService|Location|Organization|Patient|Practitioner|PractitionerRole|RelatedPerson)", "A reference to the actual participant.", 0, 1, actor);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<ActionParticipantType>
+        case 2074825009: /*typeReference*/ return this.typeReference == null ? new Base[0] : new Base[] {this.typeReference}; // Reference
+        case 3506294: /*role*/ return this.role == null ? new Base[0] : new Base[] {this.role}; // CodeableConcept
+        case 1380938712: /*function*/ return this.function == null ? new Base[0] : new Base[] {this.function}; // CodeableConcept
+        case 92645877: /*actor*/ return this.actor == null ? new Base[0] : new Base[] {this.actor}; // Reference
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3575610: // type
+          value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+          return value;
+        case 2074825009: // typeReference
+          this.typeReference = TypeConvertor.castToReference(value); // Reference
+          return value;
+        case 3506294: // role
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 1380938712: // function
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 92645877: // actor
+          this.actor = TypeConvertor.castToReference(value); // Reference
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("type")) {
+          value = new ActionParticipantTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.type = (Enumeration) value; // Enumeration<ActionParticipantType>
+        } else if (name.equals("typeReference")) {
+          this.typeReference = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("role")) {
+          this.role = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("function")) {
+          this.function = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("actor")) {
+          this.actor = TypeConvertor.castToReference(value); // Reference
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610:  return getTypeElement();
+        case 2074825009:  return getTypeReference();
+        case 3506294:  return getRole();
+        case 1380938712:  return getFunction();
+        case 92645877:  return getActor();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3575610: /*type*/ return new String[] {"code"};
+        case 2074825009: /*typeReference*/ return new String[] {"Reference"};
+        case 3506294: /*role*/ return new String[] {"CodeableConcept"};
+        case 1380938712: /*function*/ return new String[] {"CodeableConcept"};
+        case 92645877: /*actor*/ return new String[] {"Reference"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("type")) {
+          throw new FHIRException("Cannot call addChild on a primitive type RequestGroup.action.participant.type");
+        }
+        else if (name.equals("typeReference")) {
+          this.typeReference = new Reference();
+          return this.typeReference;
+        }
+        else if (name.equals("role")) {
+          this.role = new CodeableConcept();
+          return this.role;
+        }
+        else if (name.equals("function")) {
+          this.function = new CodeableConcept();
+          return this.function;
+        }
+        else if (name.equals("actor")) {
+          this.actor = new Reference();
+          return this.actor;
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public RequestGroupActionParticipantComponent copy() {
+        RequestGroupActionParticipantComponent dst = new RequestGroupActionParticipantComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(RequestGroupActionParticipantComponent dst) {
+        super.copyValues(dst);
+        dst.type = type == null ? null : type.copy();
+        dst.typeReference = typeReference == null ? null : typeReference.copy();
+        dst.role = role == null ? null : role.copy();
+        dst.function = function == null ? null : function.copy();
+        dst.actor = actor == null ? null : actor.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof RequestGroupActionParticipantComponent))
+          return false;
+        RequestGroupActionParticipantComponent o = (RequestGroupActionParticipantComponent) other_;
+        return compareDeep(type, o.type, true) && compareDeep(typeReference, o.typeReference, true) && compareDeep(role, o.role, true)
+           && compareDeep(function, o.function, true) && compareDeep(actor, o.actor, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof RequestGroupActionParticipantComponent))
+          return false;
+        RequestGroupActionParticipantComponent o = (RequestGroupActionParticipantComponent) other_;
+        return compareValues(type, o.type, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, typeReference, role
+          , function, actor);
+      }
+
+  public String fhirType() {
+    return "RequestGroup.action.participant";
 
   }
 
@@ -2256,6 +2673,7 @@ public class RequestGroup extends DomainResource {
      */
     @Child(name = "code", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="What's being requested/ordered", formalDefinition="A code that identifies what the overall request group is." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-code")
     protected CodeableConcept code;
 
     /**
@@ -2291,6 +2709,7 @@ public class RequestGroup extends DomainResource {
      */
     @Child(name = "reason", type = {CodeableReference.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Why the request group is needed", formalDefinition="Describes the reason for the request group in coded or textual form." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/action-reason-code")
     protected List<CodeableReference> reason;
 
     /**
@@ -3672,17 +4091,17 @@ public class RequestGroup extends DomainResource {
    * <p>
    * Description: <b>The participant in the requests in the group</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.action.participant</b><br>
+   * Path: <b>RequestGroup.action.participant.actor</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="participant", path="RequestGroup.action.participant", description="The participant in the requests in the group", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={Device.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  @SearchParamDefinition(name="participant", path="RequestGroup.action.participant.actor", description="The participant in the requests in the group", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for RelatedPerson") }, target={CareTeam.class, Device.class, Group.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PARTICIPANT = "participant";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>participant</b>
    * <p>
    * Description: <b>The participant in the requests in the group</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>RequestGroup.action.participant</b><br>
+   * Path: <b>RequestGroup.action.participant.actor</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PARTICIPANT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PARTICIPANT);
@@ -3701,7 +4120,7 @@ public class RequestGroup extends DomainResource {
    * Path: <b>RequestGroup.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="RequestGroup.subject.where(resolve() is Patient)", description="The identity of a patient to search for request groups", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="RequestGroup.subject.where(resolve() is Patient)", description="The identity of a patient to search for request groups", type="reference", target={Group.class, Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>

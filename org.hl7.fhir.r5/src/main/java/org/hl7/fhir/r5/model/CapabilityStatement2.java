@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +52,590 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="CapabilityStatement2", profile="http://hl7.org/fhir/StructureDefinition/CapabilityStatement2")
 public class CapabilityStatement2 extends CanonicalResource {
+
+    public enum CapabilityFeature {
+        /**
+         * 
+         */
+        FEATUREHEADER, 
+        /**
+         * 
+         */
+        SECURITYCORS, 
+        /**
+         * 
+         */
+        SECURITYSERVICE, 
+        /**
+         * 
+         */
+        VERSIONING, 
+        /**
+         * 
+         */
+        READHISTORY, 
+        /**
+         * 
+         */
+        UPDATECREATE, 
+        /**
+         * 
+         */
+        CONDITIONALCREATE, 
+        /**
+         * 
+         */
+        CONDITIONALREAD, 
+        /**
+         * 
+         */
+        CONDITIONALUPDATE, 
+        /**
+         * 
+         */
+        CONDITIONALDELETE, 
+        /**
+         * 
+         */
+        REFERENCEPOLICY, 
+        /**
+         * 
+         */
+        SEARCHINCLUDE, 
+        /**
+         * 
+         */
+        SEARCHREVINCLUDE, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static CapabilityFeature fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("feature-header".equals(codeString))
+          return FEATUREHEADER;
+        if ("security-cors".equals(codeString))
+          return SECURITYCORS;
+        if ("security-service".equals(codeString))
+          return SECURITYSERVICE;
+        if ("versioning".equals(codeString))
+          return VERSIONING;
+        if ("readHistory".equals(codeString))
+          return READHISTORY;
+        if ("updateCreate".equals(codeString))
+          return UPDATECREATE;
+        if ("conditionalCreate".equals(codeString))
+          return CONDITIONALCREATE;
+        if ("conditionalRead".equals(codeString))
+          return CONDITIONALREAD;
+        if ("conditionalUpdate".equals(codeString))
+          return CONDITIONALUPDATE;
+        if ("conditionalDelete".equals(codeString))
+          return CONDITIONALDELETE;
+        if ("referencePolicy".equals(codeString))
+          return REFERENCEPOLICY;
+        if ("searchInclude".equals(codeString))
+          return SEARCHINCLUDE;
+        if ("searchRevInclude".equals(codeString))
+          return SEARCHREVINCLUDE;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown CapabilityFeature code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case FEATUREHEADER: return "feature-header";
+            case SECURITYCORS: return "security-cors";
+            case SECURITYSERVICE: return "security-service";
+            case VERSIONING: return "versioning";
+            case READHISTORY: return "readHistory";
+            case UPDATECREATE: return "updateCreate";
+            case CONDITIONALCREATE: return "conditionalCreate";
+            case CONDITIONALREAD: return "conditionalRead";
+            case CONDITIONALUPDATE: return "conditionalUpdate";
+            case CONDITIONALDELETE: return "conditionalDelete";
+            case REFERENCEPOLICY: return "referencePolicy";
+            case SEARCHINCLUDE: return "searchInclude";
+            case SEARCHREVINCLUDE: return "searchRevInclude";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case FEATUREHEADER: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case SECURITYCORS: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case SECURITYSERVICE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case VERSIONING: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case READHISTORY: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case UPDATECREATE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case CONDITIONALCREATE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case CONDITIONALREAD: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case CONDITIONALUPDATE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case CONDITIONALDELETE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case REFERENCEPOLICY: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case SEARCHINCLUDE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case SEARCHREVINCLUDE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case FEATUREHEADER: return "";
+            case SECURITYCORS: return "";
+            case SECURITYSERVICE: return "";
+            case VERSIONING: return "";
+            case READHISTORY: return "";
+            case UPDATECREATE: return "";
+            case CONDITIONALCREATE: return "";
+            case CONDITIONALREAD: return "";
+            case CONDITIONALUPDATE: return "";
+            case CONDITIONALDELETE: return "";
+            case REFERENCEPOLICY: return "";
+            case SEARCHINCLUDE: return "";
+            case SEARCHREVINCLUDE: return "";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case FEATUREHEADER: return "Whether the server supports the Required-Feature header by which a client makes a feature as mandatory for processing a requrest properly";
+            case SECURITYCORS: return "security-cors";
+            case SECURITYSERVICE: return "security-service";
+            case VERSIONING: return "versioning";
+            case READHISTORY: return "readHistory";
+            case UPDATECREATE: return "updateCreate";
+            case CONDITIONALCREATE: return "conditionalCreate";
+            case CONDITIONALREAD: return "conditionalRead";
+            case CONDITIONALUPDATE: return "conditionalUpdate";
+            case CONDITIONALDELETE: return "conditionalDelete";
+            case REFERENCEPOLICY: return "referencePolicy";
+            case SEARCHINCLUDE: return "searchInclude";
+            case SEARCHREVINCLUDE: return "searchRevInclude";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class CapabilityFeatureEnumFactory implements EnumFactory<CapabilityFeature> {
+    public CapabilityFeature fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("feature-header".equals(codeString))
+          return CapabilityFeature.FEATUREHEADER;
+        if ("security-cors".equals(codeString))
+          return CapabilityFeature.SECURITYCORS;
+        if ("security-service".equals(codeString))
+          return CapabilityFeature.SECURITYSERVICE;
+        if ("versioning".equals(codeString))
+          return CapabilityFeature.VERSIONING;
+        if ("readHistory".equals(codeString))
+          return CapabilityFeature.READHISTORY;
+        if ("updateCreate".equals(codeString))
+          return CapabilityFeature.UPDATECREATE;
+        if ("conditionalCreate".equals(codeString))
+          return CapabilityFeature.CONDITIONALCREATE;
+        if ("conditionalRead".equals(codeString))
+          return CapabilityFeature.CONDITIONALREAD;
+        if ("conditionalUpdate".equals(codeString))
+          return CapabilityFeature.CONDITIONALUPDATE;
+        if ("conditionalDelete".equals(codeString))
+          return CapabilityFeature.CONDITIONALDELETE;
+        if ("referencePolicy".equals(codeString))
+          return CapabilityFeature.REFERENCEPOLICY;
+        if ("searchInclude".equals(codeString))
+          return CapabilityFeature.SEARCHINCLUDE;
+        if ("searchRevInclude".equals(codeString))
+          return CapabilityFeature.SEARCHREVINCLUDE;
+        throw new IllegalArgumentException("Unknown CapabilityFeature code '"+codeString+"'");
+        }
+        public Enumeration<CapabilityFeature> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<CapabilityFeature>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("feature-header".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.FEATUREHEADER);
+        if ("security-cors".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.SECURITYCORS);
+        if ("security-service".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.SECURITYSERVICE);
+        if ("versioning".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.VERSIONING);
+        if ("readHistory".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.READHISTORY);
+        if ("updateCreate".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.UPDATECREATE);
+        if ("conditionalCreate".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.CONDITIONALCREATE);
+        if ("conditionalRead".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.CONDITIONALREAD);
+        if ("conditionalUpdate".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.CONDITIONALUPDATE);
+        if ("conditionalDelete".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.CONDITIONALDELETE);
+        if ("referencePolicy".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.REFERENCEPOLICY);
+        if ("searchInclude".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.SEARCHINCLUDE);
+        if ("searchRevInclude".equals(codeString))
+          return new Enumeration<CapabilityFeature>(this, CapabilityFeature.SEARCHREVINCLUDE);
+        throw new FHIRException("Unknown CapabilityFeature code '"+codeString+"'");
+        }
+    public String toCode(CapabilityFeature code) {
+      if (code == CapabilityFeature.FEATUREHEADER)
+        return "feature-header";
+      if (code == CapabilityFeature.SECURITYCORS)
+        return "security-cors";
+      if (code == CapabilityFeature.SECURITYSERVICE)
+        return "security-service";
+      if (code == CapabilityFeature.VERSIONING)
+        return "versioning";
+      if (code == CapabilityFeature.READHISTORY)
+        return "readHistory";
+      if (code == CapabilityFeature.UPDATECREATE)
+        return "updateCreate";
+      if (code == CapabilityFeature.CONDITIONALCREATE)
+        return "conditionalCreate";
+      if (code == CapabilityFeature.CONDITIONALREAD)
+        return "conditionalRead";
+      if (code == CapabilityFeature.CONDITIONALUPDATE)
+        return "conditionalUpdate";
+      if (code == CapabilityFeature.CONDITIONALDELETE)
+        return "conditionalDelete";
+      if (code == CapabilityFeature.REFERENCEPOLICY)
+        return "referencePolicy";
+      if (code == CapabilityFeature.SEARCHINCLUDE)
+        return "searchInclude";
+      if (code == CapabilityFeature.SEARCHREVINCLUDE)
+        return "searchRevInclude";
+      return "?";
+      }
+    public String toSystem(CapabilityFeature code) {
+      return code.getSystem();
+      }
+    }
+
+    public enum CapabilityFeatureValue {
+        /**
+         * 
+         */
+        TRUE, 
+        /**
+         * 
+         */
+        FALSE, 
+        /**
+         * VersionId meta-property is not supported (server) or used (client).
+         */
+        NOVERSION, 
+        /**
+         * VersionId meta-property is supported (server) or used (client).
+         */
+        VERSIONED, 
+        /**
+         * VersionId must be correct for updates (server) or will be specified (If-match header) for updates (client).
+         */
+        VERSIONEDUPDATE, 
+        /**
+         * No support for conditional reads.
+         */
+        NOTSUPPORTED, 
+        /**
+         * Conditional reads are supported, but only with the If-Modified-Since HTTP Header.
+         */
+        MODIFIEDSINCE, 
+        /**
+         * Conditional reads are supported, but only with the If-None-Match HTTP Header.
+         */
+        NOTMATCH, 
+        /**
+         * Conditional reads are supported, with both If-Modified-Since and If-None-Match HTTP Headers.
+         */
+        FULLSUPPORT, 
+        /**
+         * Conditional deletes are supported, but only single resources at a time.
+         */
+        SINGLE, 
+        /**
+         * Conditional deletes are supported, and multiple resources can be deleted in a single interaction.
+         */
+        MULTIPLE, 
+        /**
+         * The server supports and populates Literal references (i.e. using Reference.reference) where they are known (this code does not guarantee that all references are literal; see 'enforced').
+         */
+        LITERAL, 
+        /**
+         * The server allows logical references (i.e. using Reference.identifier).
+         */
+        LOGICAL, 
+        /**
+         * The server will attempt to resolve logical references to literal references - i.e. converting Reference.identifier to Reference.reference (if resolution fails, the server may still accept resources; see logical).
+         */
+        RESOLVES, 
+        /**
+         * The server enforces that references have integrity - e.g. it ensures that references can always be resolved. This is typically the case for clinical record systems, but often not the case for middleware/proxy systems.
+         */
+        ENFORCED, 
+        /**
+         * The server does not support references that point to other servers.
+         */
+        LOCAL, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static CapabilityFeatureValue fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("true".equals(codeString))
+          return TRUE;
+        if ("false".equals(codeString))
+          return FALSE;
+        if ("no-version".equals(codeString))
+          return NOVERSION;
+        if ("versioned".equals(codeString))
+          return VERSIONED;
+        if ("versioned-update".equals(codeString))
+          return VERSIONEDUPDATE;
+        if ("not-supported".equals(codeString))
+          return NOTSUPPORTED;
+        if ("modified-since".equals(codeString))
+          return MODIFIEDSINCE;
+        if ("not-match".equals(codeString))
+          return NOTMATCH;
+        if ("full-support".equals(codeString))
+          return FULLSUPPORT;
+        if ("single".equals(codeString))
+          return SINGLE;
+        if ("multiple".equals(codeString))
+          return MULTIPLE;
+        if ("literal".equals(codeString))
+          return LITERAL;
+        if ("logical".equals(codeString))
+          return LOGICAL;
+        if ("resolves".equals(codeString))
+          return RESOLVES;
+        if ("enforced".equals(codeString))
+          return ENFORCED;
+        if ("local".equals(codeString))
+          return LOCAL;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown CapabilityFeatureValue code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case TRUE: return "true";
+            case FALSE: return "false";
+            case NOVERSION: return "no-version";
+            case VERSIONED: return "versioned";
+            case VERSIONEDUPDATE: return "versioned-update";
+            case NOTSUPPORTED: return "not-supported";
+            case MODIFIEDSINCE: return "modified-since";
+            case NOTMATCH: return "not-match";
+            case FULLSUPPORT: return "full-support";
+            case SINGLE: return "single";
+            case MULTIPLE: return "multiple";
+            case LITERAL: return "literal";
+            case LOGICAL: return "logical";
+            case RESOLVES: return "resolves";
+            case ENFORCED: return "enforced";
+            case LOCAL: return "local";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case TRUE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case FALSE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case NOVERSION: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case VERSIONED: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case VERSIONEDUPDATE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case NOTSUPPORTED: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case MODIFIEDSINCE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case NOTMATCH: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case FULLSUPPORT: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case SINGLE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case MULTIPLE: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case LITERAL: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case LOGICAL: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case RESOLVES: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case ENFORCED: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            case LOCAL: return "http://hl7.org/fhir/CodeSystem/capability-features";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case TRUE: return "";
+            case FALSE: return "";
+            case NOVERSION: return "VersionId meta-property is not supported (server) or used (client).";
+            case VERSIONED: return "VersionId meta-property is supported (server) or used (client).";
+            case VERSIONEDUPDATE: return "VersionId must be correct for updates (server) or will be specified (If-match header) for updates (client).";
+            case NOTSUPPORTED: return "No support for conditional reads.";
+            case MODIFIEDSINCE: return "Conditional reads are supported, but only with the If-Modified-Since HTTP Header.";
+            case NOTMATCH: return "Conditional reads are supported, but only with the If-None-Match HTTP Header.";
+            case FULLSUPPORT: return "Conditional reads are supported, with both If-Modified-Since and If-None-Match HTTP Headers.";
+            case SINGLE: return "Conditional deletes are supported, but only single resources at a time.";
+            case MULTIPLE: return "Conditional deletes are supported, and multiple resources can be deleted in a single interaction.";
+            case LITERAL: return "The server supports and populates Literal references (i.e. using Reference.reference) where they are known (this code does not guarantee that all references are literal; see 'enforced').";
+            case LOGICAL: return "The server allows logical references (i.e. using Reference.identifier).";
+            case RESOLVES: return "The server will attempt to resolve logical references to literal references - i.e. converting Reference.identifier to Reference.reference (if resolution fails, the server may still accept resources; see logical).";
+            case ENFORCED: return "The server enforces that references have integrity - e.g. it ensures that references can always be resolved. This is typically the case for clinical record systems, but often not the case for middleware/proxy systems.";
+            case LOCAL: return "The server does not support references that point to other servers.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case TRUE: return "Value is true";
+            case FALSE: return "Value is false";
+            case NOVERSION: return "No VersionId Support";
+            case VERSIONED: return "Versioned";
+            case VERSIONEDUPDATE: return "VersionId tracked fully";
+            case NOTSUPPORTED: return "Not Supported";
+            case MODIFIEDSINCE: return "If-Modified-Since";
+            case NOTMATCH: return "If-None-Match";
+            case FULLSUPPORT: return "Full Support";
+            case SINGLE: return "Single Deletes Supported";
+            case MULTIPLE: return "Multiple Deletes Supported";
+            case LITERAL: return "Literal References";
+            case LOGICAL: return "Logical References";
+            case RESOLVES: return "Resolves References";
+            case ENFORCED: return "Reference Integrity Enforced";
+            case LOCAL: return "Local References Only";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class CapabilityFeatureValueEnumFactory implements EnumFactory<CapabilityFeatureValue> {
+    public CapabilityFeatureValue fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("true".equals(codeString))
+          return CapabilityFeatureValue.TRUE;
+        if ("false".equals(codeString))
+          return CapabilityFeatureValue.FALSE;
+        if ("no-version".equals(codeString))
+          return CapabilityFeatureValue.NOVERSION;
+        if ("versioned".equals(codeString))
+          return CapabilityFeatureValue.VERSIONED;
+        if ("versioned-update".equals(codeString))
+          return CapabilityFeatureValue.VERSIONEDUPDATE;
+        if ("not-supported".equals(codeString))
+          return CapabilityFeatureValue.NOTSUPPORTED;
+        if ("modified-since".equals(codeString))
+          return CapabilityFeatureValue.MODIFIEDSINCE;
+        if ("not-match".equals(codeString))
+          return CapabilityFeatureValue.NOTMATCH;
+        if ("full-support".equals(codeString))
+          return CapabilityFeatureValue.FULLSUPPORT;
+        if ("single".equals(codeString))
+          return CapabilityFeatureValue.SINGLE;
+        if ("multiple".equals(codeString))
+          return CapabilityFeatureValue.MULTIPLE;
+        if ("literal".equals(codeString))
+          return CapabilityFeatureValue.LITERAL;
+        if ("logical".equals(codeString))
+          return CapabilityFeatureValue.LOGICAL;
+        if ("resolves".equals(codeString))
+          return CapabilityFeatureValue.RESOLVES;
+        if ("enforced".equals(codeString))
+          return CapabilityFeatureValue.ENFORCED;
+        if ("local".equals(codeString))
+          return CapabilityFeatureValue.LOCAL;
+        throw new IllegalArgumentException("Unknown CapabilityFeatureValue code '"+codeString+"'");
+        }
+        public Enumeration<CapabilityFeatureValue> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<CapabilityFeatureValue>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("true".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.TRUE);
+        if ("false".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.FALSE);
+        if ("no-version".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.NOVERSION);
+        if ("versioned".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.VERSIONED);
+        if ("versioned-update".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.VERSIONEDUPDATE);
+        if ("not-supported".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.NOTSUPPORTED);
+        if ("modified-since".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.MODIFIEDSINCE);
+        if ("not-match".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.NOTMATCH);
+        if ("full-support".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.FULLSUPPORT);
+        if ("single".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.SINGLE);
+        if ("multiple".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.MULTIPLE);
+        if ("literal".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.LITERAL);
+        if ("logical".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.LOGICAL);
+        if ("resolves".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.RESOLVES);
+        if ("enforced".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.ENFORCED);
+        if ("local".equals(codeString))
+          return new Enumeration<CapabilityFeatureValue>(this, CapabilityFeatureValue.LOCAL);
+        throw new FHIRException("Unknown CapabilityFeatureValue code '"+codeString+"'");
+        }
+    public String toCode(CapabilityFeatureValue code) {
+      if (code == CapabilityFeatureValue.TRUE)
+        return "true";
+      if (code == CapabilityFeatureValue.FALSE)
+        return "false";
+      if (code == CapabilityFeatureValue.NOVERSION)
+        return "no-version";
+      if (code == CapabilityFeatureValue.VERSIONED)
+        return "versioned";
+      if (code == CapabilityFeatureValue.VERSIONEDUPDATE)
+        return "versioned-update";
+      if (code == CapabilityFeatureValue.NOTSUPPORTED)
+        return "not-supported";
+      if (code == CapabilityFeatureValue.MODIFIEDSINCE)
+        return "modified-since";
+      if (code == CapabilityFeatureValue.NOTMATCH)
+        return "not-match";
+      if (code == CapabilityFeatureValue.FULLSUPPORT)
+        return "full-support";
+      if (code == CapabilityFeatureValue.SINGLE)
+        return "single";
+      if (code == CapabilityFeatureValue.MULTIPLE)
+        return "multiple";
+      if (code == CapabilityFeatureValue.LITERAL)
+        return "literal";
+      if (code == CapabilityFeatureValue.LOGICAL)
+        return "logical";
+      if (code == CapabilityFeatureValue.RESOLVES)
+        return "resolves";
+      if (code == CapabilityFeatureValue.ENFORCED)
+        return "enforced";
+      if (code == CapabilityFeatureValue.LOCAL)
+        return "local";
+      return "?";
+      }
+    public String toSystem(CapabilityFeatureValue code) {
+      return code.getSystem();
+      }
+    }
 
     public enum SystemRestfulInteraction {
         /**
@@ -96,7 +680,6 @@ public class CapabilityStatement2 extends CanonicalResource {
             case BATCH: return "batch";
             case SEARCHSYSTEM: return "search-system";
             case HISTORYSYSTEM: return "history-system";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +689,6 @@ public class CapabilityStatement2 extends CanonicalResource {
             case BATCH: return "http://hl7.org/fhir/restful-interaction";
             case SEARCHSYSTEM: return "http://hl7.org/fhir/restful-interaction";
             case HISTORYSYSTEM: return "http://hl7.org/fhir/restful-interaction";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +698,6 @@ public class CapabilityStatement2 extends CanonicalResource {
             case BATCH: return "perform a set of a separate interactions in a single http operation";
             case SEARCHSYSTEM: return "Search all resources based on some filter criteria.";
             case HISTORYSYSTEM: return "Retrieve the change history for all resources on a system.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,7 +707,6 @@ public class CapabilityStatement2 extends CanonicalResource {
             case BATCH: return "batch";
             case SEARCHSYSTEM: return "search-system";
             case HISTORYSYSTEM: return "history-system";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -259,7 +839,6 @@ public class CapabilityStatement2 extends CanonicalResource {
             case HISTORYTYPE: return "history-type";
             case CREATE: return "create";
             case SEARCHTYPE: return "search-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -274,7 +853,6 @@ public class CapabilityStatement2 extends CanonicalResource {
             case HISTORYTYPE: return "http://hl7.org/fhir/restful-interaction";
             case CREATE: return "http://hl7.org/fhir/restful-interaction";
             case SEARCHTYPE: return "http://hl7.org/fhir/restful-interaction";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -289,7 +867,6 @@ public class CapabilityStatement2 extends CanonicalResource {
             case HISTORYTYPE: return "Retrieve the change history for all resources of a particular type.";
             case CREATE: return "Create a new resource with a server assigned id.";
             case SEARCHTYPE: return "Search all resources of the specified type based on some filter criteria.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -304,7 +881,6 @@ public class CapabilityStatement2 extends CanonicalResource {
             case HISTORYTYPE: return "history-type";
             case CREATE: return "create";
             case SEARCHTYPE: return "search-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -1034,41 +1610,48 @@ public class CapabilityStatement2 extends CanonicalResource {
         protected MarkdownType documentation;
 
         /**
+         * A statement that affirms support for a feature.
+         */
+        @Child(name = "feature", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Statement of support for a feature", formalDefinition="A statement that affirms support for a feature." )
+        protected List<CapabilityStatement2RestFeatureComponent> feature;
+
+        /**
          * A specification of the restful capabilities of the solution for a specific resource type.
          */
-        @Child(name = "resource", type = {}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "resource", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Resource served on the REST interface", formalDefinition="A specification of the restful capabilities of the solution for a specific resource type." )
         protected List<CapabilityStatement2RestResourceComponent> resource;
 
         /**
          * A specification of restful operations supported by the system.
          */
-        @Child(name = "interaction", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "interaction", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="What operations are supported?", formalDefinition="A specification of restful operations supported by the system." )
         protected List<SystemInteractionComponent> interaction;
 
         /**
          * Search parameters that are supported for searching all resources for implementations to support and/or make use of - either references to ones defined in the specification, or additional ones defined for/by the implementation.
          */
-        @Child(name = "searchParam", type = {CapabilityStatement2RestResourceSearchParamComponent.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "searchParam", type = {CapabilityStatement2RestResourceSearchParamComponent.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Search parameters for searching all resources", formalDefinition="Search parameters that are supported for searching all resources for implementations to support and/or make use of - either references to ones defined in the specification, or additional ones defined for/by the implementation." )
         protected List<CapabilityStatement2RestResourceSearchParamComponent> searchParam;
 
         /**
          * Definition of an operation or a named query together with its parameters and their meaning and type.
          */
-        @Child(name = "operation", type = {CapabilityStatement2RestResourceOperationComponent.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "operation", type = {CapabilityStatement2RestResourceOperationComponent.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Definition of a system level operation", formalDefinition="Definition of an operation or a named query together with its parameters and their meaning and type." )
         protected List<CapabilityStatement2RestResourceOperationComponent> operation;
 
         /**
          * An absolute URI which is a reference to the definition of a compartment that the system supports. The reference is to a CompartmentDefinition resource by its canonical URL .
          */
-        @Child(name = "compartment", type = {CanonicalType.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "compartment", type = {CanonicalType.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Compartments served/used by system", formalDefinition="An absolute URI which is a reference to the definition of a compartment that the system supports. The reference is to a CompartmentDefinition resource by its canonical URL ." )
         protected List<CanonicalType> compartment;
 
-        private static final long serialVersionUID = -476653235L;
+        private static final long serialVersionUID = 2139914073L;
 
     /**
      * Constructor
@@ -1177,6 +1760,59 @@ public class CapabilityStatement2 extends CanonicalResource {
             this.documentation.setValue(value);
           }
           return this;
+        }
+
+        /**
+         * @return {@link #feature} (A statement that affirms support for a feature.)
+         */
+        public List<CapabilityStatement2RestFeatureComponent> getFeature() { 
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          return this.feature;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public CapabilityStatement2RestComponent setFeature(List<CapabilityStatement2RestFeatureComponent> theFeature) { 
+          this.feature = theFeature;
+          return this;
+        }
+
+        public boolean hasFeature() { 
+          if (this.feature == null)
+            return false;
+          for (CapabilityStatement2RestFeatureComponent item : this.feature)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CapabilityStatement2RestFeatureComponent addFeature() { //3
+          CapabilityStatement2RestFeatureComponent t = new CapabilityStatement2RestFeatureComponent();
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return t;
+        }
+
+        public CapabilityStatement2RestComponent addFeature(CapabilityStatement2RestFeatureComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #feature}, creating it if it does not already exist {3}
+         */
+        public CapabilityStatement2RestFeatureComponent getFeatureFirstRep() { 
+          if (getFeature().isEmpty()) {
+            addFeature();
+          }
+          return getFeature().get(0);
         }
 
         /**
@@ -1456,6 +2092,7 @@ public class CapabilityStatement2 extends CanonicalResource {
           super.listChildren(children);
           children.add(new Property("mode", "code", "Identifies whether this portion of the statement is describing the ability to initiate or receive restful operations.", 0, 1, mode));
           children.add(new Property("documentation", "markdown", "Information about the system's restful capabilities that apply across all applications, such as security.", 0, 1, documentation));
+          children.add(new Property("feature", "", "A statement that affirms support for a feature.", 0, java.lang.Integer.MAX_VALUE, feature));
           children.add(new Property("resource", "", "A specification of the restful capabilities of the solution for a specific resource type.", 0, java.lang.Integer.MAX_VALUE, resource));
           children.add(new Property("interaction", "", "A specification of restful operations supported by the system.", 0, java.lang.Integer.MAX_VALUE, interaction));
           children.add(new Property("searchParam", "@CapabilityStatement2.rest.resource.searchParam", "Search parameters that are supported for searching all resources for implementations to support and/or make use of - either references to ones defined in the specification, or additional ones defined for/by the implementation.", 0, java.lang.Integer.MAX_VALUE, searchParam));
@@ -1468,6 +2105,7 @@ public class CapabilityStatement2 extends CanonicalResource {
           switch (_hash) {
           case 3357091: /*mode*/  return new Property("mode", "code", "Identifies whether this portion of the statement is describing the ability to initiate or receive restful operations.", 0, 1, mode);
           case 1587405498: /*documentation*/  return new Property("documentation", "markdown", "Information about the system's restful capabilities that apply across all applications, such as security.", 0, 1, documentation);
+          case -979207434: /*feature*/  return new Property("feature", "", "A statement that affirms support for a feature.", 0, java.lang.Integer.MAX_VALUE, feature);
           case -341064690: /*resource*/  return new Property("resource", "", "A specification of the restful capabilities of the solution for a specific resource type.", 0, java.lang.Integer.MAX_VALUE, resource);
           case 1844104722: /*interaction*/  return new Property("interaction", "", "A specification of restful operations supported by the system.", 0, java.lang.Integer.MAX_VALUE, interaction);
           case -553645115: /*searchParam*/  return new Property("searchParam", "@CapabilityStatement2.rest.resource.searchParam", "Search parameters that are supported for searching all resources for implementations to support and/or make use of - either references to ones defined in the specification, or additional ones defined for/by the implementation.", 0, java.lang.Integer.MAX_VALUE, searchParam);
@@ -1483,6 +2121,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         switch (hash) {
         case 3357091: /*mode*/ return this.mode == null ? new Base[0] : new Base[] {this.mode}; // Enumeration<RestfulCapabilityMode>
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // MarkdownType
+        case -979207434: /*feature*/ return this.feature == null ? new Base[0] : this.feature.toArray(new Base[this.feature.size()]); // CapabilityStatement2RestFeatureComponent
         case -341064690: /*resource*/ return this.resource == null ? new Base[0] : this.resource.toArray(new Base[this.resource.size()]); // CapabilityStatement2RestResourceComponent
         case 1844104722: /*interaction*/ return this.interaction == null ? new Base[0] : this.interaction.toArray(new Base[this.interaction.size()]); // SystemInteractionComponent
         case -553645115: /*searchParam*/ return this.searchParam == null ? new Base[0] : this.searchParam.toArray(new Base[this.searchParam.size()]); // CapabilityStatement2RestResourceSearchParamComponent
@@ -1502,6 +2141,9 @@ public class CapabilityStatement2 extends CanonicalResource {
           return value;
         case 1587405498: // documentation
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case -979207434: // feature
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value); // CapabilityStatement2RestFeatureComponent
           return value;
         case -341064690: // resource
           this.getResource().add((CapabilityStatement2RestResourceComponent) value); // CapabilityStatement2RestResourceComponent
@@ -1530,6 +2172,8 @@ public class CapabilityStatement2 extends CanonicalResource {
           this.mode = (Enumeration) value; // Enumeration<RestfulCapabilityMode>
         } else if (name.equals("documentation")) {
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("feature")) {
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value);
         } else if (name.equals("resource")) {
           this.getResource().add((CapabilityStatement2RestResourceComponent) value);
         } else if (name.equals("interaction")) {
@@ -1550,6 +2194,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         switch (hash) {
         case 3357091:  return getModeElement();
         case 1587405498:  return getDocumentationElement();
+        case -979207434:  return addFeature(); 
         case -341064690:  return addResource(); 
         case 1844104722:  return addInteraction(); 
         case -553645115:  return addSearchParam(); 
@@ -1565,6 +2210,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         switch (hash) {
         case 3357091: /*mode*/ return new String[] {"code"};
         case 1587405498: /*documentation*/ return new String[] {"markdown"};
+        case -979207434: /*feature*/ return new String[] {};
         case -341064690: /*resource*/ return new String[] {};
         case 1844104722: /*interaction*/ return new String[] {};
         case -553645115: /*searchParam*/ return new String[] {"@CapabilityStatement2.rest.resource.searchParam"};
@@ -1582,6 +2228,9 @@ public class CapabilityStatement2 extends CanonicalResource {
         }
         else if (name.equals("documentation")) {
           throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement2.rest.documentation");
+        }
+        else if (name.equals("feature")) {
+          return addFeature();
         }
         else if (name.equals("resource")) {
           return addResource();
@@ -1612,6 +2261,11 @@ public class CapabilityStatement2 extends CanonicalResource {
         super.copyValues(dst);
         dst.mode = mode == null ? null : mode.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
+        if (feature != null) {
+          dst.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          for (CapabilityStatement2RestFeatureComponent i : feature)
+            dst.feature.add(i.copy());
+        };
         if (resource != null) {
           dst.resource = new ArrayList<CapabilityStatement2RestResourceComponent>();
           for (CapabilityStatement2RestResourceComponent i : resource)
@@ -1646,8 +2300,8 @@ public class CapabilityStatement2 extends CanonicalResource {
         if (!(other_ instanceof CapabilityStatement2RestComponent))
           return false;
         CapabilityStatement2RestComponent o = (CapabilityStatement2RestComponent) other_;
-        return compareDeep(mode, o.mode, true) && compareDeep(documentation, o.documentation, true) && compareDeep(resource, o.resource, true)
-           && compareDeep(interaction, o.interaction, true) && compareDeep(searchParam, o.searchParam, true)
+        return compareDeep(mode, o.mode, true) && compareDeep(documentation, o.documentation, true) && compareDeep(feature, o.feature, true)
+           && compareDeep(resource, o.resource, true) && compareDeep(interaction, o.interaction, true) && compareDeep(searchParam, o.searchParam, true)
            && compareDeep(operation, o.operation, true) && compareDeep(compartment, o.compartment, true);
       }
 
@@ -1663,12 +2317,268 @@ public class CapabilityStatement2 extends CanonicalResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(mode, documentation, resource
-          , interaction, searchParam, operation, compartment);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(mode, documentation, feature
+          , resource, interaction, searchParam, operation, compartment);
       }
 
   public String fhirType() {
     return "CapabilityStatement2.rest";
+
+  }
+
+  }
+
+    @Block()
+    public static class CapabilityStatement2RestFeatureComponent extends BackboneElement implements IBaseBackboneElement {
+        /**
+         * A code that describes the feature being reported on.
+         */
+        @Child(name = "code", type = {CodeType.class}, order=1, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Feature that is being reported", formalDefinition="A code that describes the feature being reported on." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/capability-feature")
+        protected Enumeration<CapabilityFeature> code;
+
+        /**
+         * A value for the feature - maybe true, false, or one of the set of codes allowed in the definition of the feature code.
+         */
+        @Child(name = "value", type = {CodeType.class}, order=2, min=1, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Value of the feature (true, false, or a code)", formalDefinition="A value for the feature - maybe true, false, or one of the set of codes allowed in the definition of the feature code." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/capability-feature-value")
+        protected Enumeration<CapabilityFeatureValue> value;
+
+        private static final long serialVersionUID = 782619829L;
+
+    /**
+     * Constructor
+     */
+      public CapabilityStatement2RestFeatureComponent() {
+        super();
+      }
+
+    /**
+     * Constructor
+     */
+      public CapabilityStatement2RestFeatureComponent(CapabilityFeature code, CapabilityFeatureValue value) {
+        super();
+        this.setCode(code);
+        this.setValue(value);
+      }
+
+        /**
+         * @return {@link #code} (A code that describes the feature being reported on.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public Enumeration<CapabilityFeature> getCodeElement() { 
+          if (this.code == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CapabilityStatement2RestFeatureComponent.code");
+            else if (Configuration.doAutoCreate())
+              this.code = new Enumeration<CapabilityFeature>(new CapabilityFeatureEnumFactory()); // bb
+          return this.code;
+        }
+
+        public boolean hasCodeElement() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        public boolean hasCode() { 
+          return this.code != null && !this.code.isEmpty();
+        }
+
+        /**
+         * @param value {@link #code} (A code that describes the feature being reported on.). This is the underlying object with id, value and extensions. The accessor "getCode" gives direct access to the value
+         */
+        public CapabilityStatement2RestFeatureComponent setCodeElement(Enumeration<CapabilityFeature> value) { 
+          this.code = value;
+          return this;
+        }
+
+        /**
+         * @return A code that describes the feature being reported on.
+         */
+        public CapabilityFeature getCode() { 
+          return this.code == null ? null : this.code.getValue();
+        }
+
+        /**
+         * @param value A code that describes the feature being reported on.
+         */
+        public CapabilityStatement2RestFeatureComponent setCode(CapabilityFeature value) { 
+            if (this.code == null)
+              this.code = new Enumeration<CapabilityFeature>(new CapabilityFeatureEnumFactory());
+            this.code.setValue(value);
+          return this;
+        }
+
+        /**
+         * @return {@link #value} (A value for the feature - maybe true, false, or one of the set of codes allowed in the definition of the feature code.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+         */
+        public Enumeration<CapabilityFeatureValue> getValueElement() { 
+          if (this.value == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create CapabilityStatement2RestFeatureComponent.value");
+            else if (Configuration.doAutoCreate())
+              this.value = new Enumeration<CapabilityFeatureValue>(new CapabilityFeatureValueEnumFactory()); // bb
+          return this.value;
+        }
+
+        public boolean hasValueElement() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (A value for the feature - maybe true, false, or one of the set of codes allowed in the definition of the feature code.). This is the underlying object with id, value and extensions. The accessor "getValue" gives direct access to the value
+         */
+        public CapabilityStatement2RestFeatureComponent setValueElement(Enumeration<CapabilityFeatureValue> value) { 
+          this.value = value;
+          return this;
+        }
+
+        /**
+         * @return A value for the feature - maybe true, false, or one of the set of codes allowed in the definition of the feature code.
+         */
+        public CapabilityFeatureValue getValue() { 
+          return this.value == null ? null : this.value.getValue();
+        }
+
+        /**
+         * @param value A value for the feature - maybe true, false, or one of the set of codes allowed in the definition of the feature code.
+         */
+        public CapabilityStatement2RestFeatureComponent setValue(CapabilityFeatureValue value) { 
+            if (this.value == null)
+              this.value = new Enumeration<CapabilityFeatureValue>(new CapabilityFeatureValueEnumFactory());
+            this.value.setValue(value);
+          return this;
+        }
+
+        protected void listChildren(List<Property> children) {
+          super.listChildren(children);
+          children.add(new Property("code", "code", "A code that describes the feature being reported on.", 0, 1, code));
+          children.add(new Property("value", "code", "A value for the feature - maybe true, false, or one of the set of codes allowed in the definition of the feature code.", 0, 1, value));
+        }
+
+        @Override
+        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
+          switch (_hash) {
+          case 3059181: /*code*/  return new Property("code", "code", "A code that describes the feature being reported on.", 0, 1, code);
+          case 111972721: /*value*/  return new Property("value", "code", "A value for the feature - maybe true, false, or one of the set of codes allowed in the definition of the feature code.", 0, 1, value);
+          default: return super.getNamedProperty(_hash, _name, _checkValid);
+          }
+
+        }
+
+      @Override
+      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Enumeration<CapabilityFeature>
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // Enumeration<CapabilityFeatureValue>
+        default: return super.getProperty(hash, name, checkValid);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(int hash, String name, Base value) throws FHIRException {
+        switch (hash) {
+        case 3059181: // code
+          value = new CapabilityFeatureEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<CapabilityFeature>
+          return value;
+        case 111972721: // value
+          value = new CapabilityFeatureValueEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.value = (Enumeration) value; // Enumeration<CapabilityFeatureValue>
+          return value;
+        default: return super.setProperty(hash, name, value);
+        }
+
+      }
+
+      @Override
+      public Base setProperty(String name, Base value) throws FHIRException {
+        if (name.equals("code")) {
+          value = new CapabilityFeatureEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.code = (Enumeration) value; // Enumeration<CapabilityFeature>
+        } else if (name.equals("value")) {
+          value = new CapabilityFeatureValueEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.value = (Enumeration) value; // Enumeration<CapabilityFeatureValue>
+        } else
+          return super.setProperty(name, value);
+        return value;
+      }
+
+      @Override
+      public Base makeProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181:  return getCodeElement();
+        case 111972721:  return getValueElement();
+        default: return super.makeProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
+        switch (hash) {
+        case 3059181: /*code*/ return new String[] {"code"};
+        case 111972721: /*value*/ return new String[] {"code"};
+        default: return super.getTypesForProperty(hash, name);
+        }
+
+      }
+
+      @Override
+      public Base addChild(String name) throws FHIRException {
+        if (name.equals("code")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement2.rest.feature.code");
+        }
+        else if (name.equals("value")) {
+          throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement2.rest.feature.value");
+        }
+        else
+          return super.addChild(name);
+      }
+
+      public CapabilityStatement2RestFeatureComponent copy() {
+        CapabilityStatement2RestFeatureComponent dst = new CapabilityStatement2RestFeatureComponent();
+        copyValues(dst);
+        return dst;
+      }
+
+      public void copyValues(CapabilityStatement2RestFeatureComponent dst) {
+        super.copyValues(dst);
+        dst.code = code == null ? null : code.copy();
+        dst.value = value == null ? null : value.copy();
+      }
+
+      @Override
+      public boolean equalsDeep(Base other_) {
+        if (!super.equalsDeep(other_))
+          return false;
+        if (!(other_ instanceof CapabilityStatement2RestFeatureComponent))
+          return false;
+        CapabilityStatement2RestFeatureComponent o = (CapabilityStatement2RestFeatureComponent) other_;
+        return compareDeep(code, o.code, true) && compareDeep(value, o.value, true);
+      }
+
+      @Override
+      public boolean equalsShallow(Base other_) {
+        if (!super.equalsShallow(other_))
+          return false;
+        if (!(other_ instanceof CapabilityStatement2RestFeatureComponent))
+          return false;
+        CapabilityStatement2RestFeatureComponent o = (CapabilityStatement2RestFeatureComponent) other_;
+        return compareValues(code, o.code, true) && compareValues(value, o.value, true);
+      }
+
+      public boolean isEmpty() {
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, value);
+      }
+
+  public String fhirType() {
+    return "CapabilityStatement2.rest.feature";
 
   }
 
@@ -1706,27 +2616,34 @@ public class CapabilityStatement2 extends CanonicalResource {
         protected MarkdownType documentation;
 
         /**
+         * A statement that affirms support for a feature, in this context.
+         */
+        @Child(name = "feature", type = {CapabilityStatement2RestFeatureComponent.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Statement of support for a feature in this context", formalDefinition="A statement that affirms support for a feature, in this context." )
+        protected List<CapabilityStatement2RestFeatureComponent> feature;
+
+        /**
          * Identifies a restful operation supported by the solution.
          */
-        @Child(name = "interaction", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "interaction", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="What operations are supported?", formalDefinition="Identifies a restful operation supported by the solution." )
         protected List<ResourceInteractionComponent> interaction;
 
         /**
          * Search parameters for implementations to support and/or make use of - either references to ones defined in the specification, or additional ones defined for/by the implementation.
          */
-        @Child(name = "searchParam", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Child(name = "searchParam", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="Search parameters supported by implementation", formalDefinition="Search parameters for implementations to support and/or make use of - either references to ones defined in the specification, or additional ones defined for/by the implementation." )
         protected List<CapabilityStatement2RestResourceSearchParamComponent> searchParam;
 
         /**
          * Definition of an operation or a named query together with its parameters and their meaning and type. Consult the definition of the operation for details about how to invoke the operation, and the parameters.
          */
-        @Child(name = "operation", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "operation", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Definition of a resource operation", formalDefinition="Definition of an operation or a named query together with its parameters and their meaning and type. Consult the definition of the operation for details about how to invoke the operation, and the parameters." )
         protected List<CapabilityStatement2RestResourceOperationComponent> operation;
 
-        private static final long serialVersionUID = 1394978037L;
+        private static final long serialVersionUID = -815167785L;
 
     /**
      * Constructor
@@ -1948,6 +2865,59 @@ public class CapabilityStatement2 extends CanonicalResource {
         }
 
         /**
+         * @return {@link #feature} (A statement that affirms support for a feature, in this context.)
+         */
+        public List<CapabilityStatement2RestFeatureComponent> getFeature() { 
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          return this.feature;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public CapabilityStatement2RestResourceComponent setFeature(List<CapabilityStatement2RestFeatureComponent> theFeature) { 
+          this.feature = theFeature;
+          return this;
+        }
+
+        public boolean hasFeature() { 
+          if (this.feature == null)
+            return false;
+          for (CapabilityStatement2RestFeatureComponent item : this.feature)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CapabilityStatement2RestFeatureComponent addFeature() { //3
+          CapabilityStatement2RestFeatureComponent t = new CapabilityStatement2RestFeatureComponent();
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return t;
+        }
+
+        public CapabilityStatement2RestResourceComponent addFeature(CapabilityStatement2RestFeatureComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #feature}, creating it if it does not already exist {3}
+         */
+        public CapabilityStatement2RestFeatureComponent getFeatureFirstRep() { 
+          if (getFeature().isEmpty()) {
+            addFeature();
+          }
+          return getFeature().get(0);
+        }
+
+        /**
          * @return {@link #interaction} (Identifies a restful operation supported by the solution.)
          */
         public List<ResourceInteractionComponent> getInteraction() { 
@@ -2112,6 +3082,7 @@ public class CapabilityStatement2 extends CanonicalResource {
           children.add(new Property("profile", "canonical(StructureDefinition)", "A specification of the profile that describes the solution's overall support for the resource, including any constraints on cardinality, bindings, lengths or other limitations. See further discussion in [Using Profiles](profiling.html#profile-uses).", 0, 1, profile));
           children.add(new Property("supportedProfile", "canonical(StructureDefinition)", "A list of profiles that represent different use cases supported by the system. For a server, \"supported by the system\" means the system hosts/produces a set of resources that are conformant to a particular profile, and allows clients that use its services to search using this profile and to find appropriate data. For a client, it means the system will search by this profile and process data according to the guidance implicit in the profile. See further discussion in [Using Profiles](profiling.html#profile-uses).", 0, java.lang.Integer.MAX_VALUE, supportedProfile));
           children.add(new Property("documentation", "markdown", "Additional information about the resource type used by the system.", 0, 1, documentation));
+          children.add(new Property("feature", "@CapabilityStatement2.rest.feature", "A statement that affirms support for a feature, in this context.", 0, java.lang.Integer.MAX_VALUE, feature));
           children.add(new Property("interaction", "", "Identifies a restful operation supported by the solution.", 0, java.lang.Integer.MAX_VALUE, interaction));
           children.add(new Property("searchParam", "", "Search parameters for implementations to support and/or make use of - either references to ones defined in the specification, or additional ones defined for/by the implementation.", 0, java.lang.Integer.MAX_VALUE, searchParam));
           children.add(new Property("operation", "", "Definition of an operation or a named query together with its parameters and their meaning and type. Consult the definition of the operation for details about how to invoke the operation, and the parameters.", 0, java.lang.Integer.MAX_VALUE, operation));
@@ -2124,6 +3095,7 @@ public class CapabilityStatement2 extends CanonicalResource {
           case -309425751: /*profile*/  return new Property("profile", "canonical(StructureDefinition)", "A specification of the profile that describes the solution's overall support for the resource, including any constraints on cardinality, bindings, lengths or other limitations. See further discussion in [Using Profiles](profiling.html#profile-uses).", 0, 1, profile);
           case 1225477403: /*supportedProfile*/  return new Property("supportedProfile", "canonical(StructureDefinition)", "A list of profiles that represent different use cases supported by the system. For a server, \"supported by the system\" means the system hosts/produces a set of resources that are conformant to a particular profile, and allows clients that use its services to search using this profile and to find appropriate data. For a client, it means the system will search by this profile and process data according to the guidance implicit in the profile. See further discussion in [Using Profiles](profiling.html#profile-uses).", 0, java.lang.Integer.MAX_VALUE, supportedProfile);
           case 1587405498: /*documentation*/  return new Property("documentation", "markdown", "Additional information about the resource type used by the system.", 0, 1, documentation);
+          case -979207434: /*feature*/  return new Property("feature", "@CapabilityStatement2.rest.feature", "A statement that affirms support for a feature, in this context.", 0, java.lang.Integer.MAX_VALUE, feature);
           case 1844104722: /*interaction*/  return new Property("interaction", "", "Identifies a restful operation supported by the solution.", 0, java.lang.Integer.MAX_VALUE, interaction);
           case -553645115: /*searchParam*/  return new Property("searchParam", "", "Search parameters for implementations to support and/or make use of - either references to ones defined in the specification, or additional ones defined for/by the implementation.", 0, java.lang.Integer.MAX_VALUE, searchParam);
           case 1662702951: /*operation*/  return new Property("operation", "", "Definition of an operation or a named query together with its parameters and their meaning and type. Consult the definition of the operation for details about how to invoke the operation, and the parameters.", 0, java.lang.Integer.MAX_VALUE, operation);
@@ -2139,6 +3111,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         case -309425751: /*profile*/ return this.profile == null ? new Base[0] : new Base[] {this.profile}; // CanonicalType
         case 1225477403: /*supportedProfile*/ return this.supportedProfile == null ? new Base[0] : this.supportedProfile.toArray(new Base[this.supportedProfile.size()]); // CanonicalType
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // MarkdownType
+        case -979207434: /*feature*/ return this.feature == null ? new Base[0] : this.feature.toArray(new Base[this.feature.size()]); // CapabilityStatement2RestFeatureComponent
         case 1844104722: /*interaction*/ return this.interaction == null ? new Base[0] : this.interaction.toArray(new Base[this.interaction.size()]); // ResourceInteractionComponent
         case -553645115: /*searchParam*/ return this.searchParam == null ? new Base[0] : this.searchParam.toArray(new Base[this.searchParam.size()]); // CapabilityStatement2RestResourceSearchParamComponent
         case 1662702951: /*operation*/ return this.operation == null ? new Base[0] : this.operation.toArray(new Base[this.operation.size()]); // CapabilityStatement2RestResourceOperationComponent
@@ -2161,6 +3134,9 @@ public class CapabilityStatement2 extends CanonicalResource {
           return value;
         case 1587405498: // documentation
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
+          return value;
+        case -979207434: // feature
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value); // CapabilityStatement2RestFeatureComponent
           return value;
         case 1844104722: // interaction
           this.getInteraction().add((ResourceInteractionComponent) value); // ResourceInteractionComponent
@@ -2186,6 +3162,8 @@ public class CapabilityStatement2 extends CanonicalResource {
           this.getSupportedProfile().add(TypeConvertor.castToCanonical(value));
         } else if (name.equals("documentation")) {
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("feature")) {
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value);
         } else if (name.equals("interaction")) {
           this.getInteraction().add((ResourceInteractionComponent) value);
         } else if (name.equals("searchParam")) {
@@ -2204,6 +3182,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         case -309425751:  return getProfileElement();
         case 1225477403:  return addSupportedProfileElement();
         case 1587405498:  return getDocumentationElement();
+        case -979207434:  return addFeature(); 
         case 1844104722:  return addInteraction(); 
         case -553645115:  return addSearchParam(); 
         case 1662702951:  return addOperation(); 
@@ -2219,6 +3198,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         case -309425751: /*profile*/ return new String[] {"canonical"};
         case 1225477403: /*supportedProfile*/ return new String[] {"canonical"};
         case 1587405498: /*documentation*/ return new String[] {"markdown"};
+        case -979207434: /*feature*/ return new String[] {"@CapabilityStatement2.rest.feature"};
         case 1844104722: /*interaction*/ return new String[] {};
         case -553645115: /*searchParam*/ return new String[] {};
         case 1662702951: /*operation*/ return new String[] {};
@@ -2240,6 +3220,9 @@ public class CapabilityStatement2 extends CanonicalResource {
         }
         else if (name.equals("documentation")) {
           throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement2.rest.resource.documentation");
+        }
+        else if (name.equals("feature")) {
+          return addFeature();
         }
         else if (name.equals("interaction")) {
           return addInteraction();
@@ -2270,6 +3253,11 @@ public class CapabilityStatement2 extends CanonicalResource {
             dst.supportedProfile.add(i.copy());
         };
         dst.documentation = documentation == null ? null : documentation.copy();
+        if (feature != null) {
+          dst.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          for (CapabilityStatement2RestFeatureComponent i : feature)
+            dst.feature.add(i.copy());
+        };
         if (interaction != null) {
           dst.interaction = new ArrayList<ResourceInteractionComponent>();
           for (ResourceInteractionComponent i : interaction)
@@ -2295,7 +3283,7 @@ public class CapabilityStatement2 extends CanonicalResource {
           return false;
         CapabilityStatement2RestResourceComponent o = (CapabilityStatement2RestResourceComponent) other_;
         return compareDeep(type, o.type, true) && compareDeep(profile, o.profile, true) && compareDeep(supportedProfile, o.supportedProfile, true)
-           && compareDeep(documentation, o.documentation, true) && compareDeep(interaction, o.interaction, true)
+           && compareDeep(documentation, o.documentation, true) && compareDeep(feature, o.feature, true) && compareDeep(interaction, o.interaction, true)
            && compareDeep(searchParam, o.searchParam, true) && compareDeep(operation, o.operation, true);
       }
 
@@ -2312,7 +3300,7 @@ public class CapabilityStatement2 extends CanonicalResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, profile, supportedProfile
-          , documentation, interaction, searchParam, operation);
+          , documentation, feature, interaction, searchParam, operation);
       }
 
   public String fhirType() {
@@ -2339,7 +3327,14 @@ public class CapabilityStatement2 extends CanonicalResource {
         @Description(shortDefinition="Anything special about operation behavior", formalDefinition="Guidance specific to the implementation of this operation, such as 'delete is a logical delete' or 'updates are only allowed with version id' or 'creates permitted from pre-authorized certificates only'." )
         protected MarkdownType documentation;
 
-        private static final long serialVersionUID = 2128937796L;
+        /**
+         * A statement that affirms support for a feature, in this context.
+         */
+        @Child(name = "feature", type = {CapabilityStatement2RestFeatureComponent.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Statement of support for a feature in this context", formalDefinition="A statement that affirms support for a feature, in this context." )
+        protected List<CapabilityStatement2RestFeatureComponent> feature;
+
+        private static final long serialVersionUID = -543206334L;
 
     /**
      * Constructor
@@ -2450,10 +3445,64 @@ public class CapabilityStatement2 extends CanonicalResource {
           return this;
         }
 
+        /**
+         * @return {@link #feature} (A statement that affirms support for a feature, in this context.)
+         */
+        public List<CapabilityStatement2RestFeatureComponent> getFeature() { 
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          return this.feature;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public ResourceInteractionComponent setFeature(List<CapabilityStatement2RestFeatureComponent> theFeature) { 
+          this.feature = theFeature;
+          return this;
+        }
+
+        public boolean hasFeature() { 
+          if (this.feature == null)
+            return false;
+          for (CapabilityStatement2RestFeatureComponent item : this.feature)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CapabilityStatement2RestFeatureComponent addFeature() { //3
+          CapabilityStatement2RestFeatureComponent t = new CapabilityStatement2RestFeatureComponent();
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return t;
+        }
+
+        public ResourceInteractionComponent addFeature(CapabilityStatement2RestFeatureComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #feature}, creating it if it does not already exist {3}
+         */
+        public CapabilityStatement2RestFeatureComponent getFeatureFirstRep() { 
+          if (getFeature().isEmpty()) {
+            addFeature();
+          }
+          return getFeature().get(0);
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "code", "Coded identifier of the operation, supported by the system resource.", 0, 1, code));
           children.add(new Property("documentation", "markdown", "Guidance specific to the implementation of this operation, such as 'delete is a logical delete' or 'updates are only allowed with version id' or 'creates permitted from pre-authorized certificates only'.", 0, 1, documentation));
+          children.add(new Property("feature", "@CapabilityStatement2.rest.feature", "A statement that affirms support for a feature, in this context.", 0, java.lang.Integer.MAX_VALUE, feature));
         }
 
         @Override
@@ -2461,6 +3510,7 @@ public class CapabilityStatement2 extends CanonicalResource {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "code", "Coded identifier of the operation, supported by the system resource.", 0, 1, code);
           case 1587405498: /*documentation*/  return new Property("documentation", "markdown", "Guidance specific to the implementation of this operation, such as 'delete is a logical delete' or 'updates are only allowed with version id' or 'creates permitted from pre-authorized certificates only'.", 0, 1, documentation);
+          case -979207434: /*feature*/  return new Property("feature", "@CapabilityStatement2.rest.feature", "A statement that affirms support for a feature, in this context.", 0, java.lang.Integer.MAX_VALUE, feature);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -2471,6 +3521,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Enumeration<TypeRestfulInteraction>
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // MarkdownType
+        case -979207434: /*feature*/ return this.feature == null ? new Base[0] : this.feature.toArray(new Base[this.feature.size()]); // CapabilityStatement2RestFeatureComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2486,6 +3537,9 @@ public class CapabilityStatement2 extends CanonicalResource {
         case 1587405498: // documentation
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
+        case -979207434: // feature
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value); // CapabilityStatement2RestFeatureComponent
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -2498,6 +3552,8 @@ public class CapabilityStatement2 extends CanonicalResource {
           this.code = (Enumeration) value; // Enumeration<TypeRestfulInteraction>
         } else if (name.equals("documentation")) {
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("feature")) {
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -2508,6 +3564,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         switch (hash) {
         case 3059181:  return getCodeElement();
         case 1587405498:  return getDocumentationElement();
+        case -979207434:  return addFeature(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -2518,6 +3575,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         switch (hash) {
         case 3059181: /*code*/ return new String[] {"code"};
         case 1587405498: /*documentation*/ return new String[] {"markdown"};
+        case -979207434: /*feature*/ return new String[] {"@CapabilityStatement2.rest.feature"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2530,6 +3588,9 @@ public class CapabilityStatement2 extends CanonicalResource {
         }
         else if (name.equals("documentation")) {
           throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement2.rest.resource.interaction.documentation");
+        }
+        else if (name.equals("feature")) {
+          return addFeature();
         }
         else
           return super.addChild(name);
@@ -2545,6 +3606,11 @@ public class CapabilityStatement2 extends CanonicalResource {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
+        if (feature != null) {
+          dst.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          for (CapabilityStatement2RestFeatureComponent i : feature)
+            dst.feature.add(i.copy());
+        };
       }
 
       @Override
@@ -2554,7 +3620,8 @@ public class CapabilityStatement2 extends CanonicalResource {
         if (!(other_ instanceof ResourceInteractionComponent))
           return false;
         ResourceInteractionComponent o = (ResourceInteractionComponent) other_;
-        return compareDeep(code, o.code, true) && compareDeep(documentation, o.documentation, true);
+        return compareDeep(code, o.code, true) && compareDeep(documentation, o.documentation, true) && compareDeep(feature, o.feature, true)
+          ;
       }
 
       @Override
@@ -2568,7 +3635,8 @@ public class CapabilityStatement2 extends CanonicalResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, documentation);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, documentation, feature
+          );
       }
 
   public String fhirType() {
@@ -2609,7 +3677,14 @@ public class CapabilityStatement2 extends CanonicalResource {
         @Description(shortDefinition="Server-specific usage", formalDefinition="This allows documentation of any distinct behaviors about how the search parameter is used.  For example, text matching algorithms." )
         protected MarkdownType documentation;
 
-        private static final long serialVersionUID = -171123928L;
+        /**
+         * A statement that affirms support for a feature, in this context.
+         */
+        @Child(name = "feature", type = {CapabilityStatement2RestFeatureComponent.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Statement of support for a feature in this context", formalDefinition="A statement that affirms support for a feature, in this context." )
+        protected List<CapabilityStatement2RestFeatureComponent> feature;
+
+        private static final long serialVersionUID = -300448290L;
 
     /**
      * Constructor
@@ -2815,12 +3890,66 @@ public class CapabilityStatement2 extends CanonicalResource {
           return this;
         }
 
+        /**
+         * @return {@link #feature} (A statement that affirms support for a feature, in this context.)
+         */
+        public List<CapabilityStatement2RestFeatureComponent> getFeature() { 
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          return this.feature;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public CapabilityStatement2RestResourceSearchParamComponent setFeature(List<CapabilityStatement2RestFeatureComponent> theFeature) { 
+          this.feature = theFeature;
+          return this;
+        }
+
+        public boolean hasFeature() { 
+          if (this.feature == null)
+            return false;
+          for (CapabilityStatement2RestFeatureComponent item : this.feature)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CapabilityStatement2RestFeatureComponent addFeature() { //3
+          CapabilityStatement2RestFeatureComponent t = new CapabilityStatement2RestFeatureComponent();
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return t;
+        }
+
+        public CapabilityStatement2RestResourceSearchParamComponent addFeature(CapabilityStatement2RestFeatureComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #feature}, creating it if it does not already exist {3}
+         */
+        public CapabilityStatement2RestFeatureComponent getFeatureFirstRep() { 
+          if (getFeature().isEmpty()) {
+            addFeature();
+          }
+          return getFeature().get(0);
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("name", "string", "The name of the search parameter used in the interface.", 0, 1, name));
           children.add(new Property("definition", "canonical(SearchParameter)", "An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [SearchParameter.url](searchparameter-definitions.html#SearchParameter.url)). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.", 0, 1, definition));
           children.add(new Property("type", "code", "The type of value a search parameter refers to, and how the content is interpreted.", 0, 1, type));
           children.add(new Property("documentation", "markdown", "This allows documentation of any distinct behaviors about how the search parameter is used.  For example, text matching algorithms.", 0, 1, documentation));
+          children.add(new Property("feature", "@CapabilityStatement2.rest.feature", "A statement that affirms support for a feature, in this context.", 0, java.lang.Integer.MAX_VALUE, feature));
         }
 
         @Override
@@ -2830,6 +3959,7 @@ public class CapabilityStatement2 extends CanonicalResource {
           case -1014418093: /*definition*/  return new Property("definition", "canonical(SearchParameter)", "An absolute URI that is a formal reference to where this parameter was first defined, so that a client can be confident of the meaning of the search parameter (a reference to [SearchParameter.url](searchparameter-definitions.html#SearchParameter.url)). This element SHALL be populated if the search parameter refers to a SearchParameter defined by the FHIR core specification or externally defined IGs.", 0, 1, definition);
           case 3575610: /*type*/  return new Property("type", "code", "The type of value a search parameter refers to, and how the content is interpreted.", 0, 1, type);
           case 1587405498: /*documentation*/  return new Property("documentation", "markdown", "This allows documentation of any distinct behaviors about how the search parameter is used.  For example, text matching algorithms.", 0, 1, documentation);
+          case -979207434: /*feature*/  return new Property("feature", "@CapabilityStatement2.rest.feature", "A statement that affirms support for a feature, in this context.", 0, java.lang.Integer.MAX_VALUE, feature);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -2842,6 +3972,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : new Base[] {this.definition}; // CanonicalType
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // Enumeration<SearchParamType>
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // MarkdownType
+        case -979207434: /*feature*/ return this.feature == null ? new Base[0] : this.feature.toArray(new Base[this.feature.size()]); // CapabilityStatement2RestFeatureComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -2863,6 +3994,9 @@ public class CapabilityStatement2 extends CanonicalResource {
         case 1587405498: // documentation
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
+        case -979207434: // feature
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value); // CapabilityStatement2RestFeatureComponent
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -2879,6 +4013,8 @@ public class CapabilityStatement2 extends CanonicalResource {
           this.type = (Enumeration) value; // Enumeration<SearchParamType>
         } else if (name.equals("documentation")) {
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("feature")) {
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -2891,6 +4027,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         case -1014418093:  return getDefinitionElement();
         case 3575610:  return getTypeElement();
         case 1587405498:  return getDocumentationElement();
+        case -979207434:  return addFeature(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -2903,6 +4040,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         case -1014418093: /*definition*/ return new String[] {"canonical"};
         case 3575610: /*type*/ return new String[] {"code"};
         case 1587405498: /*documentation*/ return new String[] {"markdown"};
+        case -979207434: /*feature*/ return new String[] {"@CapabilityStatement2.rest.feature"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -2922,6 +4060,9 @@ public class CapabilityStatement2 extends CanonicalResource {
         else if (name.equals("documentation")) {
           throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement2.rest.resource.searchParam.documentation");
         }
+        else if (name.equals("feature")) {
+          return addFeature();
+        }
         else
           return super.addChild(name);
       }
@@ -2938,6 +4079,11 @@ public class CapabilityStatement2 extends CanonicalResource {
         dst.definition = definition == null ? null : definition.copy();
         dst.type = type == null ? null : type.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
+        if (feature != null) {
+          dst.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          for (CapabilityStatement2RestFeatureComponent i : feature)
+            dst.feature.add(i.copy());
+        };
       }
 
       @Override
@@ -2948,7 +4094,7 @@ public class CapabilityStatement2 extends CanonicalResource {
           return false;
         CapabilityStatement2RestResourceSearchParamComponent o = (CapabilityStatement2RestResourceSearchParamComponent) other_;
         return compareDeep(name, o.name, true) && compareDeep(definition, o.definition, true) && compareDeep(type, o.type, true)
-           && compareDeep(documentation, o.documentation, true);
+           && compareDeep(documentation, o.documentation, true) && compareDeep(feature, o.feature, true);
       }
 
       @Override
@@ -2964,7 +4110,7 @@ public class CapabilityStatement2 extends CanonicalResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, definition, type, documentation
-          );
+          , feature);
       }
 
   public String fhirType() {
@@ -2997,7 +4143,14 @@ public class CapabilityStatement2 extends CanonicalResource {
         @Description(shortDefinition="Specific details about operation behavior", formalDefinition="Documentation that describes anything special about the operation behavior, possibly detailing different behavior for system, type and instance-level invocation of the operation." )
         protected MarkdownType documentation;
 
-        private static final long serialVersionUID = -388608084L;
+        /**
+         * A statement that affirms support for a feature, in this context.
+         */
+        @Child(name = "feature", type = {CapabilityStatement2RestFeatureComponent.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Statement of support for a feature in this context", formalDefinition="A statement that affirms support for a feature, in this context." )
+        protected List<CapabilityStatement2RestFeatureComponent> feature;
+
+        private static final long serialVersionUID = 1206974170L;
 
     /**
      * Constructor
@@ -3154,11 +4307,65 @@ public class CapabilityStatement2 extends CanonicalResource {
           return this;
         }
 
+        /**
+         * @return {@link #feature} (A statement that affirms support for a feature, in this context.)
+         */
+        public List<CapabilityStatement2RestFeatureComponent> getFeature() { 
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          return this.feature;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public CapabilityStatement2RestResourceOperationComponent setFeature(List<CapabilityStatement2RestFeatureComponent> theFeature) { 
+          this.feature = theFeature;
+          return this;
+        }
+
+        public boolean hasFeature() { 
+          if (this.feature == null)
+            return false;
+          for (CapabilityStatement2RestFeatureComponent item : this.feature)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CapabilityStatement2RestFeatureComponent addFeature() { //3
+          CapabilityStatement2RestFeatureComponent t = new CapabilityStatement2RestFeatureComponent();
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return t;
+        }
+
+        public CapabilityStatement2RestResourceOperationComponent addFeature(CapabilityStatement2RestFeatureComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #feature}, creating it if it does not already exist {3}
+         */
+        public CapabilityStatement2RestFeatureComponent getFeatureFirstRep() { 
+          if (getFeature().isEmpty()) {
+            addFeature();
+          }
+          return getFeature().get(0);
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("name", "string", "The name of the operation or query. For an operation, this is the name  prefixed with $ and used in the URL. For a query, this is the name used in the _query parameter when the query is called.", 0, 1, name));
           children.add(new Property("definition", "canonical(OperationDefinition)", "Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [OperationDefinition](operationdefinition.html#) with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.", 0, 1, definition));
           children.add(new Property("documentation", "markdown", "Documentation that describes anything special about the operation behavior, possibly detailing different behavior for system, type and instance-level invocation of the operation.", 0, 1, documentation));
+          children.add(new Property("feature", "@CapabilityStatement2.rest.feature", "A statement that affirms support for a feature, in this context.", 0, java.lang.Integer.MAX_VALUE, feature));
         }
 
         @Override
@@ -3167,6 +4374,7 @@ public class CapabilityStatement2 extends CanonicalResource {
           case 3373707: /*name*/  return new Property("name", "string", "The name of the operation or query. For an operation, this is the name  prefixed with $ and used in the URL. For a query, this is the name used in the _query parameter when the query is called.", 0, 1, name);
           case -1014418093: /*definition*/  return new Property("definition", "canonical(OperationDefinition)", "Where the formal definition can be found. If a server references the base definition of an Operation (i.e. from the specification itself such as ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it supports the full capabilities of the operation - e.g. both GET and POST invocation.  If it only supports a subset, it must define its own custom [OperationDefinition](operationdefinition.html#) with a 'base' of the original OperationDefinition.  The custom definition would describe the specific subset of functionality supported.", 0, 1, definition);
           case 1587405498: /*documentation*/  return new Property("documentation", "markdown", "Documentation that describes anything special about the operation behavior, possibly detailing different behavior for system, type and instance-level invocation of the operation.", 0, 1, documentation);
+          case -979207434: /*feature*/  return new Property("feature", "@CapabilityStatement2.rest.feature", "A statement that affirms support for a feature, in this context.", 0, java.lang.Integer.MAX_VALUE, feature);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -3178,6 +4386,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         case 3373707: /*name*/ return this.name == null ? new Base[0] : new Base[] {this.name}; // StringType
         case -1014418093: /*definition*/ return this.definition == null ? new Base[0] : new Base[] {this.definition}; // CanonicalType
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // MarkdownType
+        case -979207434: /*feature*/ return this.feature == null ? new Base[0] : this.feature.toArray(new Base[this.feature.size()]); // CapabilityStatement2RestFeatureComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -3195,6 +4404,9 @@ public class CapabilityStatement2 extends CanonicalResource {
         case 1587405498: // documentation
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
+        case -979207434: // feature
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value); // CapabilityStatement2RestFeatureComponent
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -3208,6 +4420,8 @@ public class CapabilityStatement2 extends CanonicalResource {
           this.definition = TypeConvertor.castToCanonical(value); // CanonicalType
         } else if (name.equals("documentation")) {
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("feature")) {
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -3219,6 +4433,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         case 3373707:  return getNameElement();
         case -1014418093:  return getDefinitionElement();
         case 1587405498:  return getDocumentationElement();
+        case -979207434:  return addFeature(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -3230,6 +4445,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         case 3373707: /*name*/ return new String[] {"string"};
         case -1014418093: /*definition*/ return new String[] {"canonical"};
         case 1587405498: /*documentation*/ return new String[] {"markdown"};
+        case -979207434: /*feature*/ return new String[] {"@CapabilityStatement2.rest.feature"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -3246,6 +4462,9 @@ public class CapabilityStatement2 extends CanonicalResource {
         else if (name.equals("documentation")) {
           throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement2.rest.resource.operation.documentation");
         }
+        else if (name.equals("feature")) {
+          return addFeature();
+        }
         else
           return super.addChild(name);
       }
@@ -3261,6 +4480,11 @@ public class CapabilityStatement2 extends CanonicalResource {
         dst.name = name == null ? null : name.copy();
         dst.definition = definition == null ? null : definition.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
+        if (feature != null) {
+          dst.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          for (CapabilityStatement2RestFeatureComponent i : feature)
+            dst.feature.add(i.copy());
+        };
       }
 
       @Override
@@ -3271,7 +4495,7 @@ public class CapabilityStatement2 extends CanonicalResource {
           return false;
         CapabilityStatement2RestResourceOperationComponent o = (CapabilityStatement2RestResourceOperationComponent) other_;
         return compareDeep(name, o.name, true) && compareDeep(definition, o.definition, true) && compareDeep(documentation, o.documentation, true)
-          ;
+           && compareDeep(feature, o.feature, true);
       }
 
       @Override
@@ -3287,7 +4511,7 @@ public class CapabilityStatement2 extends CanonicalResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(name, definition, documentation
-          );
+          , feature);
       }
 
   public String fhirType() {
@@ -3314,7 +4538,14 @@ public class CapabilityStatement2 extends CanonicalResource {
         @Description(shortDefinition="Anything special about operation behavior", formalDefinition="Guidance specific to the implementation of this operation, such as limitations on the kind of transactions allowed, or information about system wide search is implemented." )
         protected MarkdownType documentation;
 
-        private static final long serialVersionUID = -1495143879L;
+        /**
+         * A statement that affirms support for a feature, in this context.
+         */
+        @Child(name = "feature", type = {CapabilityStatement2RestFeatureComponent.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Statement of support for a feature in this context", formalDefinition="A statement that affirms support for a feature, in this context." )
+        protected List<CapabilityStatement2RestFeatureComponent> feature;
+
+        private static final long serialVersionUID = 353704493L;
 
     /**
      * Constructor
@@ -3425,10 +4656,64 @@ public class CapabilityStatement2 extends CanonicalResource {
           return this;
         }
 
+        /**
+         * @return {@link #feature} (A statement that affirms support for a feature, in this context.)
+         */
+        public List<CapabilityStatement2RestFeatureComponent> getFeature() { 
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          return this.feature;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public SystemInteractionComponent setFeature(List<CapabilityStatement2RestFeatureComponent> theFeature) { 
+          this.feature = theFeature;
+          return this;
+        }
+
+        public boolean hasFeature() { 
+          if (this.feature == null)
+            return false;
+          for (CapabilityStatement2RestFeatureComponent item : this.feature)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public CapabilityStatement2RestFeatureComponent addFeature() { //3
+          CapabilityStatement2RestFeatureComponent t = new CapabilityStatement2RestFeatureComponent();
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return t;
+        }
+
+        public SystemInteractionComponent addFeature(CapabilityStatement2RestFeatureComponent t) { //3
+          if (t == null)
+            return this;
+          if (this.feature == null)
+            this.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          this.feature.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #feature}, creating it if it does not already exist {3}
+         */
+        public CapabilityStatement2RestFeatureComponent getFeatureFirstRep() { 
+          if (getFeature().isEmpty()) {
+            addFeature();
+          }
+          return getFeature().get(0);
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "code", "A coded identifier of the operation, supported by the system.", 0, 1, code));
           children.add(new Property("documentation", "markdown", "Guidance specific to the implementation of this operation, such as limitations on the kind of transactions allowed, or information about system wide search is implemented.", 0, 1, documentation));
+          children.add(new Property("feature", "@CapabilityStatement2.rest.feature", "A statement that affirms support for a feature, in this context.", 0, java.lang.Integer.MAX_VALUE, feature));
         }
 
         @Override
@@ -3436,6 +4721,7 @@ public class CapabilityStatement2 extends CanonicalResource {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "code", "A coded identifier of the operation, supported by the system.", 0, 1, code);
           case 1587405498: /*documentation*/  return new Property("documentation", "markdown", "Guidance specific to the implementation of this operation, such as limitations on the kind of transactions allowed, or information about system wide search is implemented.", 0, 1, documentation);
+          case -979207434: /*feature*/  return new Property("feature", "@CapabilityStatement2.rest.feature", "A statement that affirms support for a feature, in this context.", 0, java.lang.Integer.MAX_VALUE, feature);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -3446,6 +4732,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // Enumeration<SystemRestfulInteraction>
         case 1587405498: /*documentation*/ return this.documentation == null ? new Base[0] : new Base[] {this.documentation}; // MarkdownType
+        case -979207434: /*feature*/ return this.feature == null ? new Base[0] : this.feature.toArray(new Base[this.feature.size()]); // CapabilityStatement2RestFeatureComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -3461,6 +4748,9 @@ public class CapabilityStatement2 extends CanonicalResource {
         case 1587405498: // documentation
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
           return value;
+        case -979207434: // feature
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value); // CapabilityStatement2RestFeatureComponent
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -3473,6 +4763,8 @@ public class CapabilityStatement2 extends CanonicalResource {
           this.code = (Enumeration) value; // Enumeration<SystemRestfulInteraction>
         } else if (name.equals("documentation")) {
           this.documentation = TypeConvertor.castToMarkdown(value); // MarkdownType
+        } else if (name.equals("feature")) {
+          this.getFeature().add((CapabilityStatement2RestFeatureComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -3483,6 +4775,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         switch (hash) {
         case 3059181:  return getCodeElement();
         case 1587405498:  return getDocumentationElement();
+        case -979207434:  return addFeature(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -3493,6 +4786,7 @@ public class CapabilityStatement2 extends CanonicalResource {
         switch (hash) {
         case 3059181: /*code*/ return new String[] {"code"};
         case 1587405498: /*documentation*/ return new String[] {"markdown"};
+        case -979207434: /*feature*/ return new String[] {"@CapabilityStatement2.rest.feature"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -3505,6 +4799,9 @@ public class CapabilityStatement2 extends CanonicalResource {
         }
         else if (name.equals("documentation")) {
           throw new FHIRException("Cannot call addChild on a primitive type CapabilityStatement2.rest.interaction.documentation");
+        }
+        else if (name.equals("feature")) {
+          return addFeature();
         }
         else
           return super.addChild(name);
@@ -3520,6 +4817,11 @@ public class CapabilityStatement2 extends CanonicalResource {
         super.copyValues(dst);
         dst.code = code == null ? null : code.copy();
         dst.documentation = documentation == null ? null : documentation.copy();
+        if (feature != null) {
+          dst.feature = new ArrayList<CapabilityStatement2RestFeatureComponent>();
+          for (CapabilityStatement2RestFeatureComponent i : feature)
+            dst.feature.add(i.copy());
+        };
       }
 
       @Override
@@ -3529,7 +4831,8 @@ public class CapabilityStatement2 extends CanonicalResource {
         if (!(other_ instanceof SystemInteractionComponent))
           return false;
         SystemInteractionComponent o = (SystemInteractionComponent) other_;
-        return compareDeep(code, o.code, true) && compareDeep(documentation, o.documentation, true);
+        return compareDeep(code, o.code, true) && compareDeep(documentation, o.documentation, true) && compareDeep(feature, o.feature, true)
+          ;
       }
 
       @Override
@@ -3543,7 +4846,8 @@ public class CapabilityStatement2 extends CanonicalResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, documentation);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(code, documentation, feature
+          );
       }
 
   public String fhirType() {
@@ -5469,6 +6773,26 @@ public class CapabilityStatement2 extends CanonicalResource {
    }
 
  /**
+   * Search parameter: <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the capability statement2</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(CapabilityStatement2.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context", path="(CapabilityStatement2.useContext.value as CodeableConcept)", description="A use context assigned to the capability statement2", type="token" )
+  public static final String SP_CONTEXT = "context";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the capability statement2</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(CapabilityStatement2.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+
+ /**
    * Search parameter: <b>context-quantity</b>
    * <p>
    * Description: <b>A quantity- or range-valued use context assigned to the capability statement2</b><br>
@@ -5489,46 +6813,6 @@ public class CapabilityStatement2 extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
 
  /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the capability statement2</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement2.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="CapabilityStatement2.useContext", description="A use context type and quantity- or range-based value assigned to the capability statement2", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the capability statement2</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement2.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the capability statement2</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement2.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="CapabilityStatement2.useContext", description="A use context type and value assigned to the capability statement2", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the capability statement2</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement2.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
    * Search parameter: <b>context-type</b>
    * <p>
    * Description: <b>A type of use context assigned to the capability statement2</b><br>
@@ -5547,26 +6831,6 @@ public class CapabilityStatement2 extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the capability statement2</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(CapabilityStatement2.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(CapabilityStatement2.useContext.value as CodeableConcept)", description="A use context assigned to the capability statement2", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the capability statement2</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(CapabilityStatement2.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
 
  /**
    * Search parameter: <b>date</b>
@@ -5755,6 +7019,26 @@ public class CapabilityStatement2 extends CanonicalResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam PUBLISHER = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_PUBLISHER);
 
  /**
+   * Search parameter: <b>resource</b>
+   * <p>
+   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement2.rest.resource.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="resource", path="CapabilityStatement2.rest.resource.type", description="Name of a resource mentioned in a capability statement", type="token" )
+  public static final String SP_RESOURCE = "resource";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>resource</b>
+   * <p>
+   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CapabilityStatement2.rest.resource.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESOURCE);
+
+ /**
    * Search parameter: <b>resource-profile</b>
    * <p>
    * Description: <b>A profile id invoked in a capability statement</b><br>
@@ -5779,26 +7063,6 @@ public class CapabilityStatement2 extends CanonicalResource {
    * the path value of "<b>CapabilityStatement2:resource-profile</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_RESOURCE_PROFILE = new ca.uhn.fhir.model.api.Include("CapabilityStatement2:resource-profile").toLocked();
-
- /**
-   * Search parameter: <b>resource</b>
-   * <p>
-   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement2.rest.resource.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="resource", path="CapabilityStatement2.rest.resource.type", description="Name of a resource mentioned in a capability statement", type="token" )
-  public static final String SP_RESOURCE = "resource";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>resource</b>
-   * <p>
-   * Description: <b>Name of a resource mentioned in a capability statement</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CapabilityStatement2.rest.resource.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam RESOURCE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_RESOURCE);
 
  /**
    * Search parameter: <b>software</b>
@@ -5925,6 +7189,46 @@ public class CapabilityStatement2 extends CanonicalResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
+
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the capability statement2</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement2.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="CapabilityStatement2.useContext", description="A use context type and quantity- or range-based value assigned to the capability statement2", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the capability statement2</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement2.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the capability statement2</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement2.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-value", path="CapabilityStatement2.useContext", description="A use context type and value assigned to the capability statement2", type="composite", compositeOf={"context-type", "context"} )
+  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the capability statement2</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement2.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
 
 
 }

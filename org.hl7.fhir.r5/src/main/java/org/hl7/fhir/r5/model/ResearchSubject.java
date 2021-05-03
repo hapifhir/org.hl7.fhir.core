@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,295 +53,23 @@ import ca.uhn.fhir.model.api.annotation.Block;
 @ResourceDef(name="ResearchSubject", profile="http://hl7.org/fhir/StructureDefinition/ResearchSubject")
 public class ResearchSubject extends DomainResource {
 
-    public enum ResearchSubjectStatus {
-        /**
-         * An identified person that can be considered for inclusion in a study.
-         */
-        CANDIDATE, 
-        /**
-         * A person that has met the eligibility criteria for inclusion in a study.
-         */
-        ELIGIBLE, 
-        /**
-         * A person is no longer receiving study intervention and/or being evaluated with tests and procedures according to the protocol, but they are being monitored on a protocol-prescribed schedule.
-         */
-        FOLLOWUP, 
-        /**
-         * A person who did not meet one or more criteria required for participation in a study is considered to have failed screening or\nis ineligible for the study.
-         */
-        INELIGIBLE, 
-        /**
-         * A person for whom registration was not completed.
-         */
-        NOTREGISTERED, 
-        /**
-         * A person that has ended their participation on a study either because their treatment/observation is complete or through not\nresponding, withdrawal, non-compliance and/or adverse event.
-         */
-        OFFSTUDY, 
-        /**
-         * A person that is enrolled or registered on a study.
-         */
-        ONSTUDY, 
-        /**
-         * The person is receiving the treatment or participating in an activity (e.g. yoga, diet, etc.) that the study is evaluating.
-         */
-        ONSTUDYINTERVENTION, 
-        /**
-         * The subject is being evaluated via tests and assessments according to the study calendar, but is not receiving any intervention. Note that this state is study-dependent and might not exist in all studies.  A synonym for this is \"short-term follow-up\".
-         */
-        ONSTUDYOBSERVATION, 
-        /**
-         * A person is pre-registered for a study.
-         */
-        PENDINGONSTUDY, 
-        /**
-         * A person that is potentially eligible for participation in the study.
-         */
-        POTENTIALCANDIDATE, 
-        /**
-         * A person who is being evaluated for eligibility for a study.
-         */
-        SCREENING, 
-        /**
-         * The person has withdrawn their participation in the study before registration.
-         */
-        WITHDRAWN, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static ResearchSubjectStatus fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("candidate".equals(codeString))
-          return CANDIDATE;
-        if ("eligible".equals(codeString))
-          return ELIGIBLE;
-        if ("follow-up".equals(codeString))
-          return FOLLOWUP;
-        if ("ineligible".equals(codeString))
-          return INELIGIBLE;
-        if ("not-registered".equals(codeString))
-          return NOTREGISTERED;
-        if ("off-study".equals(codeString))
-          return OFFSTUDY;
-        if ("on-study".equals(codeString))
-          return ONSTUDY;
-        if ("on-study-intervention".equals(codeString))
-          return ONSTUDYINTERVENTION;
-        if ("on-study-observation".equals(codeString))
-          return ONSTUDYOBSERVATION;
-        if ("pending-on-study".equals(codeString))
-          return PENDINGONSTUDY;
-        if ("potential-candidate".equals(codeString))
-          return POTENTIALCANDIDATE;
-        if ("screening".equals(codeString))
-          return SCREENING;
-        if ("withdrawn".equals(codeString))
-          return WITHDRAWN;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown ResearchSubjectStatus code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case CANDIDATE: return "candidate";
-            case ELIGIBLE: return "eligible";
-            case FOLLOWUP: return "follow-up";
-            case INELIGIBLE: return "ineligible";
-            case NOTREGISTERED: return "not-registered";
-            case OFFSTUDY: return "off-study";
-            case ONSTUDY: return "on-study";
-            case ONSTUDYINTERVENTION: return "on-study-intervention";
-            case ONSTUDYOBSERVATION: return "on-study-observation";
-            case PENDINGONSTUDY: return "pending-on-study";
-            case POTENTIALCANDIDATE: return "potential-candidate";
-            case SCREENING: return "screening";
-            case WITHDRAWN: return "withdrawn";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case CANDIDATE: return "http://hl7.org/fhir/research-subject-status";
-            case ELIGIBLE: return "http://hl7.org/fhir/research-subject-status";
-            case FOLLOWUP: return "http://hl7.org/fhir/research-subject-status";
-            case INELIGIBLE: return "http://hl7.org/fhir/research-subject-status";
-            case NOTREGISTERED: return "http://hl7.org/fhir/research-subject-status";
-            case OFFSTUDY: return "http://hl7.org/fhir/research-subject-status";
-            case ONSTUDY: return "http://hl7.org/fhir/research-subject-status";
-            case ONSTUDYINTERVENTION: return "http://hl7.org/fhir/research-subject-status";
-            case ONSTUDYOBSERVATION: return "http://hl7.org/fhir/research-subject-status";
-            case PENDINGONSTUDY: return "http://hl7.org/fhir/research-subject-status";
-            case POTENTIALCANDIDATE: return "http://hl7.org/fhir/research-subject-status";
-            case SCREENING: return "http://hl7.org/fhir/research-subject-status";
-            case WITHDRAWN: return "http://hl7.org/fhir/research-subject-status";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case CANDIDATE: return "An identified person that can be considered for inclusion in a study.";
-            case ELIGIBLE: return "A person that has met the eligibility criteria for inclusion in a study.";
-            case FOLLOWUP: return "A person is no longer receiving study intervention and/or being evaluated with tests and procedures according to the protocol, but they are being monitored on a protocol-prescribed schedule.";
-            case INELIGIBLE: return "A person who did not meet one or more criteria required for participation in a study is considered to have failed screening or\nis ineligible for the study.";
-            case NOTREGISTERED: return "A person for whom registration was not completed.";
-            case OFFSTUDY: return "A person that has ended their participation on a study either because their treatment/observation is complete or through not\nresponding, withdrawal, non-compliance and/or adverse event.";
-            case ONSTUDY: return "A person that is enrolled or registered on a study.";
-            case ONSTUDYINTERVENTION: return "The person is receiving the treatment or participating in an activity (e.g. yoga, diet, etc.) that the study is evaluating.";
-            case ONSTUDYOBSERVATION: return "The subject is being evaluated via tests and assessments according to the study calendar, but is not receiving any intervention. Note that this state is study-dependent and might not exist in all studies.  A synonym for this is \"short-term follow-up\".";
-            case PENDINGONSTUDY: return "A person is pre-registered for a study.";
-            case POTENTIALCANDIDATE: return "A person that is potentially eligible for participation in the study.";
-            case SCREENING: return "A person who is being evaluated for eligibility for a study.";
-            case WITHDRAWN: return "The person has withdrawn their participation in the study before registration.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case CANDIDATE: return "Candidate";
-            case ELIGIBLE: return "Eligible";
-            case FOLLOWUP: return "Follow-up";
-            case INELIGIBLE: return "Ineligible";
-            case NOTREGISTERED: return "Not Registered";
-            case OFFSTUDY: return "Off-study";
-            case ONSTUDY: return "On-study";
-            case ONSTUDYINTERVENTION: return "On-study-intervention";
-            case ONSTUDYOBSERVATION: return "On-study-observation";
-            case PENDINGONSTUDY: return "Pending on-study";
-            case POTENTIALCANDIDATE: return "Potential Candidate";
-            case SCREENING: return "Screening";
-            case WITHDRAWN: return "Withdrawn";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-    }
-
-  public static class ResearchSubjectStatusEnumFactory implements EnumFactory<ResearchSubjectStatus> {
-    public ResearchSubjectStatus fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("candidate".equals(codeString))
-          return ResearchSubjectStatus.CANDIDATE;
-        if ("eligible".equals(codeString))
-          return ResearchSubjectStatus.ELIGIBLE;
-        if ("follow-up".equals(codeString))
-          return ResearchSubjectStatus.FOLLOWUP;
-        if ("ineligible".equals(codeString))
-          return ResearchSubjectStatus.INELIGIBLE;
-        if ("not-registered".equals(codeString))
-          return ResearchSubjectStatus.NOTREGISTERED;
-        if ("off-study".equals(codeString))
-          return ResearchSubjectStatus.OFFSTUDY;
-        if ("on-study".equals(codeString))
-          return ResearchSubjectStatus.ONSTUDY;
-        if ("on-study-intervention".equals(codeString))
-          return ResearchSubjectStatus.ONSTUDYINTERVENTION;
-        if ("on-study-observation".equals(codeString))
-          return ResearchSubjectStatus.ONSTUDYOBSERVATION;
-        if ("pending-on-study".equals(codeString))
-          return ResearchSubjectStatus.PENDINGONSTUDY;
-        if ("potential-candidate".equals(codeString))
-          return ResearchSubjectStatus.POTENTIALCANDIDATE;
-        if ("screening".equals(codeString))
-          return ResearchSubjectStatus.SCREENING;
-        if ("withdrawn".equals(codeString))
-          return ResearchSubjectStatus.WITHDRAWN;
-        throw new IllegalArgumentException("Unknown ResearchSubjectStatus code '"+codeString+"'");
-        }
-        public Enumeration<ResearchSubjectStatus> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<ResearchSubjectStatus>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("candidate".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.CANDIDATE);
-        if ("eligible".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ELIGIBLE);
-        if ("follow-up".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.FOLLOWUP);
-        if ("ineligible".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.INELIGIBLE);
-        if ("not-registered".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.NOTREGISTERED);
-        if ("off-study".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.OFFSTUDY);
-        if ("on-study".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ONSTUDY);
-        if ("on-study-intervention".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ONSTUDYINTERVENTION);
-        if ("on-study-observation".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.ONSTUDYOBSERVATION);
-        if ("pending-on-study".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.PENDINGONSTUDY);
-        if ("potential-candidate".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.POTENTIALCANDIDATE);
-        if ("screening".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.SCREENING);
-        if ("withdrawn".equals(codeString))
-          return new Enumeration<ResearchSubjectStatus>(this, ResearchSubjectStatus.WITHDRAWN);
-        throw new FHIRException("Unknown ResearchSubjectStatus code '"+codeString+"'");
-        }
-    public String toCode(ResearchSubjectStatus code) {
-      if (code == ResearchSubjectStatus.CANDIDATE)
-        return "candidate";
-      if (code == ResearchSubjectStatus.ELIGIBLE)
-        return "eligible";
-      if (code == ResearchSubjectStatus.FOLLOWUP)
-        return "follow-up";
-      if (code == ResearchSubjectStatus.INELIGIBLE)
-        return "ineligible";
-      if (code == ResearchSubjectStatus.NOTREGISTERED)
-        return "not-registered";
-      if (code == ResearchSubjectStatus.OFFSTUDY)
-        return "off-study";
-      if (code == ResearchSubjectStatus.ONSTUDY)
-        return "on-study";
-      if (code == ResearchSubjectStatus.ONSTUDYINTERVENTION)
-        return "on-study-intervention";
-      if (code == ResearchSubjectStatus.ONSTUDYOBSERVATION)
-        return "on-study-observation";
-      if (code == ResearchSubjectStatus.PENDINGONSTUDY)
-        return "pending-on-study";
-      if (code == ResearchSubjectStatus.POTENTIALCANDIDATE)
-        return "potential-candidate";
-      if (code == ResearchSubjectStatus.SCREENING)
-        return "screening";
-      if (code == ResearchSubjectStatus.WITHDRAWN)
-        return "withdrawn";
-      return "?";
-      }
-    public String toSystem(ResearchSubjectStatus code) {
-      return code.getSystem();
-      }
-    }
-
     @Block()
     public static class ResearchSubjectProgressComponent extends BackboneElement implements IBaseBackboneElement {
         /**
          * Identifies the aspect of the subject's journey that the state refers to.
          */
         @Child(name = "type", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Kind of state that is being described", formalDefinition="Identifies the aspect of the subject's journey that the state refers to." )
+        @Description(shortDefinition="state | milestone", formalDefinition="Identifies the aspect of the subject's journey that the state refers to." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-subject-state-type")
         protected CodeableConcept type;
 
         /**
          * The current state of the subject.
          */
-        @Child(name = "state", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Child(name = "subjectState", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn", formalDefinition="The current state of the subject." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-subject-state")
-        protected CodeableConcept state;
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-subject-progress")
+        protected CodeableConcept subjectState;
 
         /**
          * The milestones the subject has passed through.
@@ -360,27 +88,26 @@ public class ResearchSubject extends DomainResource {
         protected CodeableConcept reason;
 
         /**
-         * The date when the change in status occurred.
+         * The date when the new status started.
          */
-        @Child(name = "startDate", type = {DateTimeType.class}, order=5, min=1, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="State change date", formalDefinition="The date when the change in status occurred." )
+        @Child(name = "startDate", type = {DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="State change date", formalDefinition="The date when the new status started." )
         protected DateTimeType startDate;
 
-        private static final long serialVersionUID = -29864900L;
+        /**
+         * The date when the state ended.
+         */
+        @Child(name = "endDate", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="State change date", formalDefinition="The date when the state ended." )
+        protected DateTimeType endDate;
+
+        private static final long serialVersionUID = -330838916L;
 
     /**
      * Constructor
      */
       public ResearchSubjectProgressComponent() {
         super();
-      }
-
-    /**
-     * Constructor
-     */
-      public ResearchSubjectProgressComponent(Date startDate) {
-        super();
-        this.setStartDate(startDate);
       }
 
         /**
@@ -408,26 +135,26 @@ public class ResearchSubject extends DomainResource {
         }
 
         /**
-         * @return {@link #state} (The current state of the subject.)
+         * @return {@link #subjectState} (The current state of the subject.)
          */
-        public CodeableConcept getState() { 
-          if (this.state == null)
+        public CodeableConcept getSubjectState() { 
+          if (this.subjectState == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ResearchSubjectProgressComponent.state");
+              throw new Error("Attempt to auto-create ResearchSubjectProgressComponent.subjectState");
             else if (Configuration.doAutoCreate())
-              this.state = new CodeableConcept(); // cc
-          return this.state;
+              this.subjectState = new CodeableConcept(); // cc
+          return this.subjectState;
         }
 
-        public boolean hasState() { 
-          return this.state != null && !this.state.isEmpty();
+        public boolean hasSubjectState() { 
+          return this.subjectState != null && !this.subjectState.isEmpty();
         }
 
         /**
-         * @param value {@link #state} (The current state of the subject.)
+         * @param value {@link #subjectState} (The current state of the subject.)
          */
-        public ResearchSubjectProgressComponent setState(CodeableConcept value) { 
-          this.state = value;
+        public ResearchSubjectProgressComponent setSubjectState(CodeableConcept value) { 
+          this.subjectState = value;
           return this;
         }
 
@@ -480,7 +207,7 @@ public class ResearchSubject extends DomainResource {
         }
 
         /**
-         * @return {@link #startDate} (The date when the change in status occurred.). This is the underlying object with id, value and extensions. The accessor "getStartDate" gives direct access to the value
+         * @return {@link #startDate} (The date when the new status started.). This is the underlying object with id, value and extensions. The accessor "getStartDate" gives direct access to the value
          */
         public DateTimeType getStartDateElement() { 
           if (this.startDate == null)
@@ -500,7 +227,7 @@ public class ResearchSubject extends DomainResource {
         }
 
         /**
-         * @param value {@link #startDate} (The date when the change in status occurred.). This is the underlying object with id, value and extensions. The accessor "getStartDate" gives direct access to the value
+         * @param value {@link #startDate} (The date when the new status started.). This is the underlying object with id, value and extensions. The accessor "getStartDate" gives direct access to the value
          */
         public ResearchSubjectProgressComponent setStartDateElement(DateTimeType value) { 
           this.startDate = value;
@@ -508,39 +235,94 @@ public class ResearchSubject extends DomainResource {
         }
 
         /**
-         * @return The date when the change in status occurred.
+         * @return The date when the new status started.
          */
         public Date getStartDate() { 
           return this.startDate == null ? null : this.startDate.getValue();
         }
 
         /**
-         * @param value The date when the change in status occurred.
+         * @param value The date when the new status started.
          */
         public ResearchSubjectProgressComponent setStartDate(Date value) { 
+          if (value == null)
+            this.startDate = null;
+          else {
             if (this.startDate == null)
               this.startDate = new DateTimeType();
             this.startDate.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #endDate} (The date when the state ended.). This is the underlying object with id, value and extensions. The accessor "getEndDate" gives direct access to the value
+         */
+        public DateTimeType getEndDateElement() { 
+          if (this.endDate == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ResearchSubjectProgressComponent.endDate");
+            else if (Configuration.doAutoCreate())
+              this.endDate = new DateTimeType(); // bb
+          return this.endDate;
+        }
+
+        public boolean hasEndDateElement() { 
+          return this.endDate != null && !this.endDate.isEmpty();
+        }
+
+        public boolean hasEndDate() { 
+          return this.endDate != null && !this.endDate.isEmpty();
+        }
+
+        /**
+         * @param value {@link #endDate} (The date when the state ended.). This is the underlying object with id, value and extensions. The accessor "getEndDate" gives direct access to the value
+         */
+        public ResearchSubjectProgressComponent setEndDateElement(DateTimeType value) { 
+          this.endDate = value;
+          return this;
+        }
+
+        /**
+         * @return The date when the state ended.
+         */
+        public Date getEndDate() { 
+          return this.endDate == null ? null : this.endDate.getValue();
+        }
+
+        /**
+         * @param value The date when the state ended.
+         */
+        public ResearchSubjectProgressComponent setEndDate(Date value) { 
+          if (value == null)
+            this.endDate = null;
+          else {
+            if (this.endDate == null)
+              this.endDate = new DateTimeType();
+            this.endDate.setValue(value);
+          }
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Identifies the aspect of the subject's journey that the state refers to.", 0, 1, type));
-          children.add(new Property("state", "CodeableConcept", "The current state of the subject.", 0, 1, state));
+          children.add(new Property("subjectState", "CodeableConcept", "The current state of the subject.", 0, 1, subjectState));
           children.add(new Property("milestone", "CodeableConcept", "The milestones the subject has passed through.", 0, 1, milestone));
           children.add(new Property("reason", "CodeableConcept", "The reason for the state change.  If coded it should follow the formal subject state model.", 0, 1, reason));
-          children.add(new Property("startDate", "dateTime", "The date when the change in status occurred.", 0, 1, startDate));
+          children.add(new Property("startDate", "dateTime", "The date when the new status started.", 0, 1, startDate));
+          children.add(new Property("endDate", "dateTime", "The date when the state ended.", 0, 1, endDate));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Identifies the aspect of the subject's journey that the state refers to.", 0, 1, type);
-          case 109757585: /*state*/  return new Property("state", "CodeableConcept", "The current state of the subject.", 0, 1, state);
+          case -1520444731: /*subjectState*/  return new Property("subjectState", "CodeableConcept", "The current state of the subject.", 0, 1, subjectState);
           case -1065084560: /*milestone*/  return new Property("milestone", "CodeableConcept", "The milestones the subject has passed through.", 0, 1, milestone);
           case -934964668: /*reason*/  return new Property("reason", "CodeableConcept", "The reason for the state change.  If coded it should follow the formal subject state model.", 0, 1, reason);
-          case -2129778896: /*startDate*/  return new Property("startDate", "dateTime", "The date when the change in status occurred.", 0, 1, startDate);
+          case -2129778896: /*startDate*/  return new Property("startDate", "dateTime", "The date when the new status started.", 0, 1, startDate);
+          case -1607727319: /*endDate*/  return new Property("endDate", "dateTime", "The date when the state ended.", 0, 1, endDate);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -550,10 +332,11 @@ public class ResearchSubject extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case 109757585: /*state*/ return this.state == null ? new Base[0] : new Base[] {this.state}; // CodeableConcept
+        case -1520444731: /*subjectState*/ return this.subjectState == null ? new Base[0] : new Base[] {this.subjectState}; // CodeableConcept
         case -1065084560: /*milestone*/ return this.milestone == null ? new Base[0] : new Base[] {this.milestone}; // CodeableConcept
         case -934964668: /*reason*/ return this.reason == null ? new Base[0] : new Base[] {this.reason}; // CodeableConcept
         case -2129778896: /*startDate*/ return this.startDate == null ? new Base[0] : new Base[] {this.startDate}; // DateTimeType
+        case -1607727319: /*endDate*/ return this.endDate == null ? new Base[0] : new Base[] {this.endDate}; // DateTimeType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -565,8 +348,8 @@ public class ResearchSubject extends DomainResource {
         case 3575610: // type
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case 109757585: // state
-          this.state = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case -1520444731: // subjectState
+          this.subjectState = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1065084560: // milestone
           this.milestone = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -577,6 +360,9 @@ public class ResearchSubject extends DomainResource {
         case -2129778896: // startDate
           this.startDate = TypeConvertor.castToDateTime(value); // DateTimeType
           return value;
+        case -1607727319: // endDate
+          this.endDate = TypeConvertor.castToDateTime(value); // DateTimeType
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -586,14 +372,16 @@ public class ResearchSubject extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("state")) {
-          this.state = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("subjectState")) {
+          this.subjectState = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("milestone")) {
           this.milestone = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("reason")) {
           this.reason = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("startDate")) {
           this.startDate = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("endDate")) {
+          this.endDate = TypeConvertor.castToDateTime(value); // DateTimeType
         } else
           return super.setProperty(name, value);
         return value;
@@ -603,10 +391,11 @@ public class ResearchSubject extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getType();
-        case 109757585:  return getState();
+        case -1520444731:  return getSubjectState();
         case -1065084560:  return getMilestone();
         case -934964668:  return getReason();
         case -2129778896:  return getStartDateElement();
+        case -1607727319:  return getEndDateElement();
         default: return super.makeProperty(hash, name);
         }
 
@@ -616,10 +405,11 @@ public class ResearchSubject extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case 109757585: /*state*/ return new String[] {"CodeableConcept"};
+        case -1520444731: /*subjectState*/ return new String[] {"CodeableConcept"};
         case -1065084560: /*milestone*/ return new String[] {"CodeableConcept"};
         case -934964668: /*reason*/ return new String[] {"CodeableConcept"};
         case -2129778896: /*startDate*/ return new String[] {"dateTime"};
+        case -1607727319: /*endDate*/ return new String[] {"dateTime"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -631,9 +421,9 @@ public class ResearchSubject extends DomainResource {
           this.type = new CodeableConcept();
           return this.type;
         }
-        else if (name.equals("state")) {
-          this.state = new CodeableConcept();
-          return this.state;
+        else if (name.equals("subjectState")) {
+          this.subjectState = new CodeableConcept();
+          return this.subjectState;
         }
         else if (name.equals("milestone")) {
           this.milestone = new CodeableConcept();
@@ -645,6 +435,9 @@ public class ResearchSubject extends DomainResource {
         }
         else if (name.equals("startDate")) {
           throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.progress.startDate");
+        }
+        else if (name.equals("endDate")) {
+          throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.progress.endDate");
         }
         else
           return super.addChild(name);
@@ -659,10 +452,11 @@ public class ResearchSubject extends DomainResource {
       public void copyValues(ResearchSubjectProgressComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
-        dst.state = state == null ? null : state.copy();
+        dst.subjectState = subjectState == null ? null : subjectState.copy();
         dst.milestone = milestone == null ? null : milestone.copy();
         dst.reason = reason == null ? null : reason.copy();
         dst.startDate = startDate == null ? null : startDate.copy();
+        dst.endDate = endDate == null ? null : endDate.copy();
       }
 
       @Override
@@ -672,8 +466,9 @@ public class ResearchSubject extends DomainResource {
         if (!(other_ instanceof ResearchSubjectProgressComponent))
           return false;
         ResearchSubjectProgressComponent o = (ResearchSubjectProgressComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(state, o.state, true) && compareDeep(milestone, o.milestone, true)
-           && compareDeep(reason, o.reason, true) && compareDeep(startDate, o.startDate, true);
+        return compareDeep(type, o.type, true) && compareDeep(subjectState, o.subjectState, true) && compareDeep(milestone, o.milestone, true)
+           && compareDeep(reason, o.reason, true) && compareDeep(startDate, o.startDate, true) && compareDeep(endDate, o.endDate, true)
+          ;
       }
 
       @Override
@@ -683,12 +478,12 @@ public class ResearchSubject extends DomainResource {
         if (!(other_ instanceof ResearchSubjectProgressComponent))
           return false;
         ResearchSubjectProgressComponent o = (ResearchSubjectProgressComponent) other_;
-        return compareValues(startDate, o.startDate, true);
+        return compareValues(startDate, o.startDate, true) && compareValues(endDate, o.endDate, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, state, milestone, reason
-          , startDate);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, subjectState, milestone
+          , reason, startDate, endDate);
       }
 
   public String fhirType() {
@@ -706,12 +501,12 @@ public class ResearchSubject extends DomainResource {
     protected List<Identifier> identifier;
 
     /**
-     * The current state of the subject.
+     * The publication state of the resource (not of the subject).
      */
     @Child(name = "status", type = {CodeType.class}, order=1, min=1, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn", formalDefinition="The current state of the subject." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/research-subject-status")
-    protected Enumeration<ResearchSubjectStatus> status;
+    @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The publication state of the resource (not of the subject)." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
+    protected Enumeration<PublicationStatus> status;
 
     /**
      * The current state (status) of the subject and resons for status change where appropriate.
@@ -735,11 +530,11 @@ public class ResearchSubject extends DomainResource {
     protected Reference study;
 
     /**
-     * The record of the person or animal who is involved in the study.
+     * The record of the person, animal or other entity involved in the study.
      */
-    @Child(name = "individual", type = {Patient.class}, order=5, min=1, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Who is part of study", formalDefinition="The record of the person or animal who is involved in the study." )
-    protected Reference individual;
+    @Child(name = "subject", type = {Patient.class, Group.class, Specimen.class, Device.class, Medication.class, Substance.class, BiologicallyDerivedProduct.class}, order=5, min=1, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Who or what is part of study", formalDefinition="The record of the person, animal or other entity involved in the study." )
+    protected Reference subject;
 
     /**
      * The name of the arm in the study the subject is expected to follow as part of this study.
@@ -762,7 +557,7 @@ public class ResearchSubject extends DomainResource {
     @Description(shortDefinition="Agreement to participate in study", formalDefinition="A record of the patient's informed agreement to participate in the study." )
     protected Reference consent;
 
-    private static final long serialVersionUID = 2110072351L;
+    private static final long serialVersionUID = -398870757L;
 
   /**
    * Constructor
@@ -774,11 +569,11 @@ public class ResearchSubject extends DomainResource {
   /**
    * Constructor
    */
-    public ResearchSubject(ResearchSubjectStatus status, Reference study, Reference individual) {
+    public ResearchSubject(PublicationStatus status, Reference study, Reference subject) {
       super();
       this.setStatus(status);
       this.setStudy(study);
-      this.setIndividual(individual);
+      this.setSubject(subject);
     }
 
     /**
@@ -835,14 +630,14 @@ public class ResearchSubject extends DomainResource {
     }
 
     /**
-     * @return {@link #status} (The current state of the subject.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @return {@link #status} (The publication state of the resource (not of the subject).). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public Enumeration<ResearchSubjectStatus> getStatusElement() { 
+    public Enumeration<PublicationStatus> getStatusElement() { 
       if (this.status == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create ResearchSubject.status");
         else if (Configuration.doAutoCreate())
-          this.status = new Enumeration<ResearchSubjectStatus>(new ResearchSubjectStatusEnumFactory()); // bb
+          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory()); // bb
       return this.status;
     }
 
@@ -855,26 +650,26 @@ public class ResearchSubject extends DomainResource {
     }
 
     /**
-     * @param value {@link #status} (The current state of the subject.). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
+     * @param value {@link #status} (The publication state of the resource (not of the subject).). This is the underlying object with id, value and extensions. The accessor "getStatus" gives direct access to the value
      */
-    public ResearchSubject setStatusElement(Enumeration<ResearchSubjectStatus> value) { 
+    public ResearchSubject setStatusElement(Enumeration<PublicationStatus> value) { 
       this.status = value;
       return this;
     }
 
     /**
-     * @return The current state of the subject.
+     * @return The publication state of the resource (not of the subject).
      */
-    public ResearchSubjectStatus getStatus() { 
+    public PublicationStatus getStatus() { 
       return this.status == null ? null : this.status.getValue();
     }
 
     /**
-     * @param value The current state of the subject.
+     * @param value The publication state of the resource (not of the subject).
      */
-    public ResearchSubject setStatus(ResearchSubjectStatus value) { 
+    public ResearchSubject setStatus(PublicationStatus value) { 
         if (this.status == null)
-          this.status = new Enumeration<ResearchSubjectStatus>(new ResearchSubjectStatusEnumFactory());
+          this.status = new Enumeration<PublicationStatus>(new PublicationStatusEnumFactory());
         this.status.setValue(value);
       return this;
     }
@@ -981,26 +776,26 @@ public class ResearchSubject extends DomainResource {
     }
 
     /**
-     * @return {@link #individual} (The record of the person or animal who is involved in the study.)
+     * @return {@link #subject} (The record of the person, animal or other entity involved in the study.)
      */
-    public Reference getIndividual() { 
-      if (this.individual == null)
+    public Reference getSubject() { 
+      if (this.subject == null)
         if (Configuration.errorOnAutoCreate())
-          throw new Error("Attempt to auto-create ResearchSubject.individual");
+          throw new Error("Attempt to auto-create ResearchSubject.subject");
         else if (Configuration.doAutoCreate())
-          this.individual = new Reference(); // cc
-      return this.individual;
+          this.subject = new Reference(); // cc
+      return this.subject;
     }
 
-    public boolean hasIndividual() { 
-      return this.individual != null && !this.individual.isEmpty();
+    public boolean hasSubject() { 
+      return this.subject != null && !this.subject.isEmpty();
     }
 
     /**
-     * @param value {@link #individual} (The record of the person or animal who is involved in the study.)
+     * @param value {@link #subject} (The record of the person, animal or other entity involved in the study.)
      */
-    public ResearchSubject setIndividual(Reference value) { 
-      this.individual = value;
+    public ResearchSubject setSubject(Reference value) { 
+      this.subject = value;
       return this;
     }
 
@@ -1129,11 +924,11 @@ public class ResearchSubject extends DomainResource {
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("identifier", "Identifier", "Identifiers assigned to this research subject for a study.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("status", "code", "The current state of the subject.", 0, 1, status));
+        children.add(new Property("status", "code", "The publication state of the resource (not of the subject).", 0, 1, status));
         children.add(new Property("progress", "", "The current state (status) of the subject and resons for status change where appropriate.", 0, java.lang.Integer.MAX_VALUE, progress));
         children.add(new Property("period", "Period", "The dates the subject began and ended their participation in the study.", 0, 1, period));
         children.add(new Property("study", "Reference(ResearchStudy)", "Reference to the study the subject is participating in.", 0, 1, study));
-        children.add(new Property("individual", "Reference(Patient)", "The record of the person or animal who is involved in the study.", 0, 1, individual));
+        children.add(new Property("subject", "Reference(Patient|Group|Specimen|Device|Medication|Substance|BiologicallyDerivedProduct)", "The record of the person, animal or other entity involved in the study.", 0, 1, subject));
         children.add(new Property("assignedArm", "string", "The name of the arm in the study the subject is expected to follow as part of this study.", 0, 1, assignedArm));
         children.add(new Property("actualArm", "string", "The name of the arm in the study the subject actually followed as part of this study.", 0, 1, actualArm));
         children.add(new Property("consent", "Reference(Consent)", "A record of the patient's informed agreement to participate in the study.", 0, 1, consent));
@@ -1143,11 +938,11 @@ public class ResearchSubject extends DomainResource {
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifiers assigned to this research subject for a study.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -892481550: /*status*/  return new Property("status", "code", "The current state of the subject.", 0, 1, status);
+        case -892481550: /*status*/  return new Property("status", "code", "The publication state of the resource (not of the subject).", 0, 1, status);
         case -1001078227: /*progress*/  return new Property("progress", "", "The current state (status) of the subject and resons for status change where appropriate.", 0, java.lang.Integer.MAX_VALUE, progress);
         case -991726143: /*period*/  return new Property("period", "Period", "The dates the subject began and ended their participation in the study.", 0, 1, period);
         case 109776329: /*study*/  return new Property("study", "Reference(ResearchStudy)", "Reference to the study the subject is participating in.", 0, 1, study);
-        case -46292327: /*individual*/  return new Property("individual", "Reference(Patient)", "The record of the person or animal who is involved in the study.", 0, 1, individual);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(Patient|Group|Specimen|Device|Medication|Substance|BiologicallyDerivedProduct)", "The record of the person, animal or other entity involved in the study.", 0, 1, subject);
         case 1741912494: /*assignedArm*/  return new Property("assignedArm", "string", "The name of the arm in the study the subject is expected to follow as part of this study.", 0, 1, assignedArm);
         case 528827886: /*actualArm*/  return new Property("actualArm", "string", "The name of the arm in the study the subject actually followed as part of this study.", 0, 1, actualArm);
         case 951500826: /*consent*/  return new Property("consent", "Reference(Consent)", "A record of the patient's informed agreement to participate in the study.", 0, 1, consent);
@@ -1160,11 +955,11 @@ public class ResearchSubject extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
-        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<ResearchSubjectStatus>
+        case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case -1001078227: /*progress*/ return this.progress == null ? new Base[0] : this.progress.toArray(new Base[this.progress.size()]); // ResearchSubjectProgressComponent
         case -991726143: /*period*/ return this.period == null ? new Base[0] : new Base[] {this.period}; // Period
         case 109776329: /*study*/ return this.study == null ? new Base[0] : new Base[] {this.study}; // Reference
-        case -46292327: /*individual*/ return this.individual == null ? new Base[0] : new Base[] {this.individual}; // Reference
+        case -1867885268: /*subject*/ return this.subject == null ? new Base[0] : new Base[] {this.subject}; // Reference
         case 1741912494: /*assignedArm*/ return this.assignedArm == null ? new Base[0] : new Base[] {this.assignedArm}; // StringType
         case 528827886: /*actualArm*/ return this.actualArm == null ? new Base[0] : new Base[] {this.actualArm}; // StringType
         case 951500826: /*consent*/ return this.consent == null ? new Base[0] : new Base[] {this.consent}; // Reference
@@ -1180,8 +975,8 @@ public class ResearchSubject extends DomainResource {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
         case -892481550: // status
-          value = new ResearchSubjectStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<ResearchSubjectStatus>
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
           return value;
         case -1001078227: // progress
           this.getProgress().add((ResearchSubjectProgressComponent) value); // ResearchSubjectProgressComponent
@@ -1192,8 +987,8 @@ public class ResearchSubject extends DomainResource {
         case 109776329: // study
           this.study = TypeConvertor.castToReference(value); // Reference
           return value;
-        case -46292327: // individual
-          this.individual = TypeConvertor.castToReference(value); // Reference
+        case -1867885268: // subject
+          this.subject = TypeConvertor.castToReference(value); // Reference
           return value;
         case 1741912494: // assignedArm
           this.assignedArm = TypeConvertor.castToString(value); // StringType
@@ -1214,16 +1009,16 @@ public class ResearchSubject extends DomainResource {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
         } else if (name.equals("status")) {
-          value = new ResearchSubjectStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.status = (Enumeration) value; // Enumeration<ResearchSubjectStatus>
+          value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.status = (Enumeration) value; // Enumeration<PublicationStatus>
         } else if (name.equals("progress")) {
           this.getProgress().add((ResearchSubjectProgressComponent) value);
         } else if (name.equals("period")) {
           this.period = TypeConvertor.castToPeriod(value); // Period
         } else if (name.equals("study")) {
           this.study = TypeConvertor.castToReference(value); // Reference
-        } else if (name.equals("individual")) {
-          this.individual = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("subject")) {
+          this.subject = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("assignedArm")) {
           this.assignedArm = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("actualArm")) {
@@ -1243,7 +1038,7 @@ public class ResearchSubject extends DomainResource {
         case -1001078227:  return addProgress(); 
         case -991726143:  return getPeriod();
         case 109776329:  return getStudy();
-        case -46292327:  return getIndividual();
+        case -1867885268:  return getSubject();
         case 1741912494:  return getAssignedArmElement();
         case 528827886:  return getActualArmElement();
         case 951500826:  return getConsent();
@@ -1260,7 +1055,7 @@ public class ResearchSubject extends DomainResource {
         case -1001078227: /*progress*/ return new String[] {};
         case -991726143: /*period*/ return new String[] {"Period"};
         case 109776329: /*study*/ return new String[] {"Reference"};
-        case -46292327: /*individual*/ return new String[] {"Reference"};
+        case -1867885268: /*subject*/ return new String[] {"Reference"};
         case 1741912494: /*assignedArm*/ return new String[] {"string"};
         case 528827886: /*actualArm*/ return new String[] {"string"};
         case 951500826: /*consent*/ return new String[] {"Reference"};
@@ -1288,9 +1083,9 @@ public class ResearchSubject extends DomainResource {
           this.study = new Reference();
           return this.study;
         }
-        else if (name.equals("individual")) {
-          this.individual = new Reference();
-          return this.individual;
+        else if (name.equals("subject")) {
+          this.subject = new Reference();
+          return this.subject;
         }
         else if (name.equals("assignedArm")) {
           throw new FHIRException("Cannot call addChild on a primitive type ResearchSubject.assignedArm");
@@ -1332,7 +1127,7 @@ public class ResearchSubject extends DomainResource {
         };
         dst.period = period == null ? null : period.copy();
         dst.study = study == null ? null : study.copy();
-        dst.individual = individual == null ? null : individual.copy();
+        dst.subject = subject == null ? null : subject.copy();
         dst.assignedArm = assignedArm == null ? null : assignedArm.copy();
         dst.actualArm = actualArm == null ? null : actualArm.copy();
         dst.consent = consent == null ? null : consent.copy();
@@ -1350,7 +1145,7 @@ public class ResearchSubject extends DomainResource {
           return false;
         ResearchSubject o = (ResearchSubject) other_;
         return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(progress, o.progress, true)
-           && compareDeep(period, o.period, true) && compareDeep(study, o.study, true) && compareDeep(individual, o.individual, true)
+           && compareDeep(period, o.period, true) && compareDeep(study, o.study, true) && compareDeep(subject, o.subject, true)
            && compareDeep(assignedArm, o.assignedArm, true) && compareDeep(actualArm, o.actualArm, true) && compareDeep(consent, o.consent, true)
           ;
       }
@@ -1368,7 +1163,7 @@ public class ResearchSubject extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, progress
-          , period, study, individual, assignedArm, actualArm, consent);
+          , period, study, subject, assignedArm, actualArm, consent);
       }
 
   @Override
@@ -1417,47 +1212,21 @@ public class ResearchSubject extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
-   * Search parameter: <b>individual</b>
-   * <p>
-   * Description: <b>Who is part of study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchSubject.individual</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="individual", path="ResearchSubject.individual", description="Who is part of study", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
-  public static final String SP_INDIVIDUAL = "individual";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>individual</b>
-   * <p>
-   * Description: <b>Who is part of study</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>ResearchSubject.individual</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INDIVIDUAL = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INDIVIDUAL);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>ResearchSubject:individual</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_INDIVIDUAL = new ca.uhn.fhir.model.api.Include("ResearchSubject:individual").toLocked();
-
- /**
    * Search parameter: <b>patient</b>
    * <p>
-   * Description: <b>Who is part of study</b><br>
+   * Description: <b>Who or what is part of study</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ResearchSubject.individual</b><br>
+   * Path: <b>ResearchSubject.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="ResearchSubject.individual", description="Who is part of study", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="ResearchSubject.subject", description="Who or what is part of study", type="reference", target={BiologicallyDerivedProduct.class, Device.class, Group.class, Medication.class, Patient.class, Specimen.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
    * <p>
-   * Description: <b>Who is part of study</b><br>
+   * Description: <b>Who or what is part of study</b><br>
    * Type: <b>reference</b><br>
-   * Path: <b>ResearchSubject.individual</b><br>
+   * Path: <b>ResearchSubject.subject</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
@@ -1469,39 +1238,19 @@ public class ResearchSubject extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("ResearchSubject:patient").toLocked();
 
  /**
-   * Search parameter: <b>state</b>
-   * <p>
-   * Description: <b>candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchSubject.progress.state</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="state", path="ResearchSubject.progress.state", description="candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn", type="token" )
-  public static final String SP_STATE = "state";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>state</b>
-   * <p>
-   * Description: <b>candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>ResearchSubject.progress.state</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATE);
-
- /**
    * Search parameter: <b>status</b>
    * <p>
-   * Description: <b>candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn</b><br>
+   * Description: <b>draft | active | retired | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ResearchSubject.status</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="status", path="ResearchSubject.status", description="candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn", type="token" )
+  @SearchParamDefinition(name="status", path="ResearchSubject.status", description="draft | active | retired | unknown", type="token" )
   public static final String SP_STATUS = "status";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>status</b>
    * <p>
-   * Description: <b>candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn</b><br>
+   * Description: <b>draft | active | retired | unknown</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ResearchSubject.status</b><br>
    * </p>
@@ -1533,6 +1282,52 @@ public class ResearchSubject extends DomainResource {
    * the path value of "<b>ResearchSubject:study</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_STUDY = new ca.uhn.fhir.model.api.Include("ResearchSubject:study").toLocked();
+
+ /**
+   * Search parameter: <b>subject</b>
+   * <p>
+   * Description: <b>Who or what is part of study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchSubject.subject</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject", path="ResearchSubject.subject", description="Who or what is part of study", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={BiologicallyDerivedProduct.class, Device.class, Group.class, Medication.class, Patient.class, Specimen.class, Substance.class } )
+  public static final String SP_SUBJECT = "subject";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject</b>
+   * <p>
+   * Description: <b>Who or what is part of study</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ResearchSubject.subject</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam SUBJECT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_SUBJECT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ResearchSubject:subject</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("ResearchSubject:subject").toLocked();
+
+ /**
+   * Search parameter: <b>subject_state</b>
+   * <p>
+   * Description: <b>candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchSubject.progress.subjectState</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="subject_state", path="ResearchSubject.progress.subjectState", description="candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn", type="token" )
+  public static final String SP_SUBJECTSTATE = "subject_state";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>subject_state</b>
+   * <p>
+   * Description: <b>candidate | eligible | follow-up | ineligible | not-registered | off-study | on-study | on-study-intervention | on-study-observation | pending-on-study | potential-candidate | screening | withdrawn</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>ResearchSubject.progress.subjectState</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam SUBJECTSTATE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SUBJECTSTATE);
 
 
 }
