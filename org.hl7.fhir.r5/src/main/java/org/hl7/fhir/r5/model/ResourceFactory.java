@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 
   
@@ -123,8 +123,8 @@ public class ResourceFactory extends Factory {
             return new DeviceMetric();
         if ("DeviceRequest".equals(name))
             return new DeviceRequest();
-        if ("DeviceUseStatement".equals(name))
-            return new DeviceUseStatement();
+        if ("DeviceUsage".equals(name))
+            return new DeviceUsage();
         if ("DiagnosticReport".equals(name))
             return new DiagnosticReport();
         if ("DocumentManifest".equals(name))
@@ -181,6 +181,8 @@ public class ResourceFactory extends Factory {
             return new Ingredient();
         if ("InsurancePlan".equals(name))
             return new InsurancePlan();
+        if ("InventoryReport".equals(name))
+            return new InventoryReport();
         if ("Invoice".equals(name))
             return new Invoice();
         if ("Library".equals(name))
@@ -443,6 +445,8 @@ public class ResourceFactory extends Factory {
             return new Range();
         if ("Ratio".equals(name))
             return new Ratio();
+        if ("RatioRange".equals(name))
+            return new RatioRange();
         if ("Reference".equals(name))
             return new Reference();
         if ("RelatedArtifact".equals(name))
@@ -527,7 +531,7 @@ public class ResourceFactory extends Factory {
         case 1083244649: return new DeviceDefinition();
         case -949306426: return new DeviceMetric();
         case 776138553: return new DeviceRequest();
-        case 491858238: return new DeviceUseStatement();
+        case 115711179: return new DeviceUsage();
         case -1122842661: return new DiagnosticReport();
         case 1922784394: return new DocumentManifest();
         case -1202791344: return new DocumentReference();
@@ -556,6 +560,7 @@ public class ResourceFactory extends Factory {
         case 1410262602: return new ImplementationGuide();
         case 1787055601: return new Ingredient();
         case -1503864573: return new InsurancePlan();
+        case 1884986768: return new InventoryReport();
         case -670115059: return new Invoice();
         case 1830861979: return new Library();
         case 1841735333: return new Linkage();
@@ -664,6 +669,7 @@ public class ResourceFactory extends Factory {
         case -1220360021: return new Quantity();
         case 78727453: return new Range();
         case 78733291: return new Ratio();
+        case -200924142: return new RatioRange();
         case 1078812459: return new Reference();
         case -330210563: return new RelatedArtifact();
         case 1824308900: return new SampledData();
@@ -677,33 +683,6 @@ public class ResourceFactory extends Factory {
         throw new FHIRException("Unknown Resource or Type Name '"+name+"'");
     }
   }
-
-    public static DataType createPrimitive(String type, String value) {
-      switch (type) {
-      case "boolean": return new BooleanType(value);
-      case "integer": return new IntegerType(value);
-      case "integer64": return new Integer64Type(value);
-      case "string": return new StringType(value);
-      case "decimal": return new DecimalType(value);
-      case "uri": return new UriType(value);
-      case "url": return new UrlType(value);
-      case "canonical": return new CanonicalType(value);
-      case "base64Binary": return new Base64BinaryType(value);
-      case "instant": return new InstantType(value);
-      case "date": return new DateType(value);
-      case "dateTime": return new DateTimeType(value);
-      case "time": return new TimeType(value);
-      case "code": return new CodeType(value);
-      case "oid": return new OidType(value);
-      case "id": return new IdType(value);
-      case "markdown": return new MarkdownType(value);
-      case "unsignedInt": return new UnsignedIntType(value);
-      case "positiveInt": return new PositiveIntType(value);
-      case "uuid": return new UuidType(value);
-      default:
-        throw new FHIRException("Unknown Primitive Type '"+type+"'");
-      }
-    }
 
 
 }

@@ -311,14 +311,10 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		      } else {
 		        SearchParameter comp0 = definitions.getSearchParams().get(sp.getComponent().get(0).getDefinition());
 		        SearchParameter comp1 = definitions.getSearchParams().get(sp.getComponent().get(1).getDefinition());
-		        if (comp0 == null) {
-		          throw new Error("Couldn't find composite component " + sp.getComponent().get(0).getDefinition() + " on "+analysis.getName());
+		        if (comp0 != null && comp1 != null) {
+		          String[] compositeOf = new String[] { comp0.getCode(), comp1.getCode() };
+		          writeSearchParameterField(analysis.getName(), clss, analysis.isAbstract(), sp, sp.getCode(), compositeOf, analysis.getSearchParams(), analysis.getName());
 		        }
-		        if (comp1 == null) {
-		          throw new Error("Couldn't find composite component " + sp.getComponent().get(1).getDefinition() + " on "+analysis.getName());
-		        }
-		        String[] compositeOf = new String[] { comp0.getCode(), comp1.getCode() };
-		        writeSearchParameterField(analysis.getName(), clss, analysis.isAbstract(), sp, sp.getCode(), compositeOf, analysis.getSearchParams(), analysis.getName());
 		      }  
 		    } else if (code.contains("[x]")) {
 		      /*
@@ -333,7 +329,7 @@ public class JavaResourceGenerator extends JavaBaseGenerator {
 		}
 
 		if (config.getAdornments().containsKey(analysis.getClassName())) {
-      write("// Manual code (from Configuration.txt)t:\r\n");
+      write("// Manual code (from Configuration.txt):\r\n");
 		  write(config.getAdornments().get(analysis.getClassName())+"\r\n");
       write("// end addition\r\n");
 		}

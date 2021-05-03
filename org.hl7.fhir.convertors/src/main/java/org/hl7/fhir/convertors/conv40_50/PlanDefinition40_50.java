@@ -3,6 +3,9 @@ package org.hl7.fhir.convertors.conv40_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.DataRequirement;
+import org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionInputComponent;
+import org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionOutputComponent;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -230,7 +233,7 @@ public class PlanDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setTextEquivalentElement(convertString(src.getTextEquivalentElement()));
         if (src.hasPriority())
             tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.setCode(convertCodeableConcept(t));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason()) tgt.addReason(convertCodeableConcept(t));
         for (org.hl7.fhir.r4.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(convertRelatedArtifact(t));
         for (org.hl7.fhir.r4.model.IdType t : src.getGoalId()) tgt.getGoalId().add(convertId(t));
@@ -238,8 +241,8 @@ public class PlanDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setSubject(convertType(src.getSubject()));
         for (org.hl7.fhir.r4.model.TriggerDefinition t : src.getTrigger()) tgt.addTrigger(convertTriggerDefinition(t));
         for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionConditionComponent t : src.getCondition()) tgt.addCondition(convertPlanDefinitionActionConditionComponent(t));
-        for (org.hl7.fhir.r4.model.DataRequirement t : src.getInput()) tgt.addInput(convertDataRequirement(t));
-        for (org.hl7.fhir.r4.model.DataRequirement t : src.getOutput()) tgt.addOutput(convertDataRequirement(t));
+        for (org.hl7.fhir.r4.model.DataRequirement t : src.getInput()) tgt.addInput(wrapInput(convertDataRequirement(t)));
+        for (org.hl7.fhir.r4.model.DataRequirement t : src.getOutput()) tgt.addOutput(wrapOutput(convertDataRequirement(t)));
         for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
         if (src.hasTiming())
             tgt.setTiming(convertType(src.getTiming()));
@@ -265,6 +268,14 @@ public class PlanDefinition40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
+    private static PlanDefinitionActionOutputComponent wrapOutput(DataRequirement dr) {
+      return new PlanDefinitionActionOutputComponent().setRequirement(dr);
+    }
+
+    private static PlanDefinitionActionInputComponent wrapInput(DataRequirement dr) {
+      return new PlanDefinitionActionInputComponent().setRequirement(dr);
+    }
+
     public static org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionComponent convertPlanDefinitionActionComponent(org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionComponent src) throws FHIRException {
         if (src == null)
             return null;
@@ -280,7 +291,7 @@ public class PlanDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setTextEquivalentElement(convertString(src.getTextEquivalentElement()));
         if (src.hasPriority())
             tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(convertCodeableConcept(t));
+        if (src.hasCode()) tgt.addCode(convertCodeableConcept(src.getCode()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReason()) tgt.addReason(convertCodeableConcept(t));
         for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(convertRelatedArtifact(t));
         for (org.hl7.fhir.r5.model.IdType t : src.getGoalId()) tgt.getGoalId().add(convertId(t));
@@ -288,8 +299,8 @@ public class PlanDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setSubject(convertType(src.getSubject()));
         for (org.hl7.fhir.r5.model.TriggerDefinition t : src.getTrigger()) tgt.addTrigger(convertTriggerDefinition(t));
         for (org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionConditionComponent t : src.getCondition()) tgt.addCondition(convertPlanDefinitionActionConditionComponent(t));
-        for (org.hl7.fhir.r5.model.DataRequirement t : src.getInput()) tgt.addInput(convertDataRequirement(t));
-        for (org.hl7.fhir.r5.model.DataRequirement t : src.getOutput()) tgt.addOutput(convertDataRequirement(t));
+        for (PlanDefinitionActionInputComponent t : src.getInput()) tgt.addInput(convertDataRequirement(t.getRequirement()));
+        for (PlanDefinitionActionOutputComponent t : src.getOutput()) tgt.addOutput(convertDataRequirement(t.getRequirement()));
         for (org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
         if (src.hasTiming())
             tgt.setTiming(convertType(src.getTiming()));
@@ -665,7 +676,7 @@ public class PlanDefinition40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent tgt = new org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent();
         copyElement(src, tgt);
         if (src.hasActionId())
-            tgt.setActionIdElement(convertId(src.getActionIdElement()));
+            tgt.setTargetIdElement(convertId(src.getActionIdElement()));
         if (src.hasRelationship())
             tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
         if (src.hasOffset())
@@ -678,8 +689,8 @@ public class PlanDefinition40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent tgt = new org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent();
         copyElement(src, tgt);
-        if (src.hasActionId())
-            tgt.setActionIdElement(convertId(src.getActionIdElement()));
+        if (src.hasTargetId())
+            tgt.setActionIdElement(convertId(src.getTargetIdElement()));
         if (src.hasRelationship())
             tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
         if (src.hasOffset())

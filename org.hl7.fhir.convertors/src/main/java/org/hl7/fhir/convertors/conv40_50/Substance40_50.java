@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.Identifier;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -45,10 +46,10 @@ public class Substance40_50 extends VersionConvertor_40_50 {
             tgt.setStatusElement(convertFHIRSubstanceStatus(src.getStatusElement()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
         if (src.hasCode())
-            tgt.setCode(convertCodeableConcept(src.getCode()));
+            tgt.getCode().setConcept(convertCodeableConcept(src.getCode()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        for (org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent t : src.getInstance()) tgt.addInstance(convertSubstanceInstanceComponent(t));
+        for (org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent t : src.getInstance()) convertSubstanceInstanceComponent(t, tgt);
         for (org.hl7.fhir.r4.model.Substance.SubstanceIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertSubstanceIngredientComponent(t));
         return tgt;
     }
@@ -62,11 +63,13 @@ public class Substance40_50 extends VersionConvertor_40_50 {
         if (src.hasStatus())
             tgt.setStatusElement(convertFHIRSubstanceStatus(src.getStatusElement()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(convertCodeableConcept(t));
-        if (src.hasCode())
-            tgt.setCode(convertCodeableConcept(src.getCode()));
+        if (src.getCode().hasConcept())
+            tgt.setCode(convertCodeableConcept(src.getCode().getConcept()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
-        for (org.hl7.fhir.r5.model.Substance.SubstanceInstanceComponent t : src.getInstance()) tgt.addInstance(convertSubstanceInstanceComponent(t));
+        if (src.getInstance())  {
+          tgt.addInstance(convertSubstanceInstanceComponent(src));
+        }
         for (org.hl7.fhir.r5.model.Substance.SubstanceIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertSubstanceIngredientComponent(t));
         return tgt;
     }
@@ -115,27 +118,21 @@ public class Substance40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.Substance.SubstanceInstanceComponent convertSubstanceInstanceComponent(org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Substance.SubstanceInstanceComponent tgt = new org.hl7.fhir.r5.model.Substance.SubstanceInstanceComponent();
-        copyElement(src, tgt);
-        if (src.hasIdentifier())
-            tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
-        if (src.hasExpiry())
-            tgt.setExpiryElement(convertDateTime(src.getExpiryElement()));
-        if (src.hasQuantity())
-            tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
-        return tgt;
+    public static void convertSubstanceInstanceComponent(org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent src, org.hl7.fhir.r5.model.Substance tgt) throws FHIRException {
+      tgt.setInstance(true);
+      if (src.hasIdentifier())
+        tgt.addIdentifier(convertIdentifier(src.getIdentifier()));
+      if (src.hasExpiry())
+        tgt.setExpiryElement(convertDateTime(src.getExpiryElement()));
+      if (src.hasQuantity())
+        tgt.setQuantity(convertSimpleQuantity(src.getQuantity()));
     }
 
-    public static org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent convertSubstanceInstanceComponent(org.hl7.fhir.r5.model.Substance.SubstanceInstanceComponent src) throws FHIRException {
-        if (src == null)
-            return null;
+    public static org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent convertSubstanceInstanceComponent(org.hl7.fhir.r5.model.Substance src) throws FHIRException {
         org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent tgt = new org.hl7.fhir.r4.model.Substance.SubstanceInstanceComponent();
-        copyElement(src, tgt);
-        if (src.hasIdentifier())
-            tgt.setIdentifier(convertIdentifier(src.getIdentifier()));
+        for (Identifier t : src.getIdentifier()) {
+            tgt.setIdentifier(convertIdentifier(t));
+        }
         if (src.hasExpiry())
             tgt.setExpiryElement(convertDateTime(src.getExpiryElement()));
         if (src.hasQuantity())

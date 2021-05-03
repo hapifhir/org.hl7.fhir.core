@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,7 +105,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "fluid";
             case CELLS: return "cells";
             case BIOLOGICALAGENT: return "biologicalAgent";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +115,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "http://hl7.org/fhir/product-category";
             case CELLS: return "http://hl7.org/fhir/product-category";
             case BIOLOGICALAGENT: return "http://hl7.org/fhir/product-category";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,7 +125,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "Body fluid.";
             case CELLS: return "Collection of cells.";
             case BIOLOGICALAGENT: return "Biological agent of unspecified type.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,7 +135,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FLUID: return "Fluid";
             case CELLS: return "Cells";
             case BIOLOGICALAGENT: return "BiologicalAgent";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -228,15 +224,13 @@ public class BiologicallyDerivedProduct extends DomainResource {
           switch (this) {
             case AVAILABLE: return "available";
             case UNAVAILABLE: return "unavailable";
-            case NULL: return null;
             default: return "?";
           }
         }
         public String getSystem() {
           switch (this) {
-            case AVAILABLE: return "http://hl7.org/fhir/product-status";
-            case UNAVAILABLE: return "http://hl7.org/fhir/product-status";
-            case NULL: return null;
+            case AVAILABLE: return "http://hl7.org/fhir/biological-product-status";
+            case UNAVAILABLE: return "http://hl7.org/fhir/biological-product-status";
             default: return "?";
           }
         }
@@ -244,7 +238,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
           switch (this) {
             case AVAILABLE: return "Product is currently available for use.";
             case UNAVAILABLE: return "Product is not currently available for use.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -252,7 +245,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
           switch (this) {
             case AVAILABLE: return "Available";
             case UNAVAILABLE: return "Unavailable";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -331,7 +323,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FARENHEIT: return "farenheit";
             case CELSIUS: return "celsius";
             case KELVIN: return "kelvin";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -340,7 +331,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FARENHEIT: return "http://hl7.org/fhir/product-storage-scale";
             case CELSIUS: return "http://hl7.org/fhir/product-storage-scale";
             case KELVIN: return "http://hl7.org/fhir/product-storage-scale";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -349,7 +339,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FARENHEIT: return "Fahrenheit temperature scale.";
             case CELSIUS: return "Celsius or centigrade temperature scale.";
             case KELVIN: return "Kelvin absolute thermodynamic temperature scale.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -358,7 +347,6 @@ public class BiologicallyDerivedProduct extends DomainResource {
             case FARENHEIT: return "Fahrenheit";
             case CELSIUS: return "Celsius";
             case KELVIN: return "Kelvin";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -1722,7 +1710,7 @@ public class BiologicallyDerivedProduct extends DomainResource {
      */
     @Child(name = "status", type = {CodeType.class}, order=3, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="available | unavailable", formalDefinition="Whether the product is currently available." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/product-status")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/biological-product-status")
     protected Enumeration<BiologicallyDerivedProductStatus> status;
 
     /**

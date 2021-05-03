@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +96,6 @@ public class Device extends DomainResource {
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +105,6 @@ public class Device extends DomainResource {
             case INACTIVE: return "http://hl7.org/fhir/device-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/device-status";
             case UNKNOWN: return "http://hl7.org/fhir/device-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +114,6 @@ public class Device extends DomainResource {
             case INACTIVE: return "The device is no longer available for use (e.g. lost, expired, damaged).  Note: For *implanted devices*  this means that the device has been removed from the patient.";
             case ENTEREDINERROR: return "The device was entered in error and voided.";
             case UNKNOWN: return "The status of the device has not been determined.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,7 +123,6 @@ public class Device extends DomainResource {
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -245,7 +241,6 @@ public class Device extends DomainResource {
             case SELFREPORTED: return "self-reported";
             case ELECTRONICTRANSMISSION: return "electronic-transmission";
             case UNKNOWN: return "unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -258,7 +253,6 @@ public class Device extends DomainResource {
             case SELFREPORTED: return "http://hl7.org/fhir/udi-entry-type";
             case ELECTRONICTRANSMISSION: return "http://hl7.org/fhir/udi-entry-type";
             case UNKNOWN: return "http://hl7.org/fhir/udi-entry-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -271,7 +265,6 @@ public class Device extends DomainResource {
             case SELFREPORTED: return "The data originated from a patient source and was not directly scanned or read from a label or card.";
             case ELECTRONICTRANSMISSION: return "The UDI information was received electronically from the device through a communication protocol, such as the IEEE 11073 20601 version 4 exchange protocol over Bluetooth or USB.";
             case UNKNOWN: return "The method of data capture has not been determined.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -284,7 +277,6 @@ public class Device extends DomainResource {
             case SELFREPORTED: return "Self Reported";
             case ELECTRONICTRANSMISSION: return "Electronic Transmission";
             case UNKNOWN: return "Unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -1711,20 +1703,13 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         protected CodeableConcept type;
 
         /**
-         * Property value as a quantity.
+         * Property value - can be a code or quantity.
          */
-        @Child(name = "valueQuantity", type = {Quantity.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Property value as a quantity", formalDefinition="Property value as a quantity." )
-        protected List<Quantity> valueQuantity;
+        @Child(name = "value", type = {Quantity.class, CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Property value - as a code or quantity", formalDefinition="Property value - can be a code or quantity." )
+        protected DataType value;
 
-        /**
-         * Property value as a code, e.g., NTP4 (synced to NTP).
-         */
-        @Child(name = "valueCode", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Property value as a code, e.g., NTP4 (synced to NTP)", formalDefinition="Property value as a code, e.g., NTP4 (synced to NTP)." )
-        protected List<CodeableConcept> valueCode;
-
-        private static final long serialVersionUID = 1512172633L;
+        private static final long serialVersionUID = -1659186716L;
 
     /**
      * Constructor
@@ -1766,124 +1751,70 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         }
 
         /**
-         * @return {@link #valueQuantity} (Property value as a quantity.)
+         * @return {@link #value} (Property value - can be a code or quantity.)
          */
-        public List<Quantity> getValueQuantity() { 
-          if (this.valueQuantity == null)
-            this.valueQuantity = new ArrayList<Quantity>();
-          return this.valueQuantity;
+        public DataType getValue() { 
+          return this.value;
         }
 
         /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
+         * @return {@link #value} (Property value - can be a code or quantity.)
          */
-        public DevicePropertyComponent setValueQuantity(List<Quantity> theValueQuantity) { 
-          this.valueQuantity = theValueQuantity;
-          return this;
+        public Quantity getValueQuantity() throws FHIRException { 
+          if (this.value == null)
+            this.value = new Quantity();
+          if (!(this.value instanceof Quantity))
+            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (Quantity) this.value;
         }
 
         public boolean hasValueQuantity() { 
-          if (this.valueQuantity == null)
-            return false;
-          for (Quantity item : this.valueQuantity)
-            if (!item.isEmpty())
-              return true;
-          return false;
+          return this != null && this.value instanceof Quantity;
         }
 
-        public Quantity addValueQuantity() { //3
-          Quantity t = new Quantity();
-          if (this.valueQuantity == null)
-            this.valueQuantity = new ArrayList<Quantity>();
-          this.valueQuantity.add(t);
-          return t;
+        /**
+         * @return {@link #value} (Property value - can be a code or quantity.)
+         */
+        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
+          if (this.value == null)
+            this.value = new CodeableConcept();
+          if (!(this.value instanceof CodeableConcept))
+            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
+          return (CodeableConcept) this.value;
         }
 
-        public DevicePropertyComponent addValueQuantity(Quantity t) { //3
-          if (t == null)
-            return this;
-          if (this.valueQuantity == null)
-            this.valueQuantity = new ArrayList<Quantity>();
-          this.valueQuantity.add(t);
+        public boolean hasValueCodeableConcept() { 
+          return this != null && this.value instanceof CodeableConcept;
+        }
+
+        public boolean hasValue() { 
+          return this.value != null && !this.value.isEmpty();
+        }
+
+        /**
+         * @param value {@link #value} (Property value - can be a code or quantity.)
+         */
+        public DevicePropertyComponent setValue(DataType value) { 
+          if (value != null && !(value instanceof Quantity || value instanceof CodeableConcept))
+            throw new Error("Not the right type for Device.property.value[x]: "+value.fhirType());
+          this.value = value;
           return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #valueQuantity}, creating it if it does not already exist {3}
-         */
-        public Quantity getValueQuantityFirstRep() { 
-          if (getValueQuantity().isEmpty()) {
-            addValueQuantity();
-          }
-          return getValueQuantity().get(0);
-        }
-
-        /**
-         * @return {@link #valueCode} (Property value as a code, e.g., NTP4 (synced to NTP).)
-         */
-        public List<CodeableConcept> getValueCode() { 
-          if (this.valueCode == null)
-            this.valueCode = new ArrayList<CodeableConcept>();
-          return this.valueCode;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public DevicePropertyComponent setValueCode(List<CodeableConcept> theValueCode) { 
-          this.valueCode = theValueCode;
-          return this;
-        }
-
-        public boolean hasValueCode() { 
-          if (this.valueCode == null)
-            return false;
-          for (CodeableConcept item : this.valueCode)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addValueCode() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.valueCode == null)
-            this.valueCode = new ArrayList<CodeableConcept>();
-          this.valueCode.add(t);
-          return t;
-        }
-
-        public DevicePropertyComponent addValueCode(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.valueCode == null)
-            this.valueCode = new ArrayList<CodeableConcept>();
-          this.valueCode.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #valueCode}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getValueCodeFirstRep() { 
-          if (getValueCode().isEmpty()) {
-            addValueCode();
-          }
-          return getValueCode().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("type", "CodeableConcept", "Code that specifies the property being represented. No codes are specified but the MDC codes are an example: https://build.fhir.org/mdc.html.", 0, 1, type));
-          children.add(new Property("valueQuantity", "Quantity", "Property value as a quantity.", 0, java.lang.Integer.MAX_VALUE, valueQuantity));
-          children.add(new Property("valueCode", "CodeableConcept", "Property value as a code, e.g., NTP4 (synced to NTP).", 0, java.lang.Integer.MAX_VALUE, valueCode));
+          children.add(new Property("value[x]", "Quantity|CodeableConcept", "Property value - can be a code or quantity.", 0, 1, value));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Code that specifies the property being represented. No codes are specified but the MDC codes are an example: https://build.fhir.org/mdc.html.", 0, 1, type);
-          case -2029823716: /*valueQuantity*/  return new Property("valueQuantity", "Quantity", "Property value as a quantity.", 0, java.lang.Integer.MAX_VALUE, valueQuantity);
-          case -766209282: /*valueCode*/  return new Property("valueCode", "CodeableConcept", "Property value as a code, e.g., NTP4 (synced to NTP).", 0, java.lang.Integer.MAX_VALUE, valueCode);
+          case -1410166417: /*value[x]*/  return new Property("value[x]", "Quantity|CodeableConcept", "Property value - can be a code or quantity.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value[x]", "Quantity|CodeableConcept", "Property value - can be a code or quantity.", 0, 1, value);
+          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Property value - can be a code or quantity.", 0, 1, value);
+          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Property value - can be a code or quantity.", 0, 1, value);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1893,8 +1824,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case -2029823716: /*valueQuantity*/ return this.valueQuantity == null ? new Base[0] : this.valueQuantity.toArray(new Base[this.valueQuantity.size()]); // Quantity
-        case -766209282: /*valueCode*/ return this.valueCode == null ? new Base[0] : this.valueCode.toArray(new Base[this.valueCode.size()]); // CodeableConcept
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -1906,11 +1836,8 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         case 3575610: // type
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case -2029823716: // valueQuantity
-          this.getValueQuantity().add(TypeConvertor.castToQuantity(value)); // Quantity
-          return value;
-        case -766209282: // valueCode
-          this.getValueCode().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+        case 111972721: // value
+          this.value = TypeConvertor.castToType(value); // DataType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -1921,10 +1848,8 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("valueQuantity")) {
-          this.getValueQuantity().add(TypeConvertor.castToQuantity(value));
-        } else if (name.equals("valueCode")) {
-          this.getValueCode().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("value[x]")) {
+          this.value = TypeConvertor.castToType(value); // DataType
         } else
           return super.setProperty(name, value);
         return value;
@@ -1934,8 +1859,8 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610:  return getType();
-        case -2029823716:  return addValueQuantity(); 
-        case -766209282:  return addValueCode(); 
+        case -1410166417:  return getValue();
+        case 111972721:  return getValue();
         default: return super.makeProperty(hash, name);
         }
 
@@ -1945,8 +1870,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case -2029823716: /*valueQuantity*/ return new String[] {"Quantity"};
-        case -766209282: /*valueCode*/ return new String[] {"CodeableConcept"};
+        case 111972721: /*value*/ return new String[] {"Quantity", "CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1959,10 +1883,12 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
           return this.type;
         }
         else if (name.equals("valueQuantity")) {
-          return addValueQuantity();
+          this.value = new Quantity();
+          return this.value;
         }
-        else if (name.equals("valueCode")) {
-          return addValueCode();
+        else if (name.equals("valueCodeableConcept")) {
+          this.value = new CodeableConcept();
+          return this.value;
         }
         else
           return super.addChild(name);
@@ -1977,16 +1903,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       public void copyValues(DevicePropertyComponent dst) {
         super.copyValues(dst);
         dst.type = type == null ? null : type.copy();
-        if (valueQuantity != null) {
-          dst.valueQuantity = new ArrayList<Quantity>();
-          for (Quantity i : valueQuantity)
-            dst.valueQuantity.add(i.copy());
-        };
-        if (valueCode != null) {
-          dst.valueCode = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : valueCode)
-            dst.valueCode.add(i.copy());
-        };
+        dst.value = value == null ? null : value.copy();
       }
 
       @Override
@@ -1996,8 +1913,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
         if (!(other_ instanceof DevicePropertyComponent))
           return false;
         DevicePropertyComponent o = (DevicePropertyComponent) other_;
-        return compareDeep(type, o.type, true) && compareDeep(valueQuantity, o.valueQuantity, true) && compareDeep(valueCode, o.valueCode, true)
-          ;
+        return compareDeep(type, o.type, true) && compareDeep(value, o.value, true);
       }
 
       @Override
@@ -2011,8 +1927,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, valueQuantity, valueCode
-          );
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, value);
       }
 
   public String fhirType() {
@@ -2029,6 +1944,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
          */
         @Child(name = "value", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="on |off | standby", formalDefinition="on |off | standby." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-operationalstatus")
         protected CodeableConcept value;
 
         /**
@@ -2262,6 +2178,7 @@ UDILabelName | UserFriendlyName | PatientReportedName | ManufactureDeviceName | 
          */
         @Child(name = "value", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=false)
         @Description(shortDefinition="implanted|explanted|attached", formalDefinition="implanted|explanted|attached." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-associationstatus")
         protected CodeableConcept value;
 
         /**
@@ -4580,6 +4497,26 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
    }
 
  /**
+   * Search parameter: <b>din</b>
+   * <p>
+   * Description: <b>The donation identification number (DIN)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="din", path="Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')", description="The donation identification number (DIN)", type="token" )
+  public static final String SP_DIN = "din";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>din</b>
+   * <p>
+   * Description: <b>The donation identification number (DIN)</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DIN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DIN);
+
+ /**
    * Search parameter: <b>definition</b>
    * <p>
    * Description: <b>The definition / type of the device</b><br>
@@ -4831,7 +4768,7 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
    * Path: <b>Device.patient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Device.patient", description="Patient information, if the resource is affixed to a person", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="Device.patient", description="Patient information, if the resource is affixed to a person", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -4988,26 +4925,6 @@ In the PHD case, there are 11073 10101 nomenclature codes that define the specia
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam VERSION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_VERSION);
-
- /**
-   * Search parameter: <b>din</b>
-   * <p>
-   * Description: <b>The donation identification number (DIN)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="din", path="Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')", description="The donation identification number (DIN)", type="token" )
-  public static final String SP_DIN = "din";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>din</b>
-   * <p>
-   * Description: <b>The donation identification number (DIN)</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Device.extension('http://hl7.org/fhir/SearchParameter/device-extensions-Device-din')</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam DIN = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_DIN);
 
 
 }

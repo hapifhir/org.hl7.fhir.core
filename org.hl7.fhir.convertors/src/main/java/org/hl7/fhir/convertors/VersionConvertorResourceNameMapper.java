@@ -43,7 +43,7 @@ public class VersionConvertorResourceNameMapper {
     case "DeviceComponent" : return null; 
     case "DeviceMetric" : return org.hl7.fhir.r5.model.DeviceMetric.class.getSimpleName(); 
     case "DeviceRequest" : return org.hl7.fhir.r5.model.DeviceRequest.class.getSimpleName(); 
-    case "DeviceUseStatement" : return org.hl7.fhir.r5.model.DeviceUseStatement.class.getSimpleName(); 
+    case "DeviceUseStatement" : return org.hl7.fhir.r5.model.DeviceUsage.class.getSimpleName(); 
     case "DiagnosticReport" : return org.hl7.fhir.r5.model.DiagnosticReport.class.getSimpleName(); 
     case "DocumentManifest" : return org.hl7.fhir.r5.model.DocumentManifest.class.getSimpleName(); 
     case "DocumentReference" : return org.hl7.fhir.r5.model.DocumentReference.class.getSimpleName(); 
@@ -169,7 +169,7 @@ public class VersionConvertorResourceNameMapper {
     case "DeviceDefinition" : return null; 
     case "DeviceMetric" : return org.hl7.fhir.dstu3.model.DeviceMetric.class.getSimpleName(); 
     case "DeviceRequest" : return org.hl7.fhir.dstu3.model.DeviceRequest.class.getSimpleName(); 
-    case "DeviceUseStatement" : return org.hl7.fhir.dstu3.model.DeviceUseStatement.class.getSimpleName(); 
+    case "DeviceUsage" : return org.hl7.fhir.dstu3.model.DeviceUseStatement.class.getSimpleName(); 
     case "DiagnosticReport" : return org.hl7.fhir.dstu3.model.DiagnosticReport.class.getSimpleName(); 
     case "DocumentManifest" : return org.hl7.fhir.dstu3.model.DocumentManifest.class.getSimpleName(); 
     case "DocumentReference" : return org.hl7.fhir.dstu3.model.DocumentReference.class.getSimpleName(); 

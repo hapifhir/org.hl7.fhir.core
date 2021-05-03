@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 import java.util.stream.Collectors;
 
@@ -252,7 +253,7 @@ public class AllergyIntolerance40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSubstance())
             tgt.setSubstance(convertCodeableConcept(src.getSubstance()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(new CodeableReference(convertCodeableConcept(t)));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasOnset())
@@ -272,7 +273,7 @@ public class AllergyIntolerance40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasSubstance())
             tgt.setSubstance(convertCodeableConcept(src.getSubstance()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(convertCodeableConcept(t));
+        for (CodeableReference t : src.getManifestation()) if (t.hasConcept()) tgt.addManifestation(convertCodeableConcept(t.getConcept()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         if (src.hasOnset())

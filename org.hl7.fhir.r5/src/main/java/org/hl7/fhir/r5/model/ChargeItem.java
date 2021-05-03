@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,7 +118,6 @@ public class ChargeItem extends DomainResource {
             case BILLED: return "billed";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -131,7 +130,6 @@ public class ChargeItem extends DomainResource {
             case BILLED: return "http://hl7.org/fhir/chargeitem-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/chargeitem-status";
             case UNKNOWN: return "http://hl7.org/fhir/chargeitem-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,7 +142,6 @@ public class ChargeItem extends DomainResource {
             case BILLED: return "The charge item has been billed (e.g. a billing engine has generated financial transactions by applying the associated ruled for the charge item to the context of the Encounter, and placed them into Claims/Invoices.";
             case ENTEREDINERROR: return "The charge item has been entered in error and should not be processed for billing.";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this charge item  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -157,7 +154,6 @@ public class ChargeItem extends DomainResource {
             case BILLED: return "Billed";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -603,7 +599,7 @@ public class ChargeItem extends DomainResource {
      */
     @Child(name = "product", type = {Device.class, Medication.class, Substance.class, CodeableConcept.class}, order=22, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Product charged", formalDefinition="Identifies the device, food, drug or other product being charged either by type code or reference to an instance." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-kind")
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/device-type")
     protected DataType product;
 
     /**
@@ -2537,7 +2533,7 @@ public class ChargeItem extends DomainResource {
    * Path: <b>ChargeItem.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="ChargeItem.subject.where(resolve() is Patient)", description="Individual service was done for/to", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="ChargeItem.subject.where(resolve() is Patient)", description="Individual service was done for/to", type="reference", target={Group.class, Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>

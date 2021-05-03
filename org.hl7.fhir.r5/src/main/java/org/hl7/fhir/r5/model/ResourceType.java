@@ -28,7 +28,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 
 
@@ -78,7 +78,7 @@ Account,
     DeviceDefinition,
     DeviceMetric,
     DeviceRequest,
-    DeviceUseStatement,
+    DeviceUsage,
     DiagnosticReport,
     DocumentManifest,
     DocumentReference,
@@ -107,6 +107,7 @@ Account,
     ImplementationGuide,
     Ingredient,
     InsurancePlan,
+    InventoryReport,
     Invoice,
     Library,
     Linkage,
@@ -272,8 +273,8 @@ Account,
       return "devicemetric";
     case DeviceRequest:
       return "devicerequest";
-    case DeviceUseStatement:
-      return "deviceusestatement";
+    case DeviceUsage:
+      return "deviceusage";
     case DiagnosticReport:
       return "diagnosticreport";
     case DocumentManifest:
@@ -330,6 +331,8 @@ Account,
       return "ingredient";
     case InsurancePlan:
       return "insuranceplan";
+    case InventoryReport:
+      return "inventoryreport";
     case Invoice:
       return "invoice";
     case Library:
@@ -573,8 +576,8 @@ Account,
       return DeviceMetric;
     if ("DeviceRequest".equals(code))
       return DeviceRequest;
-    if ("DeviceUseStatement".equals(code))
-      return DeviceUseStatement;
+    if ("DeviceUsage".equals(code))
+      return DeviceUsage;
     if ("DiagnosticReport".equals(code))
       return DiagnosticReport;
     if ("DocumentManifest".equals(code))
@@ -631,6 +634,8 @@ Account,
       return Ingredient;
     if ("InsurancePlan".equals(code))
       return InsurancePlan;
+    if ("InventoryReport".equals(code))
+      return InventoryReport;
     if ("Invoice".equals(code))
       return Invoice;
     if ("Library".equals(code))
