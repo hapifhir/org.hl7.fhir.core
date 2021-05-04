@@ -500,8 +500,8 @@ public class StructureMap40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasContext())
             tgt.setContextElement(convertId(src.getContextElement()));
-        if (src.hasContextType())
-            tgt.setContextTypeElement(convertStructureMapContextType(src.getContextTypeElement()));
+        if (src.hasContextType() && src.getContextType() != org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.VARIABLE)
+          throw new Error("This conversion is not supported. Consult code maintainers"); // this should never happens - no one knows what the intent was here.
         if (src.hasElement())
             tgt.setElementElement(convertString(src.getElementElement()));
         if (src.hasVariable())
@@ -524,8 +524,7 @@ public class StructureMap40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasContext())
             tgt.setContextElement(convertId(src.getContextElement()));
-        if (src.hasContextType())
-            tgt.setContextTypeElement(convertStructureMapContextType(src.getContextTypeElement()));
+        tgt.setContextType(org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.VARIABLE);
         if (src.hasElement())
             tgt.setElementElement(convertString(src.getElementElement()));
         if (src.hasVariable())
@@ -538,44 +537,6 @@ public class StructureMap40_50 extends VersionConvertor_40_50 {
         if (src.hasTransform())
             tgt.setTransformElement(convertStructureMapTransform(src.getTransformElement()));
         for (org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent t : src.getParameter()) tgt.addParameter(convertStructureMapGroupRuleTargetParameterComponent(t));
-        return tgt;
-    }
-
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapContextType> convertStructureMapContextType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapContextType> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapContextType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.StructureMap.StructureMapContextTypeEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case TYPE:
-                tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapContextType.TYPE);
-                break;
-            case VARIABLE:
-                tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapContextType.VARIABLE);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.StructureMap.StructureMapContextType.NULL);
-                break;
-        }
-        return tgt;
-    }
-
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapContextType> convertStructureMapContextType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.StructureMap.StructureMapContextType> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.StructureMap.StructureMapContextType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.StructureMap.StructureMapContextTypeEnumFactory());
-        VersionConvertor_40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case TYPE:
-                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.TYPE);
-                break;
-            case VARIABLE:
-                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.VARIABLE);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.StructureMap.StructureMapContextType.NULL);
-                break;
-        }
         return tgt;
     }
 

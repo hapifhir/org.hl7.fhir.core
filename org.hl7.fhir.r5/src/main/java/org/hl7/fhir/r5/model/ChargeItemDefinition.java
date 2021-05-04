@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2394,6 +2394,216 @@ public class ChargeItemDefinition extends MetadataResource {
     public ChargeItemDefinition setPurpose(String value) { 
       throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"purpose\"");
     }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getTopicMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     */
+    public List<CodeableConcept> getTopic() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setTopic(List<CodeableConcept> theTopic) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+    }
+    public boolean hasTopic() { 
+      return false;
+    }
+
+    public CodeableConcept addTopic() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+    }
+    public ChargeItemDefinition addTopic(CodeableConcept t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
+     */
+    public CodeableConcept getTopicFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"topic\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getAuthorMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #author} (An individiual or organization primarily involved in the creation and maintenance of the charge item definition.)
+     */
+    public List<ContactDetail> getAuthor() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setAuthor(List<ContactDetail> theAuthor) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+    }
+    public boolean hasAuthor() { 
+      return false;
+    }
+
+    public ContactDetail addAuthor() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+    }
+    public ChargeItemDefinition addAuthor(ContactDetail t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getAuthorFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"author\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getEditorMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #editor} (An individual or organization primarily responsible for internal coherence of the charge item definition.)
+     */
+    public List<ContactDetail> getEditor() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setEditor(List<ContactDetail> theEditor) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+    }
+    public boolean hasEditor() { 
+      return false;
+    }
+
+    public ContactDetail addEditor() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+    }
+    public ChargeItemDefinition addEditor(ContactDetail t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getEditorFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"editor\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getReviewerMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #reviewer} (An individual or organization primarily responsible for review of some aspect of the charge item definition.)
+     */
+    public List<ContactDetail> getReviewer() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setReviewer(List<ContactDetail> theReviewer) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+    }
+    public boolean hasReviewer() { 
+      return false;
+    }
+
+    public ContactDetail addReviewer() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+    }
+    public ChargeItemDefinition addReviewer(ContactDetail t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getReviewerFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"reviewer\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getEndorserMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #endorser} (An individual or organization responsible for officially endorsing the charge item definition for use in some setting.)
+     */
+    public List<ContactDetail> getEndorser() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setEndorser(List<ContactDetail> theEndorser) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+    }
+    public boolean hasEndorser() { 
+      return false;
+    }
+
+    public ContactDetail addEndorser() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+    }
+    public ChargeItemDefinition addEndorser(ContactDetail t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {2}
+     */
+    public ContactDetail getEndorserFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"endorser\"");
+    }
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getRelatedArtifactMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #relatedArtifact} (Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.)
+     */
+    public List<RelatedArtifact> getRelatedArtifact() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public ChargeItemDefinition setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact) { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
+    }
+    public boolean hasRelatedArtifact() { 
+      return false;
+    }
+
+    public RelatedArtifact addRelatedArtifact() { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
+    }
+    public ChargeItemDefinition addRelatedArtifact(RelatedArtifact t) { //3
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {2}
+     */
+    public RelatedArtifact getRelatedArtifactFirstRep() { 
+      throw new Error("The resource type \"ChargeItemDefinition\" does not implement the property \"relatedArtifact\"");
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this charge item definition when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this charge item definition is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the charge item definition is stored on different servers.", 0, 1, url));
@@ -2883,6 +3093,26 @@ public class ChargeItemDefinition extends MetadataResource {
    }
 
  /**
+   * Search parameter: <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the charge item definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(ChargeItemDefinition.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context", path="(ChargeItemDefinition.useContext.value as CodeableConcept)", description="A use context assigned to the charge item definition", type="token" )
+  public static final String SP_CONTEXT = "context";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the charge item definition</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(ChargeItemDefinition.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+
+ /**
    * Search parameter: <b>context-quantity</b>
    * <p>
    * Description: <b>A quantity- or range-valued use context assigned to the charge item definition</b><br>
@@ -2903,46 +3133,6 @@ public class ChargeItemDefinition extends MetadataResource {
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
 
  /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the charge item definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>ChargeItemDefinition.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="ChargeItemDefinition.useContext", description="A use context type and quantity- or range-based value assigned to the charge item definition", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the charge item definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>ChargeItemDefinition.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the charge item definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>ChargeItemDefinition.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="ChargeItemDefinition.useContext", description="A use context type and value assigned to the charge item definition", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the charge item definition</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>ChargeItemDefinition.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
    * Search parameter: <b>context-type</b>
    * <p>
    * Description: <b>A type of use context assigned to the charge item definition</b><br>
@@ -2961,26 +3151,6 @@ public class ChargeItemDefinition extends MetadataResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(ChargeItemDefinition.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(ChargeItemDefinition.useContext.value as CodeableConcept)", description="A use context assigned to the charge item definition", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the charge item definition</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(ChargeItemDefinition.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
 
  /**
    * Search parameter: <b>date</b>
@@ -3181,6 +3351,46 @@ public class ChargeItemDefinition extends MetadataResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
+
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the charge item definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>ChargeItemDefinition.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="ChargeItemDefinition.useContext", description="A use context type and quantity- or range-based value assigned to the charge item definition", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the charge item definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>ChargeItemDefinition.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the charge item definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>ChargeItemDefinition.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-value", path="ChargeItemDefinition.useContext", description="A use context type and value assigned to the charge item definition", type="composite", compositeOf={"context-type", "context"} )
+  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the charge item definition</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>ChargeItemDefinition.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
 
 
 }

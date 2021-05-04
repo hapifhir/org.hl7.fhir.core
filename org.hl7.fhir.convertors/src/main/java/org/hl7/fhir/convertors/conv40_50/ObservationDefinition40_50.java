@@ -57,15 +57,15 @@ public class ObservationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setPreferredReportNameElement(convertString(src.getPreferredReportNameElement()));
         if (src.hasQuantitativeDetails())
             tgt.setQuantitativeDetails(convertObservationDefinitionQuantitativeDetailsComponent(src.getQuantitativeDetails()));
-        for (org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
-        if (src.hasValidCodedValueSet())
-            tgt.setValidCodedValueSet(convertReference(src.getValidCodedValueSet()));
-        if (src.hasNormalCodedValueSet())
-            tgt.setNormalCodedValueSet(convertReference(src.getNormalCodedValueSet()));
-        if (src.hasAbnormalCodedValueSet())
-            tgt.setAbnormalCodedValueSet(convertReference(src.getAbnormalCodedValueSet()));
-        if (src.hasCriticalCodedValueSet())
-            tgt.setCriticalCodedValueSet(convertReference(src.getCriticalCodedValueSet()));
+//        for (org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
+//        if (src.hasValidCodedValueSet())
+//            tgt.setValidCodedValueSet(convertReference(src.getValidCodedValueSet()));
+//        if (src.hasNormalCodedValueSet())
+//            tgt.setNormalCodedValueSet(convertReference(src.getNormalCodedValueSet()));
+//        if (src.hasAbnormalCodedValueSet())
+//            tgt.setAbnormalCodedValueSet(convertReference(src.getAbnormalCodedValueSet()));
+//        if (src.hasCriticalCodedValueSet())
+//            tgt.setCriticalCodedValueSet(convertReference(src.getCriticalCodedValueSet()));
         return tgt;
     }
 
@@ -90,15 +90,15 @@ public class ObservationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setPreferredReportNameElement(convertString(src.getPreferredReportNameElement()));
         if (src.hasQuantitativeDetails())
             tgt.setQuantitativeDetails(convertObservationDefinitionQuantitativeDetailsComponent(src.getQuantitativeDetails()));
-        for (org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
-        if (src.hasValidCodedValueSet())
-            tgt.setValidCodedValueSet(convertReference(src.getValidCodedValueSet()));
-        if (src.hasNormalCodedValueSet())
-            tgt.setNormalCodedValueSet(convertReference(src.getNormalCodedValueSet()));
-        if (src.hasAbnormalCodedValueSet())
-            tgt.setAbnormalCodedValueSet(convertReference(src.getAbnormalCodedValueSet()));
-        if (src.hasCriticalCodedValueSet())
-            tgt.setCriticalCodedValueSet(convertReference(src.getCriticalCodedValueSet()));
+//        for (org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent t : src.getQualifiedInterval()) tgt.addQualifiedInterval(convertObservationDefinitionQualifiedIntervalComponent(t));
+//        if (src.hasValidCodedValueSet())
+//            tgt.setValidCodedValueSet(convertReference(src.getValidCodedValueSet()));
+//        if (src.hasNormalCodedValueSet())
+//            tgt.setNormalCodedValueSet(convertReference(src.getNormalCodedValueSet()));
+//        if (src.hasAbnormalCodedValueSet())
+//            tgt.setAbnormalCodedValueSet(convertReference(src.getAbnormalCodedValueSet()));
+//        if (src.hasCriticalCodedValueSet())
+//            tgt.setCriticalCodedValueSet(convertReference(src.getCriticalCodedValueSet()));
         return tgt;
     }
 
@@ -226,51 +226,51 @@ public class ObservationDefinition40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent convertObservationDefinitionQualifiedIntervalComponent(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent tgt = new org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent();
-        copyElement(src, tgt);
-        if (src.hasCategory())
-            tgt.setCategoryElement(convertObservationRangeCategory(src.getCategoryElement()));
-        if (src.hasRange())
-            tgt.setRange(convertRange(src.getRange()));
-        if (src.hasContext())
-            tgt.setContext(convertCodeableConcept(src.getContext()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAppliesTo()) tgt.addAppliesTo(convertCodeableConcept(t));
-        if (src.hasGender())
-            tgt.setGenderElement(Enumerations40_50.convertAdministrativeGender(src.getGenderElement()));
-        if (src.hasAge())
-            tgt.setAge(convertRange(src.getAge()));
-        if (src.hasGestationalAge())
-            tgt.setGestationalAge(convertRange(src.getGestationalAge()));
-        if (src.hasCondition())
-            tgt.setConditionElement(convertString(src.getConditionElement()));
-        return tgt;
-    }
-
-    public static org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent convertObservationDefinitionQualifiedIntervalComponent(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent tgt = new org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent();
-        copyElement(src, tgt);
-        if (src.hasCategory())
-            tgt.setCategoryElement(convertObservationRangeCategory(src.getCategoryElement()));
-        if (src.hasRange())
-            tgt.setRange(convertRange(src.getRange()));
-        if (src.hasContext())
-            tgt.setContext(convertCodeableConcept(src.getContext()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getAppliesTo()) tgt.addAppliesTo(convertCodeableConcept(t));
-        if (src.hasGender())
-            tgt.setGenderElement(Enumerations40_50.convertAdministrativeGender(src.getGenderElement()));
-        if (src.hasAge())
-            tgt.setAge(convertRange(src.getAge()));
-        if (src.hasGestationalAge())
-            tgt.setGestationalAge(convertRange(src.getGestationalAge()));
-        if (src.hasCondition())
-            tgt.setConditionElement(convertString(src.getConditionElement()));
-        return tgt;
-    }
+//    public static org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent convertObservationDefinitionQualifiedIntervalComponent(org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent src) throws FHIRException {
+//        if (src == null)
+//            return null;
+//        org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent tgt = new org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent();
+//        copyElement(src, tgt);
+//        if (src.hasCategory())
+//            tgt.setCategoryElement(convertObservationRangeCategory(src.getCategoryElement()));
+//        if (src.hasRange())
+//            tgt.setRange(convertRange(src.getRange()));
+//        if (src.hasContext())
+//            tgt.setContext(convertCodeableConcept(src.getContext()));
+//        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getAppliesTo()) tgt.addAppliesTo(convertCodeableConcept(t));
+//        if (src.hasGender())
+//            tgt.setGenderElement(Enumerations40_50.convertAdministrativeGender(src.getGenderElement()));
+//        if (src.hasAge())
+//            tgt.setAge(convertRange(src.getAge()));
+//        if (src.hasGestationalAge())
+//            tgt.setGestationalAge(convertRange(src.getGestationalAge()));
+//        if (src.hasCondition())
+//            tgt.setConditionElement(convertString(src.getConditionElement()));
+//        return tgt;
+//    }
+//
+//    public static org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent convertObservationDefinitionQualifiedIntervalComponent(org.hl7.fhir.r5.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent src) throws FHIRException {
+//        if (src == null)
+//            return null;
+//        org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent tgt = new org.hl7.fhir.r4.model.ObservationDefinition.ObservationDefinitionQualifiedIntervalComponent();
+//        copyElement(src, tgt);
+//        if (src.hasCategory())
+//            tgt.setCategoryElement(convertObservationRangeCategory(src.getCategoryElement()));
+//        if (src.hasRange())
+//            tgt.setRange(convertRange(src.getRange()));
+//        if (src.hasContext())
+//            tgt.setContext(convertCodeableConcept(src.getContext()));
+//        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getAppliesTo()) tgt.addAppliesTo(convertCodeableConcept(t));
+//        if (src.hasGender())
+//            tgt.setGenderElement(Enumerations40_50.convertAdministrativeGender(src.getGenderElement()));
+//        if (src.hasAge())
+//            tgt.setAge(convertRange(src.getAge()));
+//        if (src.hasGestationalAge())
+//            tgt.setGestationalAge(convertRange(src.getGestationalAge()));
+//        if (src.hasCondition())
+//            tgt.setConditionElement(convertString(src.getConditionElement()));
+//        return tgt;
+//    }
 
     static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ObservationDefinition.ObservationRangeCategory> convertObservationRangeCategory(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ObservationDefinition.ObservationRangeCategory> src) throws FHIRException {
         if (src == null || src.isEmpty())

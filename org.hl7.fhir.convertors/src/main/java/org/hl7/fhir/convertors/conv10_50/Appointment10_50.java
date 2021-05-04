@@ -1,9 +1,12 @@
 package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.VersionConvertor_Base;
+import org.hl7.fhir.dstu2.model.UnsignedIntType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableConcept;
 
-public class Appointment10_50 {
+public class Appointment10_50 extends VersionConvertor_Base {
 
     public static org.hl7.fhir.dstu2.model.Appointment convertAppointment(org.hl7.fhir.r5.model.Appointment src) throws FHIRException {
         if (src == null || src.isEmpty())
@@ -14,8 +17,8 @@ public class Appointment10_50 {
         if (src.hasStatus())
             tgt.setStatusElement(convertAppointmentStatus(src.getStatusElement()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType()) tgt.setType(VersionConvertor_10_50.convertCodeableConcept(t));
-        if (src.hasPriorityElement())
-            tgt.setPriorityElement(VersionConvertor_10_50.convertUnsignedInt(src.getPriorityElement()));
+        if (src.hasPriority())
+            tgt.setPriorityElement(convertAppointmentPriority(src.getPriority()));
         if (src.hasDescriptionElement())
             tgt.setDescriptionElement(VersionConvertor_10_50.convertString(src.getDescriptionElement()));
         if (src.hasStartElement())
@@ -31,6 +34,18 @@ public class Appointment10_50 {
         return tgt;
     }
 
+    private static UnsignedIntType convertAppointmentPriority(CodeableConcept src) {
+      UnsignedIntType tgt = new UnsignedIntType(convertAppointmentPriorityFromR5(src));
+      VersionConvertor_10_50.copyElement(src, tgt);      
+      return tgt;
+    }
+    
+    private static CodeableConcept convertAppointmentPriority(UnsignedIntType src) {
+      CodeableConcept tgt = src.hasValue() ? convertAppointmentPriorityToR5(src.getValue()) : new CodeableConcept();
+      VersionConvertor_10_50.copyElement(src, tgt);      
+      return tgt;
+    }
+
     public static org.hl7.fhir.r5.model.Appointment convertAppointment(org.hl7.fhir.dstu2.model.Appointment src) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
@@ -42,7 +57,7 @@ public class Appointment10_50 {
         if (src.hasType())
             tgt.addServiceType(VersionConvertor_10_50.convertCodeableConcept(src.getType()));
         if (src.hasPriorityElement())
-            tgt.setPriorityElement(VersionConvertor_10_50.convertUnsignedInt(src.getPriorityElement()));
+            tgt.setPriority(convertAppointmentPriority(src.getPriorityElement()));
         if (src.hasDescriptionElement())
             tgt.setDescriptionElement(VersionConvertor_10_50.convertString(src.getDescriptionElement()));
         if (src.hasStartElement())
@@ -57,6 +72,7 @@ public class Appointment10_50 {
         for (org.hl7.fhir.dstu2.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
         return tgt;
     }
+
 
     public static org.hl7.fhir.dstu2.model.Appointment.AppointmentParticipantComponent convertAppointmentParticipantComponent(org.hl7.fhir.r5.model.Appointment.AppointmentParticipantComponent src) throws FHIRException {
         if (src == null || src.isEmpty())

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2656,7 +2656,7 @@ public class NutritionIntake extends DomainResource {
    * Path: <b>NutritionIntake.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="NutritionIntake.subject.where(resolve() is Patient)", description="Returns statements for a specific patient.", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="NutritionIntake.subject.where(resolve() is Patient)", description="Returns statements for a specific patient.", type="reference", target={Group.class, Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>

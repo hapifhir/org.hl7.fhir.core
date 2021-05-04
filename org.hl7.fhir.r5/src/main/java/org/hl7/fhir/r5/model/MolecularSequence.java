@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,7 +83,6 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case SENSE: return "sense";
             case ANTISENSE: return "antisense";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -91,7 +90,6 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case SENSE: return "http://hl7.org/fhir/orientation-type";
             case ANTISENSE: return "http://hl7.org/fhir/orientation-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,7 +97,6 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case SENSE: return "Sense orientation of reference sequence.";
             case ANTISENSE: return "Antisense orientation of reference sequence.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -107,7 +104,6 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case SENSE: return "Sense orientation of referenceSeq";
             case ANTISENSE: return "Antisense orientation of referenceSeq";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -186,7 +182,6 @@ public class MolecularSequence extends DomainResource {
             case INDEL: return "indel";
             case SNP: return "snp";
             case UNKNOWN: return "unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -195,7 +190,6 @@ public class MolecularSequence extends DomainResource {
             case INDEL: return "http://hl7.org/fhir/quality-type";
             case SNP: return "http://hl7.org/fhir/quality-type";
             case UNKNOWN: return "http://hl7.org/fhir/quality-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -204,7 +198,6 @@ public class MolecularSequence extends DomainResource {
             case INDEL: return "INDEL Comparison.";
             case SNP: return "SNP Comparison.";
             case UNKNOWN: return "UNKNOWN Comparison.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,7 +206,6 @@ public class MolecularSequence extends DomainResource {
             case INDEL: return "INDEL Comparison";
             case SNP: return "SNP Comparison";
             case UNKNOWN: return "UNKNOWN Comparison";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -312,7 +304,6 @@ public class MolecularSequence extends DomainResource {
             case LOGIN: return "login";
             case OAUTH: return "oauth";
             case OTHER: return "other";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -323,7 +314,6 @@ public class MolecularSequence extends DomainResource {
             case LOGIN: return "http://hl7.org/fhir/repository-type";
             case OAUTH: return "http://hl7.org/fhir/repository-type";
             case OTHER: return "http://hl7.org/fhir/repository-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -334,7 +324,6 @@ public class MolecularSequence extends DomainResource {
             case LOGIN: return "When logged into the website, the resource can be seen.";
             case OAUTH: return "When logged in and  follow the API in the website related with URL, the resource can be seen.";
             case OTHER: return "Some other complicated or particular way to get resource from URL.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -345,7 +334,6 @@ public class MolecularSequence extends DomainResource {
             case LOGIN: return "Result cannot be access unless an account is logged in";
             case OAUTH: return "Result need to be fetched with API and need LOGIN( or cookies are required when visiting the link of resource)";
             case OTHER: return "Some other complicated or particular way to get resource from URL.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -442,7 +430,6 @@ public class MolecularSequence extends DomainResource {
             case AA: return "aa";
             case DNA: return "dna";
             case RNA: return "rna";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -451,7 +438,6 @@ public class MolecularSequence extends DomainResource {
             case AA: return "http://hl7.org/fhir/sequence-type";
             case DNA: return "http://hl7.org/fhir/sequence-type";
             case RNA: return "http://hl7.org/fhir/sequence-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -460,7 +446,6 @@ public class MolecularSequence extends DomainResource {
             case AA: return "Amino acid sequence.";
             case DNA: return "DNA Sequence.";
             case RNA: return "RNA Sequence.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -469,7 +454,6 @@ public class MolecularSequence extends DomainResource {
             case AA: return "AA Sequence";
             case DNA: return "DNA Sequence";
             case RNA: return "RNA Sequence";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -547,7 +531,6 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case WATSON: return "watson";
             case CRICK: return "crick";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -555,7 +538,6 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case WATSON: return "http://hl7.org/fhir/strand-type";
             case CRICK: return "http://hl7.org/fhir/strand-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -563,7 +545,6 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case WATSON: return "Watson strand of reference sequence.";
             case CRICK: return "Crick strand of reference sequence.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -571,7 +552,6 @@ public class MolecularSequence extends DomainResource {
           switch (this) {
             case WATSON: return "Watson strand of referenceSeq";
             case CRICK: return "Crick strand of referenceSeq";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -6281,46 +6261,6 @@ public class MolecularSequence extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>chromosome-variant-coordinate</b>
-   * <p>
-   * Description: <b>Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>MolecularSequence.variant</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="chromosome-variant-coordinate", path="MolecularSequence.variant", description="Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"chromosome", "variant-start"} )
-  public static final String SP_CHROMOSOME_VARIANT_COORDINATE = "chromosome-variant-coordinate";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>chromosome-variant-coordinate</b>
-   * <p>
-   * Description: <b>Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>MolecularSequence.variant</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> CHROMOSOME_VARIANT_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_CHROMOSOME_VARIANT_COORDINATE);
-
- /**
-   * Search parameter: <b>chromosome-window-coordinate</b>
-   * <p>
-   * Description: <b>Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>MolecularSequence.referenceSeq</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="chromosome-window-coordinate", path="MolecularSequence.referenceSeq", description="Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"chromosome", "window-start"} )
-  public static final String SP_CHROMOSOME_WINDOW_COORDINATE = "chromosome-window-coordinate";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>chromosome-window-coordinate</b>
-   * <p>
-   * Description: <b>Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>MolecularSequence.referenceSeq</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> CHROMOSOME_WINDOW_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_CHROMOSOME_WINDOW_COORDINATE);
-
- /**
    * Search parameter: <b>chromosome</b>
    * <p>
    * Description: <b>Chromosome number of the reference sequence</b><br>
@@ -6385,46 +6325,6 @@ public class MolecularSequence extends DomainResource {
    * the path value of "<b>MolecularSequence:patient</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("MolecularSequence:patient").toLocked();
-
- /**
-   * Search parameter: <b>referenceseqid-variant-coordinate</b>
-   * <p>
-   * Description: <b>Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>MolecularSequence.variant</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="referenceseqid-variant-coordinate", path="MolecularSequence.variant", description="Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"referenceseqid", "variant-start"} )
-  public static final String SP_REFERENCESEQID_VARIANT_COORDINATE = "referenceseqid-variant-coordinate";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>referenceseqid-variant-coordinate</b>
-   * <p>
-   * Description: <b>Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>MolecularSequence.variant</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> REFERENCESEQID_VARIANT_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_REFERENCESEQID_VARIANT_COORDINATE);
-
- /**
-   * Search parameter: <b>referenceseqid-window-coordinate</b>
-   * <p>
-   * Description: <b>Search parameter by reference sequence and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-window-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>MolecularSequence.referenceSeq</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="referenceseqid-window-coordinate", path="MolecularSequence.referenceSeq", description="Search parameter by reference sequence and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-window-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"referenceseqid", "window-start"} )
-  public static final String SP_REFERENCESEQID_WINDOW_COORDINATE = "referenceseqid-window-coordinate";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>referenceseqid-window-coordinate</b>
-   * <p>
-   * Description: <b>Search parameter by reference sequence and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-window-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>MolecularSequence.referenceSeq</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> REFERENCESEQID_WINDOW_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_REFERENCESEQID_WINDOW_COORDINATE);
 
  /**
    * Search parameter: <b>referenceseqid</b>
@@ -6545,6 +6445,86 @@ public class MolecularSequence extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.NumberClientParam WINDOW_START = new ca.uhn.fhir.rest.gclient.NumberClientParam(SP_WINDOW_START);
+
+ /**
+   * Search parameter: <b>chromosome-variant-coordinate</b>
+   * <p>
+   * Description: <b>Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>MolecularSequence.variant</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="chromosome-variant-coordinate", path="MolecularSequence.variant", description="Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"chromosome", "variant-start"} )
+  public static final String SP_CHROMOSOME_VARIANT_COORDINATE = "chromosome-variant-coordinate";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>chromosome-variant-coordinate</b>
+   * <p>
+   * Description: <b>Search parameter by chromosome and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-variant-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>MolecularSequence.variant</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> CHROMOSOME_VARIANT_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_CHROMOSOME_VARIANT_COORDINATE);
+
+ /**
+   * Search parameter: <b>chromosome-window-coordinate</b>
+   * <p>
+   * Description: <b>Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>MolecularSequence.referenceSeq</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="chromosome-window-coordinate", path="MolecularSequence.referenceSeq", description="Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"chromosome", "window-start"} )
+  public static final String SP_CHROMOSOME_WINDOW_COORDINATE = "chromosome-window-coordinate";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>chromosome-window-coordinate</b>
+   * <p>
+   * Description: <b>Search parameter by chromosome and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `chromosome-window-coordinate=1$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on chromosome 1 and with position >123 and <345, where in 1-based system resource, all strings within region 1:124-344 will be revealed, while in 0-based system resource, all strings within region 1:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>MolecularSequence.referenceSeq</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> CHROMOSOME_WINDOW_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_CHROMOSOME_WINDOW_COORDINATE);
+
+ /**
+   * Search parameter: <b>referenceseqid-variant-coordinate</b>
+   * <p>
+   * Description: <b>Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>MolecularSequence.variant</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="referenceseqid-variant-coordinate", path="MolecularSequence.variant", description="Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"referenceseqid", "variant-start"} )
+  public static final String SP_REFERENCESEQID_VARIANT_COORDINATE = "referenceseqid-variant-coordinate";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>referenceseqid-variant-coordinate</b>
+   * <p>
+   * Description: <b>Search parameter by reference sequence and variant coordinate. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-variant-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with variants on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>MolecularSequence.variant</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> REFERENCESEQID_VARIANT_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_REFERENCESEQID_VARIANT_COORDINATE);
+
+ /**
+   * Search parameter: <b>referenceseqid-window-coordinate</b>
+   * <p>
+   * Description: <b>Search parameter by reference sequence and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-window-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>MolecularSequence.referenceSeq</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="referenceseqid-window-coordinate", path="MolecularSequence.referenceSeq", description="Search parameter by reference sequence and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-window-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.", type="composite", compositeOf={"referenceseqid", "window-start"} )
+  public static final String SP_REFERENCESEQID_WINDOW_COORDINATE = "referenceseqid-window-coordinate";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>referenceseqid-window-coordinate</b>
+   * <p>
+   * Description: <b>Search parameter by reference sequence and window. This will refer to part of a locus or part of a gene where search region will be represented in 1-based system. Since the coordinateSystem can either be 0-based or 1-based, this search query will include the result of both coordinateSystem that contains the equivalent segment of the gene or whole genome sequence. For example, a search for sequence can be represented as `referenceSeqId-window-coordinate=NC_000001.11$lt345$gt123`, this means it will search for the MolecularSequence resource with a window on NC_000001.11 and with position >123 and <345, where in 1-based system resource, all strings within region NC_000001.11:124-344 will be revealed, while in 0-based system resource, all strings within region NC_000001.11:123-344 will be revealed. You may want to check detail about 0-based v.s. 1-based above.</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>MolecularSequence.referenceSeq</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam> REFERENCESEQID_WINDOW_COORDINATE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.NumberClientParam>(SP_REFERENCESEQID_WINDOW_COORDINATE);
 
 
 }

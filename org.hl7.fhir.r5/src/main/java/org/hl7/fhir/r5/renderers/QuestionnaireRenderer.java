@@ -520,7 +520,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       p.tx(" ");
       input = p.input(i.getLinkId(), "checkbox", i.getType().getDisplay(), 1);
       break;
-    case CHOICE:
+    case CODING:
       input = p.select(i.getLinkId());
       listOptions(q, i, input);
       break;
@@ -544,8 +544,6 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     case INTEGER:
       p.tx(" ");
       input = p.input(i.getLinkId(), "number", i.getType().getDisplay(), 10);
-      break;
-    case OPENCHOICE:
       break;
     case QUANTITY:
       p.tx(" ");

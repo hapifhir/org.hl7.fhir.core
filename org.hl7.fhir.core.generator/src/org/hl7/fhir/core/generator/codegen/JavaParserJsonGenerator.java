@@ -240,7 +240,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
       if (ed.unbounded()) {
         if (isPrimitive(ed.typeSummary()) || ed.typeSummary().startsWith("canonical(")) {
           parser.append("    if (json.has(\""+name+"\")) {\r\n");
-          parser.append("      JsonArray array = json.getAsJsonArray(\""+name+"\");\r\n");
+          parser.append("      JsonArray array = getJArray(json, \""+name+"\");\r\n");
           parser.append("      for (int i = 0; i < array.size(); i++) {\r\n");
           parser.append("        if (array.get(i).isJsonNull()) {\r\n");
           if (en == null) {
@@ -255,7 +255,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           parser.append("      }\r\n");
           parser.append("    };\r\n");
           parser.append("    if (json.has(\"_"+name+"\")) {\r\n");
-          parser.append("      JsonArray array = json.getAsJsonArray(\"_"+name+"\");\r\n");
+          parser.append("      JsonArray array = getJArray(json, \"_"+name+"\");\r\n");
           parser.append("      for (int i = 0; i < array.size(); i++) {\r\n");
           parser.append("        if (i == res.get"+upFirst(name)+"().size())\r\n");
           parser.append("          res.get"+upFirst(name)+"().add("+anprsr+");\r\n");
@@ -265,7 +265,7 @@ public class JavaParserJsonGenerator extends JavaBaseGenerator {
           parser.append("    };\r\n");
         } else {
           parser.append("    if (json.has(\""+name+"\")) {\r\n");
-          parser.append("      JsonArray array = json.getAsJsonArray(\""+name+"\");\r\n");
+          parser.append("      JsonArray array = getJArray(json, \""+name+"\");\r\n");
           parser.append("      for (int i = 0; i < array.size(); i++) {\r\n");
           parser.append("        res.get"+upFirst(getElementName(name, false))+"().add("+aprsr+");\r\n");
           parser.append("      }\r\n");

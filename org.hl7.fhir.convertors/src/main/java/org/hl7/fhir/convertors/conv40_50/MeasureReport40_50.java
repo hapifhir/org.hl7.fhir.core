@@ -205,8 +205,8 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
         for (org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupPopulationComponent t : src.getPopulation()) tgt.addPopulation(convertMeasureReportGroupPopulationComponent(t));
-        if (src.hasMeasureScore())
-            tgt.setMeasureScore(convertQuantity(src.getMeasureScore()));
+        if (src.hasMeasureScoreQuantity())
+            tgt.setMeasureScore(convertQuantity(src.getMeasureScoreQuantity()));
         for (org.hl7.fhir.r5.model.MeasureReport.MeasureReportGroupStratifierComponent t : src.getStratifier()) tgt.addStratifier(convertMeasureReportGroupStratifierComponent(t));
         return tgt;
     }
@@ -278,12 +278,12 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponent tgt = new org.hl7.fhir.r4.model.MeasureReport.StratifierGroupComponent();
         copyElement(src, tgt);
-        if (src.hasValue())
-            tgt.setValue(convertCodeableConcept(src.getValue()));
+        if (src.hasValueCodeableConcept())
+            tgt.setValue(convertCodeableConcept(src.getValueCodeableConcept()));
         for (org.hl7.fhir.r5.model.MeasureReport.StratifierGroupComponentComponent t : src.getComponent()) tgt.addComponent(convertStratifierGroupComponentComponent(t));
         for (org.hl7.fhir.r5.model.MeasureReport.StratifierGroupPopulationComponent t : src.getPopulation()) tgt.addPopulation(convertStratifierGroupPopulationComponent(t));
-        if (src.hasMeasureScore())
-            tgt.setMeasureScore(convertQuantity(src.getMeasureScore()));
+        if (src.hasMeasureScoreQuantity())
+            tgt.setMeasureScore(convertQuantity(src.getMeasureScoreQuantity()));
         return tgt;
     }
 
@@ -306,8 +306,8 @@ public class MeasureReport40_50 extends VersionConvertor_40_50 {
         copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasValue())
-            tgt.setValue(convertCodeableConcept(src.getValue()));
+        if (src.hasValueCodeableConcept())
+            tgt.setValue(convertCodeableConcept(src.getValueCodeableConcept()));
         return tgt;
     }
 
