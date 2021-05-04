@@ -388,7 +388,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             if (!(new File(dir).exists()))
               Utilities.createDirectory(dir);
             for (Entry<String, byte[]> fe : e.getValue().getContent().entrySet()) {
-              String fn = Utilities.path(dir, fe.getKey());
+              String fn = Utilities.path(dir, Utilities.cleanFileName(fe.getKey()));
               byte[] cnt = fe.getValue();
               TextFile.bytesToFile(cnt, fn);
               size = size + cnt.length;

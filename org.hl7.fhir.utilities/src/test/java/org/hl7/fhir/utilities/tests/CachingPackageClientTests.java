@@ -15,7 +15,15 @@ public class CachingPackageClientTests {
     CachingPackageClient client = new CachingPackageClient("http://packages.fhir.org");
     Assertions.assertTrue(client.exists("hl7.fhir.r4.core", "4.0.1"));
     Assertions.assertTrue(!client.exists("hl7.fhir.r4.core", "1.0.2"));
+    Assertions.assertTrue(client.exists("HL7.fhir.r4.core", "4.0.1"));
     Assertions.assertTrue(!client.exists("hl7.fhir.nothing", "1.0.1"));
+  }
+
+  @Test
+  public void testCase() throws IOException {
+    CachingPackageClient client = new CachingPackageClient("http://packages.fhir.org");
+    Assertions.assertTrue(client.exists("kbv.basis", "1.1.3"));
+    Assertions.assertTrue(client.exists("KBV.Basis", "1.1.3"));
   }
 
   @Test
