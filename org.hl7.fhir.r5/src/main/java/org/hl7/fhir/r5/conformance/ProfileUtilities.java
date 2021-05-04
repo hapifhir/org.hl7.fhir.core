@@ -609,7 +609,8 @@ public class ProfileUtilities extends TranslatingUtilities {
     derived.setSnapshot(new StructureDefinitionSnapshotComponent());
 
     try {
-      checkDifferential(derived.getDifferential().getElement(), derived.getType(), derived.getUrl());
+      checkDifferential(derived.getDifferential().getElement(), typeName(derived.getType()), derived.getUrl());
+      checkDifferentialBaseType(derived);
       
       // so we have two lists - the base list, and the differential list
       // the differential list is only allowed to include things that are in the base list, but
@@ -620,8 +621,6 @@ public class ProfileUtilities extends TranslatingUtilities {
       int baseCursor = 0;
       int diffCursor = 0; // we need a diff cursor because we can only look ahead, in the bound scoped by longer paths
 
-      if (derived.hasDifferential() && !derived.getDifferential().getElementFirstRep().getPath().contains(".") && !derived.getDifferential().getElementFirstRep().getType().isEmpty())
-        throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT));
 
       for (ElementDefinition e : derived.getDifferential().getElement()) 
         e.clearUserData(GENERATED_IN_SNAPSHOT);
@@ -769,6 +768,29 @@ public class ProfileUtilities extends TranslatingUtilities {
       throw e;
     }
     derived.clearUserData("profileutils.snapshot.generating");
+  }
+
+  public void checkDifferentialBaseType(StructureDefinition derived) throws Error {
+    if (derived.hasDifferential() && !derived.getDifferential().getElementFirstRep().getPath().contains(".") && !derived.getDifferential().getElementFirstRep().getType().isEmpty()) {
+      if (typeMatchesAncestor(derived.getDifferential().getElementFirstRep().getType(), derived.getBaseDefinition())) {
+        derived.getDifferential().getElementFirstRep().getType().clear();
+      } else {
+        throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT));
+      }
+    }
+  }
+
+  private boolean typeMatchesAncestor(List<TypeRefComponent> type, String baseDefinition) {
+    StructureDefinition sd = context.fetchResource(StructureDefinition.class, baseDefinition);
+    return sd != null && type.size() == 1 && sd.getType().equals(type.get(0).getCode()); 
+  }
+
+  private String typeName(String type) {
+    if (Utilities.isAbsoluteUrl(type)) {
+      return type.substring(type.lastIndexOf("/")+1);
+    } else {
+      return type;
+    }
   }
 
   private void checkGroupConstraints(StructureDefinition derived) {
