@@ -38,12 +38,6 @@ import java.util.List;
 
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
-import org.hl7.fhir.r5.model.Device;
-import org.hl7.fhir.r5.model.Group;
-import org.hl7.fhir.r5.model.Location;
-import org.hl7.fhir.r5.model.Patient;
-import org.hl7.fhir.r5.model.Practitioner;
-import org.hl7.fhir.r5.model.PractitionerRole;
 import org.hl7.fhir.utilities.Utilities;
 
 import ca.uhn.fhir.model.api.annotation.Block;
