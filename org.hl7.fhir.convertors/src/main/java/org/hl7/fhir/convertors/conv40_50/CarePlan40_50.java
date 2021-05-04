@@ -240,13 +240,13 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent();
         copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCodeableConcept()) tgt.addOutcome(convertCodeableConceptToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference()) tgt.addOutcome(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCodeableConcept()) tgt.addPerformedActivity(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference()) tgt.addPerformedActivity(convertReferenceToCodeableReference(t));
         for (org.hl7.fhir.r4.model.Annotation t : src.getProgress()) tgt.addProgress(convertAnnotation(t));
         if (src.hasReference())
-            tgt.setReference(convertReference(src.getReference()));
+            tgt.setPlannedActivityReference(convertReference(src.getReference()));
         if (src.hasDetail())
-            tgt.setDetail(convertCarePlanActivityDetailComponent(src.getDetail()));
+            tgt.setPlannedActivityDetail(convertCarePlanActivityDetailComponent(src.getDetail()));
         return tgt;
     }
 
@@ -255,22 +255,22 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent();
         copyElement(src, tgt);
-        for (CodeableReference t : src.getOutcome()) if (t.hasConcept())
+        for (CodeableReference t : src.getPerformedActivity()) if (t.hasConcept())
             tgt.addOutcomeCodeableConcept(convertCodeableConcept(t.getConcept()));
-        for (CodeableReference t : src.getOutcome()) if (t.hasReference())
+        for (CodeableReference t : src.getPerformedActivity()) if (t.hasReference())
             tgt.addOutcomeReference(convertReference(t.getReference()));
         for (org.hl7.fhir.r5.model.Annotation t : src.getProgress()) tgt.addProgress(convertAnnotation(t));
-        if (src.hasReference())
-            tgt.setReference(convertReference(src.getReference()));
-        if (src.hasDetail())
-            tgt.setDetail(convertCarePlanActivityDetailComponent(src.getDetail()));
+        if (src.hasPlannedActivityReference())
+            tgt.setReference(convertReference(src.getPlannedActivityReference()));
+        if (src.hasPlannedActivityDetail())
+            tgt.setDetail(convertCarePlanActivityDetailComponent(src.getPlannedActivityDetail()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.CarePlan.CarePlanActivityDetailComponent convertCarePlanActivityDetailComponent(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent src) throws FHIRException {
+    public static org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent convertCarePlanActivityDetailComponent(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent src) throws FHIRException {
         if (src == null)
             return null;
-        org.hl7.fhir.r5.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityDetailComponent();
+        org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent();
         copyElement(src, tgt);
         if (src.hasKind())
             tgt.setKindElement(convertCarePlanActivityKind(src.getKindElement()));
@@ -303,7 +303,7 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent convertCarePlanActivityDetailComponent(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityDetailComponent src) throws FHIRException {
+    public static org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent convertCarePlanActivityDetailComponent(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent src) throws FHIRException {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent();

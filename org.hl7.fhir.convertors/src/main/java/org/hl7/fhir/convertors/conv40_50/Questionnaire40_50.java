@@ -3,7 +3,9 @@ package org.hl7.fhir.convertors.conv40_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.CodeType;
+import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireAnswerConstraint;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -137,9 +139,15 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
         if (src.hasPrefix())
             tgt.setPrefixElement(convertString(src.getPrefixElement()));
         if (src.hasText())
-            tgt.setTextElement(convertString(src.getTextElement()));
-        if (src.hasType())
+            tgt.setTextElement(convertStringToMarkdown(src.getTextElement()));
+        if (src.hasType()) {
             tgt.setTypeElement(convertQuestionnaireItemType(src.getTypeElement()));
+            if (src.getType() == QuestionnaireItemType.CHOICE) {
+              tgt.setAnswerConstraint(QuestionnaireAnswerConstraint.OPTIONSONLY);
+            } else if (src.getType() == QuestionnaireItemType.OPENCHOICE) {
+              tgt.setAnswerConstraint(QuestionnaireAnswerConstraint.OPTIONSORSTRING);
+            } 
+        }
         for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
         if (src.hasEnableBehavior())
             tgt.setEnableBehaviorElement(convertEnableWhenBehavior(src.getEnableBehaviorElement()));
@@ -174,7 +182,7 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
         if (src.hasText())
             tgt.setTextElement(convertString(src.getTextElement()));
         if (src.hasType())
-            tgt.setTypeElement(convertQuestionnaireItemType(src.getTypeElement()));
+            tgt.setTypeElement(convertQuestionnaireItemType(src.getTypeElement(), src.getAnswerConstraint()));
         for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemEnableWhenComponent t : src.getEnableWhen()) tgt.addEnableWhen(convertQuestionnaireItemEnableWhenComponent(t));
         if (src.hasEnableBehavior())
             tgt.setEnableBehaviorElement(convertEnableWhenBehavior(src.getEnableBehaviorElement()));
@@ -237,10 +245,10 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
                 tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.URL);
                 break;
             case CHOICE:
-                tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.CHOICE);
+                tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.CODING);
                 break;
             case OPENCHOICE:
-                tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.OPENCHOICE);
+                tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.CODING);
                 break;
             case ATTACHMENT:
                 tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.ATTACHMENT);
@@ -258,7 +266,7 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
         return tgt;
     }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType> convertQuestionnaireItemType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType> src) throws FHIRException {
+    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType> convertQuestionnaireItemType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType> src, QuestionnaireAnswerConstraint constraint) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemTypeEnumFactory());
@@ -298,12 +306,12 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
             case URL:
                 tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.URL);
                 break;
-            case CHOICE:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.CHOICE);
-                break;
-            case OPENCHOICE:
+            case CODING:
+              if (constraint == QuestionnaireAnswerConstraint.OPTIONSORSTRING)
                 tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.OPENCHOICE);
-                break;
+              else 
+                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.CHOICE);
+              break;
             case ATTACHMENT:
                 tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.ATTACHMENT);
                 break;

@@ -54,7 +54,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_10_50 {
+public class VersionConvertor_10_50 extends VersionConvertor_Base {
   static public List<String> CANONICAL_URLS = new ArrayList<String>();
 
   static {
@@ -2979,8 +2979,8 @@ public class VersionConvertor_10_50 {
       return DetectedIssue10_50.convertDetectedIssue((org.hl7.fhir.r5.model.DetectedIssue) src);
     if (src instanceof org.hl7.fhir.r5.model.DeviceMetric)
       return DeviceMetric10_50.convertDeviceMetric((org.hl7.fhir.r5.model.DeviceMetric) src);
-    if (src instanceof org.hl7.fhir.r5.model.DeviceUseStatement)
-      return DeviceUseStatement10_50.convertDeviceUseStatement((org.hl7.fhir.r5.model.DeviceUseStatement) src);
+    if (src instanceof org.hl7.fhir.r5.model.DeviceUsage)
+      return DeviceUseStatement10_50.convertDeviceUseStatement((org.hl7.fhir.r5.model.DeviceUsage) src);
     if (src instanceof org.hl7.fhir.r5.model.DiagnosticReport)
       return DiagnosticReport10_50.convertDiagnosticReport((org.hl7.fhir.r5.model.DiagnosticReport) src);
     if (src instanceof org.hl7.fhir.r5.model.DocumentReference)

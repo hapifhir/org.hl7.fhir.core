@@ -115,6 +115,12 @@ public class Money extends Quantity implements ICompositeType {
       public Money copy() {
         Money dst = new Money();
         copyValues(dst);
+        dst.value = value == null ? null : value.copy();
+        dst.comparator = comparator == null ? null : comparator.copy();
+        dst.unit = unit == null ? null : unit.copy();
+        dst.system = system == null ? null : system.copy();
+        dst.code = code == null ? null : code.copy();
+
         return dst;
       }
 

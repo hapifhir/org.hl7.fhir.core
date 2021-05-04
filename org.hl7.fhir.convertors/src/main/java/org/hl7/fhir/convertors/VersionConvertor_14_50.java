@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_14_50 {
+public class VersionConvertor_14_50 extends VersionConvertor_Base {
   static public List<String> CANONICAL_URLS = new ArrayList<String>();
 
   static {
@@ -298,6 +298,13 @@ public class VersionConvertor_14_50 {
     copyElement(src, tgt);
     return tgt;
   }
+
+  public static org.hl7.fhir.r5.model.MarkdownType convertStringToMarkdown(org.hl7.fhir.dstu2016may.model.StringType src) throws FHIRException {
+    org.hl7.fhir.r5.model.MarkdownType tgt = src.hasValue() ? new org.hl7.fhir.r5.model.MarkdownType(src.getValue()) : new org.hl7.fhir.r5.model.MarkdownType();
+    copyElement(src, tgt);
+    return tgt;
+  }
+
 
   public static org.hl7.fhir.r5.model.TimeType convertTime(org.hl7.fhir.dstu2016may.model.TimeType src) throws FHIRException {
     org.hl7.fhir.r5.model.TimeType tgt = new org.hl7.fhir.r5.model.TimeType();

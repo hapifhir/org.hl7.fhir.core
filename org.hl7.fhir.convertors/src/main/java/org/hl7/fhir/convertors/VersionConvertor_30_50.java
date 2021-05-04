@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_30_50 {
+public class VersionConvertor_30_50 extends VersionConvertor_Base {
   static final public String EXT_SRC_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type";
   static public List<String> CANONICAL_URLS = new ArrayList<>();
 
@@ -4805,8 +4805,8 @@ public class VersionConvertor_30_50 {
       return Consent30_50.convertConsent((org.hl7.fhir.r5.model.Consent) src);
     if (src instanceof org.hl7.fhir.r5.model.DetectedIssue)
       return DetectedIssue30_50.convertDetectedIssue((org.hl7.fhir.r5.model.DetectedIssue) src);
-    if (src instanceof org.hl7.fhir.r5.model.DeviceUseStatement)
-      return DeviceUseStatement30_50.convertDeviceUseStatement((org.hl7.fhir.r5.model.DeviceUseStatement) src);
+    if (src instanceof org.hl7.fhir.r5.model.DeviceUsage)
+      return DeviceUseStatement30_50.convertDeviceUseStatement((org.hl7.fhir.r5.model.DeviceUsage) src);
     if (src instanceof org.hl7.fhir.r5.model.DiagnosticReport)
       return DiagnosticReport30_50.convertDiagnosticReport((org.hl7.fhir.r5.model.DiagnosticReport) src);
     if (src instanceof org.hl7.fhir.r5.model.DocumentReference)

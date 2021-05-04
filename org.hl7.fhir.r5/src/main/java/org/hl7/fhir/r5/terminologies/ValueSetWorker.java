@@ -4,7 +4,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class ValueSetWorker {
 
-  protected boolean isServerSide(String url) {
+  public boolean isServerSide(String url) {
     return Utilities.existsInList(url, "http://hl7.org/fhir/sid/cvx");
   }
 }

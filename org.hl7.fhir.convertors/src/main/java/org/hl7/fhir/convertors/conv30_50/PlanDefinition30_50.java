@@ -1,9 +1,17 @@
 package org.hl7.fhir.convertors.conv30_50;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.dstu3.model.ContactDetail;
 import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.DataRequirement;
+import org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionInputComponent;
+import org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionOutputComponent;
 
 public class PlanDefinition30_50 {
 
@@ -546,14 +554,14 @@ public class PlanDefinition30_50 {
             tgt.setDescriptionElement(VersionConvertor_30_50.convertString(src.getDescriptionElement()));
         if (src.hasTextEquivalent())
             tgt.setTextEquivalentElement(VersionConvertor_30_50.convertString(src.getTextEquivalentElement()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCode()) tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(t));
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_30_50.convertCodeableConcept(t));
         for (org.hl7.fhir.dstu3.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(VersionConvertor_30_50.convertRelatedArtifact(t));
         for (org.hl7.fhir.dstu3.model.IdType t : src.getGoalId()) tgt.addGoalId(t.getValue());
         for (org.hl7.fhir.dstu3.model.TriggerDefinition t : src.getTriggerDefinition()) tgt.addTrigger(VersionConvertor_30_50.convertTriggerDefinition(t));
         for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionConditionComponent t : src.getCondition()) tgt.addCondition(convertPlanDefinitionActionConditionComponent(t));
-        for (org.hl7.fhir.dstu3.model.DataRequirement t : src.getInput()) tgt.addInput(VersionConvertor_30_50.convertDataRequirement(t));
-        for (org.hl7.fhir.dstu3.model.DataRequirement t : src.getOutput()) tgt.addOutput(VersionConvertor_30_50.convertDataRequirement(t));
+        for (org.hl7.fhir.dstu3.model.DataRequirement t : src.getInput()) tgt.addInput(wrapInput(VersionConvertor_30_50.convertDataRequirement(t)));
+        for (org.hl7.fhir.dstu3.model.DataRequirement t : src.getOutput()) tgt.addOutput(wrapOutput(VersionConvertor_30_50.convertDataRequirement(t)));
         for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
         if (src.hasTiming())
             tgt.setTiming(VersionConvertor_30_50.convertType(src.getTiming()));
@@ -579,6 +587,14 @@ public class PlanDefinition30_50 {
         return tgt;
     }
 
+    private static PlanDefinitionActionOutputComponent wrapOutput(DataRequirement dr) {
+      return new PlanDefinitionActionOutputComponent().setRequirement(dr);
+    }
+
+    private static PlanDefinitionActionInputComponent wrapInput(DataRequirement dr) {
+      return new PlanDefinitionActionInputComponent().setRequirement(dr);
+    }
+
     public static org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionComponent convertPlanDefinitionActionComponent(org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionComponent src) throws FHIRException {
         if (src == null)
             return null;
@@ -592,14 +608,14 @@ public class PlanDefinition30_50 {
             tgt.setDescriptionElement(VersionConvertor_30_50.convertString(src.getDescriptionElement()));
         if (src.hasTextEquivalent())
             tgt.setTextEquivalentElement(VersionConvertor_30_50.convertString(src.getTextEquivalentElement()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(VersionConvertor_30_50.convertCodeableConcept(t));
+        if (src.hasCode()) tgt.addCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReason()) tgt.addReason(VersionConvertor_30_50.convertCodeableConcept(t));
         for (org.hl7.fhir.r5.model.RelatedArtifact t : src.getDocumentation()) tgt.addDocumentation(VersionConvertor_30_50.convertRelatedArtifact(t));
         for (org.hl7.fhir.r5.model.IdType t : src.getGoalId()) tgt.addGoalId(t.getValue());
         for (org.hl7.fhir.r5.model.TriggerDefinition t : src.getTrigger()) tgt.addTriggerDefinition(VersionConvertor_30_50.convertTriggerDefinition(t));
         for (org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionConditionComponent t : src.getCondition()) tgt.addCondition(convertPlanDefinitionActionConditionComponent(t));
-        for (org.hl7.fhir.r5.model.DataRequirement t : src.getInput()) tgt.addInput(VersionConvertor_30_50.convertDataRequirement(t));
-        for (org.hl7.fhir.r5.model.DataRequirement t : src.getOutput()) tgt.addOutput(VersionConvertor_30_50.convertDataRequirement(t));
+        for (PlanDefinitionActionInputComponent t : src.getInput()) tgt.addInput(VersionConvertor_30_50.convertDataRequirement(t.getRequirement()));
+        for (PlanDefinitionActionOutputComponent t : src.getOutput()) tgt.addOutput(VersionConvertor_30_50.convertDataRequirement(t.getRequirement()));
         for (org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedAction()) tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
         if (src.hasTiming())
             tgt.setTiming(VersionConvertor_30_50.convertType(src.getTiming()));
@@ -718,8 +734,8 @@ public class PlanDefinition30_50 {
             return null;
         org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent tgt = new org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasActionId())
-            tgt.setActionIdElement(VersionConvertor_30_50.convertId(src.getActionIdElement()));
+        if (src.hasTargetId())
+            tgt.setActionIdElement(VersionConvertor_30_50.convertId(src.getTargetIdElement()));
         if (src.hasRelationship())
             tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
         if (src.hasOffset())
@@ -733,7 +749,7 @@ public class PlanDefinition30_50 {
         org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent tgt = new org.hl7.fhir.r5.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasActionId())
-            tgt.setActionIdElement(VersionConvertor_30_50.convertId(src.getActionIdElement()));
+            tgt.setTargetIdElement(VersionConvertor_30_50.convertId(src.getActionIdElement()));
         if (src.hasRelationship())
             tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
         if (src.hasOffset())

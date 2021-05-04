@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * This represents statistics, certainty, both the intended and actual population, and evidence variables.
+ * The Evidence Resource provides a machine-interpretable expression of an evidence concept including the evidence variables (eg population, exposures/interventions, comparators, outcomes, measured variables, confounding variables), the statistics, and the certainty of this evidence.
  */
 @ResourceDef(name="Evidence", profile="http://hl7.org/fhir/StructureDefinition/Evidence")
 public class Evidence extends MetadataResource {
@@ -524,21 +524,36 @@ public class Evidence extends MetadataResource {
         protected List<Annotation> note;
 
         /**
-         * Quality or certainty of the Evidence.
+         * Aspect of certainty being rated.
          */
-        @Child(name = "rating", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Quality or certainty of the Evidence", formalDefinition="Quality or certainty of the Evidence." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/evidence-quality")
-        protected List<CodeableConcept> rating;
+        @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Aspect of certainty being rated", formalDefinition="Aspect of certainty being rated." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/certainty-type")
+        protected CodeableConcept type;
 
         /**
-         * A domain or subdomain of certainty rating.
+         * Assessment or judgement of the aspect.
          */
-        @Child(name = "certaintySubcomponent", type = {}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="A domain or subdomain of certainty rating", formalDefinition="A domain or subdomain of certainty rating." )
-        protected List<EvidenceCertaintyCertaintySubcomponentComponent> certaintySubcomponent;
+        @Child(name = "rating", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Assessment or judgement of the aspect", formalDefinition="Assessment or judgement of the aspect." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/certainty-rating")
+        protected CodeableConcept rating;
 
-        private static final long serialVersionUID = 775762511L;
+        /**
+         * Individual or group who did the rating.
+         */
+        @Child(name = "rater", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Individual or group who did the rating", formalDefinition="Individual or group who did the rating." )
+        protected StringType rater;
+
+        /**
+         * A domain or subdomain of certainty.
+         */
+        @Child(name = "subcomponent", type = {EvidenceCertaintyComponent.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="A domain or subdomain of certainty", formalDefinition="A domain or subdomain of certainty." )
+        protected List<EvidenceCertaintyComponent> subcomponent;
+
+        private static final long serialVersionUID = 432882532L;
 
     /**
      * Constructor
@@ -650,117 +665,163 @@ public class Evidence extends MetadataResource {
         }
 
         /**
-         * @return {@link #rating} (Quality or certainty of the Evidence.)
+         * @return {@link #type} (Aspect of certainty being rated.)
          */
-        public List<CodeableConcept> getRating() { 
+        public CodeableConcept getType() { 
+          if (this.type == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceCertaintyComponent.type");
+            else if (Configuration.doAutoCreate())
+              this.type = new CodeableConcept(); // cc
+          return this.type;
+        }
+
+        public boolean hasType() { 
+          return this.type != null && !this.type.isEmpty();
+        }
+
+        /**
+         * @param value {@link #type} (Aspect of certainty being rated.)
+         */
+        public EvidenceCertaintyComponent setType(CodeableConcept value) { 
+          this.type = value;
+          return this;
+        }
+
+        /**
+         * @return {@link #rating} (Assessment or judgement of the aspect.)
+         */
+        public CodeableConcept getRating() { 
           if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceCertaintyComponent.rating");
+            else if (Configuration.doAutoCreate())
+              this.rating = new CodeableConcept(); // cc
           return this.rating;
         }
 
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public EvidenceCertaintyComponent setRating(List<CodeableConcept> theRating) { 
-          this.rating = theRating;
-          return this;
-        }
-
         public boolean hasRating() { 
-          if (this.rating == null)
-            return false;
-          for (CodeableConcept item : this.rating)
-            if (!item.isEmpty())
-              return true;
-          return false;
+          return this.rating != null && !this.rating.isEmpty();
         }
 
-        public CodeableConcept addRating() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
-          this.rating.add(t);
-          return t;
-        }
-
-        public EvidenceCertaintyComponent addRating(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
-          this.rating.add(t);
+        /**
+         * @param value {@link #rating} (Assessment or judgement of the aspect.)
+         */
+        public EvidenceCertaintyComponent setRating(CodeableConcept value) { 
+          this.rating = value;
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #rating}, creating it if it does not already exist {3}
+         * @return {@link #rater} (Individual or group who did the rating.). This is the underlying object with id, value and extensions. The accessor "getRater" gives direct access to the value
          */
-        public CodeableConcept getRatingFirstRep() { 
-          if (getRating().isEmpty()) {
-            addRating();
-          }
-          return getRating().get(0);
+        public StringType getRaterElement() { 
+          if (this.rater == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create EvidenceCertaintyComponent.rater");
+            else if (Configuration.doAutoCreate())
+              this.rater = new StringType(); // bb
+          return this.rater;
+        }
+
+        public boolean hasRaterElement() { 
+          return this.rater != null && !this.rater.isEmpty();
+        }
+
+        public boolean hasRater() { 
+          return this.rater != null && !this.rater.isEmpty();
         }
 
         /**
-         * @return {@link #certaintySubcomponent} (A domain or subdomain of certainty rating.)
+         * @param value {@link #rater} (Individual or group who did the rating.). This is the underlying object with id, value and extensions. The accessor "getRater" gives direct access to the value
          */
-        public List<EvidenceCertaintyCertaintySubcomponentComponent> getCertaintySubcomponent() { 
-          if (this.certaintySubcomponent == null)
-            this.certaintySubcomponent = new ArrayList<EvidenceCertaintyCertaintySubcomponentComponent>();
-          return this.certaintySubcomponent;
+        public EvidenceCertaintyComponent setRaterElement(StringType value) { 
+          this.rater = value;
+          return this;
+        }
+
+        /**
+         * @return Individual or group who did the rating.
+         */
+        public String getRater() { 
+          return this.rater == null ? null : this.rater.getValue();
+        }
+
+        /**
+         * @param value Individual or group who did the rating.
+         */
+        public EvidenceCertaintyComponent setRater(String value) { 
+          if (Utilities.noString(value))
+            this.rater = null;
+          else {
+            if (this.rater == null)
+              this.rater = new StringType();
+            this.rater.setValue(value);
+          }
+          return this;
+        }
+
+        /**
+         * @return {@link #subcomponent} (A domain or subdomain of certainty.)
+         */
+        public List<EvidenceCertaintyComponent> getSubcomponent() { 
+          if (this.subcomponent == null)
+            this.subcomponent = new ArrayList<EvidenceCertaintyComponent>();
+          return this.subcomponent;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public EvidenceCertaintyComponent setCertaintySubcomponent(List<EvidenceCertaintyCertaintySubcomponentComponent> theCertaintySubcomponent) { 
-          this.certaintySubcomponent = theCertaintySubcomponent;
+        public EvidenceCertaintyComponent setSubcomponent(List<EvidenceCertaintyComponent> theSubcomponent) { 
+          this.subcomponent = theSubcomponent;
           return this;
         }
 
-        public boolean hasCertaintySubcomponent() { 
-          if (this.certaintySubcomponent == null)
+        public boolean hasSubcomponent() { 
+          if (this.subcomponent == null)
             return false;
-          for (EvidenceCertaintyCertaintySubcomponentComponent item : this.certaintySubcomponent)
+          for (EvidenceCertaintyComponent item : this.subcomponent)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public EvidenceCertaintyCertaintySubcomponentComponent addCertaintySubcomponent() { //3
-          EvidenceCertaintyCertaintySubcomponentComponent t = new EvidenceCertaintyCertaintySubcomponentComponent();
-          if (this.certaintySubcomponent == null)
-            this.certaintySubcomponent = new ArrayList<EvidenceCertaintyCertaintySubcomponentComponent>();
-          this.certaintySubcomponent.add(t);
+        public EvidenceCertaintyComponent addSubcomponent() { //3
+          EvidenceCertaintyComponent t = new EvidenceCertaintyComponent();
+          if (this.subcomponent == null)
+            this.subcomponent = new ArrayList<EvidenceCertaintyComponent>();
+          this.subcomponent.add(t);
           return t;
         }
 
-        public EvidenceCertaintyComponent addCertaintySubcomponent(EvidenceCertaintyCertaintySubcomponentComponent t) { //3
+        public EvidenceCertaintyComponent addSubcomponent(EvidenceCertaintyComponent t) { //3
           if (t == null)
             return this;
-          if (this.certaintySubcomponent == null)
-            this.certaintySubcomponent = new ArrayList<EvidenceCertaintyCertaintySubcomponentComponent>();
-          this.certaintySubcomponent.add(t);
+          if (this.subcomponent == null)
+            this.subcomponent = new ArrayList<EvidenceCertaintyComponent>();
+          this.subcomponent.add(t);
           return this;
         }
 
         /**
-         * @return The first repetition of repeating field {@link #certaintySubcomponent}, creating it if it does not already exist {3}
+         * @return The first repetition of repeating field {@link #subcomponent}, creating it if it does not already exist {3}
          */
-        public EvidenceCertaintyCertaintySubcomponentComponent getCertaintySubcomponentFirstRep() { 
-          if (getCertaintySubcomponent().isEmpty()) {
-            addCertaintySubcomponent();
+        public EvidenceCertaintyComponent getSubcomponentFirstRep() { 
+          if (getSubcomponent().isEmpty()) {
+            addSubcomponent();
           }
-          return getCertaintySubcomponent().get(0);
+          return getSubcomponent().get(0);
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("description", "string", "Textual description of certainty.", 0, 1, description));
           children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
-          children.add(new Property("rating", "CodeableConcept", "Quality or certainty of the Evidence.", 0, java.lang.Integer.MAX_VALUE, rating));
-          children.add(new Property("certaintySubcomponent", "", "A domain or subdomain of certainty rating.", 0, java.lang.Integer.MAX_VALUE, certaintySubcomponent));
+          children.add(new Property("type", "CodeableConcept", "Aspect of certainty being rated.", 0, 1, type));
+          children.add(new Property("rating", "CodeableConcept", "Assessment or judgement of the aspect.", 0, 1, rating));
+          children.add(new Property("rater", "string", "Individual or group who did the rating.", 0, 1, rater));
+          children.add(new Property("subcomponent", "@Evidence.certainty", "A domain or subdomain of certainty.", 0, java.lang.Integer.MAX_VALUE, subcomponent));
         }
 
         @Override
@@ -768,8 +829,10 @@ public class Evidence extends MetadataResource {
           switch (_hash) {
           case -1724546052: /*description*/  return new Property("description", "string", "Textual description of certainty.", 0, 1, description);
           case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
-          case -938102371: /*rating*/  return new Property("rating", "CodeableConcept", "Quality or certainty of the Evidence.", 0, java.lang.Integer.MAX_VALUE, rating);
-          case 1806398212: /*certaintySubcomponent*/  return new Property("certaintySubcomponent", "", "A domain or subdomain of certainty rating.", 0, java.lang.Integer.MAX_VALUE, certaintySubcomponent);
+          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Aspect of certainty being rated.", 0, 1, type);
+          case -938102371: /*rating*/  return new Property("rating", "CodeableConcept", "Assessment or judgement of the aspect.", 0, 1, rating);
+          case 108285842: /*rater*/  return new Property("rater", "string", "Individual or group who did the rating.", 0, 1, rater);
+          case -1308662083: /*subcomponent*/  return new Property("subcomponent", "@Evidence.certainty", "A domain or subdomain of certainty.", 0, java.lang.Integer.MAX_VALUE, subcomponent);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -780,8 +843,10 @@ public class Evidence extends MetadataResource {
         switch (hash) {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-        case -938102371: /*rating*/ return this.rating == null ? new Base[0] : this.rating.toArray(new Base[this.rating.size()]); // CodeableConcept
-        case 1806398212: /*certaintySubcomponent*/ return this.certaintySubcomponent == null ? new Base[0] : this.certaintySubcomponent.toArray(new Base[this.certaintySubcomponent.size()]); // EvidenceCertaintyCertaintySubcomponentComponent
+        case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
+        case -938102371: /*rating*/ return this.rating == null ? new Base[0] : new Base[] {this.rating}; // CodeableConcept
+        case 108285842: /*rater*/ return this.rater == null ? new Base[0] : new Base[] {this.rater}; // StringType
+        case -1308662083: /*subcomponent*/ return this.subcomponent == null ? new Base[0] : this.subcomponent.toArray(new Base[this.subcomponent.size()]); // EvidenceCertaintyComponent
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -796,11 +861,17 @@ public class Evidence extends MetadataResource {
         case 3387378: // note
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
-        case -938102371: // rating
-          this.getRating().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+        case 3575610: // type
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case 1806398212: // certaintySubcomponent
-          this.getCertaintySubcomponent().add((EvidenceCertaintyCertaintySubcomponentComponent) value); // EvidenceCertaintyCertaintySubcomponentComponent
+        case -938102371: // rating
+          this.rating = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
+        case 108285842: // rater
+          this.rater = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -1308662083: // subcomponent
+          this.getSubcomponent().add((EvidenceCertaintyComponent) value); // EvidenceCertaintyComponent
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -813,10 +884,14 @@ public class Evidence extends MetadataResource {
           this.description = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
+        } else if (name.equals("type")) {
+          this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("rating")) {
-          this.getRating().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("certaintySubcomponent")) {
-          this.getCertaintySubcomponent().add((EvidenceCertaintyCertaintySubcomponentComponent) value);
+          this.rating = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("rater")) {
+          this.rater = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("subcomponent")) {
+          this.getSubcomponent().add((EvidenceCertaintyComponent) value);
         } else
           return super.setProperty(name, value);
         return value;
@@ -827,8 +902,10 @@ public class Evidence extends MetadataResource {
         switch (hash) {
         case -1724546052:  return getDescriptionElement();
         case 3387378:  return addNote(); 
-        case -938102371:  return addRating(); 
-        case 1806398212:  return addCertaintySubcomponent(); 
+        case 3575610:  return getType();
+        case -938102371:  return getRating();
+        case 108285842:  return getRaterElement();
+        case -1308662083:  return addSubcomponent(); 
         default: return super.makeProperty(hash, name);
         }
 
@@ -839,8 +916,10 @@ public class Evidence extends MetadataResource {
         switch (hash) {
         case -1724546052: /*description*/ return new String[] {"string"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
+        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
         case -938102371: /*rating*/ return new String[] {"CodeableConcept"};
-        case 1806398212: /*certaintySubcomponent*/ return new String[] {};
+        case 108285842: /*rater*/ return new String[] {"string"};
+        case -1308662083: /*subcomponent*/ return new String[] {"@Evidence.certainty"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -854,11 +933,19 @@ public class Evidence extends MetadataResource {
         else if (name.equals("note")) {
           return addNote();
         }
-        else if (name.equals("rating")) {
-          return addRating();
+        else if (name.equals("type")) {
+          this.type = new CodeableConcept();
+          return this.type;
         }
-        else if (name.equals("certaintySubcomponent")) {
-          return addCertaintySubcomponent();
+        else if (name.equals("rating")) {
+          this.rating = new CodeableConcept();
+          return this.rating;
+        }
+        else if (name.equals("rater")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Evidence.certainty.rater");
+        }
+        else if (name.equals("subcomponent")) {
+          return addSubcomponent();
         }
         else
           return super.addChild(name);
@@ -878,15 +965,13 @@ public class Evidence extends MetadataResource {
           for (Annotation i : note)
             dst.note.add(i.copy());
         };
-        if (rating != null) {
-          dst.rating = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : rating)
-            dst.rating.add(i.copy());
-        };
-        if (certaintySubcomponent != null) {
-          dst.certaintySubcomponent = new ArrayList<EvidenceCertaintyCertaintySubcomponentComponent>();
-          for (EvidenceCertaintyCertaintySubcomponentComponent i : certaintySubcomponent)
-            dst.certaintySubcomponent.add(i.copy());
+        dst.type = type == null ? null : type.copy();
+        dst.rating = rating == null ? null : rating.copy();
+        dst.rater = rater == null ? null : rater.copy();
+        if (subcomponent != null) {
+          dst.subcomponent = new ArrayList<EvidenceCertaintyComponent>();
+          for (EvidenceCertaintyComponent i : subcomponent)
+            dst.subcomponent.add(i.copy());
         };
       }
 
@@ -897,444 +982,28 @@ public class Evidence extends MetadataResource {
         if (!(other_ instanceof EvidenceCertaintyComponent))
           return false;
         EvidenceCertaintyComponent o = (EvidenceCertaintyComponent) other_;
-        return compareDeep(description, o.description, true) && compareDeep(note, o.note, true) && compareDeep(rating, o.rating, true)
-           && compareDeep(certaintySubcomponent, o.certaintySubcomponent, true);
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof EvidenceCertaintyComponent))
-          return false;
-        EvidenceCertaintyComponent o = (EvidenceCertaintyComponent) other_;
-        return compareValues(description, o.description, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, note, rating
-          , certaintySubcomponent);
-      }
-
-  public String fhirType() {
-    return "Evidence.certainty";
-
-  }
-
-  }
-
-    @Block()
-    public static class EvidenceCertaintyCertaintySubcomponentComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Textual description of certainty subcomponent.
-         */
-        @Child(name = "description", type = {StringType.class}, order=1, min=0, max=1, modifier=false, summary=false)
-        @Description(shortDefinition="Textual description of certainty subcomponent", formalDefinition="Textual description of certainty subcomponent." )
-        protected StringType description;
-
-        /**
-         * Footnotes and/or explanatory notes.
-         */
-        @Child(name = "note", type = {Annotation.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Footnotes and/or explanatory notes", formalDefinition="Footnotes and/or explanatory notes." )
-        protected List<Annotation> note;
-
-        /**
-         * Aspect of quality or certainty being rated.
-         */
-        @Child(name = "type", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Aspect of quality or certainty being rated", formalDefinition="Aspect of quality or certainty being rated." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/certainty-subcomponent-type")
-        protected List<CodeableConcept> type;
-
-        /**
-         * Quality or certainty of the aspect.
-         */
-        @Child(name = "rating", type = {CodeableConcept.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-        @Description(shortDefinition="Quality or certainty of the aspect", formalDefinition="Quality or certainty of the aspect." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/certainty-subcomponent-rating")
-        protected List<CodeableConcept> rating;
-
-        private static final long serialVersionUID = 619041733L;
-
-    /**
-     * Constructor
-     */
-      public EvidenceCertaintyCertaintySubcomponentComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #description} (Textual description of certainty subcomponent.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public StringType getDescriptionElement() { 
-          if (this.description == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create EvidenceCertaintyCertaintySubcomponentComponent.description");
-            else if (Configuration.doAutoCreate())
-              this.description = new StringType(); // bb
-          return this.description;
-        }
-
-        public boolean hasDescriptionElement() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        public boolean hasDescription() { 
-          return this.description != null && !this.description.isEmpty();
-        }
-
-        /**
-         * @param value {@link #description} (Textual description of certainty subcomponent.). This is the underlying object with id, value and extensions. The accessor "getDescription" gives direct access to the value
-         */
-        public EvidenceCertaintyCertaintySubcomponentComponent setDescriptionElement(StringType value) { 
-          this.description = value;
-          return this;
-        }
-
-        /**
-         * @return Textual description of certainty subcomponent.
-         */
-        public String getDescription() { 
-          return this.description == null ? null : this.description.getValue();
-        }
-
-        /**
-         * @param value Textual description of certainty subcomponent.
-         */
-        public EvidenceCertaintyCertaintySubcomponentComponent setDescription(String value) { 
-          if (Utilities.noString(value))
-            this.description = null;
-          else {
-            if (this.description == null)
-              this.description = new StringType();
-            this.description.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #note} (Footnotes and/or explanatory notes.)
-         */
-        public List<Annotation> getNote() { 
-          if (this.note == null)
-            this.note = new ArrayList<Annotation>();
-          return this.note;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public EvidenceCertaintyCertaintySubcomponentComponent setNote(List<Annotation> theNote) { 
-          this.note = theNote;
-          return this;
-        }
-
-        public boolean hasNote() { 
-          if (this.note == null)
-            return false;
-          for (Annotation item : this.note)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public Annotation addNote() { //3
-          Annotation t = new Annotation();
-          if (this.note == null)
-            this.note = new ArrayList<Annotation>();
-          this.note.add(t);
-          return t;
-        }
-
-        public EvidenceCertaintyCertaintySubcomponentComponent addNote(Annotation t) { //3
-          if (t == null)
-            return this;
-          if (this.note == null)
-            this.note = new ArrayList<Annotation>();
-          this.note.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #note}, creating it if it does not already exist {3}
-         */
-        public Annotation getNoteFirstRep() { 
-          if (getNote().isEmpty()) {
-            addNote();
-          }
-          return getNote().get(0);
-        }
-
-        /**
-         * @return {@link #type} (Aspect of quality or certainty being rated.)
-         */
-        public List<CodeableConcept> getType() { 
-          if (this.type == null)
-            this.type = new ArrayList<CodeableConcept>();
-          return this.type;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public EvidenceCertaintyCertaintySubcomponentComponent setType(List<CodeableConcept> theType) { 
-          this.type = theType;
-          return this;
-        }
-
-        public boolean hasType() { 
-          if (this.type == null)
-            return false;
-          for (CodeableConcept item : this.type)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addType() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.type == null)
-            this.type = new ArrayList<CodeableConcept>();
-          this.type.add(t);
-          return t;
-        }
-
-        public EvidenceCertaintyCertaintySubcomponentComponent addType(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.type == null)
-            this.type = new ArrayList<CodeableConcept>();
-          this.type.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #type}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getTypeFirstRep() { 
-          if (getType().isEmpty()) {
-            addType();
-          }
-          return getType().get(0);
-        }
-
-        /**
-         * @return {@link #rating} (Quality or certainty of the aspect.)
-         */
-        public List<CodeableConcept> getRating() { 
-          if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
-          return this.rating;
-        }
-
-        /**
-         * @return Returns a reference to <code>this</code> for easy method chaining
-         */
-        public EvidenceCertaintyCertaintySubcomponentComponent setRating(List<CodeableConcept> theRating) { 
-          this.rating = theRating;
-          return this;
-        }
-
-        public boolean hasRating() { 
-          if (this.rating == null)
-            return false;
-          for (CodeableConcept item : this.rating)
-            if (!item.isEmpty())
-              return true;
-          return false;
-        }
-
-        public CodeableConcept addRating() { //3
-          CodeableConcept t = new CodeableConcept();
-          if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
-          this.rating.add(t);
-          return t;
-        }
-
-        public EvidenceCertaintyCertaintySubcomponentComponent addRating(CodeableConcept t) { //3
-          if (t == null)
-            return this;
-          if (this.rating == null)
-            this.rating = new ArrayList<CodeableConcept>();
-          this.rating.add(t);
-          return this;
-        }
-
-        /**
-         * @return The first repetition of repeating field {@link #rating}, creating it if it does not already exist {3}
-         */
-        public CodeableConcept getRatingFirstRep() { 
-          if (getRating().isEmpty()) {
-            addRating();
-          }
-          return getRating().get(0);
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("description", "string", "Textual description of certainty subcomponent.", 0, 1, description));
-          children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
-          children.add(new Property("type", "CodeableConcept", "Aspect of quality or certainty being rated.", 0, java.lang.Integer.MAX_VALUE, type));
-          children.add(new Property("rating", "CodeableConcept", "Quality or certainty of the aspect.", 0, java.lang.Integer.MAX_VALUE, rating));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1724546052: /*description*/  return new Property("description", "string", "Textual description of certainty subcomponent.", 0, 1, description);
-          case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
-          case 3575610: /*type*/  return new Property("type", "CodeableConcept", "Aspect of quality or certainty being rated.", 0, java.lang.Integer.MAX_VALUE, type);
-          case -938102371: /*rating*/  return new Property("rating", "CodeableConcept", "Quality or certainty of the aspect.", 0, java.lang.Integer.MAX_VALUE, rating);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-        case 3575610: /*type*/ return this.type == null ? new Base[0] : this.type.toArray(new Base[this.type.size()]); // CodeableConcept
-        case -938102371: /*rating*/ return this.rating == null ? new Base[0] : this.rating.toArray(new Base[this.rating.size()]); // CodeableConcept
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1724546052: // description
-          this.description = TypeConvertor.castToString(value); // StringType
-          return value;
-        case 3387378: // note
-          this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
-          return value;
-        case 3575610: // type
-          this.getType().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        case -938102371: // rating
-          this.getRating().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("description")) {
-          this.description = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("note")) {
-          this.getNote().add(TypeConvertor.castToAnnotation(value));
-        } else if (name.equals("type")) {
-          this.getType().add(TypeConvertor.castToCodeableConcept(value));
-        } else if (name.equals("rating")) {
-          this.getRating().add(TypeConvertor.castToCodeableConcept(value));
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052:  return getDescriptionElement();
-        case 3387378:  return addNote(); 
-        case 3575610:  return addType(); 
-        case -938102371:  return addRating(); 
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1724546052: /*description*/ return new String[] {"string"};
-        case 3387378: /*note*/ return new String[] {"Annotation"};
-        case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case -938102371: /*rating*/ return new String[] {"CodeableConcept"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("description")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Evidence.certainty.certaintySubcomponent.description");
-        }
-        else if (name.equals("note")) {
-          return addNote();
-        }
-        else if (name.equals("type")) {
-          return addType();
-        }
-        else if (name.equals("rating")) {
-          return addRating();
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public EvidenceCertaintyCertaintySubcomponentComponent copy() {
-        EvidenceCertaintyCertaintySubcomponentComponent dst = new EvidenceCertaintyCertaintySubcomponentComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(EvidenceCertaintyCertaintySubcomponentComponent dst) {
-        super.copyValues(dst);
-        dst.description = description == null ? null : description.copy();
-        if (note != null) {
-          dst.note = new ArrayList<Annotation>();
-          for (Annotation i : note)
-            dst.note.add(i.copy());
-        };
-        if (type != null) {
-          dst.type = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : type)
-            dst.type.add(i.copy());
-        };
-        if (rating != null) {
-          dst.rating = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : rating)
-            dst.rating.add(i.copy());
-        };
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof EvidenceCertaintyCertaintySubcomponentComponent))
-          return false;
-        EvidenceCertaintyCertaintySubcomponentComponent o = (EvidenceCertaintyCertaintySubcomponentComponent) other_;
         return compareDeep(description, o.description, true) && compareDeep(note, o.note, true) && compareDeep(type, o.type, true)
-           && compareDeep(rating, o.rating, true);
+           && compareDeep(rating, o.rating, true) && compareDeep(rater, o.rater, true) && compareDeep(subcomponent, o.subcomponent, true)
+          ;
       }
 
       @Override
       public boolean equalsShallow(Base other_) {
         if (!super.equalsShallow(other_))
           return false;
-        if (!(other_ instanceof EvidenceCertaintyCertaintySubcomponentComponent))
+        if (!(other_ instanceof EvidenceCertaintyComponent))
           return false;
-        EvidenceCertaintyCertaintySubcomponentComponent o = (EvidenceCertaintyCertaintySubcomponentComponent) other_;
-        return compareValues(description, o.description, true);
+        EvidenceCertaintyComponent o = (EvidenceCertaintyComponent) other_;
+        return compareValues(description, o.description, true) && compareValues(rater, o.rater, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, note, type
-          , rating);
+          , rating, rater, subcomponent);
       }
 
   public String fhirType() {
-    return "Evidence.certainty.certaintySubcomponent";
+    return "Evidence.certainty";
 
   }
 
@@ -1369,9 +1038,16 @@ public class Evidence extends MetadataResource {
     protected StringType title;
 
     /**
+     * Citation Resource or display of suggested citation for this evidence.
+     */
+    @Child(name = "citeAs", type = {Citation.class, MarkdownType.class}, order=4, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Citation for this evidence", formalDefinition="Citation Resource or display of suggested citation for this evidence." )
+    protected DataType citeAs;
+
+    /**
      * The status of this summary. Enables tracking the life-cycle of the content.
      */
-    @Child(name = "status", type = {CodeType.class}, order=4, min=1, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=5, min=1, max=1, modifier=true, summary=true)
     @Description(shortDefinition="draft | active | retired | unknown", formalDefinition="The status of this summary. Enables tracking the life-cycle of the content." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/publication-status")
     protected Enumeration<PublicationStatus> status;
@@ -1379,146 +1055,146 @@ public class Evidence extends MetadataResource {
     /**
      * The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes.
      */
-    @Child(name = "date", type = {DateTimeType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "date", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Date last changed", formalDefinition="The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes." )
     protected DateTimeType date;
 
     /**
      * The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances.
      */
-    @Child(name = "useContext", type = {UsageContext.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "useContext", type = {UsageContext.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="The context that the content is intended to support", formalDefinition="The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances." )
     protected List<UsageContext> useContext;
 
     /**
      * The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage.
      */
-    @Child(name = "approvalDate", type = {DateType.class}, order=7, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "approvalDate", type = {DateType.class}, order=8, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the summary was approved by publisher", formalDefinition="The date on which the resource content was approved by the publisher. Approval happens once when the content is officially approved for usage." )
     protected DateType approvalDate;
 
     /**
      * The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date.
      */
-    @Child(name = "lastReviewDate", type = {DateType.class}, order=8, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "lastReviewDate", type = {DateType.class}, order=9, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="When the summary was last reviewed", formalDefinition="The date on which the resource content was last reviewed. Review happens periodically after approval but does not change the original approval date." )
     protected DateType lastReviewDate;
 
     /**
      * The name of the organization or individual that published the evidence.
      */
-    @Child(name = "publisher", type = {StringType.class}, order=9, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "publisher", type = {StringType.class}, order=10, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Name of the publisher (organization or individual)", formalDefinition="The name of the organization or individual that published the evidence." )
     protected StringType publisher;
 
     /**
      * Contact details to assist a user in finding and communicating with the publisher.
      */
-    @Child(name = "contact", type = {ContactDetail.class}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "contact", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Contact details for the publisher", formalDefinition="Contact details to assist a user in finding and communicating with the publisher." )
     protected List<ContactDetail> contact;
 
     /**
      * An individiual, organization, or device primarily involved in the creation and maintenance of the content.
      */
-    @Child(name = "author", type = {ContactDetail.class}, order=11, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "author", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who authored the content", formalDefinition="An individiual, organization, or device primarily involved in the creation and maintenance of the content." )
     protected List<ContactDetail> author;
 
     /**
      * An individiual, organization, or device primarily responsible for internal coherence of the content.
      */
-    @Child(name = "editor", type = {ContactDetail.class}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "editor", type = {ContactDetail.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who edited the content", formalDefinition="An individiual, organization, or device primarily responsible for internal coherence of the content." )
     protected List<ContactDetail> editor;
 
     /**
      * An individiual, organization, or device primarily responsible for review of some aspect of the content.
      */
-    @Child(name = "reviewer", type = {ContactDetail.class}, order=13, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "reviewer", type = {ContactDetail.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Who reviewed the content", formalDefinition="An individiual, organization, or device primarily responsible for review of some aspect of the content." )
     protected List<ContactDetail> reviewer;
 
     /**
      * An individiual, organization, or device responsible for officially endorsing the content for use in some setting.
      */
-    @Child(name = "endorser", type = {ContactDetail.class}, order=14, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "endorser", type = {ContactDetail.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Who endorsed the content", formalDefinition="An individiual, organization, or device responsible for officially endorsing the content for use in some setting." )
     protected List<ContactDetail> endorser;
 
     /**
      * Link or citation to artifact associated with the summary.
      */
-    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=15, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "relatedArtifact", type = {RelatedArtifact.class}, order=16, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Link or citation to artifact associated with the summary", formalDefinition="Link or citation to artifact associated with the summary." )
     protected List<RelatedArtifact> relatedArtifact;
 
     /**
      * A free text natural language description of the evidence from a consumer's perspective.
      */
-    @Child(name = "description", type = {MarkdownType.class}, order=16, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "description", type = {MarkdownType.class}, order=17, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Description of the particular summary", formalDefinition="A free text natural language description of the evidence from a consumer's perspective." )
     protected MarkdownType description;
 
     /**
      * Declarative description of the Evidence.
      */
-    @Child(name = "assertion", type = {MarkdownType.class}, order=17, min=0, max=1, modifier=false, summary=false)
+    @Child(name = "assertion", type = {MarkdownType.class}, order=18, min=0, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Declarative description of the Evidence", formalDefinition="Declarative description of the Evidence." )
     protected MarkdownType assertion;
 
     /**
      * Footnotes and/or explanatory notes.
      */
-    @Child(name = "note", type = {Annotation.class}, order=18, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "note", type = {Annotation.class}, order=19, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Footnotes and/or explanatory notes", formalDefinition="Footnotes and/or explanatory notes." )
     protected List<Annotation> note;
 
     /**
      * Evidence variable such as population, exposure, or outcome.
      */
-    @Child(name = "variableDefinition", type = {}, order=19, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "variableDefinition", type = {}, order=20, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Evidence variable such as population, exposure, or outcome", formalDefinition="Evidence variable such as population, exposure, or outcome." )
     protected List<EvidenceVariableDefinitionComponent> variableDefinition;
 
     /**
-     * The particular type of synthesis if this is a synthesis summary.
+     * The method to combine studies.
      */
-    @Child(name = "synthesisType", type = {CodeableConcept.class}, order=20, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The particular type of synthesis if this is a synthesis summary", formalDefinition="The particular type of synthesis if this is a synthesis summary." )
+    @Child(name = "synthesisType", type = {CodeableConcept.class}, order=21, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The method to combine studies", formalDefinition="The method to combine studies." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/synthesis-type")
     protected CodeableConcept synthesisType;
 
     /**
-     * The type of study that produced this summary.
+     * The type of study that produced this evidence.
      */
-    @Child(name = "studyType", type = {CodeableConcept.class}, order=21, min=0, max=1, modifier=false, summary=false)
-    @Description(shortDefinition="The type of study that produced this summary", formalDefinition="The type of study that produced this summary." )
+    @Child(name = "studyType", type = {CodeableConcept.class}, order=22, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="The type of study that produced this evidence", formalDefinition="The type of study that produced this evidence." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/study-type")
     protected CodeableConcept studyType;
 
     /**
-     * The statistic value(s).
+     * Values and parameters for a single statistic.
      */
-    @Child(name = "statistic", type = {Statistic.class}, order=22, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Values and parameters for a single statistic", formalDefinition="The statistic value(s)." )
+    @Child(name = "statistic", type = {Statistic.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Values and parameters for a single statistic", formalDefinition="Values and parameters for a single statistic." )
     protected List<Statistic> statistic;
 
     /**
-     * Ordered distribution.
+     * An ordered group of statistics.
      */
-    @Child(name = "distribution", type = {OrderedDistribution.class}, order=23, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="An ordered group of statistics", formalDefinition="Ordered distribution." )
+    @Child(name = "distribution", type = {OrderedDistribution.class}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="An ordered group of statistics", formalDefinition="An ordered group of statistics." )
     protected List<OrderedDistribution> distribution;
 
     /**
-     * Level of certainty.
+     * Assessment of certainty, confidence in the estimates, or quality of the evidence.
      */
-    @Child(name = "certainty", type = {}, order=24, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
-    @Description(shortDefinition="Level of certainty", formalDefinition="Level of certainty." )
+    @Child(name = "certainty", type = {}, order=25, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Certainty or quality of the evidence", formalDefinition="Assessment of certainty, confidence in the estimates, or quality of the evidence." )
     protected List<EvidenceCertaintyComponent> certainty;
 
-    private static final long serialVersionUID = 100960848L;
+    private static final long serialVersionUID = -2080725419L;
 
   /**
    * Constructor
@@ -1733,6 +1409,57 @@ public class Evidence extends MetadataResource {
           this.title = new StringType();
         this.title.setValue(value);
       }
+      return this;
+    }
+
+    /**
+     * @return {@link #citeAs} (Citation Resource or display of suggested citation for this evidence.)
+     */
+    public DataType getCiteAs() { 
+      return this.citeAs;
+    }
+
+    /**
+     * @return {@link #citeAs} (Citation Resource or display of suggested citation for this evidence.)
+     */
+    public Reference getCiteAsReference() throws FHIRException { 
+      if (this.citeAs == null)
+        this.citeAs = new Reference();
+      if (!(this.citeAs instanceof Reference))
+        throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.citeAs.getClass().getName()+" was encountered");
+      return (Reference) this.citeAs;
+    }
+
+    public boolean hasCiteAsReference() { 
+      return this != null && this.citeAs instanceof Reference;
+    }
+
+    /**
+     * @return {@link #citeAs} (Citation Resource or display of suggested citation for this evidence.)
+     */
+    public MarkdownType getCiteAsMarkdownType() throws FHIRException { 
+      if (this.citeAs == null)
+        this.citeAs = new MarkdownType();
+      if (!(this.citeAs instanceof MarkdownType))
+        throw new FHIRException("Type mismatch: the type MarkdownType was expected, but "+this.citeAs.getClass().getName()+" was encountered");
+      return (MarkdownType) this.citeAs;
+    }
+
+    public boolean hasCiteAsMarkdownType() { 
+      return this != null && this.citeAs instanceof MarkdownType;
+    }
+
+    public boolean hasCiteAs() { 
+      return this.citeAs != null && !this.citeAs.isEmpty();
+    }
+
+    /**
+     * @param value {@link #citeAs} (Citation Resource or display of suggested citation for this evidence.)
+     */
+    public Evidence setCiteAs(DataType value) { 
+      if (value != null && !(value instanceof Reference || value instanceof MarkdownType))
+        throw new Error("Not the right type for Evidence.citeAs[x]: "+value.fhirType());
+      this.citeAs = value;
       return this;
     }
 
@@ -2553,7 +2280,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #synthesisType} (The particular type of synthesis if this is a synthesis summary.)
+     * @return {@link #synthesisType} (The method to combine studies.)
      */
     public CodeableConcept getSynthesisType() { 
       if (this.synthesisType == null)
@@ -2569,7 +2296,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @param value {@link #synthesisType} (The particular type of synthesis if this is a synthesis summary.)
+     * @param value {@link #synthesisType} (The method to combine studies.)
      */
     public Evidence setSynthesisType(CodeableConcept value) { 
       this.synthesisType = value;
@@ -2577,7 +2304,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #studyType} (The type of study that produced this summary.)
+     * @return {@link #studyType} (The type of study that produced this evidence.)
      */
     public CodeableConcept getStudyType() { 
       if (this.studyType == null)
@@ -2593,7 +2320,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @param value {@link #studyType} (The type of study that produced this summary.)
+     * @param value {@link #studyType} (The type of study that produced this evidence.)
      */
     public Evidence setStudyType(CodeableConcept value) { 
       this.studyType = value;
@@ -2601,7 +2328,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #statistic} (The statistic value(s).)
+     * @return {@link #statistic} (Values and parameters for a single statistic.)
      */
     public List<Statistic> getStatistic() { 
       if (this.statistic == null)
@@ -2654,7 +2381,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #distribution} (Ordered distribution.)
+     * @return {@link #distribution} (An ordered group of statistics.)
      */
     public List<OrderedDistribution> getDistribution() { 
       if (this.distribution == null)
@@ -2707,7 +2434,7 @@ public class Evidence extends MetadataResource {
     }
 
     /**
-     * @return {@link #certainty} (Level of certainty.)
+     * @return {@link #certainty} (Assessment of certainty, confidence in the estimates, or quality of the evidence.)
      */
     public List<EvidenceCertaintyComponent> getCertainty() { 
       if (this.certainty == null)
@@ -2961,12 +2688,48 @@ public class Evidence extends MetadataResource {
       throw new Error("The resource type \"Evidence\" does not implement the property \"effectivePeriod\"");
     }
 
+    /**
+     * not supported on this implementation
+     */
+    @Override
+    public int getTopicMax() { 
+      return 0;
+    }
+    /**
+     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     */
+    public List<CodeableConcept> getTopic() { 
+      return new ArrayList<>();
+    }
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public Evidence setTopic(List<CodeableConcept> theTopic) { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+    }
+    public boolean hasTopic() { 
+      return false;
+    }
+
+    public CodeableConcept addTopic() { //3
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+    }
+    public Evidence addTopic(CodeableConcept t) { //3
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+    }
+    /**
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {2}
+     */
+    public CodeableConcept getTopicFirstRep() { 
+      throw new Error("The resource type \"Evidence\" does not implement the property \"topic\"");
+    }
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
         children.add(new Property("url", "uri", "An absolute URI that is used to identify this evidence when it is referenced in a specification, model, design or an instance; also called its canonical identifier. This SHOULD be globally unique and SHOULD be a literal address at which at which an authoritative instance of this summary is (or will be) published. This URL can be the target of a canonical reference. It SHALL remain the same when the summary is stored on different servers.", 0, 1, url));
         children.add(new Property("identifier", "Identifier", "A formal identifier that is used to identify this summary when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier));
         children.add(new Property("version", "string", "The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version));
         children.add(new Property("title", "string", "A short, descriptive, user-friendly title for the summary.", 0, 1, title));
+        children.add(new Property("citeAs[x]", "Reference(Citation)|markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs));
         children.add(new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status));
         children.add(new Property("date", "dateTime", "The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes.", 0, 1, date));
         children.add(new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances.", 0, java.lang.Integer.MAX_VALUE, useContext));
@@ -2983,11 +2746,11 @@ public class Evidence extends MetadataResource {
         children.add(new Property("assertion", "markdown", "Declarative description of the Evidence.", 0, 1, assertion));
         children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("variableDefinition", "", "Evidence variable such as population, exposure, or outcome.", 0, java.lang.Integer.MAX_VALUE, variableDefinition));
-        children.add(new Property("synthesisType", "CodeableConcept", "The particular type of synthesis if this is a synthesis summary.", 0, 1, synthesisType));
-        children.add(new Property("studyType", "CodeableConcept", "The type of study that produced this summary.", 0, 1, studyType));
-        children.add(new Property("statistic", "Statistic", "The statistic value(s).", 0, java.lang.Integer.MAX_VALUE, statistic));
-        children.add(new Property("distribution", "OrderedDistribution", "Ordered distribution.", 0, java.lang.Integer.MAX_VALUE, distribution));
-        children.add(new Property("certainty", "", "Level of certainty.", 0, java.lang.Integer.MAX_VALUE, certainty));
+        children.add(new Property("synthesisType", "CodeableConcept", "The method to combine studies.", 0, 1, synthesisType));
+        children.add(new Property("studyType", "CodeableConcept", "The type of study that produced this evidence.", 0, 1, studyType));
+        children.add(new Property("statistic", "Statistic", "Values and parameters for a single statistic.", 0, java.lang.Integer.MAX_VALUE, statistic));
+        children.add(new Property("distribution", "OrderedDistribution", "An ordered group of statistics.", 0, java.lang.Integer.MAX_VALUE, distribution));
+        children.add(new Property("certainty", "", "Assessment of certainty, confidence in the estimates, or quality of the evidence.", 0, java.lang.Integer.MAX_VALUE, certainty));
       }
 
       @Override
@@ -2997,6 +2760,10 @@ public class Evidence extends MetadataResource {
         case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "A formal identifier that is used to identify this summary when it is represented in other formats, or referenced in a specification, model, design or an instance.", 0, java.lang.Integer.MAX_VALUE, identifier);
         case 351608024: /*version*/  return new Property("version", "string", "The identifier that is used to identify this version of the summary when it is referenced in a specification, model, design or instance. This is an arbitrary value managed by the summary author and is not expected to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not available. There is also no expectation that versions can be placed in a lexicographical sequence.", 0, 1, version);
         case 110371416: /*title*/  return new Property("title", "string", "A short, descriptive, user-friendly title for the summary.", 0, 1, title);
+        case -1706539017: /*citeAs[x]*/  return new Property("citeAs[x]", "Reference(Citation)|markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
+        case -1360156695: /*citeAs*/  return new Property("citeAs[x]", "Reference(Citation)|markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
+        case 1269009762: /*citeAsReference*/  return new Property("citeAs[x]", "Reference(Citation)", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
+        case 456265720: /*citeAsMarkdown*/  return new Property("citeAs[x]", "markdown", "Citation Resource or display of suggested citation for this evidence.", 0, 1, citeAs);
         case -892481550: /*status*/  return new Property("status", "code", "The status of this summary. Enables tracking the life-cycle of the content.", 0, 1, status);
         case 3076014: /*date*/  return new Property("date", "dateTime", "The date  (and optionally time) when the summary was published. The date must change when the business version changes and it must change if the status code changes. In addition, it should change when the substantive content of the summary changes.", 0, 1, date);
         case -669707736: /*useContext*/  return new Property("useContext", "UsageContext", "The content was developed with a focus and intent of supporting the contexts that are listed. These contexts may be general categories (gender, age, ...) or may be references to specific programs (insurance plans, studies, ...) and may be used to assist with indexing and searching for appropriate evidence instances.", 0, java.lang.Integer.MAX_VALUE, useContext);
@@ -3013,11 +2780,11 @@ public class Evidence extends MetadataResource {
         case 1314395906: /*assertion*/  return new Property("assertion", "markdown", "Declarative description of the Evidence.", 0, 1, assertion);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
         case -1807222545: /*variableDefinition*/  return new Property("variableDefinition", "", "Evidence variable such as population, exposure, or outcome.", 0, java.lang.Integer.MAX_VALUE, variableDefinition);
-        case 672726254: /*synthesisType*/  return new Property("synthesisType", "CodeableConcept", "The particular type of synthesis if this is a synthesis summary.", 0, 1, synthesisType);
-        case -1955265373: /*studyType*/  return new Property("studyType", "CodeableConcept", "The type of study that produced this summary.", 0, 1, studyType);
-        case -2081261232: /*statistic*/  return new Property("statistic", "Statistic", "The statistic value(s).", 0, java.lang.Integer.MAX_VALUE, statistic);
-        case -1580708220: /*distribution*/  return new Property("distribution", "OrderedDistribution", "Ordered distribution.", 0, java.lang.Integer.MAX_VALUE, distribution);
-        case -1404142937: /*certainty*/  return new Property("certainty", "", "Level of certainty.", 0, java.lang.Integer.MAX_VALUE, certainty);
+        case 672726254: /*synthesisType*/  return new Property("synthesisType", "CodeableConcept", "The method to combine studies.", 0, 1, synthesisType);
+        case -1955265373: /*studyType*/  return new Property("studyType", "CodeableConcept", "The type of study that produced this evidence.", 0, 1, studyType);
+        case -2081261232: /*statistic*/  return new Property("statistic", "Statistic", "Values and parameters for a single statistic.", 0, java.lang.Integer.MAX_VALUE, statistic);
+        case -1580708220: /*distribution*/  return new Property("distribution", "OrderedDistribution", "An ordered group of statistics.", 0, java.lang.Integer.MAX_VALUE, distribution);
+        case -1404142937: /*certainty*/  return new Property("certainty", "", "Assessment of certainty, confidence in the estimates, or quality of the evidence.", 0, java.lang.Integer.MAX_VALUE, certainty);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -3030,6 +2797,7 @@ public class Evidence extends MetadataResource {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
         case 351608024: /*version*/ return this.version == null ? new Base[0] : new Base[] {this.version}; // StringType
         case 110371416: /*title*/ return this.title == null ? new Base[0] : new Base[] {this.title}; // StringType
+        case -1360156695: /*citeAs*/ return this.citeAs == null ? new Base[0] : new Base[] {this.citeAs}; // DataType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<PublicationStatus>
         case 3076014: /*date*/ return this.date == null ? new Base[0] : new Base[] {this.date}; // DateTimeType
         case -669707736: /*useContext*/ return this.useContext == null ? new Base[0] : this.useContext.toArray(new Base[this.useContext.size()]); // UsageContext
@@ -3070,6 +2838,9 @@ public class Evidence extends MetadataResource {
           return value;
         case 110371416: // title
           this.title = TypeConvertor.castToString(value); // StringType
+          return value;
+        case -1360156695: // citeAs
+          this.citeAs = TypeConvertor.castToType(value); // DataType
           return value;
         case -892481550: // status
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
@@ -3150,6 +2921,8 @@ public class Evidence extends MetadataResource {
           this.version = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("title")) {
           this.title = TypeConvertor.castToString(value); // StringType
+        } else if (name.equals("citeAs[x]")) {
+          this.citeAs = TypeConvertor.castToType(value); // DataType
         } else if (name.equals("status")) {
           value = new PublicationStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<PublicationStatus>
@@ -3205,6 +2978,8 @@ public class Evidence extends MetadataResource {
         case -1618432855:  return addIdentifier(); 
         case 351608024:  return getVersionElement();
         case 110371416:  return getTitleElement();
+        case -1706539017:  return getCiteAs();
+        case -1360156695:  return getCiteAs();
         case -892481550:  return getStatusElement();
         case 3076014:  return getDateElement();
         case -669707736:  return addUseContext(); 
@@ -3238,6 +3013,7 @@ public class Evidence extends MetadataResource {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
         case 351608024: /*version*/ return new String[] {"string"};
         case 110371416: /*title*/ return new String[] {"string"};
+        case -1360156695: /*citeAs*/ return new String[] {"Reference", "markdown"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 3076014: /*date*/ return new String[] {"dateTime"};
         case -669707736: /*useContext*/ return new String[] {"UsageContext"};
@@ -3277,6 +3053,14 @@ public class Evidence extends MetadataResource {
         }
         else if (name.equals("title")) {
           throw new FHIRException("Cannot call addChild on a primitive type Evidence.title");
+        }
+        else if (name.equals("citeAsReference")) {
+          this.citeAs = new Reference();
+          return this.citeAs;
+        }
+        else if (name.equals("citeAsMarkdown")) {
+          this.citeAs = new MarkdownType();
+          return this.citeAs;
         }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type Evidence.status");
@@ -3368,6 +3152,7 @@ public class Evidence extends MetadataResource {
         };
         dst.version = version == null ? null : version.copy();
         dst.title = title == null ? null : title.copy();
+        dst.citeAs = citeAs == null ? null : citeAs.copy();
         dst.status = status == null ? null : status.copy();
         dst.date = date == null ? null : date.copy();
         if (useContext != null) {
@@ -3451,8 +3236,8 @@ public class Evidence extends MetadataResource {
           return false;
         Evidence o = (Evidence) other_;
         return compareDeep(url, o.url, true) && compareDeep(identifier, o.identifier, true) && compareDeep(version, o.version, true)
-           && compareDeep(title, o.title, true) && compareDeep(status, o.status, true) && compareDeep(date, o.date, true)
-           && compareDeep(useContext, o.useContext, true) && compareDeep(approvalDate, o.approvalDate, true)
+           && compareDeep(title, o.title, true) && compareDeep(citeAs, o.citeAs, true) && compareDeep(status, o.status, true)
+           && compareDeep(date, o.date, true) && compareDeep(useContext, o.useContext, true) && compareDeep(approvalDate, o.approvalDate, true)
            && compareDeep(lastReviewDate, o.lastReviewDate, true) && compareDeep(publisher, o.publisher, true)
            && compareDeep(contact, o.contact, true) && compareDeep(author, o.author, true) && compareDeep(editor, o.editor, true)
            && compareDeep(reviewer, o.reviewer, true) && compareDeep(endorser, o.endorser, true) && compareDeep(relatedArtifact, o.relatedArtifact, true)
@@ -3477,8 +3262,8 @@ public class Evidence extends MetadataResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(url, identifier, version
-          , title, status, date, useContext, approvalDate, lastReviewDate, publisher, contact
-          , author, editor, reviewer, endorser, relatedArtifact, description, assertion
+          , title, citeAs, status, date, useContext, approvalDate, lastReviewDate, publisher
+          , contact, author, editor, reviewer, endorser, relatedArtifact, description, assertion
           , note, variableDefinition, synthesisType, studyType, statistic, distribution, certainty
           );
       }
@@ -3487,6 +3272,26 @@ public class Evidence extends MetadataResource {
   public ResourceType getResourceType() {
     return ResourceType.Evidence;
    }
+
+ /**
+   * Search parameter: <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the evidence</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Evidence.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context", path="(Evidence.useContext.value as CodeableConcept)", description="A use context assigned to the evidence", type="token" )
+  public static final String SP_CONTEXT = "context";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>A use context assigned to the evidence</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(Evidence.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
 
  /**
    * Search parameter: <b>context-quantity</b>
@@ -3509,46 +3314,6 @@ public class Evidence extends MetadataResource {
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
 
  /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Evidence.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="Evidence.useContext", description="A use context type and quantity- or range-based value assigned to the evidence", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Evidence.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the evidence</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Evidence.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="Evidence.useContext", description="A use context type and value assigned to the evidence", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>A use context type and value assigned to the evidence</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>Evidence.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
    * Search parameter: <b>context-type</b>
    * <p>
    * Description: <b>A type of use context assigned to the evidence</b><br>
@@ -3567,26 +3332,6 @@ public class Evidence extends MetadataResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the evidence</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(Evidence.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(Evidence.useContext.value as CodeableConcept)", description="A use context assigned to the evidence", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>A use context assigned to the evidence</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(Evidence.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
 
  /**
    * Search parameter: <b>date</b>
@@ -3747,6 +3492,46 @@ public class Evidence extends MetadataResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
+
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Evidence.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="Evidence.useContext", description="A use context type and quantity- or range-based value assigned to the evidence", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>A use context type and quantity- or range-based value assigned to the evidence</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Evidence.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the evidence</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Evidence.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-value", path="Evidence.useContext", description="A use context type and value assigned to the evidence", type="composite", compositeOf={"context-type", "context"} )
+  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
+   * <p>
+   * Description: <b>A use context type and value assigned to the evidence</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>Evidence.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
 
 
 }

@@ -5,10 +5,14 @@ import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence;
+import org.hl7.fhir.r4.model.StringType;
+import org.hl7.fhir.r4.model.UriType;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CanonicalPair;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -126,18 +130,29 @@ public class ConceptMap40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent();
         copyElement(src, tgt);
-        if (src.hasSource())
-            tgt.setSourceElement(convertUri(src.getSourceElement()));
-        if (src.hasSourceVersion())
-            tgt.setSourceVersionElement(convertString(src.getSourceVersionElement()));
-        if (src.hasTarget())
-            tgt.setTargetElement(convertUri(src.getTargetElement()));
-        if (src.hasTargetVersion())
-            tgt.setTargetVersionElement(convertString(src.getTargetVersionElement()));
+        if (src.hasSource() || src.hasSourceVersion())
+          tgt.setSourceElement(convertUriAndVersionToCanonical(src.getSourceElement(), src.getSourceVersionElement()));
+        if (src.hasTarget() || src.hasTargetVersion())
+          tgt.setTargetElement(convertUriAndVersionToCanonical(src.getTargetElement(), src.getTargetVersionElement()));
         for (org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent t : src.getElement()) tgt.addElement(convertSourceElementComponent(t));
         if (src.hasUnmapped())
             tgt.setUnmapped(convertConceptMapGroupUnmappedComponent(src.getUnmapped()));
         return tgt;
+    }
+
+    private static CanonicalType convertUriAndVersionToCanonical(org.hl7.fhir.r4.model.UriType srcUri, org.hl7.fhir.r4.model.StringType srcVersion) {
+      if (srcUri == null && srcVersion == null)
+        return null;
+      org.hl7.fhir.r5.model.CanonicalType tgt = new org.hl7.fhir.r5.model.CanonicalType();
+      copyElement(srcUri == null  ? srcVersion : srcUri, tgt);
+      if (srcUri.hasValue()) {
+        if (srcVersion.hasValue()) {
+          tgt.setValue(srcUri.getValue()+"|"+srcVersion.getValue());
+        } else {
+          tgt.setValue(srcUri.getValue());        
+        }
+      }
+      return tgt;
     }
 
     public static org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent convertConceptMapGroupComponent(org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent src) throws FHIRException {
@@ -145,14 +160,16 @@ public class ConceptMap40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent tgt = new org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent();
         copyElement(src, tgt);
-        if (src.hasSource())
-            tgt.setSourceElement(convertUri(src.getSourceElement()));
-        if (src.hasSourceVersion())
-            tgt.setSourceVersionElement(convertString(src.getSourceVersionElement()));
-        if (src.hasTarget())
-            tgt.setTargetElement(convertUri(src.getTargetElement()));
-        if (src.hasTargetVersion())
-            tgt.setTargetVersionElement(convertString(src.getTargetVersionElement()));
+        if (src.hasSource()) {
+          CanonicalPair cp = new CanonicalPair(src.getSource());
+          tgt.setSource(cp.getUrl());
+          tgt.setSourceVersion(cp.getVersion());
+        }
+        if (src.hasTarget()) {
+          CanonicalPair cp = new CanonicalPair(src.getTarget());
+          tgt.setTarget(cp.getUrl());
+          tgt.setTargetVersion(cp.getVersion());
+        }
         for (org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent t : src.getElement()) tgt.addElement(convertSourceElementComponent(t));
         if (src.hasUnmapped())
             tgt.setUnmapped(convertConceptMapGroupUnmappedComponent(src.getUnmapped()));

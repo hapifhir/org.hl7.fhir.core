@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -128,6 +128,138 @@ public abstract class MetadataResource extends CanonicalResource {
      */
     public abstract MetadataResource setEffectivePeriod(Period value); 
 
+    /**
+     * How many allowed for this property by the implementation
+     */
+    public int getTopicMax() { 
+      return Integer.MAX_VALUE;
+    }
+    /**
+     * @return {@link #topic} (Descriptive topics related to the content of the library. Topics provide a high-level categorization of the library that can be useful for filtering and searching.)
+     */
+    public abstract List<CodeableConcept> getTopic(); 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public abstract MetadataResource setTopic(List<CodeableConcept> theTopic); 
+    public abstract boolean hasTopic(); 
+
+    public abstract CodeableConcept addTopic(); //3
+    public abstract MetadataResource addTopic(CodeableConcept t); //3
+    /**
+     * @return The first repetition of repeating field {@link #topic}, creating it if it does not already exist {1}
+     */
+    public abstract CodeableConcept getTopicFirstRep(); 
+    /**
+     * How many allowed for this property by the implementation
+     */
+    public int getAuthorMax() { 
+      return Integer.MAX_VALUE;
+    }
+    /**
+     * @return {@link #author} (An individiual or organization primarily involved in the creation and maintenance of the metadata resource.)
+     */
+    public abstract List<ContactDetail> getAuthor(); 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public abstract MetadataResource setAuthor(List<ContactDetail> theAuthor); 
+    public abstract boolean hasAuthor(); 
+
+    public abstract ContactDetail addAuthor(); //3
+    public abstract MetadataResource addAuthor(ContactDetail t); //3
+    /**
+     * @return The first repetition of repeating field {@link #author}, creating it if it does not already exist {1}
+     */
+    public abstract ContactDetail getAuthorFirstRep(); 
+    /**
+     * How many allowed for this property by the implementation
+     */
+    public int getEditorMax() { 
+      return Integer.MAX_VALUE;
+    }
+    /**
+     * @return {@link #editor} (An individual or organization primarily responsible for internal coherence of the metadata resource.)
+     */
+    public abstract List<ContactDetail> getEditor(); 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public abstract MetadataResource setEditor(List<ContactDetail> theEditor); 
+    public abstract boolean hasEditor(); 
+
+    public abstract ContactDetail addEditor(); //3
+    public abstract MetadataResource addEditor(ContactDetail t); //3
+    /**
+     * @return The first repetition of repeating field {@link #editor}, creating it if it does not already exist {1}
+     */
+    public abstract ContactDetail getEditorFirstRep(); 
+    /**
+     * How many allowed for this property by the implementation
+     */
+    public int getReviewerMax() { 
+      return Integer.MAX_VALUE;
+    }
+    /**
+     * @return {@link #reviewer} (An individual or organization primarily responsible for review of some aspect of the metadata resource.)
+     */
+    public abstract List<ContactDetail> getReviewer(); 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public abstract MetadataResource setReviewer(List<ContactDetail> theReviewer); 
+    public abstract boolean hasReviewer(); 
+
+    public abstract ContactDetail addReviewer(); //3
+    public abstract MetadataResource addReviewer(ContactDetail t); //3
+    /**
+     * @return The first repetition of repeating field {@link #reviewer}, creating it if it does not already exist {1}
+     */
+    public abstract ContactDetail getReviewerFirstRep(); 
+    /**
+     * How many allowed for this property by the implementation
+     */
+    public int getEndorserMax() { 
+      return Integer.MAX_VALUE;
+    }
+    /**
+     * @return {@link #endorser} (An individual or organization responsible for officially endorsing the metadata resource for use in some setting.)
+     */
+    public abstract List<ContactDetail> getEndorser(); 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public abstract MetadataResource setEndorser(List<ContactDetail> theEndorser); 
+    public abstract boolean hasEndorser(); 
+
+    public abstract ContactDetail addEndorser(); //3
+    public abstract MetadataResource addEndorser(ContactDetail t); //3
+    /**
+     * @return The first repetition of repeating field {@link #endorser}, creating it if it does not already exist {1}
+     */
+    public abstract ContactDetail getEndorserFirstRep(); 
+    /**
+     * How many allowed for this property by the implementation
+     */
+    public int getRelatedArtifactMax() { 
+      return Integer.MAX_VALUE;
+    }
+    /**
+     * @return {@link #relatedArtifact} (Related artifacts such as additional documentation, justification, dependencies, bibliographic references, and predecessor and successor artifacts.)
+     */
+    public abstract List<RelatedArtifact> getRelatedArtifact(); 
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public abstract MetadataResource setRelatedArtifact(List<RelatedArtifact> theRelatedArtifact); 
+    public abstract boolean hasRelatedArtifact(); 
+
+    public abstract RelatedArtifact addRelatedArtifact(); //3
+    public abstract MetadataResource addRelatedArtifact(RelatedArtifact t); //3
+    /**
+     * @return The first repetition of repeating field {@link #relatedArtifact}, creating it if it does not already exist {1}
+     */
+    public abstract RelatedArtifact getRelatedArtifactFirstRep(); 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
       }

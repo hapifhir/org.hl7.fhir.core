@@ -1,9 +1,11 @@
 package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ContactDetail;
+import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireAnswerConstraint;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemAnswerOptionComponent;
 
 public class Questionnaire10_50 {
@@ -98,7 +100,7 @@ public class Questionnaire10_50 {
             tgt.setLinkIdElement(VersionConvertor_10_50.convertString(src.getLinkIdElement()));
         for (org.hl7.fhir.dstu2.model.Coding t : src.getConcept()) tgt.addCode(VersionConvertor_10_50.convertCoding(t));
         if (src.hasTextElement())
-            tgt.setTextElement(VersionConvertor_10_50.convertString(src.getTextElement()));
+            tgt.setTextElement(VersionConvertor_10_50.convertStringToMarkdown(src.getTextElement()));
         tgt.setType(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.GROUP);
         if (src.hasRequiredElement())
             tgt.setRequiredElement(VersionConvertor_10_50.convertBoolean(src.getRequiredElement()));
@@ -109,7 +111,7 @@ public class Questionnaire10_50 {
         return tgt;
     }
 
-    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat> convertQuestionnaireItemType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType> src) throws FHIRException {
+    static public org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat> convertQuestionnaireItemType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType> src, QuestionnaireAnswerConstraint constraint) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormatEnumFactory());
@@ -142,11 +144,11 @@ public class Questionnaire10_50 {
             case URL:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat.URL);
                 break;
-            case CHOICE:
-                tgt.setValue(org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat.CHOICE);
-                break;
-            case OPENCHOICE:
-                tgt.setValue(org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat.OPENCHOICE);
+            case CODING:
+                if (constraint == QuestionnaireAnswerConstraint.OPTIONSORSTRING)
+                  tgt.setValue(org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat.OPENCHOICE);
+                else 
+                  tgt.setValue(org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat.CHOICE);
                 break;
             case ATTACHMENT:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat.ATTACHMENT);
@@ -175,7 +177,7 @@ public class Questionnaire10_50 {
         if (src.hasTextElement())
             tgt.setTextElement(VersionConvertor_10_50.convertString(src.getTextElement()));
         if (src.hasType())
-            tgt.setTypeElement(convertQuestionnaireItemType(src.getTypeElement()));
+            tgt.setTypeElement(convertQuestionnaireItemType(src.getTypeElement(), src.getAnswerConstraint()));
         if (src.hasRequiredElement())
             tgt.setRequiredElement(VersionConvertor_10_50.convertBoolean(src.getRequiredElement()));
         if (src.hasRepeatsElement())
@@ -201,9 +203,15 @@ public class Questionnaire10_50 {
             tgt.setLinkIdElement(VersionConvertor_10_50.convertString(src.getLinkIdElement()));
         for (org.hl7.fhir.dstu2.model.Coding t : src.getConcept()) tgt.addCode(VersionConvertor_10_50.convertCoding(t));
         if (src.hasTextElement())
-            tgt.setTextElement(VersionConvertor_10_50.convertString(src.getTextElement()));
-        if (src.hasType())
+            tgt.setTextElement(VersionConvertor_10_50.convertStringToMarkdown(src.getTextElement()));
+        if (src.hasType()) {
             tgt.setTypeElement(convertQuestionnaireQuestionType(src.getTypeElement()));
+            if (src.getType() == AnswerFormat.CHOICE) {
+              tgt.setAnswerConstraint(QuestionnaireAnswerConstraint.OPTIONSONLY);
+            } else if (src.getType() == AnswerFormat.OPENCHOICE) {
+              tgt.setAnswerConstraint(QuestionnaireAnswerConstraint.OPTIONSORSTRING);
+            } 
+        }
         if (src.hasRequiredElement())
             tgt.setRequiredElement(VersionConvertor_10_50.convertBoolean(src.getRequiredElement()));
         if (src.hasRepeatsElement())
@@ -252,10 +260,10 @@ public class Questionnaire10_50 {
                 tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.URL);
                 break;
             case CHOICE:
-                tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.CHOICE);
+                tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.CODING);
                 break;
             case OPENCHOICE:
-                tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.OPENCHOICE);
+                tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.CODING);
                 break;
             case ATTACHMENT:
                 tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.ATTACHMENT);

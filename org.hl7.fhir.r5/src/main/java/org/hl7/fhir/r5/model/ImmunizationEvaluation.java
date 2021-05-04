@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,7 +82,6 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,7 +89,6 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "http://hl7.org/fhir/CodeSystem/medication-admin-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/CodeSystem/medication-admin-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,7 +96,6 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "All actions that are implied by the administration have occurred.";
             case ENTEREDINERROR: return "The administration was entered in error and therefore nullified.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +103,6 @@ public class ImmunizationEvaluation extends DomainResource {
           switch (this) {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
-            case NULL: return null;
             default: return "?";
           }
         }
