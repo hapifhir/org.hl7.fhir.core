@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -97,7 +97,6 @@ public class Narrative extends BaseNarrative implements INarrative {
             case EXTENSIONS: return "extensions";
             case ADDITIONAL: return "additional";
             case EMPTY: return "empty";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -107,7 +106,6 @@ public class Narrative extends BaseNarrative implements INarrative {
             case EXTENSIONS: return "http://hl7.org/fhir/narrative-status";
             case ADDITIONAL: return "http://hl7.org/fhir/narrative-status";
             case EMPTY: return "http://hl7.org/fhir/narrative-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,7 +115,6 @@ public class Narrative extends BaseNarrative implements INarrative {
             case EXTENSIONS: return "The contents of the narrative are entirely generated from the core elements in the content and some of the content is generated from extensions. The narrative SHALL reflect the impact of all modifier extensions.";
             case ADDITIONAL: return "The contents of the narrative may contain additional information not found in the structured data. Note that there is no computable way to determine what the extra information is, other than by human inspection.";
             case EMPTY: return "The contents of the narrative are some equivalent of \"No human-readable text provided in this case\".";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,7 +124,6 @@ public class Narrative extends BaseNarrative implements INarrative {
             case EXTENSIONS: return "Extensions";
             case ADDITIONAL: return "Additional";
             case EMPTY: return "Empty";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -193,7 +189,7 @@ public class Narrative extends BaseNarrative implements INarrative {
     /**
      * The actual narrative content, a stripped down version of XHTML.
      */
-    @Child(name = "div", type = {XhtmlNode.class}, order=1, min=1, max=1, modifier=false, summary=false)
+    @Child(name = "div", type = {XhtmlType.class}, order=1, min=1, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Limited xhtml content", formalDefinition="The actual narrative content, a stripped down version of XHTML." )
     protected XhtmlNode div;
 

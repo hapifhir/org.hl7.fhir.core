@@ -46,7 +46,7 @@ public class Medication40_50 extends VersionConvertor_40_50 {
         if (src.hasStatus())
             tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
         if (src.hasManufacturer())
-            tgt.setManufacturer(convertReference(src.getManufacturer()));
+            tgt.setSponsor(convertReference(src.getManufacturer()));
         if (src.hasForm())
             tgt.setDoseForm(convertCodeableConcept(src.getForm()));
         if (src.hasAmount())
@@ -67,8 +67,8 @@ public class Medication40_50 extends VersionConvertor_40_50 {
             tgt.setCode(convertCodeableConcept(src.getCode()));
         if (src.hasStatus())
             tgt.setStatusElement(convertMedicationStatus(src.getStatusElement()));
-        if (src.hasManufacturer())
-            tgt.setManufacturer(convertReference(src.getManufacturer()));
+        if (src.hasSponsor())
+            tgt.setManufacturer(convertReference(src.getSponsor()));
         if (src.hasDoseForm())
             tgt.setForm(convertCodeableConcept(src.getDoseForm()));
         if (src.hasAmount())

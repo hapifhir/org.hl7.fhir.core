@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,25 +71,25 @@ public class Statistic extends BackboneType implements ICompositeType {
         /**
          * Number of participants in the population.
          */
-        @Child(name = "numberOfStudies", type = {IntegerType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "numberOfStudies", type = {UnsignedIntType.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Number of contributing studies", formalDefinition="Number of participants in the population." )
-        protected IntegerType numberOfStudies;
+        protected UnsignedIntType numberOfStudies;
 
         /**
          * A human-readable string to clarify or explain concepts about the sample size.
          */
-        @Child(name = "numberOfParticipants", type = {IntegerType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "numberOfParticipants", type = {UnsignedIntType.class}, order=4, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Cumulative number of participants", formalDefinition="A human-readable string to clarify or explain concepts about the sample size." )
-        protected IntegerType numberOfParticipants;
+        protected UnsignedIntType numberOfParticipants;
 
         /**
          * Number of participants with known results for measured variables.
          */
-        @Child(name = "knownDataCount", type = {IntegerType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "knownDataCount", type = {UnsignedIntType.class}, order=5, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Number of participants with known results for measured variables", formalDefinition="Number of participants with known results for measured variables." )
-        protected IntegerType knownDataCount;
+        protected UnsignedIntType knownDataCount;
 
-        private static final long serialVersionUID = -2042101071L;
+        private static final long serialVersionUID = -1870635979L;
 
     /**
      * Constructor
@@ -203,12 +203,12 @@ public class Statistic extends BackboneType implements ICompositeType {
         /**
          * @return {@link #numberOfStudies} (Number of participants in the population.). This is the underlying object with id, value and extensions. The accessor "getNumberOfStudies" gives direct access to the value
          */
-        public IntegerType getNumberOfStudiesElement() { 
+        public UnsignedIntType getNumberOfStudiesElement() { 
           if (this.numberOfStudies == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create StatisticSampleSizeComponent.numberOfStudies");
             else if (Configuration.doAutoCreate())
-              this.numberOfStudies = new IntegerType(); // bb
+              this.numberOfStudies = new UnsignedIntType(); // bb
           return this.numberOfStudies;
         }
 
@@ -223,7 +223,7 @@ public class Statistic extends BackboneType implements ICompositeType {
         /**
          * @param value {@link #numberOfStudies} (Number of participants in the population.). This is the underlying object with id, value and extensions. The accessor "getNumberOfStudies" gives direct access to the value
          */
-        public StatisticSampleSizeComponent setNumberOfStudiesElement(IntegerType value) { 
+        public StatisticSampleSizeComponent setNumberOfStudiesElement(UnsignedIntType value) { 
           this.numberOfStudies = value;
           return this;
         }
@@ -240,7 +240,7 @@ public class Statistic extends BackboneType implements ICompositeType {
          */
         public StatisticSampleSizeComponent setNumberOfStudies(int value) { 
             if (this.numberOfStudies == null)
-              this.numberOfStudies = new IntegerType();
+              this.numberOfStudies = new UnsignedIntType();
             this.numberOfStudies.setValue(value);
           return this;
         }
@@ -248,12 +248,12 @@ public class Statistic extends BackboneType implements ICompositeType {
         /**
          * @return {@link #numberOfParticipants} (A human-readable string to clarify or explain concepts about the sample size.). This is the underlying object with id, value and extensions. The accessor "getNumberOfParticipants" gives direct access to the value
          */
-        public IntegerType getNumberOfParticipantsElement() { 
+        public UnsignedIntType getNumberOfParticipantsElement() { 
           if (this.numberOfParticipants == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create StatisticSampleSizeComponent.numberOfParticipants");
             else if (Configuration.doAutoCreate())
-              this.numberOfParticipants = new IntegerType(); // bb
+              this.numberOfParticipants = new UnsignedIntType(); // bb
           return this.numberOfParticipants;
         }
 
@@ -268,7 +268,7 @@ public class Statistic extends BackboneType implements ICompositeType {
         /**
          * @param value {@link #numberOfParticipants} (A human-readable string to clarify or explain concepts about the sample size.). This is the underlying object with id, value and extensions. The accessor "getNumberOfParticipants" gives direct access to the value
          */
-        public StatisticSampleSizeComponent setNumberOfParticipantsElement(IntegerType value) { 
+        public StatisticSampleSizeComponent setNumberOfParticipantsElement(UnsignedIntType value) { 
           this.numberOfParticipants = value;
           return this;
         }
@@ -285,7 +285,7 @@ public class Statistic extends BackboneType implements ICompositeType {
          */
         public StatisticSampleSizeComponent setNumberOfParticipants(int value) { 
             if (this.numberOfParticipants == null)
-              this.numberOfParticipants = new IntegerType();
+              this.numberOfParticipants = new UnsignedIntType();
             this.numberOfParticipants.setValue(value);
           return this;
         }
@@ -293,12 +293,12 @@ public class Statistic extends BackboneType implements ICompositeType {
         /**
          * @return {@link #knownDataCount} (Number of participants with known results for measured variables.). This is the underlying object with id, value and extensions. The accessor "getKnownDataCount" gives direct access to the value
          */
-        public IntegerType getKnownDataCountElement() { 
+        public UnsignedIntType getKnownDataCountElement() { 
           if (this.knownDataCount == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create StatisticSampleSizeComponent.knownDataCount");
             else if (Configuration.doAutoCreate())
-              this.knownDataCount = new IntegerType(); // bb
+              this.knownDataCount = new UnsignedIntType(); // bb
           return this.knownDataCount;
         }
 
@@ -313,7 +313,7 @@ public class Statistic extends BackboneType implements ICompositeType {
         /**
          * @param value {@link #knownDataCount} (Number of participants with known results for measured variables.). This is the underlying object with id, value and extensions. The accessor "getKnownDataCount" gives direct access to the value
          */
-        public StatisticSampleSizeComponent setKnownDataCountElement(IntegerType value) { 
+        public StatisticSampleSizeComponent setKnownDataCountElement(UnsignedIntType value) { 
           this.knownDataCount = value;
           return this;
         }
@@ -330,7 +330,7 @@ public class Statistic extends BackboneType implements ICompositeType {
          */
         public StatisticSampleSizeComponent setKnownDataCount(int value) { 
             if (this.knownDataCount == null)
-              this.knownDataCount = new IntegerType();
+              this.knownDataCount = new UnsignedIntType();
             this.knownDataCount.setValue(value);
           return this;
         }
@@ -339,9 +339,9 @@ public class Statistic extends BackboneType implements ICompositeType {
           super.listChildren(children);
           children.add(new Property("description", "string", "Human-readable summary of population sample size.", 0, 1, description));
           children.add(new Property("note", "Annotation", "Footnote or explanatory note about the sample size.", 0, java.lang.Integer.MAX_VALUE, note));
-          children.add(new Property("numberOfStudies", "integer", "Number of participants in the population.", 0, 1, numberOfStudies));
-          children.add(new Property("numberOfParticipants", "integer", "A human-readable string to clarify or explain concepts about the sample size.", 0, 1, numberOfParticipants));
-          children.add(new Property("knownDataCount", "integer", "Number of participants with known results for measured variables.", 0, 1, knownDataCount));
+          children.add(new Property("numberOfStudies", "unsignedInt", "Number of participants in the population.", 0, 1, numberOfStudies));
+          children.add(new Property("numberOfParticipants", "unsignedInt", "A human-readable string to clarify or explain concepts about the sample size.", 0, 1, numberOfParticipants));
+          children.add(new Property("knownDataCount", "unsignedInt", "Number of participants with known results for measured variables.", 0, 1, knownDataCount));
         }
 
         @Override
@@ -349,9 +349,9 @@ public class Statistic extends BackboneType implements ICompositeType {
           switch (_hash) {
           case -1724546052: /*description*/  return new Property("description", "string", "Human-readable summary of population sample size.", 0, 1, description);
           case 3387378: /*note*/  return new Property("note", "Annotation", "Footnote or explanatory note about the sample size.", 0, java.lang.Integer.MAX_VALUE, note);
-          case -177467129: /*numberOfStudies*/  return new Property("numberOfStudies", "integer", "Number of participants in the population.", 0, 1, numberOfStudies);
-          case 1799357120: /*numberOfParticipants*/  return new Property("numberOfParticipants", "integer", "A human-readable string to clarify or explain concepts about the sample size.", 0, 1, numberOfParticipants);
-          case -937344126: /*knownDataCount*/  return new Property("knownDataCount", "integer", "Number of participants with known results for measured variables.", 0, 1, knownDataCount);
+          case -177467129: /*numberOfStudies*/  return new Property("numberOfStudies", "unsignedInt", "Number of participants in the population.", 0, 1, numberOfStudies);
+          case 1799357120: /*numberOfParticipants*/  return new Property("numberOfParticipants", "unsignedInt", "A human-readable string to clarify or explain concepts about the sample size.", 0, 1, numberOfParticipants);
+          case -937344126: /*knownDataCount*/  return new Property("knownDataCount", "unsignedInt", "Number of participants with known results for measured variables.", 0, 1, knownDataCount);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -362,9 +362,9 @@ public class Statistic extends BackboneType implements ICompositeType {
         switch (hash) {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
-        case -177467129: /*numberOfStudies*/ return this.numberOfStudies == null ? new Base[0] : new Base[] {this.numberOfStudies}; // IntegerType
-        case 1799357120: /*numberOfParticipants*/ return this.numberOfParticipants == null ? new Base[0] : new Base[] {this.numberOfParticipants}; // IntegerType
-        case -937344126: /*knownDataCount*/ return this.knownDataCount == null ? new Base[0] : new Base[] {this.knownDataCount}; // IntegerType
+        case -177467129: /*numberOfStudies*/ return this.numberOfStudies == null ? new Base[0] : new Base[] {this.numberOfStudies}; // UnsignedIntType
+        case 1799357120: /*numberOfParticipants*/ return this.numberOfParticipants == null ? new Base[0] : new Base[] {this.numberOfParticipants}; // UnsignedIntType
+        case -937344126: /*knownDataCount*/ return this.knownDataCount == null ? new Base[0] : new Base[] {this.knownDataCount}; // UnsignedIntType
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -380,13 +380,13 @@ public class Statistic extends BackboneType implements ICompositeType {
           this.getNote().add(TypeConvertor.castToAnnotation(value)); // Annotation
           return value;
         case -177467129: // numberOfStudies
-          this.numberOfStudies = TypeConvertor.castToInteger(value); // IntegerType
+          this.numberOfStudies = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case 1799357120: // numberOfParticipants
-          this.numberOfParticipants = TypeConvertor.castToInteger(value); // IntegerType
+          this.numberOfParticipants = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case -937344126: // knownDataCount
-          this.knownDataCount = TypeConvertor.castToInteger(value); // IntegerType
+          this.knownDataCount = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -400,11 +400,11 @@ public class Statistic extends BackboneType implements ICompositeType {
         } else if (name.equals("note")) {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("numberOfStudies")) {
-          this.numberOfStudies = TypeConvertor.castToInteger(value); // IntegerType
+          this.numberOfStudies = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("numberOfParticipants")) {
-          this.numberOfParticipants = TypeConvertor.castToInteger(value); // IntegerType
+          this.numberOfParticipants = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("knownDataCount")) {
-          this.knownDataCount = TypeConvertor.castToInteger(value); // IntegerType
+          this.knownDataCount = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else
           return super.setProperty(name, value);
         return value;
@@ -428,9 +428,9 @@ public class Statistic extends BackboneType implements ICompositeType {
         switch (hash) {
         case -1724546052: /*description*/ return new String[] {"string"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
-        case -177467129: /*numberOfStudies*/ return new String[] {"integer"};
-        case 1799357120: /*numberOfParticipants*/ return new String[] {"integer"};
-        case -937344126: /*knownDataCount*/ return new String[] {"integer"};
+        case -177467129: /*numberOfStudies*/ return new String[] {"unsignedInt"};
+        case 1799357120: /*numberOfParticipants*/ return new String[] {"unsignedInt"};
+        case -937344126: /*knownDataCount*/ return new String[] {"unsignedInt"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -1569,18 +1569,17 @@ public class Statistic extends BackboneType implements ICompositeType {
         /**
          * Description of a component of the method to generate the statistic.
          */
-        @Child(name = "code", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "code", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Model specification", formalDefinition="Description of a component of the method to generate the statistic." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/statistic-model-code")
         protected CodeableConcept code;
 
         /**
-         * Further specification of a component of the method to generate the statistic.
+         * Further specification of the quantified value of the component of the method to generate the statistic.
          */
-        @Child(name = "value", type = {CodeableConcept.class, BooleanType.class, Quantity.class, Range.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Model specification details", formalDefinition="Further specification of a component of the method to generate the statistic." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/statistic-model-method")
-        protected DataType value;
+        @Child(name = "value", type = {Quantity.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="Numerical value to complete model specification", formalDefinition="Further specification of the quantified value of the component of the method to generate the statistic." )
+        protected Quantity value;
 
         /**
          * A variable adjusted for in the adjusted analysis.
@@ -1589,13 +1588,21 @@ public class Statistic extends BackboneType implements ICompositeType {
         @Description(shortDefinition="A variable adjusted for in the adjusted analysis", formalDefinition="A variable adjusted for in the adjusted analysis." )
         protected List<StatisticModelCharacteristicVariableComponent> variable;
 
-        private static final long serialVersionUID = 215509186L;
+        private static final long serialVersionUID = 1539071113L;
 
     /**
      * Constructor
      */
       public StatisticModelCharacteristicComponent() {
         super();
+      }
+
+    /**
+     * Constructor
+     */
+      public StatisticModelCharacteristicComponent(CodeableConcept code) {
+        super();
+        this.setCode(code);
       }
 
         /**
@@ -1623,70 +1630,15 @@ public class Statistic extends BackboneType implements ICompositeType {
         }
 
         /**
-         * @return {@link #value} (Further specification of a component of the method to generate the statistic.)
+         * @return {@link #value} (Further specification of the quantified value of the component of the method to generate the statistic.)
          */
-        public DataType getValue() { 
+        public Quantity getValue() { 
+          if (this.value == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create StatisticModelCharacteristicComponent.value");
+            else if (Configuration.doAutoCreate())
+              this.value = new Quantity(); // cc
           return this.value;
-        }
-
-        /**
-         * @return {@link #value} (Further specification of a component of the method to generate the statistic.)
-         */
-        public CodeableConcept getValueCodeableConcept() throws FHIRException { 
-          if (this.value == null)
-            this.value = new CodeableConcept();
-          if (!(this.value instanceof CodeableConcept))
-            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (CodeableConcept) this.value;
-        }
-
-        public boolean hasValueCodeableConcept() { 
-          return this != null && this.value instanceof CodeableConcept;
-        }
-
-        /**
-         * @return {@link #value} (Further specification of a component of the method to generate the statistic.)
-         */
-        public BooleanType getValueBooleanType() throws FHIRException { 
-          if (this.value == null)
-            this.value = new BooleanType();
-          if (!(this.value instanceof BooleanType))
-            throw new FHIRException("Type mismatch: the type BooleanType was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (BooleanType) this.value;
-        }
-
-        public boolean hasValueBooleanType() { 
-          return this != null && this.value instanceof BooleanType;
-        }
-
-        /**
-         * @return {@link #value} (Further specification of a component of the method to generate the statistic.)
-         */
-        public Quantity getValueQuantity() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Quantity();
-          if (!(this.value instanceof Quantity))
-            throw new FHIRException("Type mismatch: the type Quantity was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Quantity) this.value;
-        }
-
-        public boolean hasValueQuantity() { 
-          return this != null && this.value instanceof Quantity;
-        }
-
-        /**
-         * @return {@link #value} (Further specification of a component of the method to generate the statistic.)
-         */
-        public Range getValueRange() throws FHIRException { 
-          if (this.value == null)
-            this.value = new Range();
-          if (!(this.value instanceof Range))
-            throw new FHIRException("Type mismatch: the type Range was expected, but "+this.value.getClass().getName()+" was encountered");
-          return (Range) this.value;
-        }
-
-        public boolean hasValueRange() { 
-          return this != null && this.value instanceof Range;
         }
 
         public boolean hasValue() { 
@@ -1694,11 +1646,9 @@ public class Statistic extends BackboneType implements ICompositeType {
         }
 
         /**
-         * @param value {@link #value} (Further specification of a component of the method to generate the statistic.)
+         * @param value {@link #value} (Further specification of the quantified value of the component of the method to generate the statistic.)
          */
-        public StatisticModelCharacteristicComponent setValue(DataType value) { 
-          if (value != null && !(value instanceof CodeableConcept || value instanceof BooleanType || value instanceof Quantity || value instanceof Range))
-            throw new Error("Not the right type for Statistic.modelCharacteristic.value[x]: "+value.fhirType());
+        public StatisticModelCharacteristicComponent setValue(Quantity value) { 
           this.value = value;
           return this;
         }
@@ -1759,7 +1709,7 @@ public class Statistic extends BackboneType implements ICompositeType {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "Description of a component of the method to generate the statistic.", 0, 1, code));
-          children.add(new Property("value[x]", "CodeableConcept|boolean|Quantity|Range", "Further specification of a component of the method to generate the statistic.", 0, 1, value));
+          children.add(new Property("value", "Quantity", "Further specification of the quantified value of the component of the method to generate the statistic.", 0, 1, value));
           children.add(new Property("variable", "", "A variable adjusted for in the adjusted analysis.", 0, java.lang.Integer.MAX_VALUE, variable));
         }
 
@@ -1767,12 +1717,7 @@ public class Statistic extends BackboneType implements ICompositeType {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Description of a component of the method to generate the statistic.", 0, 1, code);
-          case -1410166417: /*value[x]*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range", "Further specification of a component of the method to generate the statistic.", 0, 1, value);
-          case 111972721: /*value*/  return new Property("value[x]", "CodeableConcept|boolean|Quantity|Range", "Further specification of a component of the method to generate the statistic.", 0, 1, value);
-          case 924902896: /*valueCodeableConcept*/  return new Property("value[x]", "CodeableConcept", "Further specification of a component of the method to generate the statistic.", 0, 1, value);
-          case 733421943: /*valueBoolean*/  return new Property("value[x]", "boolean", "Further specification of a component of the method to generate the statistic.", 0, 1, value);
-          case -2029823716: /*valueQuantity*/  return new Property("value[x]", "Quantity", "Further specification of a component of the method to generate the statistic.", 0, 1, value);
-          case 2030761548: /*valueRange*/  return new Property("value[x]", "Range", "Further specification of a component of the method to generate the statistic.", 0, 1, value);
+          case 111972721: /*value*/  return new Property("value", "Quantity", "Further specification of the quantified value of the component of the method to generate the statistic.", 0, 1, value);
           case -1249586564: /*variable*/  return new Property("variable", "", "A variable adjusted for in the adjusted analysis.", 0, java.lang.Integer.MAX_VALUE, variable);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1783,7 +1728,7 @@ public class Statistic extends BackboneType implements ICompositeType {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
-        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // DataType
+        case 111972721: /*value*/ return this.value == null ? new Base[0] : new Base[] {this.value}; // Quantity
         case -1249586564: /*variable*/ return this.variable == null ? new Base[0] : this.variable.toArray(new Base[this.variable.size()]); // StatisticModelCharacteristicVariableComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1797,7 +1742,7 @@ public class Statistic extends BackboneType implements ICompositeType {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case 111972721: // value
-          this.value = TypeConvertor.castToType(value); // DataType
+          this.value = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -1249586564: // variable
           this.getVariable().add((StatisticModelCharacteristicVariableComponent) value); // StatisticModelCharacteristicVariableComponent
@@ -1811,8 +1756,8 @@ public class Statistic extends BackboneType implements ICompositeType {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("code")) {
           this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("value[x]")) {
-          this.value = TypeConvertor.castToType(value); // DataType
+        } else if (name.equals("value")) {
+          this.value = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("variable")) {
           this.getVariable().add((StatisticModelCharacteristicVariableComponent) value);
         } else
@@ -1824,7 +1769,6 @@ public class Statistic extends BackboneType implements ICompositeType {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181:  return getCode();
-        case -1410166417:  return getValue();
         case 111972721:  return getValue();
         case -1249586564:  return addVariable(); 
         default: return super.makeProperty(hash, name);
@@ -1836,7 +1780,7 @@ public class Statistic extends BackboneType implements ICompositeType {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 3059181: /*code*/ return new String[] {"CodeableConcept"};
-        case 111972721: /*value*/ return new String[] {"CodeableConcept", "boolean", "Quantity", "Range"};
+        case 111972721: /*value*/ return new String[] {"Quantity"};
         case -1249586564: /*variable*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1849,20 +1793,8 @@ public class Statistic extends BackboneType implements ICompositeType {
           this.code = new CodeableConcept();
           return this.code;
         }
-        else if (name.equals("valueCodeableConcept")) {
-          this.value = new CodeableConcept();
-          return this.value;
-        }
-        else if (name.equals("valueBoolean")) {
-          this.value = new BooleanType();
-          return this.value;
-        }
-        else if (name.equals("valueQuantity")) {
+        else if (name.equals("value")) {
           this.value = new Quantity();
-          return this.value;
-        }
-        else if (name.equals("valueRange")) {
-          this.value = new Range();
           return this.value;
         }
         else if (name.equals("variable")) {
@@ -2417,41 +2349,55 @@ public class Statistic extends BackboneType implements ICompositeType {
     protected CodeableConcept statisticType;
 
     /**
+     * When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting.
+     */
+    @Child(name = "category", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Associated category for categorical variable\"", formalDefinition="When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting." )
+    protected CodeableConcept category;
+
+    /**
      * Statistic value.
      */
-    @Child(name = "quantity", type = {Quantity.class}, order=3, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "quantity", type = {Quantity.class}, order=4, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Statistic value", formalDefinition="Statistic value." )
     protected Quantity quantity;
 
     /**
-     * The number of events associated with the statistic.
+     * The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.
      */
-    @Child(name = "numberOfEvents", type = {IntegerType.class}, order=4, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The number of events associated with the statistic", formalDefinition="The number of events associated with the statistic." )
-    protected IntegerType numberOfEvents;
+    @Child(name = "numberOfEvents", type = {UnsignedIntType.class}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The number of events associated with the statistic", formalDefinition="The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants." )
+    protected UnsignedIntType numberOfEvents;
+
+    /**
+     * The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.
+     */
+    @Child(name = "numberAffected", type = {UnsignedIntType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="The number of participants affected", formalDefinition="The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants." )
+    protected UnsignedIntType numberAffected;
 
     /**
      * Number of samples in the statistic.
      */
-    @Child(name = "sampleSize", type = {}, order=5, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "sampleSize", type = {}, order=7, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Number of samples in the statistic", formalDefinition="Number of samples in the statistic." )
     protected StatisticSampleSizeComponent sampleSize;
 
     /**
      * A statistical attribute of the statistic such as a measure of heterogeneity.
      */
-    @Child(name = "attributeEstimate", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "attributeEstimate", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="An attribute of the Statistic", formalDefinition="A statistical attribute of the statistic such as a measure of heterogeneity." )
     protected List<StatisticAttributeEstimateComponent> attributeEstimate;
 
     /**
      * A component of the method to generate the statistic.
      */
-    @Child(name = "modelCharacteristic", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "modelCharacteristic", type = {}, order=9, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Model characteristic", formalDefinition="A component of the method to generate the statistic." )
     protected List<StatisticModelCharacteristicComponent> modelCharacteristic;
 
-    private static final long serialVersionUID = -1410335525L;
+    private static final long serialVersionUID = -1861373489L;
 
   /**
    * Constructor
@@ -2587,6 +2533,30 @@ public class Statistic extends BackboneType implements ICompositeType {
     }
 
     /**
+     * @return {@link #category} (When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting.)
+     */
+    public CodeableConcept getCategory() { 
+      if (this.category == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Statistic.category");
+        else if (Configuration.doAutoCreate())
+          this.category = new CodeableConcept(); // cc
+      return this.category;
+    }
+
+    public boolean hasCategory() { 
+      return this.category != null && !this.category.isEmpty();
+    }
+
+    /**
+     * @param value {@link #category} (When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting.)
+     */
+    public Statistic setCategory(CodeableConcept value) { 
+      this.category = value;
+      return this;
+    }
+
+    /**
      * @return {@link #quantity} (Statistic value.)
      */
     public Quantity getQuantity() { 
@@ -2611,14 +2581,14 @@ public class Statistic extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @return {@link #numberOfEvents} (The number of events associated with the statistic.). This is the underlying object with id, value and extensions. The accessor "getNumberOfEvents" gives direct access to the value
+     * @return {@link #numberOfEvents} (The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.). This is the underlying object with id, value and extensions. The accessor "getNumberOfEvents" gives direct access to the value
      */
-    public IntegerType getNumberOfEventsElement() { 
+    public UnsignedIntType getNumberOfEventsElement() { 
       if (this.numberOfEvents == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Statistic.numberOfEvents");
         else if (Configuration.doAutoCreate())
-          this.numberOfEvents = new IntegerType(); // bb
+          this.numberOfEvents = new UnsignedIntType(); // bb
       return this.numberOfEvents;
     }
 
@@ -2631,27 +2601,72 @@ public class Statistic extends BackboneType implements ICompositeType {
     }
 
     /**
-     * @param value {@link #numberOfEvents} (The number of events associated with the statistic.). This is the underlying object with id, value and extensions. The accessor "getNumberOfEvents" gives direct access to the value
+     * @param value {@link #numberOfEvents} (The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.). This is the underlying object with id, value and extensions. The accessor "getNumberOfEvents" gives direct access to the value
      */
-    public Statistic setNumberOfEventsElement(IntegerType value) { 
+    public Statistic setNumberOfEventsElement(UnsignedIntType value) { 
       this.numberOfEvents = value;
       return this;
     }
 
     /**
-     * @return The number of events associated with the statistic.
+     * @return The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.
      */
     public int getNumberOfEvents() { 
       return this.numberOfEvents == null || this.numberOfEvents.isEmpty() ? 0 : this.numberOfEvents.getValue();
     }
 
     /**
-     * @param value The number of events associated with the statistic.
+     * @param value The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.
      */
     public Statistic setNumberOfEvents(int value) { 
         if (this.numberOfEvents == null)
-          this.numberOfEvents = new IntegerType();
+          this.numberOfEvents = new UnsignedIntType();
         this.numberOfEvents.setValue(value);
+      return this;
+    }
+
+    /**
+     * @return {@link #numberAffected} (The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.). This is the underlying object with id, value and extensions. The accessor "getNumberAffected" gives direct access to the value
+     */
+    public UnsignedIntType getNumberAffectedElement() { 
+      if (this.numberAffected == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Statistic.numberAffected");
+        else if (Configuration.doAutoCreate())
+          this.numberAffected = new UnsignedIntType(); // bb
+      return this.numberAffected;
+    }
+
+    public boolean hasNumberAffectedElement() { 
+      return this.numberAffected != null && !this.numberAffected.isEmpty();
+    }
+
+    public boolean hasNumberAffected() { 
+      return this.numberAffected != null && !this.numberAffected.isEmpty();
+    }
+
+    /**
+     * @param value {@link #numberAffected} (The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.). This is the underlying object with id, value and extensions. The accessor "getNumberAffected" gives direct access to the value
+     */
+    public Statistic setNumberAffectedElement(UnsignedIntType value) { 
+      this.numberAffected = value;
+      return this;
+    }
+
+    /**
+     * @return The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.
+     */
+    public int getNumberAffected() { 
+      return this.numberAffected == null || this.numberAffected.isEmpty() ? 0 : this.numberAffected.getValue();
+    }
+
+    /**
+     * @param value The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.
+     */
+    public Statistic setNumberAffected(int value) { 
+        if (this.numberAffected == null)
+          this.numberAffected = new UnsignedIntType();
+        this.numberAffected.setValue(value);
       return this;
     }
 
@@ -2790,8 +2805,10 @@ public class Statistic extends BackboneType implements ICompositeType {
         children.add(new Property("description", "string", "A description of the content value of the statistic.", 0, 1, description));
         children.add(new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note));
         children.add(new Property("statisticType", "CodeableConcept", "Type of statistic, eg relative risk.", 0, 1, statisticType));
+        children.add(new Property("category", "CodeableConcept", "When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting.", 0, 1, category));
         children.add(new Property("quantity", "Quantity", "Statistic value.", 0, 1, quantity));
-        children.add(new Property("numberOfEvents", "integer", "The number of events associated with the statistic.", 0, 1, numberOfEvents));
+        children.add(new Property("numberOfEvents", "unsignedInt", "The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.", 0, 1, numberOfEvents));
+        children.add(new Property("numberAffected", "unsignedInt", "The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.", 0, 1, numberAffected));
         children.add(new Property("sampleSize", "", "Number of samples in the statistic.", 0, 1, sampleSize));
         children.add(new Property("attributeEstimate", "", "A statistical attribute of the statistic such as a measure of heterogeneity.", 0, java.lang.Integer.MAX_VALUE, attributeEstimate));
         children.add(new Property("modelCharacteristic", "", "A component of the method to generate the statistic.", 0, java.lang.Integer.MAX_VALUE, modelCharacteristic));
@@ -2803,8 +2820,10 @@ public class Statistic extends BackboneType implements ICompositeType {
         case -1724546052: /*description*/  return new Property("description", "string", "A description of the content value of the statistic.", 0, 1, description);
         case 3387378: /*note*/  return new Property("note", "Annotation", "Footnotes and/or explanatory notes.", 0, java.lang.Integer.MAX_VALUE, note);
         case -392342358: /*statisticType*/  return new Property("statisticType", "CodeableConcept", "Type of statistic, eg relative risk.", 0, 1, statisticType);
+        case 50511102: /*category*/  return new Property("category", "CodeableConcept", "When the measured variable is handled categorically, the category element is used to define which category the statistic is reporting.", 0, 1, category);
         case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "Statistic value.", 0, 1, quantity);
-        case 1534510137: /*numberOfEvents*/  return new Property("numberOfEvents", "integer", "The number of events associated with the statistic.", 0, 1, numberOfEvents);
+        case 1534510137: /*numberOfEvents*/  return new Property("numberOfEvents", "unsignedInt", "The number of events associated with the statistic, where the unit of analysis is different from numberAffected, sampleSize.knownDataCount and sampleSize.numberOfParticipants.", 0, 1, numberOfEvents);
+        case -460990243: /*numberAffected*/  return new Property("numberAffected", "unsignedInt", "The number of participants affected where the unit of analysis is the same as sampleSize.knownDataCount and sampleSize.numberOfParticipants.", 0, 1, numberAffected);
         case 143123659: /*sampleSize*/  return new Property("sampleSize", "", "Number of samples in the statistic.", 0, 1, sampleSize);
         case -1539581980: /*attributeEstimate*/  return new Property("attributeEstimate", "", "A statistical attribute of the statistic such as a measure of heterogeneity.", 0, java.lang.Integer.MAX_VALUE, attributeEstimate);
         case 274795812: /*modelCharacteristic*/  return new Property("modelCharacteristic", "", "A component of the method to generate the statistic.", 0, java.lang.Integer.MAX_VALUE, modelCharacteristic);
@@ -2819,8 +2838,10 @@ public class Statistic extends BackboneType implements ICompositeType {
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
         case 3387378: /*note*/ return this.note == null ? new Base[0] : this.note.toArray(new Base[this.note.size()]); // Annotation
         case -392342358: /*statisticType*/ return this.statisticType == null ? new Base[0] : new Base[] {this.statisticType}; // CodeableConcept
+        case 50511102: /*category*/ return this.category == null ? new Base[0] : new Base[] {this.category}; // CodeableConcept
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
-        case 1534510137: /*numberOfEvents*/ return this.numberOfEvents == null ? new Base[0] : new Base[] {this.numberOfEvents}; // IntegerType
+        case 1534510137: /*numberOfEvents*/ return this.numberOfEvents == null ? new Base[0] : new Base[] {this.numberOfEvents}; // UnsignedIntType
+        case -460990243: /*numberAffected*/ return this.numberAffected == null ? new Base[0] : new Base[] {this.numberAffected}; // UnsignedIntType
         case 143123659: /*sampleSize*/ return this.sampleSize == null ? new Base[0] : new Base[] {this.sampleSize}; // StatisticSampleSizeComponent
         case -1539581980: /*attributeEstimate*/ return this.attributeEstimate == null ? new Base[0] : this.attributeEstimate.toArray(new Base[this.attributeEstimate.size()]); // StatisticAttributeEstimateComponent
         case 274795812: /*modelCharacteristic*/ return this.modelCharacteristic == null ? new Base[0] : this.modelCharacteristic.toArray(new Base[this.modelCharacteristic.size()]); // StatisticModelCharacteristicComponent
@@ -2841,11 +2862,17 @@ public class Statistic extends BackboneType implements ICompositeType {
         case -392342358: // statisticType
           this.statisticType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
+        case 50511102: // category
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         case -1285004149: // quantity
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case 1534510137: // numberOfEvents
-          this.numberOfEvents = TypeConvertor.castToInteger(value); // IntegerType
+          this.numberOfEvents = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+          return value;
+        case -460990243: // numberAffected
+          this.numberAffected = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
           return value;
         case 143123659: // sampleSize
           this.sampleSize = (StatisticSampleSizeComponent) value; // StatisticSampleSizeComponent
@@ -2869,10 +2896,14 @@ public class Statistic extends BackboneType implements ICompositeType {
           this.getNote().add(TypeConvertor.castToAnnotation(value));
         } else if (name.equals("statisticType")) {
           this.statisticType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("category")) {
+          this.category = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("quantity")) {
           this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("numberOfEvents")) {
-          this.numberOfEvents = TypeConvertor.castToInteger(value); // IntegerType
+          this.numberOfEvents = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
+        } else if (name.equals("numberAffected")) {
+          this.numberAffected = TypeConvertor.castToUnsignedInt(value); // UnsignedIntType
         } else if (name.equals("sampleSize")) {
           this.sampleSize = (StatisticSampleSizeComponent) value; // StatisticSampleSizeComponent
         } else if (name.equals("attributeEstimate")) {
@@ -2890,8 +2921,10 @@ public class Statistic extends BackboneType implements ICompositeType {
         case -1724546052:  return getDescriptionElement();
         case 3387378:  return addNote(); 
         case -392342358:  return getStatisticType();
+        case 50511102:  return getCategory();
         case -1285004149:  return getQuantity();
         case 1534510137:  return getNumberOfEventsElement();
+        case -460990243:  return getNumberAffectedElement();
         case 143123659:  return getSampleSize();
         case -1539581980:  return addAttributeEstimate(); 
         case 274795812:  return addModelCharacteristic(); 
@@ -2906,8 +2939,10 @@ public class Statistic extends BackboneType implements ICompositeType {
         case -1724546052: /*description*/ return new String[] {"string"};
         case 3387378: /*note*/ return new String[] {"Annotation"};
         case -392342358: /*statisticType*/ return new String[] {"CodeableConcept"};
+        case 50511102: /*category*/ return new String[] {"CodeableConcept"};
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
-        case 1534510137: /*numberOfEvents*/ return new String[] {"integer"};
+        case 1534510137: /*numberOfEvents*/ return new String[] {"unsignedInt"};
+        case -460990243: /*numberAffected*/ return new String[] {"unsignedInt"};
         case 143123659: /*sampleSize*/ return new String[] {};
         case -1539581980: /*attributeEstimate*/ return new String[] {};
         case 274795812: /*modelCharacteristic*/ return new String[] {};
@@ -2928,12 +2963,19 @@ public class Statistic extends BackboneType implements ICompositeType {
           this.statisticType = new CodeableConcept();
           return this.statisticType;
         }
+        else if (name.equals("category")) {
+          this.category = new CodeableConcept();
+          return this.category;
+        }
         else if (name.equals("quantity")) {
           this.quantity = new Quantity();
           return this.quantity;
         }
         else if (name.equals("numberOfEvents")) {
           throw new FHIRException("Cannot call addChild on a primitive type Statistic.numberOfEvents");
+        }
+        else if (name.equals("numberAffected")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Statistic.numberAffected");
         }
         else if (name.equals("sampleSize")) {
           this.sampleSize = new StatisticSampleSizeComponent();
@@ -2969,8 +3011,10 @@ public class Statistic extends BackboneType implements ICompositeType {
             dst.note.add(i.copy());
         };
         dst.statisticType = statisticType == null ? null : statisticType.copy();
+        dst.category = category == null ? null : category.copy();
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.numberOfEvents = numberOfEvents == null ? null : numberOfEvents.copy();
+        dst.numberAffected = numberAffected == null ? null : numberAffected.copy();
         dst.sampleSize = sampleSize == null ? null : sampleSize.copy();
         if (attributeEstimate != null) {
           dst.attributeEstimate = new ArrayList<StatisticAttributeEstimateComponent>();
@@ -2996,9 +3040,10 @@ public class Statistic extends BackboneType implements ICompositeType {
           return false;
         Statistic o = (Statistic) other_;
         return compareDeep(description, o.description, true) && compareDeep(note, o.note, true) && compareDeep(statisticType, o.statisticType, true)
-           && compareDeep(quantity, o.quantity, true) && compareDeep(numberOfEvents, o.numberOfEvents, true)
-           && compareDeep(sampleSize, o.sampleSize, true) && compareDeep(attributeEstimate, o.attributeEstimate, true)
-           && compareDeep(modelCharacteristic, o.modelCharacteristic, true);
+           && compareDeep(category, o.category, true) && compareDeep(quantity, o.quantity, true) && compareDeep(numberOfEvents, o.numberOfEvents, true)
+           && compareDeep(numberAffected, o.numberAffected, true) && compareDeep(sampleSize, o.sampleSize, true)
+           && compareDeep(attributeEstimate, o.attributeEstimate, true) && compareDeep(modelCharacteristic, o.modelCharacteristic, true)
+          ;
       }
 
       @Override
@@ -3009,12 +3054,13 @@ public class Statistic extends BackboneType implements ICompositeType {
           return false;
         Statistic o = (Statistic) other_;
         return compareValues(description, o.description, true) && compareValues(numberOfEvents, o.numberOfEvents, true)
-          ;
+           && compareValues(numberAffected, o.numberAffected, true);
       }
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(description, note, statisticType
-          , quantity, numberOfEvents, sampleSize, attributeEstimate, modelCharacteristic);
+          , category, quantity, numberOfEvents, numberAffected, sampleSize, attributeEstimate
+          , modelCharacteristic);
       }
 
 

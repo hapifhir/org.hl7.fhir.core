@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionVersionComponent;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -48,9 +49,9 @@ public class DeviceDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasModelNumber())
             tgt.setModelNumberElement(convertString(src.getModelNumberElement()));
         if (src.hasType())
-            tgt.setType(convertCodeableConcept(src.getType()));
+            tgt.addType(convertCodeableConcept(src.getType()));
         for (org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionSpecializationComponent t : src.getSpecialization()) tgt.addSpecialization(convertDeviceDefinitionSpecializationComponent(t));
-        for (org.hl7.fhir.r4.model.StringType t : src.getVersion()) tgt.getVersion().add(convertString(t));
+        for (org.hl7.fhir.r4.model.StringType t : src.getVersion()) tgt.getVersion().add(new DeviceDefinitionVersionComponent().setValueElement(convertString(t)));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSafety()) tgt.addSafety(convertCodeableConcept(t));
         for (org.hl7.fhir.r4.model.ProductShelfLife t : src.getShelfLifeStorage()) tgt.addShelfLifeStorage(convertProductShelfLife(t));
         if (src.hasPhysicalCharacteristics())
@@ -64,8 +65,6 @@ public class DeviceDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasOnlineInformation())
             tgt.setOnlineInformationElement(convertUri(src.getOnlineInformationElement()));
         for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        if (src.hasQuantity())
-            tgt.setQuantity(convertQuantity(src.getQuantity()));
         if (src.hasParentDevice())
             tgt.setParentDevice(convertReference(src.getParentDevice()));
         for (org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionMaterialComponent t : src.getMaterial()) tgt.addMaterial(convertDeviceDefinitionMaterialComponent(t));
@@ -84,10 +83,9 @@ public class DeviceDefinition40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionDeviceNameComponent t : src.getDeviceName()) tgt.addDeviceName(convertDeviceDefinitionDeviceNameComponent(t));
         if (src.hasModelNumber())
             tgt.setModelNumberElement(convertString(src.getModelNumberElement()));
-        if (src.hasType())
-            tgt.setType(convertCodeableConcept(src.getType()));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.setType(convertCodeableConcept(t));
         for (org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionSpecializationComponent t : src.getSpecialization()) tgt.addSpecialization(convertDeviceDefinitionSpecializationComponent(t));
-        for (org.hl7.fhir.r5.model.StringType t : src.getVersion()) tgt.getVersion().add(convertString(t));
+        for (DeviceDefinitionVersionComponent t : src.getVersion()) tgt.getVersion().add(convertString(t.getValueElement()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSafety()) tgt.addSafety(convertCodeableConcept(t));
         for (org.hl7.fhir.r5.model.ProductShelfLife t : src.getShelfLifeStorage()) tgt.addShelfLifeStorage(convertProductShelfLife(t));
         if (src.hasPhysicalCharacteristics())
@@ -101,8 +99,6 @@ public class DeviceDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasOnlineInformation())
             tgt.setOnlineInformationElement(convertUri(src.getOnlineInformationElement()));
         for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
-        if (src.hasQuantity())
-            tgt.setQuantity(convertQuantity(src.getQuantity()));
         if (src.hasParentDevice())
             tgt.setParentDevice(convertReference(src.getParentDevice()));
         for (org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionMaterialComponent t : src.getMaterial()) tgt.addMaterial(convertDeviceDefinitionMaterialComponent(t));

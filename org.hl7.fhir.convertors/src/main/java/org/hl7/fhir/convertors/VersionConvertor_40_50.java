@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_40_50 {
+public class VersionConvertor_40_50 extends VersionConvertor_Base {
   static public boolean isExemptExtension(String url, String[] extensionsToIgnore) {
     boolean ok = false;
     for (String s : extensionsToIgnore) if (s.equals(url)) ok = true;
@@ -3478,8 +3478,8 @@ public class VersionConvertor_40_50 {
       return Coverage40_50.convertCoverage((org.hl7.fhir.r4.model.Coverage) src);
     if (src instanceof org.hl7.fhir.r4.model.CoverageEligibilityRequest)
       return CoverageEligibilityRequest40_50.convertCoverageEligibilityRequest((org.hl7.fhir.r4.model.CoverageEligibilityRequest) src);
-    if (src instanceof org.hl7.fhir.r4.model.CoverageEligibilityResponse)
-      return CoverageEligibilityResponse40_50.convertCoverageEligibilityResponse((org.hl7.fhir.r4.model.CoverageEligibilityResponse) src);
+//    if (src instanceof org.hl7.fhir.r4.model.CoverageEligibilityResponse)
+//      return CoverageEligibilityResponse40_50.convertCoverageEligibilityResponse((org.hl7.fhir.r4.model.CoverageEligibilityResponse) src);
     if (src instanceof org.hl7.fhir.r4.model.DetectedIssue)
       return DetectedIssue40_50.convertDetectedIssue((org.hl7.fhir.r4.model.DetectedIssue) src);
     if (src instanceof org.hl7.fhir.r4.model.Device)
@@ -3504,8 +3504,8 @@ public class VersionConvertor_40_50 {
       return Endpoint40_50.convertEndpoint((org.hl7.fhir.r4.model.Endpoint) src);
     if (src instanceof org.hl7.fhir.r4.model.EnrollmentRequest)
       return EnrollmentRequest40_50.convertEnrollmentRequest((org.hl7.fhir.r4.model.EnrollmentRequest) src);
-    if (src instanceof org.hl7.fhir.r4.model.EnrollmentResponse)
-      return EnrollmentResponse40_50.convertEnrollmentResponse((org.hl7.fhir.r4.model.EnrollmentResponse) src);
+//    if (src instanceof org.hl7.fhir.r4.model.EnrollmentResponse)
+//      return EnrollmentResponse40_50.convertEnrollmentResponse((org.hl7.fhir.r4.model.EnrollmentResponse) src);
     if (src instanceof org.hl7.fhir.r4.model.EpisodeOfCare)
       return EpisodeOfCare40_50.convertEpisodeOfCare((org.hl7.fhir.r4.model.EpisodeOfCare) src);
     if (src instanceof org.hl7.fhir.r4.model.EventDefinition)
@@ -3564,8 +3564,8 @@ public class VersionConvertor_40_50 {
       return MedicationRequest40_50.convertMedicationRequest((org.hl7.fhir.r4.model.MedicationRequest) src);
     if (src instanceof org.hl7.fhir.r4.model.MedicationStatement)
       return MedicationStatement40_50.convertMedicationStatement((org.hl7.fhir.r4.model.MedicationStatement) src);
-    if (src instanceof org.hl7.fhir.r4.model.MedicinalProduct)
-      return MedicinalProductDefinition40_50.convertMedicinalProduct((org.hl7.fhir.r4.model.MedicinalProduct) src);
+//    if (src instanceof org.hl7.fhir.r4.model.MedicinalProduct)
+//      return MedicinalProductDefinition40_50.convertMedicinalProduct((org.hl7.fhir.r4.model.MedicinalProduct) src);
     if (src instanceof org.hl7.fhir.r4.model.MessageDefinition)
       return MessageDefinition40_50.convertMessageDefinition((org.hl7.fhir.r4.model.MessageDefinition) src);
     if (src instanceof org.hl7.fhir.r4.model.MessageHeader)
@@ -3592,8 +3592,8 @@ public class VersionConvertor_40_50 {
       return Patient40_50.convertPatient((org.hl7.fhir.r4.model.Patient) src);
     if (src instanceof org.hl7.fhir.r4.model.PaymentNotice)
       return PaymentNotice40_50.convertPaymentNotice((org.hl7.fhir.r4.model.PaymentNotice) src);
-    if (src instanceof org.hl7.fhir.r4.model.PaymentReconciliation)
-      return PaymentReconciliation40_50.convertPaymentReconciliation((org.hl7.fhir.r4.model.PaymentReconciliation) src);
+//    if (src instanceof org.hl7.fhir.r4.model.PaymentReconciliation)
+//      return PaymentReconciliation40_50.convertPaymentReconciliation((org.hl7.fhir.r4.model.PaymentReconciliation) src);
     if (src instanceof org.hl7.fhir.r4.model.Person)
       return Person40_50.convertPerson((org.hl7.fhir.r4.model.Person) src);
     if (src instanceof org.hl7.fhir.r4.model.PlanDefinition)
@@ -3612,12 +3612,12 @@ public class VersionConvertor_40_50 {
       return QuestionnaireResponse40_50.convertQuestionnaireResponse((org.hl7.fhir.r4.model.QuestionnaireResponse) src);
     if (src instanceof org.hl7.fhir.r4.model.RelatedPerson)
       return RelatedPerson40_50.convertRelatedPerson((org.hl7.fhir.r4.model.RelatedPerson) src);
-    if (src instanceof org.hl7.fhir.r4.model.RequestGroup)
-      return RequestGroup40_50.convertRequestGroup((org.hl7.fhir.r4.model.RequestGroup) src);
-    if (src instanceof org.hl7.fhir.r4.model.ResearchStudy)
-      return ResearchStudy40_50.convertResearchStudy((org.hl7.fhir.r4.model.ResearchStudy) src);
-    if (src instanceof org.hl7.fhir.r4.model.ResearchSubject)
-      return ResearchSubject40_50.convertResearchSubject((org.hl7.fhir.r4.model.ResearchSubject) src);
+//    if (src instanceof org.hl7.fhir.r4.model.RequestGroup)
+//      return RequestGroup40_50.convertRequestGroup((org.hl7.fhir.r4.model.RequestGroup) src);
+//    if (src instanceof org.hl7.fhir.r4.model.ResearchStudy)
+//      return ResearchStudy40_50.convertResearchStudy((org.hl7.fhir.r4.model.ResearchStudy) src);
+//    if (src instanceof org.hl7.fhir.r4.model.ResearchSubject)
+//      return ResearchSubject40_50.convertResearchSubject((org.hl7.fhir.r4.model.ResearchSubject) src);
     if (src instanceof org.hl7.fhir.r4.model.RiskAssessment)
       return RiskAssessment40_50.convertRiskAssessment((org.hl7.fhir.r4.model.RiskAssessment) src);
     if (src instanceof org.hl7.fhir.r4.model.Schedule)
@@ -3729,8 +3729,8 @@ public class VersionConvertor_40_50 {
       return Coverage40_50.convertCoverage((org.hl7.fhir.r5.model.Coverage) src);
     if (src instanceof org.hl7.fhir.r5.model.CoverageEligibilityRequest)
       return CoverageEligibilityRequest40_50.convertCoverageEligibilityRequest((org.hl7.fhir.r5.model.CoverageEligibilityRequest) src);
-    if (src instanceof org.hl7.fhir.r5.model.CoverageEligibilityResponse)
-      return CoverageEligibilityResponse40_50.convertCoverageEligibilityResponse((org.hl7.fhir.r5.model.CoverageEligibilityResponse) src);
+//    if (src instanceof org.hl7.fhir.r5.model.CoverageEligibilityResponse)
+//      return CoverageEligibilityResponse40_50.convertCoverageEligibilityResponse((org.hl7.fhir.r5.model.CoverageEligibilityResponse) src);
     if (src instanceof org.hl7.fhir.r5.model.DetectedIssue)
       return DetectedIssue40_50.convertDetectedIssue((org.hl7.fhir.r5.model.DetectedIssue) src);
     if (src instanceof org.hl7.fhir.r5.model.Device)
@@ -3741,8 +3741,8 @@ public class VersionConvertor_40_50 {
       return DeviceMetric40_50.convertDeviceMetric((org.hl7.fhir.r5.model.DeviceMetric) src);
     if (src instanceof org.hl7.fhir.r5.model.DeviceRequest)
       return DeviceRequest40_50.convertDeviceRequest((org.hl7.fhir.r5.model.DeviceRequest) src);
-    if (src instanceof org.hl7.fhir.r5.model.DeviceUseStatement)
-      return DeviceUseStatement40_50.convertDeviceUseStatement((org.hl7.fhir.r5.model.DeviceUseStatement) src);
+    if (src instanceof org.hl7.fhir.r5.model.DeviceUsage)
+      return DeviceUseStatement40_50.convertDeviceUseStatement((org.hl7.fhir.r5.model.DeviceUsage) src);
     if (src instanceof org.hl7.fhir.r5.model.DiagnosticReport)
       return DiagnosticReport40_50.convertDiagnosticReport((org.hl7.fhir.r5.model.DiagnosticReport) src);
     if (src instanceof org.hl7.fhir.r5.model.DocumentManifest)
@@ -3755,8 +3755,8 @@ public class VersionConvertor_40_50 {
       return Endpoint40_50.convertEndpoint((org.hl7.fhir.r5.model.Endpoint) src);
     if (src instanceof org.hl7.fhir.r5.model.EnrollmentRequest)
       return EnrollmentRequest40_50.convertEnrollmentRequest((org.hl7.fhir.r5.model.EnrollmentRequest) src);
-    if (src instanceof org.hl7.fhir.r5.model.EnrollmentResponse)
-      return EnrollmentResponse40_50.convertEnrollmentResponse((org.hl7.fhir.r5.model.EnrollmentResponse) src);
+//    if (src instanceof org.hl7.fhir.r5.model.EnrollmentResponse)
+//      return EnrollmentResponse40_50.convertEnrollmentResponse((org.hl7.fhir.r5.model.EnrollmentResponse) src);
     if (src instanceof org.hl7.fhir.r5.model.EpisodeOfCare)
       return EpisodeOfCare40_50.convertEpisodeOfCare((org.hl7.fhir.r5.model.EpisodeOfCare) src);
     if (src instanceof org.hl7.fhir.r5.model.EventDefinition)
@@ -3816,8 +3816,8 @@ public class VersionConvertor_40_50 {
       return MedicationRequest40_50.convertMedicationRequest((org.hl7.fhir.r5.model.MedicationRequest) src);
     if (src instanceof org.hl7.fhir.r5.model.MedicationUsage)
       return MedicationStatement40_50.convertMedicationStatement((org.hl7.fhir.r5.model.MedicationUsage) src);
-    if (src instanceof org.hl7.fhir.r5.model.MedicinalProductDefinition)
-      return MedicinalProductDefinition40_50.convertMedicinalProductDefinition((org.hl7.fhir.r5.model.MedicinalProductDefinition) src);
+//    if (src instanceof org.hl7.fhir.r5.model.MedicinalProductDefinition)
+//      return MedicinalProductDefinition40_50.convertMedicinalProductDefinition((org.hl7.fhir.r5.model.MedicinalProductDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.MessageDefinition)
       return MessageDefinition40_50.convertMessageDefinition((org.hl7.fhir.r5.model.MessageDefinition) src);
     if (src instanceof org.hl7.fhir.r5.model.MessageHeader)
@@ -3844,8 +3844,8 @@ public class VersionConvertor_40_50 {
       return Patient40_50.convertPatient((org.hl7.fhir.r5.model.Patient) src);
     if (src instanceof org.hl7.fhir.r5.model.PaymentNotice)
       return PaymentNotice40_50.convertPaymentNotice((org.hl7.fhir.r5.model.PaymentNotice) src);
-    if (src instanceof org.hl7.fhir.r5.model.PaymentReconciliation)
-      return PaymentReconciliation40_50.convertPaymentReconciliation((org.hl7.fhir.r5.model.PaymentReconciliation) src);
+//    if (src instanceof org.hl7.fhir.r5.model.PaymentReconciliation)
+//      return PaymentReconciliation40_50.convertPaymentReconciliation((org.hl7.fhir.r5.model.PaymentReconciliation) src);
     if (src instanceof org.hl7.fhir.r5.model.Person)
       return Person40_50.convertPerson((org.hl7.fhir.r5.model.Person) src);
     if (src instanceof org.hl7.fhir.r5.model.PlanDefinition)
@@ -3864,12 +3864,12 @@ public class VersionConvertor_40_50 {
       return QuestionnaireResponse40_50.convertQuestionnaireResponse((org.hl7.fhir.r5.model.QuestionnaireResponse) src);
     if (src instanceof org.hl7.fhir.r5.model.RelatedPerson)
       return RelatedPerson40_50.convertRelatedPerson((org.hl7.fhir.r5.model.RelatedPerson) src);
-    if (src instanceof org.hl7.fhir.r5.model.RequestGroup)
-      return RequestGroup40_50.convertRequestGroup((org.hl7.fhir.r5.model.RequestGroup) src);
-    if (src instanceof org.hl7.fhir.r5.model.ResearchStudy)
-      return ResearchStudy40_50.convertResearchStudy((org.hl7.fhir.r5.model.ResearchStudy) src);
-    if (src instanceof org.hl7.fhir.r5.model.ResearchSubject)
-      return ResearchSubject40_50.convertResearchSubject((org.hl7.fhir.r5.model.ResearchSubject) src);
+//    if (src instanceof org.hl7.fhir.r5.model.RequestGroup)
+//      return RequestGroup40_50.convertRequestGroup((org.hl7.fhir.r5.model.RequestGroup) src);
+//    if (src instanceof org.hl7.fhir.r5.model.ResearchStudy)
+//      return ResearchStudy40_50.convertResearchStudy((org.hl7.fhir.r5.model.ResearchStudy) src);
+//    if (src instanceof org.hl7.fhir.r5.model.ResearchSubject)
+//      return ResearchSubject40_50.convertResearchSubject((org.hl7.fhir.r5.model.ResearchSubject) src);
     if (src instanceof org.hl7.fhir.r5.model.RiskAssessment)
       return RiskAssessment40_50.convertRiskAssessment((org.hl7.fhir.r5.model.RiskAssessment) src);
     if (src instanceof org.hl7.fhir.r5.model.Schedule)

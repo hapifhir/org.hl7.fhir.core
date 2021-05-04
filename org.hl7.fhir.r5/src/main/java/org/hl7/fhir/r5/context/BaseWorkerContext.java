@@ -863,12 +863,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
-        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this); 
-        res = vsc.validateCode(code);
-        if (txCache != null) {
-          txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
+        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this);
+        if (!vsc.isServerSide(code.getSystem())) {
+          res = vsc.validateCode(code);
+          if (txCache != null) {
+            txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
+          }
+          return res;
         }
-        return res;
       } catch (Exception e) {
       }
     }

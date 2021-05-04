@@ -39,6 +39,7 @@ import org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.ConceptMap.TargetElementComponent;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
+import org.hl7.fhir.utilities.CanonicalPair;
 
 public class ConceptMapEngine {
 
@@ -83,7 +84,8 @@ public class ConceptMapEngine {
     }
     if (tt == null)
       return null;
-    return new Coding().setSystem(cg.getTarget()).setVersion(cg.getTargetVersion()).setCode(tt.getCode()).setDisplay(tt.getDisplay());
+    CanonicalPair cp = new CanonicalPair(cg.getTarget());
+    return new Coding().setSystem(cp.getUrl()).setVersion(cp.getVersion()).setCode(tt.getCode()).setDisplay(tt.getDisplay());      
   }
 
   private boolean isOkRelationship(ConceptMapRelationship relationship) {

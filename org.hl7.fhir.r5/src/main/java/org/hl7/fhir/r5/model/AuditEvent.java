@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -103,7 +103,6 @@ public class AuditEvent extends DomainResource {
             case U: return "U";
             case D: return "D";
             case E: return "E";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,7 +113,6 @@ public class AuditEvent extends DomainResource {
             case U: return "http://hl7.org/fhir/audit-event-action";
             case D: return "http://hl7.org/fhir/audit-event-action";
             case E: return "http://hl7.org/fhir/audit-event-action";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -125,7 +123,6 @@ public class AuditEvent extends DomainResource {
             case U: return "Update data, such as revise patient information.";
             case D: return "Delete items, such as a doctor master file record.";
             case E: return "Perform a system or application function such as log-on, program execution or use of an object's method, or perform a query/search operation.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -136,7 +133,6 @@ public class AuditEvent extends DomainResource {
             case U: return "Update";
             case D: return "Delete";
             case E: return "Execute";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -247,7 +243,6 @@ public class AuditEvent extends DomainResource {
             case _3: return "3";
             case _4: return "4";
             case _5: return "5";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -258,7 +253,6 @@ public class AuditEvent extends DomainResource {
             case _3: return "http://hl7.org/fhir/network-type";
             case _4: return "http://hl7.org/fhir/network-type";
             case _5: return "http://hl7.org/fhir/network-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -269,7 +263,6 @@ public class AuditEvent extends DomainResource {
             case _3: return "The assigned telephone number.";
             case _4: return "The assigned email address.";
             case _5: return "URI (User directory, HTTP-PUT, ftp, etc.).";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -280,7 +273,6 @@ public class AuditEvent extends DomainResource {
             case _3: return "Telephone Number";
             case _4: return "Email address";
             case _5: return "URI";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -412,7 +404,6 @@ public class AuditEvent extends DomainResource {
             case NOTICE: return "notice";
             case INFORMATIONAL: return "informational";
             case DEBUG: return "debug";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -426,7 +417,6 @@ public class AuditEvent extends DomainResource {
             case NOTICE: return "http://hl7.org/fhir/audit-event-severity";
             case INFORMATIONAL: return "http://hl7.org/fhir/audit-event-severity";
             case DEBUG: return "http://hl7.org/fhir/audit-event-severity";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -440,7 +430,6 @@ public class AuditEvent extends DomainResource {
             case NOTICE: return "Normal but significant condition.";
             case INFORMATIONAL: return "Informational messages.";
             case DEBUG: return "Debug-level messages.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -454,7 +443,6 @@ public class AuditEvent extends DomainResource {
             case NOTICE: return "Notice";
             case INFORMATIONAL: return "Informational";
             case DEBUG: return "Debug";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -1610,7 +1598,7 @@ public class AuditEvent extends DomainResource {
          */
         @Child(name = "type", type = {Coding.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
         @Description(shortDefinition="The type of source where event originated", formalDefinition="Code specifying the type of source where event originated." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/audit-source-type")
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/security-source-type")
         protected List<Coding> type;
 
         private static final long serialVersionUID = 31014963L;
@@ -2827,27 +2815,41 @@ public class AuditEvent extends DomainResource {
     protected List<CodeableConcept> purposeOfEvent;
 
     /**
+     * Allows tracing of authorizatino for the events and tracking whether proposals/recommendations were acted upon.
+     */
+    @Child(name = "basedOn", type = {CarePlan.class, DeviceRequest.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, ServiceRequest.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Description(shortDefinition="Workflow authorization within which this event occurred", formalDefinition="Allows tracing of authorizatino for the events and tracking whether proposals/recommendations were acted upon." )
+    protected List<Reference> basedOn;
+
+    /**
+     * This will typically be the encounter the event occurred, but some events may be initiated prior to or after the official completion of an encounter but still be tied to the context of the encounter (e.g. pre-admission lab tests).
+     */
+    @Child(name = "encounter", type = {Encounter.class}, order=9, min=0, max=1, modifier=false, summary=false)
+    @Description(shortDefinition="Encounter within which this event occurred or which the event is tightly associated", formalDefinition="This will typically be the encounter the event occurred, but some events may be initiated prior to or after the official completion of an encounter but still be tied to the context of the encounter (e.g. pre-admission lab tests)." )
+    protected Reference encounter;
+
+    /**
      * An actor taking an active role in the event or activity that is logged.
      */
-    @Child(name = "agent", type = {}, order=8, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "agent", type = {}, order=10, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Actor involved in the event", formalDefinition="An actor taking an active role in the event or activity that is logged." )
     protected List<AuditEventAgentComponent> agent;
 
     /**
      * The system that is reporting the event.
      */
-    @Child(name = "source", type = {}, order=9, min=1, max=1, modifier=false, summary=false)
+    @Child(name = "source", type = {}, order=11, min=1, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Audit Event Reporter", formalDefinition="The system that is reporting the event." )
     protected AuditEventSourceComponent source;
 
     /**
      * Specific instances of data or objects that have been accessed.
      */
-    @Child(name = "entity", type = {}, order=10, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+    @Child(name = "entity", type = {}, order=12, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
     @Description(shortDefinition="Data or objects used", formalDefinition="Specific instances of data or objects that have been accessed." )
     protected List<AuditEventEntityComponent> entity;
 
-    private static final long serialVersionUID = -446219294L;
+    private static final long serialVersionUID = -702709297L;
 
   /**
    * Constructor
@@ -3189,6 +3191,83 @@ public class AuditEvent extends DomainResource {
     }
 
     /**
+     * @return {@link #basedOn} (Allows tracing of authorizatino for the events and tracking whether proposals/recommendations were acted upon.)
+     */
+    public List<Reference> getBasedOn() { 
+      if (this.basedOn == null)
+        this.basedOn = new ArrayList<Reference>();
+      return this.basedOn;
+    }
+
+    /**
+     * @return Returns a reference to <code>this</code> for easy method chaining
+     */
+    public AuditEvent setBasedOn(List<Reference> theBasedOn) { 
+      this.basedOn = theBasedOn;
+      return this;
+    }
+
+    public boolean hasBasedOn() { 
+      if (this.basedOn == null)
+        return false;
+      for (Reference item : this.basedOn)
+        if (!item.isEmpty())
+          return true;
+      return false;
+    }
+
+    public Reference addBasedOn() { //3
+      Reference t = new Reference();
+      if (this.basedOn == null)
+        this.basedOn = new ArrayList<Reference>();
+      this.basedOn.add(t);
+      return t;
+    }
+
+    public AuditEvent addBasedOn(Reference t) { //3
+      if (t == null)
+        return this;
+      if (this.basedOn == null)
+        this.basedOn = new ArrayList<Reference>();
+      this.basedOn.add(t);
+      return this;
+    }
+
+    /**
+     * @return The first repetition of repeating field {@link #basedOn}, creating it if it does not already exist {3}
+     */
+    public Reference getBasedOnFirstRep() { 
+      if (getBasedOn().isEmpty()) {
+        addBasedOn();
+      }
+      return getBasedOn().get(0);
+    }
+
+    /**
+     * @return {@link #encounter} (This will typically be the encounter the event occurred, but some events may be initiated prior to or after the official completion of an encounter but still be tied to the context of the encounter (e.g. pre-admission lab tests).)
+     */
+    public Reference getEncounter() { 
+      if (this.encounter == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create AuditEvent.encounter");
+        else if (Configuration.doAutoCreate())
+          this.encounter = new Reference(); // cc
+      return this.encounter;
+    }
+
+    public boolean hasEncounter() { 
+      return this.encounter != null && !this.encounter.isEmpty();
+    }
+
+    /**
+     * @param value {@link #encounter} (This will typically be the encounter the event occurred, but some events may be initiated prior to or after the official completion of an encounter but still be tied to the context of the encounter (e.g. pre-admission lab tests).)
+     */
+    public AuditEvent setEncounter(Reference value) { 
+      this.encounter = value;
+      return this;
+    }
+
+    /**
      * @return {@link #agent} (An actor taking an active role in the event or activity that is logged.)
      */
     public List<AuditEventAgentComponent> getAgent() { 
@@ -3328,6 +3407,8 @@ public class AuditEvent extends DomainResource {
         children.add(new Property("recorded", "instant", "The time when the event was recorded.", 0, 1, recorded));
         children.add(new Property("outcome", "CodeableConcept", "Indicates whether the event succeeded or failed. A free text descripiton can be given in outcome.text.", 0, 1, outcome));
         children.add(new Property("purposeOfEvent", "CodeableConcept", "The purposeOfUse (reason) that was used during the event being recorded.", 0, java.lang.Integer.MAX_VALUE, purposeOfEvent));
+        children.add(new Property("basedOn", "Reference(CarePlan|DeviceRequest|ImmunizationRecommendation|MedicationRequest|NutritionOrder|ServiceRequest)", "Allows tracing of authorizatino for the events and tracking whether proposals/recommendations were acted upon.", 0, java.lang.Integer.MAX_VALUE, basedOn));
+        children.add(new Property("encounter", "Reference(Encounter)", "This will typically be the encounter the event occurred, but some events may be initiated prior to or after the official completion of an encounter but still be tied to the context of the encounter (e.g. pre-admission lab tests).", 0, 1, encounter));
         children.add(new Property("agent", "", "An actor taking an active role in the event or activity that is logged.", 0, java.lang.Integer.MAX_VALUE, agent));
         children.add(new Property("source", "", "The system that is reporting the event.", 0, 1, source));
         children.add(new Property("entity", "", "Specific instances of data or objects that have been accessed.", 0, java.lang.Integer.MAX_VALUE, entity));
@@ -3344,6 +3425,8 @@ public class AuditEvent extends DomainResource {
         case -799233872: /*recorded*/  return new Property("recorded", "instant", "The time when the event was recorded.", 0, 1, recorded);
         case -1106507950: /*outcome*/  return new Property("outcome", "CodeableConcept", "Indicates whether the event succeeded or failed. A free text descripiton can be given in outcome.text.", 0, 1, outcome);
         case -341917691: /*purposeOfEvent*/  return new Property("purposeOfEvent", "CodeableConcept", "The purposeOfUse (reason) that was used during the event being recorded.", 0, java.lang.Integer.MAX_VALUE, purposeOfEvent);
+        case -332612366: /*basedOn*/  return new Property("basedOn", "Reference(CarePlan|DeviceRequest|ImmunizationRecommendation|MedicationRequest|NutritionOrder|ServiceRequest)", "Allows tracing of authorizatino for the events and tracking whether proposals/recommendations were acted upon.", 0, java.lang.Integer.MAX_VALUE, basedOn);
+        case 1524132147: /*encounter*/  return new Property("encounter", "Reference(Encounter)", "This will typically be the encounter the event occurred, but some events may be initiated prior to or after the official completion of an encounter but still be tied to the context of the encounter (e.g. pre-admission lab tests).", 0, 1, encounter);
         case 92750597: /*agent*/  return new Property("agent", "", "An actor taking an active role in the event or activity that is logged.", 0, java.lang.Integer.MAX_VALUE, agent);
         case -896505829: /*source*/  return new Property("source", "", "The system that is reporting the event.", 0, 1, source);
         case -1298275357: /*entity*/  return new Property("entity", "", "Specific instances of data or objects that have been accessed.", 0, java.lang.Integer.MAX_VALUE, entity);
@@ -3363,6 +3446,8 @@ public class AuditEvent extends DomainResource {
         case -799233872: /*recorded*/ return this.recorded == null ? new Base[0] : new Base[] {this.recorded}; // InstantType
         case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // CodeableConcept
         case -341917691: /*purposeOfEvent*/ return this.purposeOfEvent == null ? new Base[0] : this.purposeOfEvent.toArray(new Base[this.purposeOfEvent.size()]); // CodeableConcept
+        case -332612366: /*basedOn*/ return this.basedOn == null ? new Base[0] : this.basedOn.toArray(new Base[this.basedOn.size()]); // Reference
+        case 1524132147: /*encounter*/ return this.encounter == null ? new Base[0] : new Base[] {this.encounter}; // Reference
         case 92750597: /*agent*/ return this.agent == null ? new Base[0] : this.agent.toArray(new Base[this.agent.size()]); // AuditEventAgentComponent
         case -896505829: /*source*/ return this.source == null ? new Base[0] : new Base[] {this.source}; // AuditEventSourceComponent
         case -1298275357: /*entity*/ return this.entity == null ? new Base[0] : this.entity.toArray(new Base[this.entity.size()]); // AuditEventEntityComponent
@@ -3400,6 +3485,12 @@ public class AuditEvent extends DomainResource {
         case -341917691: // purposeOfEvent
           this.getPurposeOfEvent().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
+        case -332612366: // basedOn
+          this.getBasedOn().add(TypeConvertor.castToReference(value)); // Reference
+          return value;
+        case 1524132147: // encounter
+          this.encounter = TypeConvertor.castToReference(value); // Reference
+          return value;
         case 92750597: // agent
           this.getAgent().add((AuditEventAgentComponent) value); // AuditEventAgentComponent
           return value;
@@ -3434,6 +3525,10 @@ public class AuditEvent extends DomainResource {
           this.outcome = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("purposeOfEvent")) {
           this.getPurposeOfEvent().add(TypeConvertor.castToCodeableConcept(value));
+        } else if (name.equals("basedOn")) {
+          this.getBasedOn().add(TypeConvertor.castToReference(value));
+        } else if (name.equals("encounter")) {
+          this.encounter = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("agent")) {
           this.getAgent().add((AuditEventAgentComponent) value);
         } else if (name.equals("source")) {
@@ -3456,6 +3551,8 @@ public class AuditEvent extends DomainResource {
         case -799233872:  return getRecordedElement();
         case -1106507950:  return getOutcome();
         case -341917691:  return addPurposeOfEvent(); 
+        case -332612366:  return addBasedOn(); 
+        case 1524132147:  return getEncounter();
         case 92750597:  return addAgent(); 
         case -896505829:  return getSource();
         case -1298275357:  return addEntity(); 
@@ -3475,6 +3572,8 @@ public class AuditEvent extends DomainResource {
         case -799233872: /*recorded*/ return new String[] {"instant"};
         case -1106507950: /*outcome*/ return new String[] {"CodeableConcept"};
         case -341917691: /*purposeOfEvent*/ return new String[] {"CodeableConcept"};
+        case -332612366: /*basedOn*/ return new String[] {"Reference"};
+        case 1524132147: /*encounter*/ return new String[] {"Reference"};
         case 92750597: /*agent*/ return new String[] {};
         case -896505829: /*source*/ return new String[] {};
         case -1298275357: /*entity*/ return new String[] {};
@@ -3511,6 +3610,13 @@ public class AuditEvent extends DomainResource {
         }
         else if (name.equals("purposeOfEvent")) {
           return addPurposeOfEvent();
+        }
+        else if (name.equals("basedOn")) {
+          return addBasedOn();
+        }
+        else if (name.equals("encounter")) {
+          this.encounter = new Reference();
+          return this.encounter;
         }
         else if (name.equals("agent")) {
           return addAgent();
@@ -3555,6 +3661,12 @@ public class AuditEvent extends DomainResource {
           for (CodeableConcept i : purposeOfEvent)
             dst.purposeOfEvent.add(i.copy());
         };
+        if (basedOn != null) {
+          dst.basedOn = new ArrayList<Reference>();
+          for (Reference i : basedOn)
+            dst.basedOn.add(i.copy());
+        };
+        dst.encounter = encounter == null ? null : encounter.copy();
         if (agent != null) {
           dst.agent = new ArrayList<AuditEventAgentComponent>();
           for (AuditEventAgentComponent i : agent)
@@ -3582,8 +3694,8 @@ public class AuditEvent extends DomainResource {
         return compareDeep(type, o.type, true) && compareDeep(subtype, o.subtype, true) && compareDeep(action, o.action, true)
            && compareDeep(severity, o.severity, true) && compareDeep(period, o.period, true) && compareDeep(recorded, o.recorded, true)
            && compareDeep(outcome, o.outcome, true) && compareDeep(purposeOfEvent, o.purposeOfEvent, true)
-           && compareDeep(agent, o.agent, true) && compareDeep(source, o.source, true) && compareDeep(entity, o.entity, true)
-          ;
+           && compareDeep(basedOn, o.basedOn, true) && compareDeep(encounter, o.encounter, true) && compareDeep(agent, o.agent, true)
+           && compareDeep(source, o.source, true) && compareDeep(entity, o.entity, true);
       }
 
       @Override
@@ -3599,7 +3711,8 @@ public class AuditEvent extends DomainResource {
 
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(type, subtype, action, severity
-          , period, recorded, outcome, purposeOfEvent, agent, source, entity);
+          , period, recorded, outcome, purposeOfEvent, basedOn, encounter, agent, source
+          , entity);
       }
 
   @Override
@@ -3648,6 +3761,32 @@ public class AuditEvent extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
 
  /**
+   * Search parameter: <b>agent</b>
+   * <p>
+   * Description: <b>Identifier of who</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.agent.who</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="agent", path="AuditEvent.agent.who", description="Identifier of who", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
+  public static final String SP_AGENT = "agent";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>agent</b>
+   * <p>
+   * Description: <b>Identifier of who</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.agent.who</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AGENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AGENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AuditEvent:agent</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_AGENT = new ca.uhn.fhir.model.api.Include("AuditEvent:agent").toLocked();
+
+ /**
    * Search parameter: <b>agent-name</b>
    * <p>
    * Description: <b>Human friendly name for the agent</b><br>
@@ -3688,32 +3827,6 @@ public class AuditEvent extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam AGENT_ROLE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_AGENT_ROLE);
 
  /**
-   * Search parameter: <b>agent</b>
-   * <p>
-   * Description: <b>Identifier of who</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AuditEvent.agent.who</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="agent", path="AuditEvent.agent.who", description="Identifier of who", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
-  public static final String SP_AGENT = "agent";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>agent</b>
-   * <p>
-   * Description: <b>Identifier of who</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AuditEvent.agent.who</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam AGENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_AGENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AuditEvent:agent</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_AGENT = new ca.uhn.fhir.model.api.Include("AuditEvent:agent").toLocked();
-
- /**
    * Search parameter: <b>altid</b>
    * <p>
    * Description: <b>Alternative User identity</b><br>
@@ -3734,6 +3847,32 @@ public class AuditEvent extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ALTID = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ALTID);
 
  /**
+   * Search parameter: <b>based-on</b>
+   * <p>
+   * Description: <b>Reference to the service request.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.basedOn</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="based-on", path="AuditEvent.basedOn", description="Reference to the service request.", type="reference", target={CarePlan.class, DeviceRequest.class, ImmunizationRecommendation.class, MedicationRequest.class, NutritionOrder.class, ServiceRequest.class } )
+  public static final String SP_BASED_ON = "based-on";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>based-on</b>
+   * <p>
+   * Description: <b>Reference to the service request.</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.basedOn</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam BASED_ON = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_BASED_ON);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AuditEvent:based-on</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_BASED_ON = new ca.uhn.fhir.model.api.Include("AuditEvent:based-on").toLocked();
+
+ /**
    * Search parameter: <b>date</b>
    * <p>
    * Description: <b>Time when the event was recorded</b><br>
@@ -3752,6 +3891,58 @@ public class AuditEvent extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam DATE = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_DATE);
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>Encounter related to the activity recorded in the AuditEvent</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="AuditEvent.encounter", description="Encounter related to the activity recorded in the AuditEvent", type="reference", target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>Encounter related to the activity recorded in the AuditEvent</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AuditEvent:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("AuditEvent:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>entity</b>
+   * <p>
+   * Description: <b>Specific instance of resource</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.entity.what</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="entity", path="AuditEvent.entity.what", description="Specific instance of resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_ENTITY = "entity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>entity</b>
+   * <p>
+   * Description: <b>Specific instance of resource</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AuditEvent.entity.what</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENTITY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENTITY);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>AuditEvent:entity</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENTITY = new ca.uhn.fhir.model.api.Include("AuditEvent:entity").toLocked();
 
  /**
    * Search parameter: <b>entity-name</b>
@@ -3814,32 +4005,6 @@ public class AuditEvent extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ENTITY_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ENTITY_TYPE);
 
  /**
-   * Search parameter: <b>entity</b>
-   * <p>
-   * Description: <b>Specific instance of resource</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AuditEvent.entity.what</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="entity", path="AuditEvent.entity.what", description="Specific instance of resource", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUseStatement.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
-  public static final String SP_ENTITY = "entity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>entity</b>
-   * <p>
-   * Description: <b>Specific instance of resource</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AuditEvent.entity.what</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENTITY = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENTITY);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>AuditEvent:entity</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENTITY = new ca.uhn.fhir.model.api.Include("AuditEvent:entity").toLocked();
-
- /**
    * Search parameter: <b>outcome</b>
    * <p>
    * Description: <b>Whether the event succeeded or failed</b><br>
@@ -3867,7 +4032,7 @@ public class AuditEvent extends DomainResource {
    * Path: <b>AuditEvent.agent.who.where(resolve() is Patient) | AuditEvent.entity.what.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AuditEvent.agent.who.where(resolve() is Patient) | AuditEvent.entity.what.where(resolve() is Patient)", description="Identifier of who", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="AuditEvent.agent.who.where(resolve() is Patient) | AuditEvent.entity.what.where(resolve() is Patient)", description="Identifier of who", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>

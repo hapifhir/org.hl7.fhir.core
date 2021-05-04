@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv30_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 import java.util.stream.Collectors;
 
@@ -207,7 +208,7 @@ public class AllergyIntolerance30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasSubstance())
             tgt.setSubstance(VersionConvertor_30_50.convertCodeableConcept(src.getSubstance()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (CodeableReference t : src.getManifestation()) if (t.hasConcept()) tgt.addManifestation(VersionConvertor_30_50.convertCodeableConcept(t.getConcept()));
         if (src.hasDescription())
             tgt.setDescriptionElement(VersionConvertor_30_50.convertString(src.getDescriptionElement()));
         if (src.hasOnset())
@@ -227,7 +228,7 @@ public class AllergyIntolerance30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasSubstance())
             tgt.setSubstance(VersionConvertor_30_50.convertCodeableConcept(src.getSubstance()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getManifestation()) tgt.addManifestation(new CodeableReference(VersionConvertor_30_50.convertCodeableConcept(t)));
         if (src.hasDescription())
             tgt.setDescriptionElement(VersionConvertor_30_50.convertString(src.getDescriptionElement()));
         if (src.hasOnset())

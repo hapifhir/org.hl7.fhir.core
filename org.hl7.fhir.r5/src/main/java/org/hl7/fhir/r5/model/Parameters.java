@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1632,7 +1632,7 @@ public String toString() {
     return ResourceType.Parameters;
    }
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
 public Parameters addParameter(String name, boolean b) {
     addParameter().setName(name).setValue(new BooleanType(b));
     return this;

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * A single usage issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.
+ * A single issue - either an indication, contraindication, interaction or an undesirable effect for a medicinal product, medication, device or procedure.
  */
 @ResourceDef(name="ClinicalUseIssue", profile="http://hl7.org/fhir/StructureDefinition/ClinicalUseIssue")
 public class ClinicalUseIssue extends DomainResource {
@@ -103,7 +103,6 @@ public class ClinicalUseIssue extends DomainResource {
             case INTERACTION: return "interaction";
             case UNDESIRABLEEFFECT: return "undesirable-effect";
             case WARNING: return "warning";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,7 +113,6 @@ public class ClinicalUseIssue extends DomainResource {
             case INTERACTION: return "http://hl7.org/fhir/clinical-use-issue-type";
             case UNDESIRABLEEFFECT: return "http://hl7.org/fhir/clinical-use-issue-type";
             case WARNING: return "http://hl7.org/fhir/clinical-use-issue-type";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -125,7 +123,6 @@ public class ClinicalUseIssue extends DomainResource {
             case INTERACTION: return "Interactions between the medication and other substances.";
             case UNDESIRABLEEFFECT: return "Side effects or adverse effects associated with the medication.";
             case WARNING: return "A general warning or issue that is not specifically one of the other types.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -136,7 +133,6 @@ public class ClinicalUseIssue extends DomainResource {
             case INTERACTION: return "Interaction";
             case UNDESIRABLEEFFECT: return "Undesirable Effect";
             case WARNING: return "Warning";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -202,23 +198,23 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * The situation that is being documented as contraindicating against this item.
          */
-        @Child(name = "diseaseSymptomProcedure", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "diseaseSymptomProcedure", type = {CodeableReference.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The situation that is being documented as contraindicating against this item", formalDefinition="The situation that is being documented as contraindicating against this item." )
-        protected CodeableConcept diseaseSymptomProcedure;
+        protected CodeableReference diseaseSymptomProcedure;
 
         /**
          * The status of the disease or symptom for the contraindication.
          */
-        @Child(name = "diseaseStatus", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "diseaseStatus", type = {CodeableReference.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The status of the disease or symptom for the contraindication", formalDefinition="The status of the disease or symptom for the contraindication." )
-        protected CodeableConcept diseaseStatus;
+        protected CodeableReference diseaseStatus;
 
         /**
          * A comorbidity (concurrent condition) or coinfection.
          */
-        @Child(name = "comorbidity", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "comorbidity", type = {CodeableReference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="A comorbidity (concurrent condition) or coinfection", formalDefinition="A comorbidity (concurrent condition) or coinfection." )
-        protected List<CodeableConcept> comorbidity;
+        protected List<CodeableReference> comorbidity;
 
         /**
          * The indication which this is a contraidication for.
@@ -228,13 +224,13 @@ public class ClinicalUseIssue extends DomainResource {
         protected List<Reference> indication;
 
         /**
-         * Information about the use of the medicinal product in relation to other therapies described as part of the indication.
+         * Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.
          */
         @Child(name = "otherTherapy", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Information about the use of the medicinal product in relation to other therapies described as part of the indication", formalDefinition="Information about the use of the medicinal product in relation to other therapies described as part of the indication." )
+        @Description(shortDefinition="Information about the use of the medicinal product in relation to other therapies described as part of the contraindication", formalDefinition="Information about the use of the medicinal product in relation to other therapies described as part of the contraindication." )
         protected List<ClinicalUseIssueContraindicationOtherTherapyComponent> otherTherapy;
 
-        private static final long serialVersionUID = -165584476L;
+        private static final long serialVersionUID = 1347024193L;
 
     /**
      * Constructor
@@ -246,12 +242,12 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @return {@link #diseaseSymptomProcedure} (The situation that is being documented as contraindicating against this item.)
          */
-        public CodeableConcept getDiseaseSymptomProcedure() { 
+        public CodeableReference getDiseaseSymptomProcedure() { 
           if (this.diseaseSymptomProcedure == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ClinicalUseIssueContraindicationComponent.diseaseSymptomProcedure");
             else if (Configuration.doAutoCreate())
-              this.diseaseSymptomProcedure = new CodeableConcept(); // cc
+              this.diseaseSymptomProcedure = new CodeableReference(); // cc
           return this.diseaseSymptomProcedure;
         }
 
@@ -262,7 +258,7 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @param value {@link #diseaseSymptomProcedure} (The situation that is being documented as contraindicating against this item.)
          */
-        public ClinicalUseIssueContraindicationComponent setDiseaseSymptomProcedure(CodeableConcept value) { 
+        public ClinicalUseIssueContraindicationComponent setDiseaseSymptomProcedure(CodeableReference value) { 
           this.diseaseSymptomProcedure = value;
           return this;
         }
@@ -270,12 +266,12 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @return {@link #diseaseStatus} (The status of the disease or symptom for the contraindication.)
          */
-        public CodeableConcept getDiseaseStatus() { 
+        public CodeableReference getDiseaseStatus() { 
           if (this.diseaseStatus == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ClinicalUseIssueContraindicationComponent.diseaseStatus");
             else if (Configuration.doAutoCreate())
-              this.diseaseStatus = new CodeableConcept(); // cc
+              this.diseaseStatus = new CodeableReference(); // cc
           return this.diseaseStatus;
         }
 
@@ -286,7 +282,7 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @param value {@link #diseaseStatus} (The status of the disease or symptom for the contraindication.)
          */
-        public ClinicalUseIssueContraindicationComponent setDiseaseStatus(CodeableConcept value) { 
+        public ClinicalUseIssueContraindicationComponent setDiseaseStatus(CodeableReference value) { 
           this.diseaseStatus = value;
           return this;
         }
@@ -294,16 +290,16 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @return {@link #comorbidity} (A comorbidity (concurrent condition) or coinfection.)
          */
-        public List<CodeableConcept> getComorbidity() { 
+        public List<CodeableReference> getComorbidity() { 
           if (this.comorbidity == null)
-            this.comorbidity = new ArrayList<CodeableConcept>();
+            this.comorbidity = new ArrayList<CodeableReference>();
           return this.comorbidity;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ClinicalUseIssueContraindicationComponent setComorbidity(List<CodeableConcept> theComorbidity) { 
+        public ClinicalUseIssueContraindicationComponent setComorbidity(List<CodeableReference> theComorbidity) { 
           this.comorbidity = theComorbidity;
           return this;
         }
@@ -311,25 +307,25 @@ public class ClinicalUseIssue extends DomainResource {
         public boolean hasComorbidity() { 
           if (this.comorbidity == null)
             return false;
-          for (CodeableConcept item : this.comorbidity)
+          for (CodeableReference item : this.comorbidity)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CodeableConcept addComorbidity() { //3
-          CodeableConcept t = new CodeableConcept();
+        public CodeableReference addComorbidity() { //3
+          CodeableReference t = new CodeableReference();
           if (this.comorbidity == null)
-            this.comorbidity = new ArrayList<CodeableConcept>();
+            this.comorbidity = new ArrayList<CodeableReference>();
           this.comorbidity.add(t);
           return t;
         }
 
-        public ClinicalUseIssueContraindicationComponent addComorbidity(CodeableConcept t) { //3
+        public ClinicalUseIssueContraindicationComponent addComorbidity(CodeableReference t) { //3
           if (t == null)
             return this;
           if (this.comorbidity == null)
-            this.comorbidity = new ArrayList<CodeableConcept>();
+            this.comorbidity = new ArrayList<CodeableReference>();
           this.comorbidity.add(t);
           return this;
         }
@@ -337,7 +333,7 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #comorbidity}, creating it if it does not already exist {3}
          */
-        public CodeableConcept getComorbidityFirstRep() { 
+        public CodeableReference getComorbidityFirstRep() { 
           if (getComorbidity().isEmpty()) {
             addComorbidity();
           }
@@ -398,7 +394,7 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @return {@link #otherTherapy} (Information about the use of the medicinal product in relation to other therapies described as part of the indication.)
+         * @return {@link #otherTherapy} (Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.)
          */
         public List<ClinicalUseIssueContraindicationOtherTherapyComponent> getOtherTherapy() { 
           if (this.otherTherapy == null)
@@ -452,21 +448,21 @@ public class ClinicalUseIssue extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("diseaseSymptomProcedure", "CodeableConcept", "The situation that is being documented as contraindicating against this item.", 0, 1, diseaseSymptomProcedure));
-          children.add(new Property("diseaseStatus", "CodeableConcept", "The status of the disease or symptom for the contraindication.", 0, 1, diseaseStatus));
-          children.add(new Property("comorbidity", "CodeableConcept", "A comorbidity (concurrent condition) or coinfection.", 0, java.lang.Integer.MAX_VALUE, comorbidity));
+          children.add(new Property("diseaseSymptomProcedure", "CodeableReference(ObservationDefinition)", "The situation that is being documented as contraindicating against this item.", 0, 1, diseaseSymptomProcedure));
+          children.add(new Property("diseaseStatus", "CodeableReference(ObservationDefinition)", "The status of the disease or symptom for the contraindication.", 0, 1, diseaseStatus));
+          children.add(new Property("comorbidity", "CodeableReference(ObservationDefinition)", "A comorbidity (concurrent condition) or coinfection.", 0, java.lang.Integer.MAX_VALUE, comorbidity));
           children.add(new Property("indication", "Reference(ClinicalUseIssue)", "The indication which this is a contraidication for.", 0, java.lang.Integer.MAX_VALUE, indication));
-          children.add(new Property("otherTherapy", "", "Information about the use of the medicinal product in relation to other therapies described as part of the indication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy));
+          children.add(new Property("otherTherapy", "", "Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1497395130: /*diseaseSymptomProcedure*/  return new Property("diseaseSymptomProcedure", "CodeableConcept", "The situation that is being documented as contraindicating against this item.", 0, 1, diseaseSymptomProcedure);
-          case -505503602: /*diseaseStatus*/  return new Property("diseaseStatus", "CodeableConcept", "The status of the disease or symptom for the contraindication.", 0, 1, diseaseStatus);
-          case -406395211: /*comorbidity*/  return new Property("comorbidity", "CodeableConcept", "A comorbidity (concurrent condition) or coinfection.", 0, java.lang.Integer.MAX_VALUE, comorbidity);
+          case -1497395130: /*diseaseSymptomProcedure*/  return new Property("diseaseSymptomProcedure", "CodeableReference(ObservationDefinition)", "The situation that is being documented as contraindicating against this item.", 0, 1, diseaseSymptomProcedure);
+          case -505503602: /*diseaseStatus*/  return new Property("diseaseStatus", "CodeableReference(ObservationDefinition)", "The status of the disease or symptom for the contraindication.", 0, 1, diseaseStatus);
+          case -406395211: /*comorbidity*/  return new Property("comorbidity", "CodeableReference(ObservationDefinition)", "A comorbidity (concurrent condition) or coinfection.", 0, java.lang.Integer.MAX_VALUE, comorbidity);
           case -597168804: /*indication*/  return new Property("indication", "Reference(ClinicalUseIssue)", "The indication which this is a contraidication for.", 0, java.lang.Integer.MAX_VALUE, indication);
-          case -544509127: /*otherTherapy*/  return new Property("otherTherapy", "", "Information about the use of the medicinal product in relation to other therapies described as part of the indication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy);
+          case -544509127: /*otherTherapy*/  return new Property("otherTherapy", "", "Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -475,9 +471,9 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1497395130: /*diseaseSymptomProcedure*/ return this.diseaseSymptomProcedure == null ? new Base[0] : new Base[] {this.diseaseSymptomProcedure}; // CodeableConcept
-        case -505503602: /*diseaseStatus*/ return this.diseaseStatus == null ? new Base[0] : new Base[] {this.diseaseStatus}; // CodeableConcept
-        case -406395211: /*comorbidity*/ return this.comorbidity == null ? new Base[0] : this.comorbidity.toArray(new Base[this.comorbidity.size()]); // CodeableConcept
+        case -1497395130: /*diseaseSymptomProcedure*/ return this.diseaseSymptomProcedure == null ? new Base[0] : new Base[] {this.diseaseSymptomProcedure}; // CodeableReference
+        case -505503602: /*diseaseStatus*/ return this.diseaseStatus == null ? new Base[0] : new Base[] {this.diseaseStatus}; // CodeableReference
+        case -406395211: /*comorbidity*/ return this.comorbidity == null ? new Base[0] : this.comorbidity.toArray(new Base[this.comorbidity.size()]); // CodeableReference
         case -597168804: /*indication*/ return this.indication == null ? new Base[0] : this.indication.toArray(new Base[this.indication.size()]); // Reference
         case -544509127: /*otherTherapy*/ return this.otherTherapy == null ? new Base[0] : this.otherTherapy.toArray(new Base[this.otherTherapy.size()]); // ClinicalUseIssueContraindicationOtherTherapyComponent
         default: return super.getProperty(hash, name, checkValid);
@@ -489,13 +485,13 @@ public class ClinicalUseIssue extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1497395130: // diseaseSymptomProcedure
-          this.diseaseSymptomProcedure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.diseaseSymptomProcedure = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case -505503602: // diseaseStatus
-          this.diseaseStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.diseaseStatus = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case -406395211: // comorbidity
-          this.getComorbidity().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          this.getComorbidity().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case -597168804: // indication
           this.getIndication().add(TypeConvertor.castToReference(value)); // Reference
@@ -511,11 +507,11 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("diseaseSymptomProcedure")) {
-          this.diseaseSymptomProcedure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.diseaseSymptomProcedure = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("diseaseStatus")) {
-          this.diseaseStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.diseaseStatus = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("comorbidity")) {
-          this.getComorbidity().add(TypeConvertor.castToCodeableConcept(value));
+          this.getComorbidity().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("indication")) {
           this.getIndication().add(TypeConvertor.castToReference(value));
         } else if (name.equals("otherTherapy")) {
@@ -541,9 +537,9 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1497395130: /*diseaseSymptomProcedure*/ return new String[] {"CodeableConcept"};
-        case -505503602: /*diseaseStatus*/ return new String[] {"CodeableConcept"};
-        case -406395211: /*comorbidity*/ return new String[] {"CodeableConcept"};
+        case -1497395130: /*diseaseSymptomProcedure*/ return new String[] {"CodeableReference"};
+        case -505503602: /*diseaseStatus*/ return new String[] {"CodeableReference"};
+        case -406395211: /*comorbidity*/ return new String[] {"CodeableReference"};
         case -597168804: /*indication*/ return new String[] {"Reference"};
         case -544509127: /*otherTherapy*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
@@ -554,11 +550,11 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("diseaseSymptomProcedure")) {
-          this.diseaseSymptomProcedure = new CodeableConcept();
+          this.diseaseSymptomProcedure = new CodeableReference();
           return this.diseaseSymptomProcedure;
         }
         else if (name.equals("diseaseStatus")) {
-          this.diseaseStatus = new CodeableConcept();
+          this.diseaseStatus = new CodeableReference();
           return this.diseaseStatus;
         }
         else if (name.equals("comorbidity")) {
@@ -585,8 +581,8 @@ public class ClinicalUseIssue extends DomainResource {
         dst.diseaseSymptomProcedure = diseaseSymptomProcedure == null ? null : diseaseSymptomProcedure.copy();
         dst.diseaseStatus = diseaseStatus == null ? null : diseaseStatus.copy();
         if (comorbidity != null) {
-          dst.comorbidity = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : comorbidity)
+          dst.comorbidity = new ArrayList<CodeableReference>();
+          for (CodeableReference i : comorbidity)
             dst.comorbidity.add(i.copy());
         };
         if (indication != null) {
@@ -640,18 +636,18 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * The type of relationship between the medicinal product indication or contraindication and another therapy.
          */
-        @Child(name = "therapyRelationshipType", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "relationshipType", type = {CodeableConcept.class}, order=1, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The type of relationship between the medicinal product indication or contraindication and another therapy", formalDefinition="The type of relationship between the medicinal product indication or contraindication and another therapy." )
-        protected CodeableConcept therapyRelationshipType;
+        protected CodeableConcept relationshipType;
 
         /**
          * Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.
          */
-        @Child(name = "medication", type = {CodeableConcept.class, MedicinalProductDefinition.class, Medication.class, Substance.class, SubstanceDefinition.class}, order=2, min=1, max=1, modifier=false, summary=true)
+        @Child(name = "therapy", type = {CodeableReference.class}, order=2, min=1, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication", formalDefinition="Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication." )
-        protected DataType medication;
+        protected CodeableReference therapy;
 
-        private static final long serialVersionUID = -923241363L;
+        private static final long serialVersionUID = -363440718L;
 
     /**
      * Constructor
@@ -663,101 +659,71 @@ public class ClinicalUseIssue extends DomainResource {
     /**
      * Constructor
      */
-      public ClinicalUseIssueContraindicationOtherTherapyComponent(CodeableConcept therapyRelationshipType, DataType medication) {
+      public ClinicalUseIssueContraindicationOtherTherapyComponent(CodeableConcept relationshipType, CodeableReference therapy) {
         super();
-        this.setTherapyRelationshipType(therapyRelationshipType);
-        this.setMedication(medication);
+        this.setRelationshipType(relationshipType);
+        this.setTherapy(therapy);
       }
 
         /**
-         * @return {@link #therapyRelationshipType} (The type of relationship between the medicinal product indication or contraindication and another therapy.)
+         * @return {@link #relationshipType} (The type of relationship between the medicinal product indication or contraindication and another therapy.)
          */
-        public CodeableConcept getTherapyRelationshipType() { 
-          if (this.therapyRelationshipType == null)
+        public CodeableConcept getRelationshipType() { 
+          if (this.relationshipType == null)
             if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create ClinicalUseIssueContraindicationOtherTherapyComponent.therapyRelationshipType");
+              throw new Error("Attempt to auto-create ClinicalUseIssueContraindicationOtherTherapyComponent.relationshipType");
             else if (Configuration.doAutoCreate())
-              this.therapyRelationshipType = new CodeableConcept(); // cc
-          return this.therapyRelationshipType;
+              this.relationshipType = new CodeableConcept(); // cc
+          return this.relationshipType;
         }
 
-        public boolean hasTherapyRelationshipType() { 
-          return this.therapyRelationshipType != null && !this.therapyRelationshipType.isEmpty();
+        public boolean hasRelationshipType() { 
+          return this.relationshipType != null && !this.relationshipType.isEmpty();
         }
 
         /**
-         * @param value {@link #therapyRelationshipType} (The type of relationship between the medicinal product indication or contraindication and another therapy.)
+         * @param value {@link #relationshipType} (The type of relationship between the medicinal product indication or contraindication and another therapy.)
          */
-        public ClinicalUseIssueContraindicationOtherTherapyComponent setTherapyRelationshipType(CodeableConcept value) { 
-          this.therapyRelationshipType = value;
+        public ClinicalUseIssueContraindicationOtherTherapyComponent setRelationshipType(CodeableConcept value) { 
+          this.relationshipType = value;
           return this;
         }
 
         /**
-         * @return {@link #medication} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
+         * @return {@link #therapy} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
          */
-        public DataType getMedication() { 
-          return this.medication;
+        public CodeableReference getTherapy() { 
+          if (this.therapy == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create ClinicalUseIssueContraindicationOtherTherapyComponent.therapy");
+            else if (Configuration.doAutoCreate())
+              this.therapy = new CodeableReference(); // cc
+          return this.therapy;
+        }
+
+        public boolean hasTherapy() { 
+          return this.therapy != null && !this.therapy.isEmpty();
         }
 
         /**
-         * @return {@link #medication} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
+         * @param value {@link #therapy} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
          */
-        public CodeableConcept getMedicationCodeableConcept() throws FHIRException { 
-          if (this.medication == null)
-            this.medication = new CodeableConcept();
-          if (!(this.medication instanceof CodeableConcept))
-            throw new FHIRException("Type mismatch: the type CodeableConcept was expected, but "+this.medication.getClass().getName()+" was encountered");
-          return (CodeableConcept) this.medication;
-        }
-
-        public boolean hasMedicationCodeableConcept() { 
-          return this != null && this.medication instanceof CodeableConcept;
-        }
-
-        /**
-         * @return {@link #medication} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
-         */
-        public Reference getMedicationReference() throws FHIRException { 
-          if (this.medication == null)
-            this.medication = new Reference();
-          if (!(this.medication instanceof Reference))
-            throw new FHIRException("Type mismatch: the type Reference was expected, but "+this.medication.getClass().getName()+" was encountered");
-          return (Reference) this.medication;
-        }
-
-        public boolean hasMedicationReference() { 
-          return this != null && this.medication instanceof Reference;
-        }
-
-        public boolean hasMedication() { 
-          return this.medication != null && !this.medication.isEmpty();
-        }
-
-        /**
-         * @param value {@link #medication} (Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.)
-         */
-        public ClinicalUseIssueContraindicationOtherTherapyComponent setMedication(DataType value) { 
-          if (value != null && !(value instanceof CodeableConcept || value instanceof Reference))
-            throw new Error("Not the right type for ClinicalUseIssue.contraindication.otherTherapy.medication[x]: "+value.fhirType());
-          this.medication = value;
+        public ClinicalUseIssueContraindicationOtherTherapyComponent setTherapy(CodeableReference value) { 
+          this.therapy = value;
           return this;
         }
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("therapyRelationshipType", "CodeableConcept", "The type of relationship between the medicinal product indication or contraindication and another therapy.", 0, 1, therapyRelationshipType));
-          children.add(new Property("medication[x]", "CodeableConcept|Reference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, medication));
+          children.add(new Property("relationshipType", "CodeableConcept", "The type of relationship between the medicinal product indication or contraindication and another therapy.", 0, 1, relationshipType));
+          children.add(new Property("therapy", "CodeableReference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition|ActivityDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, therapy));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -551658469: /*therapyRelationshipType*/  return new Property("therapyRelationshipType", "CodeableConcept", "The type of relationship between the medicinal product indication or contraindication and another therapy.", 0, 1, therapyRelationshipType);
-          case 1458402129: /*medication[x]*/  return new Property("medication[x]", "CodeableConcept|Reference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, medication);
-          case 1998965455: /*medication*/  return new Property("medication[x]", "CodeableConcept|Reference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, medication);
-          case -209845038: /*medicationCodeableConcept*/  return new Property("medication[x]", "CodeableConcept", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, medication);
-          case 2104315196: /*medicationReference*/  return new Property("medication[x]", "Reference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, medication);
+          case -1602839150: /*relationshipType*/  return new Property("relationshipType", "CodeableConcept", "The type of relationship between the medicinal product indication or contraindication and another therapy.", 0, 1, relationshipType);
+          case -1349555095: /*therapy*/  return new Property("therapy", "CodeableReference(MedicinalProductDefinition|Medication|Substance|SubstanceDefinition|ActivityDefinition)", "Reference to a specific medication (active substance, medicinal product or class of products) as part of an indication or contraindication.", 0, 1, therapy);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -766,8 +732,8 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -551658469: /*therapyRelationshipType*/ return this.therapyRelationshipType == null ? new Base[0] : new Base[] {this.therapyRelationshipType}; // CodeableConcept
-        case 1998965455: /*medication*/ return this.medication == null ? new Base[0] : new Base[] {this.medication}; // DataType
+        case -1602839150: /*relationshipType*/ return this.relationshipType == null ? new Base[0] : new Base[] {this.relationshipType}; // CodeableConcept
+        case -1349555095: /*therapy*/ return this.therapy == null ? new Base[0] : new Base[] {this.therapy}; // CodeableReference
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -776,11 +742,11 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
-        case -551658469: // therapyRelationshipType
-          this.therapyRelationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        case -1602839150: // relationshipType
+          this.relationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
-        case 1998965455: // medication
-          this.medication = TypeConvertor.castToType(value); // DataType
+        case -1349555095: // therapy
+          this.therapy = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         default: return super.setProperty(hash, name, value);
         }
@@ -789,10 +755,10 @@ public class ClinicalUseIssue extends DomainResource {
 
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("therapyRelationshipType")) {
-          this.therapyRelationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
-        } else if (name.equals("medication[x]")) {
-          this.medication = TypeConvertor.castToType(value); // DataType
+        if (name.equals("relationshipType")) {
+          this.relationshipType = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+        } else if (name.equals("therapy")) {
+          this.therapy = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else
           return super.setProperty(name, value);
         return value;
@@ -801,9 +767,8 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -551658469:  return getTherapyRelationshipType();
-        case 1458402129:  return getMedication();
-        case 1998965455:  return getMedication();
+        case -1602839150:  return getRelationshipType();
+        case -1349555095:  return getTherapy();
         default: return super.makeProperty(hash, name);
         }
 
@@ -812,8 +777,8 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -551658469: /*therapyRelationshipType*/ return new String[] {"CodeableConcept"};
-        case 1998965455: /*medication*/ return new String[] {"CodeableConcept", "Reference"};
+        case -1602839150: /*relationshipType*/ return new String[] {"CodeableConcept"};
+        case -1349555095: /*therapy*/ return new String[] {"CodeableReference"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -821,17 +786,13 @@ public class ClinicalUseIssue extends DomainResource {
 
       @Override
       public Base addChild(String name) throws FHIRException {
-        if (name.equals("therapyRelationshipType")) {
-          this.therapyRelationshipType = new CodeableConcept();
-          return this.therapyRelationshipType;
+        if (name.equals("relationshipType")) {
+          this.relationshipType = new CodeableConcept();
+          return this.relationshipType;
         }
-        else if (name.equals("medicationCodeableConcept")) {
-          this.medication = new CodeableConcept();
-          return this.medication;
-        }
-        else if (name.equals("medicationReference")) {
-          this.medication = new Reference();
-          return this.medication;
+        else if (name.equals("therapy")) {
+          this.therapy = new CodeableReference();
+          return this.therapy;
         }
         else
           return super.addChild(name);
@@ -845,8 +806,8 @@ public class ClinicalUseIssue extends DomainResource {
 
       public void copyValues(ClinicalUseIssueContraindicationOtherTherapyComponent dst) {
         super.copyValues(dst);
-        dst.therapyRelationshipType = therapyRelationshipType == null ? null : therapyRelationshipType.copy();
-        dst.medication = medication == null ? null : medication.copy();
+        dst.relationshipType = relationshipType == null ? null : relationshipType.copy();
+        dst.therapy = therapy == null ? null : therapy.copy();
       }
 
       @Override
@@ -856,7 +817,7 @@ public class ClinicalUseIssue extends DomainResource {
         if (!(other_ instanceof ClinicalUseIssueContraindicationOtherTherapyComponent))
           return false;
         ClinicalUseIssueContraindicationOtherTherapyComponent o = (ClinicalUseIssueContraindicationOtherTherapyComponent) other_;
-        return compareDeep(therapyRelationshipType, o.therapyRelationshipType, true) && compareDeep(medication, o.medication, true)
+        return compareDeep(relationshipType, o.relationshipType, true) && compareDeep(therapy, o.therapy, true)
           ;
       }
 
@@ -871,7 +832,7 @@ public class ClinicalUseIssue extends DomainResource {
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(therapyRelationshipType, medication
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(relationshipType, therapy
           );
       }
 
@@ -887,53 +848,53 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * The situation that is being documented as an indicaton for this item.
          */
-        @Child(name = "diseaseSymptomProcedure", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "diseaseSymptomProcedure", type = {CodeableReference.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The situation that is being documented as an indicaton for this item", formalDefinition="The situation that is being documented as an indicaton for this item." )
-        protected CodeableConcept diseaseSymptomProcedure;
+        protected CodeableReference diseaseSymptomProcedure;
 
         /**
          * The status of the disease or symptom for the indication.
          */
-        @Child(name = "diseaseStatus", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "diseaseStatus", type = {CodeableReference.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The status of the disease or symptom for the indication", formalDefinition="The status of the disease or symptom for the indication." )
-        protected CodeableConcept diseaseStatus;
+        protected CodeableReference diseaseStatus;
 
         /**
          * A comorbidity (concurrent condition) or coinfection as part of the indication.
          */
-        @Child(name = "comorbidity", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "comorbidity", type = {CodeableReference.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="A comorbidity (concurrent condition) or coinfection as part of the indication", formalDefinition="A comorbidity (concurrent condition) or coinfection as part of the indication." )
-        protected List<CodeableConcept> comorbidity;
+        protected List<CodeableReference> comorbidity;
 
         /**
-         * For an indication - the intended effect, aim or strategy to be achieved.
+         * The intended effect, aim or strategy to be achieved.
          */
-        @Child(name = "intendedEffect", type = {CodeableConcept.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="For an indication - the intended effect, aim or strategy to be achieved", formalDefinition="For an indication - the intended effect, aim or strategy to be achieved." )
-        protected CodeableConcept intendedEffect;
+        @Child(name = "intendedEffect", type = {CodeableReference.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Description(shortDefinition="The intended effect, aim or strategy to be achieved", formalDefinition="The intended effect, aim or strategy to be achieved." )
+        protected CodeableReference intendedEffect;
 
         /**
-         * For an indication - timing or duration information.
+         * Timing or duration information.
          */
         @Child(name = "duration", type = {Quantity.class}, order=5, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="For an indication - timing or duration information", formalDefinition="For an indication - timing or duration information." )
+        @Description(shortDefinition="Timing or duration information", formalDefinition="Timing or duration information." )
         protected Quantity duration;
 
         /**
-         * For an indicaton - the specific undesirable effects of the medicinal product.
+         * The specific undesirable effects of the medicinal product.
          */
         @Child(name = "undesirableEffect", type = {ClinicalUseIssue.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="For an indicaton - the specific undesirable effects of the medicinal product", formalDefinition="For an indicaton - the specific undesirable effects of the medicinal product." )
+        @Description(shortDefinition="The specific undesirable effects of the medicinal product", formalDefinition="The specific undesirable effects of the medicinal product." )
         protected List<Reference> undesirableEffect;
 
         /**
-         * Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.
+         * Information about the use of the medicinal product in relation to other therapies described as part of the indication.
          */
         @Child(name = "otherTherapy", type = {ClinicalUseIssueContraindicationOtherTherapyComponent.class}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="Information about the use of the medicinal product in relation to other therapies described as part of the contraindication", formalDefinition="Information about the use of the medicinal product in relation to other therapies described as part of the contraindication." )
+        @Description(shortDefinition="Information about the use of the medicinal product in relation to other therapies described as part of the indication", formalDefinition="Information about the use of the medicinal product in relation to other therapies described as part of the indication." )
         protected List<ClinicalUseIssueContraindicationOtherTherapyComponent> otherTherapy;
 
-        private static final long serialVersionUID = -631720121L;
+        private static final long serialVersionUID = 1637864097L;
 
     /**
      * Constructor
@@ -945,12 +906,12 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @return {@link #diseaseSymptomProcedure} (The situation that is being documented as an indicaton for this item.)
          */
-        public CodeableConcept getDiseaseSymptomProcedure() { 
+        public CodeableReference getDiseaseSymptomProcedure() { 
           if (this.diseaseSymptomProcedure == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ClinicalUseIssueIndicationComponent.diseaseSymptomProcedure");
             else if (Configuration.doAutoCreate())
-              this.diseaseSymptomProcedure = new CodeableConcept(); // cc
+              this.diseaseSymptomProcedure = new CodeableReference(); // cc
           return this.diseaseSymptomProcedure;
         }
 
@@ -961,7 +922,7 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @param value {@link #diseaseSymptomProcedure} (The situation that is being documented as an indicaton for this item.)
          */
-        public ClinicalUseIssueIndicationComponent setDiseaseSymptomProcedure(CodeableConcept value) { 
+        public ClinicalUseIssueIndicationComponent setDiseaseSymptomProcedure(CodeableReference value) { 
           this.diseaseSymptomProcedure = value;
           return this;
         }
@@ -969,12 +930,12 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @return {@link #diseaseStatus} (The status of the disease or symptom for the indication.)
          */
-        public CodeableConcept getDiseaseStatus() { 
+        public CodeableReference getDiseaseStatus() { 
           if (this.diseaseStatus == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ClinicalUseIssueIndicationComponent.diseaseStatus");
             else if (Configuration.doAutoCreate())
-              this.diseaseStatus = new CodeableConcept(); // cc
+              this.diseaseStatus = new CodeableReference(); // cc
           return this.diseaseStatus;
         }
 
@@ -985,7 +946,7 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @param value {@link #diseaseStatus} (The status of the disease or symptom for the indication.)
          */
-        public ClinicalUseIssueIndicationComponent setDiseaseStatus(CodeableConcept value) { 
+        public ClinicalUseIssueIndicationComponent setDiseaseStatus(CodeableReference value) { 
           this.diseaseStatus = value;
           return this;
         }
@@ -993,16 +954,16 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @return {@link #comorbidity} (A comorbidity (concurrent condition) or coinfection as part of the indication.)
          */
-        public List<CodeableConcept> getComorbidity() { 
+        public List<CodeableReference> getComorbidity() { 
           if (this.comorbidity == null)
-            this.comorbidity = new ArrayList<CodeableConcept>();
+            this.comorbidity = new ArrayList<CodeableReference>();
           return this.comorbidity;
         }
 
         /**
          * @return Returns a reference to <code>this</code> for easy method chaining
          */
-        public ClinicalUseIssueIndicationComponent setComorbidity(List<CodeableConcept> theComorbidity) { 
+        public ClinicalUseIssueIndicationComponent setComorbidity(List<CodeableReference> theComorbidity) { 
           this.comorbidity = theComorbidity;
           return this;
         }
@@ -1010,25 +971,25 @@ public class ClinicalUseIssue extends DomainResource {
         public boolean hasComorbidity() { 
           if (this.comorbidity == null)
             return false;
-          for (CodeableConcept item : this.comorbidity)
+          for (CodeableReference item : this.comorbidity)
             if (!item.isEmpty())
               return true;
           return false;
         }
 
-        public CodeableConcept addComorbidity() { //3
-          CodeableConcept t = new CodeableConcept();
+        public CodeableReference addComorbidity() { //3
+          CodeableReference t = new CodeableReference();
           if (this.comorbidity == null)
-            this.comorbidity = new ArrayList<CodeableConcept>();
+            this.comorbidity = new ArrayList<CodeableReference>();
           this.comorbidity.add(t);
           return t;
         }
 
-        public ClinicalUseIssueIndicationComponent addComorbidity(CodeableConcept t) { //3
+        public ClinicalUseIssueIndicationComponent addComorbidity(CodeableReference t) { //3
           if (t == null)
             return this;
           if (this.comorbidity == null)
-            this.comorbidity = new ArrayList<CodeableConcept>();
+            this.comorbidity = new ArrayList<CodeableReference>();
           this.comorbidity.add(t);
           return this;
         }
@@ -1036,7 +997,7 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @return The first repetition of repeating field {@link #comorbidity}, creating it if it does not already exist {3}
          */
-        public CodeableConcept getComorbidityFirstRep() { 
+        public CodeableReference getComorbidityFirstRep() { 
           if (getComorbidity().isEmpty()) {
             addComorbidity();
           }
@@ -1044,14 +1005,14 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @return {@link #intendedEffect} (For an indication - the intended effect, aim or strategy to be achieved.)
+         * @return {@link #intendedEffect} (The intended effect, aim or strategy to be achieved.)
          */
-        public CodeableConcept getIntendedEffect() { 
+        public CodeableReference getIntendedEffect() { 
           if (this.intendedEffect == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ClinicalUseIssueIndicationComponent.intendedEffect");
             else if (Configuration.doAutoCreate())
-              this.intendedEffect = new CodeableConcept(); // cc
+              this.intendedEffect = new CodeableReference(); // cc
           return this.intendedEffect;
         }
 
@@ -1060,15 +1021,15 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @param value {@link #intendedEffect} (For an indication - the intended effect, aim or strategy to be achieved.)
+         * @param value {@link #intendedEffect} (The intended effect, aim or strategy to be achieved.)
          */
-        public ClinicalUseIssueIndicationComponent setIntendedEffect(CodeableConcept value) { 
+        public ClinicalUseIssueIndicationComponent setIntendedEffect(CodeableReference value) { 
           this.intendedEffect = value;
           return this;
         }
 
         /**
-         * @return {@link #duration} (For an indication - timing or duration information.)
+         * @return {@link #duration} (Timing or duration information.)
          */
         public Quantity getDuration() { 
           if (this.duration == null)
@@ -1084,7 +1045,7 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @param value {@link #duration} (For an indication - timing or duration information.)
+         * @param value {@link #duration} (Timing or duration information.)
          */
         public ClinicalUseIssueIndicationComponent setDuration(Quantity value) { 
           this.duration = value;
@@ -1092,7 +1053,7 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @return {@link #undesirableEffect} (For an indicaton - the specific undesirable effects of the medicinal product.)
+         * @return {@link #undesirableEffect} (The specific undesirable effects of the medicinal product.)
          */
         public List<Reference> getUndesirableEffect() { 
           if (this.undesirableEffect == null)
@@ -1145,7 +1106,7 @@ public class ClinicalUseIssue extends DomainResource {
         }
 
         /**
-         * @return {@link #otherTherapy} (Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.)
+         * @return {@link #otherTherapy} (Information about the use of the medicinal product in relation to other therapies described as part of the indication.)
          */
         public List<ClinicalUseIssueContraindicationOtherTherapyComponent> getOtherTherapy() { 
           if (this.otherTherapy == null)
@@ -1199,25 +1160,25 @@ public class ClinicalUseIssue extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("diseaseSymptomProcedure", "CodeableConcept", "The situation that is being documented as an indicaton for this item.", 0, 1, diseaseSymptomProcedure));
-          children.add(new Property("diseaseStatus", "CodeableConcept", "The status of the disease or symptom for the indication.", 0, 1, diseaseStatus));
-          children.add(new Property("comorbidity", "CodeableConcept", "A comorbidity (concurrent condition) or coinfection as part of the indication.", 0, java.lang.Integer.MAX_VALUE, comorbidity));
-          children.add(new Property("intendedEffect", "CodeableConcept", "For an indication - the intended effect, aim or strategy to be achieved.", 0, 1, intendedEffect));
-          children.add(new Property("duration", "Quantity", "For an indication - timing or duration information.", 0, 1, duration));
-          children.add(new Property("undesirableEffect", "Reference(ClinicalUseIssue)", "For an indicaton - the specific undesirable effects of the medicinal product.", 0, java.lang.Integer.MAX_VALUE, undesirableEffect));
-          children.add(new Property("otherTherapy", "@ClinicalUseIssue.contraindication.otherTherapy", "Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy));
+          children.add(new Property("diseaseSymptomProcedure", "CodeableReference(ObservationDefinition)", "The situation that is being documented as an indicaton for this item.", 0, 1, diseaseSymptomProcedure));
+          children.add(new Property("diseaseStatus", "CodeableReference(ObservationDefinition)", "The status of the disease or symptom for the indication.", 0, 1, diseaseStatus));
+          children.add(new Property("comorbidity", "CodeableReference(ObservationDefinition)", "A comorbidity (concurrent condition) or coinfection as part of the indication.", 0, java.lang.Integer.MAX_VALUE, comorbidity));
+          children.add(new Property("intendedEffect", "CodeableReference(ObservationDefinition)", "The intended effect, aim or strategy to be achieved.", 0, 1, intendedEffect));
+          children.add(new Property("duration", "Quantity", "Timing or duration information.", 0, 1, duration));
+          children.add(new Property("undesirableEffect", "Reference(ClinicalUseIssue)", "The specific undesirable effects of the medicinal product.", 0, java.lang.Integer.MAX_VALUE, undesirableEffect));
+          children.add(new Property("otherTherapy", "@ClinicalUseIssue.contraindication.otherTherapy", "Information about the use of the medicinal product in relation to other therapies described as part of the indication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy));
         }
 
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -1497395130: /*diseaseSymptomProcedure*/  return new Property("diseaseSymptomProcedure", "CodeableConcept", "The situation that is being documented as an indicaton for this item.", 0, 1, diseaseSymptomProcedure);
-          case -505503602: /*diseaseStatus*/  return new Property("diseaseStatus", "CodeableConcept", "The status of the disease or symptom for the indication.", 0, 1, diseaseStatus);
-          case -406395211: /*comorbidity*/  return new Property("comorbidity", "CodeableConcept", "A comorbidity (concurrent condition) or coinfection as part of the indication.", 0, java.lang.Integer.MAX_VALUE, comorbidity);
-          case 1587112348: /*intendedEffect*/  return new Property("intendedEffect", "CodeableConcept", "For an indication - the intended effect, aim or strategy to be achieved.", 0, 1, intendedEffect);
-          case -1992012396: /*duration*/  return new Property("duration", "Quantity", "For an indication - timing or duration information.", 0, 1, duration);
-          case 444367565: /*undesirableEffect*/  return new Property("undesirableEffect", "Reference(ClinicalUseIssue)", "For an indicaton - the specific undesirable effects of the medicinal product.", 0, java.lang.Integer.MAX_VALUE, undesirableEffect);
-          case -544509127: /*otherTherapy*/  return new Property("otherTherapy", "@ClinicalUseIssue.contraindication.otherTherapy", "Information about the use of the medicinal product in relation to other therapies described as part of the contraindication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy);
+          case -1497395130: /*diseaseSymptomProcedure*/  return new Property("diseaseSymptomProcedure", "CodeableReference(ObservationDefinition)", "The situation that is being documented as an indicaton for this item.", 0, 1, diseaseSymptomProcedure);
+          case -505503602: /*diseaseStatus*/  return new Property("diseaseStatus", "CodeableReference(ObservationDefinition)", "The status of the disease or symptom for the indication.", 0, 1, diseaseStatus);
+          case -406395211: /*comorbidity*/  return new Property("comorbidity", "CodeableReference(ObservationDefinition)", "A comorbidity (concurrent condition) or coinfection as part of the indication.", 0, java.lang.Integer.MAX_VALUE, comorbidity);
+          case 1587112348: /*intendedEffect*/  return new Property("intendedEffect", "CodeableReference(ObservationDefinition)", "The intended effect, aim or strategy to be achieved.", 0, 1, intendedEffect);
+          case -1992012396: /*duration*/  return new Property("duration", "Quantity", "Timing or duration information.", 0, 1, duration);
+          case 444367565: /*undesirableEffect*/  return new Property("undesirableEffect", "Reference(ClinicalUseIssue)", "The specific undesirable effects of the medicinal product.", 0, java.lang.Integer.MAX_VALUE, undesirableEffect);
+          case -544509127: /*otherTherapy*/  return new Property("otherTherapy", "@ClinicalUseIssue.contraindication.otherTherapy", "Information about the use of the medicinal product in relation to other therapies described as part of the indication.", 0, java.lang.Integer.MAX_VALUE, otherTherapy);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -1226,10 +1187,10 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -1497395130: /*diseaseSymptomProcedure*/ return this.diseaseSymptomProcedure == null ? new Base[0] : new Base[] {this.diseaseSymptomProcedure}; // CodeableConcept
-        case -505503602: /*diseaseStatus*/ return this.diseaseStatus == null ? new Base[0] : new Base[] {this.diseaseStatus}; // CodeableConcept
-        case -406395211: /*comorbidity*/ return this.comorbidity == null ? new Base[0] : this.comorbidity.toArray(new Base[this.comorbidity.size()]); // CodeableConcept
-        case 1587112348: /*intendedEffect*/ return this.intendedEffect == null ? new Base[0] : new Base[] {this.intendedEffect}; // CodeableConcept
+        case -1497395130: /*diseaseSymptomProcedure*/ return this.diseaseSymptomProcedure == null ? new Base[0] : new Base[] {this.diseaseSymptomProcedure}; // CodeableReference
+        case -505503602: /*diseaseStatus*/ return this.diseaseStatus == null ? new Base[0] : new Base[] {this.diseaseStatus}; // CodeableReference
+        case -406395211: /*comorbidity*/ return this.comorbidity == null ? new Base[0] : this.comorbidity.toArray(new Base[this.comorbidity.size()]); // CodeableReference
+        case 1587112348: /*intendedEffect*/ return this.intendedEffect == null ? new Base[0] : new Base[] {this.intendedEffect}; // CodeableReference
         case -1992012396: /*duration*/ return this.duration == null ? new Base[0] : new Base[] {this.duration}; // Quantity
         case 444367565: /*undesirableEffect*/ return this.undesirableEffect == null ? new Base[0] : this.undesirableEffect.toArray(new Base[this.undesirableEffect.size()]); // Reference
         case -544509127: /*otherTherapy*/ return this.otherTherapy == null ? new Base[0] : this.otherTherapy.toArray(new Base[this.otherTherapy.size()]); // ClinicalUseIssueContraindicationOtherTherapyComponent
@@ -1242,16 +1203,16 @@ public class ClinicalUseIssue extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -1497395130: // diseaseSymptomProcedure
-          this.diseaseSymptomProcedure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.diseaseSymptomProcedure = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case -505503602: // diseaseStatus
-          this.diseaseStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.diseaseStatus = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case -406395211: // comorbidity
-          this.getComorbidity().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
+          this.getComorbidity().add(TypeConvertor.castToCodeableReference(value)); // CodeableReference
           return value;
         case 1587112348: // intendedEffect
-          this.intendedEffect = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.intendedEffect = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case -1992012396: // duration
           this.duration = TypeConvertor.castToQuantity(value); // Quantity
@@ -1270,13 +1231,13 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("diseaseSymptomProcedure")) {
-          this.diseaseSymptomProcedure = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.diseaseSymptomProcedure = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("diseaseStatus")) {
-          this.diseaseStatus = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.diseaseStatus = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("comorbidity")) {
-          this.getComorbidity().add(TypeConvertor.castToCodeableConcept(value));
+          this.getComorbidity().add(TypeConvertor.castToCodeableReference(value));
         } else if (name.equals("intendedEffect")) {
-          this.intendedEffect = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.intendedEffect = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("duration")) {
           this.duration = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("undesirableEffect")) {
@@ -1306,10 +1267,10 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -1497395130: /*diseaseSymptomProcedure*/ return new String[] {"CodeableConcept"};
-        case -505503602: /*diseaseStatus*/ return new String[] {"CodeableConcept"};
-        case -406395211: /*comorbidity*/ return new String[] {"CodeableConcept"};
-        case 1587112348: /*intendedEffect*/ return new String[] {"CodeableConcept"};
+        case -1497395130: /*diseaseSymptomProcedure*/ return new String[] {"CodeableReference"};
+        case -505503602: /*diseaseStatus*/ return new String[] {"CodeableReference"};
+        case -406395211: /*comorbidity*/ return new String[] {"CodeableReference"};
+        case 1587112348: /*intendedEffect*/ return new String[] {"CodeableReference"};
         case -1992012396: /*duration*/ return new String[] {"Quantity"};
         case 444367565: /*undesirableEffect*/ return new String[] {"Reference"};
         case -544509127: /*otherTherapy*/ return new String[] {"@ClinicalUseIssue.contraindication.otherTherapy"};
@@ -1321,18 +1282,18 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("diseaseSymptomProcedure")) {
-          this.diseaseSymptomProcedure = new CodeableConcept();
+          this.diseaseSymptomProcedure = new CodeableReference();
           return this.diseaseSymptomProcedure;
         }
         else if (name.equals("diseaseStatus")) {
-          this.diseaseStatus = new CodeableConcept();
+          this.diseaseStatus = new CodeableReference();
           return this.diseaseStatus;
         }
         else if (name.equals("comorbidity")) {
           return addComorbidity();
         }
         else if (name.equals("intendedEffect")) {
-          this.intendedEffect = new CodeableConcept();
+          this.intendedEffect = new CodeableReference();
           return this.intendedEffect;
         }
         else if (name.equals("duration")) {
@@ -1360,8 +1321,8 @@ public class ClinicalUseIssue extends DomainResource {
         dst.diseaseSymptomProcedure = diseaseSymptomProcedure == null ? null : diseaseSymptomProcedure.copy();
         dst.diseaseStatus = diseaseStatus == null ? null : diseaseStatus.copy();
         if (comorbidity != null) {
-          dst.comorbidity = new ArrayList<CodeableConcept>();
-          for (CodeableConcept i : comorbidity)
+          dst.comorbidity = new ArrayList<CodeableReference>();
+          for (CodeableReference i : comorbidity)
             dst.comorbidity.add(i.copy());
         };
         dst.intendedEffect = intendedEffect == null ? null : intendedEffect.copy();
@@ -1416,10 +1377,10 @@ public class ClinicalUseIssue extends DomainResource {
     @Block()
     public static class ClinicalUseIssueInteractionComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * The specific medication, food or laboratory test that interacts.
+         * The specific medication, food, substance or laboratory test that interacts.
          */
         @Child(name = "interactant", type = {}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-        @Description(shortDefinition="The specific medication, food or laboratory test that interacts", formalDefinition="The specific medication, food or laboratory test that interacts." )
+        @Description(shortDefinition="The specific medication, food, substance or laboratory test that interacts", formalDefinition="The specific medication, food, substance or laboratory test that interacts." )
         protected List<ClinicalUseIssueInteractionInteractantComponent> interactant;
 
         /**
@@ -1432,9 +1393,9 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * The effect of the interaction, for example "reduced gastric absorption of primary medication".
          */
-        @Child(name = "effect", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "effect", type = {CodeableReference.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The effect of the interaction, for example \"reduced gastric absorption of primary medication\"", formalDefinition="The effect of the interaction, for example \"reduced gastric absorption of primary medication\"." )
-        protected CodeableConcept effect;
+        protected CodeableReference effect;
 
         /**
          * The incidence of the interaction, e.g. theoretical, observed.
@@ -1450,7 +1411,7 @@ public class ClinicalUseIssue extends DomainResource {
         @Description(shortDefinition="Actions for managing the interaction", formalDefinition="Actions for managing the interaction." )
         protected CodeableConcept management;
 
-        private static final long serialVersionUID = -910262208L;
+        private static final long serialVersionUID = -104458755L;
 
     /**
      * Constructor
@@ -1460,7 +1421,7 @@ public class ClinicalUseIssue extends DomainResource {
       }
 
         /**
-         * @return {@link #interactant} (The specific medication, food or laboratory test that interacts.)
+         * @return {@link #interactant} (The specific medication, food, substance or laboratory test that interacts.)
          */
         public List<ClinicalUseIssueInteractionInteractantComponent> getInteractant() { 
           if (this.interactant == null)
@@ -1539,12 +1500,12 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @return {@link #effect} (The effect of the interaction, for example "reduced gastric absorption of primary medication".)
          */
-        public CodeableConcept getEffect() { 
+        public CodeableReference getEffect() { 
           if (this.effect == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ClinicalUseIssueInteractionComponent.effect");
             else if (Configuration.doAutoCreate())
-              this.effect = new CodeableConcept(); // cc
+              this.effect = new CodeableReference(); // cc
           return this.effect;
         }
 
@@ -1555,7 +1516,7 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @param value {@link #effect} (The effect of the interaction, for example "reduced gastric absorption of primary medication".)
          */
-        public ClinicalUseIssueInteractionComponent setEffect(CodeableConcept value) { 
+        public ClinicalUseIssueInteractionComponent setEffect(CodeableReference value) { 
           this.effect = value;
           return this;
         }
@@ -1610,9 +1571,9 @@ public class ClinicalUseIssue extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("interactant", "", "The specific medication, food or laboratory test that interacts.", 0, java.lang.Integer.MAX_VALUE, interactant));
+          children.add(new Property("interactant", "", "The specific medication, food, substance or laboratory test that interacts.", 0, java.lang.Integer.MAX_VALUE, interactant));
           children.add(new Property("type", "CodeableConcept", "The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction.", 0, 1, type));
-          children.add(new Property("effect", "CodeableConcept", "The effect of the interaction, for example \"reduced gastric absorption of primary medication\".", 0, 1, effect));
+          children.add(new Property("effect", "CodeableReference(ObservationDefinition)", "The effect of the interaction, for example \"reduced gastric absorption of primary medication\".", 0, 1, effect));
           children.add(new Property("incidence", "CodeableConcept", "The incidence of the interaction, e.g. theoretical, observed.", 0, 1, incidence));
           children.add(new Property("management", "CodeableConcept", "Actions for managing the interaction.", 0, 1, management));
         }
@@ -1620,9 +1581,9 @@ public class ClinicalUseIssue extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 1844097009: /*interactant*/  return new Property("interactant", "", "The specific medication, food or laboratory test that interacts.", 0, java.lang.Integer.MAX_VALUE, interactant);
+          case 1844097009: /*interactant*/  return new Property("interactant", "", "The specific medication, food, substance or laboratory test that interacts.", 0, java.lang.Integer.MAX_VALUE, interactant);
           case 3575610: /*type*/  return new Property("type", "CodeableConcept", "The type of the interaction e.g. drug-drug interaction, drug-food interaction, drug-lab test interaction.", 0, 1, type);
-          case -1306084975: /*effect*/  return new Property("effect", "CodeableConcept", "The effect of the interaction, for example \"reduced gastric absorption of primary medication\".", 0, 1, effect);
+          case -1306084975: /*effect*/  return new Property("effect", "CodeableReference(ObservationDefinition)", "The effect of the interaction, for example \"reduced gastric absorption of primary medication\".", 0, 1, effect);
           case -1598467132: /*incidence*/  return new Property("incidence", "CodeableConcept", "The incidence of the interaction, e.g. theoretical, observed.", 0, 1, incidence);
           case -1799980989: /*management*/  return new Property("management", "CodeableConcept", "Actions for managing the interaction.", 0, 1, management);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -1635,7 +1596,7 @@ public class ClinicalUseIssue extends DomainResource {
         switch (hash) {
         case 1844097009: /*interactant*/ return this.interactant == null ? new Base[0] : this.interactant.toArray(new Base[this.interactant.size()]); // ClinicalUseIssueInteractionInteractantComponent
         case 3575610: /*type*/ return this.type == null ? new Base[0] : new Base[] {this.type}; // CodeableConcept
-        case -1306084975: /*effect*/ return this.effect == null ? new Base[0] : new Base[] {this.effect}; // CodeableConcept
+        case -1306084975: /*effect*/ return this.effect == null ? new Base[0] : new Base[] {this.effect}; // CodeableReference
         case -1598467132: /*incidence*/ return this.incidence == null ? new Base[0] : new Base[] {this.incidence}; // CodeableConcept
         case -1799980989: /*management*/ return this.management == null ? new Base[0] : new Base[] {this.management}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
@@ -1653,7 +1614,7 @@ public class ClinicalUseIssue extends DomainResource {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
           return value;
         case -1306084975: // effect
-          this.effect = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.effect = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case -1598467132: // incidence
           this.incidence = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -1673,7 +1634,7 @@ public class ClinicalUseIssue extends DomainResource {
         } else if (name.equals("type")) {
           this.type = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("effect")) {
-          this.effect = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.effect = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("incidence")) {
           this.incidence = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("management")) {
@@ -1701,7 +1662,7 @@ public class ClinicalUseIssue extends DomainResource {
         switch (hash) {
         case 1844097009: /*interactant*/ return new String[] {};
         case 3575610: /*type*/ return new String[] {"CodeableConcept"};
-        case -1306084975: /*effect*/ return new String[] {"CodeableConcept"};
+        case -1306084975: /*effect*/ return new String[] {"CodeableReference"};
         case -1598467132: /*incidence*/ return new String[] {"CodeableConcept"};
         case -1799980989: /*management*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
@@ -1719,7 +1680,7 @@ public class ClinicalUseIssue extends DomainResource {
           return this.type;
         }
         else if (name.equals("effect")) {
-          this.effect = new CodeableConcept();
+          this.effect = new CodeableReference();
           return this.effect;
         }
         else if (name.equals("incidence")) {
@@ -1989,9 +1950,9 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * The situation in which the undesirable effect may manifest.
          */
-        @Child(name = "symptomConditionEffect", type = {CodeableConcept.class}, order=1, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "symptomConditionEffect", type = {CodeableReference.class}, order=1, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="The situation in which the undesirable effect may manifest", formalDefinition="The situation in which the undesirable effect may manifest." )
-        protected CodeableConcept symptomConditionEffect;
+        protected CodeableReference symptomConditionEffect;
 
         /**
          * High level classification of the effect.
@@ -2007,7 +1968,7 @@ public class ClinicalUseIssue extends DomainResource {
         @Description(shortDefinition="How often the effect is seen", formalDefinition="How often the effect is seen." )
         protected CodeableConcept frequencyOfOccurrence;
 
-        private static final long serialVersionUID = 503141026L;
+        private static final long serialVersionUID = -55472609L;
 
     /**
      * Constructor
@@ -2019,12 +1980,12 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @return {@link #symptomConditionEffect} (The situation in which the undesirable effect may manifest.)
          */
-        public CodeableConcept getSymptomConditionEffect() { 
+        public CodeableReference getSymptomConditionEffect() { 
           if (this.symptomConditionEffect == null)
             if (Configuration.errorOnAutoCreate())
               throw new Error("Attempt to auto-create ClinicalUseIssueUndesirableEffectComponent.symptomConditionEffect");
             else if (Configuration.doAutoCreate())
-              this.symptomConditionEffect = new CodeableConcept(); // cc
+              this.symptomConditionEffect = new CodeableReference(); // cc
           return this.symptomConditionEffect;
         }
 
@@ -2035,7 +1996,7 @@ public class ClinicalUseIssue extends DomainResource {
         /**
          * @param value {@link #symptomConditionEffect} (The situation in which the undesirable effect may manifest.)
          */
-        public ClinicalUseIssueUndesirableEffectComponent setSymptomConditionEffect(CodeableConcept value) { 
+        public ClinicalUseIssueUndesirableEffectComponent setSymptomConditionEffect(CodeableReference value) { 
           this.symptomConditionEffect = value;
           return this;
         }
@@ -2090,7 +2051,7 @@ public class ClinicalUseIssue extends DomainResource {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("symptomConditionEffect", "CodeableConcept", "The situation in which the undesirable effect may manifest.", 0, 1, symptomConditionEffect));
+          children.add(new Property("symptomConditionEffect", "CodeableReference(ObservationDefinition)", "The situation in which the undesirable effect may manifest.", 0, 1, symptomConditionEffect));
           children.add(new Property("classification", "CodeableConcept", "High level classification of the effect.", 0, 1, classification));
           children.add(new Property("frequencyOfOccurrence", "CodeableConcept", "How often the effect is seen.", 0, 1, frequencyOfOccurrence));
         }
@@ -2098,7 +2059,7 @@ public class ClinicalUseIssue extends DomainResource {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case -650549981: /*symptomConditionEffect*/  return new Property("symptomConditionEffect", "CodeableConcept", "The situation in which the undesirable effect may manifest.", 0, 1, symptomConditionEffect);
+          case -650549981: /*symptomConditionEffect*/  return new Property("symptomConditionEffect", "CodeableReference(ObservationDefinition)", "The situation in which the undesirable effect may manifest.", 0, 1, symptomConditionEffect);
           case 382350310: /*classification*/  return new Property("classification", "CodeableConcept", "High level classification of the effect.", 0, 1, classification);
           case 791175812: /*frequencyOfOccurrence*/  return new Property("frequencyOfOccurrence", "CodeableConcept", "How often the effect is seen.", 0, 1, frequencyOfOccurrence);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
@@ -2109,7 +2070,7 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
-        case -650549981: /*symptomConditionEffect*/ return this.symptomConditionEffect == null ? new Base[0] : new Base[] {this.symptomConditionEffect}; // CodeableConcept
+        case -650549981: /*symptomConditionEffect*/ return this.symptomConditionEffect == null ? new Base[0] : new Base[] {this.symptomConditionEffect}; // CodeableReference
         case 382350310: /*classification*/ return this.classification == null ? new Base[0] : new Base[] {this.classification}; // CodeableConcept
         case 791175812: /*frequencyOfOccurrence*/ return this.frequencyOfOccurrence == null ? new Base[0] : new Base[] {this.frequencyOfOccurrence}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
@@ -2121,7 +2082,7 @@ public class ClinicalUseIssue extends DomainResource {
       public Base setProperty(int hash, String name, Base value) throws FHIRException {
         switch (hash) {
         case -650549981: // symptomConditionEffect
-          this.symptomConditionEffect = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.symptomConditionEffect = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case 382350310: // classification
           this.classification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
@@ -2137,7 +2098,7 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("symptomConditionEffect")) {
-          this.symptomConditionEffect = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.symptomConditionEffect = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("classification")) {
           this.classification = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else if (name.equals("frequencyOfOccurrence")) {
@@ -2161,7 +2122,7 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
-        case -650549981: /*symptomConditionEffect*/ return new String[] {"CodeableConcept"};
+        case -650549981: /*symptomConditionEffect*/ return new String[] {"CodeableReference"};
         case 382350310: /*classification*/ return new String[] {"CodeableConcept"};
         case 791175812: /*frequencyOfOccurrence*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
@@ -2172,7 +2133,7 @@ public class ClinicalUseIssue extends DomainResource {
       @Override
       public Base addChild(String name) throws FHIRException {
         if (name.equals("symptomConditionEffect")) {
-          this.symptomConditionEffect = new CodeableConcept();
+          this.symptomConditionEffect = new CodeableReference();
           return this.symptomConditionEffect;
         }
         else if (name.equals("classification")) {
@@ -3013,17 +2974,17 @@ public class ClinicalUseIssue extends DomainResource {
  /**
    * Search parameter: <b>contraindication</b>
    * <p>
-   * Description: <b>The situation that is being documented as contraindicating against this item</b><br>
+   * Description: <b>The situation that is being documented as contraindicating against this item, as a code</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="contraindication", path="ClinicalUseIssue.contraindication.diseaseSymptomProcedure", description="The situation that is being documented as contraindicating against this item", type="token" )
+  @SearchParamDefinition(name="contraindication", path="ClinicalUseIssue.contraindication.diseaseSymptomProcedure", description="The situation that is being documented as contraindicating against this item, as a code", type="token" )
   public static final String SP_CONTRAINDICATION = "contraindication";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>contraindication</b>
    * <p>
-   * Description: <b>The situation that is being documented as contraindicating against this item</b><br>
+   * Description: <b>The situation that is being documented as contraindicating against this item, as a code</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
    * </p>
@@ -3031,24 +2992,76 @@ public class ClinicalUseIssue extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTRAINDICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTRAINDICATION);
 
  /**
+   * Search parameter: <b>contraindication-reference</b>
+   * <p>
+   * Description: <b>The situation that is being documented as contraindicating against this item, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="contraindication-reference", path="ClinicalUseIssue.contraindication.diseaseSymptomProcedure", description="The situation that is being documented as contraindicating against this item, as a reference", type="reference" )
+  public static final String SP_CONTRAINDICATION_REFERENCE = "contraindication-reference";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>contraindication-reference</b>
+   * <p>
+   * Description: <b>The situation that is being documented as contraindicating against this item, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.contraindication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CONTRAINDICATION_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CONTRAINDICATION_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ClinicalUseIssue:contraindication-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_CONTRAINDICATION_REFERENCE = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:contraindication-reference").toLocked();
+
+ /**
    * Search parameter: <b>effect</b>
    * <p>
-   * Description: <b>The situation in which the undesirable effect may manifest</b><br>
+   * Description: <b>The situation in which the undesirable effect may manifest, as a code</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="effect", path="ClinicalUseIssue.undesirableEffect.symptomConditionEffect", description="The situation in which the undesirable effect may manifest", type="token" )
+  @SearchParamDefinition(name="effect", path="ClinicalUseIssue.undesirableEffect.symptomConditionEffect", description="The situation in which the undesirable effect may manifest, as a code", type="token" )
   public static final String SP_EFFECT = "effect";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>effect</b>
    * <p>
-   * Description: <b>The situation in which the undesirable effect may manifest</b><br>
+   * Description: <b>The situation in which the undesirable effect may manifest, as a code</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam EFFECT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EFFECT);
+
+ /**
+   * Search parameter: <b>effect-reference</b>
+   * <p>
+   * Description: <b>The situation in which the undesirable effect may manifest, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="effect-reference", path="ClinicalUseIssue.undesirableEffect.symptomConditionEffect", description="The situation in which the undesirable effect may manifest, as a reference", type="reference" )
+  public static final String SP_EFFECT_REFERENCE = "effect-reference";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>effect-reference</b>
+   * <p>
+   * Description: <b>The situation in which the undesirable effect may manifest, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.undesirableEffect.symptomConditionEffect</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam EFFECT_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_EFFECT_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ClinicalUseIssue:effect-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_EFFECT_REFERENCE = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:effect-reference").toLocked();
 
  /**
    * Search parameter: <b>identifier</b>
@@ -3073,22 +3086,48 @@ public class ClinicalUseIssue extends DomainResource {
  /**
    * Search parameter: <b>indication</b>
    * <p>
-   * Description: <b>The situation that is being documented as an indicaton for this item</b><br>
+   * Description: <b>The situation that is being documented as an indicaton for this item, as a code</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="indication", path="ClinicalUseIssue.indication.diseaseSymptomProcedure", description="The situation that is being documented as an indicaton for this item", type="token" )
+  @SearchParamDefinition(name="indication", path="ClinicalUseIssue.indication.diseaseSymptomProcedure", description="The situation that is being documented as an indicaton for this item, as a code", type="token" )
   public static final String SP_INDICATION = "indication";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>indication</b>
    * <p>
-   * Description: <b>The situation that is being documented as an indicaton for this item</b><br>
+   * Description: <b>The situation that is being documented as an indicaton for this item, as a code</b><br>
    * Type: <b>token</b><br>
    * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam INDICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_INDICATION);
+
+ /**
+   * Search parameter: <b>indication-reference</b>
+   * <p>
+   * Description: <b>The situation that is being documented as an indicaton for this item, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="indication-reference", path="ClinicalUseIssue.indication.diseaseSymptomProcedure", description="The situation that is being documented as an indicaton for this item, as a reference", type="reference" )
+  public static final String SP_INDICATION_REFERENCE = "indication-reference";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>indication-reference</b>
+   * <p>
+   * Description: <b>The situation that is being documented as an indicaton for this item, as a reference</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>ClinicalUseIssue.indication.diseaseSymptomProcedure</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam INDICATION_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_INDICATION_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>ClinicalUseIssue:indication-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_INDICATION_REFERENCE = new ca.uhn.fhir.model.api.Include("ClinicalUseIssue:indication-reference").toLocked();
 
  /**
    * Search parameter: <b>interaction</b>
@@ -3118,7 +3157,7 @@ public class ClinicalUseIssue extends DomainResource {
    * Path: <b>ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="product", path="ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)", description="The medicinal product for which this is a clinical usage issue", type="reference", target={MedicinalProductDefinition.class } )
+  @SearchParamDefinition(name="product", path="ClinicalUseIssue.subject.where(resolve() is MedicinalProductDefinition)", description="The medicinal product for which this is a clinical usage issue", type="reference", target={ActivityDefinition.class, Device.class, DeviceDefinition.class, Medication.class, MedicinalProductDefinition.class, PlanDefinition.class, Substance.class } )
   public static final String SP_PRODUCT = "product";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>product</b>

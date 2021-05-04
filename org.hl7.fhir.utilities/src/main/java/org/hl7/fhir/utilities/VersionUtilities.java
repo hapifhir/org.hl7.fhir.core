@@ -55,8 +55,8 @@ public class VersionUtilities {
     }
   }
 
-  public static final String CURRENT_VERSION = "4.5";
-  public static final String CURRENT_FULL_VERSION = "4.5.0";
+  public static final String CURRENT_VERSION = "4.6";
+  public static final String CURRENT_FULL_VERSION = "4.6.0";
 
   public static String packageForVersion(String v) {
     if (isR2Ver(v)) {
@@ -77,7 +77,7 @@ public class VersionUtilities {
     if (v != null && v.startsWith(CURRENT_VERSION)) {
       return "hl7.fhir.r5.core";
     }
-    if ("4.4.0".equals(v)) {
+    if (Utilities.existsInList(v, "4.4.0", "4.5.0")) {
       return "hl7.fhir.r5.core";
     }
     return null;

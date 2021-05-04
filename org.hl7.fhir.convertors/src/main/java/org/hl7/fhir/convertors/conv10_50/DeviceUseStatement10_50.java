@@ -7,10 +7,10 @@ import org.hl7.fhir.r5.model.CodeableReference;
 
 public class DeviceUseStatement10_50 {
 
-    public static org.hl7.fhir.r5.model.DeviceUseStatement convertDeviceUseStatement(org.hl7.fhir.dstu2.model.DeviceUseStatement src) throws FHIRException {
+    public static org.hl7.fhir.r5.model.DeviceUsage convertDeviceUseStatement(org.hl7.fhir.dstu2.model.DeviceUseStatement src) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
-        org.hl7.fhir.r5.model.DeviceUseStatement tgt = new org.hl7.fhir.r5.model.DeviceUseStatement();
+        org.hl7.fhir.r5.model.DeviceUsage tgt = new org.hl7.fhir.r5.model.DeviceUsage();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
         if (src.hasBodySiteCodeableConcept())
             tgt.getBodySite().setConcept(VersionConvertor_10_50.convertCodeableConcept(src.getBodySiteCodeableConcept()));
@@ -28,7 +28,7 @@ public class DeviceUseStatement10_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.DeviceUseStatement convertDeviceUseStatement(org.hl7.fhir.r5.model.DeviceUseStatement src) throws FHIRException {
+    public static org.hl7.fhir.dstu2.model.DeviceUseStatement convertDeviceUseStatement(org.hl7.fhir.r5.model.DeviceUsage src) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.DeviceUseStatement tgt = new org.hl7.fhir.dstu2.model.DeviceUseStatement();
