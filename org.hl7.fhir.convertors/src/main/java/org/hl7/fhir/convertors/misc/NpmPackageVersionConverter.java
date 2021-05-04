@@ -50,20 +50,6 @@ public class NpmPackageVersionConverter {
       return false;
     }
 
-    @Override
-    public Resource convertR2(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-      throw new Error("Not done yet");
-    }
-
-    @Override
-    public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-      throw new Error("Not done yet");
-    }
-
-    @Override
-    public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-      throw new Error("Not done yet");
-    }
 
     @Override
     public void handleCodeSystem(CodeSystem tgtcs, ValueSet source) throws FHIRException {
