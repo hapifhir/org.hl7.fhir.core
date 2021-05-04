@@ -47,4 +47,13 @@ public class PackageCacheTests {
     Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.1.x").version(), "3.1.1");
     Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.0.x").version(), "3.0.1");
   }
+
+  @Test
+  public void testNotCaseSensitive() throws IOException {
+    FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    cache.clear();    
+    Assertions.assertEquals(cache.loadPackage("KBV.Basis", "1.1.3").version(), "1.1.3");
+    Assertions.assertEquals(cache.loadPackage("kbv.basis", "1.1.3").version(), "1.1.3");
+    
+  }
 }
