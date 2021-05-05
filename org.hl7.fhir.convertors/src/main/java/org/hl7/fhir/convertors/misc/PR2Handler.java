@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
-import org.hl7.fhir.convertors.advisor.VersionConvertorAdvisor40;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor40;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Bundle;

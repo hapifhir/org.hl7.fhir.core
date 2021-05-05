@@ -38,7 +38,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
-import org.hl7.fhir.convertors.advisor.VersionConvertorAdvisor30;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor30;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;

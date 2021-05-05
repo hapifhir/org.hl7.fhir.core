@@ -32,7 +32,7 @@ package org.hl7.fhir.convertors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.hl7.fhir.convertors.advisor.VersionConvertorAdvisor40;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.loaders.R2016MayToR4Loader;
 import org.hl7.fhir.convertors.loaders.R2ToR4Loader;
 import org.hl7.fhir.convertors.loaders.R3ToR4Loader;

@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.advisor;
+package org.hl7.fhir.convertors.advisors;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
