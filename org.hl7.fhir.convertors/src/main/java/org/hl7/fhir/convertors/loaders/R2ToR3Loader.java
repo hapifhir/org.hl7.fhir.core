@@ -113,10 +113,6 @@ public class R2ToR3Loader extends BaseLoaderR3 implements VersionConvertorAdviso
     return false;
   }
 
-  @Override
-  public Resource convert(org.hl7.fhir.dstu3.model.Resource resource) throws FHIRException {
-    return null;
-  }
 
   @Override
   public void handleCodeSystem(CodeSystem cs, ValueSet vs) {

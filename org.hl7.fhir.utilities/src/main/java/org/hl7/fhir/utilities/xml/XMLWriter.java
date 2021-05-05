@@ -900,6 +900,12 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
   public void decorate(ElementDecoration element) throws IOException {
     // nothing...
   }
+  @Override
+  public void setSchemaLocation(String ns, String loc) throws IOException {
+    namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+    attribute("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation", ns+" "+loc);
+    
+  }
 	
 	
 }
