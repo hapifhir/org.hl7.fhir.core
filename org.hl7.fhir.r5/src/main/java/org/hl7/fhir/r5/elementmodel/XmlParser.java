@@ -86,6 +86,16 @@ public class XmlParser extends ParserBase {
   public XmlParser(IWorkerContext context) {
     super(context);
   }
+  
+  private String schemaPath;
+  
+  public String getSchemaPath() {
+    return schemaPath;
+  }
+  public void setSchemaPath(String schemaPath) {
+    this.schemaPath = schemaPath;
+  }
+
 
   
   public boolean isAllowXsiLocation() {
@@ -597,6 +607,9 @@ public class XmlParser extends ParserBase {
   public void compose(Element e, IXMLWriter xml) throws Exception {
     xml.start();
     xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
+    if (schemaPath != null) {
+      xml.setSchemaLocation(FormatUtilities.FHIR_NS, Utilities.pathURL(schemaPath, e.fhirType()+".xsd"));
+    }
     composeElement(xml, e, e.getType(), true);
     xml.end();
   }

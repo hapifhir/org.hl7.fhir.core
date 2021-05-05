@@ -89,10 +89,6 @@ public class IGPackConverter102 implements VersionConvertorAdvisor30 {
     return false;
   }
 
-  @Override
-  public Resource convert(org.hl7.fhir.dstu3.model.Resource resource) throws FHIRException {
-    return null;
-  }
 
   @Override
   public void handleCodeSystem(CodeSystem tgtcs, ValueSet vs) {
