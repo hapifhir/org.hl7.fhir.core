@@ -1755,7 +1755,7 @@ public class ListResource extends DomainResource {
    * Path: <b>List.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="List.subject", description="If all resources have the same subject", type="reference", target={Device.class, Group.class, Location.class, Patient.class } )
+  @SearchParamDefinition(name="subject", path="List.subject", description="If all resources have the same subject", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Device.class, Group.class, Location.class, Patient.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
@@ -1807,7 +1807,7 @@ public class ListResource extends DomainResource {
    * Path: <b>List.source</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="source", path="List.source", description="Who and/or what defined the list contents (aka Author)", type="reference", target={Device.class, Patient.class, Practitioner.class } )
+  @SearchParamDefinition(name="source", path="List.source", description="Who and/or what defined the list contents (aka Author)", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Patient.class, Practitioner.class } )
   public static final String SP_SOURCE = "source";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>source</b>

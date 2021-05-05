@@ -25,6 +25,11 @@ import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor40;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.CodeSystem;
+import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
@@ -36,6 +41,26 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class NpmPackageVersionConverter {
+
+  private class PR2Handler implements VersionConvertorAdvisor40 {
+
+    @Override
+    public boolean ignoreEntry(Bundle.BundleEntryComponent src) {
+      return false;
+    }
+
+
+    @Override
+    public void handleCodeSystem(CodeSystem tgtcs, ValueSet source) throws FHIRException {
+      throw new Error("Not done yet");
+    }
+
+    @Override
+    public CodeSystem getCodeSystem(ValueSet src) throws FHIRException {
+      throw new Error("Not done yet");
+    }
+    
+  }
 
   private static final int BUFFER_SIZE = 1024;
 

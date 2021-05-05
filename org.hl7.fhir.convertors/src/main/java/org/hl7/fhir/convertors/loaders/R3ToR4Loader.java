@@ -124,20 +124,6 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
     return false;
   }
 
-  @Override
-  public org.hl7.fhir.dstu2.model.Resource convertR2(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public Resource convertR3(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
 
   @Override
   public void handleCodeSystem(CodeSystem cs, ValueSet vs) {

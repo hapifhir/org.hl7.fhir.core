@@ -47,32 +47,12 @@ public class IGR2ConvertorAdvisor5 implements VersionConvertorAdvisor50 {
   }
 
   @Override
-  public Resource convertR2(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
   public void handleCodeSystem(CodeSystem cs, ValueSet vs) {
     cs.setId(vs.getId());
   }
 
   @Override
   public CodeSystem getCodeSystem(ValueSet src) {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.r4.model.Resource convertR4(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
     return null;
   }
 
