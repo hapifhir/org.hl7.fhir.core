@@ -3,3 +3,4 @@
 * Snapshot generator: fix problem checking types on logical models
 * Do not flag internal references as suspicious
 * XMLParser allows passing a schema location
+* Issue 484 https://github.com/hapifhir/org.hl7.fhir.core/issues/484
