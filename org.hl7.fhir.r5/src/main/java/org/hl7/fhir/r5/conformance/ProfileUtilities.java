@@ -329,6 +329,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private String defWebRoot;
   private boolean autoFixSliceNames;
   private XVerExtensionManager xver;
+  private boolean wantFixDifferentialFirstElementType;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
@@ -363,9 +364,15 @@ public class ProfileUtilities extends TranslatingUtilities {
   public void setIgmode(boolean igmode) {
     this.igmode = igmode;
   }
+  
+  public boolean isWantFixDifferentialFirstElementType() {
+    return wantFixDifferentialFirstElementType;
+  }
 
-  
-  
+  public void setWantFixDifferentialFirstElementType(boolean wantFixDifferentialFirstElementType) {
+    this.wantFixDifferentialFirstElementType = wantFixDifferentialFirstElementType;
+  }
+
   public boolean isAutoFixSliceNames() {
     return autoFixSliceNames;
   }
@@ -772,7 +779,7 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   public void checkDifferentialBaseType(StructureDefinition derived) throws Error {
     if (derived.hasDifferential() && !derived.getDifferential().getElementFirstRep().getPath().contains(".") && !derived.getDifferential().getElementFirstRep().getType().isEmpty()) {
-      if (typeMatchesAncestor(derived.getDifferential().getElementFirstRep().getType(), derived.getBaseDefinition())) {
+      if (wantFixDifferentialFirstElementType && typeMatchesAncestor(derived.getDifferential().getElementFirstRep().getType(), derived.getBaseDefinition())) {
         derived.getDifferential().getElementFirstRep().getType().clear();
       } else {
         throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT));

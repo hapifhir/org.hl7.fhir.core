@@ -2,3 +2,4 @@
 * Fix compartment definitions of ListResource.source and subject for R3 and R4
 * Snapshot generator: fix problem checking types on logical models
 * Do not flag internal references as suspicious
+* XMLParser allows passing a schema location
