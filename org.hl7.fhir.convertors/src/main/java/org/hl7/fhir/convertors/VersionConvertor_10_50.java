@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors;
 
+import org.hl7.fhir.convertors.advisor.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.conv10_50.*;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu2.model.Parameters;
@@ -2472,19 +2473,6 @@ public class VersionConvertor_10_50 extends VersionConvertor_Base {
     CodeableReference tgt = new CodeableReference();
     tgt.setConcept(convertCodeableConcept(src));
     return tgt;
-  }
-
-  static public class SourceElementComponentWrapper {
-    public SourceElementComponentWrapper(SourceElementComponent comp, String source, String target) {
-      super();
-      this.source = source;
-      this.target = target;
-      this.comp = comp;
-    }
-
-    public String source;
-    public String target;
-    public org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent comp;
   }
 
   public static org.hl7.fhir.r5.model.UsageContext convertCodeableConceptToUsageContext(org.hl7.fhir.dstu2.model.CodeableConcept t) throws FHIRException {

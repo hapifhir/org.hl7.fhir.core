@@ -37,10 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
+import org.hl7.fhir.convertors.advisor.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.loaders.BaseLoaderR5.ILoaderKnowledgeProvider;
-import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
 import org.hl7.fhir.dstu2.formats.JsonParser;
 import org.hl7.fhir.dstu2.formats.XmlParser;
 import org.hl7.fhir.dstu2.model.Resource;
@@ -56,11 +54,8 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
-
-import com.google.gson.JsonSyntaxException;
 
 public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader, VersionConvertorAdvisor50 {
 

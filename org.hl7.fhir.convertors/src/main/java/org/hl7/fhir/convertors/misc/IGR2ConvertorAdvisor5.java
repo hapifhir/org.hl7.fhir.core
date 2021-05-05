@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
+import org.hl7.fhir.convertors.advisor.VersionConvertorAdvisor50;
 
 /*
   Copyright (c) 2011+, HL7, Inc.

@@ -16,7 +16,6 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
-import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
@@ -26,11 +25,6 @@ import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.dstu2.model.Resource;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r4.model.CodeSystem;
-import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
@@ -43,39 +37,6 @@ import com.google.gson.JsonObject;
 
 public class NpmPackageVersionConverter {
 
-  private class PR2Handler implements VersionConvertorAdvisor40 {
-
-    @Override
-    public boolean ignoreEntry(BundleEntryComponent src) {
-      return false;
-    }
-
-    @Override
-    public Resource convertR2(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-      throw new Error("Not done yet");
-    }
-
-    @Override
-    public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-      throw new Error("Not done yet");
-    }
-
-    @Override
-    public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-      throw new Error("Not done yet");
-    }
-
-    @Override
-    public void handleCodeSystem(CodeSystem tgtcs, ValueSet source) throws FHIRException {
-      throw new Error("Not done yet");
-    }
-
-    @Override
-    public CodeSystem getCodeSystem(ValueSet src) throws FHIRException {
-      throw new Error("Not done yet");
-    }
-    
-  }
   private static final int BUFFER_SIZE = 1024;
 
   private String source;

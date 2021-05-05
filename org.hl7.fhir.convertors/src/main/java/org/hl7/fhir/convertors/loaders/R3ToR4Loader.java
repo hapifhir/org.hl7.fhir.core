@@ -37,9 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
+import org.hl7.fhir.convertors.advisor.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
-import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
 import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Resource;

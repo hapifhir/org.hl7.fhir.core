@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv10_40;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
+import org.hl7.fhir.convertors.advisor.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 

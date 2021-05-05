@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors;
 
+import org.hl7.fhir.convertors.advisor.VersionConvertorAdvisor30;
 import org.hl7.fhir.convertors.conv10_30.*;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
@@ -2349,19 +2350,6 @@ public class VersionConvertor_10_30 extends VersionConvertor_Base {
       }
     }
     return tgt;
-  }
-
-  static public class SourceElementComponentWrapper {
-    public SourceElementComponentWrapper(SourceElementComponent comp, String source, String target) {
-      super();
-      this.source = source;
-      this.target = target;
-      this.comp = comp;
-    }
-
-    public String source;
-    public String target;
-    public org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent comp;
   }
 
   public static org.hl7.fhir.dstu3.model.UsageContext convertCodeableConceptToUsageContext(org.hl7.fhir.dstu2.model.CodeableConcept t) throws FHIRException {
