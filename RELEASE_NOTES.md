@@ -4,3 +4,5 @@
 * Do not flag internal references as suspicious
 * XMLParser allows passing a schema location
 * Issue 484 https://github.com/hapifhir/org.hl7.fhir.core/issues/484
+* Adding Kotlin to the build process
+* random cleaning up in convertors

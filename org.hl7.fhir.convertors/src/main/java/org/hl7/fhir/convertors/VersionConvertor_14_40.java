@@ -2513,19 +2513,6 @@ public class VersionConvertor_14_40 extends VersionConvertor_Base {
     return result;
   }
 
-  static public class SourceElementComponentWrapper {
-    public SourceElementComponentWrapper(SourceElementComponent comp, String source, String target) {
-      super();
-      this.source = source;
-      this.target = target;
-      this.comp = comp;
-    }
-
-    public String source;
-    public String target;
-    public org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent comp;
-  }
-
   static public CanonicalType convertReferenceToCanonical(Reference src) throws FHIRException {
     CanonicalType dst = new CanonicalType(src.getReference());
     copyElement(src, dst);

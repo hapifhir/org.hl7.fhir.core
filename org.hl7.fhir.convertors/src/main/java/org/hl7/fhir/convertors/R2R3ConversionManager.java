@@ -29,8 +29,6 @@ package org.hl7.fhir.convertors;
   
  */
 
-
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -88,26 +86,6 @@ import org.hl7.fhir.utilities.TextFile;
  *
  */
 public class R2R3ConversionManager implements ITransformerServices {
-
-  public class TransformContext {
-
-    private SimpleWorkerContext context;
-    private String id;
-
-    public TransformContext(SimpleWorkerContext context, String id) {
-      this.context = context;
-      this.id = id;
-    }
-
-    public SimpleWorkerContext getContext() {
-      return context;
-    }
-
-    public String getId() {
-      return id;
-    }
-
-  }
 
   private SimpleWorkerContext contextR2;
   private SimpleWorkerContext contextR3;
@@ -288,7 +266,7 @@ public class R2R3ConversionManager implements ITransformerServices {
       throw new FHIRException("No Map Found from R2 to R3 for "+r2.fhirType());
     String tn = smu3.getTargetType(map).getType();
     Resource r3 = ResourceFactory.createResource(tn);
-    smu3.transform(new TransformContext(contextR3, r2.getChildValue("id")), r2, map, r3);
+    smu3.transform(new TransformContextR2R3(contextR3, r2.getChildValue("id")), r2, map, r3);
     FormatUtilities.makeParser(format).setOutputStyle(style).compose(dest, r3);
   }
 
@@ -309,7 +287,7 @@ public class R2R3ConversionManager implements ITransformerServices {
 
   @Override
   public Base createType(Object appInfo, String name) throws FHIRException {
-    SimpleWorkerContext context = ((TransformContext) appInfo).getContext();
+    SimpleWorkerContext context = ((TransformContextR2R3) appInfo).getContext();
     if (context == contextR2) {
       StructureDefinition sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/DSTU2/StructureDefinition/"+name);
       if (sd == null)
@@ -324,7 +302,7 @@ public class R2R3ConversionManager implements ITransformerServices {
     if (res instanceof Resource && (res.fhirType().equals("CodeSystem") || res.fhirType().equals("CareTeam")) || res.fhirType().equals("PractitionerRole")) {
       Resource r = (Resource) res;
       extras.add(r);
-      r.setId(((TransformContext) appInfo).getId()+"-"+extras.size()); //todo: get this into appinfo
+      r.setId(((TransformContextR2R3) appInfo).getId()+"-"+extras.size()); //todo: get this into appinfo
     }
     return res;
   }
