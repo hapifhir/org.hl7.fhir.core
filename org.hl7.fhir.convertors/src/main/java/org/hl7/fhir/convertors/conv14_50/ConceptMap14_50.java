@@ -2,6 +2,8 @@ package org.hl7.fhir.convertors.conv14_50;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hl7.fhir.convertors.SourceElementComponentWrapper;
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.dstu2016may.model.Enumerations.ConceptMapEquivalence;
@@ -53,8 +55,8 @@ public class ConceptMap14_50 {
         tt = VersionConvertor_14_50.convertType(src.getTarget());
         tgt.setTarget(tt instanceof org.hl7.fhir.r5.model.Reference ? new CanonicalType(((org.hl7.fhir.r5.model.Reference) tt).getReference()) : tt);
         for (org.hl7.fhir.dstu2016may.model.ConceptMap.SourceElementComponent t : src.getElement()) {
-            List<VersionConvertor_14_50.SourceElementComponentWrapper> ws = convertSourceElementComponent(t);
-            for (VersionConvertor_14_50.SourceElementComponentWrapper w : ws) getGroup(tgt, w.source, w.target).addElement(w.comp);
+            List<SourceElementComponentWrapper<ConceptMap.SourceElementComponent>> ws = convertSourceElementComponent(t);
+            for (SourceElementComponentWrapper<ConceptMap.SourceElementComponent> w : ws) getGroup(tgt, w.getSource(), w.getTarget()).addElement(w.getComp());
         }
         return tgt;
     }
@@ -228,8 +230,8 @@ public class ConceptMap14_50 {
         return tgt;
     }
 
-    public static List<VersionConvertor_14_50.SourceElementComponentWrapper> convertSourceElementComponent(org.hl7.fhir.dstu2016may.model.ConceptMap.SourceElementComponent src) throws FHIRException {
-        List<VersionConvertor_14_50.SourceElementComponentWrapper> res = new ArrayList<VersionConvertor_14_50.SourceElementComponentWrapper>();
+    public static List<SourceElementComponentWrapper<ConceptMap.SourceElementComponent>> convertSourceElementComponent(org.hl7.fhir.dstu2016may.model.ConceptMap.SourceElementComponent src) throws FHIRException {
+        List<SourceElementComponentWrapper<ConceptMap.SourceElementComponent>> res = new ArrayList<>();
         if (src == null || src.isEmpty())
             return res;
         for (org.hl7.fhir.dstu2016may.model.ConceptMap.TargetElementComponent t : src.getTarget()) {
@@ -242,7 +244,7 @@ public class ConceptMap14_50 {
             } else {
                 tgt.addTarget(convertTargetElementComponent(t));
             }
-            res.add(new VersionConvertor_14_50.SourceElementComponentWrapper(tgt, src.getSystem(), t.getSystem()));
+            res.add(new SourceElementComponentWrapper<>(tgt, src.getSystem(), t.getSystem()));
         }
         return res;
     }

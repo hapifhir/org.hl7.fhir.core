@@ -36,13 +36,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor30;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor30;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
 import org.hl7.fhir.dstu2.formats.JsonParser;
 import org.hl7.fhir.dstu2.formats.XmlParser;
 import org.hl7.fhir.dstu2.model.Resource;
-import org.hl7.fhir.dstu3.context.SimpleWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.dstu3.model.Bundle.BundleType;
