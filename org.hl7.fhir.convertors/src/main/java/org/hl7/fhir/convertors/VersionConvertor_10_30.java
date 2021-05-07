@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors;
 
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor30;
 import org.hl7.fhir.convertors.conv10_30.*;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
@@ -7,7 +8,6 @@ import org.hl7.fhir.dstu3.conformance.ProfileUtilities;
 import org.hl7.fhir.dstu3.model.CodeSystem;
 import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionDesignationComponent;
-import org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.dstu3.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -2349,19 +2349,6 @@ public class VersionConvertor_10_30 extends VersionConvertor_Base {
       }
     }
     return tgt;
-  }
-
-  static public class SourceElementComponentWrapper {
-    public SourceElementComponentWrapper(SourceElementComponent comp, String source, String target) {
-      super();
-      this.source = source;
-      this.target = target;
-      this.comp = comp;
-    }
-
-    public String source;
-    public String target;
-    public org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent comp;
   }
 
   public static org.hl7.fhir.dstu3.model.UsageContext convertCodeableConceptToUsageContext(org.hl7.fhir.dstu2.model.CodeableConcept t) throws FHIRException {

@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors;
+package org.hl7.fhir.convertors.advisors;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -28,9 +28,6 @@ package org.hl7.fhir.convertors;
   POSSIBILITY OF SUCH DAMAGE.
   
  */
-
-
-
 import org.hl7.fhir.exceptions.FHIRException;
 
 /**

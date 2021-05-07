@@ -2398,19 +2398,6 @@ public class VersionConvertor_14_30 extends VersionConvertor_Base {
     return result;
   }
 
-  static public class SourceElementComponentWrapper {
-    public SourceElementComponentWrapper(SourceElementComponent comp, String source, String target) {
-      super();
-      this.source = source;
-      this.target = target;
-      this.comp = comp;
-    }
-
-    public String source;
-    public String target;
-    public org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent comp;
-  }
-
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Enumerations.SearchParamType> convertSearchParamType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Enumerations.SearchParamType> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Enumerations.SearchParamType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Enumerations.SearchParamTypeEnumFactory());
