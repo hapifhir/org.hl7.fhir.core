@@ -246,7 +246,9 @@ public class ValidationService {
       validator.setSecurityChecks(cliContext.isSecurityChecks());
       validator.setCrumbTrails(cliContext.isCrumbTrails());
       validator.setShowTimes(cliContext.isShowTimes());
-      validator.setFetcher(new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator));
+      StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator);
+      validator.setFetcher(fetcher);
+      validator.getContext().setLocator(fetcher);
       validator.getBundleValidationRules().addAll(cliContext.getBundleValidationRules());
       TerminologyCache.setNoCaching(cliContext.isNoInternalCaching());
       validator.prepare(); // generate any missing snapshots

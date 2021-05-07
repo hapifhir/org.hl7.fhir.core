@@ -1052,6 +1052,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       res = false;
                       txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, vr.getMessage());
                     } else {
+                      if (binding.getStrength() == BindingStrength.EXTENSIBLE) {
+                        removeTrackedMessagesForLocation(errors, element, path);
+                      }
                       res = false;
                     }
                   }

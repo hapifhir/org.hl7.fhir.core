@@ -468,8 +468,12 @@ public class XmlParser extends ParserBase {
 
 	private String convertForDateFormatFromExternal(String fmt, String av) throws FHIRException {
   	if ("v3".equals(fmt)) {
-  		DateTimeType d = DateTimeType.parseV3(av);
-  		return d.asStringValue();
+  	  try {
+    		DateTimeType d = DateTimeType.parseV3(av);
+    		return d.asStringValue();
+  	  } catch (Exception e) {
+  	    return av; // not at all clear what to do in this case.
+  	  }
   	} else
       throw new FHIRException(context.formatMessage(I18nConstants.UNKNOWN_DATA_FORMAT_, fmt));
 	}
