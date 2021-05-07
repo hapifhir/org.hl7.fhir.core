@@ -267,7 +267,7 @@ public class StructureMap30_50 {
         VersionConvertor_30_50.copyElement(src, tgt);
         if (src.hasContext())
             tgt.setContextElement(VersionConvertor_30_50.convertId(src.getContextElement()));
-        if (src.hasContextType() && src.getContextType() == org.hl7.fhir.dstu3.model.StructureMap.StructureMapContextType.VARIABLE)
+        if (src.hasContextType() && src.getContextType() != org.hl7.fhir.dstu3.model.StructureMap.StructureMapContextType.VARIABLE)
           throw new Error("This conversion is not supported. Consult code maintainers"); // this should never happens - no one knows what the intent was here.
         if (src.hasElement())
             tgt.setElementElement(VersionConvertor_30_50.convertString(src.getElementElement()));

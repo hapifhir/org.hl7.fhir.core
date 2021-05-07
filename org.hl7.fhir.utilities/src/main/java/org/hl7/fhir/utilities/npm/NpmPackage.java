@@ -814,7 +814,7 @@ public class NpmPackage {
   //  }
 
   public String getWebLocation() {
-    if (npm.has("url")) {
+    if (npm.has("url") && npm.get("url").isJsonPrimitive()) {
       return PackageHacker.fixPackageUrl(npm.get("url").getAsString());
     } else {
       return JSONUtil.str(npm, "canonical");
