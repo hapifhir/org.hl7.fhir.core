@@ -3,7 +3,13 @@
 * Snapshot generator: fix problem checking types on logical models
 * Do not flag internal references as suspicious
 * XMLParser allows passing a schema location
+* XMLParser allows passing a schema location
 * Issue 484 https://github.com/hapifhir/org.hl7.fhir.core/issues/484
 * Adding Kotlin to the build process
 * random cleaning up in convertors
 * Adding version option to ignore bundle entry in conversion advisors
+* Validator: Load code systems from known packages on the fly
+* Validator: better handle invalid v3 dates
+* Renderer: Render OperationDefinition.InputProfile and OutputProfile
+* Important: Allow more valid schemas for Utilities.isAbsoluteUrl
+* Validator: remove notes about extensible bindings if profile extensible binding is valid

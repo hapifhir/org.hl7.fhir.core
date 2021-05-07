@@ -170,6 +170,10 @@ public interface IWorkerContext {
     }
   }
 
+  public interface ICanonicalResourceLocator {
+    void findResource(String url); // if it can be found, put it in the context
+  }
+  
   public interface IContextResourceLoader {
     /** 
      * @return List of the resource types that shoud be loaded
