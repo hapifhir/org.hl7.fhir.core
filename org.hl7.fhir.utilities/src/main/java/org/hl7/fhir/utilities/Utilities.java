@@ -1093,10 +1093,12 @@ public class Utilities {
 
 
   public static boolean isAbsoluteUrl(String ref) {
-    return ref != null && (ref.startsWith("http:") || ref.startsWith("https:") || ref.startsWith("urn:uuid:") || ref.startsWith("urn:oid:") || 
-        Utilities.startsWithInList(ref, "urn:iso:", "urn:iso-iec:", "urn:iso-cie:", "urn:iso-astm:", "urn:iso-ieee:", "urn:iec:")); // rfc5141
+    if (ref != null && ref.contains(":")) {
+      String scheme = ref.substring(0, ref.indexOf(":"));
+      return existsInList(scheme, "http", "https", "urn") || isToken(scheme) || Utilities.startsWithInList(ref, "urn:iso:", "urn:iso-iec:", "urn:iso-cie:", "urn:iso-astm:", "urn:iso-ieee:", "urn:iec:"); // rfc5141
+    }
+    return false; 
   }
-
 
   public static boolean equivalent(String l, String r) {
     if (Utilities.noString(l) && Utilities.noString(r))

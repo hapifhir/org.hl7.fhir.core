@@ -3,3 +3,8 @@
 * Snapshot generator: fix problem checking types on logical models
 * Do not flag internal references as suspicious
 * XMLParser allows passing a schema location
+* Validator: Load code systems from known packages on the fly
+* Validator: better handle invalid v3 dates
+* Renderer: Render OperationDefinition.InputProfile and OutputProfile
+* Important: Allow more valid schemas for Utilities.isAbsoluteUrl
+* Validator: remove notes about extensible bindings if profile extensible binding is valid
