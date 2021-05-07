@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv10_40;
 
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

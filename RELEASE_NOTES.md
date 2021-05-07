@@ -7,6 +7,7 @@
 * Issue 484 https://github.com/hapifhir/org.hl7.fhir.core/issues/484
 * Adding Kotlin to the build process
 * random cleaning up in convertors
+* Adding version option to ignore bundle entry in conversion advisors
 * Validator: Load code systems from known packages on the fly
 * Validator: better handle invalid v3 dates
 * Renderer: Render OperationDefinition.InputProfile and OutputProfile
