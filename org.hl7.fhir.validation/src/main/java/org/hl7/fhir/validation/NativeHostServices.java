@@ -34,11 +34,11 @@ package org.hl7.fhir.validation;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /**
@@ -104,7 +104,7 @@ public class NativeHostServices {
   private class NH_10_50_Advisor implements VersionConvertorAdvisor50 {
 
     @Override
-    public boolean ignoreEntry(BundleEntryComponent src) {
+    public boolean ignoreEntry(BundleEntryComponent src, FhirPublication publication) {
       return false;
     }
 

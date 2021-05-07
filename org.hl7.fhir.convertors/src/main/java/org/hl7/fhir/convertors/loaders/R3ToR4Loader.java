@@ -37,8 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor40;
 import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Resource;
@@ -120,7 +120,7 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
   }
 
   @Override
-  public boolean ignoreEntry(BundleEntryComponent src) {
+  public boolean ignoreEntry(BundleEntryComponent src, org.hl7.fhir.r5.model.FhirPublication publication) {
     return false;
   }
 

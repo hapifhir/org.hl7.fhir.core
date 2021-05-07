@@ -38,9 +38,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor30;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
-import org.hl7.fhir.dstu2.model.Resource;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor30;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
@@ -48,6 +47,7 @@ import org.hl7.fhir.dstu3.model.Bundle.BundleType;
 import org.hl7.fhir.dstu3.model.CodeSystem;
 import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 
 public class IGPackConverter102 implements VersionConvertorAdvisor30 {
@@ -85,7 +85,7 @@ public class IGPackConverter102 implements VersionConvertorAdvisor30 {
   }
 
   @Override
-  public boolean ignoreEntry(BundleEntryComponent src) {
+  public boolean ignoreEntry(BundleEntryComponent src, FhirPublication publication) {
     return false;
   }
 
