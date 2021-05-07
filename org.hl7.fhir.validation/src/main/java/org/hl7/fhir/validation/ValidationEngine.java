@@ -9,6 +9,7 @@ import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -138,6 +139,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   @Getter @Setter private PrintWriter mapLog;
   @Getter @Setter private boolean debug = false;
   @Getter @Setter private IValidatorResourceFetcher fetcher;
+  @Getter @Setter private ICanonicalResourceLocator locator;
   @Getter @Setter private boolean assumeValidRestReferences;
   @Getter @Setter private boolean noExtensibleBindingMessages;
   @Getter @Setter private boolean securityChecks;

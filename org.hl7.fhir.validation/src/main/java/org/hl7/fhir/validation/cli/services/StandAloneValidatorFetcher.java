@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
+public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, ICanonicalResourceLocator {
 
   List<String> mappingsUris = new ArrayList<>();
   private FilesystemPackageCacheManager pcm;
@@ -63,7 +64,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
       url = url.substring(0, url.lastIndexOf("|"));
     }
 
-    if (type.equals("uri") && isMappingUri(url)) {
+    if (type != null && type.equals("uri") && isMappingUri(url)) {
       return true;
     }
 
@@ -128,6 +129,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
         pidMap.put(pid+"|"+ver, null);
       }
       if (pi != null) {
+        context.loadFromPackage(pi, null);
         return pi.hasCanonical(url);
       }
     }
@@ -247,6 +249,14 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
   @Override
   public boolean fetchesCanonicalResource(String url) {
     return true;
+  }
+
+  @Override
+  public void findResource(String url) {
+    try {
+      resolveURL(null, null, url, null);
+    } catch (Exception e) {
+    }
   }
 
 }
