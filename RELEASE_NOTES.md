@@ -1,15 +1,19 @@
-* Update core R5 code to v4.6.0 (breaking changes to questionnaire, concept map, and other resources that are less important to core)
-* Fix compartment definitions of ListResource.source and subject for R3 and R4
+Validator
 * Snapshot generator: fix problem checking types on logical models
 * Do not flag internal references as suspicious
+* Load code systems from known packages on the fly
+* better handle invalid v3 dates
+* Remove notes about extensible bindings if profile extensible binding is valid
+* fix overrun error reading invalid xhtml
+
+Other Code Changes
+* Important: Allow more valid schemas for Utilities.isAbsoluteUrl
+* Update core R5 code to v4.6.0 (breaking changes to questionnaire, concept map, and other resources that are less important to core)
+* Fix compartment definitions of ListResource.source and subject for R3 and R4
 * XMLParser allows passing a schema location
-* XMLParser allows passing a schema location
-* Issue 484 https://github.com/hapifhir/org.hl7.fhir.core/issues/484
+* fix for IntegerType.copy() throws a NullPointerException when called for an object with a null value
 * Adding Kotlin to the build process
 * random cleaning up in convertors
 * Adding version option to ignore bundle entry in conversion advisors
-* Validator: Load code systems from known packages on the fly
-* Validator: better handle invalid v3 dates
 * Renderer: Render OperationDefinition.InputProfile and OutputProfile
-* Important: Allow more valid schemas for Utilities.isAbsoluteUrl
-* Validator: remove notes about extensible bindings if profile extensible binding is valid
+* fix loading problem on validation test
