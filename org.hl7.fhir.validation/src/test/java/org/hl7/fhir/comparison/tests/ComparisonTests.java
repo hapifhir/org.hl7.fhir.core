@@ -33,6 +33,7 @@ import org.hl7.fhir.r5.comparison.ProfileComparer.ProfileComparison;
 import org.hl7.fhir.r5.comparison.ValueSetComparer;
 import org.hl7.fhir.r5.comparison.ValueSetComparer.ValueSetComparison;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.BaseWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -109,7 +110,11 @@ public class ComparisonTests {
       context = TestingUtilities.context();
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
       NpmPackage npm = pcm.loadPackage("hl7.fhir.us.core#3.1.0");
-      context.loadFromPackage(npm, new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider()));    
+      BaseWorkerContext bc = (BaseWorkerContext) context;
+      boolean dupl = bc.isAllowLoadingDuplicates();
+      bc.setAllowLoadingDuplicates(true);
+      context.loadFromPackage(npm, new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider()));
+      bc.setAllowLoadingDuplicates(dupl);
     }
 
     if (!new File(Utilities.path("[tmp]", "comparison")).exists()) {
