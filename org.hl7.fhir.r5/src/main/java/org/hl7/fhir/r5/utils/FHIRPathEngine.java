@@ -4711,7 +4711,7 @@ public class FHIRPathEngine {
       if (Utilities.noString(st)) {
         result.add(new BooleanType(false).noExtensions());
       } else {
-        boolean ok = st.matches(sw);
+        boolean ok = st.matches("(?s)" + sw);
         result.add(new BooleanType(ok).noExtensions());
       }
     } else {
