@@ -341,6 +341,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean anyExtensionsAllowed;
   private boolean errorForUnknownProfiles;
   private boolean noInvariantChecks;
+  private boolean wantInvariantInMessage;
   private boolean noTerminologyChecks;
   private boolean hintAboutNonMustSupport;
   private boolean showMessagesFromReferences;
@@ -424,6 +425,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   @Override
   public IResourceValidator setNoInvariantChecks(boolean value) {
     this.noInvariantChecks = value;
+    return this;
+  }
+
+  @Override
+  public boolean isWantInvariantInMessage() {
+    return wantInvariantInMessage;
+  }
+
+  @Override
+  public IResourceValidator setWantInvariantInMessage(boolean wantInvariantInMessage) {
+    this.wantInvariantInMessage = wantInvariantInMessage;
     return this;
   }
 
@@ -5015,20 +5027,24 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (!ok) {
       if (!Utilities.noString(msg)) {
-        msg = " (" + msg + ")";
+        msg = "'" + inv.getHuman()+"' (" + msg + ")";
+      } else if (wantInvariantInMessage) {
+        msg = "'" + inv.getHuman()+"'  [" + n.toString() + "]";
+      } else {
+        msg = context.formatMessage(I18nConstants.INV_FAILED, "'" + inv.getHuman()+"'");        
       }
       if (inv.hasExtension("http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice") &&
         ToolingExtensions.readBooleanExtension(inv, "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice")) {
         if (bpWarnings == BestPracticeWarningLevel.Hint)
-          hint(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + (Utilities.noString(msg) ? "failed" : msg));
+          hint(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": " + msg);
         else if (bpWarnings == BestPracticeWarningLevel.Warning)
-          warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + (Utilities.noString(msg) ? "failed" : msg));
+          warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + msg);
         else if (bpWarnings == BestPracticeWarningLevel.Error)
-          rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + (Utilities.noString(msg) ? "failed" : msg));
+          rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + msg);
       } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
-        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + (Utilities.noString(msg) ? "failed" : msg));
+        rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + msg);
       } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
-        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + (Utilities.noString(msg) ? "failed" : msg));
+        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + msg);
       }
     }
   }

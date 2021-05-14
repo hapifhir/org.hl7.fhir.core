@@ -1,5 +1,6 @@
 package org.hl7.fhir.utilities.tests;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
@@ -94,5 +95,18 @@ public class XhtmlNodeTest {
   @Test
   public void testParseBadChars() throws FHIRFormatError, IOException {
     XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "bad-chars.html"), "div");
+  }  
+  
+  @Test
+  public void testParseBadLink1() throws FHIRFormatError, IOException {
+    XhtmlNode x = new XhtmlParser().setMustBeWellFormed(false).parse(BaseTestingUtilities.loadTestResource("xhtml", "bad-link.html"), "div");
   }
+    
+  @Test
+  public void testParseBadLink2() throws FHIRFormatError, IOException {
+    Assertions.assertThrows(FHIRException.class, () -> new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "bad-link.html"), "div"));
+  }
+
+
+
 }
