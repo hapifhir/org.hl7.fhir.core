@@ -11,6 +11,8 @@ import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.DomainResource;
+import org.hl7.fhir.r5.model.Enumerations.FHIRVersion;
+import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.renderers.utils.Resolver.IReferenceResolver;
 import org.hl7.fhir.r5.renderers.utils.Resolver.ResourceContext;
 import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
@@ -96,6 +98,7 @@ public class RenderingContext {
   private QuestionnaireRendererMode questionnaireMode = QuestionnaireRendererMode.FORM;
   private boolean addGeneratedNarrativeHeader = true;
 
+  private FhirPublication targetVersion;
   /**
    * 
    * @param context - access to all related resources that might be needed
@@ -392,7 +395,12 @@ public class RenderingContext {
     return this;
    }
 
+  public FhirPublication getTargetVersion() {
+    return targetVersion;
+  }
 
-
+  public void setTargetVersion(FhirPublication targetVersion) {
+    this.targetVersion = targetVersion;
+  }
 
 }
