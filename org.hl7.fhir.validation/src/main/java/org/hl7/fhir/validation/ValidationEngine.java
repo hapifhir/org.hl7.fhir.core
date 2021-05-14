@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
@@ -127,6 +128,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   @Getter @Setter private Map<String, byte[]> binaries = new HashMap<>();
   @Getter @Setter private boolean doNative;
   @Getter @Setter private boolean noInvariantChecks;
+  @Getter @Setter private boolean wantInvariantInMessage;
   @Getter @Setter private boolean hintAboutNonMustSupport;
   @Getter @Setter private boolean anyExtensionsAllowed = false;
   @Getter @Setter private String version;
@@ -415,12 +417,25 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return Manager.build(getContext(), structureDefinition);
   }
 
-  public DomainResource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
+  public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = igLoader.loadContent(source, "validate", false);
     Resource res = igLoader.loadResourceByVersion(version, cnt.focus, source);
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
-    RendererFactory.factory(res, rc).render((DomainResource) res);
-    return (DomainResource) res;
+    genResource(res, rc);
+    return (Resource) res;
+  }
+
+  public void genResource(Resource res, RenderingContext rc) throws IOException, EOperationOutcome {
+    if (res instanceof Bundle) {
+      Bundle bnd = (Bundle) res;
+      for (BundleEntryComponent be : bnd.getEntry()) {
+        if (be.hasResource()) {
+          genResource(be.getResource(), rc);
+        }
+      }
+    } else {
+      RendererFactory.factory(res, rc).render((DomainResource) res);
+    }
   }
 
   public void convert(String source, String output) throws FHIRException, IOException {
@@ -463,7 +478,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.setNoInvariantChecks(isNoInvariantChecks());
+    validator.setWantInvariantInMessage(isWantInvariantInMessage());
     validator.setValidationLanguage(language);
+    if (language != null) {
+      validator.getContext().setValidationMessageLanguage(Locale.forLanguageTag(language));
+    }
     validator.setAssumeValidRestReferences(assumeValidRestReferences);
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
     validator.setSecurityChecks(securityChecks);
