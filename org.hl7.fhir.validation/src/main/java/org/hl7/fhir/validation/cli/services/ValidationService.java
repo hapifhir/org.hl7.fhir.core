@@ -143,7 +143,7 @@ public class ValidationService {
   }
 
   public void generateNarrative(CliContext cliContext, ValidationEngine validator) throws Exception {
-    DomainResource r = validator.generate(cliContext.getSources().get(0), cliContext.getSv());
+    Resource r = validator.generate(cliContext.getSources().get(0), cliContext.getSv());
     System.out.println(" ...generated narrative successfully");
     if (cliContext.getOutput() != null) {
       validator.handleOutput(r, cliContext.getOutput(), cliContext.getSv());
@@ -243,6 +243,8 @@ public class ValidationService {
       validator.setSnomedExtension(cliContext.getSnomedCTCode());
       validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
       validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
+      validator.setNoInvariantChecks(cliContext.isNoInvariants());
+      validator.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
       validator.setSecurityChecks(cliContext.isSecurityChecks());
       validator.setCrumbTrails(cliContext.isCrumbTrails());
       validator.setShowTimes(cliContext.isShowTimes());
