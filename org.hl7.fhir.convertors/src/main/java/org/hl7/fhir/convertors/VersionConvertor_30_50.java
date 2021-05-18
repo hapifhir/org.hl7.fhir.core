@@ -1826,6 +1826,10 @@ public class VersionConvertor_30_50 {
         tgt.setProfile(u.getValue());
       }
     }
+    for (org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.AggregationMode> t : src.getAggregation()) {
+      org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ElementDefinition.AggregationMode> a = convertAggregationMode(t);
+      if (!tgt.hasAggregation(a.getValue())) copyElement(t, tgt.addAggregation(a.getValue()));
+    }
   }
 
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.AggregationMode> convertAggregationMode(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ElementDefinition.AggregationMode> src) throws FHIRException {
