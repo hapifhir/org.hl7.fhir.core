@@ -36,6 +36,19 @@ steps:
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'package'
 
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: 'exec:exec'
+    options: '-pl org.hl7.fhir.validation.cli'
+    publishJUnitResults: false
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
+
   # Upload test results to codecov    
   - script: bash <(curl https://codecov.io/bash) -t $(codecov)
     displayName: 'codecov Bash Uploader'
