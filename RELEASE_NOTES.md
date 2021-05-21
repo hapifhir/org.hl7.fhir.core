@@ -1,1 +1,0 @@
-* Rolling back HAPI dependency so we can build and publish
