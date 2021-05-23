@@ -1,0 +1,1 @@
+* Adding Maven exec to test validation cli jar
