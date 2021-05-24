@@ -1977,7 +1977,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           boolean found;
           try {
             found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || 
-                SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || fetcher.resolveURL(appContext, path, url, type);
+                SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || fetcher.resolveURL(appContext, path, url, type) || isPassPortSID(url);
           } catch (IOException e1) {
             found = false;
           }
@@ -2160,6 +2160,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
 
     // for nothing to check
+  }
+
+  private boolean isPassPortSID(String url) {
+    if (url.matches("^http:\\/\\/hl7.org\\/fhir\\/sid\\/passport-[a-zA-Z]{3}$")) {
+      //TODO: verify ISO countrycode part vs country code list
+      return true;
+    }
+    return false;
   }
 
   private List<String> listExpectedCanonicalTypes(ElementDefinition context) {
