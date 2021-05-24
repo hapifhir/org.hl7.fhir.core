@@ -108,6 +108,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case FILLERORDER: return "filler-order";
             case INSTANCEORDER: return "instance-order";
             case OPTION: return "option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -124,6 +125,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order";
             case INSTANCEORDER: return "An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.";
             case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.\n\nRefer to [[[RequestGroup]]] for additional information on how this status is used";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -137,6 +139,7 @@ Refer to [[[RequestGroup]]] for additional information on how this status is use
             case FILLERORDER: return "Filler Order";
             case INSTANCEORDER: return "Instance Order";
             case OPTION: return "Option";
+            case NULL: return null;
             default: return "?";
           }
     }

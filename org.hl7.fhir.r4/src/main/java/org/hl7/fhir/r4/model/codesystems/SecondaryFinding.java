@@ -64,6 +64,7 @@ public enum SecondaryFinding {
           switch (this) {
             case ACMGVERSION1: return "acmg-version1";
             case ACMGVERSION2: return "acmg-version2";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum SecondaryFinding {
           switch (this) {
             case ACMGVERSION1: return "First release (2013): ACMG Recommendations for Reporting of Incidental Findings in Clinical Exome and Genome Sequencing.  https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3727274/";
             case ACMGVERSION2: return "Second release (2016): Recommendations for reporting of secondary findings in clinical exome and genome sequencing, 2016 update (ACMG SF v2.0): a policy statement of the American College of Medical Genetics and Genomics. https://www.ncbi.nlm.nih.gov/pubmed/27854360";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum SecondaryFinding {
           switch (this) {
             case ACMGVERSION1: return "ACMG Version 1";
             case ACMGVERSION2: return "ACMG Version 2";
+            case NULL: return null;
             default: return "?";
           }
     }

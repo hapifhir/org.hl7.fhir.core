@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_14_30 {
+public class VersionConvertor_14_30 extends VersionConvertor_Base {
   static public void copyElement(org.hl7.fhir.dstu2016may.model.Element src, org.hl7.fhir.dstu3.model.Element tgt, String... exemptExtensions) throws FHIRException {
     if (src.hasId()) tgt.setId(src.getId());
     for (org.hl7.fhir.dstu2016may.model.Extension e : src.getExtension()) {
@@ -2396,19 +2396,6 @@ public class VersionConvertor_14_30 {
     org.hl7.fhir.dstu3.model.UsageContext result = new org.hl7.fhir.dstu3.model.UsageContext();
     result.setValue(convertCodeableConcept(t));
     return result;
-  }
-
-  static public class SourceElementComponentWrapper {
-    public SourceElementComponentWrapper(SourceElementComponent comp, String source, String target) {
-      super();
-      this.source = source;
-      this.target = target;
-      this.comp = comp;
-    }
-
-    public String source;
-    public String target;
-    public org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent comp;
   }
 
   static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Enumerations.SearchParamType> convertSearchParamType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Enumerations.SearchParamType> src) throws FHIRException {

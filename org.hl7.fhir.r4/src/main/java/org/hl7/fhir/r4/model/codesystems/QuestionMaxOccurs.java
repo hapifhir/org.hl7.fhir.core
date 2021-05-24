@@ -57,6 +57,7 @@ public enum QuestionMaxOccurs {
         public String toCode() {
           switch (this) {
             case ASTERISK: return "*";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum QuestionMaxOccurs {
         public String getDefinition() {
           switch (this) {
             case ASTERISK: return "Element can repeat an unlimited number of times.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case ASTERISK: return "Repeating";
+            case NULL: return null;
             default: return "?";
           }
     }

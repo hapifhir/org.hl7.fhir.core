@@ -57,6 +57,7 @@ public enum HspcDeltaFlagNumericNom {
         public String toCode() {
           switch (this) {
             case UNCHANGED: return "unchanged";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum HspcDeltaFlagNumericNom {
         public String getDefinition() {
           switch (this) {
             case UNCHANGED: return "The current test results are not significantly different from previous results";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case UNCHANGED: return "Unchanged";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -64,6 +64,7 @@ public enum ProfileOriginTypes {
           switch (this) {
             case FHIRDSTU2CLIENT: return "FHIR-DSTU2-Client";
             case FHIRDSTU2SDCFORMFILLER: return "FHIR-DSTU2-SDC-FormFiller";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum ProfileOriginTypes {
           switch (this) {
             case FHIRDSTU2CLIENT: return "General DSTU2 client initiating against a DSTU2 Server.";
             case FHIRDSTU2SDCFORMFILLER: return "DSTU2 client that serves as an SDC-FormFiller.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum ProfileOriginTypes {
           switch (this) {
             case FHIRDSTU2CLIENT: return "FHIR-DSTU2-Client";
             case FHIRDSTU2SDCFORMFILLER: return "FHIR-DSTU2-SDC-FormFiller";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -64,6 +64,7 @@ public enum OccurrenceSpanCodes {
           switch (this) {
             case _1001: return "1001";
             case _1002: return "1002";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum OccurrenceSpanCodes {
           switch (this) {
             case _1001: return "Occurrance Span 1001 description.";
             case _1002: return "Occurrance Span 1002 description.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum OccurrenceSpanCodes {
           switch (this) {
             case _1001: return "Occurrance Span 1001";
             case _1002: return "Occurrance Span 1002";
+            case NULL: return null;
             default: return "?";
           }
     }

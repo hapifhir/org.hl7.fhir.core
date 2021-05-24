@@ -90,6 +90,7 @@ public class Narrative extends BaseNarrative implements INarrative {
             case EXTENSIONS: return "extensions";
             case ADDITIONAL: return "additional";
             case EMPTY: return "empty";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +100,7 @@ public class Narrative extends BaseNarrative implements INarrative {
             case EXTENSIONS: return "http://hl7.org/fhir/narrative-status";
             case ADDITIONAL: return "http://hl7.org/fhir/narrative-status";
             case EMPTY: return "http://hl7.org/fhir/narrative-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public class Narrative extends BaseNarrative implements INarrative {
             case EXTENSIONS: return "The contents of the narrative are entirely generated from the structured data in the content and some of the content is generated from extensions";
             case ADDITIONAL: return "The contents of the narrative may contain additional information not found in the structured data. Note that there is no computable way to determine what the extra information is, other than by human inspection";
             case EMPTY: return "The contents of the narrative are some equivalent of \"No human-readable text provided in this case\"";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +120,7 @@ public class Narrative extends BaseNarrative implements INarrative {
             case EXTENSIONS: return "Extensions";
             case ADDITIONAL: return "Additional";
             case EMPTY: return "Empty";
+            case NULL: return null;
             default: return "?";
           }
         }

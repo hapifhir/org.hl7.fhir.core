@@ -71,6 +71,7 @@ public enum ResearchElementType {
             case POPULATION: return "population";
             case EXPOSURE: return "exposure";
             case OUTCOME: return "outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ResearchElementType {
             case POPULATION: return "The element defines the population that forms the basis for research.";
             case EXPOSURE: return "The element defines an exposure within the population that is being researched.";
             case OUTCOME: return "The element defines an outcome within the population that is being researched.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ResearchElementType {
             case POPULATION: return "Population";
             case EXPOSURE: return "Exposure";
             case OUTCOME: return "Outcome";
+            case NULL: return null;
             default: return "?";
           }
     }

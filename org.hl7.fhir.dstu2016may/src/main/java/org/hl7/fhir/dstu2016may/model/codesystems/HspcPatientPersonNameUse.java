@@ -71,6 +71,7 @@ public enum HspcPatientPersonNameUse {
             case _188: return "188";
             case _191: return "191";
             case _812: return "812";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum HspcPatientPersonNameUse {
             case _188: return "A name by which an individual previously identified by.";
             case _191: return "The name by which an individual prefers to be known by.";
             case _812: return "The name by which an individual in known by professionally.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum HspcPatientPersonNameUse {
             case _188: return "Previous Name";
             case _191: return "Preferred Name";
             case _812: return "Professional Name";
+            case NULL: return null;
             default: return "?";
           }
     }

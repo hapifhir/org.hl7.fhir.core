@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_14_40 {
+public class VersionConvertor_14_40 extends VersionConvertor_Base {
   static public List<String> CANONICAL_URLS = new ArrayList<String>();
 
   static {
@@ -2511,19 +2511,6 @@ public class VersionConvertor_14_40 {
     org.hl7.fhir.r4.model.UsageContext result = new org.hl7.fhir.r4.model.UsageContext();
     result.setValue(convertCodeableConcept(t));
     return result;
-  }
-
-  static public class SourceElementComponentWrapper {
-    public SourceElementComponentWrapper(SourceElementComponent comp, String source, String target) {
-      super();
-      this.source = source;
-      this.target = target;
-      this.comp = comp;
-    }
-
-    public String source;
-    public String target;
-    public org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent comp;
   }
 
   static public CanonicalType convertReferenceToCanonical(Reference src) throws FHIRException {

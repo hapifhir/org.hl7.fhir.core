@@ -2194,6 +2194,7 @@ public enum V3ObservationMethod {
             case _0278: return "0278";
             case _0279: return "0279";
             case _0127: return "0127";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2506,6 +2507,7 @@ public enum V3ObservationMethod {
             case _0278: return "Agar screen";
             case _0279: return "Disk induction";
             case _0127: return "Molecular, Nucleic acid probe";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -2815,6 +2817,7 @@ public enum V3ObservationMethod {
             case _0278: return "Agar screen";
             case _0279: return "Disk induction";
             case _0127: return "Nucleic acid probe";
+            case NULL: return null;
             default: return "?";
           }
     }

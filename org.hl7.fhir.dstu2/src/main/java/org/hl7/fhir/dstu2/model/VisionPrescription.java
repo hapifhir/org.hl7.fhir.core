@@ -79,6 +79,7 @@ public class VisionPrescription extends DomainResource {
           switch (this) {
             case RIGHT: return "right";
             case LEFT: return "left";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -86,6 +87,7 @@ public class VisionPrescription extends DomainResource {
           switch (this) {
             case RIGHT: return "http://hl7.org/fhir/vision-eye-codes";
             case LEFT: return "http://hl7.org/fhir/vision-eye-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -93,6 +95,7 @@ public class VisionPrescription extends DomainResource {
           switch (this) {
             case RIGHT: return "Right Eye";
             case LEFT: return "Left Eye";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -100,6 +103,7 @@ public class VisionPrescription extends DomainResource {
           switch (this) {
             case RIGHT: return "Right Eye";
             case LEFT: return "Left Eye";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -177,6 +181,7 @@ public class VisionPrescription extends DomainResource {
             case DOWN: return "down";
             case IN: return "in";
             case OUT: return "out";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -186,6 +191,7 @@ public class VisionPrescription extends DomainResource {
             case DOWN: return "http://hl7.org/fhir/vision-base-codes";
             case IN: return "http://hl7.org/fhir/vision-base-codes";
             case OUT: return "http://hl7.org/fhir/vision-base-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -195,6 +201,7 @@ public class VisionPrescription extends DomainResource {
             case DOWN: return "bottom";
             case IN: return "inner edge";
             case OUT: return "outer edge";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -204,6 +211,7 @@ public class VisionPrescription extends DomainResource {
             case DOWN: return "Down";
             case IN: return "In";
             case OUT: return "Out";
+            case NULL: return null;
             default: return "?";
           }
         }

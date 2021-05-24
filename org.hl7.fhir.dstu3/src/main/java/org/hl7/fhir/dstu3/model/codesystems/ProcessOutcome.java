@@ -71,6 +71,7 @@ public enum ProcessOutcome {
             case COMPLETE: return "complete";
             case PENDED: return "pended";
             case ERROR: return "error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ProcessOutcome {
             case COMPLETE: return "The requested processing has completed.";
             case PENDED: return "The requested processing has been suspended.";
             case ERROR: return "The requested processing has terminated with some errors being found.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ProcessOutcome {
             case COMPLETE: return "Complete";
             case PENDED: return "Pended";
             case ERROR: return "Error";
+            case NULL: return null;
             default: return "?";
           }
     }

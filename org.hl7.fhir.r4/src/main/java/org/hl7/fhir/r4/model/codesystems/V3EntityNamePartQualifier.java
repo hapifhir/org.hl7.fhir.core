@@ -367,6 +367,7 @@ public enum V3EntityNamePartQualifier {
             case _PERSONNAMEPARTAFFIXTYPES: return "_PersonNamePartAffixTypes";
             case _PERSONNAMEPARTCHANGEQUALIFIER: return "_PersonNamePartChangeQualifier";
             case _PERSONNAMEPARTMISCQUALIFIER: return "_PersonNamePartMiscQualifier";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -404,6 +405,7 @@ public enum V3EntityNamePartQualifier {
             case _PERSONNAMEPARTAFFIXTYPES: return "PersonNamePartAffixTypes";
             case _PERSONNAMEPARTCHANGEQUALIFIER: return "PersonNamePartChangeQualifier";
             case _PERSONNAMEPARTMISCQUALIFIER: return "PersonNamePartMiscQualifier";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -438,6 +440,7 @@ public enum V3EntityNamePartQualifier {
             case _PERSONNAMEPARTAFFIXTYPES: return "PersonNamePartAffixTypes";
             case _PERSONNAMEPARTCHANGEQUALIFIER: return "PersonNamePartChangeQualifier";
             case _PERSONNAMEPARTMISCQUALIFIER: return "PersonNamePartMiscQualifier";
+            case NULL: return null;
             default: return "?";
           }
     }

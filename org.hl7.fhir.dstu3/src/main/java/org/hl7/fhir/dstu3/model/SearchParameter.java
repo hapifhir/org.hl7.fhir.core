@@ -107,6 +107,7 @@ public class SearchParameter extends MetadataResource {
             case NEARBY: return "nearby";
             case DISTANCE: return "distance";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +118,7 @@ public class SearchParameter extends MetadataResource {
             case NEARBY: return "http://hl7.org/fhir/search-xpath-usage";
             case DISTANCE: return "http://hl7.org/fhir/search-xpath-usage";
             case OTHER: return "http://hl7.org/fhir/search-xpath-usage";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,6 +129,7 @@ public class SearchParameter extends MetadataResource {
             case NEARBY: return "The search parameter is based on a spatial transform of the selected nodes.";
             case DISTANCE: return "The search parameter is based on a spatial transform of the selected nodes, using physical distance from the middle.";
             case OTHER: return "The interpretation of the xpath statement is unknown (and can't be automated).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -137,6 +140,7 @@ public class SearchParameter extends MetadataResource {
             case NEARBY: return "Nearby";
             case DISTANCE: return "Distance";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -275,6 +279,7 @@ public class SearchParameter extends MetadataResource {
             case SA: return "sa";
             case EB: return "eb";
             case AP: return "ap";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -289,6 +294,7 @@ public class SearchParameter extends MetadataResource {
             case SA: return "http://hl7.org/fhir/search-comparator";
             case EB: return "http://hl7.org/fhir/search-comparator";
             case AP: return "http://hl7.org/fhir/search-comparator";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -303,6 +309,7 @@ public class SearchParameter extends MetadataResource {
             case SA: return "the value for the parameter in the resource starts after the provided value";
             case EB: return "the value for the parameter in the resource ends before the provided value";
             case AP: return "the value for the parameter in the resource is approximately the same to the provided value.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -317,6 +324,7 @@ public class SearchParameter extends MetadataResource {
             case SA: return "Starts After";
             case EB: return "Ends Before";
             case AP: return "Approximately";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -486,6 +494,7 @@ public class SearchParameter extends MetadataResource {
             case BELOW: return "below";
             case ABOVE: return "above";
             case TYPE: return "type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -501,6 +510,7 @@ public class SearchParameter extends MetadataResource {
             case BELOW: return "http://hl7.org/fhir/search-modifier-code";
             case ABOVE: return "http://hl7.org/fhir/search-modifier-code";
             case TYPE: return "http://hl7.org/fhir/search-modifier-code";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -516,6 +526,7 @@ public class SearchParameter extends MetadataResource {
             case BELOW: return "The search parameter tests whether the value in a resource is subsumed by the specified value (is-a, or hierarchical relationships).";
             case ABOVE: return "The search parameter tests whether the value in a resource subsumes the specified value (is-a, or hierarchical relationships).";
             case TYPE: return "The search parameter only applies to the Resource Type specified as a modifier (e.g. the modifier is not actually :type, but :Patient etc.).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -531,6 +542,7 @@ public class SearchParameter extends MetadataResource {
             case BELOW: return "Below";
             case ABOVE: return "Above";
             case TYPE: return "Type";
+            case NULL: return null;
             default: return "?";
           }
         }

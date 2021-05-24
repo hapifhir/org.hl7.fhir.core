@@ -92,6 +92,7 @@ public enum HspcSpecialArrangement {
             case _528123037: return "528123037";
             case _30719: return "30719";
             case _528123038: return "528123038";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum HspcSpecialArrangement {
             case _528123037: return "A canine that has been trained to lead an idividual that is blind.";
             case _30719: return "A suuplimental substance given to patients who cannot obtain appropriate level of environmental oxygen through natural breathing.";
             case _528123038: return "A device that monitors an idividual's heart rate.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum HspcSpecialArrangement {
             case _528123037: return "Seeing eye dog";
             case _30719: return "Oxygen";
             case _528123038: return "Heart monitor";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -228,6 +228,7 @@ public class GuidanceResponse extends DomainResource {
      */
     @Child(name = "module", type = {UriType.class, CanonicalType.class, CodeableConcept.class}, order=2, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="What guidance was requested", formalDefinition="An identifier, CodeableConcept or canonical reference to the guidance that was requested." )
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/guidance-module-code")
     protected DataType module;
 
     /**
@@ -1275,7 +1276,7 @@ public class GuidanceResponse extends DomainResource {
    * Path: <b>GuidanceResponse.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="GuidanceResponse.subject.where(resolve() is Patient)", description="The identity of a patient to search for guidance response results", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="GuidanceResponse.subject.where(resolve() is Patient)", description="The identity of a patient to search for guidance response results", type="reference", target={Group.class, Patient.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -1312,6 +1313,26 @@ public class GuidanceResponse extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam REQUEST = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_REQUEST);
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>The status of the guidance response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>GuidanceResponse.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="GuidanceResponse.status", description="The status of the guidance response", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>The status of the guidance response</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>GuidanceResponse.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
  /**
    * Search parameter: <b>subject</b>

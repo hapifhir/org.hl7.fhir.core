@@ -113,6 +113,7 @@ public enum ListExampleCodes {
             case WAITING: return "waiting";
             case PROTOCOLS: return "protocols";
             case PLANS: return "plans";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum ListExampleCodes {
             case WAITING: return "A list of items waiting for an event (perhaps a surgical patient waiting list).";
             case PROTOCOLS: return "A set of protocols to be followed.";
             case PLANS: return "A set of care plans that apply in a particular context of care.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum ListExampleCodes {
             case WAITING: return "Waiting List";
             case PROTOCOLS: return "Protocols";
             case PLANS: return "Care Plans";
+            case NULL: return null;
             default: return "?";
           }
     }

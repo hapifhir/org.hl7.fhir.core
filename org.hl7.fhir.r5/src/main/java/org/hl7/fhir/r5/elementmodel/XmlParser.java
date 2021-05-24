@@ -86,6 +86,16 @@ public class XmlParser extends ParserBase {
   public XmlParser(IWorkerContext context) {
     super(context);
   }
+  
+  private String schemaPath;
+  
+  public String getSchemaPath() {
+    return schemaPath;
+  }
+  public void setSchemaPath(String schemaPath) {
+    this.schemaPath = schemaPath;
+  }
+
 
   
   public boolean isAllowXsiLocation() {
@@ -188,7 +198,7 @@ public class XmlParser extends ParserBase {
     String name = element.getLocalName();
     String path = "/"+pathPrefix(ns)+name;
     
-    StructureDefinition sd = getDefinition(line(element), col(element), (ns == null ? "default" : ns), name);
+    StructureDefinition sd = getDefinition(line(element), col(element), (ns == null ? "noNamespace" : ns), name);
     if (sd == null)
       return null;
 
@@ -242,7 +252,7 @@ public class XmlParser extends ParserBase {
       String ns = prop.getXmlNamespace();
       String elementNs = element.getNamespaceURI();
       if (elementNs == null) {
-        elementNs = "default";
+        elementNs = "noNamespace";
       }
       if (!elementNs.equals(ns))
         logError(line(element), col(element), path, IssueType.INVALID, context.formatMessage(I18nConstants.WRONG_NAMESPACE__EXPECTED_, ns), IssueSeverity.ERROR);
@@ -458,8 +468,12 @@ public class XmlParser extends ParserBase {
 
 	private String convertForDateFormatFromExternal(String fmt, String av) throws FHIRException {
   	if ("v3".equals(fmt)) {
-  		DateTimeType d = DateTimeType.parseV3(av);
-  		return d.asStringValue();
+  	  try {
+    		DateTimeType d = DateTimeType.parseV3(av);
+    		return d.asStringValue();
+  	  } catch (Exception e) {
+  	    return av; // not at all clear what to do in this case.
+  	  }
   	} else
       throw new FHIRException(context.formatMessage(I18nConstants.UNKNOWN_DATA_FORMAT_, fmt));
 	}
@@ -544,7 +558,7 @@ public class XmlParser extends ParserBase {
     xml.setPretty(style == OutputStyle.PRETTY);
     xml.start();
     String ns = e.getProperty().getXmlNamespace();
-    if (ns!=null && !"default".equals(ns)) {
+    if (ns!=null && !"noNamespace".equals(ns)) {
       xml.setDefaultNamespace(ns);
     }
     if (hasTypeAttr(e))
@@ -597,6 +611,9 @@ public class XmlParser extends ParserBase {
   public void compose(Element e, IXMLWriter xml) throws Exception {
     xml.start();
     xml.setDefaultNamespace(e.getProperty().getXmlNamespace());
+    if (schemaPath != null) {
+      xml.setSchemaLocation(FormatUtilities.FHIR_NS, Utilities.pathURL(schemaPath, e.fhirType()+".xsd"));
+    }
     composeElement(xml, e, e.getType(), true);
     xml.end();
   }

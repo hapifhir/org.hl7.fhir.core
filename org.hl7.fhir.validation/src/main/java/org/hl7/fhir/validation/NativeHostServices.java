@@ -34,11 +34,11 @@ package org.hl7.fhir.validation;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /**
@@ -104,23 +104,8 @@ public class NativeHostServices {
   private class NH_10_50_Advisor implements VersionConvertorAdvisor50 {
 
     @Override
-    public boolean ignoreEntry(BundleEntryComponent src) {
+    public boolean ignoreEntry(BundleEntryComponent src, FhirPublication publication) {
       return false;
-    }
-
-    @Override
-    public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(Resource resource) throws FHIRException {
-      return null;
-    }
-
-    @Override
-    public org.hl7.fhir.dstu2.model.Resource convertR2(Resource resource) throws FHIRException {
-      return null;
-    }
-
-    @Override
-    public org.hl7.fhir.dstu3.model.Resource convertR3(Resource resource) throws FHIRException {
-      return null;
     }
 
     @Override
@@ -132,15 +117,10 @@ public class NativeHostServices {
       throw new FHIRException("Code systems cannot be handled at this time"); // what to do? need thread local storage? 
     }
 
-    @Override
-    public org.hl7.fhir.r4.model.Resource convertR4(Resource resource) throws FHIRException {
-      // still to do
-      return null;
-    }
-
   }
 
   private ValidationEngine validator;
+  private IgLoader igLoader;
   private int validationCount = 0;
   private int resourceCount = 0;
   private int convertCount = 0;
@@ -167,6 +147,7 @@ public class NativeHostServices {
   public void init(String pack) throws Exception {
     validator = new ValidationEngine(pack);
     validator.getContext().setAllowLoadingDuplicates(true);
+    igLoader = new IgLoader(validator.getPcm(), validator.getContext(), validator.getVersion(), validator.isDebug());
   }
 
   /** 
@@ -177,7 +158,7 @@ public class NativeHostServices {
    * @throws Exception
    */
   public void load(String pack) throws Exception {
-    validator.loadIg(pack, false);
+    igLoader.loadIg(validator.getIgs(), validator.getBinaries(), pack, false);
   }
 
   /** 

@@ -99,6 +99,7 @@ public enum FinancialTaskinputtype {
             case ITEM: return "item";
             case PERIOD: return "period";
             case STATUS: return "status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum FinancialTaskinputtype {
             case ITEM: return "The sequence number associated with an item for reprocessing.";
             case PERIOD: return "The reference period for the action being requested.";
             case STATUS: return "The processing status from a check on the processing status of a resource such as the adjudication of a claim.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum FinancialTaskinputtype {
             case ITEM: return "Item Number";
             case PERIOD: return "Period";
             case STATUS: return "Status code";
+            case NULL: return null;
             default: return "?";
           }
     }

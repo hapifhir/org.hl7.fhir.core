@@ -120,6 +120,7 @@ public enum V3PersonDisabilityType {
             case G: return "G";
             case WC: return "WC";
             case WK: return "WK";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum V3PersonDisabilityType {
             case G: return "A gurney is required to move the person";
             case WC: return "Person requires a wheelchair to be ambulatory";
             case WK: return "Person requires a walker to ambulate";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum V3PersonDisabilityType {
             case G: return "Requires gurney";
             case WC: return "Requires wheelchair";
             case WK: return "Requires walker";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -71,6 +71,7 @@ public enum QicoreDiagnosticorderPrecondition {
             case _1: return "1";
             case _2: return "2";
             case _3: return "3";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum QicoreDiagnosticorderPrecondition {
             case _1: return "The diagnostic test was or should be performed after the patient has engaged in physical activity";
             case _2: return "The diagnostic test was or should be performed while the patient is at rest";
             case _3: return "The diagnostic test was or should be performed after the patient operation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum QicoreDiagnosticorderPrecondition {
             case _1: return "After activity";
             case _2: return "At rest";
             case _3: return "Post-op";
+            case NULL: return null;
             default: return "?";
           }
     }

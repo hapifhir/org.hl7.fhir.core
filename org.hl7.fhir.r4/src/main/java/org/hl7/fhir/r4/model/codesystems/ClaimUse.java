@@ -71,6 +71,7 @@ public enum ClaimUse {
             case CLAIM: return "claim";
             case PREAUTHORIZATION: return "preauthorization";
             case PREDETERMINATION: return "predetermination";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ClaimUse {
             case CLAIM: return "The treatment is complete and this represents a Claim for the services.";
             case PREAUTHORIZATION: return "The treatment is proposed and this represents a Pre-authorization for the services.";
             case PREDETERMINATION: return "The treatment is proposed and this represents a Pre-determination for the services.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ClaimUse {
             case CLAIM: return "Claim";
             case PREAUTHORIZATION: return "Preauthorization";
             case PREDETERMINATION: return "Predetermination";
+            case NULL: return null;
             default: return "?";
           }
     }

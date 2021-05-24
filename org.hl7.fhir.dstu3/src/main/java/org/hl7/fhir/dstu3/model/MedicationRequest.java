@@ -123,6 +123,7 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "stopped";
             case DRAFT: return "draft";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -136,6 +137,7 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "http://hl7.org/fhir/medication-request-status";
             case DRAFT: return "http://hl7.org/fhir/medication-request-status";
             case UNKNOWN: return "http://hl7.org/fhir/medication-request-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -149,6 +151,7 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "Actions implied by the prescription are to be permanently halted, before all of them occurred.";
             case DRAFT: return "The prescription is not yet 'actionable', i.e. it is a work in progress, requires sign-off or verification, and needs to be run through decision support process.";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +165,7 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "Stopped";
             case DRAFT: return "Draft";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -283,6 +287,7 @@ public class MedicationRequest extends DomainResource {
             case PLAN: return "plan";
             case ORDER: return "order";
             case INSTANCEORDER: return "instance-order";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -292,6 +297,7 @@ public class MedicationRequest extends DomainResource {
             case PLAN: return "http://hl7.org/fhir/medication-request-intent";
             case ORDER: return "http://hl7.org/fhir/medication-request-intent";
             case INSTANCEORDER: return "http://hl7.org/fhir/medication-request-intent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -301,6 +307,7 @@ public class MedicationRequest extends DomainResource {
             case PLAN: return "The request represents an intension to ensure something occurs without providing an authorization for others to act";
             case ORDER: return "The request represents a request/demand and authorization for action";
             case INSTANCEORDER: return "The request represents an instance for the particular order, for example a medication administration record.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -310,6 +317,7 @@ public class MedicationRequest extends DomainResource {
             case PLAN: return "Plan";
             case ORDER: return "Order";
             case INSTANCEORDER: return "Instance Order";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -407,6 +415,7 @@ public class MedicationRequest extends DomainResource {
             case URGENT: return "urgent";
             case STAT: return "stat";
             case ASAP: return "asap";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -416,6 +425,7 @@ public class MedicationRequest extends DomainResource {
             case URGENT: return "http://hl7.org/fhir/medication-request-priority";
             case STAT: return "http://hl7.org/fhir/medication-request-priority";
             case ASAP: return "http://hl7.org/fhir/medication-request-priority";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -425,6 +435,7 @@ public class MedicationRequest extends DomainResource {
             case URGENT: return "The order should be urgently.";
             case STAT: return "The order is time-critical.";
             case ASAP: return "The order should be acted on as soon as possible.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -434,6 +445,7 @@ public class MedicationRequest extends DomainResource {
             case URGENT: return "Urgent";
             case STAT: return "Stat";
             case ASAP: return "ASAP";
+            case NULL: return null;
             default: return "?";
           }
         }

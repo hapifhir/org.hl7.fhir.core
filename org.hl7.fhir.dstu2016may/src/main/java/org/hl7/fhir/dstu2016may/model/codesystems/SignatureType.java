@@ -176,6 +176,7 @@ public enum SignatureType {
             case OID_1_2_840_10065_1_12_1_16: return "1.2.840.10065.1.12.1.16";
             case OID_1_2_840_10065_1_12_1_17: return "1.2.840.10065.1.12.1.17";
             case OID_1_2_840_10065_1_12_1_18: return "1.2.840.10065.1.12.1.18";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -202,6 +203,7 @@ public enum SignatureType {
             case OID_1_2_840_10065_1_12_1_16: return "the signature on an original document of an individual who has generated a new amended document. This (original) document shall reference the new document via an additional signature purpose. This is the inverse of an addendum signature and provides a pointer from the original to the amended document.";
             case OID_1_2_840_10065_1_12_1_17: return "the signature of an individual who is certifying that the document is invalidated by an error(s), or is placed in the wrong chart. An administrative (error/edit) signature must include an addendum to the document and therefore shall have an addendum signature sub-type (see 8.1). This signature is reserved for the highest health information system administrative classification, since it is a statement that the entire document is invalidated by the error and that the document should no longer be used for patient care, although for legal reasons the document must remain part of the permanent patient record.";
             case OID_1_2_840_10065_1_12_1_18: return "the signature by an entity or device trusted to provide accurate timestamps. This timestamp might be provided, for example, in the signature time attribute.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -225,6 +227,7 @@ public enum SignatureType {
             case OID_1_2_840_10065_1_12_1_16: return "Modification Signature";
             case OID_1_2_840_10065_1_12_1_17: return "Administrative (Error/Edit) Signature";
             case OID_1_2_840_10065_1_12_1_18: return "Timestamp Signature";
+            case NULL: return null;
             default: return "?";
           }
     }

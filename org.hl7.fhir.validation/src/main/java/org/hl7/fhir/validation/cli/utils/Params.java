@@ -52,6 +52,8 @@ public class Params {
   public static final String RIGHT = "-right";
   public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
   public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
+  public static final String NO_INVARIANTS = "-no-invariants";
+  public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String CRUMB_TRAIL = "-crumb-trails";
   public static final String SHOW_TIMES = "-show-times";
@@ -129,10 +131,10 @@ public class Params {
         cliContext.getBundleValidationRules().add(new BundleValidationRule(r, p));
       } else if (args[i].equals(QUESTIONNAIRE)) {
         if (i + 1 == args.length)
-          throw new Error("Specified -questionnaire without indicating questionnaire file");
+          throw new Error("Specified -questionnaire without indicating questionnaire mode");
         else {
           String q = args[++i];
-          cliContext.setQuestionnaireMode(QuestionnaireMode.valueOf(q));
+          cliContext.setQuestionnaireMode(QuestionnaireMode.fromCode(q));
         }
       } else if (args[i].equals(NATIVE)) {
         cliContext.setDoNative(true);
@@ -156,6 +158,10 @@ public class Params {
         cliContext.setNoInternalCaching(true);
       } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
         cliContext.setNoExtensibleBindingMessages(true);
+      } else if (args[i].equals(NO_INVARIANTS)) {
+        cliContext.setNoInvariants(true);
+      } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
+        cliContext.setWantInvariantsInMessages(true);
       } else if (args[i].equals(HINT_ABOUT_NON_MUST_SUPPORT)) {
         cliContext.setHintAboutNonMustSupport(true);
       } else if (args[i].equals(TO_VERSION)) {

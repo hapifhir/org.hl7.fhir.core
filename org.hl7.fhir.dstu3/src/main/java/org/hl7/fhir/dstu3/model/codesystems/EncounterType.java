@@ -78,6 +78,7 @@ public enum EncounterType {
             case BD_BMCLIN: return "BD/BM-clin";
             case CCS60: return "CCS60";
             case OKI: return "OKI";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum EncounterType {
             case BD_BMCLIN: return "";
             case CCS60: return "";
             case OKI: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum EncounterType {
             case BD_BMCLIN: return "Bone drilling/bone marrow punction in clinic";
             case CCS60: return "Infant colon screening - 60 minutes";
             case OKI: return "Outpatient Kenacort injection";
+            case NULL: return null;
             default: return "?";
           }
     }

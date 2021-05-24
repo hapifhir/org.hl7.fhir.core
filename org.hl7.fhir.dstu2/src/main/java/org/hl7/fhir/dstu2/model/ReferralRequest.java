@@ -110,6 +110,7 @@ public class ReferralRequest extends DomainResource {
             case ACCEPTED: return "accepted";
             case REJECTED: return "rejected";
             case COMPLETED: return "completed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public class ReferralRequest extends DomainResource {
             case ACCEPTED: return "http://hl7.org/fhir/referralstatus";
             case REJECTED: return "http://hl7.org/fhir/referralstatus";
             case COMPLETED: return "http://hl7.org/fhir/referralstatus";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -134,6 +136,7 @@ public class ReferralRequest extends DomainResource {
             case ACCEPTED: return "The recipient has agreed to deliver the care requested by the referral.";
             case REJECTED: return "The recipient has declined to accept the referral.";
             case COMPLETED: return "The referral has been completely actioned.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +149,7 @@ public class ReferralRequest extends DomainResource {
             case ACCEPTED: return "Accepted";
             case REJECTED: return "Rejected";
             case COMPLETED: return "Completed";
+            case NULL: return null;
             default: return "?";
           }
         }

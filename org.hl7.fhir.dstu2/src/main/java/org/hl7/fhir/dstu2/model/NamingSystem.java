@@ -86,6 +86,7 @@ public class NamingSystem extends DomainResource {
             case CODESYSTEM: return "codesystem";
             case IDENTIFIER: return "identifier";
             case ROOT: return "root";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -94,6 +95,7 @@ public class NamingSystem extends DomainResource {
             case CODESYSTEM: return "http://hl7.org/fhir/namingsystem-type";
             case IDENTIFIER: return "http://hl7.org/fhir/namingsystem-type";
             case ROOT: return "http://hl7.org/fhir/namingsystem-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -102,6 +104,7 @@ public class NamingSystem extends DomainResource {
             case CODESYSTEM: return "The naming system is used to define concepts and symbols to represent those concepts; e.g. UCUM, LOINC, NDC code, local lab codes, etc.";
             case IDENTIFIER: return "The naming system is used to manage identifiers (e.g. license numbers, order numbers, etc.).";
             case ROOT: return "The naming system is used as the root for other identifiers and naming systems.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -110,6 +113,7 @@ public class NamingSystem extends DomainResource {
             case CODESYSTEM: return "Code System";
             case IDENTIFIER: return "Identifier";
             case ROOT: return "Root";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -193,6 +197,7 @@ public class NamingSystem extends DomainResource {
             case UUID: return "uuid";
             case URI: return "uri";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -202,6 +207,7 @@ public class NamingSystem extends DomainResource {
             case UUID: return "http://hl7.org/fhir/namingsystem-identifier-type";
             case URI: return "http://hl7.org/fhir/namingsystem-identifier-type";
             case OTHER: return "http://hl7.org/fhir/namingsystem-identifier-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -211,6 +217,7 @@ public class NamingSystem extends DomainResource {
             case UUID: return "A universally unique identifier of the form a5afddf4-e880-459b-876e-e4591b0acc11.";
             case URI: return "A uniform resource identifier (ideally a URL - uniform resource locator); e.g. http://unitsofmeasure.org.";
             case OTHER: return "Some other type of unique identifier; e.g. HL7-assigned reserved string such as LN for LOINC.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -220,6 +227,7 @@ public class NamingSystem extends DomainResource {
             case UUID: return "UUID";
             case URI: return "URI";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
         }

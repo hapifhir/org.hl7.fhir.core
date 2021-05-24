@@ -53,12 +53,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.security.cert.X509Certificate;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -92,9 +90,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public static final String PRIMARY_SERVER = "http://packages.fhir.org";
   public static final String SECONDARY_SERVER = "http://packages2.fhir.org/packages";
   //  private static final String SECONDARY_SERVER = "http://local.fhir.org:960/packages";
-  public static final String PACKAGE_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+$";
-  public static final String PACKAGE_VERSION_REGEX = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*$";
-  public static final String PACKAGE_VERSION_REGEX_OPT = "^[a-z][a-z0-9\\_\\-]*(\\.[a-z0-9\\_\\-]+)+(\\#[a-z0-9\\-\\_]+(\\.[a-z0-9\\-\\_]+)*)?$";
+  public static final String PACKAGE_REGEX = "^[a-zA-Z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+$";
+  public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*$";
+  public static final String PACKAGE_VERSION_REGEX_OPT = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+(\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*)?$";
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
   private static final String CACHE_VERSION = "3"; // second version - see wiki page
   private String cacheFolder;
@@ -207,8 +205,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private void listSpecs(Map<String, String> specList, String server) throws IOException {
     CachingPackageClient pc = new CachingPackageClient(server);
-    List<PackageClient.PackageInfo> matches = pc.search(null, null, null, false);
-    for (PackageClient.PackageInfo m : matches) {
+    List<PackageInfo> matches = pc.search(null, null, null, false);
+    for (PackageInfo m : matches) {
       if (!specList.containsKey(m.getId())) {
         specList.put(m.getId(), m.getUrl());
       }
@@ -390,7 +388,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
             if (!(new File(dir).exists()))
               Utilities.createDirectory(dir);
             for (Entry<String, byte[]> fe : e.getValue().getContent().entrySet()) {
-              String fn = Utilities.path(dir, fe.getKey());
+              String fn = Utilities.path(dir, Utilities.cleanFileName(fe.getKey()));
               byte[] cnt = fe.getValue();
               TextFile.bytesToFile(cnt, fn);
               size = size + cnt.length;
@@ -559,8 +557,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public String getPackageId(String canonicalUrl) throws IOException {
     String retVal = findCanonicalInLocalCache(canonicalUrl);
     
-    retVal = super.getPackageId(canonicalUrl);
-
+    if(retVal == null) {
+      retVal = super.getPackageId(canonicalUrl);
+    }
+    
     if (retVal == null) {
       retVal = getPackageIdFromBuildList(canonicalUrl);
     }

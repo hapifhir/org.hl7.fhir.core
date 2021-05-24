@@ -92,6 +92,7 @@ public enum SpecialValues {
             case SUFFICIENT: return "sufficient";
             case WITHDRAWN: return "withdrawn";
             case NILKNOWN: return "nil-known";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum SpecialValues {
             case SUFFICIENT: return "The specific quantity is not known, but is known to be non-zero and is not specified because it makes up the bulk of the material.";
             case WITHDRAWN: return "The value is no longer available.";
             case NILKNOWN: return "The are no known applicable values in this context.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum SpecialValues {
             case SUFFICIENT: return "Sufficient Quantity";
             case WITHDRAWN: return "Value Withdrawn";
             case NILKNOWN: return "Nil Known";
+            case NULL: return null;
             default: return "?";
           }
     }

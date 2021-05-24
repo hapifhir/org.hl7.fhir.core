@@ -104,6 +104,7 @@ public class ResearchSubject extends DomainResource {
             case SUSPENDED: return "suspended";
             case WITHDRAWN: return "withdrawn";
             case COMPLETED: return "completed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -115,6 +116,7 @@ public class ResearchSubject extends DomainResource {
             case SUSPENDED: return "http://hl7.org/fhir/research-subject-status";
             case WITHDRAWN: return "http://hl7.org/fhir/research-subject-status";
             case COMPLETED: return "http://hl7.org/fhir/research-subject-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public class ResearchSubject extends DomainResource {
             case SUSPENDED: return "The subject has temporarily discontinued monitoring/treatment as part of the study";
             case WITHDRAWN: return "The subject has permanently ended participation in the study prior to completion of the intended monitoring/treatment";
             case COMPLETED: return "All intended monitoring/treatment of the subject has been completed and their engagement with the study is now ended";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -137,6 +140,7 @@ public class ResearchSubject extends DomainResource {
             case SUSPENDED: return "Suspended";
             case WITHDRAWN: return "Withdrawn";
             case COMPLETED: return "Completed";
+            case NULL: return null;
             default: return "?";
           }
         }

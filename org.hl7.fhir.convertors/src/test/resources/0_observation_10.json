@@ -1,0 +1,42 @@
+{
+  "resourceType": "Observation",
+  "id": "fobafoba",
+  "status": "final",
+  "category": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/observation-category",
+        "code": "laboratory",
+        "display": "Laboratory"
+      }
+    ],
+    "text": "Laboratory"
+  },
+  "code": {
+    "coding": [
+      {
+        "system": "http://loinc.org",
+        "code": "2885-2",
+        "display": "Protein [Mass/volume] in Serum or Plasma"
+      }
+    ],
+    "text": "PROTEIN,TOTAL"
+  },
+  "subject": {
+    "display": "Mr shoko",
+    "reference": "other subject"
+  },
+  "effectiveDateTime": "2016-04-12T05:57:00Z",
+  "issued": "2016-04-12T05:57:00Z",
+  "valueQuantity": {
+    "value": 5.5,
+    "unit": "g/dL",
+    "system": "http://unitsofmeasure.org",
+    "code": "g/dL"
+  },
+  "referenceRange": [
+    {
+      "text": "6.0 - 8.2"
+    }
+  ]
+}

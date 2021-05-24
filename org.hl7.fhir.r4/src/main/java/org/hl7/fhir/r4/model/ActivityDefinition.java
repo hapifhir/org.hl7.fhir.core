@@ -173,6 +173,7 @@ public class ActivityDefinition extends MetadataResource {
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -193,6 +194,7 @@ public class ActivityDefinition extends MetadataResource {
             case SUPPLYREQUEST: return "http://hl7.org/fhir/request-resource-types";
             case TASK: return "http://hl7.org/fhir/request-resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/request-resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -213,6 +215,7 @@ public class ActivityDefinition extends MetadataResource {
             case SUPPLYREQUEST: return "Request for a medication, substance or device.";
             case TASK: return "A task to be performed.";
             case VISIONPRESCRIPTION: return "Prescription for vision correction products for a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -233,6 +236,7 @@ public class ActivityDefinition extends MetadataResource {
             case SUPPLYREQUEST: return "SupplyRequest";
             case TASK: return "Task";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -431,6 +435,7 @@ public class ActivityDefinition extends MetadataResource {
             case FILLERORDER: return "filler-order";
             case INSTANCEORDER: return "instance-order";
             case OPTION: return "option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -445,6 +450,7 @@ public class ActivityDefinition extends MetadataResource {
             case FILLERORDER: return "http://hl7.org/fhir/request-intent";
             case INSTANCEORDER: return "http://hl7.org/fhir/request-intent";
             case OPTION: return "http://hl7.org/fhir/request-intent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -459,6 +465,7 @@ public class ActivityDefinition extends MetadataResource {
             case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
             case INSTANCEORDER: return "An order created in fulfillment of a broader order that represents the authorization for a single activity occurrence.  E.g. The administration of a single dose of a drug.";
             case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or other constraints among a set of requests.  Refer to [[[RequestGroup]]] for additional information on how this status is used.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -473,6 +480,7 @@ public class ActivityDefinition extends MetadataResource {
             case FILLERORDER: return "Filler Order";
             case INSTANCEORDER: return "Instance Order";
             case OPTION: return "Option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -600,6 +608,7 @@ public class ActivityDefinition extends MetadataResource {
             case URGENT: return "urgent";
             case ASAP: return "asap";
             case STAT: return "stat";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -609,6 +618,7 @@ public class ActivityDefinition extends MetadataResource {
             case URGENT: return "http://hl7.org/fhir/request-priority";
             case ASAP: return "http://hl7.org/fhir/request-priority";
             case STAT: return "http://hl7.org/fhir/request-priority";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -618,6 +628,7 @@ public class ActivityDefinition extends MetadataResource {
             case URGENT: return "The request should be actioned promptly - higher priority than routine.";
             case ASAP: return "The request should be actioned as soon as possible - higher priority than urgent.";
             case STAT: return "The request should be actioned immediately - highest possible priority.  E.g. an emergency.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -627,6 +638,7 @@ public class ActivityDefinition extends MetadataResource {
             case URGENT: return "Urgent";
             case ASAP: return "ASAP";
             case STAT: return "STAT";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -724,6 +736,7 @@ public class ActivityDefinition extends MetadataResource {
             case PRACTITIONER: return "practitioner";
             case RELATEDPERSON: return "related-person";
             case DEVICE: return "device";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -733,6 +746,7 @@ public class ActivityDefinition extends MetadataResource {
             case PRACTITIONER: return "http://hl7.org/fhir/action-participant-type";
             case RELATEDPERSON: return "http://hl7.org/fhir/action-participant-type";
             case DEVICE: return "http://hl7.org/fhir/action-participant-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -742,6 +756,7 @@ public class ActivityDefinition extends MetadataResource {
             case PRACTITIONER: return "The participant is a practitioner involved in the patient's care.";
             case RELATEDPERSON: return "The participant is a person related to the patient.";
             case DEVICE: return "The participant is a system or device used in the care of the patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -751,6 +766,7 @@ public class ActivityDefinition extends MetadataResource {
             case PRACTITIONER: return "Practitioner";
             case RELATEDPERSON: return "Related Person";
             case DEVICE: return "Device";
+            case NULL: return null;
             default: return "?";
           }
         }

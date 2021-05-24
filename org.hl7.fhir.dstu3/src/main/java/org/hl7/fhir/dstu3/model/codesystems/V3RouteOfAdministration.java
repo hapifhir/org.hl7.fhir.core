@@ -2752,6 +2752,7 @@ public enum V3RouteOfAdministration {
             case _URINARYTRACTROUTE: return "_UrinaryTractRoute";
             case _VAGINALROUTE: return "_VaginalRoute";
             case _VITREOUSHUMOURROUTE: return "_VitreousHumourRoute";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -3146,6 +3147,7 @@ public enum V3RouteOfAdministration {
             case _URINARYTRACTROUTE: return "Urinary tract";
             case _VAGINALROUTE: return "Vaginal";
             case _VITREOUSHUMOURROUTE: return "Vitreous humour";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -3537,6 +3539,7 @@ public enum V3RouteOfAdministration {
             case _URINARYTRACTROUTE: return "UrinaryTractRoute";
             case _VAGINALROUTE: return "VaginalRoute";
             case _VITREOUSHUMOURROUTE: return "VitreousHumourRoute";
+            case NULL: return null;
             default: return "?";
           }
     }

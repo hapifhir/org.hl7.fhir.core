@@ -71,6 +71,7 @@ public enum NamingsystemType {
             case CODESYSTEM: return "codesystem";
             case IDENTIFIER: return "identifier";
             case ROOT: return "root";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum NamingsystemType {
             case CODESYSTEM: return "The naming system is used to define concepts and symbols to represent those concepts; e.g. UCUM, LOINC, NDC code, local lab codes, etc.";
             case IDENTIFIER: return "The naming system is used to manage identifiers (e.g. license numbers, order numbers, etc.).";
             case ROOT: return "The naming system is used as the root for other identifiers and naming systems.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum NamingsystemType {
             case CODESYSTEM: return "Code System";
             case IDENTIFIER: return "Identifier";
             case ROOT: return "Root";
+            case NULL: return null;
             default: return "?";
           }
     }

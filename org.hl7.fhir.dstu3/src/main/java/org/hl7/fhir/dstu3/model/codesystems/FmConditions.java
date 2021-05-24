@@ -57,6 +57,7 @@ public enum FmConditions {
         public String toCode() {
           switch (this) {
             case _123987: return "123987";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum FmConditions {
         public String getDefinition() {
           switch (this) {
             case _123987: return "Headache";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case _123987: return "Headache";
+            case NULL: return null;
             default: return "?";
           }
     }

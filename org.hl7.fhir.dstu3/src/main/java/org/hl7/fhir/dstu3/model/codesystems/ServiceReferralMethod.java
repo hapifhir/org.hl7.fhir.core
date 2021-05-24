@@ -85,6 +85,7 @@ public enum ServiceReferralMethod {
             case ELEC: return "elec";
             case SEMAIL: return "semail";
             case MAIL: return "mail";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ServiceReferralMethod {
             case ELEC: return "Referrals may be accepted via a secure messaging system. To determine the types of secure messaging systems supported, refer to the identifiers collection. Callers will need to understand the specific identifier system used to know that they are able to transmit messages.";
             case SEMAIL: return "Referrals may be accepted via a secure email. To send please encrypt with the services public key.";
             case MAIL: return "Referrals may be accepted via regular postage (or hand delivered).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ServiceReferralMethod {
             case ELEC: return "Secure Messaging";
             case SEMAIL: return "Secure Email";
             case MAIL: return "Mail";
+            case NULL: return null;
             default: return "?";
           }
     }

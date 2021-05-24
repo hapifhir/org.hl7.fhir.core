@@ -115,6 +115,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "wk";
             case MO: return "mo";
             case A: return "a";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,6 +128,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "http://unitsofmeasure.org";
             case MO: return "http://unitsofmeasure.org";
             case A: return "http://unitsofmeasure.org";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -139,6 +141,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "";
             case MO: return "";
             case A: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -151,6 +154,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case WK: return "week";
             case MO: return "month";
             case A: return "year";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -287,6 +291,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case FRI: return "fri";
             case SAT: return "sat";
             case SUN: return "sun";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -299,6 +304,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case FRI: return "http://hl7.org/fhir/days-of-week";
             case SAT: return "http://hl7.org/fhir/days-of-week";
             case SUN: return "http://hl7.org/fhir/days-of-week";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -311,6 +317,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case FRI: return "Friday.";
             case SAT: return "Saturday.";
             case SUN: return "Sunday.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -323,6 +330,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case FRI: return "Friday";
             case SAT: return "Saturday";
             case SUN: return "Sunday";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -592,6 +600,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "PCM";
             case PCD: return "PCD";
             case PCV: return "PCV";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -623,6 +632,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
             case PCD: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
             case PCV: return "http://terminology.hl7.org/CodeSystem/v3-TimingEvent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -654,6 +664,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "";
             case PCD: return "";
             case PCV: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -685,6 +696,7 @@ public class Timing extends BackboneType implements ICompositeType {
             case PCM: return "PCM";
             case PCD: return "PCD";
             case PCV: return "PCV";
+            case NULL: return null;
             default: return "?";
           }
         }

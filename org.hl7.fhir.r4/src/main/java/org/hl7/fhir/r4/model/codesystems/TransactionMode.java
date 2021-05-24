@@ -78,6 +78,7 @@ public enum TransactionMode {
             case BATCH: return "batch";
             case TRANSACTION: return "transaction";
             case BOTH: return "both";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum TransactionMode {
             case BATCH: return "Batches are  supported.";
             case TRANSACTION: return "Transactions are supported.";
             case BOTH: return "Both batches and transactions are supported.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum TransactionMode {
             case BATCH: return "Batches supported";
             case TRANSACTION: return "Transactions Supported";
             case BOTH: return "Batches & Transactions";
+            case NULL: return null;
             default: return "?";
           }
     }

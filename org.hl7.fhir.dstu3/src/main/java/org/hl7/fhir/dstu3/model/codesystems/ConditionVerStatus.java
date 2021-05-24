@@ -92,6 +92,7 @@ public enum ConditionVerStatus {
             case REFUTED: return "refuted";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ConditionVerStatus {
             case REFUTED: return "This condition has been ruled out by diagnostic and clinical evidence.";
             case ENTEREDINERROR: return "The statement was entered in error and is not valid.";
             case UNKNOWN: return "The condition status is unknown.  Note that \"unknown\" is a value of last resort and every attempt should be made to provide a meaningful value other than \"unknown\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ConditionVerStatus {
             case REFUTED: return "Refuted";
             case ENTEREDINERROR: return "Entered In Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

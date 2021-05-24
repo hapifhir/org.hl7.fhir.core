@@ -120,6 +120,7 @@ public enum V3MaritalStatus {
             case T: return "T";
             case U: return "U";
             case W: return "W";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum V3MaritalStatus {
             case T: return "Person declares that a domestic partner relationship exists.";
             case U: return "Currently not in a marriage contract.";
             case W: return "The spouse has died";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum V3MaritalStatus {
             case T: return "Domestic partner";
             case U: return "unmarried";
             case W: return "Widowed";
+            case NULL: return null;
             default: return "?";
           }
     }

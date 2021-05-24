@@ -29,8 +29,6 @@ public class Goal30_50 {
             tgt.setStatusDateElement(VersionConvertor_30_50.convertDate(src.getStatusDateElement()));
         if (src.hasStatusReason())
             tgt.setStatusReasonElement(VersionConvertor_30_50.convertString(src.getStatusReasonElement()));
-        if (src.hasExpressedBy())
-            tgt.setExpressedBy(VersionConvertor_30_50.convertReference(src.getExpressedBy()));
         for (org.hl7.fhir.r5.model.Reference t : src.getAddresses()) tgt.addAddresses(VersionConvertor_30_50.convertReference(t));
         for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
         for (CodeableReference t : src.getOutcome()) if (t.hasConcept())
@@ -63,8 +61,6 @@ public class Goal30_50 {
             tgt.setStatusDateElement(VersionConvertor_30_50.convertDate(src.getStatusDateElement()));
         if (src.hasStatusReason())
             tgt.setStatusReasonElement(VersionConvertor_30_50.convertString(src.getStatusReasonElement()));
-        if (src.hasExpressedBy())
-            tgt.setExpressedBy(VersionConvertor_30_50.convertReference(src.getExpressedBy()));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getAddresses()) tgt.addAddresses(VersionConvertor_30_50.convertReference(t));
         for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_50.convertAnnotation(t));
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getOutcomeCode()) tgt.addOutcome(VersionConvertor_30_50.convertCodeableConceptToCodableReference(t));

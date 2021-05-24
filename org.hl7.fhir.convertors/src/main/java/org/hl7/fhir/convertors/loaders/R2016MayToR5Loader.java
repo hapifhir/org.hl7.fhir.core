@@ -37,29 +37,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
 import org.hl7.fhir.dstu2016may.formats.JsonParser;
 import org.hl7.fhir.dstu2016may.formats.XmlParser;
 import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ValueSet;
-
-import com.google.gson.JsonSyntaxException;
 
 public class R2016MayToR5Loader extends BaseLoaderR5 implements VersionConvertorAdvisor50 {
 
@@ -159,23 +148,8 @@ public class R2016MayToR5Loader extends BaseLoaderR5 implements VersionConvertor
   }
   
   @Override
-  public boolean ignoreEntry(BundleEntryComponent src) {
+  public boolean ignoreEntry(BundleEntryComponent src, FhirPublication publication) {
     return false;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu2.model.Resource convertR2(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public Resource convertR2016May(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
   }
 
   @Override
@@ -191,11 +165,5 @@ public class R2016MayToR5Loader extends BaseLoaderR5 implements VersionConvertor
     return null;
   }
 
-  @Override
-  public org.hl7.fhir.r4.model.Resource convertR4(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
- 
 
 }

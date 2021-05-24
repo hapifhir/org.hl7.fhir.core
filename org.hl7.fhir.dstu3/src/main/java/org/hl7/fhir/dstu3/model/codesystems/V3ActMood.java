@@ -297,6 +297,7 @@ public enum V3ActMood {
             case GOL: return "GOL";
             case RSK: return "RSK";
             case OPT: return "OPT";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -333,6 +334,7 @@ public enum V3ActMood {
             case GOL: return "Definition: An expectation that is considered to be desirable to occur in the future \r\n\n                        \n                           Examples:Target weight below 80Kg, Stop smoking, Regain ability to walk, goal is to administer thrombolytics to candidate patients presenting with acute myocardial infarction.\r\n\n                        \n                           UsageNotes: INT (intent) reflects a plan for the future, which is a declaration to do something.  This contrasts with goal which doesn't represent an intention to act, merely a hope for an eventual result.  A goal is distinct from the intended actions to reach that goal.  \"I will reduce the dose of drug x to 20mg\" is an intent.  \"I hope to be able to get the patient to the point where I can reduce the dose of drug x to 20mg\" is a goal. EXPEC (expectation) reflects a prediction rather than a hope. RSK (risk) reflects a potential negative event rather than a hope.";
             case RSK: return "Definition:An act that may occur in the future and which is regarded as undesirable \r\n\n                        \n                           Examples:Increased risk of DVT, at risk for sub-acute bacterial endocarditis.\r\n\n                        \n                           UsageNotes:Note: An observation in RSK mood expresses the undesirable act, and not the underlying risk factor. A risk factor that is present (e.g. obesity, smoking, etc) should be expressed in event mood. INT (intent) reflects a plan for the future, which is a declaration to do something. This contrasts with RSK (risk), which is the potential that something negative will occur that may or may not ever happen. GOL (goal) reflects a hope to achieve something. EXPEC (expectation) is the prediction of a positive or negative event. This contrasts with RSK (risk), which is the potential that something negative will occur that may or may not ever happen, and may not be expected to happen.";
             case OPT: return "Definition: One of a set of acts that specify an option for the property values that the parent act may have. Typically used in definitions or orders to describe alternatives. An option can only be used as a group, that is, all assigned values must be used together. The actual mood of the act is the same as the parent act, and they must be linked by an actrelationship with type = OPTN.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -366,6 +368,7 @@ public enum V3ActMood {
             case GOL: return "Goal";
             case RSK: return "risk";
             case OPT: return "option";
+            case NULL: return null;
             default: return "?";
           }
     }

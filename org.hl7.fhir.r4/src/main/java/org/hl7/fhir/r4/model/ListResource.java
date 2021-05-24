@@ -87,6 +87,7 @@ public class ListResource extends DomainResource {
             case CURRENT: return "current";
             case RETIRED: return "retired";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -95,6 +96,7 @@ public class ListResource extends DomainResource {
             case CURRENT: return "http://hl7.org/fhir/list-status";
             case RETIRED: return "http://hl7.org/fhir/list-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/list-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +105,7 @@ public class ListResource extends DomainResource {
             case CURRENT: return "The list is considered to be an active part of the patient's record.";
             case RETIRED: return "The list is \"old\" and should no longer be considered accurate or relevant.";
             case ENTEREDINERROR: return "The list was never accurate.  It is retained for medico-legal purposes only.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,6 +114,7 @@ public class ListResource extends DomainResource {
             case CURRENT: return "Current";
             case RETIRED: return "Retired";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -195,6 +199,7 @@ public class ListResource extends DomainResource {
             case WORKING: return "working";
             case SNAPSHOT: return "snapshot";
             case CHANGES: return "changes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -203,6 +208,7 @@ public class ListResource extends DomainResource {
             case WORKING: return "http://hl7.org/fhir/list-mode";
             case SNAPSHOT: return "http://hl7.org/fhir/list-mode";
             case CHANGES: return "http://hl7.org/fhir/list-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -211,6 +217,7 @@ public class ListResource extends DomainResource {
             case WORKING: return "This list is the master list, maintained in an ongoing fashion with regular updates as the real world list it is tracking changes.";
             case SNAPSHOT: return "This list was prepared as a snapshot. It should not be assumed to be current.";
             case CHANGES: return "A point-in-time list that shows what changes have been made or recommended.  E.g. a discharge medication list showing what was added and removed during an encounter.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -219,6 +226,7 @@ public class ListResource extends DomainResource {
             case WORKING: return "Working List";
             case SNAPSHOT: return "Snapshot List";
             case CHANGES: return "Change List";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1755,7 +1763,7 @@ public class ListResource extends DomainResource {
    * Path: <b>List.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="List.subject", description="If all resources have the same subject", type="reference", target={Device.class, Group.class, Location.class, Patient.class } )
+  @SearchParamDefinition(name="subject", path="List.subject", description="If all resources have the same subject", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient") }, target={Device.class, Group.class, Location.class, Patient.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
@@ -1807,7 +1815,7 @@ public class ListResource extends DomainResource {
    * Path: <b>List.source</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="source", path="List.source", description="Who and/or what defined the list contents (aka Author)", type="reference", target={Device.class, Patient.class, Practitioner.class, PractitionerRole.class } )
+  @SearchParamDefinition(name="source", path="List.source", description="Who and/or what defined the list contents (aka Author)", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Device"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Patient"), @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Practitioner") }, target={Device.class, Patient.class, Practitioner.class, PractitionerRole.class } )
   public static final String SP_SOURCE = "source";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>source</b>

@@ -36,13 +36,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor30;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor30;
 import org.hl7.fhir.dstu2.formats.JsonParser;
 import org.hl7.fhir.dstu2.formats.XmlParser;
 import org.hl7.fhir.dstu2.model.Resource;
-import org.hl7.fhir.dstu3.context.SimpleWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.dstu3.model.Bundle.BundleType;
@@ -53,6 +51,7 @@ import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.FhirPublication;
 
 public class R2ToR3Loader extends BaseLoaderR3 implements VersionConvertorAdvisor30 {
 
@@ -109,14 +108,10 @@ public class R2ToR3Loader extends BaseLoaderR3 implements VersionConvertorAdviso
   }
 
   @Override
-  public boolean ignoreEntry(BundleEntryComponent src) {
+  public boolean ignoreEntry(BundleEntryComponent src, FhirPublication publication) {
     return false;
   }
 
-  @Override
-  public Resource convert(org.hl7.fhir.dstu3.model.Resource resource) throws FHIRException {
-    return null;
-  }
 
   @Override
   public void handleCodeSystem(CodeSystem cs, ValueSet vs) {

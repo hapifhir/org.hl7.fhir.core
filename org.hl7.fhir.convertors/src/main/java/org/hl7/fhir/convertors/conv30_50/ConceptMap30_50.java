@@ -4,10 +4,12 @@ import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.Enumeration;
 import org.hl7.fhir.r5.model.Enumerations;
 import org.hl7.fhir.r5.model.Enumerations.ConceptMapRelationship;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
+import org.hl7.fhir.utilities.CanonicalPair;
 
 public class ConceptMap30_50 {
 
@@ -100,14 +102,11 @@ public class ConceptMap30_50 {
             return null;
         org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent tgt = new org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasSource())
-            tgt.setSourceElement(VersionConvertor_30_50.convertUri(src.getSourceElement()));
-        if (src.hasSourceVersion())
-            tgt.setSourceVersionElement(VersionConvertor_30_50.convertString(src.getSourceVersionElement()));
-        if (src.hasTarget())
-            tgt.setTarget(src.getTarget());
-        if (src.hasTargetVersion())
-            tgt.setTargetVersion(src.getTargetVersion());
+        if (src.hasSource() || src.hasSourceVersion())
+          tgt.setSourceElement(convertUriAndVersionToCanonical(src.getSourceElement(), src.getSourceVersionElement()));
+        if (src.hasTarget() || src.hasTargetVersion())
+          tgt.setSourceElement(convertUriAndVersionToCanonical(src.getTargetElement(), src.getTargetVersionElement()));
+
         for (org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent t : src.getElement()) tgt.addElement(convertSourceElementComponent(t));
         if (src.hasUnmapped())
             tgt.setUnmapped(convertConceptMapGroupUnmappedComponent(src.getUnmapped()));
@@ -119,19 +118,37 @@ public class ConceptMap30_50 {
             return null;
         org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent tgt = new org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent();
         VersionConvertor_30_50.copyElement(src, tgt);
-        if (src.hasSource())
-            tgt.setSourceElement(VersionConvertor_30_50.convertUri(src.getSourceElement()));
-        if (src.hasSourceVersion())
-            tgt.setSourceVersionElement(VersionConvertor_30_50.convertString(src.getSourceVersionElement()));
-        if (src.hasTarget())
-            tgt.setTarget(src.getTarget());
-        if (src.hasTargetVersion())
-            tgt.setTargetVersion(src.getTargetVersion());
+        if (src.hasSource()) {
+          CanonicalPair cp = new CanonicalPair(src.getSource());
+          tgt.setSource(cp.getUrl());
+          tgt.setSourceVersion(cp.getVersion());
+        }
+        if (src.hasTarget()) {
+          CanonicalPair cp = new CanonicalPair(src.getTarget());
+          tgt.setTarget(cp.getUrl());
+          tgt.setTargetVersion(cp.getVersion());
+        }
         for (org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent t : src.getElement()) tgt.addElement(convertSourceElementComponent(t));
         if (src.hasUnmapped())
             tgt.setUnmapped(convertConceptMapGroupUnmappedComponent(src.getUnmapped()));
         return tgt;
     }
+
+    private static CanonicalType convertUriAndVersionToCanonical(org.hl7.fhir.dstu3.model.UriType srcUri, org.hl7.fhir.dstu3.model.StringType srcVersion) {
+      if (srcUri == null && srcVersion == null)
+        return null;
+      org.hl7.fhir.r5.model.CanonicalType tgt = new org.hl7.fhir.r5.model.CanonicalType();
+      VersionConvertor_30_50.copyElement(srcUri == null ? srcVersion : srcUri, tgt);
+      if (srcUri.hasValue()) {
+        if (srcVersion.hasValue()) {
+          tgt.setValue(srcUri.getValue()+"|"+srcVersion.getValue());
+        } else {
+          tgt.setValue(srcUri.getValue());        
+        }
+      }
+      return tgt;
+    }
+
 
     public static org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupUnmappedComponent convertConceptMapGroupUnmappedComponent(org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupUnmappedComponent src) throws FHIRException {
         if (src == null)

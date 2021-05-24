@@ -61,6 +61,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TimeTracker;
+import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
@@ -70,9 +71,6 @@ import org.hl7.fhir.validation.cli.utils.*;
 import java.io.File;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Base64;
 
 /**
  * A executable class that will validate one or more FHIR resources against
@@ -96,6 +94,8 @@ public class ValidatorCli {
   public static final String JAVA_DISABLED_TUNNELING_SCHEMES = "jdk.http.auth.tunneling.disabledSchemes";
   public static final String JAVA_DISABLED_PROXY_SCHEMES = "jdk.http.auth.proxying.disabledSchemes";
   public static final String JAVA_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
+
+  private static ValidationService validationService = new ValidationService();
 
   public static void main(String[] args) throws Exception {
     TimeTracker tt = new TimeTracker();
@@ -184,42 +184,42 @@ public class ValidatorCli {
   private static void doLeftRightComparison(String[] args, CliContext cliContext, TimeTracker tt) throws Exception {
     Display.printCliArgumentsAndInfo(args);
     if (cliContext.getSv() == null) {
-      cliContext.setSv(ValidationService.determineVersion(cliContext));
+      cliContext.setSv(validationService.determineVersion(cliContext));
     }
     String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
-    ValidationEngine validator = ValidationService.getValidator(cliContext, definitions, tt);
+    ValidationEngine validator = validationService.initializeValidator(cliContext, definitions, tt);
     ComparisonService.doLeftRightComparison(args, Params.getParam(args, Params.DESTINATION), validator);
   }
 
   private static void doValidation(TimeTracker tt, TimeTracker.Session tts, CliContext cliContext) throws Exception {
     if (cliContext.getSv() == null) {
-      cliContext.setSv(ValidationService.determineVersion(cliContext));
+      cliContext.setSv(validationService.determineVersion(cliContext));
     }
     System.out.println("Loading");
     // Comment this out because definitions filename doesn't necessarily contain version (and many not even be 14 characters long).
     // Version gets spit out a couple of lines later after we've loaded the context
     String definitions = VersionUtilities.packageForVersion(cliContext.getSv()) + "#" + VersionUtilities.getCurrentVersion(cliContext.getSv());
-    ValidationEngine validator = ValidationService.getValidator(cliContext, definitions, tt);
+    ValidationEngine validator = validationService.initializeValidator(cliContext, definitions, tt);
     tts.end();
     switch (cliContext.getMode()) {
       case TRANSFORM:
-        ValidationService.transform(cliContext, validator);
+        validationService.transform(cliContext, validator);
         break;
       case NARRATIVE:
-        ValidationService.generateNarrative(cliContext, validator);
+        validationService.generateNarrative(cliContext, validator);
         break;
       case SNAPSHOT:
-        ValidationService.generateSnapshot(cliContext, validator);
+        validationService.generateSnapshot(cliContext, validator);
         break;
       case CONVERT:
-        ValidationService.convertSources(cliContext, validator);
+        validationService.convertSources(cliContext, validator);
         break;
       case FHIRPATH:
-        ValidationService.evaluateFhirpath(cliContext, validator);
+        validationService.evaluateFhirpath(cliContext, validator);
         break;
       case VERSION:
-        ValidationService.transformVersion(cliContext, validator);
+        validationService.transformVersion(cliContext, validator);
         break;
       case VALIDATION:
       case SCAN:
@@ -232,12 +232,13 @@ public class ValidatorCli {
         }
         System.out.println("Validating");
         if (cliContext.getMode() == EngineMode.SCAN) {
-          ValidationService.validateScan(cliContext, validator);
+          Scanner validationScanner = new Scanner(validator.getContext(), validator.getValidator(), validator.getIgLoader(), validator.getFhirPathEngine());
+          validationScanner.validateScan(cliContext.getOutput(), cliContext.getSources());
         } else {
-          ValidationService.validateSources(cliContext, validator);
+          validationService.validateSources(cliContext, validator);
         }
         break;
     }
-    System.out.println("Done. " + tt.report());
+    System.out.println("Done. " + tt.report()+". Max Memory = "+Utilities.describeSize(Runtime.getRuntime().maxMemory()));
   }
 }

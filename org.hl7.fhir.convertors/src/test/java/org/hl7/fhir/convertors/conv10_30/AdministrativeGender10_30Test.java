@@ -1,18 +1,13 @@
 package org.hl7.fhir.convertors.conv10_30;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor30;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor30;
 import org.hl7.fhir.convertors.loaders.R2ToR3Loader;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.stream.Stream;
 
 public class AdministrativeGender10_30Test {
 

@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors;
 
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.conv10_50.*;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu2.model.Parameters;
@@ -13,7 +14,6 @@ import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r5.model.CodeSystem.ConceptDefinitionDesignationComponent;
 import org.hl7.fhir.r5.model.CodeableReference;
-import org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent;
@@ -54,7 +54,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_10_50 {
+public class VersionConvertor_10_50 extends VersionConvertor_Base {
   static public List<String> CANONICAL_URLS = new ArrayList<String>();
 
   static {
@@ -2474,19 +2474,6 @@ public class VersionConvertor_10_50 {
     return tgt;
   }
 
-  static public class SourceElementComponentWrapper {
-    public SourceElementComponentWrapper(SourceElementComponent comp, String source, String target) {
-      super();
-      this.source = source;
-      this.target = target;
-      this.comp = comp;
-    }
-
-    public String source;
-    public String target;
-    public org.hl7.fhir.r5.model.ConceptMap.SourceElementComponent comp;
-  }
-
   public static org.hl7.fhir.r5.model.UsageContext convertCodeableConceptToUsageContext(org.hl7.fhir.dstu2.model.CodeableConcept t) throws FHIRException {
     org.hl7.fhir.r5.model.UsageContext result = new org.hl7.fhir.r5.model.UsageContext();
     result.setValue(convertCodeableConcept(t));
@@ -2979,8 +2966,8 @@ public class VersionConvertor_10_50 {
       return DetectedIssue10_50.convertDetectedIssue((org.hl7.fhir.r5.model.DetectedIssue) src);
     if (src instanceof org.hl7.fhir.r5.model.DeviceMetric)
       return DeviceMetric10_50.convertDeviceMetric((org.hl7.fhir.r5.model.DeviceMetric) src);
-    if (src instanceof org.hl7.fhir.r5.model.DeviceUseStatement)
-      return DeviceUseStatement10_50.convertDeviceUseStatement((org.hl7.fhir.r5.model.DeviceUseStatement) src);
+    if (src instanceof org.hl7.fhir.r5.model.DeviceUsage)
+      return DeviceUseStatement10_50.convertDeviceUseStatement((org.hl7.fhir.r5.model.DeviceUsage) src);
     if (src instanceof org.hl7.fhir.r5.model.DiagnosticReport)
       return DiagnosticReport10_50.convertDiagnosticReport((org.hl7.fhir.r5.model.DiagnosticReport) src);
     if (src instanceof org.hl7.fhir.r5.model.DocumentReference)

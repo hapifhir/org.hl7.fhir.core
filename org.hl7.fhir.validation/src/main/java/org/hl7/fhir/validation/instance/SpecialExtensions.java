@@ -18,7 +18,8 @@ public class SpecialExtensions {
     return Utilities.existsInList(url, 
         "http://hl7.org/fhir/StructureDefinition/elementdefinition-type-must-support",
         "http://hl7.org/fhir/StructureDefinition/instance-name",
-        "http://hl7.org/fhir/StructureDefinition/instance-description"
+        "http://hl7.org/fhir/StructureDefinition/instance-description",
+        "http://hl7.org/fhir/StructureDefinition/structuredefinition-rdf-type"
         );
   }
 

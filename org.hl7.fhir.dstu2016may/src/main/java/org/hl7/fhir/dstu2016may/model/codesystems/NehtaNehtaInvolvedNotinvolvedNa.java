@@ -57,6 +57,7 @@ public enum NehtaNehtaInvolvedNotinvolvedNa {
         public String toCode() {
           switch (this) {
             case NOTINVOLVED: return "not_involved";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum NehtaNehtaInvolvedNotinvolvedNa {
         public String getDefinition() {
           switch (this) {
             case NOTINVOLVED: return "Not involved";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case NOTINVOLVED: return "Not involved";
+            case NULL: return null;
             default: return "?";
           }
     }

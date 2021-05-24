@@ -99,6 +99,7 @@ public enum V3RoleStatus {
             case SUSPENDED: return "suspended";
             case TERMINATED: return "terminated";
             case NULLIFIED: return "nullified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum V3RoleStatus {
             case SUSPENDED: return "The state that represents a suspension of the Entity playing the Role. This state is arrived at from the \"active\" state.";
             case TERMINATED: return "The state representing the successful termination of the Role.";
             case NULLIFIED: return "The state representing the termination of a Role instance that was created in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum V3RoleStatus {
             case SUSPENDED: return "suspended";
             case TERMINATED: return "terminated";
             case NULLIFIED: return "nullified";
+            case NULL: return null;
             default: return "?";
           }
     }

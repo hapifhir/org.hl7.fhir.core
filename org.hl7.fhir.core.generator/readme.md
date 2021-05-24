@@ -1,6 +1,6 @@
 The Java Core Code Generator
 
-Note: This code only generates tje R5 java code. Older generated models are now maintained by hand.
+Note: This code only generates the R5 java code. Older generated models are now maintained by hand.
 
 To run this code, run the class JavaCoreGenerator with 3 parameters:      
 * 1: fhir version to generate from (e.g. 4.1.0 or 'current'

@@ -450,7 +450,7 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 		if ("http://www.w3.org/XML/1998/namespace".equals(namespace))
 			return "xml:";
 		
-		if (namespace == null || "".equals(namespace) || "default".equals(namespace))
+		if (namespace == null || "".equals(namespace) || "noNamespace".equals(namespace))
 			return "";
 		
 		XMLNamespace ns = findByNamespace(namespace);
@@ -899,6 +899,12 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
   @Override
   public void decorate(ElementDecoration element) throws IOException {
     // nothing...
+  }
+  @Override
+  public void setSchemaLocation(String ns, String loc) throws IOException {
+    namespace("http://www.w3.org/2001/XMLSchema-instance", "xsi");
+    attribute("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation", ns+" "+loc);
+    
   }
 	
 	

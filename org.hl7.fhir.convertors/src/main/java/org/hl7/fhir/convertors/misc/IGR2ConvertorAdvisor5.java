@@ -1,7 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -33,32 +31,17 @@ import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
 
 
 
-import org.hl7.fhir.dstu2.model.Resource;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.CodeSystem;
+import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.r5.model.ValueSet;
 
 public class IGR2ConvertorAdvisor5 implements VersionConvertorAdvisor50 {
 
   @Override
-  public boolean ignoreEntry(BundleEntryComponent src) {
+  public boolean ignoreEntry(BundleEntryComponent src, FhirPublication publication) {
     return false;
-  }
-
-  @Override
-  public Resource convertR2(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
   }
 
   @Override
@@ -68,11 +51,6 @@ public class IGR2ConvertorAdvisor5 implements VersionConvertorAdvisor50 {
 
   @Override
   public CodeSystem getCodeSystem(ValueSet src) {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.r4.model.Resource convertR4(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
     return null;
   }
 

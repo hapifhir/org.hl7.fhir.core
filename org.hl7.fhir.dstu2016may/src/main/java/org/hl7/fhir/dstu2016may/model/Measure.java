@@ -91,6 +91,7 @@ public class Measure extends DomainResource {
             case RATIO: return "ratio";
             case CONTINUOUSVARIABLE: return "continuous-variable";
             case COHORT: return "cohort";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -100,6 +101,7 @@ public class Measure extends DomainResource {
             case RATIO: return "http://hl7.org/fhir/measure-scoring";
             case CONTINUOUSVARIABLE: return "http://hl7.org/fhir/measure-scoring";
             case COHORT: return "http://hl7.org/fhir/measure-scoring";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -109,6 +111,7 @@ public class Measure extends DomainResource {
             case RATIO: return "The measure score is defined using a ratio";
             case CONTINUOUSVARIABLE: return "The score is defined by a calculation of some quantity";
             case COHORT: return "The measure is a cohort definition";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -118,6 +121,7 @@ public class Measure extends DomainResource {
             case RATIO: return "Ratio";
             case CONTINUOUSVARIABLE: return "Continuous Variable";
             case COHORT: return "Cohort";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -196,6 +200,7 @@ public class Measure extends DomainResource {
           switch (this) {
             case PROCESS: return "process";
             case OUTCOME: return "outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -203,6 +208,7 @@ public class Measure extends DomainResource {
           switch (this) {
             case PROCESS: return "http://hl7.org/fhir/measure-type";
             case OUTCOME: return "http://hl7.org/fhir/measure-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -210,6 +216,7 @@ public class Measure extends DomainResource {
           switch (this) {
             case PROCESS: return "The measure is a process measure";
             case OUTCOME: return "The measure is an outcome measure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -217,6 +224,7 @@ public class Measure extends DomainResource {
           switch (this) {
             case PROCESS: return "Process";
             case OUTCOME: return "Outcome";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -332,6 +340,7 @@ public class Measure extends DomainResource {
             case MEASUREPOPULATION: return "measure-population";
             case MEASUREPOPULATIONEXCLUSION: return "measure-population-exclusion";
             case MEASURESCORE: return "measure-score";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -346,6 +355,7 @@ public class Measure extends DomainResource {
             case MEASUREPOPULATION: return "http://hl7.org/fhir/measure-population";
             case MEASUREPOPULATIONEXCLUSION: return "http://hl7.org/fhir/measure-population";
             case MEASURESCORE: return "http://hl7.org/fhir/measure-population";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -360,6 +370,7 @@ public class Measure extends DomainResource {
             case MEASUREPOPULATION: return "The measure population for the measure";
             case MEASUREPOPULATIONEXCLUSION: return "The measure population exclusion for the measure";
             case MEASURESCORE: return "The measure score for the measure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -374,6 +385,7 @@ public class Measure extends DomainResource {
             case MEASUREPOPULATION: return "Measure Population";
             case MEASUREPOPULATIONEXCLUSION: return "Measure Population Exclusion";
             case MEASURESCORE: return "Measure Score";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -482,6 +494,7 @@ public class Measure extends DomainResource {
           switch (this) {
             case SUPPLEMENTALDATA: return "supplemental-data";
             case RISKADJUSTMENTFACTOR: return "risk-adjustment-factor";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -489,6 +502,7 @@ public class Measure extends DomainResource {
           switch (this) {
             case SUPPLEMENTALDATA: return "http://hl7.org/fhir/measure-data-usage";
             case RISKADJUSTMENTFACTOR: return "http://hl7.org/fhir/measure-data-usage";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -496,6 +510,7 @@ public class Measure extends DomainResource {
           switch (this) {
             case SUPPLEMENTALDATA: return "The data is intended to be provided as additional information alongside the measure results";
             case RISKADJUSTMENTFACTOR: return "The data is intended to be used to calculate and apply a risk adjustment model for the measure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -503,6 +518,7 @@ public class Measure extends DomainResource {
           switch (this) {
             case SUPPLEMENTALDATA: return "Supplemental Data";
             case RISKADJUSTMENTFACTOR: return "Risk Adjustment Factor";
+            case NULL: return null;
             default: return "?";
           }
         }

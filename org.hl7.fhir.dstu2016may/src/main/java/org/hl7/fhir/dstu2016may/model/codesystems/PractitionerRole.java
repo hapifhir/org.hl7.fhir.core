@@ -92,6 +92,7 @@ public enum PractitionerRole {
             case RESEARCHER: return "researcher";
             case TEACHER: return "teacher";
             case ICT: return "ict";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum PractitionerRole {
             case RESEARCHER: return "";
             case TEACHER: return "";
             case ICT: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum PractitionerRole {
             case RESEARCHER: return "Researcher";
             case TEACHER: return "Teacher/educator";
             case ICT: return "ICT professional";
+            case NULL: return null;
             default: return "?";
           }
     }

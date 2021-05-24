@@ -71,6 +71,7 @@ public enum ExtensionContext {
             case RESOURCE: return "resource";
             case DATATYPE: return "datatype";
             case EXTENSION: return "extension";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ExtensionContext {
             case RESOURCE: return "The context is all elements matching a particular resource element path.";
             case DATATYPE: return "The context is all nodes matching a particular data type element path (root or repeating element) or all elements referencing a particular primitive data type (expressed as the datatype name).";
             case EXTENSION: return "The context is a particular extension from a particular profile, a uri that identifies the extension definition.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ExtensionContext {
             case RESOURCE: return "Resource";
             case DATATYPE: return "Datatype";
             case EXTENSION: return "Extension";
+            case NULL: return null;
             default: return "?";
           }
     }

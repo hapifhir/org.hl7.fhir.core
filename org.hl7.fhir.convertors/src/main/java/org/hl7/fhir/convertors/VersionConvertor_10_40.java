@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors;
 
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.conv10_40.*;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu2.model.Parameters;
@@ -13,7 +14,6 @@ import org.hl7.fhir.r4.model.CanonicalType;
 import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionDesignationComponent;
-import org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r4.model.Immunization.ImmunizationPerformerComponent;
@@ -55,7 +55,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_10_40 {
+public class VersionConvertor_10_40 extends VersionConvertor_Base {
   static public List<String> CANONICAL_URLS = new ArrayList<String>();
 
   static {
@@ -2451,19 +2451,6 @@ public class VersionConvertor_10_40 {
     return tgt;
   }
 
-  static public class SourceElementComponentWrapper {
-    public SourceElementComponentWrapper(SourceElementComponent comp, String source, String target) {
-      super();
-      this.source = source;
-      this.target = target;
-      this.comp = comp;
-    }
-
-    public String source;
-    public String target;
-    public org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent comp;
-  }
-
   public static org.hl7.fhir.r4.model.UsageContext convertCodeableConceptToUsageContext(org.hl7.fhir.dstu2.model.CodeableConcept t) throws FHIRException {
     org.hl7.fhir.r4.model.UsageContext result = new org.hl7.fhir.r4.model.UsageContext();
     result.setValue(convertCodeableConcept(t));
@@ -2923,6 +2910,10 @@ public class VersionConvertor_10_40 {
       return TestScript10_40.convertTestScript((org.hl7.fhir.dstu2.model.TestScript) src);
     if (src instanceof org.hl7.fhir.dstu2.model.ValueSet)
       return ValueSet10_40.convertValueSet((org.hl7.fhir.dstu2.model.ValueSet) src, advisor);
+    if (src instanceof org.hl7.fhir.dstu2.model.Procedure)
+      return Procedure10_40.convertProcedure((org.hl7.fhir.dstu2.model.Procedure) src);
+    if (src instanceof org.hl7.fhir.dstu2.model.Medication)
+      return Medication10_40.convertMedication((org.hl7.fhir.dstu2.model.Medication) src);
     throw new FHIRException("Unknown resource " + src.fhirType());
   }
 

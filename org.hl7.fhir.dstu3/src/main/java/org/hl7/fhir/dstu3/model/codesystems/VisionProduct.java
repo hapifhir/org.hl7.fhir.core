@@ -64,6 +64,7 @@ public enum VisionProduct {
           switch (this) {
             case LENS: return "lens";
             case CONTACT: return "contact";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum VisionProduct {
           switch (this) {
             case LENS: return "A lens to be fitted to a frame to comprise a pair of glasses.";
             case CONTACT: return "A lens to be fitted for wearing directly on an eye.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum VisionProduct {
           switch (this) {
             case LENS: return "Lens";
             case CONTACT: return "Contact Lens";
+            case NULL: return null;
             default: return "?";
           }
     }

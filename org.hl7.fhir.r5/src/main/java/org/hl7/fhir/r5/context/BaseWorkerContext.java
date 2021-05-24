@@ -205,6 +205,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected TerminologyCache txCache;
   protected TimeTracker clock;
   private boolean tlogging = true;
+  private ICanonicalResourceLocator locator;
   
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     txCache = new TerminologyCache(lock, null);
@@ -498,9 +499,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public CodeSystem fetchCodeSystem(String system) {
+    CodeSystem cs;
     synchronized (lock) {
-      return codeSystems.get(system);
+      cs = codeSystems.get(system);
     }
+    if (cs == null && locator != null) {
+      locator.findResource(system);
+      synchronized (lock) {
+        cs = codeSystems.get(system);
+      }
+    }
+    return cs;
   } 
 
   @Override
@@ -750,7 +759,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     // 3rd pass: hit the server
     for (CodingValidationRequest t : codes) {
       t.setCacheToken(txCache != null ? txCache.generateValidationToken(options, t.getCoding(), vs) : null);
-      codeSystemsUsed.add(t.getCoding().getSystem());
+      if (t.getCoding().hasSystem()) {
+        codeSystemsUsed.add(t.getCoding().getSystem());
+      }
       if (txCache != null) { 
         t.setResult(txCache.getValidation(t.getCacheToken()));
       }
@@ -846,7 +857,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       options = ValidationOptions.defaults();
     }
     
-    codeSystemsUsed.add(code.getSystem());
+    if (code.hasSystem()) {
+      codeSystemsUsed.add(code.getSystem());
+    }
     CacheToken cacheToken = txCache != null ? txCache.generateValidationToken(options, code, vs) : null;
     ValidationResult res = null;
     if (txCache != null) {
@@ -859,12 +872,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
-        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this); 
-        res = vsc.validateCode(code);
-        if (txCache != null) {
-          txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
+        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this);
+        if (!vsc.isServerSide(code.getSystem())) {
+          res = vsc.validateCode(code);
+          if (txCache != null) {
+            txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
+          }
+          return res;
         }
-        return res;
       } catch (Exception e) {
       }
     }
@@ -922,7 +937,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       return res;
     }
     for (Coding c : code.getCoding()) {
-      codeSystemsUsed.add(c.getSystem());
+      if (c.hasSystem()) {
+        codeSystemsUsed.add(c.getSystem());
+      }
     }
 
     if (options.isUseClient()) {
@@ -972,7 +989,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (vs != null) {
       if (isTxCaching && cacheId != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
-        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+"|"+vs.getVersion()));        
+        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+(vs.hasVersion() ? "|"+vs.getVersion() : "")));        
       } else {
         pin.addParameter().setName("valueSet").setResource(vs);
         cached.add(vs.getUrl()+"|"+vs.getVersion());
@@ -1132,6 +1149,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   @Override
   public boolean isNoTerminologyServer() {
     return noTerminologyServer;
+  }
+
+  public void setNoTerminologyServer(boolean noTerminologyServer) {
+    this.noTerminologyServer = noTerminologyServer;
   }
 
   public String getName() {
@@ -1988,6 +2009,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     default:
       return "http://hl7.org/fhir";
     }
+  }
+
+  public ICanonicalResourceLocator getLocator() {
+    return locator;
+  }
+
+  public void setLocator(ICanonicalResourceLocator locator) {
+    this.locator = locator;
   }
 
 }

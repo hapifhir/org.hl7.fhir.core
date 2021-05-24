@@ -71,6 +71,7 @@ public enum AccountStatus {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum AccountStatus {
             case ACTIVE: return "This account is active and may be used.";
             case INACTIVE: return "This account is inactive and should not be used to track financial information.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum AccountStatus {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in error";
+            case NULL: return null;
             default: return "?";
           }
     }

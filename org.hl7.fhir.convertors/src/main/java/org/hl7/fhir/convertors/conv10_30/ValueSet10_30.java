@@ -1,8 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import java.util.List;
-import org.hl7.fhir.convertors.VersionConvertorAdvisor30;
+
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor30;
 import org.hl7.fhir.dstu2.model.ValueSet;
 import org.hl7.fhir.dstu3.model.CodeSystem;
 import org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemContentMode;
@@ -225,6 +226,7 @@ public class ValueSet10_30 {
                 tgt.setCompose(convertValueSetComposeComponent(src.getCompose()));
             tgt.getCompose().setLockedDate(src.getLockedDate());
         }
+        //TODO
         if (src.hasCodeSystem() && advisor != null) {
             org.hl7.fhir.dstu3.model.CodeSystem tgtcs = new org.hl7.fhir.dstu3.model.CodeSystem();
             VersionConvertor_10_30.copyDomainResource(src, tgtcs);

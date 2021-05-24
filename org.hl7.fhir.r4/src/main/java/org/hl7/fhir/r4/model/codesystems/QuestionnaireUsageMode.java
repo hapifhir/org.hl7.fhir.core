@@ -85,6 +85,7 @@ public enum QuestionnaireUsageMode {
             case DISPLAY: return "display";
             case DISPLAYNONEMPTY: return "display-non-empty";
             case CAPTUREDISPLAYNONEMPTY: return "capture-display-non-empty";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum QuestionnaireUsageMode {
             case DISPLAY: return "Render the item only when displaying a completed form.";
             case DISPLAYNONEMPTY: return "Render the item only when displaying a completed form and the item has been answered (or has child items that have been answered).";
             case CAPTUREDISPLAYNONEMPTY: return "Render the item when capturing data or when displaying a completed form and the item has been answered (or has child items that have been answered).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum QuestionnaireUsageMode {
             case DISPLAY: return "Display Only";
             case DISPLAYNONEMPTY: return "Display when Answered";
             case CAPTUREDISPLAYNONEMPTY: return "Capture or, if answered, Display";
+            case NULL: return null;
             default: return "?";
           }
     }

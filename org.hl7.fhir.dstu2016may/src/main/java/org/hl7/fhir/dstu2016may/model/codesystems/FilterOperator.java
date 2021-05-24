@@ -92,6 +92,7 @@ public enum FilterOperator {
             case REGEX: return "regex";
             case IN: return "in";
             case NOTIN: return "not-in";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum FilterOperator {
             case REGEX: return "The specified property of the code  matches the regex specified in the provided value.";
             case IN: return "The specified property of the code is in the set of codes or concepts specified in the provided value (comma separated list).";
             case NOTIN: return "The specified property of the code is not in the set of codes or concepts specified in the provided value (comma separated list).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum FilterOperator {
             case REGEX: return "Regular Expression";
             case IN: return "In Set";
             case NOTIN: return "Not in Set";
+            case NULL: return null;
             default: return "?";
           }
     }

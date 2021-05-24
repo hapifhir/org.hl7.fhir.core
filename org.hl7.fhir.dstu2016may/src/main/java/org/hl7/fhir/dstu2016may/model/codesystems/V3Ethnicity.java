@@ -351,6 +351,7 @@ public enum V3Ethnicity {
             case _21824: return "2182-4";
             case _21840: return "2184-0";
             case _21865: return "2186-5";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -402,6 +403,7 @@ public enum V3Ethnicity {
             case _21824: return "Cuban";
             case _21840: return "Dominican";
             case _21865: return "Note that this term remains in the table for completeness, even though within HL7, the notion of \"not otherwise coded\" term is deprecated.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -450,6 +452,7 @@ public enum V3Ethnicity {
             case _21824: return "Cuban";
             case _21840: return "Dominican";
             case _21865: return "Not Hispanic or Latino";
+            case NULL: return null;
             default: return "?";
           }
     }

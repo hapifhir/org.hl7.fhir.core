@@ -70,10 +70,10 @@ public class CarePlan10_50 {
         org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
         for (org.hl7.fhir.r5.model.Annotation t : src.getProgress()) tgt.addProgress(VersionConvertor_10_50.convertAnnotation(t));
-        if (src.hasReference())
-            tgt.setReference(VersionConvertor_10_50.convertReference(src.getReference()));
-        if (src.hasDetail())
-            tgt.setDetail(convertCarePlanActivityDetailComponent(src.getDetail()));
+        if (src.hasPlannedActivityReference())
+            tgt.setReference(VersionConvertor_10_50.convertReference(src.getPlannedActivityReference()));
+        if (src.hasPlannedActivityDetail())
+            tgt.setDetail(convertCarePlanActivityDetailComponent(src.getPlannedActivityDetail()));
         return tgt;
     }
 
@@ -84,16 +84,16 @@ public class CarePlan10_50 {
         VersionConvertor_10_50.copyElement(src, tgt);
         for (org.hl7.fhir.dstu2.model.Annotation t : src.getProgress()) tgt.addProgress(VersionConvertor_10_50.convertAnnotation(t));
         if (src.hasReference())
-            tgt.setReference(VersionConvertor_10_50.convertReference(src.getReference()));
+            tgt.setPlannedActivityReference(VersionConvertor_10_50.convertReference(src.getReference()));
         if (src.hasDetail())
-            tgt.setDetail(convertCarePlanActivityDetailComponent(src.getDetail()));
+            tgt.setPlannedActivityDetail(convertCarePlanActivityDetailComponent(src.getDetail()));
         return tgt;
     }
 
-    public static org.hl7.fhir.r5.model.CarePlan.CarePlanActivityDetailComponent convertCarePlanActivityDetailComponent(org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent src) throws FHIRException {
+    public static org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent convertCarePlanActivityDetailComponent(org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent src) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
-        org.hl7.fhir.r5.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityDetailComponent();
+        org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
@@ -120,7 +120,7 @@ public class CarePlan10_50 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent convertCarePlanActivityDetailComponent(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityDetailComponent src) throws FHIRException {
+    public static org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent convertCarePlanActivityDetailComponent(org.hl7.fhir.r5.model.CarePlan.CarePlanActivityPlannedActivityDetailComponent src) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent();

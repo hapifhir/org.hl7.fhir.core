@@ -78,6 +78,7 @@ public enum CatalogContentStatus {
             case PENDING: return "pending";
             case DISCONTINUED: return "discontinued";
             case OFFICIAL: return "official";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum CatalogContentStatus {
             case PENDING: return "The catalog content is pending some action e.g. confirmation or approval";
             case DISCONTINUED: return "The catalog is discontinued";
             case OFFICIAL: return "The catalog content is considered official";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum CatalogContentStatus {
             case PENDING: return "Pending";
             case DISCONTINUED: return "Discontinued";
             case OFFICIAL: return "Official";
+            case NULL: return null;
             default: return "?";
           }
     }

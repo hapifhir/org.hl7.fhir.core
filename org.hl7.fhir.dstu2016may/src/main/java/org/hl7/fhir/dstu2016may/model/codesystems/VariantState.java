@@ -71,6 +71,7 @@ public enum VariantState {
             case POSITIVE: return "positive";
             case NEGATIVE: return "negative";
             case ABSENT: return "absent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum VariantState {
             case POSITIVE: return "the variant is detected";
             case NEGATIVE: return "no variant is detected";
             case ABSENT: return "result of the variant is missing";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum VariantState {
             case POSITIVE: return "positive";
             case NEGATIVE: return "negative";
             case ABSENT: return "absent";
+            case NULL: return null;
             default: return "?";
           }
     }

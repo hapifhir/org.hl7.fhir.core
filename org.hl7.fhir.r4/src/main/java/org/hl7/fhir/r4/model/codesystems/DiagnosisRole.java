@@ -99,6 +99,7 @@ public enum DiagnosisRole {
             case PREOP: return "pre-op";
             case POSTOP: return "post-op";
             case BILLING: return "billing";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum DiagnosisRole {
             case PREOP: return "";
             case POSTOP: return "";
             case BILLING: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum DiagnosisRole {
             case PREOP: return "pre-op diagnosis";
             case POSTOP: return "post-op diagnosis";
             case BILLING: return "Billing";
+            case NULL: return null;
             default: return "?";
           }
     }

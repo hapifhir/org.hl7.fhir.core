@@ -91,6 +91,7 @@ public class Provenance extends DomainResource {
             case REVISION: return "revision";
             case QUOTATION: return "quotation";
             case SOURCE: return "source";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -100,6 +101,7 @@ public class Provenance extends DomainResource {
             case REVISION: return "http://hl7.org/fhir/provenance-entity-role";
             case QUOTATION: return "http://hl7.org/fhir/provenance-entity-role";
             case SOURCE: return "http://hl7.org/fhir/provenance-entity-role";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -109,6 +111,7 @@ public class Provenance extends DomainResource {
             case REVISION: return "A derivation for which the resulting entity is a revised version of some original.";
             case QUOTATION: return "The repeat of (some or all of) an entity, such as text or image, by someone who may or may not be its original author.";
             case SOURCE: return "A primary source for a topic refers to something produced by some agent with direct experience and knowledge about the topic, at the time of the topic's study, without benefit from hindsight.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -118,6 +121,7 @@ public class Provenance extends DomainResource {
             case REVISION: return "Revision";
             case QUOTATION: return "Quotation";
             case SOURCE: return "Source";
+            case NULL: return null;
             default: return "?";
           }
         }

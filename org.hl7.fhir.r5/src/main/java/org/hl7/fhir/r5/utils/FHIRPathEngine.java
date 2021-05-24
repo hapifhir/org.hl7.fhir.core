@@ -304,22 +304,11 @@ public class FHIRPathEngine {
     public ValueSet resolveValueSet(Object appContext, String url);
   }
 
-
   /**
    * @param worker - used when validating paths (@check), and used doing value set membership when executing tests (once that's defined)
    */
   public FHIRPathEngine(IWorkerContext worker) {
-    super();
-    this.worker = worker;
-    profileUtilities = new ProfileUtilities(worker, null, null); 
-    for (StructureDefinition sd : worker.getStructures()) {
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() != StructureDefinitionKind.LOGICAL) {
-        allTypes.put(sd.getName(), sd);
-      }
-      if (sd.getDerivation() == TypeDerivationRule.SPECIALIZATION && sd.getKind() == StructureDefinitionKind.PRIMITIVETYPE) { 
-        primitiveTypes.add(sd.getName());
-      }
-    }
+    this(worker, new ProfileUtilities(worker, null, null));
   }
 
   public FHIRPathEngine(IWorkerContext worker, ProfileUtilities utilities) {

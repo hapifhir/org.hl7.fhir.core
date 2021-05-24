@@ -134,6 +134,7 @@ public enum MapTransform {
             case UUID: return "uuid";
             case POINTER: return "pointer";
             case EVALUATE: return "evaluate";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum MapTransform {
             case UUID: return "something";
             case POINTER: return "something";
             case EVALUATE: return "something";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum MapTransform {
             case UUID: return "uuid";
             case POINTER: return "pointer";
             case EVALUATE: return "evaluate";
+            case NULL: return null;
             default: return "?";
           }
     }

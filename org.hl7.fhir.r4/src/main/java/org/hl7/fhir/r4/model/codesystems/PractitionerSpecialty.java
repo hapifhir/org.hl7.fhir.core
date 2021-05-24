@@ -85,6 +85,7 @@ public enum PractitionerSpecialty {
             case DIETARY: return "dietary";
             case MIDW: return "midw";
             case SYSARCH: return "sysarch";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum PractitionerSpecialty {
             case DIETARY: return "";
             case MIDW: return "";
             case SYSARCH: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum PractitionerSpecialty {
             case DIETARY: return "Dietary consultant";
             case MIDW: return "Midwife";
             case SYSARCH: return "Systems architect";
+            case NULL: return null;
             default: return "?";
           }
     }

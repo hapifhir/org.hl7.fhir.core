@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,7 +48,7 @@ import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
 /**
- * A pharmaceutical product described in terms of its composition and dose form.
+ * A medicinal product in the final form which is suitable for administering to a patient (after any mixing of multiple components, dissolution etc. has been performed).
  */
 @ResourceDef(name="AdministrableProductDefinition", profile="http://hl7.org/fhir/StructureDefinition/AdministrableProductDefinition")
 public class AdministrableProductDefinition extends DomainResource {
@@ -414,38 +414,38 @@ public class AdministrableProductDefinition extends DomainResource {
         protected CodeableConcept code;
 
         /**
-         * The first dose (dose quantity) administered in humans can be specified, for a product under investigation, using a numerical value and its unit of measurement.
+         * The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement.
          */
         @Child(name = "firstDose", type = {Quantity.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The first dose (dose quantity) administered in humans can be specified, for a product under investigation, using a numerical value and its unit of measurement", formalDefinition="The first dose (dose quantity) administered in humans can be specified, for a product under investigation, using a numerical value and its unit of measurement." )
+        @Description(shortDefinition="The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement", formalDefinition="The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement." )
         protected Quantity firstDose;
 
         /**
-         * The maximum single dose that can be administered as per the protocol of a clinical trial can be specified using a numerical value and its unit of measurement.
+         * The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement.
          */
         @Child(name = "maxSingleDose", type = {Quantity.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The maximum single dose that can be administered as per the protocol of a clinical trial can be specified using a numerical value and its unit of measurement", formalDefinition="The maximum single dose that can be administered as per the protocol of a clinical trial can be specified using a numerical value and its unit of measurement." )
+        @Description(shortDefinition="The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement", formalDefinition="The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement." )
         protected Quantity maxSingleDose;
 
         /**
-         * The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered as per the protocol referenced in the clinical trial authorisation.
+         * The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered.
          */
         @Child(name = "maxDosePerDay", type = {Quantity.class}, order=4, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered as per the protocol referenced in the clinical trial authorisation", formalDefinition="The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered as per the protocol referenced in the clinical trial authorisation." )
+        @Description(shortDefinition="The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered", formalDefinition="The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered." )
         protected Quantity maxDosePerDay;
 
         /**
-         * The maximum dose per treatment period that can be administered as per the protocol referenced in the clinical trial authorisation.
+         * The maximum dose per treatment period that can be administered.
          */
         @Child(name = "maxDosePerTreatmentPeriod", type = {Ratio.class}, order=5, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The maximum dose per treatment period that can be administered as per the protocol referenced in the clinical trial authorisation", formalDefinition="The maximum dose per treatment period that can be administered as per the protocol referenced in the clinical trial authorisation." )
+        @Description(shortDefinition="The maximum dose per treatment period that can be administered", formalDefinition="The maximum dose per treatment period that can be administered." )
         protected Ratio maxDosePerTreatmentPeriod;
 
         /**
-         * The maximum treatment period during which an Investigational Medicinal Product can be administered as per the protocol referenced in the clinical trial authorisation.
+         * The maximum treatment period during which an Investigational Medicinal Product can be administered.
          */
         @Child(name = "maxTreatmentPeriod", type = {Duration.class}, order=6, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="The maximum treatment period during which an Investigational Medicinal Product can be administered as per the protocol referenced in the clinical trial authorisation", formalDefinition="The maximum treatment period during which an Investigational Medicinal Product can be administered as per the protocol referenced in the clinical trial authorisation." )
+        @Description(shortDefinition="The maximum treatment period during which an Investigational Medicinal Product can be administered", formalDefinition="The maximum treatment period during which an Investigational Medicinal Product can be administered." )
         protected Duration maxTreatmentPeriod;
 
         /**
@@ -497,7 +497,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #firstDose} (The first dose (dose quantity) administered in humans can be specified, for a product under investigation, using a numerical value and its unit of measurement.)
+         * @return {@link #firstDose} (The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement.)
          */
         public Quantity getFirstDose() { 
           if (this.firstDose == null)
@@ -513,7 +513,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #firstDose} (The first dose (dose quantity) administered in humans can be specified, for a product under investigation, using a numerical value and its unit of measurement.)
+         * @param value {@link #firstDose} (The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement.)
          */
         public AdministrableProductDefinitionRouteOfAdministrationComponent setFirstDose(Quantity value) { 
           this.firstDose = value;
@@ -521,7 +521,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #maxSingleDose} (The maximum single dose that can be administered as per the protocol of a clinical trial can be specified using a numerical value and its unit of measurement.)
+         * @return {@link #maxSingleDose} (The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement.)
          */
         public Quantity getMaxSingleDose() { 
           if (this.maxSingleDose == null)
@@ -537,7 +537,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #maxSingleDose} (The maximum single dose that can be administered as per the protocol of a clinical trial can be specified using a numerical value and its unit of measurement.)
+         * @param value {@link #maxSingleDose} (The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement.)
          */
         public AdministrableProductDefinitionRouteOfAdministrationComponent setMaxSingleDose(Quantity value) { 
           this.maxSingleDose = value;
@@ -545,7 +545,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #maxDosePerDay} (The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered as per the protocol referenced in the clinical trial authorisation.)
+         * @return {@link #maxDosePerDay} (The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered.)
          */
         public Quantity getMaxDosePerDay() { 
           if (this.maxDosePerDay == null)
@@ -561,7 +561,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #maxDosePerDay} (The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered as per the protocol referenced in the clinical trial authorisation.)
+         * @param value {@link #maxDosePerDay} (The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered.)
          */
         public AdministrableProductDefinitionRouteOfAdministrationComponent setMaxDosePerDay(Quantity value) { 
           this.maxDosePerDay = value;
@@ -569,7 +569,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #maxDosePerTreatmentPeriod} (The maximum dose per treatment period that can be administered as per the protocol referenced in the clinical trial authorisation.)
+         * @return {@link #maxDosePerTreatmentPeriod} (The maximum dose per treatment period that can be administered.)
          */
         public Ratio getMaxDosePerTreatmentPeriod() { 
           if (this.maxDosePerTreatmentPeriod == null)
@@ -585,7 +585,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #maxDosePerTreatmentPeriod} (The maximum dose per treatment period that can be administered as per the protocol referenced in the clinical trial authorisation.)
+         * @param value {@link #maxDosePerTreatmentPeriod} (The maximum dose per treatment period that can be administered.)
          */
         public AdministrableProductDefinitionRouteOfAdministrationComponent setMaxDosePerTreatmentPeriod(Ratio value) { 
           this.maxDosePerTreatmentPeriod = value;
@@ -593,7 +593,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @return {@link #maxTreatmentPeriod} (The maximum treatment period during which an Investigational Medicinal Product can be administered as per the protocol referenced in the clinical trial authorisation.)
+         * @return {@link #maxTreatmentPeriod} (The maximum treatment period during which an Investigational Medicinal Product can be administered.)
          */
         public Duration getMaxTreatmentPeriod() { 
           if (this.maxTreatmentPeriod == null)
@@ -609,7 +609,7 @@ public class AdministrableProductDefinition extends DomainResource {
         }
 
         /**
-         * @param value {@link #maxTreatmentPeriod} (The maximum treatment period during which an Investigational Medicinal Product can be administered as per the protocol referenced in the clinical trial authorisation.)
+         * @param value {@link #maxTreatmentPeriod} (The maximum treatment period during which an Investigational Medicinal Product can be administered.)
          */
         public AdministrableProductDefinitionRouteOfAdministrationComponent setMaxTreatmentPeriod(Duration value) { 
           this.maxTreatmentPeriod = value;
@@ -672,11 +672,11 @@ public class AdministrableProductDefinition extends DomainResource {
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("code", "CodeableConcept", "Coded expression for the route.", 0, 1, code));
-          children.add(new Property("firstDose", "Quantity", "The first dose (dose quantity) administered in humans can be specified, for a product under investigation, using a numerical value and its unit of measurement.", 0, 1, firstDose));
-          children.add(new Property("maxSingleDose", "Quantity", "The maximum single dose that can be administered as per the protocol of a clinical trial can be specified using a numerical value and its unit of measurement.", 0, 1, maxSingleDose));
-          children.add(new Property("maxDosePerDay", "Quantity", "The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered as per the protocol referenced in the clinical trial authorisation.", 0, 1, maxDosePerDay));
-          children.add(new Property("maxDosePerTreatmentPeriod", "Ratio", "The maximum dose per treatment period that can be administered as per the protocol referenced in the clinical trial authorisation.", 0, 1, maxDosePerTreatmentPeriod));
-          children.add(new Property("maxTreatmentPeriod", "Duration", "The maximum treatment period during which an Investigational Medicinal Product can be administered as per the protocol referenced in the clinical trial authorisation.", 0, 1, maxTreatmentPeriod));
+          children.add(new Property("firstDose", "Quantity", "The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement.", 0, 1, firstDose));
+          children.add(new Property("maxSingleDose", "Quantity", "The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement.", 0, 1, maxSingleDose));
+          children.add(new Property("maxDosePerDay", "Quantity", "The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered.", 0, 1, maxDosePerDay));
+          children.add(new Property("maxDosePerTreatmentPeriod", "Ratio", "The maximum dose per treatment period that can be administered.", 0, 1, maxDosePerTreatmentPeriod));
+          children.add(new Property("maxTreatmentPeriod", "Duration", "The maximum treatment period during which an Investigational Medicinal Product can be administered.", 0, 1, maxTreatmentPeriod));
           children.add(new Property("targetSpecies", "", "A species for which this route applies.", 0, java.lang.Integer.MAX_VALUE, targetSpecies));
         }
 
@@ -684,11 +684,11 @@ public class AdministrableProductDefinition extends DomainResource {
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
           case 3059181: /*code*/  return new Property("code", "CodeableConcept", "Coded expression for the route.", 0, 1, code);
-          case 132551405: /*firstDose*/  return new Property("firstDose", "Quantity", "The first dose (dose quantity) administered in humans can be specified, for a product under investigation, using a numerical value and its unit of measurement.", 0, 1, firstDose);
-          case -259207927: /*maxSingleDose*/  return new Property("maxSingleDose", "Quantity", "The maximum single dose that can be administered as per the protocol of a clinical trial can be specified using a numerical value and its unit of measurement.", 0, 1, maxSingleDose);
-          case -2017475520: /*maxDosePerDay*/  return new Property("maxDosePerDay", "Quantity", "The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered as per the protocol referenced in the clinical trial authorisation.", 0, 1, maxDosePerDay);
-          case -608040195: /*maxDosePerTreatmentPeriod*/  return new Property("maxDosePerTreatmentPeriod", "Ratio", "The maximum dose per treatment period that can be administered as per the protocol referenced in the clinical trial authorisation.", 0, 1, maxDosePerTreatmentPeriod);
-          case 920698453: /*maxTreatmentPeriod*/  return new Property("maxTreatmentPeriod", "Duration", "The maximum treatment period during which an Investigational Medicinal Product can be administered as per the protocol referenced in the clinical trial authorisation.", 0, 1, maxTreatmentPeriod);
+          case 132551405: /*firstDose*/  return new Property("firstDose", "Quantity", "The first dose (dose quantity) administered can be specified for the product, using a numerical value and its unit of measurement.", 0, 1, firstDose);
+          case -259207927: /*maxSingleDose*/  return new Property("maxSingleDose", "Quantity", "The maximum single dose that can be administered, can be specified using a numerical value and its unit of measurement.", 0, 1, maxSingleDose);
+          case -2017475520: /*maxDosePerDay*/  return new Property("maxDosePerDay", "Quantity", "The maximum dose per day (maximum dose quantity to be administered in any one 24-h period) that can be administered.", 0, 1, maxDosePerDay);
+          case -608040195: /*maxDosePerTreatmentPeriod*/  return new Property("maxDosePerTreatmentPeriod", "Ratio", "The maximum dose per treatment period that can be administered.", 0, 1, maxDosePerTreatmentPeriod);
+          case 920698453: /*maxTreatmentPeriod*/  return new Property("maxTreatmentPeriod", "Duration", "The maximum treatment period during which an Investigational Medicinal Product can be administered.", 0, 1, maxTreatmentPeriod);
           case 295481963: /*targetSpecies*/  return new Property("targetSpecies", "", "A species for which this route applies.", 0, java.lang.Integer.MAX_VALUE, targetSpecies);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
@@ -1404,31 +1404,31 @@ public class AdministrableProductDefinition extends DomainResource {
   }
 
     /**
-     * An identifier for the pharmaceutical medicinal product.
+     * An identifier for the administrable product.
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="An identifier for the pharmaceutical medicinal product", formalDefinition="An identifier for the pharmaceutical medicinal product." )
+    @Description(shortDefinition="An identifier for the administrable product", formalDefinition="An identifier for the administrable product." )
     protected List<Identifier> identifier;
 
     /**
-     * The product that this is a pharmaceutical product of.
+     * The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product.
      */
     @Child(name = "subject", type = {MedicinalProductDefinition.class}, order=1, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The product that this is a pharmaceutical product of", formalDefinition="The product that this is a pharmaceutical product of." )
+    @Description(shortDefinition="The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product", formalDefinition="The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product." )
     protected List<Reference> subject;
 
     /**
-     * The administrable dose form, after necessary reconstitution.
+     * The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing.
      */
     @Child(name = "administrableDoseForm", type = {CodeableConcept.class}, order=2, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="The administrable dose form, after necessary reconstitution", formalDefinition="The administrable dose form, after necessary reconstitution." )
+    @Description(shortDefinition="The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing", formalDefinition="The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing." )
     protected CodeableConcept administrableDoseForm;
 
     /**
-     * Todo.
+     * The units of presentation for the administrable product, for example 'tablet'.
      */
     @Child(name = "unitOfPresentation", type = {CodeableConcept.class}, order=3, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Todo", formalDefinition="Todo." )
+    @Description(shortDefinition="The units of presentation for the administrable product, for example 'tablet'", formalDefinition="The units of presentation for the administrable product, for example 'tablet'." )
     protected CodeableConcept unitOfPresentation;
 
     /**
@@ -1439,17 +1439,17 @@ public class AdministrableProductDefinition extends DomainResource {
     protected List<Reference> producedFrom;
 
     /**
-     * The ingredients of this administrable pharmaceutical product.
+     * The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s).
      */
     @Child(name = "ingredient", type = {Ingredient.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The ingredients of this administrable pharmaceutical product", formalDefinition="The ingredients of this administrable pharmaceutical product." )
+    @Description(shortDefinition="The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s)", formalDefinition="The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s)." )
     protected List<Reference> ingredient;
 
     /**
-     * Accompanying device.
+     * A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged.
      */
     @Child(name = "device", type = {DeviceDefinition.class}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Accompanying device", formalDefinition="Accompanying device." )
+    @Description(shortDefinition="A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged", formalDefinition="A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged." )
     protected List<Reference> device;
 
     /**
@@ -1460,10 +1460,10 @@ public class AdministrableProductDefinition extends DomainResource {
     protected List<AdministrableProductDefinitionPropertyComponent> property;
 
     /**
-     * The path by which the pharmaceutical product is taken into or makes contact with the body.
+     * The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route.
      */
     @Child(name = "routeOfAdministration", type = {}, order=8, min=1, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="The path by which the pharmaceutical product is taken into or makes contact with the body", formalDefinition="The path by which the pharmaceutical product is taken into or makes contact with the body." )
+    @Description(shortDefinition="The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route", formalDefinition="The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route." )
     protected List<AdministrableProductDefinitionRouteOfAdministrationComponent> routeOfAdministration;
 
     private static final long serialVersionUID = -1072766896L;
@@ -1484,7 +1484,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #identifier} (An identifier for the pharmaceutical medicinal product.)
+     * @return {@link #identifier} (An identifier for the administrable product.)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -1537,7 +1537,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #subject} (The product that this is a pharmaceutical product of.)
+     * @return {@link #subject} (The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product.)
      */
     public List<Reference> getSubject() { 
       if (this.subject == null)
@@ -1590,7 +1590,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #administrableDoseForm} (The administrable dose form, after necessary reconstitution.)
+     * @return {@link #administrableDoseForm} (The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing.)
      */
     public CodeableConcept getAdministrableDoseForm() { 
       if (this.administrableDoseForm == null)
@@ -1606,7 +1606,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @param value {@link #administrableDoseForm} (The administrable dose form, after necessary reconstitution.)
+     * @param value {@link #administrableDoseForm} (The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing.)
      */
     public AdministrableProductDefinition setAdministrableDoseForm(CodeableConcept value) { 
       this.administrableDoseForm = value;
@@ -1614,7 +1614,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #unitOfPresentation} (Todo.)
+     * @return {@link #unitOfPresentation} (The units of presentation for the administrable product, for example 'tablet'.)
      */
     public CodeableConcept getUnitOfPresentation() { 
       if (this.unitOfPresentation == null)
@@ -1630,7 +1630,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @param value {@link #unitOfPresentation} (Todo.)
+     * @param value {@link #unitOfPresentation} (The units of presentation for the administrable product, for example 'tablet'.)
      */
     public AdministrableProductDefinition setUnitOfPresentation(CodeableConcept value) { 
       this.unitOfPresentation = value;
@@ -1691,7 +1691,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #ingredient} (The ingredients of this administrable pharmaceutical product.)
+     * @return {@link #ingredient} (The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s).)
      */
     public List<Reference> getIngredient() { 
       if (this.ingredient == null)
@@ -1744,7 +1744,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #device} (Accompanying device.)
+     * @return {@link #device} (A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged.)
      */
     public List<Reference> getDevice() { 
       if (this.device == null)
@@ -1850,7 +1850,7 @@ public class AdministrableProductDefinition extends DomainResource {
     }
 
     /**
-     * @return {@link #routeOfAdministration} (The path by which the pharmaceutical product is taken into or makes contact with the body.)
+     * @return {@link #routeOfAdministration} (The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route.)
      */
     public List<AdministrableProductDefinitionRouteOfAdministrationComponent> getRouteOfAdministration() { 
       if (this.routeOfAdministration == null)
@@ -1904,29 +1904,29 @@ public class AdministrableProductDefinition extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "An identifier for the pharmaceutical medicinal product.", 0, java.lang.Integer.MAX_VALUE, identifier));
-        children.add(new Property("subject", "Reference(MedicinalProductDefinition)", "The product that this is a pharmaceutical product of.", 0, java.lang.Integer.MAX_VALUE, subject));
-        children.add(new Property("administrableDoseForm", "CodeableConcept", "The administrable dose form, after necessary reconstitution.", 0, 1, administrableDoseForm));
-        children.add(new Property("unitOfPresentation", "CodeableConcept", "Todo.", 0, 1, unitOfPresentation));
+        children.add(new Property("identifier", "Identifier", "An identifier for the administrable product.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("subject", "Reference(MedicinalProductDefinition)", "The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product.", 0, java.lang.Integer.MAX_VALUE, subject));
+        children.add(new Property("administrableDoseForm", "CodeableConcept", "The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing.", 0, 1, administrableDoseForm));
+        children.add(new Property("unitOfPresentation", "CodeableConcept", "The units of presentation for the administrable product, for example 'tablet'.", 0, 1, unitOfPresentation));
         children.add(new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients.", 0, java.lang.Integer.MAX_VALUE, producedFrom));
-        children.add(new Property("ingredient", "Reference(Ingredient)", "The ingredients of this administrable pharmaceutical product.", 0, java.lang.Integer.MAX_VALUE, ingredient));
-        children.add(new Property("device", "Reference(DeviceDefinition)", "Accompanying device.", 0, java.lang.Integer.MAX_VALUE, device));
+        children.add(new Property("ingredient", "Reference(Ingredient)", "The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s).", 0, java.lang.Integer.MAX_VALUE, ingredient));
+        children.add(new Property("device", "Reference(DeviceDefinition)", "A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged.", 0, java.lang.Integer.MAX_VALUE, device));
         children.add(new Property("property", "", "Characteristics e.g. a products onset of action.", 0, java.lang.Integer.MAX_VALUE, property));
-        children.add(new Property("routeOfAdministration", "", "The path by which the pharmaceutical product is taken into or makes contact with the body.", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration));
+        children.add(new Property("routeOfAdministration", "", "The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route.", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "An identifier for the pharmaceutical medicinal product.", 0, java.lang.Integer.MAX_VALUE, identifier);
-        case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition)", "The product that this is a pharmaceutical product of.", 0, java.lang.Integer.MAX_VALUE, subject);
-        case 1446105202: /*administrableDoseForm*/  return new Property("administrableDoseForm", "CodeableConcept", "The administrable dose form, after necessary reconstitution.", 0, 1, administrableDoseForm);
-        case -1427765963: /*unitOfPresentation*/  return new Property("unitOfPresentation", "CodeableConcept", "Todo.", 0, 1, unitOfPresentation);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "An identifier for the administrable product.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -1867885268: /*subject*/  return new Property("subject", "Reference(MedicinalProductDefinition)", "The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product.", 0, java.lang.Integer.MAX_VALUE, subject);
+        case 1446105202: /*administrableDoseForm*/  return new Property("administrableDoseForm", "CodeableConcept", "The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing.", 0, 1, administrableDoseForm);
+        case -1427765963: /*unitOfPresentation*/  return new Property("unitOfPresentation", "CodeableConcept", "The units of presentation for the administrable product, for example 'tablet'.", 0, 1, unitOfPresentation);
         case 588380494: /*producedFrom*/  return new Property("producedFrom", "Reference(ManufacturedItemDefinition)", "The manufactured item(s) that this administrable product is produced from. Either a single item, or several that are mixed before administration (e.g. a power item and a solution item). Note that these are not raw ingredients.", 0, java.lang.Integer.MAX_VALUE, producedFrom);
-        case -206409263: /*ingredient*/  return new Property("ingredient", "Reference(Ingredient)", "The ingredients of this administrable pharmaceutical product.", 0, java.lang.Integer.MAX_VALUE, ingredient);
-        case -1335157162: /*device*/  return new Property("device", "Reference(DeviceDefinition)", "Accompanying device.", 0, java.lang.Integer.MAX_VALUE, device);
+        case -206409263: /*ingredient*/  return new Property("ingredient", "Reference(Ingredient)", "The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s).", 0, java.lang.Integer.MAX_VALUE, ingredient);
+        case -1335157162: /*device*/  return new Property("device", "Reference(DeviceDefinition)", "A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged.", 0, java.lang.Integer.MAX_VALUE, device);
         case -993141291: /*property*/  return new Property("property", "", "Characteristics e.g. a products onset of action.", 0, java.lang.Integer.MAX_VALUE, property);
-        case 1742084734: /*routeOfAdministration*/  return new Property("routeOfAdministration", "", "The path by which the pharmaceutical product is taken into or makes contact with the body.", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration);
+        case 1742084734: /*routeOfAdministration*/  return new Property("routeOfAdministration", "", "The path by which the product is taken into or makes contact with the body. In some regions this is referred to as the licenced or approved route.", 0, java.lang.Integer.MAX_VALUE, routeOfAdministration);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
 
@@ -2171,17 +2171,17 @@ public class AdministrableProductDefinition extends DomainResource {
  /**
    * Search parameter: <b>device</b>
    * <p>
-   * Description: <b>Accompanying device</b><br>
+   * Description: <b>A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>AdministrableProductDefinition.device</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="device", path="AdministrableProductDefinition.device", description="Accompanying device", type="reference", target={DeviceDefinition.class } )
+  @SearchParamDefinition(name="device", path="AdministrableProductDefinition.device", description="A device that is integral to the medicinal product, in effect being considered as an \"ingredient\" of the medicinal product. This is not intended for devices that are just co-packaged", type="reference", target={DeviceDefinition.class } )
   public static final String SP_DEVICE = "device";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>device</b>
    * <p>
-   * Description: <b>Accompanying device</b><br>
+   * Description: <b>A device that is integral to the medicinal product, in effect being considered as an "ingredient" of the medicinal product. This is not intended for devices that are just co-packaged</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>AdministrableProductDefinition.device</b><br>
    * </p>
@@ -2197,17 +2197,17 @@ public class AdministrableProductDefinition extends DomainResource {
  /**
    * Search parameter: <b>dose-form</b>
    * <p>
-   * Description: <b>The administrable dose form, after necessary reconstitution</b><br>
+   * Description: <b>The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing</b><br>
    * Type: <b>token</b><br>
    * Path: <b>AdministrableProductDefinition.administrableDoseForm</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="dose-form", path="AdministrableProductDefinition.administrableDoseForm", description="The administrable dose form, after necessary reconstitution", type="token" )
+  @SearchParamDefinition(name="dose-form", path="AdministrableProductDefinition.administrableDoseForm", description="The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing", type="token" )
   public static final String SP_DOSE_FORM = "dose-form";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>dose-form</b>
    * <p>
-   * Description: <b>The administrable dose form, after necessary reconstitution</b><br>
+   * Description: <b>The administrable dose form, i.e. the dose form of the final product after necessary reconstitution or processing</b><br>
    * Type: <b>token</b><br>
    * Path: <b>AdministrableProductDefinition.administrableDoseForm</b><br>
    * </p>
@@ -2217,17 +2217,17 @@ public class AdministrableProductDefinition extends DomainResource {
  /**
    * Search parameter: <b>identifier</b>
    * <p>
-   * Description: <b>An identifier for the pharmaceutical medicinal product</b><br>
+   * Description: <b>An identifier for the administrable product</b><br>
    * Type: <b>token</b><br>
    * Path: <b>AdministrableProductDefinition.identifier</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="identifier", path="AdministrableProductDefinition.identifier", description="An identifier for the pharmaceutical medicinal product", type="token" )
+  @SearchParamDefinition(name="identifier", path="AdministrableProductDefinition.identifier", description="An identifier for the administrable product", type="token" )
   public static final String SP_IDENTIFIER = "identifier";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
    * <p>
-   * Description: <b>An identifier for the pharmaceutical medicinal product</b><br>
+   * Description: <b>An identifier for the administrable product</b><br>
    * Type: <b>token</b><br>
    * Path: <b>AdministrableProductDefinition.identifier</b><br>
    * </p>
@@ -2237,17 +2237,17 @@ public class AdministrableProductDefinition extends DomainResource {
  /**
    * Search parameter: <b>ingredient</b>
    * <p>
-   * Description: <b>The ingredients of this administrable pharmaceutical product</b><br>
+   * Description: <b>The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s)</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>AdministrableProductDefinition.ingredient</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="ingredient", path="AdministrableProductDefinition.ingredient", description="The ingredients of this administrable pharmaceutical product", type="reference", target={Ingredient.class } )
+  @SearchParamDefinition(name="ingredient", path="AdministrableProductDefinition.ingredient", description="The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s)", type="reference", target={Ingredient.class } )
   public static final String SP_INGREDIENT = "ingredient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>ingredient</b>
    * <p>
-   * Description: <b>The ingredients of this administrable pharmaceutical product</b><br>
+   * Description: <b>The ingredients of this administrable medicinal product. Sometimes it may be appropriate to specify these via the associated manufactured item(s)</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>AdministrableProductDefinition.ingredient</b><br>
    * </p>
@@ -2309,17 +2309,17 @@ public class AdministrableProductDefinition extends DomainResource {
  /**
    * Search parameter: <b>subject</b>
    * <p>
-   * Description: <b>The product that this is a pharmaceutical product of</b><br>
+   * Description: <b>The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>AdministrableProductDefinition.subject</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="subject", path="AdministrableProductDefinition.subject", description="The product that this is a pharmaceutical product of", type="reference", target={MedicinalProductDefinition.class } )
+  @SearchParamDefinition(name="subject", path="AdministrableProductDefinition.subject", description="The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product", type="reference", target={MedicinalProductDefinition.class } )
   public static final String SP_SUBJECT = "subject";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>subject</b>
    * <p>
-   * Description: <b>The product that this is a pharmaceutical product of</b><br>
+   * Description: <b>The medicinal product that this is an administrable form of. This is not a reference to the item(s) that make up this administrable form - it is the whole product</b><br>
    * Type: <b>reference</b><br>
    * Path: <b>AdministrableProductDefinition.subject</b><br>
    * </p>

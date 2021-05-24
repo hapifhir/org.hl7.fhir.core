@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -4039,26 +4039,6 @@ public class SpecimenDefinition extends DomainResource {
   public static final ca.uhn.fhir.rest.gclient.StringClientParam TITLE = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TITLE);
 
  /**
-   * Search parameter: <b>type-tested</b>
-   * <p>
-   * Description: <b>The type of specimen conditioned for testing</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>SpecimenDefinition.typeTested.type</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="type-tested", path="SpecimenDefinition.typeTested.type", description="The type of specimen conditioned for testing", type="token" )
-  public static final String SP_TYPE_TESTED = "type-tested";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>type-tested</b>
-   * <p>
-   * Description: <b>The type of specimen conditioned for testing</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>SpecimenDefinition.typeTested.type</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE_TESTED = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE_TESTED);
-
- /**
    * Search parameter: <b>type</b>
    * <p>
    * Description: <b>The type of collected specimen</b><br>
@@ -4077,6 +4057,26 @@ public class SpecimenDefinition extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE);
+
+ /**
+   * Search parameter: <b>type-tested</b>
+   * <p>
+   * Description: <b>The type of specimen conditioned for testing</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeTested.type</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="type-tested", path="SpecimenDefinition.typeTested.type", description="The type of specimen conditioned for testing", type="token" )
+  public static final String SP_TYPE_TESTED = "type-tested";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>type-tested</b>
+   * <p>
+   * Description: <b>The type of specimen conditioned for testing</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>SpecimenDefinition.typeTested.type</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TYPE_TESTED = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TYPE_TESTED);
 
  /**
    * Search parameter: <b>url</b>

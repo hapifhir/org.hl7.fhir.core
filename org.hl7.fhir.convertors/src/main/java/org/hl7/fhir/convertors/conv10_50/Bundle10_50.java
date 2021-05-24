@@ -1,8 +1,9 @@
 package org.hl7.fhir.convertors.conv10_50;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.FhirPublication;
 
 public class Bundle10_50 {
 
@@ -64,16 +65,14 @@ public class Bundle10_50 {
     public static org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent convertBundleEntryComponent(org.hl7.fhir.r5.model.Bundle.BundleEntryComponent src, VersionConvertorAdvisor50 advisor) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
-        if (advisor.ignoreEntry(src))
+        if (advisor.ignoreEntry(src, FhirPublication.DSTU2))
             return null;
         org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent();
         VersionConvertor_10_50.copyElement(src, tgt);
         for (org.hl7.fhir.r5.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
         if (src.hasFullUrlElement())
             tgt.setFullUrlElement(VersionConvertor_10_50.convertUri(src.getFullUrlElement()));
-        org.hl7.fhir.dstu2.model.Resource res = advisor.convertR2(src.getResource());
-        if (res == null)
-            res = VersionConvertor_10_50.convertResource(src.getResource());
+        org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_50.convertResource(src.getResource());
         tgt.setResource(res);
         if (src.hasSearch())
             tgt.setSearch(convertBundleEntrySearchComponent(src.getSearch()));

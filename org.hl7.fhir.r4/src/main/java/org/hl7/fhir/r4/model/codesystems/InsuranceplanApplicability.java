@@ -71,6 +71,7 @@ public enum InsuranceplanApplicability {
             case INNETWORK: return "in-network";
             case OUTOFNETWORK: return "out-of-network";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum InsuranceplanApplicability {
             case INNETWORK: return "Provider is contracted with the health insurance company to provide services to plan members for specific pre-negotiated rates";
             case OUTOFNETWORK: return "Provider is  not contracted with the health insurance company to provide services to plan members for specific pre-negotiated rates";
             case OTHER: return "Other applicability";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum InsuranceplanApplicability {
             case INNETWORK: return "In Network";
             case OUTOFNETWORK: return "Out of Network";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

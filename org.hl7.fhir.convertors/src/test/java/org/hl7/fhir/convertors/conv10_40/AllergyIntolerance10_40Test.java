@@ -1,11 +1,10 @@
 package org.hl7.fhir.convertors.conv10_40;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

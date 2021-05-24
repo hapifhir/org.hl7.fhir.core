@@ -99,6 +99,7 @@ public enum DaysOfWeek {
             case FRI: return "fri";
             case SAT: return "sat";
             case SUN: return "sun";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum DaysOfWeek {
             case FRI: return "Friday.";
             case SAT: return "Saturday.";
             case SUN: return "Sunday.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum DaysOfWeek {
             case FRI: return "Friday";
             case SAT: return "Saturday";
             case SUN: return "Sunday";
+            case NULL: return null;
             default: return "?";
           }
     }

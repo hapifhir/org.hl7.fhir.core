@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -789,7 +789,7 @@ public class AppointmentResponse extends DomainResource {
    * Path: <b>AppointmentResponse.actor.where(resolve() is Location)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="location", path="AppointmentResponse.actor.where(resolve() is Location)", description="This Response is for this Location", type="reference", target={Location.class } )
+  @SearchParamDefinition(name="location", path="AppointmentResponse.actor.where(resolve() is Location)", description="This Response is for this Location", type="reference", target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_LOCATION = "location";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>location</b>
@@ -835,7 +835,7 @@ public class AppointmentResponse extends DomainResource {
    * Path: <b>AppointmentResponse.actor.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="AppointmentResponse.actor.where(resolve() is Patient)", description="This Response is for this Patient", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="AppointmentResponse.actor.where(resolve() is Patient)", description="This Response is for this Patient", type="reference", target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>
@@ -861,7 +861,7 @@ public class AppointmentResponse extends DomainResource {
    * Path: <b>AppointmentResponse.actor.where(resolve() is Practitioner)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="practitioner", path="AppointmentResponse.actor.where(resolve() is Practitioner)", description="This Response is for this Practitioner", type="reference", target={Practitioner.class } )
+  @SearchParamDefinition(name="practitioner", path="AppointmentResponse.actor.where(resolve() is Practitioner)", description="This Response is for this Practitioner", type="reference", target={Device.class, HealthcareService.class, Location.class, Patient.class, Practitioner.class, PractitionerRole.class, RelatedPerson.class } )
   public static final String SP_PRACTITIONER = "practitioner";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>practitioner</b>

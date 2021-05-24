@@ -78,6 +78,7 @@ public enum VisionBaseCodes {
             case DOWN: return "down";
             case IN: return "in";
             case OUT: return "out";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum VisionBaseCodes {
             case DOWN: return "bottom";
             case IN: return "inner edge";
             case OUT: return "outer edge";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum VisionBaseCodes {
             case DOWN: return "Down";
             case IN: return "In";
             case OUT: return "Out";
+            case NULL: return null;
             default: return "?";
           }
     }

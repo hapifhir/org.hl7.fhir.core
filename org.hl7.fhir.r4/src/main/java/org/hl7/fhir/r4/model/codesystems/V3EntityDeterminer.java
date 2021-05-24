@@ -88,6 +88,7 @@ public enum V3EntityDeterminer {
             case KIND: return "KIND";
             case GROUPKIND: return "GROUPKIND";
             case QUANTIFIEDKIND: return "QUANTIFIED_KIND";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +102,7 @@ public enum V3EntityDeterminer {
             case KIND: return "Description:A determiner that specifies that the Entity object represents a universal, kind or class of physical thing (as opposed to a particular thing).";
             case GROUPKIND: return "A determiner that specifies that the Entity object represents a universal, kind or class of collections physical things.  While the collection may resolve to having only a single individual (or even no individuals), the potential should exist for it to cover multiple individuals.";
             case QUANTIFIEDKIND: return "The described quantified determiner indicates that the given Entity is taken as a general description of a specific amount of a thing. For example, QUANTIFIED_KIND of syringe (quantity = 3,) stands for exactly three syringes.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,6 +113,7 @@ public enum V3EntityDeterminer {
             case KIND: return "described";
             case GROUPKIND: return "described group";
             case QUANTIFIEDKIND: return "described quantified";
+            case NULL: return null;
             default: return "?";
           }
     }

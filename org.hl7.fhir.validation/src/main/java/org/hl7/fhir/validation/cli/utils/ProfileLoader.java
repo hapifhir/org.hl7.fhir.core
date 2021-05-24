@@ -27,6 +27,7 @@ public class ProfileLoader {
     try {
       URL url = new URL(src + "?nocache=" + System.currentTimeMillis());
       URLConnection c = url.openConnection();
+     
       return IOUtils.toByteArray(c.getInputStream());
     } catch (Exception e) {
       throw new FHIRException("Unable to find definitions at URL '" + src + "': " + e.getMessage(), e);

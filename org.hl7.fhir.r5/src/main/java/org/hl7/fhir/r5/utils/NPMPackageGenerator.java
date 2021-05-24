@@ -276,6 +276,8 @@ public class NPMPackageGenerator {
       return "hl7.fhir.r3.core";
     if (v.startsWith("4.0"))
       return "hl7.fhir.r4.core";
+    if (v.startsWith("4.1"))
+      return "hl7.fhir.r4b.core";
     return null;
   }
 

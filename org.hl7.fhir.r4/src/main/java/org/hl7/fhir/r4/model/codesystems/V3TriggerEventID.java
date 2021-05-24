@@ -127,6 +127,7 @@ public enum V3TriggerEventID {
             case POLBTE004202UV: return "POLB_TE004202UV";
             case POLBTE004301UV: return "POLB_TE004301UV";
             case POLBTE004500UV: return "POLB_TE004500UV";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public enum V3TriggerEventID {
             case POLBTE004202UV: return "Description:";
             case POLBTE004301UV: return "Description:";
             case POLBTE004500UV: return "Description:";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public enum V3TriggerEventID {
             case POLBTE004202UV: return "Result Complete";
             case POLBTE004301UV: return "Result Abort";
             case POLBTE004500UV: return "Result Nullify";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -197,6 +197,7 @@ public enum V3StyleType {
             case LRULE: return "Lrule";
             case RRULE: return "Rrule";
             case TOPRULE: return "Toprule";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -226,6 +227,7 @@ public enum V3StyleType {
             case LRULE: return "Render cell with left-sided rule";
             case RRULE: return "Render cell with right-sided rule";
             case TOPRULE: return "Render cell with rule on top";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -252,6 +254,7 @@ public enum V3StyleType {
             case LRULE: return "Left-sided rule";
             case RRULE: return "Right-sided rule";
             case TOPRULE: return "Top Rule";
+            case NULL: return null;
             default: return "?";
           }
     }

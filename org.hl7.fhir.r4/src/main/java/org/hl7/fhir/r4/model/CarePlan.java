@@ -115,6 +115,7 @@ public class CarePlan extends DomainResource {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,6 +128,7 @@ public class CarePlan extends DomainResource {
             case COMPLETED: return "http://hl7.org/fhir/request-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/request-status";
             case UNKNOWN: return "http://hl7.org/fhir/request-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -139,6 +141,7 @@ public class CarePlan extends DomainResource {
             case COMPLETED: return "The activity described by the request has been fully performed.  No further activity will occur.";
             case ENTEREDINERROR: return "This request should never have existed and should be considered 'void'.  (It is possible that real-world decisions were based on it.  If real-world activity has occurred, the status should be \"revoked\" rather than \"entered-in-error\".).";
             case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply,  but the authoring/source system does not know which.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -151,6 +154,7 @@ public class CarePlan extends DomainResource {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -266,6 +270,7 @@ public class CarePlan extends DomainResource {
             case PLAN: return "plan";
             case ORDER: return "order";
             case OPTION: return "option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -275,6 +280,7 @@ public class CarePlan extends DomainResource {
             case PLAN: return "http://hl7.org/fhir/request-intent";
             case ORDER: return "http://hl7.org/fhir/request-intent";
             case OPTION: return "http://hl7.org/fhir/request-intent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -284,6 +290,7 @@ public class CarePlan extends DomainResource {
             case PLAN: return "";
             case ORDER: return "";
             case OPTION: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -293,6 +300,7 @@ public class CarePlan extends DomainResource {
             case PLAN: return "plan";
             case ORDER: return "order";
             case OPTION: return "option";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -418,6 +426,7 @@ public class CarePlan extends DomainResource {
             case TASK: return "Task";
             case SERVICEREQUEST: return "ServiceRequest";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -431,6 +440,7 @@ public class CarePlan extends DomainResource {
             case TASK: return "http://hl7.org/fhir/resource-types";
             case SERVICEREQUEST: return "http://hl7.org/fhir/resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -444,6 +454,7 @@ public class CarePlan extends DomainResource {
             case TASK: return "";
             case SERVICEREQUEST: return "";
             case VISIONPRESCRIPTION: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -457,6 +468,7 @@ public class CarePlan extends DomainResource {
             case TASK: return "Task";
             case SERVICEREQUEST: return "ServiceRequest";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -613,6 +625,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "stopped";
             case UNKNOWN: return "unknown";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -627,6 +640,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "http://hl7.org/fhir/care-plan-activity-status";
             case UNKNOWN: return "http://hl7.org/fhir/care-plan-activity-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/care-plan-activity-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -641,6 +655,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "The planned care plan activity has been ended prior to completion after the activity was started.";
             case UNKNOWN: return "The current state of the care plan activity is not known.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, but the authoring/source system does not know which one.";
             case ENTEREDINERROR: return "Care plan activity was entered in error and voided.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -655,6 +670,7 @@ public class CarePlan extends DomainResource {
             case STOPPED: return "Stopped";
             case UNKNOWN: return "Unknown";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }

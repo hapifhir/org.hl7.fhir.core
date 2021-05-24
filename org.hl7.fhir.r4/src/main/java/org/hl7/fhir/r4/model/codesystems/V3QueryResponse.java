@@ -78,6 +78,7 @@ public enum V3QueryResponse {
             case NF: return "NF";
             case OK: return "OK";
             case QE: return "QE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3QueryResponse {
             case NF: return "No errors, but no data was found matching the query request specification.";
             case OK: return "Query reponse data found for 1 or more result sets matching the query request specification.";
             case QE: return "QueryError. Problem with input ParmetersError";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3QueryResponse {
             case NF: return "No data found";
             case OK: return "Data found";
             case QE: return "QueryParameterError";
+            case NULL: return null;
             default: return "?";
           }
     }

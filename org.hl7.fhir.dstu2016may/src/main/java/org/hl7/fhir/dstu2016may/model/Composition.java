@@ -92,6 +92,7 @@ public class Composition extends DomainResource {
             case FINAL: return "final";
             case AMENDED: return "amended";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +102,7 @@ public class Composition extends DomainResource {
             case FINAL: return "http://hl7.org/fhir/composition-status";
             case AMENDED: return "http://hl7.org/fhir/composition-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/composition-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -110,6 +112,7 @@ public class Composition extends DomainResource {
             case FINAL: return "This version of the composition is complete and verified by an appropriate person and no further work is planned. Any subsequent updates would be on a new version of the composition.";
             case AMENDED: return "The composition content or the referenced resources have been modified (edited or added to) subsequent to being released as \"final\" and the composition is complete and verified by an authorized person.";
             case ENTEREDINERROR: return "The composition or document was originally created/issued in error, and this is an amendment that marks that the entire series should not be considered as valid.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +122,7 @@ public class Composition extends DomainResource {
             case FINAL: return "Final";
             case AMENDED: return "Amended";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -211,6 +215,7 @@ public class Composition extends DomainResource {
             case PROFESSIONAL: return "professional";
             case LEGAL: return "legal";
             case OFFICIAL: return "official";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -220,6 +225,7 @@ public class Composition extends DomainResource {
             case PROFESSIONAL: return "http://hl7.org/fhir/composition-attestation-mode";
             case LEGAL: return "http://hl7.org/fhir/composition-attestation-mode";
             case OFFICIAL: return "http://hl7.org/fhir/composition-attestation-mode";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -229,6 +235,7 @@ public class Composition extends DomainResource {
             case PROFESSIONAL: return "The person authenticated the content in their professional capacity.";
             case LEGAL: return "The person authenticated the content and accepted legal responsibility for its content.";
             case OFFICIAL: return "The organization authenticated the content as consistent with their policies and procedures.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -238,6 +245,7 @@ public class Composition extends DomainResource {
             case PROFESSIONAL: return "Professional";
             case LEGAL: return "Legal";
             case OFFICIAL: return "Official";
+            case NULL: return null;
             default: return "?";
           }
         }

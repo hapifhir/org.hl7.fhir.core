@@ -71,6 +71,7 @@ public enum V3ParticipationSignature {
             case I: return "I";
             case S: return "S";
             case X: return "X";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3ParticipationSignature {
             case I: return "The particpant intends to provide a signature.";
             case S: return "Signature has been affixed, either written on file, or electronic (incl. digital) signature in Participation.signatureText.";
             case X: return "A signature for the service is required of this actor.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3ParticipationSignature {
             case I: return "intended";
             case S: return "signed";
             case X: return "required";
+            case NULL: return null;
             default: return "?";
           }
     }

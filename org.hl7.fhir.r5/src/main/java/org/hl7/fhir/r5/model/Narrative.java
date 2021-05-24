@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -189,7 +189,7 @@ public class Narrative extends BaseNarrative implements INarrative {
     /**
      * The actual narrative content, a stripped down version of XHTML.
      */
-    @Child(name = "div", type = {XhtmlNode.class}, order=1, min=1, max=1, modifier=false, summary=false)
+    @Child(name = "div", type = {XhtmlType.class}, order=1, min=1, max=1, modifier=false, summary=false)
     @Description(shortDefinition="Limited xhtml content", formalDefinition="The actual narrative content, a stripped down version of XHTML." )
     protected XhtmlNode div;
 
