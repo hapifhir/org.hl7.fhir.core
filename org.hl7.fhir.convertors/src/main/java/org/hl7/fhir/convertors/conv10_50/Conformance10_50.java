@@ -2,6 +2,7 @@ package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
@@ -54,10 +55,14 @@ public class Conformance10_50 {
     }
 
     public static org.hl7.fhir.dstu2.model.Conformance convertConformance(org.hl7.fhir.r5.model.CapabilityStatement src) throws FHIRException {
+      return convertConformance(src, new BaseAdvisor_10_50());
+    }
+
+    public static org.hl7.fhir.dstu2.model.Conformance convertConformance(org.hl7.fhir.r5.model.CapabilityStatement src, BaseAdvisor_10_50 advisor) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Conformance tgt = new org.hl7.fhir.dstu2.model.Conformance();
-        VersionConvertor_10_50.copyDomainResource(src, tgt, "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
+        VersionConvertor_10_50.copyDomainResource(src, tgt, advisor);
         if (src.hasUrlElement())
             tgt.setUrlElement(VersionConvertor_10_50.convertUri(src.getUrlElement()));
         if (src.hasVersionElement())

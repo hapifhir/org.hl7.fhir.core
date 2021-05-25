@@ -50,7 +50,7 @@ public class Bundle30_40 {
         if (src.hasFullUrl())
             tgt.setFullUrlElement(VersionConvertor_30_40.convertUri(src.getFullUrlElement()));
         if (src.hasResource())
-            tgt.setResource(VersionConvertor_30_40.convertResource(src.getResource(), false));
+            tgt.setResource(VersionConvertor_30_40.convertResource(src.getResource()));
         if (src.hasSearch())
             tgt.setSearch(convertBundleEntrySearchComponent(src.getSearch()));
         if (src.hasRequest())
@@ -69,7 +69,7 @@ public class Bundle30_40 {
         if (src.hasFullUrl())
             tgt.setFullUrlElement(VersionConvertor_30_40.convertUri(src.getFullUrlElement()));
         if (src.hasResource())
-            tgt.setResource(VersionConvertor_30_40.convertResource(src.getResource(), false));
+            tgt.setResource(VersionConvertor_30_40.convertResource(src.getResource()));
         if (src.hasSearch())
             tgt.setSearch(convertBundleEntrySearchComponent(src.getSearch()));
         if (src.hasRequest())
@@ -133,7 +133,7 @@ public class Bundle30_40 {
         if (src.hasLastModified())
             tgt.setLastModifiedElement(VersionConvertor_30_40.convertInstant(src.getLastModifiedElement()));
         if (src.hasOutcome())
-            tgt.setOutcome(VersionConvertor_30_40.convertResource(src.getOutcome(), false));
+            tgt.setOutcome(VersionConvertor_30_40.convertResource(src.getOutcome()));
         return tgt;
     }
 
@@ -151,7 +151,7 @@ public class Bundle30_40 {
         if (src.hasLastModified())
             tgt.setLastModifiedElement(VersionConvertor_30_40.convertInstant(src.getLastModifiedElement()));
         if (src.hasOutcome())
-            tgt.setOutcome(VersionConvertor_30_40.convertResource(src.getOutcome(), false));
+            tgt.setOutcome(VersionConvertor_30_40.convertResource(src.getOutcome()));
         return tgt;
     }
 
