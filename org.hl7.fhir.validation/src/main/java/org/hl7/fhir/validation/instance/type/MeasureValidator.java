@@ -215,7 +215,7 @@ public class MeasureValidator extends BaseValidator {
               throw new FHIRException(context.formatMessage(I18nConstants.UNSUPPORTED_VERSION_R2B));
             case STU3:
               org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(json);
-              Resource r5 = VersionConvertor_30_50.convertResource(r3, false);
+              Resource r5 = VersionConvertor_30_50.convertResource(r3);
               if (r5 instanceof Measure)
                 return (Measure) r5;
               else

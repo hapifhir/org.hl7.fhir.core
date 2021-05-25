@@ -38,7 +38,7 @@ import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /**
@@ -101,22 +101,14 @@ The interface is optimised for JNI.
  */
 public class NativeHostServices {
   
-  private class NH_10_50_Advisor implements VersionConvertorAdvisor50 {
-
+  private class NH_10_50_Advisor extends BaseAdvisor_10_50 {
     @Override
-    public boolean ignoreEntry(BundleEntryComponent src, FhirPublication publication) {
-      return false;
-    }
-
-    @Override
-    public void handleCodeSystem(CodeSystem tgtcs, ValueSet source) throws FHIRException {
-    }
+    public void handleCodeSystem(CodeSystem tgtcs, ValueSet source) throws FHIRException {}
 
     @Override
     public CodeSystem getCodeSystem(ValueSet src) throws FHIRException {
       throw new FHIRException("Code systems cannot be handled at this time"); // what to do? need thread local storage? 
     }
-
   }
 
   private ValidationEngine validator;
@@ -129,7 +121,7 @@ public class NativeHostServices {
   private String lastException = null;  
   private Object lock = new Object();
 
-  private VersionConvertorAdvisor50 conv_10_50_advisor = new NH_10_50_Advisor();
+  private final BaseAdvisor_10_50 conv_10_50_advisor = new NH_10_50_Advisor();
 
   /**
    * Create an instance of the service
@@ -347,7 +339,7 @@ public class NativeHostServices {
       if (VersionUtilities.isR3Ver(version)) {
         org.hl7.fhir.dstu3.formats.ParserBase p3 = org.hl7.fhir.dstu3.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.dstu3.model.Resource res3 = p3.parse(r);
-        Resource res4 = VersionConvertor_30_50.convertResource(res3, false);
+        Resource res4 = VersionConvertor_30_50.convertResource(res3);
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         convertCount++;
         return p4.composeBytes(res4);
@@ -398,7 +390,7 @@ public class NativeHostServices {
       if ("3.0".equals(version) || "3.0.1".equals(version) || "r3".equals(version)) {
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.r5.model.Resource res4 = p4.parse(r);
-        org.hl7.fhir.dstu3.model.Resource res3 = VersionConvertor_30_50.convertResource(res4, false);
+        org.hl7.fhir.dstu3.model.Resource res3 = VersionConvertor_30_50.convertResource(res4);
         org.hl7.fhir.dstu3.formats.ParserBase p3 = org.hl7.fhir.dstu3.formats.FormatUtilities.makeParser(fmt);
         unConvertCount++;
         return p3.composeBytes(res3);
