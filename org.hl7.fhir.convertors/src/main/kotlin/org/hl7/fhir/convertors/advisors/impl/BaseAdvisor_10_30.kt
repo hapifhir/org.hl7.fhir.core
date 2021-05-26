@@ -6,9 +6,10 @@ import org.hl7.fhir.convertors.advisors.interfaces.codesystem.CodeSystemAdvisor3
 import org.hl7.fhir.convertors.advisors.interfaces.extension.ExtensionAdvisor30
 import org.hl7.fhir.dstu3.model.CodeSystem
 import org.hl7.fhir.dstu3.model.ValueSet
-import java.util.ArrayList
+import java.util.*
 
-open class BaseAdvisor_10_30(val failFast: Boolean = true): BaseAdvisor, BundleAdvisor30, CodeSystemAdvisor30, ExtensionAdvisor30<org.hl7.fhir.dstu2.model.Extension> {
+open class BaseAdvisor_10_30(val failFast: Boolean = true) : BaseAdvisor, BundleAdvisor30, CodeSystemAdvisor30,
+    ExtensionAdvisor30<org.hl7.fhir.dstu2.model.Extension> {
 
     val cslist = ArrayList<CodeSystem>()
 

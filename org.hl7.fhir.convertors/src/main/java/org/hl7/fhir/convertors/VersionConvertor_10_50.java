@@ -2311,16 +2311,16 @@ public class VersionConvertor_10_50 extends VersionConvertor_Base {
       .map(resource -> convertResource(resource, advisor))
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(extension)) {
-        org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();
-        advisor.handleExtension(extension, convertExtension);
+      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
+        org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();//TODO add path
+        advisor.handleExtension("", extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl())) {
+      } else if (!advisor.ignoreExtension("", extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl())) {//TODO add path
         tgt.addExtension(convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl()))
+      .filter(extension -> !advisor.ignoreExtension("", extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl()))//TODO add path
       .map(VersionConvertor_10_50::convertExtension)
       .forEach(tgt::addModifierExtension);
   }
@@ -2336,16 +2336,16 @@ public class VersionConvertor_10_50 extends VersionConvertor_Base {
       .map(resource -> convertResource(resource, advisor))
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(extension)) {
+      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
         Extension convertExtension = new Extension();
-        advisor.handleExtension(extension, convertExtension);
+        advisor.handleExtension("", extension, convertExtension);//TODO add path
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl())) {
+      } else if (!advisor.ignoreExtension("", extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl())) {//TODO add path
         tgt.addExtension(convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl()))
+      .filter(extension -> !advisor.ignoreExtension("", extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl()))//TODO add path
       .map(VersionConvertor_10_50::convertExtension)
       .forEach(tgt::addModifierExtension);
   }

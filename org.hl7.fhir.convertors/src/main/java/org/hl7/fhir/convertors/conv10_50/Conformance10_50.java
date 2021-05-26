@@ -62,7 +62,7 @@ public class Conformance10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Conformance tgt = new org.hl7.fhir.dstu2.model.Conformance();
-        VersionConvertor_10_50.copyDomainResource(src, tgt, advisor);
+        VersionConvertor_10_50.copyDomainResource(src, tgt, "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
         if (src.hasUrlElement())
             tgt.setUrlElement(VersionConvertor_10_50.convertUri(src.getUrlElement()));
         if (src.hasVersionElement())
