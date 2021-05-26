@@ -10,12 +10,12 @@ import org.hl7.fhir.r4.model.Extension
 class ExpressionAdvisor40 : BaseAdvisor_10_40() {
 
     @Throws(FHIRException::class)
-    override fun useAdvisorForExtension(ext: Extension): Boolean {
+    override fun useAdvisorForExtension(path: String, ext: Extension): Boolean {
         return ext.hasValue() && ext.value is Expression
     }
 
     @Throws(FHIRException::class)
-    override fun handleExtension(src: Extension, tgt: org.hl7.fhir.dstu2.model.Extension) {
+    override fun handleExtension(path:String, src: Extension, tgt: org.hl7.fhir.dstu2.model.Extension) {
         when {
             (src.value is Expression) -> {
                 val type = StringType()

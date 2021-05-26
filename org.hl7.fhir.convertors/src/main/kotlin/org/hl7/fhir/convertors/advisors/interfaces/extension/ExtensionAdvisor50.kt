@@ -19,55 +19,55 @@ interface ExtensionAdvisor50<T: IBaseExtension<T, *>> {
 
     @JvmDefault
     @Throws(FHIRException::class)
-    fun ignoreExtension(ext: Extension): Boolean {
-        return ext.url?.let { ignoreExtension(ext.url) } ?: false || ext.value?.let { ignoreType(ext.value) } ?: false
+    fun ignoreExtension(path: String, ext: Extension): Boolean {
+        return ext.url?.let { ignoreExtension(path, ext.url) } ?: false || ext.value?.let { ignoreType(path, ext.value) } ?: false
     }
 
     @JvmDefault
     @Throws(FHIRException::class)
-    fun ignoreExtension(ext: T): Boolean {
-        return ext.url?.let { ignoreExtension(ext.url) } ?: false || ext.value?.let { ignoreType(ext.value) } ?: false
+    fun ignoreExtension(path: String, ext: T): Boolean {
+        return ext.url?.let { ignoreExtension(path, ext.url) } ?: false || ext.value?.let { ignoreType(path, ext.value) } ?: false
     }
 
     @JvmDefault
     @Throws(FHIRException::class)
-    fun ignoreExtension(url: String): Boolean {
+    fun ignoreExtension(path: String, url: String): Boolean {
         return false
     }
 
     @JvmDefault
     @Throws(FHIRException::class)
-    fun ignoreType(type: DataType): Boolean {
+    fun ignoreType(path: String, type: DataType): Boolean {
         return false
     }
 
     @JvmDefault
     @Throws(FHIRException::class)
-    fun ignoreType(type: Any): Boolean {
+    fun ignoreType(path: String, type: Any): Boolean {
         return false
     }
 
     @JvmDefault
     @Throws(FHIRException::class)
-    fun useAdvisorForExtension(ext: Extension): Boolean {
+    fun useAdvisorForExtension(path: String, ext: Extension): Boolean {
         return false
     }
 
     @JvmDefault
     @Throws(FHIRException::class)
-    fun useAdvisorForExtension(ext: T): Boolean {
+    fun useAdvisorForExtension(path: String, ext: T): Boolean {
         return false
     }
 
     @JvmDefault
     @Throws(FHIRException::class)
-    fun handleExtension(src: Extension, tgt: T) {
+    fun handleExtension(path: String, src: Extension, tgt: T) {
         // Override to add code to handle specific extensions
     }
 
     @JvmDefault
     @Throws(FHIRException::class)
-    fun handleExtension(src: T, tgt: Extension) {
+    fun handleExtension(path: String, src: T, tgt: Extension) {
         // Override to add code to handle specific extensions
     }
 }

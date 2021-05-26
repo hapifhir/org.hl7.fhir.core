@@ -9,11 +9,15 @@ import org.hl7.fhir.r5.model.Extension
 
 open class ExpressionAdvisor50 : BaseAdvisor_10_50() {
 
-    override fun useAdvisorForExtension(ext: Extension): Boolean {
+    override fun useAdvisorForExtension(path: String, ext: org.hl7.fhir.dstu2.model.Extension): Boolean {
+        return super.useAdvisorForExtension(path, ext)
+    }
+
+    override fun useAdvisorForExtension(path: String, ext: Extension): Boolean {
         return ext.hasValue() && ext.value is Expression
     }
 
-    override fun handleExtension(src: Extension, tgt: org.hl7.fhir.dstu2.model.Extension) {
+    override fun handleExtension(path: String, src: Extension, tgt: org.hl7.fhir.dstu2.model.Extension) {
         when {
             (src.value is Expression) -> {
                 val type = StringType()

@@ -1,15 +1,15 @@
 package org.hl7.fhir.convertors.advisors.impl
 
 import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor
-import org.hl7.fhir.convertors.advisors.interfaces.extension.ExtensionAdvisor30
 import org.hl7.fhir.convertors.advisors.interfaces.bundle.BundleAdvisor30
 import org.hl7.fhir.convertors.advisors.interfaces.codesystem.CodeSystemAdvisor30
+import org.hl7.fhir.convertors.advisors.interfaces.extension.ExtensionAdvisor30
 import org.hl7.fhir.dstu3.model.CodeSystem
-import org.hl7.fhir.dstu3.model.Type
 import org.hl7.fhir.dstu3.model.ValueSet
-import java.util.ArrayList
+import java.util.*
 
-open class BaseAdvisor_14_30(val failFast: Boolean = true): BaseAdvisor, BundleAdvisor30, CodeSystemAdvisor30, ExtensionAdvisor30<org.hl7.fhir.dstu2016may.model.Extension> {
+open class BaseAdvisor_14_30(val failFast: Boolean = true) : BaseAdvisor, BundleAdvisor30, CodeSystemAdvisor30,
+    ExtensionAdvisor30<org.hl7.fhir.dstu2016may.model.Extension> {
 
     val cslist = ArrayList<CodeSystem>()
 

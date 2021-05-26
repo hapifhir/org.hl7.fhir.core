@@ -3399,16 +3399,16 @@ public class VersionConvertor_40_50 extends VersionConvertor_Base {
       .map(resource -> convertResource(resource, advisor))
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(extension)) {
+      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
         org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();
-        advisor.handleExtension(extension, convertExtension);
+        advisor.handleExtension("", extension, convertExtension);//TODO add path
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(extension)) {
+      } else if (!advisor.ignoreExtension("", extension)) {//TODO add path
         tgt.addExtension(convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(extension))
+      .filter(extension -> !advisor.ignoreExtension("", extension))//TODO add path
       .map(VersionConvertor_40_50::convertExtension)
       .forEach(tgt::addModifierExtension);
   }
@@ -3424,16 +3424,16 @@ public class VersionConvertor_40_50 extends VersionConvertor_Base {
       .map(resource -> convertResource(resource, advisor))
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(extension)) {
+      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
         org.hl7.fhir.r4.model.Extension convertExtension = new org.hl7.fhir.r4.model.Extension();
-        advisor.handleExtension(extension, convertExtension);
+        advisor.handleExtension("", extension, convertExtension);//TODO add path
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(extension)) {
+      } else if (!advisor.ignoreExtension("", extension)) {//TODO add path
         tgt.addExtension(convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(extension))
+      .filter(extension -> !advisor.ignoreExtension("", extension))//TODO add path
       .map(VersionConvertor_40_50::convertExtension)
       .forEach(tgt::addModifierExtension);
   }

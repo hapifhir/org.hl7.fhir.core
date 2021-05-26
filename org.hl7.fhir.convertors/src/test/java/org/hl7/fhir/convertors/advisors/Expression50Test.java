@@ -41,7 +41,7 @@ public class Expression50Test {
     Extension ext = new Extension();
     ext.setValue(exp);
     BaseAdvisor_10_50 baseAdvisor50 = new BaseAdvisor_10_50();
-    Assertions.assertTrue(baseAdvisor50.ignoreExtension(ext));
+    Assertions.assertTrue(baseAdvisor50.ignoreExtension("", ext));
   }
 
   @Test
