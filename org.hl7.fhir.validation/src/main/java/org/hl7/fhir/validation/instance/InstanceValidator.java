@@ -1843,7 +1843,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       List<Element> extensions = new ArrayList<Element>();
       focus.getNamedChildren("extension", extensions);
       if (fixed.getExtension().size() == 0) {
-        rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, extensions.size() == 0, I18nConstants.EXTENSION_EXT_FIXED_BANNED);
+        rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, extensions.size() == 0 || pattern == true, I18nConstants.EXTENSION_EXT_FIXED_BANNED);
       } else if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, extensions.size() == fixed.getExtension().size(), I18nConstants.EXTENSION_EXT_COUNT_MISMATCH, Integer.toString(fixed.getExtension().size()), Integer.toString(extensions.size()))) {
         for (Extension e : fixed.getExtension()) {
           Element ex = getExtensionByUrl(extensions, e.getUrl());
@@ -5044,7 +5044,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
         rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + msg);
       } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
-        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + msg);
+        warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + msg);
       }
     }
   }

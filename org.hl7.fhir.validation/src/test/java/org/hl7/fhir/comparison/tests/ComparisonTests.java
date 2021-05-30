@@ -209,7 +209,7 @@ public class ComparisonTests {
         if (Constants.VERSION.equals(ver) || "5.0".equals(ver))
           return new JsonParser().parse(inputStream);
         else if (VersionUtilities.isR3Ver(ver))
-          return VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream), false);
+          return VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream));
         else if (VersionUtilities.isR2BVer(ver))
           return VersionConvertor_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream));
         else if (VersionUtilities.isR2Ver(ver))
@@ -222,7 +222,7 @@ public class ComparisonTests {
         if (Constants.VERSION.equals(ver) || "5.0".equals(ver))
           return new XmlParser().parse(inputStream);
         else if (VersionUtilities.isR3Ver(ver))
-          return VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(inputStream), false);
+          return VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(inputStream));
         else if (VersionUtilities.isR2BVer(ver))
           return VersionConvertor_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(inputStream));
         else if (VersionUtilities.isR2Ver(ver))
