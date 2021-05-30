@@ -327,9 +327,9 @@ public class ConceptMapRenderer extends TerminologyRenderer {
     } else if ("equivalent".equals(code)) {
       return "is equivalent to";
     } else if ("source-is-narrower-than-target".equals(code)) {
-      return "maps to wider concept";
+      return "is narrower then";
     } else if ("source-is-broader-than-target".equals(code)) {
-      return "maps to narrower target";
+      return "is broader than";
     } else if ("not-related-to".equals(code)) {
       return "is not related to";
     } else {

@@ -2,6 +2,10 @@ package org.hl7.fhir.r5.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+
+import org.hl7.fhir.r5.formats.IParser.OutputStyle;
+import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.CapabilityStatement;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CompartmentDefinition;
@@ -12,6 +16,7 @@ import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.MessageDefinition;
 import org.hl7.fhir.r5.model.NamingSystem;
 import org.hl7.fhir.r5.model.OperationDefinition;
+import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
@@ -40,4 +45,27 @@ class ResourceTests {
     assertFalse(new GraphDefinition().supportsCopyright()); 
   }
 
+  private String SRC = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n"+
+      "<Patient xmlns=\"http://hl7.org/fhir\">\r\n"+
+      "  <name>\r\n"+
+      "    <text value=\"Job Bloggs\"/>\r\n"+
+      "  </name>\r\n"+
+      "</Patient>\r\n";
+
+  private String TGT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+
+      "<Patient xmlns=\"http://hl7.org/fhir\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://hl7.org/fhir http://test.org/Patient.xsd\">"+
+      "<name>"+
+      "<text value=\"Job Bloggs\"/>"+
+      "</name>"+
+      "</Patient>";
+  
+  @Test
+  void testSchemaLocation() throws IOException {
+    XmlParser xml = new XmlParser();
+    xml.setSchemaPath("http://test.org");
+    xml.setOutputStyle(OutputStyle.NORMAL);
+    Resource res = xml.parse(SRC);
+    String output = xml.composeString(res);
+    assertEquals(TGT, output);
+  }
 }

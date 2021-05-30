@@ -63,7 +63,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.validation.ValidationOptions.ValueSetMode;
 
-public class ValueSetCheckerSimple implements ValueSetChecker {
+public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChecker {
 
   private ValueSet valueset;
   private IWorkerContext context;
@@ -130,7 +130,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
 
     ValidationResult res = null;
     boolean inExpansion = false;
-    String system = code.hasSystem() ? code.getSystem() : getValueSetSystem();
+    String system = code.hasSystem() ? code.getSystem() : getValueSetSystemOrNull();
     if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
       if (system == null && !code.hasDisplay()) { // dealing with just a plain code (enum)
         system = systemForCodeInValueSet(code.getCode());
@@ -149,7 +149,11 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       if (cs == null) {
         warningMessage = "Unable to resolve system "+system;
         if (!inExpansion) {
-          throw new FHIRException(warningMessage);
+          if (valueset.hasExpansion()) {
+            return new ValidationResult(IssueSeverity.ERROR, context.formatMessage(I18nConstants.CODESYSTEM_CS_UNK_EXPANSION, valueset.getUrl(), code.getCode().toString(), code.getSystem()));
+          } else {
+            throw new FHIRException(warningMessage);
+          }
         }
       }
       if (cs != null && cs.hasSupplements()) {
@@ -170,7 +174,7 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
         res = validateCode(code, cs);
       } else if (cs == null && valueset.hasExpansion() && inExpansion) {
         // we just take the value set as face value then
-        res = new ValidationResult(IssueSeverity.INFORMATION, null);
+        res = new ValidationResult(new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()));
       } else {
         // well, we didn't find a code system - try the expansion? 
         // disabled waiting for discussion
@@ -356,6 +360,37 @@ public class ValueSetCheckerSimple implements ValueSetChecker {
       }
       if (!inc.hasSystem()) {
         throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_RESOLVE_SYSTEM__VALUE_SET_HAS_INCLUDE_WITH_NO_SYSTEM));
+      }
+    }
+    if (valueset.getCompose().getInclude().size() == 1) {
+      return valueset.getCompose().getInclude().get(0).getSystem();
+    }
+
+    return null;
+  }
+
+  private String getValueSetSystemOrNull() throws FHIRException {
+    if (valueset == null) {
+      return null;
+    }
+    if (valueset.getCompose().getInclude().size() == 0) {
+      if (!valueset.hasExpansion() || valueset.getExpansion().getContains().size() == 0) {
+        return null;
+      } else {
+        String cs = valueset.getExpansion().getContains().get(0).getSystem();
+        if (cs != null && checkSystem(valueset.getExpansion().getContains(), cs)) {
+          return cs;
+        } else {
+          return null;
+        }
+      }
+    }
+    for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
+      if (inc.hasValueSet()) {
+        return null;
+      }
+      if (!inc.hasSystem()) {
+        return null;
       }
     }
     if (valueset.getCompose().getInclude().size() == 1) {

@@ -35,7 +35,7 @@ public class VersionConvertorPrimitiveType30_50Test {
   @Test
   public void testAuditEvent() throws FHIRFormatError, IOException {
     org.hl7.fhir.dstu3.model.AuditEvent ae3 = (org.hl7.fhir.dstu3.model.AuditEvent) new org.hl7.fhir.dstu3.formats.JsonParser().parse(AUDIT_EVENT_SOURCE);
-    org.hl7.fhir.r5.model.AuditEvent ae5 = (org.hl7.fhir.r5.model.AuditEvent) VersionConvertor_30_50.convertResource(ae3, false);
+    org.hl7.fhir.r5.model.AuditEvent ae5 = (org.hl7.fhir.r5.model.AuditEvent) VersionConvertor_30_50.convertResource(ae3);
     Assertions.assertEquals(ae5.getId(), ae3.getId());
   }
   
@@ -43,7 +43,7 @@ public class VersionConvertorPrimitiveType30_50Test {
   @Test
   public void testProvenance() throws FHIRFormatError, IOException {
     org.hl7.fhir.dstu3.model.Provenance ae3 = (org.hl7.fhir.dstu3.model.Provenance) new org.hl7.fhir.dstu3.formats.JsonParser().parse(PROVENANCE_SOURCE);
-    org.hl7.fhir.r5.model.Provenance ae5 = (org.hl7.fhir.r5.model.Provenance) VersionConvertor_30_50.convertResource(ae3, false);
+    org.hl7.fhir.r5.model.Provenance ae5 = (org.hl7.fhir.r5.model.Provenance) VersionConvertor_30_50.convertResource(ae3);
     Assertions.assertEquals(ae5.getId(), ae3.getId());
   }
 

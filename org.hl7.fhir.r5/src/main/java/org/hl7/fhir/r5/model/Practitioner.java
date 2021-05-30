@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1265,84 +1265,36 @@ public class Practitioner extends DomainResource {
    }
 
  /**
-   * Search parameter: <b>active</b>
+   * Search parameter: <b>address</b>
    * <p>
-   * Description: <b>Whether the practitioner record is active</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.active</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="active", path="Practitioner.active", description="Whether the practitioner record is active", type="token" )
-  public static final String SP_ACTIVE = "active";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>active</b>
-   * <p>
-   * Description: <b>Whether the practitioner record is active</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.active</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
+   * Description: <b>Multiple Resources: 
 
- /**
-   * Search parameter: <b>communication</b>
-   * <p>
-   * Description: <b>One of the languages that the practitioner can communicate with</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.communication</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="communication", path="Practitioner.communication", description="One of the languages that the practitioner can communicate with", type="token" )
-  public static final String SP_COMMUNICATION = "communication";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>communication</b>
-   * <p>
-   * Description: <b>One of the languages that the practitioner can communicate with</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.communication</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam COMMUNICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_COMMUNICATION);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>A practitioner's Identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="Practitioner.identifier", description="A practitioner's Identifier", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>A practitioner's Identifier</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Practitioner.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>name</b>
-   * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text</b><br>
+* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Practitioner.name</b><br>
+   * Path: <b>Patient.address | Person.address | Practitioner.address | RelatedPerson.address</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="name", path="Practitioner.name", description="A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text", type="string" )
-  public static final String SP_NAME = "name";
+  @SearchParamDefinition(name="address", path="Patient.address | Person.address | Practitioner.address | RelatedPerson.address", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n", type="string" )
+  public static final String SP_ADDRESS = "address";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <b>Fluent Client</b> search parameter constant for <b>address</b>
    * <p>
-   * Description: <b>A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text</b><br>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
+</b><br>
    * Type: <b>string</b><br>
-   * Path: <b>Practitioner.name</b><br>
+   * Path: <b>Patient.address | Person.address | Practitioner.address | RelatedPerson.address</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
 
  /**
    * Search parameter: <b>address-city</b>
@@ -1503,38 +1455,6 @@ public class Practitioner extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam ADDRESS_USE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ADDRESS_USE);
-
- /**
-   * Search parameter: <b>address</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address | Person.address | Practitioner.address | RelatedPerson.address</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="address", path="Patient.address | Person.address | Practitioner.address | RelatedPerson.address", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text\r\n", type="string" )
-  public static final String SP_ADDRESS = "address";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>address</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Person](person.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [Practitioner](practitioner.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-* [RelatedPerson](relatedperson.html): A server defined search that may match any of the string fields in the Address, including line, city, district, state, country, postalCode, and/or text
-</b><br>
-   * Type: <b>string</b><br>
-   * Path: <b>Patient.address | Person.address | Practitioner.address | RelatedPerson.address</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam ADDRESS = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_ADDRESS);
 
  /**
    * Search parameter: <b>email</b>
@@ -1757,6 +1677,86 @@ public class Practitioner extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);
+
+ /**
+   * Search parameter: <b>active</b>
+   * <p>
+   * Description: <b>Whether the practitioner record is active</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Practitioner.active</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="active", path="Practitioner.active", description="Whether the practitioner record is active", type="token" )
+  public static final String SP_ACTIVE = "active";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>active</b>
+   * <p>
+   * Description: <b>Whether the practitioner record is active</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Practitioner.active</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam ACTIVE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_ACTIVE);
+
+ /**
+   * Search parameter: <b>communication</b>
+   * <p>
+   * Description: <b>One of the languages that the practitioner can communicate with</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Practitioner.communication</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="communication", path="Practitioner.communication", description="One of the languages that the practitioner can communicate with", type="token" )
+  public static final String SP_COMMUNICATION = "communication";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>communication</b>
+   * <p>
+   * Description: <b>One of the languages that the practitioner can communicate with</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Practitioner.communication</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam COMMUNICATION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_COMMUNICATION);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>A practitioner's Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Practitioner.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="Practitioner.identifier", description="A practitioner's Identifier", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>A practitioner's Identifier</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Practitioner.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>name</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Practitioner.name</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="name", path="Practitioner.name", description="A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text", type="string" )
+  public static final String SP_NAME = "name";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>name</b>
+   * <p>
+   * Description: <b>A server defined search that may match any of the string fields in the HumanName, including family, give, prefix, suffix, suffix, and/or text</b><br>
+   * Type: <b>string</b><br>
+   * Path: <b>Practitioner.name</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.StringClientParam NAME = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_NAME);
 
 
 }

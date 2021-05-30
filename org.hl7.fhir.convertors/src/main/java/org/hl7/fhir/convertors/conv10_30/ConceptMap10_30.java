@@ -2,6 +2,8 @@ package org.hl7.fhir.convertors.conv10_30;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hl7.fhir.convertors.SourceElementComponentWrapper;
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.dstu3.model.ConceptMap;
 import org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent;
@@ -85,8 +87,8 @@ public class ConceptMap10_30 {
         if (src.hasTarget())
             tgt.setTarget(VersionConvertor_10_30.convertType(src.getTarget()));
         for (org.hl7.fhir.dstu2.model.ConceptMap.SourceElementComponent t : src.getElement()) {
-            List<VersionConvertor_10_30.SourceElementComponentWrapper> ws = convertSourceElementComponent(t);
-            for (VersionConvertor_10_30.SourceElementComponentWrapper w : ws) getGroup(tgt, w.source, w.target).addElement(w.comp);
+            List<SourceElementComponentWrapper<ConceptMap.SourceElementComponent>> ws = convertSourceElementComponent(t);
+            for (SourceElementComponentWrapper<ConceptMap.SourceElementComponent> w : ws) getGroup(tgt, w.getSource(), w.getTarget()).addElement(w.getComp());
         }
         return tgt;
     }
@@ -221,8 +223,8 @@ public class ConceptMap10_30 {
         return tgt;
     }
 
-    public static List<VersionConvertor_10_30.SourceElementComponentWrapper> convertSourceElementComponent(org.hl7.fhir.dstu2.model.ConceptMap.SourceElementComponent src) throws FHIRException {
-        List<VersionConvertor_10_30.SourceElementComponentWrapper> res = new ArrayList<VersionConvertor_10_30.SourceElementComponentWrapper>();
+    public static List<SourceElementComponentWrapper<ConceptMap.SourceElementComponent>> convertSourceElementComponent(org.hl7.fhir.dstu2.model.ConceptMap.SourceElementComponent src) throws FHIRException {
+        List<SourceElementComponentWrapper<ConceptMap.SourceElementComponent>> res = new ArrayList<>();
         if (src == null || src.isEmpty())
             return res;
         for (org.hl7.fhir.dstu2.model.ConceptMap.TargetElementComponent t : src.getTarget()) {
@@ -230,7 +232,7 @@ public class ConceptMap10_30 {
             VersionConvertor_10_30.copyElement(src, tgt);
             tgt.setCode(src.getCode());
             tgt.addTarget(convertTargetElementComponent(t));
-            res.add(new VersionConvertor_10_30.SourceElementComponentWrapper(tgt, src.getCodeSystem(), t.getCodeSystem()));
+            res.add(new SourceElementComponentWrapper<>(tgt, src.getCodeSystem(), t.getCodeSystem()));
         }
         return res;
     }

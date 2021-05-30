@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -101,7 +101,6 @@ public class Identifier extends DataType implements ICompositeType {
             case TEMP: return "temp";
             case SECONDARY: return "secondary";
             case OLD: return "old";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -112,7 +111,6 @@ public class Identifier extends DataType implements ICompositeType {
             case TEMP: return "http://hl7.org/fhir/identifier-use";
             case SECONDARY: return "http://hl7.org/fhir/identifier-use";
             case OLD: return "http://hl7.org/fhir/identifier-use";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -123,7 +121,6 @@ public class Identifier extends DataType implements ICompositeType {
             case TEMP: return "A temporary identifier.";
             case SECONDARY: return "An identifier that was assigned in secondary use - it serves to identify the object in a relative context, but cannot be consistently assigned to the same object again in a different context.";
             case OLD: return "The identifier id no longer considered valid, but may be relevant for search purposes.  E.g. Changes to identifier schemes, account merges, etc.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -134,7 +131,6 @@ public class Identifier extends DataType implements ICompositeType {
             case TEMP: return "Temp";
             case SECONDARY: return "Secondary";
             case OLD: return "Old";
-            case NULL: return null;
             default: return "?";
           }
         }

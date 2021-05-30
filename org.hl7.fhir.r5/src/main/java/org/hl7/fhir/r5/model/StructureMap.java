@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,9 +38,12 @@ import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.r5.model.Enumerations.*;
 import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.instance.model.api.ICompositeType;
 import ca.uhn.fhir.model.api.annotation.ResourceDef;
 import ca.uhn.fhir.model.api.annotation.SearchParamDefinition;
+import org.hl7.fhir.instance.model.api.IBaseBackboneElement;
 import ca.uhn.fhir.model.api.annotation.Child;
+import ca.uhn.fhir.model.api.annotation.ChildOrder;
 import ca.uhn.fhir.model.api.annotation.Description;
 import ca.uhn.fhir.model.api.annotation.Block;
 
@@ -50,102 +53,6 @@ import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
  */
 @ResourceDef(name="StructureMap", profile="http://hl7.org/fhir/StructureDefinition/StructureMap")
 public class StructureMap extends CanonicalResource {
-
-    public enum StructureMapContextType {
-        /**
-         * The context specifies a type.
-         */
-        TYPE, 
-        /**
-         * The context specifies a variable.
-         */
-        VARIABLE, 
-        /**
-         * added to help the parsers with the generic types
-         */
-        NULL;
-        public static StructureMapContextType fromCode(String codeString) throws FHIRException {
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("type".equals(codeString))
-          return TYPE;
-        if ("variable".equals(codeString))
-          return VARIABLE;
-        if (Configuration.isAcceptInvalidEnums())
-          return null;
-        else
-          throw new FHIRException("Unknown StructureMapContextType code '"+codeString+"'");
-        }
-        public String toCode() {
-          switch (this) {
-            case TYPE: return "type";
-            case VARIABLE: return "variable";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getSystem() {
-          switch (this) {
-            case TYPE: return "http://hl7.org/fhir/map-context-type";
-            case VARIABLE: return "http://hl7.org/fhir/map-context-type";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDefinition() {
-          switch (this) {
-            case TYPE: return "The context specifies a type.";
-            case VARIABLE: return "The context specifies a variable.";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-        public String getDisplay() {
-          switch (this) {
-            case TYPE: return "Type";
-            case VARIABLE: return "Variable";
-            case NULL: return null;
-            default: return "?";
-          }
-        }
-    }
-
-  public static class StructureMapContextTypeEnumFactory implements EnumFactory<StructureMapContextType> {
-    public StructureMapContextType fromCode(String codeString) throws IllegalArgumentException {
-      if (codeString == null || "".equals(codeString))
-            if (codeString == null || "".equals(codeString))
-                return null;
-        if ("type".equals(codeString))
-          return StructureMapContextType.TYPE;
-        if ("variable".equals(codeString))
-          return StructureMapContextType.VARIABLE;
-        throw new IllegalArgumentException("Unknown StructureMapContextType code '"+codeString+"'");
-        }
-        public Enumeration<StructureMapContextType> fromType(Base code) throws FHIRException {
-          if (code == null)
-            return null;
-          if (code.isEmpty())
-            return new Enumeration<StructureMapContextType>(this);
-          String codeString = ((PrimitiveType) code).asStringValue();
-          if (codeString == null || "".equals(codeString))
-            return null;
-        if ("type".equals(codeString))
-          return new Enumeration<StructureMapContextType>(this, StructureMapContextType.TYPE);
-        if ("variable".equals(codeString))
-          return new Enumeration<StructureMapContextType>(this, StructureMapContextType.VARIABLE);
-        throw new FHIRException("Unknown StructureMapContextType code '"+codeString+"'");
-        }
-    public String toCode(StructureMapContextType code) {
-      if (code == StructureMapContextType.TYPE)
-        return "type";
-      if (code == StructureMapContextType.VARIABLE)
-        return "variable";
-      return "?";
-      }
-    public String toSystem(StructureMapContextType code) {
-      return code.getSystem();
-      }
-    }
 
     public enum StructureMapGroupTypeMode {
         /**
@@ -176,7 +83,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case TYPES: return "types";
             case TYPEANDTYPES: return "type-and-types";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -184,7 +90,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case TYPES: return "http://hl7.org/fhir/map-group-type-mode";
             case TYPEANDTYPES: return "http://hl7.org/fhir/map-group-type-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -192,7 +97,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case TYPES: return "This group is a default mapping group for the specified types and for the primary source type.";
             case TYPEANDTYPES: return "This group is a default mapping group for the specified types.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -200,7 +104,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case TYPES: return "Default for Type Combination";
             case TYPEANDTYPES: return "Default for type + combination";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -272,7 +175,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case SOURCE: return "source";
             case TARGET: return "target";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -280,7 +182,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case SOURCE: return "http://hl7.org/fhir/map-input-mode";
             case TARGET: return "http://hl7.org/fhir/map-input-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -288,7 +189,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case SOURCE: return "Names an input instance used a source for mapping.";
             case TARGET: return "Names an instance that is being populated.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -296,7 +196,6 @@ public class StructureMap extends CanonicalResource {
           switch (this) {
             case SOURCE: return "Source Instance";
             case TARGET: return "Target Instance";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -382,7 +281,6 @@ public class StructureMap extends CanonicalResource {
             case QUERIED: return "queried";
             case TARGET: return "target";
             case PRODUCED: return "produced";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -392,7 +290,6 @@ public class StructureMap extends CanonicalResource {
             case QUERIED: return "http://hl7.org/fhir/map-model-mode";
             case TARGET: return "http://hl7.org/fhir/map-model-mode";
             case PRODUCED: return "http://hl7.org/fhir/map-model-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -402,7 +299,6 @@ public class StructureMap extends CanonicalResource {
             case QUERIED: return "This structure describes an instance that the mapping engine may ask for that is used a source of data.";
             case TARGET: return "This structure describes an instance passed to the mapping engine that is used a target of data.";
             case PRODUCED: return "This structure describes an instance that the mapping engine may ask to create that is used a target of data.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -412,7 +308,6 @@ public class StructureMap extends CanonicalResource {
             case QUERIED: return "Queried Structure Definition";
             case TARGET: return "Target Structure Definition";
             case PRODUCED: return "Produced Structure Definition";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -517,7 +412,6 @@ public class StructureMap extends CanonicalResource {
             case LAST: return "last";
             case NOTLAST: return "not_last";
             case ONLYONE: return "only_one";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -528,7 +422,6 @@ public class StructureMap extends CanonicalResource {
             case LAST: return "http://hl7.org/fhir/map-source-list-mode";
             case NOTLAST: return "http://hl7.org/fhir/map-source-list-mode";
             case ONLYONE: return "http://hl7.org/fhir/map-source-list-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -539,7 +432,6 @@ public class StructureMap extends CanonicalResource {
             case LAST: return "Only process this rule for the last in the list.";
             case NOTLAST: return "Process this rule for all but the last.";
             case ONLYONE: return "Only process this rule is there is only item.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -550,7 +442,6 @@ public class StructureMap extends CanonicalResource {
             case LAST: return "Last";
             case NOTLAST: return "All but the last";
             case ONLYONE: return "Enforce only one";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -654,7 +545,6 @@ public class StructureMap extends CanonicalResource {
             case SHARE: return "share";
             case LAST: return "last";
             case COLLATE: return "collate";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -664,7 +554,6 @@ public class StructureMap extends CanonicalResource {
             case SHARE: return "http://hl7.org/fhir/map-target-list-mode";
             case LAST: return "http://hl7.org/fhir/map-target-list-mode";
             case COLLATE: return "http://hl7.org/fhir/map-target-list-mode";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -674,7 +563,6 @@ public class StructureMap extends CanonicalResource {
             case SHARE: return "the target instance is shared with the target instances generated by another rule (up to the first common n items, then create new ones).";
             case LAST: return "when the target list is being assembled, the items for this rule go last. If more than one rule defines a last item (for a given instance of mapping) then this is an error.";
             case COLLATE: return "re-use the first item in the list, and keep adding content to it.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -684,7 +572,6 @@ public class StructureMap extends CanonicalResource {
             case SHARE: return "Share";
             case LAST: return "Last";
             case COLLATE: return "Collate";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -873,7 +760,6 @@ public class StructureMap extends CanonicalResource {
             case QTY: return "qty";
             case ID: return "id";
             case CP: return "cp";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -896,7 +782,6 @@ public class StructureMap extends CanonicalResource {
             case QTY: return "http://hl7.org/fhir/map-transform";
             case ID: return "http://hl7.org/fhir/map-transform";
             case CP: return "http://hl7.org/fhir/map-transform";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -919,7 +804,6 @@ public class StructureMap extends CanonicalResource {
             case QTY: return "Create a quantity. Parameters = (text) or (value, unit, [system, code]) where text is the natural representation e.g. [comparator]value[space]unit.";
             case ID: return "Create an identifier. Parameters = (system, value[, type]) where type is a code from the identifier type value set.";
             case CP: return "Create a contact details. Parameters = (value) or (system, value). If no system is provided, the system should be inferred from the content of the value.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -942,7 +826,6 @@ public class StructureMap extends CanonicalResource {
             case QTY: return "qty";
             case ID: return "id";
             case CP: return "cp";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -4894,38 +4777,30 @@ public String toString() {
     @Block()
     public static class StructureMapGroupRuleTargetComponent extends BackboneElement implements IBaseBackboneElement {
         /**
-         * Type or variable this rule applies to.
+         * Variable this rule applies to.
          */
         @Child(name = "context", type = {IdType.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Type or variable this rule applies to", formalDefinition="Type or variable this rule applies to." )
+        @Description(shortDefinition="Variable this rule applies to", formalDefinition="Variable this rule applies to." )
         protected IdType context;
-
-        /**
-         * How to interpret the context.
-         */
-        @Child(name = "contextType", type = {CodeType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="type | variable", formalDefinition="How to interpret the context." )
-        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/map-context-type")
-        protected Enumeration<StructureMapContextType> contextType;
 
         /**
          * Field to create in the context.
          */
-        @Child(name = "element", type = {StringType.class}, order=3, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "element", type = {StringType.class}, order=2, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Field to create in the context", formalDefinition="Field to create in the context." )
         protected StringType element;
 
         /**
          * Named context for field, if desired, and a field is specified.
          */
-        @Child(name = "variable", type = {IdType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "variable", type = {IdType.class}, order=3, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Named context for field, if desired, and a field is specified", formalDefinition="Named context for field, if desired, and a field is specified." )
         protected IdType variable;
 
         /**
          * If field is a list, how to manage the list.
          */
-        @Child(name = "listMode", type = {CodeType.class}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "listMode", type = {CodeType.class}, order=4, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="first | share | last | collate", formalDefinition="If field is a list, how to manage the list." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/map-target-list-mode")
         protected List<Enumeration<StructureMapTargetListMode>> listMode;
@@ -4933,14 +4808,14 @@ public String toString() {
         /**
          * Internal rule reference for shared list items.
          */
-        @Child(name = "listRuleId", type = {IdType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "listRuleId", type = {IdType.class}, order=5, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="Internal rule reference for shared list items", formalDefinition="Internal rule reference for shared list items." )
         protected IdType listRuleId;
 
         /**
          * How the data is copied / created.
          */
-        @Child(name = "transform", type = {CodeType.class}, order=7, min=0, max=1, modifier=false, summary=true)
+        @Child(name = "transform", type = {CodeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
         @Description(shortDefinition="create | copy +", formalDefinition="How the data is copied / created." )
         @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/map-transform")
         protected Enumeration<StructureMapTransform> transform;
@@ -4948,11 +4823,11 @@ public String toString() {
         /**
          * Parameters to the transform.
          */
-        @Child(name = "parameter", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+        @Child(name = "parameter", type = {}, order=7, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
         @Description(shortDefinition="Parameters to the transform", formalDefinition="Parameters to the transform." )
         protected List<StructureMapGroupRuleTargetParameterComponent> parameter;
 
-        private static final long serialVersionUID = -1441766429L;
+        private static final long serialVersionUID = 1225668521L;
 
     /**
      * Constructor
@@ -4962,7 +4837,7 @@ public String toString() {
       }
 
         /**
-         * @return {@link #context} (Type or variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
+         * @return {@link #context} (Variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
          */
         public IdType getContextElement() { 
           if (this.context == null)
@@ -4982,7 +4857,7 @@ public String toString() {
         }
 
         /**
-         * @param value {@link #context} (Type or variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
+         * @param value {@link #context} (Variable this rule applies to.). This is the underlying object with id, value and extensions. The accessor "getContext" gives direct access to the value
          */
         public StructureMapGroupRuleTargetComponent setContextElement(IdType value) { 
           this.context = value;
@@ -4990,14 +4865,14 @@ public String toString() {
         }
 
         /**
-         * @return Type or variable this rule applies to.
+         * @return Variable this rule applies to.
          */
         public String getContext() { 
           return this.context == null ? null : this.context.getValue();
         }
 
         /**
-         * @param value Type or variable this rule applies to.
+         * @param value Variable this rule applies to.
          */
         public StructureMapGroupRuleTargetComponent setContext(String value) { 
           if (Utilities.noString(value))
@@ -5006,55 +4881,6 @@ public String toString() {
             if (this.context == null)
               this.context = new IdType();
             this.context.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #contextType} (How to interpret the context.). This is the underlying object with id, value and extensions. The accessor "getContextType" gives direct access to the value
-         */
-        public Enumeration<StructureMapContextType> getContextTypeElement() { 
-          if (this.contextType == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create StructureMapGroupRuleTargetComponent.contextType");
-            else if (Configuration.doAutoCreate())
-              this.contextType = new Enumeration<StructureMapContextType>(new StructureMapContextTypeEnumFactory()); // bb
-          return this.contextType;
-        }
-
-        public boolean hasContextTypeElement() { 
-          return this.contextType != null && !this.contextType.isEmpty();
-        }
-
-        public boolean hasContextType() { 
-          return this.contextType != null && !this.contextType.isEmpty();
-        }
-
-        /**
-         * @param value {@link #contextType} (How to interpret the context.). This is the underlying object with id, value and extensions. The accessor "getContextType" gives direct access to the value
-         */
-        public StructureMapGroupRuleTargetComponent setContextTypeElement(Enumeration<StructureMapContextType> value) { 
-          this.contextType = value;
-          return this;
-        }
-
-        /**
-         * @return How to interpret the context.
-         */
-        public StructureMapContextType getContextType() { 
-          return this.contextType == null ? null : this.contextType.getValue();
-        }
-
-        /**
-         * @param value How to interpret the context.
-         */
-        public StructureMapGroupRuleTargetComponent setContextType(StructureMapContextType value) { 
-          if (value == null)
-            this.contextType = null;
-          else {
-            if (this.contextType == null)
-              this.contextType = new Enumeration<StructureMapContextType>(new StructureMapContextTypeEnumFactory());
-            this.contextType.setValue(value);
           }
           return this;
         }
@@ -5371,8 +5197,7 @@ public String toString() {
 
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
-          children.add(new Property("context", "id", "Type or variable this rule applies to.", 0, 1, context));
-          children.add(new Property("contextType", "code", "How to interpret the context.", 0, 1, contextType));
+          children.add(new Property("context", "id", "Variable this rule applies to.", 0, 1, context));
           children.add(new Property("element", "string", "Field to create in the context.", 0, 1, element));
           children.add(new Property("variable", "id", "Named context for field, if desired, and a field is specified.", 0, 1, variable));
           children.add(new Property("listMode", "code", "If field is a list, how to manage the list.", 0, java.lang.Integer.MAX_VALUE, listMode));
@@ -5384,8 +5209,7 @@ public String toString() {
         @Override
         public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
           switch (_hash) {
-          case 951530927: /*context*/  return new Property("context", "id", "Type or variable this rule applies to.", 0, 1, context);
-          case -102839927: /*contextType*/  return new Property("contextType", "code", "How to interpret the context.", 0, 1, contextType);
+          case 951530927: /*context*/  return new Property("context", "id", "Variable this rule applies to.", 0, 1, context);
           case -1662836996: /*element*/  return new Property("element", "string", "Field to create in the context.", 0, 1, element);
           case -1249586564: /*variable*/  return new Property("variable", "id", "Named context for field, if desired, and a field is specified.", 0, 1, variable);
           case 1345445729: /*listMode*/  return new Property("listMode", "code", "If field is a list, how to manage the list.", 0, java.lang.Integer.MAX_VALUE, listMode);
@@ -5401,7 +5225,6 @@ public String toString() {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case 951530927: /*context*/ return this.context == null ? new Base[0] : new Base[] {this.context}; // IdType
-        case -102839927: /*contextType*/ return this.contextType == null ? new Base[0] : new Base[] {this.contextType}; // Enumeration<StructureMapContextType>
         case -1662836996: /*element*/ return this.element == null ? new Base[0] : new Base[] {this.element}; // StringType
         case -1249586564: /*variable*/ return this.variable == null ? new Base[0] : new Base[] {this.variable}; // IdType
         case 1345445729: /*listMode*/ return this.listMode == null ? new Base[0] : this.listMode.toArray(new Base[this.listMode.size()]); // Enumeration<StructureMapTargetListMode>
@@ -5418,10 +5241,6 @@ public String toString() {
         switch (hash) {
         case 951530927: // context
           this.context = TypeConvertor.castToId(value); // IdType
-          return value;
-        case -102839927: // contextType
-          value = new StructureMapContextTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.contextType = (Enumeration) value; // Enumeration<StructureMapContextType>
           return value;
         case -1662836996: // element
           this.element = TypeConvertor.castToString(value); // StringType
@@ -5452,9 +5271,6 @@ public String toString() {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("context")) {
           this.context = TypeConvertor.castToId(value); // IdType
-        } else if (name.equals("contextType")) {
-          value = new StructureMapContextTypeEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.contextType = (Enumeration) value; // Enumeration<StructureMapContextType>
         } else if (name.equals("element")) {
           this.element = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("variable")) {
@@ -5478,7 +5294,6 @@ public String toString() {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 951530927:  return getContextElement();
-        case -102839927:  return getContextTypeElement();
         case -1662836996:  return getElementElement();
         case -1249586564:  return getVariableElement();
         case 1345445729:  return addListModeElement();
@@ -5494,7 +5309,6 @@ public String toString() {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case 951530927: /*context*/ return new String[] {"id"};
-        case -102839927: /*contextType*/ return new String[] {"code"};
         case -1662836996: /*element*/ return new String[] {"string"};
         case -1249586564: /*variable*/ return new String[] {"id"};
         case 1345445729: /*listMode*/ return new String[] {"code"};
@@ -5510,9 +5324,6 @@ public String toString() {
       public Base addChild(String name) throws FHIRException {
         if (name.equals("context")) {
           throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.target.context");
-        }
-        else if (name.equals("contextType")) {
-          throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.target.contextType");
         }
         else if (name.equals("element")) {
           throw new FHIRException("Cannot call addChild on a primitive type StructureMap.group.rule.target.element");
@@ -5545,7 +5356,6 @@ public String toString() {
       public void copyValues(StructureMapGroupRuleTargetComponent dst) {
         super.copyValues(dst);
         dst.context = context == null ? null : context.copy();
-        dst.contextType = contextType == null ? null : contextType.copy();
         dst.element = element == null ? null : element.copy();
         dst.variable = variable == null ? null : variable.copy();
         if (listMode != null) {
@@ -5569,9 +5379,9 @@ public String toString() {
         if (!(other_ instanceof StructureMapGroupRuleTargetComponent))
           return false;
         StructureMapGroupRuleTargetComponent o = (StructureMapGroupRuleTargetComponent) other_;
-        return compareDeep(context, o.context, true) && compareDeep(contextType, o.contextType, true) && compareDeep(element, o.element, true)
-           && compareDeep(variable, o.variable, true) && compareDeep(listMode, o.listMode, true) && compareDeep(listRuleId, o.listRuleId, true)
-           && compareDeep(transform, o.transform, true) && compareDeep(parameter, o.parameter, true);
+        return compareDeep(context, o.context, true) && compareDeep(element, o.element, true) && compareDeep(variable, o.variable, true)
+           && compareDeep(listMode, o.listMode, true) && compareDeep(listRuleId, o.listRuleId, true) && compareDeep(transform, o.transform, true)
+           && compareDeep(parameter, o.parameter, true);
       }
 
       @Override
@@ -5581,14 +5391,14 @@ public String toString() {
         if (!(other_ instanceof StructureMapGroupRuleTargetComponent))
           return false;
         StructureMapGroupRuleTargetComponent o = (StructureMapGroupRuleTargetComponent) other_;
-        return compareValues(context, o.context, true) && compareValues(contextType, o.contextType, true) && compareValues(element, o.element, true)
-           && compareValues(variable, o.variable, true) && compareValues(listMode, o.listMode, true) && compareValues(listRuleId, o.listRuleId, true)
-           && compareValues(transform, o.transform, true);
+        return compareValues(context, o.context, true) && compareValues(element, o.element, true) && compareValues(variable, o.variable, true)
+           && compareValues(listMode, o.listMode, true) && compareValues(listRuleId, o.listRuleId, true) && compareValues(transform, o.transform, true)
+          ;
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(context, contextType, element
-          , variable, listMode, listRuleId, transform, parameter);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(context, element, variable
+          , listMode, listRuleId, transform, parameter);
       }
 
   public String fhirType() {
@@ -7586,6 +7396,58 @@ public String toString() {
    }
 
  /**
+   * Search parameter: <b>context</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition
+* [StructureMap](structuremap.html): A use context assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context assigned to the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context", path="(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
+  public static final String SP_CONTEXT = "context";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition
+* [StructureMap](structuremap.html): A use context assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context assigned to the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
+
+ /**
    * Search parameter: <b>context-quantity</b>
    * <p>
    * Description: <b>Multiple Resources: 
@@ -7638,110 +7500,6 @@ public String toString() {
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam CONTEXT_QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_CONTEXT_QUANTITY);
 
  /**
-   * Search parameter: <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-quantity", path="CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set\r\n", type="composite", compositeOf={"context-type", "context-quantity"} )
-  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
-
- /**
-   * Search parameter: <b>context-type-value</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context-type-value", path="CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context type and value assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context type and value assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context type and value assigned to the value set\r\n", type="composite", compositeOf={"context-type", "context"} )
-  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context type and value assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition
-* [StructureMap](structuremap.html): A use context type and value assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context type and value assigned to the value set
-</b><br>
-   * Type: <b>composite</b><br>
-   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
-
- /**
    * Search parameter: <b>context-type</b>
    * <p>
    * Description: <b>Multiple Resources: 
@@ -7792,58 +7550,6 @@ public String toString() {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT_TYPE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT_TYPE);
-
- /**
-   * Search parameter: <b>context</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition
-* [StructureMap](structuremap.html): A use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context assigned to the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="context", path="(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context assigned to the value set\r\n", type="token" )
-  public static final String SP_CONTEXT = "context";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>context</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CapabilityStatement](capabilitystatement.html): A use context assigned to the capability statement
-* [CodeSystem](codesystem.html): A use context assigned to the code system
-* [CompartmentDefinition](compartmentdefinition.html): A use context assigned to the compartment definition
-* [ConceptMap](conceptmap.html): A use context assigned to the concept map
-* [GraphDefinition](graphdefinition.html): A use context assigned to the graph definition
-* [ImplementationGuide](implementationguide.html): A use context assigned to the implementation guide
-* [MessageDefinition](messagedefinition.html): A use context assigned to the message definition
-* [NamingSystem](namingsystem.html): A use context assigned to the naming system
-* [OperationDefinition](operationdefinition.html): A use context assigned to the operation definition
-* [SearchParameter](searchparameter.html): A use context assigned to the search parameter
-* [StructureDefinition](structuredefinition.html): A use context assigned to the structure definition
-* [StructureMap](structuremap.html): A use context assigned to the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): A use context assigned to the terminology capabilities
-* [ValueSet](valueset.html): A use context assigned to the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>(CapabilityStatement.useContext.value as CodeableConcept) | (CodeSystem.useContext.value as CodeableConcept) | (CompartmentDefinition.useContext.value as CodeableConcept) | (ConceptMap.useContext.value as CodeableConcept) | (GraphDefinition.useContext.value as CodeableConcept) | (ImplementationGuide.useContext.value as CodeableConcept) | (MessageDefinition.useContext.value as CodeableConcept) | (NamingSystem.useContext.value as CodeableConcept) | (OperationDefinition.useContext.value as CodeableConcept) | (SearchParameter.useContext.value as CodeableConcept) | (StructureDefinition.useContext.value as CodeableConcept) | (StructureMap.useContext.value as CodeableConcept) | (TerminologyCapabilities.useContext.value as CodeableConcept) | (ValueSet.useContext.value as CodeableConcept)</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTEXT = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTEXT);
 
  /**
    * Search parameter: <b>date</b>
@@ -7948,44 +7654,6 @@ public String toString() {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.StringClientParam DESCRIPTION = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_DESCRIPTION);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CodeSystem](codesystem.html): External identifier for the code system
-* [ConceptMap](conceptmap.html): External identifier for the concept map
-* [MessageDefinition](messagedefinition.html): External identifier for the message definition
-* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
-* [StructureMap](structuremap.html): External identifier for the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
-* [ValueSet](valueset.html): External identifier for the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [CodeSystem](codesystem.html): External identifier for the code system
-* [ConceptMap](conceptmap.html): External identifier for the concept map
-* [MessageDefinition](messagedefinition.html): External identifier for the message definition
-* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
-* [StructureMap](structuremap.html): External identifier for the structure map
-* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
-* [ValueSet](valueset.html): External identifier for the value set
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
 
  /**
    * Search parameter: <b>jurisdiction</b>
@@ -8341,7 +8009,149 @@ public String toString() {
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam VERSION = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_VERSION);
 
-// Manual code (from Configuration.txt)t:
+ /**
+   * Search parameter: <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition
+* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set
+</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-quantity", path="CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set\r\n", type="composite", compositeOf={"context-type", "context-quantity"} )
+  public static final String SP_CONTEXT_TYPE_QUANTITY = "context-type-quantity";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-quantity</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context type and quantity- or range-based value assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context type and quantity- or range-based value assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context type and quantity- or range-based value assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context type and quantity- or range-based value assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context type and quantity- or range-based value assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context type and quantity- or range-based value assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context type and quantity- or range-based value assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context type and quantity- or range-based value assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context type and quantity- or range-based value assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context type and quantity- or range-based value assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context type and quantity- or range-based value assigned to the structure definition
+* [StructureMap](structuremap.html): A use context type and quantity- or range-based value assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context type and quantity- or range-based value assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context type and quantity- or range-based value assigned to the value set
+</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam> CONTEXT_TYPE_QUANTITY = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.QuantityClientParam>(SP_CONTEXT_TYPE_QUANTITY);
+
+ /**
+   * Search parameter: <b>context-type-value</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context type and value assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition
+* [StructureMap](structuremap.html): A use context type and value assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context type and value assigned to the value set
+</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="context-type-value", path="CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext", description="Multiple Resources: \r\n\r\n* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement\r\n* [CodeSystem](codesystem.html): A use context type and value assigned to the code system\r\n* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition\r\n* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map\r\n* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition\r\n* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide\r\n* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition\r\n* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system\r\n* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition\r\n* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter\r\n* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition\r\n* [StructureMap](structuremap.html): A use context type and value assigned to the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities\r\n* [ValueSet](valueset.html): A use context type and value assigned to the value set\r\n", type="composite", compositeOf={"context-type", "context"} )
+  public static final String SP_CONTEXT_TYPE_VALUE = "context-type-value";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>context-type-value</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CapabilityStatement](capabilitystatement.html): A use context type and value assigned to the capability statement
+* [CodeSystem](codesystem.html): A use context type and value assigned to the code system
+* [CompartmentDefinition](compartmentdefinition.html): A use context type and value assigned to the compartment definition
+* [ConceptMap](conceptmap.html): A use context type and value assigned to the concept map
+* [GraphDefinition](graphdefinition.html): A use context type and value assigned to the graph definition
+* [ImplementationGuide](implementationguide.html): A use context type and value assigned to the implementation guide
+* [MessageDefinition](messagedefinition.html): A use context type and value assigned to the message definition
+* [NamingSystem](namingsystem.html): A use context type and value assigned to the naming system
+* [OperationDefinition](operationdefinition.html): A use context type and value assigned to the operation definition
+* [SearchParameter](searchparameter.html): A use context type and value assigned to the search parameter
+* [StructureDefinition](structuredefinition.html): A use context type and value assigned to the structure definition
+* [StructureMap](structuremap.html): A use context type and value assigned to the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): A use context type and value assigned to the terminology capabilities
+* [ValueSet](valueset.html): A use context type and value assigned to the value set
+</b><br>
+   * Type: <b>composite</b><br>
+   * Path: <b>CapabilityStatement.useContext | CodeSystem.useContext | CompartmentDefinition.useContext | ConceptMap.useContext | GraphDefinition.useContext | ImplementationGuide.useContext | MessageDefinition.useContext | NamingSystem.useContext | OperationDefinition.useContext | SearchParameter.useContext | StructureDefinition.useContext | StructureMap.useContext | TerminologyCapabilities.useContext | ValueSet.useContext</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam> CONTEXT_TYPE_VALUE = new ca.uhn.fhir.rest.gclient.CompositeClientParam<ca.uhn.fhir.rest.gclient.TokenClientParam, ca.uhn.fhir.rest.gclient.TokenClientParam>(SP_CONTEXT_TYPE_VALUE);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CodeSystem](codesystem.html): External identifier for the code system
+* [ConceptMap](conceptmap.html): External identifier for the concept map
+* [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
+* [StructureMap](structuremap.html): External identifier for the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
+* [ValueSet](valueset.html): External identifier for the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier", description="Multiple Resources: \r\n\r\n* [CodeSystem](codesystem.html): External identifier for the code system\r\n* [ConceptMap](conceptmap.html): External identifier for the concept map\r\n* [MessageDefinition](messagedefinition.html): External identifier for the message definition\r\n* [StructureDefinition](structuredefinition.html): External identifier for the structure definition\r\n* [StructureMap](structuremap.html): External identifier for the structure map\r\n* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities\r\n* [ValueSet](valueset.html): External identifier for the value set\r\n", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [CodeSystem](codesystem.html): External identifier for the code system
+* [ConceptMap](conceptmap.html): External identifier for the concept map
+* [MessageDefinition](messagedefinition.html): External identifier for the message definition
+* [StructureDefinition](structuredefinition.html): External identifier for the structure definition
+* [StructureMap](structuremap.html): External identifier for the structure map
+* [TerminologyCapabilities](terminologycapabilities.html): External identifier for the terminology capabilities
+* [ValueSet](valueset.html): External identifier for the value set
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>CodeSystem.identifier | ConceptMap.identifier | MessageDefinition.identifier | StructureDefinition.identifier | StructureMap.identifier | TerminologyCapabilities.identifier | ValueSet.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+// Manual code (from Configuration.txt):
 public String toString() {
     return StructureMapUtilities.render(this);
   }

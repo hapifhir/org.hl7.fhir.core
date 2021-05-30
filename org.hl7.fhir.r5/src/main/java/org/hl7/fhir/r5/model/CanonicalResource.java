@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -442,8 +442,7 @@ public abstract class CanonicalResource extends DomainResource {
     /**
      * @param value A copyright statement relating to the canonical resource and/or its contents. Copyright statements are generally legal restrictions on the use and publishing of the canonical resource.
      */
-    public abstract CanonicalResource setCopyright(String value);
-    
+    public abstract CanonicalResource setCopyright(String value); 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
       }
@@ -533,27 +532,28 @@ public abstract class CanonicalResource extends DomainResource {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty();
       }
 
-// Manual code (from Configuration.txt)t:
-      @Override
-      public String toString() {
-        return fhirType()+"["+getUrl()+"]";
-      }
-
-      public String present() {
-        if (hasTitle())
-          return getTitle();
-        if (hasName())
-          return getName();
-        return toString();
-      }
-
-      public String getVUrl() {
-        return getUrl() + (hasVersion() ? "|"+getVersion() : "");
-      }
-
-      public boolean supportsCopyright() {
-        return true;
-      }
+// Manual code (from Configuration.txt):
+  @Override
+  public String toString() {
+    return fhirType()+"["+getUrl()+"]";
+  }
+  
+  public String present() {
+    if (hasTitle())
+      return getTitle();
+    if (hasName())
+      return getName();
+    return toString();
+  }
+  
+  public String getVUrl() {
+    return getUrl() + (hasVersion() ? "|"+getVersion() : "");
+  }      
+  
+  public boolean supportsCopyright() {
+    return true;
+  }
+  
 // end addition
 
 }

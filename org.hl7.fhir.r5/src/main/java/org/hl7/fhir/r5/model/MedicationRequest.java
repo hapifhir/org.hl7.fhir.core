@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -124,7 +124,6 @@ public class MedicationRequest extends DomainResource {
             case FILLERORDER: return "filler-order";
             case INSTANCEORDER: return "instance-order";
             case OPTION: return "option";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,7 +137,6 @@ public class MedicationRequest extends DomainResource {
             case FILLERORDER: return "http://hl7.org/fhir/CodeSystem/medicationrequest-intent";
             case INSTANCEORDER: return "http://hl7.org/fhir/CodeSystem/medicationrequest-intent";
             case OPTION: return "http://hl7.org/fhir/CodeSystem/medicationrequest-intent";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -152,7 +150,6 @@ public class MedicationRequest extends DomainResource {
             case FILLERORDER: return "The request represents the view of an authorization instantiated by a fulfilling system representing the details of the fulfiller's intention to act upon a submitted order.";
             case INSTANCEORDER: return "The request represents an instance for the particular order, for example a medication administration record.";
             case OPTION: return "The request represents a component or option for a RequestGroup that establishes timing, conditionality and/or  other constraints among a set of requests.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -166,7 +163,6 @@ public class MedicationRequest extends DomainResource {
             case FILLERORDER: return "Filler Order";
             case INSTANCEORDER: return "Instance Order";
             case OPTION: return "Option";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -316,7 +312,6 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "stopped";
             case DRAFT: return "draft";
             case UNKNOWN: return "unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -330,7 +325,6 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "http://hl7.org/fhir/CodeSystem/medicationrequest-status";
             case DRAFT: return "http://hl7.org/fhir/CodeSystem/medicationrequest-status";
             case UNKNOWN: return "http://hl7.org/fhir/CodeSystem/medicationrequest-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -344,7 +338,6 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "Actions implied by the prescription are to be permanently halted, before all of the administrations occurred. This should not be used if the original order was entered in error";
             case DRAFT: return "The prescription is not yet 'actionable', e.g. it is a work in progress, requires sign-off, verification or needs to be run through decision support process.";
             case UNKNOWN: return "The authoring/source system does not know which of the status values currently applies for this observation. Note: This concept is not to be used for 'other' - one of the listed statuses is presumed to apply, but the authoring/source system does not know which.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -358,7 +351,6 @@ public class MedicationRequest extends DomainResource {
             case STOPPED: return "Stopped";
             case DRAFT: return "Draft";
             case UNKNOWN: return "Unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -488,7 +480,22 @@ public class MedicationRequest extends DomainResource {
         @Description(shortDefinition="Intended performer of dispense", formalDefinition="Indicates the intended performing Organization that will dispense the medication as specified by the prescriber." )
         protected Reference dispenser;
 
-        private static final long serialVersionUID = 1118791702L;
+        /**
+         * Provides additional information to the dispenser, for example, counselling to be provided to the patient.
+         */
+        @Child(name = "dispenserInstruction", type = {Annotation.class}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=false)
+        @Description(shortDefinition="Additional information for the dispenser", formalDefinition="Provides additional information to the dispenser, for example, counselling to be provided to the patient." )
+        protected List<Annotation> dispenserInstruction;
+
+        /**
+         * Provides information about the type of adherence packaging to be supplied for the medication dispense.
+         */
+        @Child(name = "doseAdministrationAid", type = {CodeableConcept.class}, order=9, min=0, max=1, modifier=false, summary=false)
+        @Description(shortDefinition="Type of adherence packaging to use for the dispense", formalDefinition="Provides information about the type of adherence packaging to be supplied for the medication dispense." )
+        @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/medication-dose-aid")
+        protected CodeableConcept doseAdministrationAid;
+
+        private static final long serialVersionUID = -916083616L;
 
     /**
      * Constructor
@@ -686,6 +693,83 @@ public class MedicationRequest extends DomainResource {
           return this;
         }
 
+        /**
+         * @return {@link #dispenserInstruction} (Provides additional information to the dispenser, for example, counselling to be provided to the patient.)
+         */
+        public List<Annotation> getDispenserInstruction() { 
+          if (this.dispenserInstruction == null)
+            this.dispenserInstruction = new ArrayList<Annotation>();
+          return this.dispenserInstruction;
+        }
+
+        /**
+         * @return Returns a reference to <code>this</code> for easy method chaining
+         */
+        public MedicationRequestDispenseRequestComponent setDispenserInstruction(List<Annotation> theDispenserInstruction) { 
+          this.dispenserInstruction = theDispenserInstruction;
+          return this;
+        }
+
+        public boolean hasDispenserInstruction() { 
+          if (this.dispenserInstruction == null)
+            return false;
+          for (Annotation item : this.dispenserInstruction)
+            if (!item.isEmpty())
+              return true;
+          return false;
+        }
+
+        public Annotation addDispenserInstruction() { //3
+          Annotation t = new Annotation();
+          if (this.dispenserInstruction == null)
+            this.dispenserInstruction = new ArrayList<Annotation>();
+          this.dispenserInstruction.add(t);
+          return t;
+        }
+
+        public MedicationRequestDispenseRequestComponent addDispenserInstruction(Annotation t) { //3
+          if (t == null)
+            return this;
+          if (this.dispenserInstruction == null)
+            this.dispenserInstruction = new ArrayList<Annotation>();
+          this.dispenserInstruction.add(t);
+          return this;
+        }
+
+        /**
+         * @return The first repetition of repeating field {@link #dispenserInstruction}, creating it if it does not already exist {3}
+         */
+        public Annotation getDispenserInstructionFirstRep() { 
+          if (getDispenserInstruction().isEmpty()) {
+            addDispenserInstruction();
+          }
+          return getDispenserInstruction().get(0);
+        }
+
+        /**
+         * @return {@link #doseAdministrationAid} (Provides information about the type of adherence packaging to be supplied for the medication dispense.)
+         */
+        public CodeableConcept getDoseAdministrationAid() { 
+          if (this.doseAdministrationAid == null)
+            if (Configuration.errorOnAutoCreate())
+              throw new Error("Attempt to auto-create MedicationRequestDispenseRequestComponent.doseAdministrationAid");
+            else if (Configuration.doAutoCreate())
+              this.doseAdministrationAid = new CodeableConcept(); // cc
+          return this.doseAdministrationAid;
+        }
+
+        public boolean hasDoseAdministrationAid() { 
+          return this.doseAdministrationAid != null && !this.doseAdministrationAid.isEmpty();
+        }
+
+        /**
+         * @param value {@link #doseAdministrationAid} (Provides information about the type of adherence packaging to be supplied for the medication dispense.)
+         */
+        public MedicationRequestDispenseRequestComponent setDoseAdministrationAid(CodeableConcept value) { 
+          this.doseAdministrationAid = value;
+          return this;
+        }
+
         protected void listChildren(List<Property> children) {
           super.listChildren(children);
           children.add(new Property("initialFill", "", "Indicates the quantity or duration for the first dispense of the medication.", 0, 1, initialFill));
@@ -695,6 +779,8 @@ public class MedicationRequest extends DomainResource {
           children.add(new Property("quantity", "Quantity", "The amount that is to be dispensed for one fill.", 0, 1, quantity));
           children.add(new Property("expectedSupplyDuration", "Duration", "Identifies the period time over which the supplied product is expected to be used, or the length of time the dispense is expected to last.", 0, 1, expectedSupplyDuration));
           children.add(new Property("dispenser", "Reference(Organization)", "Indicates the intended performing Organization that will dispense the medication as specified by the prescriber.", 0, 1, dispenser));
+          children.add(new Property("dispenserInstruction", "Annotation", "Provides additional information to the dispenser, for example, counselling to be provided to the patient.", 0, java.lang.Integer.MAX_VALUE, dispenserInstruction));
+          children.add(new Property("doseAdministrationAid", "CodeableConcept", "Provides information about the type of adherence packaging to be supplied for the medication dispense.", 0, 1, doseAdministrationAid));
         }
 
         @Override
@@ -707,6 +793,8 @@ public class MedicationRequest extends DomainResource {
           case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The amount that is to be dispensed for one fill.", 0, 1, quantity);
           case -1910182789: /*expectedSupplyDuration*/  return new Property("expectedSupplyDuration", "Duration", "Identifies the period time over which the supplied product is expected to be used, or the length of time the dispense is expected to last.", 0, 1, expectedSupplyDuration);
           case 241511093: /*dispenser*/  return new Property("dispenser", "Reference(Organization)", "Indicates the intended performing Organization that will dispense the medication as specified by the prescriber.", 0, 1, dispenser);
+          case 2073630361: /*dispenserInstruction*/  return new Property("dispenserInstruction", "Annotation", "Provides additional information to the dispenser, for example, counselling to be provided to the patient.", 0, java.lang.Integer.MAX_VALUE, dispenserInstruction);
+          case 390821217: /*doseAdministrationAid*/  return new Property("doseAdministrationAid", "CodeableConcept", "Provides information about the type of adherence packaging to be supplied for the medication dispense.", 0, 1, doseAdministrationAid);
           default: return super.getNamedProperty(_hash, _name, _checkValid);
           }
 
@@ -722,6 +810,8 @@ public class MedicationRequest extends DomainResource {
         case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -1910182789: /*expectedSupplyDuration*/ return this.expectedSupplyDuration == null ? new Base[0] : new Base[] {this.expectedSupplyDuration}; // Duration
         case 241511093: /*dispenser*/ return this.dispenser == null ? new Base[0] : new Base[] {this.dispenser}; // Reference
+        case 2073630361: /*dispenserInstruction*/ return this.dispenserInstruction == null ? new Base[0] : this.dispenserInstruction.toArray(new Base[this.dispenserInstruction.size()]); // Annotation
+        case 390821217: /*doseAdministrationAid*/ return this.doseAdministrationAid == null ? new Base[0] : new Base[] {this.doseAdministrationAid}; // CodeableConcept
         default: return super.getProperty(hash, name, checkValid);
         }
 
@@ -751,6 +841,12 @@ public class MedicationRequest extends DomainResource {
         case 241511093: // dispenser
           this.dispenser = TypeConvertor.castToReference(value); // Reference
           return value;
+        case 2073630361: // dispenserInstruction
+          this.getDispenserInstruction().add(TypeConvertor.castToAnnotation(value)); // Annotation
+          return value;
+        case 390821217: // doseAdministrationAid
+          this.doseAdministrationAid = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          return value;
         default: return super.setProperty(hash, name, value);
         }
 
@@ -772,6 +868,10 @@ public class MedicationRequest extends DomainResource {
           this.expectedSupplyDuration = TypeConvertor.castToDuration(value); // Duration
         } else if (name.equals("dispenser")) {
           this.dispenser = TypeConvertor.castToReference(value); // Reference
+        } else if (name.equals("dispenserInstruction")) {
+          this.getDispenserInstruction().add(TypeConvertor.castToAnnotation(value));
+        } else if (name.equals("doseAdministrationAid")) {
+          this.doseAdministrationAid = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
         } else
           return super.setProperty(name, value);
         return value;
@@ -787,6 +887,8 @@ public class MedicationRequest extends DomainResource {
         case -1285004149:  return getQuantity();
         case -1910182789:  return getExpectedSupplyDuration();
         case 241511093:  return getDispenser();
+        case 2073630361:  return addDispenserInstruction(); 
+        case 390821217:  return getDoseAdministrationAid();
         default: return super.makeProperty(hash, name);
         }
 
@@ -802,6 +904,8 @@ public class MedicationRequest extends DomainResource {
         case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -1910182789: /*expectedSupplyDuration*/ return new String[] {"Duration"};
         case 241511093: /*dispenser*/ return new String[] {"Reference"};
+        case 2073630361: /*dispenserInstruction*/ return new String[] {"Annotation"};
+        case 390821217: /*doseAdministrationAid*/ return new String[] {"CodeableConcept"};
         default: return super.getTypesForProperty(hash, name);
         }
 
@@ -836,6 +940,13 @@ public class MedicationRequest extends DomainResource {
           this.dispenser = new Reference();
           return this.dispenser;
         }
+        else if (name.equals("dispenserInstruction")) {
+          return addDispenserInstruction();
+        }
+        else if (name.equals("doseAdministrationAid")) {
+          this.doseAdministrationAid = new CodeableConcept();
+          return this.doseAdministrationAid;
+        }
         else
           return super.addChild(name);
       }
@@ -855,6 +966,12 @@ public class MedicationRequest extends DomainResource {
         dst.quantity = quantity == null ? null : quantity.copy();
         dst.expectedSupplyDuration = expectedSupplyDuration == null ? null : expectedSupplyDuration.copy();
         dst.dispenser = dispenser == null ? null : dispenser.copy();
+        if (dispenserInstruction != null) {
+          dst.dispenserInstruction = new ArrayList<Annotation>();
+          for (Annotation i : dispenserInstruction)
+            dst.dispenserInstruction.add(i.copy());
+        };
+        dst.doseAdministrationAid = doseAdministrationAid == null ? null : doseAdministrationAid.copy();
       }
 
       @Override
@@ -867,7 +984,8 @@ public class MedicationRequest extends DomainResource {
         return compareDeep(initialFill, o.initialFill, true) && compareDeep(dispenseInterval, o.dispenseInterval, true)
            && compareDeep(validityPeriod, o.validityPeriod, true) && compareDeep(numberOfRepeatsAllowed, o.numberOfRepeatsAllowed, true)
            && compareDeep(quantity, o.quantity, true) && compareDeep(expectedSupplyDuration, o.expectedSupplyDuration, true)
-           && compareDeep(dispenser, o.dispenser, true);
+           && compareDeep(dispenser, o.dispenser, true) && compareDeep(dispenserInstruction, o.dispenserInstruction, true)
+           && compareDeep(doseAdministrationAid, o.doseAdministrationAid, true);
       }
 
       @Override
@@ -883,7 +1001,7 @@ public class MedicationRequest extends DomainResource {
       public boolean isEmpty() {
         return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(initialFill, dispenseInterval
           , validityPeriod, numberOfRepeatsAllowed, quantity, expectedSupplyDuration, dispenser
-          );
+          , dispenserInstruction, doseAdministrationAid);
       }
 
   public String fhirType() {
@@ -3572,6 +3690,340 @@ public class MedicationRequest extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>code</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
+* [Condition](condition.html): Code for the condition
+* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
+* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
+* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
+* [List](list.html): What the purpose of this list is
+* [Medication](medication.html): Returns medications for a specific code
+* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
+* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
+* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
+* [MedicationUsage](medicationusage.html): Return statements of this medication code
+* [Observation](observation.html): The code of the observation type
+* [Procedure](procedure.html): A code to identify a  procedure
+* [ServiceRequest](servicerequest.html): What is being requested/ordered
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="code", path="AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance\r\n* [Condition](condition.html): Code for the condition\r\n* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered\r\n* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code\r\n* [List](list.html): What the purpose of this list is\r\n* [Medication](medication.html): Returns medications for a specific code\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication code\r\n* [Observation](observation.html): The code of the observation type\r\n* [Procedure](procedure.html): A code to identify a  procedure\r\n* [ServiceRequest](servicerequest.html): What is being requested/ordered\r\n", type="token" )
+  public static final String SP_CODE = "code";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>code</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
+* [Condition](condition.html): Code for the condition
+* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
+* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
+* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
+* [List](list.html): What the purpose of this list is
+* [Medication](medication.html): Returns medications for a specific code
+* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
+* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
+* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
+* [MedicationUsage](medicationusage.html): Return statements of this medication code
+* [Observation](observation.html): The code of the observation type
+* [Procedure](procedure.html): A code to identify a  procedure
+* [ServiceRequest](servicerequest.html): What is being requested/ordered
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
+
+ /**
+   * Search parameter: <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
+* [DocumentReference](documentreference.html): Identifier of the attachment binary
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Goal](goal.html): External Ids for this goal
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
+* [Immunization](immunization.html): Business identifier
+* [List](list.html): Business identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationUsage](medicationusage.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
+  public static final String SP_IDENTIFIER = "identifier";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): External ids for this item
+* [CarePlan](careplan.html): External Ids for this plan
+* [CareTeam](careteam.html): External Ids for this team
+* [Composition](composition.html): Version-independent identifier for the Composition
+* [Condition](condition.html): A unique identifier of the condition record
+* [Consent](consent.html): Identifier for this record (external references)
+* [DetectedIssue](detectedissue.html): Unique id for the detected issue
+* [DeviceRequest](devicerequest.html): Business identifier for request/order
+* [DiagnosticReport](diagnosticreport.html): An identifier for the report
+* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
+* [DocumentReference](documentreference.html): Identifier of the attachment binary
+* [Encounter](encounter.html): Identifier(s) by which this encounter is known
+* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
+* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
+* [Goal](goal.html): External Ids for this goal
+* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID
+* [Immunization](immunization.html): Business identifier
+* [List](list.html): Business identifier
+* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
+* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
+* [MedicationUsage](medicationusage.html): Return statements with this external identifier
+* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
+* [Observation](observation.html): The unique id for a particular observation
+* [Procedure](procedure.html): A unique identifier for a procedure
+* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
+* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
+* [SupplyDelivery](supplydelivery.html): External identifier
+* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
+* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
+
+ /**
+   * Search parameter: <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUsage](deviceusage.html): Search by subject - a patient
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentManifest](documentmanifest.html): The subject of the set of documents
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient or group present at the encounter
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [List](list.html): If all resources have the same subject
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Procedure](procedure.html): Search by subject - a patient
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUsage](deviceusage.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={Account.class, ActivityDefinition.class, AdministrableProductDefinition.class, AdverseEvent.class, AllergyIntolerance.class, Appointment.class, AppointmentResponse.class, AuditEvent.class, Basic.class, Binary.class, BiologicallyDerivedProduct.class, BodyStructure.class, Bundle.class, CapabilityStatement.class, CapabilityStatement2.class, CarePlan.class, CareTeam.class, CatalogEntry.class, ChargeItem.class, ChargeItemDefinition.class, Citation.class, Claim.class, ClaimResponse.class, ClinicalImpression.class, ClinicalUseIssue.class, CodeSystem.class, Communication.class, CommunicationRequest.class, CompartmentDefinition.class, Composition.class, ConceptMap.class, Condition.class, ConditionDefinition.class, Consent.class, Contract.class, Coverage.class, CoverageEligibilityRequest.class, CoverageEligibilityResponse.class, DetectedIssue.class, Device.class, DeviceDefinition.class, DeviceMetric.class, DeviceRequest.class, DeviceUsage.class, DiagnosticReport.class, DocumentManifest.class, DocumentReference.class, Encounter.class, Endpoint.class, EnrollmentRequest.class, EnrollmentResponse.class, EpisodeOfCare.class, EventDefinition.class, Evidence.class, EvidenceReport.class, EvidenceVariable.class, ExampleScenario.class, ExplanationOfBenefit.class, FamilyMemberHistory.class, Flag.class, Goal.class, GraphDefinition.class, Group.class, GuidanceResponse.class, HealthcareService.class, ImagingStudy.class, Immunization.class, ImmunizationEvaluation.class, ImmunizationRecommendation.class, ImplementationGuide.class, Ingredient.class, InsurancePlan.class, InventoryReport.class, Invoice.class, Library.class, Linkage.class, ListResource.class, Location.class, ManufacturedItemDefinition.class, Measure.class, MeasureReport.class, Medication.class, MedicationAdministration.class, MedicationDispense.class, MedicationKnowledge.class, MedicationRequest.class, MedicationUsage.class, MedicinalProductDefinition.class, MessageDefinition.class, MessageHeader.class, MolecularSequence.class, NamingSystem.class, NutritionIntake.class, NutritionOrder.class, NutritionProduct.class, Observation.class, ObservationDefinition.class, OperationDefinition.class, OperationOutcome.class, Organization.class, OrganizationAffiliation.class, PackagedProductDefinition.class, Patient.class, PaymentNotice.class, PaymentReconciliation.class, Permission.class, Person.class, PlanDefinition.class, Practitioner.class, PractitionerRole.class, Procedure.class, Provenance.class, Questionnaire.class, QuestionnaireResponse.class, RegulatedAuthorization.class, RelatedPerson.class, RequestGroup.class, ResearchStudy.class, ResearchSubject.class, RiskAssessment.class, Schedule.class, SearchParameter.class, ServiceRequest.class, Slot.class, Specimen.class, SpecimenDefinition.class, StructureDefinition.class, StructureMap.class, Subscription.class, SubscriptionStatus.class, SubscriptionTopic.class, Substance.class, SubstanceDefinition.class, SubstanceNucleicAcid.class, SubstancePolymer.class, SubstanceProtein.class, SubstanceReferenceInformation.class, SubstanceSourceMaterial.class, SupplyDelivery.class, SupplyRequest.class, Task.class, TerminologyCapabilities.class, TestReport.class, TestScript.class, ValueSet.class, VerificationResult.class, VisionPrescription.class } )
+  public static final String SP_PATIENT = "patient";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
+* [CarePlan](careplan.html): Who the care plan is for
+* [CareTeam](careteam.html): Who care team is for
+* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
+* [Composition](composition.html): Who and/or what the composition is about
+* [Condition](condition.html): Who has the condition?
+* [Consent](consent.html): Who the consent applies to
+* [DetectedIssue](detectedissue.html): Associated patient
+* [DeviceRequest](devicerequest.html): Individual the service is ordered for
+* [DeviceUsage](deviceusage.html): Search by subject - a patient
+* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
+* [DocumentManifest](documentmanifest.html): The subject of the set of documents
+* [DocumentReference](documentreference.html): Who/what is the subject of the document
+* [Encounter](encounter.html): The patient or group present at the encounter
+* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
+* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
+* [Flag](flag.html): The identity of a subject to list flags for
+* [Goal](goal.html): Who this goal is intended for
+* [ImagingStudy](imagingstudy.html): Who the study is about
+* [Immunization](immunization.html): The patient for the vaccination record
+* [List](list.html): If all resources have the same subject
+* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
+* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
+* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
+* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
+* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
+* [Observation](observation.html): The subject that the observation is about (if patient)
+* [Procedure](procedure.html): Search by subject - a patient
+* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
+* [ServiceRequest](servicerequest.html): Search by subject - a patient
+* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
+* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUsage.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MedicationRequest:patient</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("MedicationRequest:patient").toLocked();
+
+ /**
+   * Search parameter: <b>encounter</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [MedicationAdministration](medicationadministration.html): Return administrations that share this encounter
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this encounter identifier
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicationAdministration.encounter | MedicationRequest.encounter</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="encounter", path="MedicationAdministration.encounter | MedicationRequest.encounter", description="Multiple Resources: \r\n\r\n* [MedicationAdministration](medicationadministration.html): Return administrations that share this encounter\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this encounter identifier\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
+  public static final String SP_ENCOUNTER = "encounter";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [MedicationAdministration](medicationadministration.html): Return administrations that share this encounter
+* [MedicationRequest](medicationrequest.html): Return prescriptions with this encounter identifier
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicationAdministration.encounter | MedicationRequest.encounter</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MedicationRequest:encounter</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("MedicationRequest:encounter").toLocked();
+
+ /**
+   * Search parameter: <b>medication</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [MedicationAdministration](medicationadministration.html): Return administrations of this medication reference
+* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine resource
+* [MedicationRequest](medicationrequest.html): Return prescriptions for this medication reference
+* [MedicationUsage](medicationusage.html): Return statements of this medication reference
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicationAdministration.medication.reference | MedicationDispense.medication.reference | MedicationRequest.medication.reference | MedicationUsage.medication.reference</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="medication", path="MedicationAdministration.medication.reference | MedicationDispense.medication.reference | MedicationRequest.medication.reference | MedicationUsage.medication.reference", description="Multiple Resources: \r\n\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication reference\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine resource\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions for this medication reference\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication reference\r\n", type="reference" )
+  public static final String SP_MEDICATION = "medication";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>medication</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [MedicationAdministration](medicationadministration.html): Return administrations of this medication reference
+* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine resource
+* [MedicationRequest](medicationrequest.html): Return prescriptions for this medication reference
+* [MedicationUsage](medicationusage.html): Return statements of this medication reference
+</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>MedicationAdministration.medication.reference | MedicationDispense.medication.reference | MedicationRequest.medication.reference | MedicationUsage.medication.reference</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MEDICATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MEDICATION);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>MedicationRequest:medication</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_MEDICATION = new ca.uhn.fhir.model.api.Include("MedicationRequest:medication").toLocked();
+
+ /**
+   * Search parameter: <b>status</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [MedicationAdministration](medicationadministration.html): MedicationAdministration event status (for example one of active/paused/completed/nullified)
+* [MedicationDispense](medicationdispense.html): Returns dispenses with a specified dispense status
+* [MedicationRequest](medicationrequest.html): Status of the prescription
+* [MedicationUsage](medicationusage.html): Return statements that match the given status
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationAdministration.status | MedicationDispense.status | MedicationRequest.status | MedicationUsage.status</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="status", path="MedicationAdministration.status | MedicationDispense.status | MedicationRequest.status | MedicationUsage.status", description="Multiple Resources: \r\n\r\n* [MedicationAdministration](medicationadministration.html): MedicationAdministration event status (for example one of active/paused/completed/nullified)\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with a specified dispense status\r\n* [MedicationRequest](medicationrequest.html): Status of the prescription\r\n* [MedicationUsage](medicationusage.html): Return statements that match the given status\r\n", type="token" )
+  public static final String SP_STATUS = "status";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>status</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [MedicationAdministration](medicationadministration.html): MedicationAdministration event status (for example one of active/paused/completed/nullified)
+* [MedicationDispense](medicationdispense.html): Returns dispenses with a specified dispense status
+* [MedicationRequest](medicationrequest.html): Status of the prescription
+* [MedicationUsage](medicationusage.html): Return statements that match the given status
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>MedicationAdministration.status | MedicationDispense.status | MedicationRequest.status | MedicationUsage.status</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
+
+ /**
    * Search parameter: <b>authoredon</b>
    * <p>
    * Description: <b>Return prescriptions written on this date</b><br>
@@ -3794,340 +4246,6 @@ public class MedicationRequest extends DomainResource {
    * the path value of "<b>MedicationRequest:subject</b>".
    */
   public static final ca.uhn.fhir.model.api.Include INCLUDE_SUBJECT = new ca.uhn.fhir.model.api.Include("MedicationRequest:subject").toLocked();
-
- /**
-   * Search parameter: <b>code</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
-* [Condition](condition.html): Code for the condition
-* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
-* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
-* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
-* [List](list.html): What the purpose of this list is
-* [Medication](medication.html): Returns medications for a specific code
-* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
-* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
-* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
-* [MedicationUsage](medicationusage.html): Return statements of this medication code
-* [Observation](observation.html): The code of the observation type
-* [Procedure](procedure.html): A code to identify a  procedure
-* [ServiceRequest](servicerequest.html): What is being requested/ordered
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="code", path="AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance\r\n* [Condition](condition.html): Code for the condition\r\n* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered\r\n* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code\r\n* [List](list.html): What the purpose of this list is\r\n* [Medication](medication.html): Returns medications for a specific code\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication code\r\n* [Observation](observation.html): The code of the observation type\r\n* [Procedure](procedure.html): A code to identify a  procedure\r\n* [ServiceRequest](servicerequest.html): What is being requested/ordered\r\n", type="token" )
-  public static final String SP_CODE = "code";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>code</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): Code that identifies the allergy or intolerance
-* [Condition](condition.html): Code for the condition
-* [DeviceRequest](devicerequest.html): Code for what is being requested/ordered
-* [DiagnosticReport](diagnosticreport.html): The code for the report, as opposed to codes for the atomic results, which are the names on the observation resource referred to from the result
-* [FamilyMemberHistory](familymemberhistory.html): A search by a condition code
-* [List](list.html): What the purpose of this list is
-* [Medication](medication.html): Returns medications for a specific code
-* [MedicationAdministration](medicationadministration.html): Return administrations of this medication code
-* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine code
-* [MedicationRequest](medicationrequest.html): Return prescriptions of this medication code
-* [MedicationUsage](medicationusage.html): Return statements of this medication code
-* [Observation](observation.html): The code of the observation type
-* [Procedure](procedure.html): A code to identify a  procedure
-* [ServiceRequest](servicerequest.html): What is being requested/ordered
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.code | AllergyIntolerance.reaction.substance | Condition.code | DeviceRequest.code.concept | DiagnosticReport.code | FamilyMemberHistory.condition.code | List.code | Medication.code | MedicationAdministration.medication.concept | MedicationDispense.medication.concept | MedicationRequest.medication.concept | MedicationUsage.medication.concept | Observation.code | Procedure.code | ServiceRequest.code</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
-
- /**
-   * Search parameter: <b>identifier</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): External ids for this item
-* [CarePlan](careplan.html): External Ids for this plan
-* [CareTeam](careteam.html): External Ids for this team
-* [Composition](composition.html): Version-independent identifier for the Composition
-* [Condition](condition.html): A unique identifier of the condition record
-* [Consent](consent.html): Identifier for this record (external references)
-* [DetectedIssue](detectedissue.html): Unique id for the detected issue
-* [DeviceRequest](devicerequest.html): Business identifier for request/order
-* [DiagnosticReport](diagnosticreport.html): An identifier for the report
-* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
-* [DocumentReference](documentreference.html): Identifier of the attachment binary
-* [Encounter](encounter.html): Identifier(s) by which this encounter is known
-* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
-* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
-* [Goal](goal.html): External Ids for this goal
-* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
-* [Immunization](immunization.html): Business identifier
-* [List](list.html): Business identifier
-* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
-* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
-* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
-* [MedicationUsage](medicationusage.html): Return statements with this external identifier
-* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
-* [Observation](observation.html): The unique id for a particular observation
-* [Procedure](procedure.html): A unique identifier for a procedure
-* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
-* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
-* [SupplyDelivery](supplydelivery.html): External identifier
-* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
-* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="identifier", path="AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): External ids for this item\r\n* [CarePlan](careplan.html): External Ids for this plan\r\n* [CareTeam](careteam.html): External Ids for this team\r\n* [Composition](composition.html): Version-independent identifier for the Composition\r\n* [Condition](condition.html): A unique identifier of the condition record\r\n* [Consent](consent.html): Identifier for this record (external references)\r\n* [DetectedIssue](detectedissue.html): Unique id for the detected issue\r\n* [DeviceRequest](devicerequest.html): Business identifier for request/order\r\n* [DiagnosticReport](diagnosticreport.html): An identifier for the report\r\n* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents\r\n* [DocumentReference](documentreference.html): Identifier of the attachment binary\r\n* [Encounter](encounter.html): Identifier(s) by which this encounter is known\r\n* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare\r\n* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier\r\n* [Goal](goal.html): External Ids for this goal\r\n* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number\r\n* [Immunization](immunization.html): Business identifier\r\n* [List](list.html): Business identifier\r\n* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier\r\n* [MedicationUsage](medicationusage.html): Return statements with this external identifier\r\n* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier\r\n* [Observation](observation.html): The unique id for a particular observation\r\n* [Procedure](procedure.html): A unique identifier for a procedure\r\n* [RiskAssessment](riskassessment.html): Unique identifier for the assessment\r\n* [ServiceRequest](servicerequest.html): Identifiers assigned to this order\r\n* [SupplyDelivery](supplydelivery.html): External identifier\r\n* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest\r\n* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier\r\n", type="token" )
-  public static final String SP_IDENTIFIER = "identifier";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>identifier</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): External ids for this item
-* [CarePlan](careplan.html): External Ids for this plan
-* [CareTeam](careteam.html): External Ids for this team
-* [Composition](composition.html): Version-independent identifier for the Composition
-* [Condition](condition.html): A unique identifier of the condition record
-* [Consent](consent.html): Identifier for this record (external references)
-* [DetectedIssue](detectedissue.html): Unique id for the detected issue
-* [DeviceRequest](devicerequest.html): Business identifier for request/order
-* [DiagnosticReport](diagnosticreport.html): An identifier for the report
-* [DocumentManifest](documentmanifest.html): Unique Identifier for the set of documents
-* [DocumentReference](documentreference.html): Identifier of the attachment binary
-* [Encounter](encounter.html): Identifier(s) by which this encounter is known
-* [EpisodeOfCare](episodeofcare.html): Business Identifier(s) relevant for this EpisodeOfCare
-* [FamilyMemberHistory](familymemberhistory.html): A search by a record identifier
-* [Goal](goal.html): External Ids for this goal
-* [ImagingStudy](imagingstudy.html): Identifiers for the Study, such as DICOM Study Instance UID and Accession number
-* [Immunization](immunization.html): Business identifier
-* [List](list.html): Business identifier
-* [MedicationAdministration](medicationadministration.html): Return administrations with this external identifier
-* [MedicationDispense](medicationdispense.html): Returns dispenses with this external identifier
-* [MedicationRequest](medicationrequest.html): Return prescriptions with this external identifier
-* [MedicationUsage](medicationusage.html): Return statements with this external identifier
-* [NutritionOrder](nutritionorder.html): Return nutrition orders with this external identifier
-* [Observation](observation.html): The unique id for a particular observation
-* [Procedure](procedure.html): A unique identifier for a procedure
-* [RiskAssessment](riskassessment.html): Unique identifier for the assessment
-* [ServiceRequest](servicerequest.html): Identifiers assigned to this order
-* [SupplyDelivery](supplydelivery.html): External identifier
-* [SupplyRequest](supplyrequest.html): Business Identifier for SupplyRequest
-* [VisionPrescription](visionprescription.html): Return prescriptions with this external identifier
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>AllergyIntolerance.identifier | CarePlan.identifier | CareTeam.identifier | Composition.identifier | Condition.identifier | Consent.identifier | DetectedIssue.identifier | DeviceRequest.identifier | DiagnosticReport.identifier | DocumentManifest.masterIdentifier | DocumentManifest.identifier | DocumentReference.content.identifier | DocumentReference.identifier | Encounter.identifier | EpisodeOfCare.identifier | FamilyMemberHistory.identifier | Goal.identifier | ImagingStudy.identifier | Immunization.identifier | List.identifier | MedicationAdministration.identifier | MedicationDispense.identifier | MedicationRequest.identifier | MedicationUsage.identifier | NutritionOrder.identifier | Observation.identifier | Procedure.identifier | RiskAssessment.identifier | ServiceRequest.identifier | SupplyDelivery.identifier | SupplyRequest.identifier | VisionPrescription.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_IDENTIFIER);
-
- /**
-   * Search parameter: <b>patient</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
-* [CarePlan](careplan.html): Who the care plan is for
-* [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
-* [Composition](composition.html): Who and/or what the composition is about
-* [Condition](condition.html): Who has the condition?
-* [Consent](consent.html): Who the consent applies to
-* [DetectedIssue](detectedissue.html): Associated patient
-* [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
-* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
-* [DocumentManifest](documentmanifest.html): The subject of the set of documents
-* [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient or group present at the encounter
-* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
-* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
-* [Flag](flag.html): The identity of a subject to list flags for
-* [Goal](goal.html): Who this goal is intended for
-* [ImagingStudy](imagingstudy.html): Who the study is about
-* [Immunization](immunization.html): The patient for the vaccination record
-* [List](list.html): If all resources have the same subject
-* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
-* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
-* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
-* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
-* [Observation](observation.html): The subject that the observation is about (if patient)
-* [Procedure](procedure.html): Search by subject - a patient
-* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
-* [ServiceRequest](servicerequest.html): Search by subject - a patient
-* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
-* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="patient", path="AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient", description="Multiple Resources: \r\n\r\n* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for\r\n* [CarePlan](careplan.html): Who the care plan is for\r\n* [CareTeam](careteam.html): Who care team is for\r\n* [ClinicalImpression](clinicalimpression.html): Patient or group assessed\r\n* [Composition](composition.html): Who and/or what the composition is about\r\n* [Condition](condition.html): Who has the condition?\r\n* [Consent](consent.html): Who the consent applies to\r\n* [DetectedIssue](detectedissue.html): Associated patient\r\n* [DeviceRequest](devicerequest.html): Individual the service is ordered for\r\n* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient\r\n* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient\r\n* [DocumentManifest](documentmanifest.html): The subject of the set of documents\r\n* [DocumentReference](documentreference.html): Who/what is the subject of the document\r\n* [Encounter](encounter.html): The patient or group present at the encounter\r\n* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care\r\n* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for\r\n* [Flag](flag.html): The identity of a subject to list flags for\r\n* [Goal](goal.html): Who this goal is intended for\r\n* [ImagingStudy](imagingstudy.html): Who the study is about\r\n* [Immunization](immunization.html): The patient for the vaccination record\r\n* [List](list.html): If all resources have the same subject\r\n* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for\r\n* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for\r\n* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient\r\n* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.\r\n* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement\r\n* [Observation](observation.html): The subject that the observation is about (if patient)\r\n* [Procedure](procedure.html): Search by subject - a patient\r\n* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?\r\n* [ServiceRequest](servicerequest.html): Search by subject - a patient\r\n* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied\r\n* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for\r\n", type="reference", target={Group.class, Patient.class } )
-  public static final String SP_PATIENT = "patient";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>patient</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [AllergyIntolerance](allergyintolerance.html): Who the sensitivity is for
-* [CarePlan](careplan.html): Who the care plan is for
-* [CareTeam](careteam.html): Who care team is for
-* [ClinicalImpression](clinicalimpression.html): Patient or group assessed
-* [Composition](composition.html): Who and/or what the composition is about
-* [Condition](condition.html): Who has the condition?
-* [Consent](consent.html): Who the consent applies to
-* [DetectedIssue](detectedissue.html): Associated patient
-* [DeviceRequest](devicerequest.html): Individual the service is ordered for
-* [DeviceUseStatement](deviceusestatement.html): Search by subject - a patient
-* [DiagnosticReport](diagnosticreport.html): The subject of the report if a patient
-* [DocumentManifest](documentmanifest.html): The subject of the set of documents
-* [DocumentReference](documentreference.html): Who/what is the subject of the document
-* [Encounter](encounter.html): The patient or group present at the encounter
-* [EpisodeOfCare](episodeofcare.html): The patient who is the focus of this episode of care
-* [FamilyMemberHistory](familymemberhistory.html): The identity of a subject to list family member history items for
-* [Flag](flag.html): The identity of a subject to list flags for
-* [Goal](goal.html): Who this goal is intended for
-* [ImagingStudy](imagingstudy.html): Who the study is about
-* [Immunization](immunization.html): The patient for the vaccination record
-* [List](list.html): If all resources have the same subject
-* [MedicationAdministration](medicationadministration.html): The identity of a patient to list administrations  for
-* [MedicationDispense](medicationdispense.html): The identity of a patient to list dispenses  for
-* [MedicationRequest](medicationrequest.html): Returns prescriptions for a specific patient
-* [MedicationUsage](medicationusage.html): Returns statements for a specific patient.
-* [NutritionOrder](nutritionorder.html): The identity of the person who requires the diet, formula or nutritional supplement
-* [Observation](observation.html): The subject that the observation is about (if patient)
-* [Procedure](procedure.html): Search by subject - a patient
-* [RiskAssessment](riskassessment.html): Who/what does assessment apply to?
-* [ServiceRequest](servicerequest.html): Search by subject - a patient
-* [SupplyDelivery](supplydelivery.html): Patient for whom the item is supplied
-* [VisionPrescription](visionprescription.html): The identity of a patient to list dispenses for
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>AllergyIntolerance.patient | CarePlan.subject.where(resolve() is Patient) | CareTeam.subject.where(resolve() is Patient) | ClinicalImpression.subject.where(resolve() is Patient) | Composition.subject.where(resolve() is Patient) | Condition.subject.where(resolve() is Patient) | Consent.subject.where(resolve() is Patient) | DetectedIssue.patient | DeviceRequest.subject.where(resolve() is Patient) | DeviceUseStatement.subject | DiagnosticReport.subject.where(resolve() is Patient) | DocumentManifest.subject.where(resolve() is Patient) | DocumentReference.subject.where(resolve() is Patient) | Encounter.subject.where(resolve() is Patient) | EpisodeOfCare.patient | FamilyMemberHistory.patient | Flag.subject.where(resolve() is Patient) | Goal.subject.where(resolve() is Patient) | ImagingStudy.subject.where(resolve() is Patient) | Immunization.patient | List.subject.where(resolve() is Patient) | MedicationAdministration.subject.where(resolve() is Patient) | MedicationDispense.subject.where(resolve() is Patient) | MedicationRequest.subject.where(resolve() is Patient) | MedicationUsage.subject.where(resolve() is Patient) | NutritionOrder.patient | Observation.subject.where(resolve() is Patient) | Procedure.subject.where(resolve() is Patient) | RiskAssessment.subject.where(resolve() is Patient) | ServiceRequest.subject.where(resolve() is Patient) | SupplyDelivery.patient | VisionPrescription.patient</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam PATIENT = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_PATIENT);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>MedicationRequest:patient</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_PATIENT = new ca.uhn.fhir.model.api.Include("MedicationRequest:patient").toLocked();
-
- /**
-   * Search parameter: <b>encounter</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [MedicationAdministration](medicationadministration.html): Return administrations that share this encounter
-* [MedicationRequest](medicationrequest.html): Return prescriptions with this encounter identifier
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>MedicationAdministration.encounter | MedicationRequest.encounter</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="encounter", path="MedicationAdministration.encounter | MedicationRequest.encounter", description="Multiple Resources: \r\n\r\n* [MedicationAdministration](medicationadministration.html): Return administrations that share this encounter\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions with this encounter identifier\r\n", type="reference", providesMembershipIn={ @ca.uhn.fhir.model.api.annotation.Compartment(name="Base FHIR compartment definition for Encounter") }, target={Encounter.class } )
-  public static final String SP_ENCOUNTER = "encounter";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>encounter</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [MedicationAdministration](medicationadministration.html): Return administrations that share this encounter
-* [MedicationRequest](medicationrequest.html): Return prescriptions with this encounter identifier
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>MedicationAdministration.encounter | MedicationRequest.encounter</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam ENCOUNTER = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_ENCOUNTER);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>MedicationRequest:encounter</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_ENCOUNTER = new ca.uhn.fhir.model.api.Include("MedicationRequest:encounter").toLocked();
-
- /**
-   * Search parameter: <b>medication</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [MedicationAdministration](medicationadministration.html): Return administrations of this medication reference
-* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine resource
-* [MedicationRequest](medicationrequest.html): Return prescriptions for this medication reference
-* [MedicationUsage](medicationusage.html): Return statements of this medication reference
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>MedicationAdministration.medication.reference | MedicationDispense.medication.reference | MedicationRequest.medication.reference | MedicationUsage.medication.reference</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="medication", path="MedicationAdministration.medication.reference | MedicationDispense.medication.reference | MedicationRequest.medication.reference | MedicationUsage.medication.reference", description="Multiple Resources: \r\n\r\n* [MedicationAdministration](medicationadministration.html): Return administrations of this medication reference\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine resource\r\n* [MedicationRequest](medicationrequest.html): Return prescriptions for this medication reference\r\n* [MedicationUsage](medicationusage.html): Return statements of this medication reference\r\n", type="reference" )
-  public static final String SP_MEDICATION = "medication";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>medication</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [MedicationAdministration](medicationadministration.html): Return administrations of this medication reference
-* [MedicationDispense](medicationdispense.html): Returns dispenses of this medicine resource
-* [MedicationRequest](medicationrequest.html): Return prescriptions for this medication reference
-* [MedicationUsage](medicationusage.html): Return statements of this medication reference
-</b><br>
-   * Type: <b>reference</b><br>
-   * Path: <b>MedicationAdministration.medication.reference | MedicationDispense.medication.reference | MedicationRequest.medication.reference | MedicationUsage.medication.reference</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam MEDICATION = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_MEDICATION);
-
-/**
-   * Constant for fluent queries to be used to add include statements. Specifies
-   * the path value of "<b>MedicationRequest:medication</b>".
-   */
-  public static final ca.uhn.fhir.model.api.Include INCLUDE_MEDICATION = new ca.uhn.fhir.model.api.Include("MedicationRequest:medication").toLocked();
-
- /**
-   * Search parameter: <b>status</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [MedicationAdministration](medicationadministration.html): MedicationAdministration event status (for example one of active/paused/completed/nullified)
-* [MedicationDispense](medicationdispense.html): Returns dispenses with a specified dispense status
-* [MedicationRequest](medicationrequest.html): Status of the prescription
-* [MedicationUsage](medicationusage.html): Return statements that match the given status
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>MedicationAdministration.status | MedicationDispense.status | MedicationRequest.status | MedicationUsage.status</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="status", path="MedicationAdministration.status | MedicationDispense.status | MedicationRequest.status | MedicationUsage.status", description="Multiple Resources: \r\n\r\n* [MedicationAdministration](medicationadministration.html): MedicationAdministration event status (for example one of active/paused/completed/nullified)\r\n* [MedicationDispense](medicationdispense.html): Returns dispenses with a specified dispense status\r\n* [MedicationRequest](medicationrequest.html): Status of the prescription\r\n* [MedicationUsage](medicationusage.html): Return statements that match the given status\r\n", type="token" )
-  public static final String SP_STATUS = "status";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>status</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [MedicationAdministration](medicationadministration.html): MedicationAdministration event status (for example one of active/paused/completed/nullified)
-* [MedicationDispense](medicationdispense.html): Returns dispenses with a specified dispense status
-* [MedicationRequest](medicationrequest.html): Status of the prescription
-* [MedicationUsage](medicationusage.html): Return statements that match the given status
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>MedicationAdministration.status | MedicationDispense.status | MedicationRequest.status | MedicationUsage.status</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam STATUS = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_STATUS);
 
 
 }

@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors;
 
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.conv10_40.*;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu2.model.Parameters;
@@ -9,20 +10,17 @@ import org.hl7.fhir.dstu2.model.Reference;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
-import org.hl7.fhir.r4.model.CanonicalType;
-import org.hl7.fhir.r4.model.CodeSystem;
+import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionDesignationComponent;
-import org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r4.model.Immunization.ImmunizationPerformerComponent;
-import org.hl7.fhir.r4.model.TerminologyCapabilities;
-import org.hl7.fhir.r4.model.UnsignedIntType;
 import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +53,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_10_40 {
+public class VersionConvertor_10_40 extends VersionConvertor_Base {
   static public List<String> CANONICAL_URLS = new ArrayList<String>();
 
   static {
@@ -2282,23 +2280,53 @@ public class VersionConvertor_10_40 {
   }
 
   public static void copyDomainResource(org.hl7.fhir.dstu2.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt, String... extensionsToIgnore) throws FHIRException {
+    copyDomainResource(src, tgt, new BaseAdvisor_10_40(), extensionsToIgnore);
+  }
+
+  public static void copyDomainResource(org.hl7.fhir.dstu2.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt,  BaseAdvisor_10_40 advisor, String... extensionsToIgnore) throws FHIRException {
     copyResource(src, tgt);
-    tgt.setText(convertNarrative(src.getText()));
-    for (org.hl7.fhir.dstu2.model.Resource t : src.getContained()) tgt.addContained(convertResource(t));
-    for (org.hl7.fhir.dstu2.model.Extension t : src.getExtension())
-      if (!isExemptExtension(t.getUrl(), extensionsToIgnore)) tgt.addExtension(convertExtension(t));
-    for (org.hl7.fhir.dstu2.model.Extension t : src.getModifierExtension())
-      if (!isExemptExtension(t.getUrl(), extensionsToIgnore)) tgt.addModifierExtension(convertExtension(t));
+    if (src.hasText()) tgt.setText(convertNarrative(src.getText()));
+    src.getContained().stream()
+      .map(resource -> convertResource(resource, advisor))
+      .forEach(tgt::addContained);
+    src.getExtension().forEach(ext -> {
+      if (advisor.useAdvisorForExtension("", ext)) {//TODO add path
+        Extension convertExtension = new Extension();
+        advisor.handleExtension("", ext, convertExtension);//TODO add path
+        tgt.addExtension(convertExtension);
+      } else if (!advisor.ignoreExtension("", ext) && !Arrays.asList(extensionsToIgnore).contains(ext.getUrl())) {//TODO add path
+        tgt.addExtension(convertExtension(ext));
+      }
+    });
+    src.getModifierExtension().stream()
+      .filter(extension -> !advisor.ignoreExtension("", extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl()))//TODO add path
+      .map(VersionConvertor_10_40::convertExtension)
+      .forEach(tgt::addModifierExtension);
   }
 
   public static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.dstu2.model.DomainResource tgt, String... extensionsToIgnore) throws FHIRException {
+    copyDomainResource(src, tgt, new BaseAdvisor_10_40(), extensionsToIgnore);
+  }
+
+  public static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.dstu2.model.DomainResource tgt, BaseAdvisor_10_40 advisor, String... extensionsToIgnore) throws FHIRException {
     copyResource(src, tgt);
-    tgt.setText(convertNarrative(src.getText()));
-    for (org.hl7.fhir.r4.model.Resource t : src.getContained()) tgt.addContained(convertResource(t));
-    for (org.hl7.fhir.r4.model.Extension t : src.getExtension())
-      if (!isExemptExtension(t.getUrl(), extensionsToIgnore)) tgt.addExtension(convertExtension(t));
-    for (org.hl7.fhir.r4.model.Extension t : src.getModifierExtension())
-      if (!isExemptExtension(t.getUrl(), extensionsToIgnore)) tgt.addModifierExtension(convertExtension(t));
+    if (src.hasText()) tgt.setText(convertNarrative(src.getText()));
+    src.getContained().stream()
+      .map(resource -> convertResource(resource, advisor))
+      .forEach(tgt::addContained);
+    src.getExtension().forEach(extension -> {
+      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
+        org.hl7.fhir.dstu2.model.Extension convertExtension = new org.hl7.fhir.dstu2.model.Extension();
+        advisor.handleExtension("", extension, convertExtension);//TODO add path
+        tgt.addExtension(convertExtension);
+      } else if (!advisor.ignoreExtension("", extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl())) {//TODO add path
+        tgt.addExtension(convertExtension(extension));
+      }
+    });
+    src.getModifierExtension().stream()
+      .filter(extension -> !advisor.ignoreExtension("", extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl()))//TODO add path
+      .map(VersionConvertor_10_40::convertExtension)
+      .forEach(tgt::addModifierExtension);
   }
 
   public static void copyResource(org.hl7.fhir.dstu2.model.Resource src, org.hl7.fhir.r4.model.Resource tgt) throws FHIRException {
@@ -2449,19 +2477,6 @@ public class VersionConvertor_10_40 {
       }
     }
     return tgt;
-  }
-
-  static public class SourceElementComponentWrapper {
-    public SourceElementComponentWrapper(SourceElementComponent comp, String source, String target) {
-      super();
-      this.source = source;
-      this.target = target;
-      this.comp = comp;
-    }
-
-    public String source;
-    public String target;
-    public org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent comp;
   }
 
   public static org.hl7.fhir.r4.model.UsageContext convertCodeableConceptToUsageContext(org.hl7.fhir.dstu2.model.CodeableConcept t) throws FHIRException {
@@ -2807,7 +2822,7 @@ public class VersionConvertor_10_40 {
     return t.hasCoding() && ("http://unstats.un.org/unsd/methods/m49/m49.htm".equals(t.getCoding().get(0).getSystem()) || "urn:iso:std:iso:3166".equals(t.getCoding().get(0).getSystem()) || "https://www.usps.com/".equals(t.getCoding().get(0).getSystem()));
   }
 
-  public static org.hl7.fhir.r4.model.Resource convertResource(org.hl7.fhir.dstu2.model.Resource src, VersionConvertorAdvisor40 advisor) throws FHIRException {
+  public static org.hl7.fhir.r4.model.Resource convertResource(org.hl7.fhir.dstu2.model.Resource src, BaseAdvisor_10_40 advisor) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.dstu2.model.Parameters)
       return Parameters10_40.convertParameters((org.hl7.fhir.dstu2.model.Parameters) src);
@@ -2930,7 +2945,11 @@ public class VersionConvertor_10_40 {
     throw new FHIRException("Unknown resource " + src.fhirType());
   }
 
-  public static org.hl7.fhir.dstu2.model.Resource convertResource(org.hl7.fhir.r4.model.Resource src, VersionConvertorAdvisor40 advisor) throws FHIRException {
+  public static org.hl7.fhir.dstu2.model.Resource convertResource(org.hl7.fhir.r4.model.Resource src) throws FHIRException {
+    return convertResource(src, new BaseAdvisor_10_40());
+  }
+
+  public static org.hl7.fhir.dstu2.model.Resource convertResource(org.hl7.fhir.r4.model.Resource src, BaseAdvisor_10_40 advisor) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.r4.model.Parameters)
       return Parameters10_40.convertParameters((org.hl7.fhir.r4.model.Parameters) src);
@@ -2959,7 +2978,7 @@ public class VersionConvertor_10_40 {
     if (src instanceof org.hl7.fhir.r4.model.Condition)
       return Condition10_40.convertCondition((org.hl7.fhir.r4.model.Condition) src);
     if (src instanceof org.hl7.fhir.r4.model.CapabilityStatement)
-      return Conformance10_40.convertConformance((org.hl7.fhir.r4.model.CapabilityStatement) src);
+      return Conformance10_40.convertConformance((org.hl7.fhir.r4.model.CapabilityStatement) src, advisor);
     if (src instanceof org.hl7.fhir.r4.model.DetectedIssue)
       return DetectedIssue10_40.convertDetectedIssue((org.hl7.fhir.r4.model.DetectedIssue) src);
     if (src instanceof org.hl7.fhir.r4.model.DeviceMetric)
@@ -3014,7 +3033,7 @@ public class VersionConvertor_10_40 {
     if (src instanceof org.hl7.fhir.r4.model.Practitioner)
       return Practitioner10_40.convertPractitioner((org.hl7.fhir.r4.model.Practitioner) src);
     if (src instanceof org.hl7.fhir.r4.model.Questionnaire)
-      return Questionnaire10_40.convertQuestionnaire((org.hl7.fhir.r4.model.Questionnaire) src);
+      return Questionnaire10_40.convertQuestionnaire((org.hl7.fhir.r4.model.Questionnaire) src, advisor);
     if (src instanceof org.hl7.fhir.r4.model.QuestionnaireResponse)
       return QuestionnaireResponse10_40.convertQuestionnaireResponse((org.hl7.fhir.r4.model.QuestionnaireResponse) src);
     if (src instanceof org.hl7.fhir.r4.model.RiskAssessment)
@@ -3054,10 +3073,6 @@ public class VersionConvertor_10_40 {
   }
 
   public static org.hl7.fhir.r4.model.Resource convertResource(org.hl7.fhir.dstu2.model.Resource src) throws FHIRException {
-    return convertResource(src, null);
-  }
-
-  public static org.hl7.fhir.dstu2.model.Resource convertResource(org.hl7.fhir.r4.model.Resource src) throws FHIRException {
     return convertResource(src, null);
   }
 

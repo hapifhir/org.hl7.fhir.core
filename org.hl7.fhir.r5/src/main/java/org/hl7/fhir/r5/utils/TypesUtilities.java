@@ -111,7 +111,7 @@ public class TypesUtilities {
     res.add(new WildcardInformation("id", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("instant", TypeClassification.PRIMITIVE));
     res.add(new WildcardInformation("integer", TypeClassification.PRIMITIVE));
-    if (!version.startsWith("4.0")) {
+    if (!version.startsWith("4.1")) {
       res.add(new WildcardInformation("integer64", TypeClassification.PRIMITIVE));
     }
     res.add(new WildcardInformation("markdown", TypeClassification.PRIMITIVE));

@@ -37,14 +37,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
-import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.dstu2.formats.JsonParser;
 import org.hl7.fhir.dstu2.formats.XmlParser;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.context.SimpleWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
@@ -54,10 +52,11 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.UriType;
 import org.hl7.fhir.r4.model.ValueSet;
+import org.hl7.fhir.r5.model.FhirPublication;
 
-public class R2ToR4Loader extends BaseLoaderR4 implements VersionConvertorAdvisor40 {
+public class R2ToR4Loader extends BaseLoaderR4 {
 
-  private List<CodeSystem> cslist = new ArrayList<>();
+  private final BaseAdvisor_10_40 advisor = new BaseAdvisor_10_40();
 
   public R2ToR4Loader() {
     super(new String[0], new NullLoaderKnowledgeProvider());
@@ -70,23 +69,24 @@ public class R2ToR4Loader extends BaseLoaderR4 implements VersionConvertorAdviso
       r2 = new JsonParser().parse(stream);
     else
       r2 = new XmlParser().parse(stream);
-    org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_10_40.convertResource(r2, this);
+    org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_10_40.convertResource(r2, advisor);
     Bundle b;
-    if (r4 instanceof Bundle)
+    if (r4 instanceof Bundle) {
       b = (Bundle) r4;
-    else {
+    } else {
       b = new Bundle();
       b.setId(UUID.randomUUID().toString().toLowerCase());
       b.setType(BundleType.COLLECTION);
       b.addEntry().setResource(r4).setFullUrl(r4 instanceof MetadataResource ? ((MetadataResource) r4).getUrl() : null);
     }
     // Add any code systems defined as part of processing value sets to the end of the converted Bundle
-    for (CodeSystem cs : cslist) {
+    advisor.getCslist().forEach(cs -> {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
-    }
-    cslist.clear();
+    });
+    advisor.getCslist().clear();
+
     if (killPrimitives) {
       List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
       for (BundleEntryComponent be : b.getEntry()) {
@@ -99,47 +99,14 @@ public class R2ToR4Loader extends BaseLoaderR4 implements VersionConvertorAdviso
       b.getEntry().removeAll(remove);
     }
     if (patchUrls) {
-      for (BundleEntryComponent be : b.getEntry()) {
-        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-          StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
-          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-        }
-      }
+      b.getEntry().stream()
+        .filter(be -> be.hasResource() && be.getResource() instanceof StructureDefinition)
+        .map(be -> (StructureDefinition) be.getResource())
+        .forEach(sd -> {
+        sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
+        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+      });
     }
     return b;
   }
-
-  @Override
-  public boolean ignoreEntry(BundleEntryComponent src) {
-    return false;
-  }
-
-  @Override
-  public Resource convertR2(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public void handleCodeSystem(CodeSystem cs, ValueSet vs) {
-    cs.setId(vs.getId());
-    cs.setValueSet(vs.getUrl());
-    cslist.add(cs);
-    
-  }
-
-  @Override
-  public CodeSystem getCodeSystem(ValueSet src) {
-    return null;
-  }
-
 }

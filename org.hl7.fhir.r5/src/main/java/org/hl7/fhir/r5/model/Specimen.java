@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +96,6 @@ public class Specimen extends DomainResource {
             case UNAVAILABLE: return "unavailable";
             case UNSATISFACTORY: return "unsatisfactory";
             case ENTEREDINERROR: return "entered-in-error";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +105,6 @@ public class Specimen extends DomainResource {
             case UNAVAILABLE: return "http://hl7.org/fhir/specimen-status";
             case UNSATISFACTORY: return "http://hl7.org/fhir/specimen-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/specimen-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +114,6 @@ public class Specimen extends DomainResource {
             case UNAVAILABLE: return "There is no physical specimen because it is either lost, destroyed or consumed.";
             case UNSATISFACTORY: return "The specimen cannot be used because of a quality issue such as a broken container, contamination, or too old.";
             case ENTEREDINERROR: return "The specimen was entered in error and therefore nullified.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,7 +123,6 @@ public class Specimen extends DomainResource {
             case UNAVAILABLE: return "Unavailable";
             case UNSATISFACTORY: return "Unsatisfactory";
             case ENTEREDINERROR: return "Entered in Error";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -2638,26 +2634,6 @@ public class Specimen extends DomainResource {
   public static final ca.uhn.fhir.model.api.Include INCLUDE_COLLECTOR = new ca.uhn.fhir.model.api.Include("Specimen:collector").toLocked();
 
  /**
-   * Search parameter: <b>container-id</b>
-   * <p>
-   * Description: <b>The unique identifier associated with the specimen container</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Specimen.container.identifier</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="container-id", path="Specimen.container.identifier", description="The unique identifier associated with the specimen container", type="token" )
-  public static final String SP_CONTAINER_ID = "container-id";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>container-id</b>
-   * <p>
-   * Description: <b>The unique identifier associated with the specimen container</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Specimen.container.identifier</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTAINER_ID = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTAINER_ID);
-
- /**
    * Search parameter: <b>container</b>
    * <p>
    * Description: <b>The kind of specimen container</b><br>
@@ -2676,6 +2652,26 @@ public class Specimen extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTAINER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTAINER);
+
+ /**
+   * Search parameter: <b>container-id</b>
+   * <p>
+   * Description: <b>The unique identifier associated with the specimen container</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Specimen.container.identifier</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="container-id", path="Specimen.container.identifier", description="The unique identifier associated with the specimen container", type="token" )
+  public static final String SP_CONTAINER_ID = "container-id";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>container-id</b>
+   * <p>
+   * Description: <b>The unique identifier associated with the specimen container</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Specimen.container.identifier</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTAINER_ID = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTAINER_ID);
 
  /**
    * Search parameter: <b>identifier</b>
@@ -2731,7 +2727,7 @@ public class Specimen extends DomainResource {
    * Path: <b>Specimen.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Specimen.subject.where(resolve() is Patient)", description="The patient the specimen comes from", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="Specimen.subject.where(resolve() is Patient)", description="The patient the specimen comes from", type="reference", target={Device.class, Group.class, Location.class, Patient.class, Substance.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>

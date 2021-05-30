@@ -1,6 +1,5 @@
 package org.hl7.fhir.validation;
 
-import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -9,6 +8,7 @@ import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
+import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
@@ -30,20 +31,16 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.*;
-import org.hl7.fhir.utilities.json.JSONUtil;
-import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
-import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.cli.services.IPackageInstaller;
 import org.hl7.fhir.validation.cli.utils.*;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import java.io.*;
@@ -130,6 +127,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   @Getter @Setter private Map<String, byte[]> binaries = new HashMap<>();
   @Getter @Setter private boolean doNative;
   @Getter @Setter private boolean noInvariantChecks;
+  @Getter @Setter private boolean wantInvariantInMessage;
   @Getter @Setter private boolean hintAboutNonMustSupport;
   @Getter @Setter private boolean anyExtensionsAllowed = false;
   @Getter @Setter private String version;
@@ -138,6 +136,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   @Getter @Setter private PrintWriter mapLog;
   @Getter @Setter private boolean debug = false;
   @Getter @Setter private IValidatorResourceFetcher fetcher;
+  @Getter @Setter private ICanonicalResourceLocator locator;
   @Getter @Setter private boolean assumeValidRestReferences;
   @Getter @Setter private boolean noExtensibleBindingMessages;
   @Getter @Setter private boolean securityChecks;
@@ -193,47 +192,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, FhirPublication version, String vString, TimeTracker tt) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String vString, TimeTracker tt) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, tt);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
-  }
-
-  public void scanForVersions(List<String> sources, VersionSourceInformation versions) throws FHIRException, IOException {
-    List<String> refs = new ArrayList<String>();
-    ValidatorUtils.parseSources(sources, refs, context);
-    for (String ref : refs) {
-      Content cnt = igLoader.loadContent(ref, "validate", false);
-      String s = TextFile.bytesToString(cnt.focus);
-      if (s.contains("http://hl7.org/fhir/3.0")) {
-        versions.see("3.0", "Profile in " + ref);
-      }
-      if (s.contains("http://hl7.org/fhir/1.0")) {
-        versions.see("1.0", "Profile in " + ref);
-      }
-      if (s.contains("http://hl7.org/fhir/4.0")) {
-        versions.see("4.0", "Profile in " + ref);
-      }
-      if (s.contains("http://hl7.org/fhir/1.4")) {
-        versions.see("1.4", "Profile in " + ref);
-      }
-      try {
-        if (s.startsWith("{")) {
-          JsonObject json = JsonTrackingParser.parse(s, null);
-          if (json.has("fhirVersion")) {
-            versions.see(VersionUtilities.getMajMin(JSONUtil.str(json, "fhirVersion")), "fhirVersion in " + ref);
-          }
-        } else {
-          Document doc = ValidatorUtils.parseXml(cnt.focus);
-          String v = XMLUtil.getNamedChildValue(doc.getDocumentElement(), "fhirVersion");
-          if (v != null) {
-            versions.see(VersionUtilities.getMajMin(v), "fhirVersion in " + ref);
-          }
-        }
-      } catch (Exception e) {
-        // nothing
-      }
-    }
   }
 
   private void loadCoreDefinitions(String src, boolean recursive, TimeTracker tt) throws FHIRException, IOException {
@@ -252,7 +214,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     initContext(tt);
   }
 
-  public void initContext(TimeTracker tt) throws IOException, FileNotFoundException {
+  public void initContext(TimeTracker tt) throws IOException {
     context.setCanNoTS(true);
     context.setCacheId(UUID.randomUUID().toString());
     context.setAllowLoadingDuplicates(true); // because of Forge
@@ -454,12 +416,25 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return Manager.build(getContext(), structureDefinition);
   }
 
-  public DomainResource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
+  public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = igLoader.loadContent(source, "validate", false);
     Resource res = igLoader.loadResourceByVersion(version, cnt.focus, source);
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
-    RendererFactory.factory(res, rc).render((DomainResource) res);
-    return (DomainResource) res;
+    genResource(res, rc);
+    return (Resource) res;
+  }
+
+  public void genResource(Resource res, RenderingContext rc) throws IOException, EOperationOutcome {
+    if (res instanceof Bundle) {
+      Bundle bnd = (Bundle) res;
+      for (BundleEntryComponent be : bnd.getEntry()) {
+        if (be.hasResource()) {
+          genResource(be.getResource(), rc);
+        }
+      }
+    } else {
+      RendererFactory.factory(res, rc).render((DomainResource) res);
+    }
   }
 
   public void convert(String source, String output) throws FHIRException, IOException {
@@ -502,7 +477,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.setNoInvariantChecks(isNoInvariantChecks());
+    validator.setWantInvariantInMessage(isWantInvariantInMessage());
     validator.setValidationLanguage(language);
+    if (language != null) {
+      validator.getContext().setValidationMessageLanguage(Locale.forLanguageTag(language));
+    }
     validator.setAssumeValidRestReferences(assumeValidRestReferences);
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
     validator.setSecurityChecks(securityChecks);
@@ -522,9 +501,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
         makeSnapshot(sd);
       } catch (Exception e) {
         System.out.println("Process Note: Unable to generate snapshot for " + sd.present() + ": " + e.getMessage());
-        if (debug) {
+//        if (debug) {
           e.printStackTrace();
-        }
+//        }
       }
     }
   }
@@ -566,7 +545,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (fn.endsWith(".html") || fn.endsWith(".htm") && r instanceof DomainResource)
       new XhtmlComposer(XhtmlComposer.HTML, true).compose(s, ((DomainResource) r).getText().getDiv());
     else if (version.startsWith("3.0")) {
-      org.hl7.fhir.dstu3.model.Resource res = VersionConvertor_30_50.convertResource(r, false);
+      org.hl7.fhir.dstu3.model.Resource res = VersionConvertor_30_50.convertResource(r);
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         new org.hl7.fhir.dstu3.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
@@ -594,8 +573,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       else
         throw new FHIRException("Unsupported format for " + fn);
     } else if (version.startsWith("1.0")) {
-      VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5();
-      org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_50.convertResource(r, advisor);
+      org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_50.convertResource(r, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         new org.hl7.fhir.dstu2.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu2.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
@@ -693,7 +671,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
 
   public FilesystemPackageCacheManager getPcm() throws IOException {
     if (pcm == null) {
-      System.out.println("Creating Package manager?");
+      //System.out.println("Creating Package manager?");
       pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     }
     return pcm;
@@ -759,7 +737,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       return true;
     }
     if (fetcher != null) {
-      return fetcher.resolveURL(appContext, path, url, type);
+      try {
+        return fetcher.resolveURL(appContext, path, url, type);
+      } catch (Exception e) {
+        return false;
+      }
     }
     return false;
   }

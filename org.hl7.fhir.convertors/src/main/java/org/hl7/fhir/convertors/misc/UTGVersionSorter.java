@@ -204,7 +204,7 @@ public class UTGVersionSorter {
     System.out.println("Load "+id);
     NpmPackage npm = pcm.loadPackage(id);
     for (PackageResourceInformation p : npm.listIndexedResources("CodeSystem", "ValueSet")) {
-      CanonicalResource r = (CanonicalResource) VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(npm.load(p)), false);
+      CanonicalResource r = (CanonicalResource) VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(npm.load(p)));
       res.put(r.getUrl(), r);
     }
     return res;

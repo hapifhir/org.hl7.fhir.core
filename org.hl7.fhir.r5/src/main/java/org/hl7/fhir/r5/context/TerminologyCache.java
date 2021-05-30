@@ -133,12 +133,22 @@ public class TerminologyCache {
     json.setOutputStyle(OutputStyle.PRETTY);
     ValueSet vsc = getVSEssense(vs);
     try {
-      ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : json.composeString(vsc))+(options == null ? "" : ", "+options.toJson())+"}";
+      ct.request = "{\"code\" : "+json.composeString(code, "code")+", \"valueSet\" :"+(vsc == null ? "null" : extracted(json, vsc))+(options == null ? "" : ", "+options.toJson())+"}";
     } catch (IOException e) {
       throw new Error(e);
     }
     ct.key = String.valueOf(hashNWS(ct.request));
     return ct;
+  }
+
+  public String extracted(JsonParser json, ValueSet vsc) throws IOException {
+    String s = null;
+    if (vsc.getExpansion().getContains().size() > 1000 || vsc.getCompose().getIncludeFirstRep().getConcept().size() > 1000) {      
+      s = Integer.toString(vsc.hashCode()); // turn caching off - hack efficiency optimisation
+    } else {
+      s = json.composeString(vsc);
+    }
+    return s;
   }
 
   public CacheToken generateValidationToken(ValidationOptions options, CodeableConcept code, ValueSet vs) {
@@ -151,7 +161,7 @@ public class TerminologyCache {
     json.setOutputStyle(OutputStyle.PRETTY);
     ValueSet vsc = getVSEssense(vs);
     try {
-      ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+json.composeString(vsc)+(options == null ? "" : ", "+options.toJson())+"}";
+      ct.request = "{\"code\" : "+json.composeString(code, "codeableConcept")+", \"valueSet\" :"+extracted(json, vsc)+(options == null ? "" : ", "+options.toJson())+"}";
     } catch (IOException e) {
       throw new Error(e);
     }
@@ -186,7 +196,7 @@ public class TerminologyCache {
     JsonParser json = new JsonParser();
     json.setOutputStyle(OutputStyle.PRETTY);
     try {
-      ct.request = "{\"hierarchical\" : "+(heirarchical ? "true" : "false")+", \"valueSet\" :"+json.composeString(vsc)+"}\r\n";
+      ct.request = "{\"hierarchical\" : "+(heirarchical ? "true" : "false")+", \"valueSet\" :"+extracted(json, vsc)+"}\r\n";
     } catch (IOException e) {
       throw new Error(e);
     }

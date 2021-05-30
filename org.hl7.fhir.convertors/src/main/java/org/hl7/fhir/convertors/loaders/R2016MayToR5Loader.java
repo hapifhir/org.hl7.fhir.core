@@ -37,37 +37,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_50;
 import org.hl7.fhir.dstu2016may.formats.JsonParser;
 import org.hl7.fhir.dstu2016may.formats.XmlParser;
 import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.r5.model.Bundle;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.ElementDefinition;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.r5.model.UriType;
-import org.hl7.fhir.r5.model.ValueSet;
 
-import com.google.gson.JsonSyntaxException;
-
-public class R2016MayToR5Loader extends BaseLoaderR5 implements VersionConvertorAdvisor50 {
+public class R2016MayToR5Loader extends BaseLoaderR5 {
 
   public R2016MayToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
     super(types, lkp);
   }
 
-  private List<CodeSystem> cslist = new ArrayList<>();
+  private final BaseAdvisor_14_50 advisor = new BaseAdvisor_14_50();
 
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
@@ -76,7 +65,7 @@ public class R2016MayToR5Loader extends BaseLoaderR5 implements VersionConvertor
       r2016may = new JsonParser().parse(stream);
     else
       r2016may = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_14_50.convertResource(r2016may);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_14_50.convertResource(r2016may, advisor);
     
     Bundle b;
     if (r5 instanceof Bundle)
@@ -88,7 +77,7 @@ public class R2016MayToR5Loader extends BaseLoaderR5 implements VersionConvertor
       b.addEntry().setResource(r5).setFullUrl(r5 instanceof CanonicalResource ? ((CanonicalResource) r5).getUrl() : null);
     }
     
-    for (CodeSystem cs : cslist) {
+    for (CodeSystem cs : advisor.getCslist()) {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
@@ -127,7 +116,7 @@ public class R2016MayToR5Loader extends BaseLoaderR5 implements VersionConvertor
     org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_14_50.convertResource(r2016may);
     setPath(r5);
 
-    if (!cslist.isEmpty()) {
+    if (!advisor.getCslist().isEmpty()) {
       throw new FHIRException("Error: Cannot have included code systems");
     }
     if (killPrimitives) {
@@ -157,45 +146,4 @@ public class R2016MayToR5Loader extends BaseLoaderR5 implements VersionConvertor
       }
     }    
   }
-  
-  @Override
-  public boolean ignoreEntry(BundleEntryComponent src) {
-    return false;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu2.model.Resource convertR2(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public Resource convertR2016May(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public void handleCodeSystem(CodeSystem cs, ValueSet vs) {
-    cs.setId(vs.getId());
-    cs.setValueSet(vs.getUrl());
-    cslist.add(cs);
-    
-  }
-
-  @Override
-  public CodeSystem getCodeSystem(ValueSet src) {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.r4.model.Resource convertR4(org.hl7.fhir.r5.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
- 
-
 }

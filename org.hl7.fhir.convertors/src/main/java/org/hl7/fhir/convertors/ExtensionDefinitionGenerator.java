@@ -30,18 +30,10 @@ package org.hl7.fhir.convertors;
  */
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.TimeZone;
-
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.loaders.R2016MayToR4Loader;
 import org.hl7.fhir.convertors.loaders.R2ToR4Loader;
 import org.hl7.fhir.convertors.loaders.R3ToR4Loader;
@@ -67,25 +59,15 @@ import org.hl7.fhir.r4.utils.NPMPackageGenerator.Category;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
-import org.hl7.fhir.utilities.npm.ToolsVersion;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
+import org.hl7.fhir.utilities.npm.ToolsVersion;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ExtensionDefinitionGenerator {
-
-  
-  public class StringReplacement {
-
-    public String source;
-    public String replacement;
-    public StringReplacement(String source, String replacement) {
-      super();
-      this.source = source;
-      this.replacement = replacement;
-    }
-  }
 
   public static void main(String[] args) throws IOException, FHIRException {
     if (args.length == 0) {
@@ -107,7 +89,7 @@ public class ExtensionDefinitionGenerator {
       self.generate();
     }
   }
-  
+
 
   private static String getNamedParam(String[] args, String param) {
     boolean found = false;
@@ -118,7 +100,7 @@ public class ExtensionDefinitionGenerator {
         found = true;
       }
     }
-    throw new Error("Unable to find parameter "+param);
+    throw new Error("Unable to find parameter " + param);
   }
 
   private FHIRVersion sourceVersion;
@@ -128,7 +110,7 @@ public class ExtensionDefinitionGenerator {
   private ElementDefinition extv;
   private ProfileUtilities pu;
   private BaseWorkerContext context;
-  
+
   public FHIRVersion getSourceVersion() {
     return sourceVersion;
   }
@@ -152,7 +134,7 @@ public class ExtensionDefinitionGenerator {
   public void setFilename(String filename) {
     this.filename = filename;
   }
-  
+
 
   private void generate() throws IOException, FHIRException {
     List<StructureDefinition> definitions = loadSource();
@@ -160,7 +142,7 @@ public class ExtensionDefinitionGenerator {
     for (StructureDefinition ext : extensions)
       pu.generateSnapshot(extbase, ext, ext.getUrl(), "http://hl7.org/fhir/R4", ext.getName());
     savePackage(extensions);
-    
+
   }
 
   private List<StructureDefinition> buildExtensions(List<StructureDefinition> definitions) throws DefinitionException, FHIRException {
@@ -191,13 +173,13 @@ public class ExtensionDefinitionGenerator {
 
   private StructureDefinition generateExtension(StructureDefinition type, ElementDefinition ed) throws DefinitionException, FHIRException {
     StructureDefinition ext = new StructureDefinition();
-    ext.setId("extension-"+ed.getPath().replace("[x]", ""));
-    ext.setUrl("http://hl7.org/fhir/"+sourceVersion.toCode(3)+"/StructureDefinition/"+ext.getId());
+    ext.setId("extension-" + ed.getPath().replace("[x]", ""));
+    ext.setUrl("http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/StructureDefinition/" + ext.getId());
     if (ext.getId().length() > 64)
       ext.setId(contract(ext.getId()));
     ext.setVersion(sourceVersion.toCode());
-    ext.setName("ExtensionR"+sourceVersion.toCode(1)+ed.getPath().replace(".", ""));
-    ext.setTitle("Extension definition for R"+sourceVersion.toCode(1)+" element " +ed.getPath());
+    ext.setName("ExtensionR" + sourceVersion.toCode(1) + ed.getPath().replace(".", ""));
+    ext.setTitle("Extension definition for R" + sourceVersion.toCode(1) + " element " + ed.getPath());
     ext.setStatus(PublicationStatus.ACTIVE);
     ext.setDate(type.getDate());
     ext.setFhirVersion(type.getFhirVersion());
@@ -216,20 +198,20 @@ public class ExtensionDefinitionGenerator {
         String n = tail(child.getPath());
         if (!Utilities.existsInList(n, "id", "extension", "modifierExtension") && !hasNonValidType(child)) {
           v = child.copy();
-          v.setId("Extension.extension:"+n);
+          v.setId("Extension.extension:" + n);
           v.setPath("Extension.extension");
           v.setSliceName(n);
           v.getType().clear();
           v.setIsSummaryElement(null);
-          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/"+sourceVersion.toCode(3)+"/StructureDefinition/extension-"+child.getPath().replace("[x]", ""));
+          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/StructureDefinition/extension-" + child.getPath().replace("[x]", ""));
           ext.getDifferential().addElement(v);
         }
       }
       ext.getDifferential().addElement(genElement("Extension.url").setFixed(new UriType(ext.getUrl())));
       ext.getDifferential().addElement(genElement("Extension.value[x]").setMax("0"));
-      
+
     } else if (ed.hasType() && Utilities.existsInList(ed.getType().get(0).getCode(), "Resource", "Narrative")) {
-        return null;
+      return null;
     } else if (ed.hasType() && !goesInExtension(ed.getType().get(0).getCode())) {
       ElementDefinition v = ed.copy();
       v.setPath("Extension");
@@ -241,12 +223,12 @@ public class ExtensionDefinitionGenerator {
         String n = tail(child.getPath());
         if (!Utilities.existsInList(n, "id", "extension", "modifierExtension") && !hasNonValidType(child)) {
           v = child.copy();
-          v.setId("Extension.extension:"+n);
+          v.setId("Extension.extension:" + n);
           v.setPath("Extension.extension");
           v.setSliceName(n);
           v.getType().clear();
           v.setIsSummaryElement(null);
-          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/"+sourceVersion.toCode(3)+"/StructureDefinition/extension-"+child.getPath().replace("[x]", ""));
+          v.addType().setCode("Extension").addProfile("http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/StructureDefinition/extension-" + child.getPath().replace("[x]", ""));
           ext.getDifferential().addElement(v);
         }
       }
@@ -288,7 +270,7 @@ public class ExtensionDefinitionGenerator {
 
 
   private String tail(String path) {
-    return path.substring(path.lastIndexOf(".")+1);
+    return path.substring(path.lastIndexOf(".") + 1);
   }
 
 
@@ -315,13 +297,13 @@ public class ExtensionDefinitionGenerator {
     abbrevs.add(new StringReplacement("MedicationOrder", "MO"));
     abbrevs.add(new StringReplacement("MedicationDispense", "MD"));
     abbrevs.add(new StringReplacement("NutritionOrder", "NO"));
-    abbrevs.add(new StringReplacement("MedicinalProductAuthorization", "MPA"));        
-    abbrevs.add(new StringReplacement("MedicinalProductContraindication", "MPC"));        
-    abbrevs.add(new StringReplacement("MedicinalProductIngredient", "MPI"));        
-    abbrevs.add(new StringReplacement("MedicinalProductPharmaceutical", "MPP"));        
+    abbrevs.add(new StringReplacement("MedicinalProductAuthorization", "MPA"));
+    abbrevs.add(new StringReplacement("MedicinalProductContraindication", "MPC"));
+    abbrevs.add(new StringReplacement("MedicinalProductIngredient", "MPI"));
+    abbrevs.add(new StringReplacement("MedicinalProductPharmaceutical", "MPP"));
     abbrevs.add(new StringReplacement("MedicinalProduct", "MP"));
     abbrevs.add(new StringReplacement("ResearchElementDefinition", "RED"));
-    abbrevs.add(new StringReplacement("RiskEvidenceSynthesis", "RES"));   
+    abbrevs.add(new StringReplacement("RiskEvidenceSynthesis", "RES"));
     abbrevs.add(new StringReplacement("ObservationDefinition", "OD"));
     abbrevs.add(new StringReplacement("SubstanceReferenceInformation", "SRI"));
     abbrevs.add(new StringReplacement("SubstanceSourceMaterial", "SSM"));
@@ -333,7 +315,7 @@ public class ExtensionDefinitionGenerator {
     abbrevs.add(new StringReplacement("EligibilityResponse", "ERsp"));
     abbrevs.add(new StringReplacement("ExpansionProfile", "EP"));
     abbrevs.add(new StringReplacement("ImagingObjectSelection", "IOS"));
-    
+
 
     abbrevs.add(new StringReplacement("administrationGuidelines.patientCharacteristics", "ag.pc"));
     abbrevs.add(new StringReplacement("manufacturingBusinessOperation", "mbo"));
@@ -343,18 +325,18 @@ public class ExtensionDefinitionGenerator {
     abbrevs.add(new StringReplacement("structuralRepresentation", "sr"));
     abbrevs.add(new StringReplacement("compareToSourceExpression", "ctse"));
     abbrevs.add(new StringReplacement("TestScript.setup.action.assert", "TestScript.s.a.a"));
-    
+
     for (StringReplacement s : abbrevs)
-      if (id.contains(s.source))
-        id = id.replace(s.source,s.replacement);
+      if (id.contains(s.getSource()))
+        id = id.replace(s.getSource(), s.getReplacement());
     if (id.length() > 64)
-      throw new Error("Still too long: "+id);
+      throw new Error("Still too long: " + id);
     return id;
   }
 
 
   private String timezone() {
-    TimeZone tz = TimeZone.getDefault();  
+    TimeZone tz = TimeZone.getDefault();
     Calendar cal = GregorianCalendar.getInstance(tz);
     int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
 
@@ -366,15 +348,15 @@ public class ExtensionDefinitionGenerator {
 
   private void savePackage(List<StructureDefinition> extensions) throws FHIRException, IOException {
     JsonObject npm = new JsonObject();
-    npm.addProperty("name", "hl7.fhir.extensions.r"+sourceVersion.toCode(1));
+    npm.addProperty("name", "hl7.fhir.extensions.r" + sourceVersion.toCode(1));
     npm.addProperty("version", targetVersion.toCode(3));
     npm.addProperty("tools-version", ToolsVersion.TOOLS_VERSION);
     npm.addProperty("type", PackageType.IG.getCode());
     npm.addProperty("license", SPDXLicense.CC01_0.toCode());
-    npm.addProperty("canonical", "http://hl7.org/fhir/"+sourceVersion.toCode(3)+"/extensions/"+targetVersion.toCode(3));
-    npm.addProperty("url", "http://hl7.org/fhir/"+sourceVersion.toCode(3)+"/extensions/"+targetVersion.toCode(3));
-    npm.addProperty("title", "Extension Definitions for representing elements from "+sourceVersion.toCode()+" in "+targetVersion.toCode());
-    npm.addProperty("description", "Extension Definitions for representing elements from "+sourceVersion.toCode()+" in "+targetVersion.toCode()+" built "+new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime())+timezone()+")");
+    npm.addProperty("canonical", "http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/extensions/" + targetVersion.toCode(3));
+    npm.addProperty("url", "http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/extensions/" + targetVersion.toCode(3));
+    npm.addProperty("title", "Extension Definitions for representing elements from " + sourceVersion.toCode() + " in " + targetVersion.toCode());
+    npm.addProperty("description", "Extension Definitions for representing elements from " + sourceVersion.toCode() + " in " + targetVersion.toCode() + " built " + new SimpleDateFormat("EEE, MMM d, yyyy HH:mmZ", new Locale("en", "US")).format(Calendar.getInstance().getTime()) + timezone() + ")");
     JsonObject dep = new JsonObject();
     npm.add("dependencies", dep);
     dep.addProperty("hl7.fhir.core", targetVersion.toCode());
@@ -386,8 +368,8 @@ public class ExtensionDefinitionGenerator {
     md.addProperty("url", "http://hl7.org/fhir");
     NPMPackageGenerator pi = new NPMPackageGenerator(filename, npm);
     for (StructureDefinition sd : extensions) {
-      byte[] cnt = saveResource(sd, targetVersion); 
-      pi.addFile(Category.RESOURCE, "StructureDefinition-"+sd.getId()+".json", cnt);
+      byte[] cnt = saveResource(sd, targetVersion);
+      pi.addFile(Category.RESOURCE, "StructureDefinition-" + sd.getId() + ".json", cnt);
     }
     pi.finish();
 
@@ -406,50 +388,49 @@ public class ExtensionDefinitionGenerator {
       context = SimpleWorkerContext.fromPackage(npm, new R2016MayToR4Loader());
     else if (sourceVersion == FHIRVersion._1_0_2)
       context = SimpleWorkerContext.fromPackage(npm, new R2ToR4Loader());
-    pu = new ProfileUtilities(context,  null,  null);
+    pu = new ProfileUtilities(context, null, null);
     for (String fn : npm.listResources("StructureDefinition")) {
       list.add((StructureDefinition) loadResource(npm.load("package", fn), sourceVersion));
     }
     for (StructureDefinition sd : list)
       if (sd.getName().equals("Extension")) {
         extbase = sd;
-        extv = extbase.getSnapshot().getElement().get(extbase.getSnapshot().getElement().size() -1);
-      }        
+        extv = extbase.getSnapshot().getElement().get(extbase.getSnapshot().getElement().size() - 1);
+      }
     return list;
   }
 
   private byte[] saveResource(Resource resource, FHIRVersion v) throws IOException, FHIRException {
     if (v == FHIRVersion._3_0_1) {
-      org.hl7.fhir.dstu3.model.Resource res = VersionConvertor_30_40.convertResource(resource, true);
+      org.hl7.fhir.dstu3.model.Resource res = VersionConvertor_30_40.convertResource(resource, new BaseAdvisor_30_40(false));
       return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._1_4_0) {
       org.hl7.fhir.dstu2016may.model.Resource res = VersionConvertor_14_40.convertResource(resource);
       return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._1_0_2) {
-      VersionConvertorAdvisor40 advisor = new IGR2ConvertorAdvisor();
+      BaseAdvisor_10_40 advisor = new IGR2ConvertorAdvisor();
       org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_40.convertResource(resource, advisor);
       return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._4_0_0) {
       return new JsonParser().composeBytes(resource);
     } else
-      throw new Error("Unsupported version "+v);   
+      throw new Error("Unsupported version " + v);
   }
 
   private Resource loadResource(InputStream inputStream, FHIRVersion v) throws IOException, FHIRException {
     if (v == FHIRVersion._3_0_1) {
       org.hl7.fhir.dstu3.model.Resource res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream);
-      return VersionConvertor_30_40.convertResource(res, true);
+      return VersionConvertor_30_40.convertResource(res, new BaseAdvisor_30_40(false));
     } else if (v == FHIRVersion._1_4_0) {
       org.hl7.fhir.dstu2016may.model.Resource res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream);
       return VersionConvertor_14_40.convertResource(res);
     } else if (v == FHIRVersion._1_0_2) {
       org.hl7.fhir.dstu2.model.Resource res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream);
-      VersionConvertorAdvisor40 advisor = new IGR2ConvertorAdvisor();
+      BaseAdvisor_10_40 advisor = new IGR2ConvertorAdvisor();
       return VersionConvertor_10_40.convertResource(res, advisor);
     } else if (v == FHIRVersion._4_0_0) {
       return new JsonParser().parse(inputStream);
     } else
-      throw new Error("Unsupported version "+v);
+      throw new Error("Unsupported version " + v);
   }
-
 }

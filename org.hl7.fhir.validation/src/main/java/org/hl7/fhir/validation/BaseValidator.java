@@ -125,9 +125,11 @@ public class BaseValidator {
 
   protected final String META = "meta";
   protected final String ENTRY = "entry";
+  protected final String LINK = "link";
   protected final String DOCUMENT = "document";
   protected final String RESOURCE = "resource";
   protected final String MESSAGE = "message";
+  protected final String SEARCHSET = "searchset";
   protected final String ID = "id";
   protected final String FULL_URL = "fullUrl";
   protected final String PATH_ARG = ":0";
@@ -831,7 +833,7 @@ public class BaseValidator {
     String targetUrl = null;
     String version = "";
     String resourceType = null;
-    if (ref.startsWith("http") || ref.startsWith("urn")) {
+    if (ref.startsWith("http:") || ref.startsWith("urn:") || Utilities.isAbsoluteUrl(ref)) {
       // We've got an absolute reference, no need to calculate
       if (ref.contains("/_history/")) {
         targetUrl = ref.substring(0, ref.indexOf("/_history/") - 1);

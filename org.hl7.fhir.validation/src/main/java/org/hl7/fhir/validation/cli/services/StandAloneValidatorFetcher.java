@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
@@ -21,15 +22,20 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
+public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, ICanonicalResourceLocator {
 
   List<String> mappingsUris = new ArrayList<>();
   private FilesystemPackageCacheManager pcm;
   private IWorkerContext context;
   private IPackageInstaller installer;
+  private Map<String, Boolean> urlList = new HashMap<>();
+  private Map<String, String> pidList = new HashMap<>();
+  private Map<String, NpmPackage> pidMap = new HashMap<>();
 
   public StandAloneValidatorFetcher(FilesystemPackageCacheManager pcm, IWorkerContext context, IPackageInstaller installer) {
     super();
@@ -58,7 +64,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
       url = url.substring(0, url.lastIndexOf("|"));
     }
 
-    if (type.equals("uri") && isMappingUri(url)) {
+    if (type != null && type.equals("uri") && isMappingUri(url)) {
       return true;
     }
 
@@ -70,15 +76,25 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
       return !url.startsWith("http://hl7.org/fhir") && !type.equals("canonical");
     }
 
+    // the next operations are expensive. we're going to cache them 
+    if (urlList.containsKey(url)) {
+      return urlList.get(url);
+    }
     if (base.equals("http://terminology.hl7.org")) {
       pid = "hl7.terminology";
     } else if (url.startsWith("http://hl7.org/fhir")) {
       pid = pcm.getPackageId(base);
     } else {
-      pid = pcm.findCanonicalInLocalCache(base);
+      if (pidList.containsKey(base)) {
+        pid = pidList.get(base);
+      } else {
+        pid = pcm.findCanonicalInLocalCache(base);
+        pidList.put(base, pid);
+      }
     }
     ver = url.contains("|") ? url.substring(url.indexOf("|") + 1) : null;
     if (pid == null && Utilities.startsWithInList(url, "http://hl7.org/fhir", "http://terminology.hl7.org")) {
+      urlList.put(url, false);
       return false;
     }
 
@@ -87,15 +103,33 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
       VersionURLInfo vu = VersionUtilities.parseVersionUrl(url);
       if (vu != null) {
         NpmPackage pi = pcm.loadPackage(VersionUtilities.packageForVersion(vu.getVersion()), VersionUtilities.getCurrentVersion(vu.getVersion()));
-        return pi.hasCanonical(vu.getUrl());
+        boolean res = pi.hasCanonical(vu.getUrl());
+        urlList.put(url, res);
+        return res;
       }
     }
 
     // ok maybe it's a reference to a package we know
     if (pid != null) {
-      if (installer.packageExists(pid, ver)) {
-        installer.loadPackage(pid, ver);
-        NpmPackage pi = pcm.loadPackage(pid);
+      if ("sharedhealth.fhir.ca.common".equals(pid)) { // special case - optimise this
+        return false;
+      }
+      NpmPackage pi = null;
+      if (pidMap.containsKey(pid+"|"+ver)) {
+        pi = pidMap.get(pid+"|"+ver);
+      } else  if (installer.packageExists(pid, ver)) {
+        try {
+          installer.loadPackage(pid, ver);
+          pi = pcm.loadPackage(pid);
+          pidMap.put(pid+"|"+ver, pi);
+        } catch (Exception e) {
+          pidMap.put(pid+"|"+ver, null);          
+        }
+      } else {
+        pidMap.put(pid+"|"+ver, null);
+      }
+      if (pi != null) {
+        context.loadFromPackage(pi, null);
         return pi.hasCanonical(url);
       }
     }
@@ -215,6 +249,14 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher {
   @Override
   public boolean fetchesCanonicalResource(String url) {
     return true;
+  }
+
+  @Override
+  public void findResource(String url) {
+    try {
+      resolveURL(null, null, url, null);
+    } catch (Exception e) {
+    }
   }
 
 }

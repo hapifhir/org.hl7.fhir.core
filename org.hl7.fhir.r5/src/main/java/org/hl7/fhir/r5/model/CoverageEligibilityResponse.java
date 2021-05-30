@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +52,130 @@ import ca.uhn.fhir.model.api.annotation.Block;
  */
 @ResourceDef(name="CoverageEligibilityResponse", profile="http://hl7.org/fhir/StructureDefinition/CoverageEligibilityResponse")
 public class CoverageEligibilityResponse extends DomainResource {
+
+    public enum EligibilityOutcome {
+        /**
+         * The Claim/Pre-authorization/Pre-determination has been received but processing has not begun.
+         */
+        QUEUED, 
+        /**
+         * The processing has completed without errors
+         */
+        COMPLETE, 
+        /**
+         * One or more errors have been detected in the Claim
+         */
+        ERROR, 
+        /**
+         * No errors have been detected in the Claim and some of the adjudication has been performed.
+         */
+        PARTIAL, 
+        /**
+         * added to help the parsers with the generic types
+         */
+        NULL;
+        public static EligibilityOutcome fromCode(String codeString) throws FHIRException {
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("queued".equals(codeString))
+          return QUEUED;
+        if ("complete".equals(codeString))
+          return COMPLETE;
+        if ("error".equals(codeString))
+          return ERROR;
+        if ("partial".equals(codeString))
+          return PARTIAL;
+        if (Configuration.isAcceptInvalidEnums())
+          return null;
+        else
+          throw new FHIRException("Unknown EligibilityOutcome code '"+codeString+"'");
+        }
+        public String toCode() {
+          switch (this) {
+            case QUEUED: return "queued";
+            case COMPLETE: return "complete";
+            case ERROR: return "error";
+            case PARTIAL: return "partial";
+            default: return "?";
+          }
+        }
+        public String getSystem() {
+          switch (this) {
+            case QUEUED: return "http://hl7.org/fhir/eligibility-outcome";
+            case COMPLETE: return "http://hl7.org/fhir/eligibility-outcome";
+            case ERROR: return "http://hl7.org/fhir/eligibility-outcome";
+            case PARTIAL: return "http://hl7.org/fhir/eligibility-outcome";
+            default: return "?";
+          }
+        }
+        public String getDefinition() {
+          switch (this) {
+            case QUEUED: return "The Claim/Pre-authorization/Pre-determination has been received but processing has not begun.";
+            case COMPLETE: return "The processing has completed without errors";
+            case ERROR: return "One or more errors have been detected in the Claim";
+            case PARTIAL: return "No errors have been detected in the Claim and some of the adjudication has been performed.";
+            default: return "?";
+          }
+        }
+        public String getDisplay() {
+          switch (this) {
+            case QUEUED: return "Queued";
+            case COMPLETE: return "Processing Complete";
+            case ERROR: return "Error";
+            case PARTIAL: return "Partial Processing";
+            default: return "?";
+          }
+        }
+    }
+
+  public static class EligibilityOutcomeEnumFactory implements EnumFactory<EligibilityOutcome> {
+    public EligibilityOutcome fromCode(String codeString) throws IllegalArgumentException {
+      if (codeString == null || "".equals(codeString))
+            if (codeString == null || "".equals(codeString))
+                return null;
+        if ("queued".equals(codeString))
+          return EligibilityOutcome.QUEUED;
+        if ("complete".equals(codeString))
+          return EligibilityOutcome.COMPLETE;
+        if ("error".equals(codeString))
+          return EligibilityOutcome.ERROR;
+        if ("partial".equals(codeString))
+          return EligibilityOutcome.PARTIAL;
+        throw new IllegalArgumentException("Unknown EligibilityOutcome code '"+codeString+"'");
+        }
+        public Enumeration<EligibilityOutcome> fromType(Base code) throws FHIRException {
+          if (code == null)
+            return null;
+          if (code.isEmpty())
+            return new Enumeration<EligibilityOutcome>(this);
+          String codeString = ((PrimitiveType) code).asStringValue();
+          if (codeString == null || "".equals(codeString))
+            return null;
+        if ("queued".equals(codeString))
+          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.QUEUED);
+        if ("complete".equals(codeString))
+          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.COMPLETE);
+        if ("error".equals(codeString))
+          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.ERROR);
+        if ("partial".equals(codeString))
+          return new Enumeration<EligibilityOutcome>(this, EligibilityOutcome.PARTIAL);
+        throw new FHIRException("Unknown EligibilityOutcome code '"+codeString+"'");
+        }
+    public String toCode(EligibilityOutcome code) {
+      if (code == EligibilityOutcome.QUEUED)
+        return "queued";
+      if (code == EligibilityOutcome.COMPLETE)
+        return "complete";
+      if (code == EligibilityOutcome.ERROR)
+        return "error";
+      if (code == EligibilityOutcome.PARTIAL)
+        return "partial";
+      return "?";
+      }
+    public String toSystem(EligibilityOutcome code) {
+      return code.getSystem();
+      }
+    }
 
     public enum EligibilityResponsePurpose {
         /**
@@ -96,7 +220,6 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "benefits";
             case DISCOVERY: return "discovery";
             case VALIDATION: return "validation";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,7 +229,6 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "http://hl7.org/fhir/eligibilityresponse-purpose";
             case DISCOVERY: return "http://hl7.org/fhir/eligibilityresponse-purpose";
             case VALIDATION: return "http://hl7.org/fhir/eligibilityresponse-purpose";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +238,6 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "The plan benefits and optionally benefits consumed  for the listed, or discovered if specified, converages are requested.";
             case DISCOVERY: return "The insurer is requested to report on any coverages which they are aware of in addition to any specifed.";
             case VALIDATION: return "A check that the specified coverages are in-force is requested.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,7 +247,6 @@ public class CoverageEligibilityResponse extends DomainResource {
             case BENEFITS: return "Coverage benefits";
             case DISCOVERY: return "Coverage Discovery";
             case VALIDATION: return "Coverage Validation";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -2107,8 +2227,8 @@ public class CoverageEligibilityResponse extends DomainResource {
      */
     @Child(name = "outcome", type = {CodeType.class}, order=8, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="queued | complete | error | partial", formalDefinition="The outcome of the request processing." )
-    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/remittance-outcome")
-    protected Enumeration<ClaimProcessingCodes> outcome;
+    @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/eligibility-outcome")
+    protected Enumeration<EligibilityOutcome> outcome;
 
     /**
      * A human readable description of the status of the adjudication.
@@ -2153,7 +2273,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     @Description(shortDefinition="Processing errors", formalDefinition="Errors encountered during the processing of the request." )
     protected List<ErrorsComponent> error;
 
-    private static final long serialVersionUID = 1048956296L;
+    private static final long serialVersionUID = 235292922L;
 
   /**
    * Constructor
@@ -2165,7 +2285,7 @@ public class CoverageEligibilityResponse extends DomainResource {
   /**
    * Constructor
    */
-    public CoverageEligibilityResponse(FinancialResourceStatusCodes status, EligibilityResponsePurpose purpose, Reference patient, Date created, Reference request, ClaimProcessingCodes outcome, Reference insurer) {
+    public CoverageEligibilityResponse(FinancialResourceStatusCodes status, EligibilityResponsePurpose purpose, Reference patient, Date created, Reference request, EligibilityOutcome outcome, Reference insurer) {
       super();
       this.setStatus(status);
       this.addPurpose(purpose);
@@ -2506,12 +2626,12 @@ public class CoverageEligibilityResponse extends DomainResource {
     /**
      * @return {@link #outcome} (The outcome of the request processing.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
      */
-    public Enumeration<ClaimProcessingCodes> getOutcomeElement() { 
+    public Enumeration<EligibilityOutcome> getOutcomeElement() { 
       if (this.outcome == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create CoverageEligibilityResponse.outcome");
         else if (Configuration.doAutoCreate())
-          this.outcome = new Enumeration<ClaimProcessingCodes>(new ClaimProcessingCodesEnumFactory()); // bb
+          this.outcome = new Enumeration<EligibilityOutcome>(new EligibilityOutcomeEnumFactory()); // bb
       return this.outcome;
     }
 
@@ -2526,7 +2646,7 @@ public class CoverageEligibilityResponse extends DomainResource {
     /**
      * @param value {@link #outcome} (The outcome of the request processing.). This is the underlying object with id, value and extensions. The accessor "getOutcome" gives direct access to the value
      */
-    public CoverageEligibilityResponse setOutcomeElement(Enumeration<ClaimProcessingCodes> value) { 
+    public CoverageEligibilityResponse setOutcomeElement(Enumeration<EligibilityOutcome> value) { 
       this.outcome = value;
       return this;
     }
@@ -2534,16 +2654,16 @@ public class CoverageEligibilityResponse extends DomainResource {
     /**
      * @return The outcome of the request processing.
      */
-    public ClaimProcessingCodes getOutcome() { 
+    public EligibilityOutcome getOutcome() { 
       return this.outcome == null ? null : this.outcome.getValue();
     }
 
     /**
      * @param value The outcome of the request processing.
      */
-    public CoverageEligibilityResponse setOutcome(ClaimProcessingCodes value) { 
+    public CoverageEligibilityResponse setOutcome(EligibilityOutcome value) { 
         if (this.outcome == null)
-          this.outcome = new Enumeration<ClaimProcessingCodes>(new ClaimProcessingCodesEnumFactory());
+          this.outcome = new Enumeration<EligibilityOutcome>(new EligibilityOutcomeEnumFactory());
         this.outcome.setValue(value);
       return this;
     }
@@ -2856,7 +2976,7 @@ public class CoverageEligibilityResponse extends DomainResource {
         case 1028554472: /*created*/ return this.created == null ? new Base[0] : new Base[] {this.created}; // DateTimeType
         case 693934258: /*requestor*/ return this.requestor == null ? new Base[0] : new Base[] {this.requestor}; // Reference
         case 1095692943: /*request*/ return this.request == null ? new Base[0] : new Base[] {this.request}; // Reference
-        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<ClaimProcessingCodes>
+        case -1106507950: /*outcome*/ return this.outcome == null ? new Base[0] : new Base[] {this.outcome}; // Enumeration<EligibilityOutcome>
         case 583380919: /*disposition*/ return this.disposition == null ? new Base[0] : new Base[] {this.disposition}; // StringType
         case 1957615864: /*insurer*/ return this.insurer == null ? new Base[0] : new Base[] {this.insurer}; // Reference
         case 73049818: /*insurance*/ return this.insurance == null ? new Base[0] : this.insurance.toArray(new Base[this.insurance.size()]); // InsuranceComponent
@@ -2898,8 +3018,8 @@ public class CoverageEligibilityResponse extends DomainResource {
           this.request = TypeConvertor.castToReference(value); // Reference
           return value;
         case -1106507950: // outcome
-          value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
+          value = new EligibilityOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<EligibilityOutcome>
           return value;
         case 583380919: // disposition
           this.disposition = TypeConvertor.castToString(value); // StringType
@@ -2945,8 +3065,8 @@ public class CoverageEligibilityResponse extends DomainResource {
         } else if (name.equals("request")) {
           this.request = TypeConvertor.castToReference(value); // Reference
         } else if (name.equals("outcome")) {
-          value = new ClaimProcessingCodesEnumFactory().fromType(TypeConvertor.castToCode(value));
-          this.outcome = (Enumeration) value; // Enumeration<ClaimProcessingCodes>
+          value = new EligibilityOutcomeEnumFactory().fromType(TypeConvertor.castToCode(value));
+          this.outcome = (Enumeration) value; // Enumeration<EligibilityOutcome>
         } else if (name.equals("disposition")) {
           this.disposition = TypeConvertor.castToString(value); // StringType
         } else if (name.equals("insurer")) {

@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1791,6 +1791,108 @@ public class PractitionerRole extends DomainResource {
    }
 
  /**
+   * Search parameter: <b>email</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): A value in an email contact
+* [Person](person.html): A value in an email contact
+* [Practitioner](practitioner.html): A value in an email contact
+* [PractitionerRole](practitionerrole.html): A value in an email contact
+* [RelatedPerson](relatedperson.html): A value in an email contact
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="email", path="Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in an email contact\r\n* [Person](person.html): A value in an email contact\r\n* [Practitioner](practitioner.html): A value in an email contact\r\n* [PractitionerRole](practitionerrole.html): A value in an email contact\r\n* [RelatedPerson](relatedperson.html): A value in an email contact\r\n", type="token" )
+  public static final String SP_EMAIL = "email";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>email</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): A value in an email contact
+* [Person](person.html): A value in an email contact
+* [Practitioner](practitioner.html): A value in an email contact
+* [PractitionerRole](practitionerrole.html): A value in an email contact
+* [RelatedPerson](relatedperson.html): A value in an email contact
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EMAIL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EMAIL);
+
+ /**
+   * Search parameter: <b>phone</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): A value in a phone contact
+* [Person](person.html): A value in a phone contact
+* [Practitioner](practitioner.html): A value in a phone contact
+* [PractitionerRole](practitionerrole.html): A value in a phone contact
+* [RelatedPerson](relatedperson.html): A value in a phone contact
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="phone", path="Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in a phone contact\r\n* [Person](person.html): A value in a phone contact\r\n* [Practitioner](practitioner.html): A value in a phone contact\r\n* [PractitionerRole](practitionerrole.html): A value in a phone contact\r\n* [RelatedPerson](relatedperson.html): A value in a phone contact\r\n", type="token" )
+  public static final String SP_PHONE = "phone";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>phone</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): A value in a phone contact
+* [Person](person.html): A value in a phone contact
+* [Practitioner](practitioner.html): A value in a phone contact
+* [PractitionerRole](practitionerrole.html): A value in a phone contact
+* [RelatedPerson](relatedperson.html): A value in a phone contact
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PHONE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PHONE);
+
+ /**
+   * Search parameter: <b>telecom</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): The value in any kind of telecom details of the patient
+* [Person](person.html): The value in any kind of contact
+* [Practitioner](practitioner.html): The value in any kind of contact
+* [PractitionerRole](practitionerrole.html): The value in any kind of contact
+* [RelatedPerson](relatedperson.html): The value in any kind of contact
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
+   * </p>
+   */
+  @SearchParamDefinition(name="telecom", path="Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): The value in any kind of telecom details of the patient\r\n* [Person](person.html): The value in any kind of contact\r\n* [Practitioner](practitioner.html): The value in any kind of contact\r\n* [PractitionerRole](practitionerrole.html): The value in any kind of contact\r\n* [RelatedPerson](relatedperson.html): The value in any kind of contact\r\n", type="token" )
+  public static final String SP_TELECOM = "telecom";
+ /**
+   * <b>Fluent Client</b> search parameter constant for <b>telecom</b>
+   * <p>
+   * Description: <b>Multiple Resources: 
+
+* [Patient](patient.html): The value in any kind of telecom details of the patient
+* [Person](person.html): The value in any kind of contact
+* [Practitioner](practitioner.html): The value in any kind of contact
+* [PractitionerRole](practitionerrole.html): The value in any kind of contact
+* [RelatedPerson](relatedperson.html): The value in any kind of contact
+</b><br>
+   * Type: <b>token</b><br>
+   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
+   * </p>
+   */
+  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);
+
+ /**
    * Search parameter: <b>active</b>
    * <p>
    * Description: <b>Whether this practitioner role record is in active use</b><br>
@@ -2019,108 +2121,6 @@ public class PractitionerRole extends DomainResource {
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam SPECIALTY = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_SPECIALTY);
-
- /**
-   * Search parameter: <b>email</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A value in an email contact
-* [Person](person.html): A value in an email contact
-* [Practitioner](practitioner.html): A value in an email contact
-* [PractitionerRole](practitionerrole.html): A value in an email contact
-* [RelatedPerson](relatedperson.html): A value in an email contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="email", path="Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in an email contact\r\n* [Person](person.html): A value in an email contact\r\n* [Practitioner](practitioner.html): A value in an email contact\r\n* [PractitionerRole](practitionerrole.html): A value in an email contact\r\n* [RelatedPerson](relatedperson.html): A value in an email contact\r\n", type="token" )
-  public static final String SP_EMAIL = "email";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>email</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A value in an email contact
-* [Person](person.html): A value in an email contact
-* [Practitioner](practitioner.html): A value in an email contact
-* [PractitionerRole](practitionerrole.html): A value in an email contact
-* [RelatedPerson](relatedperson.html): A value in an email contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='email') | Person.telecom.where(system='email') | Practitioner.telecom.where(system='email') | PractitionerRole.telecom.where(system='email') | RelatedPerson.telecom.where(system='email')</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam EMAIL = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_EMAIL);
-
- /**
-   * Search parameter: <b>phone</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A value in a phone contact
-* [Person](person.html): A value in a phone contact
-* [Practitioner](practitioner.html): A value in a phone contact
-* [PractitionerRole](practitionerrole.html): A value in a phone contact
-* [RelatedPerson](relatedperson.html): A value in a phone contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="phone", path="Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): A value in a phone contact\r\n* [Person](person.html): A value in a phone contact\r\n* [Practitioner](practitioner.html): A value in a phone contact\r\n* [PractitionerRole](practitionerrole.html): A value in a phone contact\r\n* [RelatedPerson](relatedperson.html): A value in a phone contact\r\n", type="token" )
-  public static final String SP_PHONE = "phone";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>phone</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): A value in a phone contact
-* [Person](person.html): A value in a phone contact
-* [Practitioner](practitioner.html): A value in a phone contact
-* [PractitionerRole](practitionerrole.html): A value in a phone contact
-* [RelatedPerson](relatedperson.html): A value in a phone contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom.where(system='phone') | Person.telecom.where(system='phone') | Practitioner.telecom.where(system='phone') | PractitionerRole.telecom.where(system='phone') | RelatedPerson.telecom.where(system='phone')</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam PHONE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_PHONE);
-
- /**
-   * Search parameter: <b>telecom</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): The value in any kind of telecom details of the patient
-* [Person](person.html): The value in any kind of contact
-* [Practitioner](practitioner.html): The value in any kind of contact
-* [PractitionerRole](practitionerrole.html): The value in any kind of contact
-* [RelatedPerson](relatedperson.html): The value in any kind of contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
-   * </p>
-   */
-  @SearchParamDefinition(name="telecom", path="Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom", description="Multiple Resources: \r\n\r\n* [Patient](patient.html): The value in any kind of telecom details of the patient\r\n* [Person](person.html): The value in any kind of contact\r\n* [Practitioner](practitioner.html): The value in any kind of contact\r\n* [PractitionerRole](practitionerrole.html): The value in any kind of contact\r\n* [RelatedPerson](relatedperson.html): The value in any kind of contact\r\n", type="token" )
-  public static final String SP_TELECOM = "telecom";
- /**
-   * <b>Fluent Client</b> search parameter constant for <b>telecom</b>
-   * <p>
-   * Description: <b>Multiple Resources: 
-
-* [Patient](patient.html): The value in any kind of telecom details of the patient
-* [Person](person.html): The value in any kind of contact
-* [Practitioner](practitioner.html): The value in any kind of contact
-* [PractitionerRole](practitionerrole.html): The value in any kind of contact
-* [RelatedPerson](relatedperson.html): The value in any kind of contact
-</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Patient.telecom | Person.telecom | Practitioner.telecom | PractitionerRole.telecom | RelatedPerson.telecom</b><br>
-   * </p>
-   */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam TELECOM = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_TELECOM);
 
 
 }

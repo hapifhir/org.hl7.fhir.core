@@ -1,8 +1,11 @@
 package org.hl7.fhir.convertors.conv40_50;
 
 
+import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.r4.model.UnsignedIntType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.CodeableReference;
 
 /*
@@ -54,7 +57,7 @@ public class Appointment40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
         if (src.hasPriority())
-            tgt.setPriorityElement(convertUnsignedInt(src.getPriorityElement()));
+            tgt.setPriority(convertAppointmentPriority(src.getPriorityElement()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
@@ -97,7 +100,7 @@ public class Appointment40_50 extends VersionConvertor_40_50 {
         for (CodeableReference t : src.getReason()) if (t.hasReference())
             tgt.addReasonReference(convertReference(t.getReference()));
         if (src.hasPriority())
-            tgt.setPriorityElement(convertUnsignedInt(src.getPriorityElement()));
+          tgt.setPriorityElement(convertAppointmentPriority(src.getPriority()));
         if (src.hasDescription())
             tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
         for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInformation(convertReference(t));
@@ -118,6 +121,19 @@ public class Appointment40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r5.model.Appointment.AppointmentParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertAppointmentParticipantComponent(t));
         for (org.hl7.fhir.r5.model.Period t : src.getRequestedPeriod()) tgt.addRequestedPeriod(convertPeriod(t));
         return tgt;
+    }
+
+
+    private static UnsignedIntType convertAppointmentPriority(CodeableConcept src) {
+      UnsignedIntType tgt = new UnsignedIntType(convertAppointmentPriorityFromR5(src));
+      VersionConvertor_40_50.copyElement(src, tgt);      
+      return tgt;
+    }
+    
+    private static CodeableConcept convertAppointmentPriority(UnsignedIntType src) {
+      CodeableConcept tgt = src.hasValue() ? convertAppointmentPriorityToR5(src.getValue()) : new CodeableConcept();
+      VersionConvertor_40_50.copyElement(src, tgt);      
+      return tgt;
     }
 
     static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Appointment.AppointmentStatus> convertAppointmentStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Appointment.AppointmentStatus> src) throws FHIRException {

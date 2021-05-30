@@ -164,6 +164,9 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     public boolean isError() {
       return this == FATAL || this == ERROR;
     }
+    public boolean isHint() {
+      return this == INFORMATION;
+    }
   }
 
   public enum IssueType {
