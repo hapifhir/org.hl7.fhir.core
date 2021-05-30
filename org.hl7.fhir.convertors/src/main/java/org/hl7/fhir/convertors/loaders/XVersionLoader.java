@@ -22,7 +22,7 @@ public class XVersionLoader {
     switch (VersionUtilities.getMajMin(version)) {
     case "1.0": return VersionConvertor_10_50.convertResource(new org.hl7.fhir.dstu2.formats.XmlParser().parse(stream));
     case "1.4": return VersionConvertor_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.XmlParser().parse(stream));
-    case "3.0": return VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(stream), false);
+    case "3.0": return VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.XmlParser().parse(stream));
     case "4.0": return VersionConvertor_40_50.convertResource(new org.hl7.fhir.r4.formats.XmlParser().parse(stream));
     case "5.0": return new org.hl7.fhir.r5.formats.XmlParser().parse(stream);
     }
@@ -36,7 +36,7 @@ public class XVersionLoader {
     switch (VersionUtilities.getMajMin(version)) {
     case "1.0": return VersionConvertor_10_50.convertResource(new org.hl7.fhir.dstu2.formats.JsonParser().parse(stream));
     case "1.4": return VersionConvertor_14_50.convertResource(new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(stream));
-    case "3.0": return VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(stream), false);
+    case "3.0": return VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(stream));
     case "4.0": return VersionConvertor_40_50.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(stream));
     case "5.0": return new org.hl7.fhir.r5.formats.JsonParser().parse(stream);
     }

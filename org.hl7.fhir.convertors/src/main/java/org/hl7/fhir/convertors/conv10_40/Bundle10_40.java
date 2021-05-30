@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor40;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.FhirPublication;
 
@@ -23,7 +23,7 @@ public class Bundle10_40 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Bundle convertBundle(org.hl7.fhir.r4.model.Bundle src, VersionConvertorAdvisor40 advisor) throws FHIRException {
+    public static org.hl7.fhir.dstu2.model.Bundle convertBundle(org.hl7.fhir.r4.model.Bundle src, BaseAdvisor_10_40 advisor) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Bundle tgt = new org.hl7.fhir.dstu2.model.Bundle();
@@ -62,7 +62,7 @@ public class Bundle10_40 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent convertBundleEntryComponent(org.hl7.fhir.r4.model.Bundle.BundleEntryComponent src, VersionConvertorAdvisor40 advisor) throws FHIRException {
+    public static org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent convertBundleEntryComponent(org.hl7.fhir.r4.model.Bundle.BundleEntryComponent src, BaseAdvisor_10_40 advisor) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
         if (advisor.ignoreEntry(src, FhirPublication.DSTU2))
