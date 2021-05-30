@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.dstu2.formats.JsonParser;
 import org.hl7.fhir.dstu2.formats.XmlParser;
 import org.hl7.fhir.dstu2.model.Resource;
@@ -50,13 +50,13 @@ import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 
-public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader, VersionConvertorAdvisor50 {
+public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
 
   public R2ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
     super(types, lkp);
   }
 
-  private List<CodeSystem> cslist = new ArrayList<>();
+  private final BaseAdvisor_10_50 advisor = new BaseAdvisor_10_50();
 
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
@@ -65,23 +65,25 @@ public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       r2 = new JsonParser().parse(stream);
     else
       r2 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_10_50.convertResource(r2, this);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_10_50.convertResource(r2, advisor);
     Bundle b;
-    if (r5 instanceof Bundle)
+    if (r5 instanceof Bundle) {
       b = (Bundle) r5;
-    else {
+    } else {
       b = new Bundle();
       b.setId(UUID.randomUUID().toString().toLowerCase());
       b.setType(BundleType.COLLECTION);
       b.addEntry().setResource(r5).setFullUrl(r5 instanceof CanonicalResource ? ((CanonicalResource) r5).getUrl() : null);
     }
     // Add any code systems defined as part of processing value sets to the end of the converted Bundle
-    for (CodeSystem cs : cslist) {
+    for (CodeSystem cs : advisor.getCslist()) {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
     }
-    cslist.clear();
+
+    advisor.getCslist().clear();
+
     if (killPrimitives) {
       List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
       for (BundleEntryComponent be : b.getEntry()) {
@@ -113,9 +115,9 @@ public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       r2 = new JsonParser().parse(stream);
     else
       r2 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_10_50.convertResource(r2, this);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_10_50.convertResource(r2, advisor);
     setPath(r5);
-    if (!cslist.isEmpty()) {
+    if (!advisor.getCslist().isEmpty()) {
       throw new FHIRException("Error: Cannot have included code systems");
     }
     if (killPrimitives) {
@@ -145,24 +147,4 @@ public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       }
     }    
   }
-  
-  @Override
-  public boolean ignoreEntry(BundleEntryComponent src, FhirPublication publication) {
-    return false;
-  }
-
-  @Override
-  public void handleCodeSystem(CodeSystem cs, ValueSet vs) {
-    cs.setId(vs.getId());
-    cs.setValueSet(vs.getUrl());
-    cslist.add(cs);
-    
-  }
-
-  @Override
-  public CodeSystem getCodeSystem(ValueSet src) {
-    return null;
-  }
-
-
 }

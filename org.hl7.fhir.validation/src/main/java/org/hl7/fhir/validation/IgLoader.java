@@ -3,7 +3,6 @@ package org.hl7.fhir.validation;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import org.hl7.fhir.convertors.*;
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -650,7 +649,7 @@ public class IgLoader {
         res = new org.hl7.fhir.dstu3.utils.StructureMapUtilities(null).parse(new String(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertor_30_50.convertResource(res, false);
+      r = VersionConvertor_30_50.convertResource(res);
     } else if (fhirVersion.startsWith("4.0")) {
       org.hl7.fhir.r4.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -679,8 +678,7 @@ public class IgLoader {
         res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
-      VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5();
-      r = VersionConvertor_10_50.convertResource(res, advisor);
+      r = VersionConvertor_10_50.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
     } else if (fhirVersion.equals(Constants.VERSION) || "current".equals(fhirVersion)) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         r = new XmlParser().parse(new ByteArrayInputStream(content));

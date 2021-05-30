@@ -1,10 +1,8 @@
-package org.hl7.fhir.convertors.advisors
+package org.hl7.fhir.convertors.advisors.interfaces.codesystem
 
 import org.hl7.fhir.exceptions.FHIRException
-import org.hl7.fhir.r5.model.Bundle
-import org.hl7.fhir.r5.model.CodeSystem
+import org.hl7.fhir.r4.model.*
 import org.hl7.fhir.r5.model.FhirPublication
-import org.hl7.fhir.r5.model.ValueSet
 
 /*
  Copyright (c) 2011+, HL7, Inc.
@@ -33,24 +31,17 @@ import org.hl7.fhir.r5.model.ValueSet
  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
 
-*/
-interface VersionConvertorAdvisor50 {
-
-    /**
-     * When processing a bundle during conversion, we can choose whether to ignore an entry in the bundle. We return
-     * true when it's a resource that isn't handled, and you don't want to convert.
-     *
-     * Different conversions require differing behaviors, so users can determine how they want to handle conversion
-     * for different target [FhirPublication] versions by switching on the the passed in version.
-     *
-     * If implementing this advisor, by default, always return false unless you have a specific reason not to convert
-     * a [Bundle.BundleEntryComponent].
-     *
-     * @param src [Bundle.BundleEntryComponent] to ignore
-     * @param targetVersion [FhirPublication] of the target version
-     * @return [Boolean] True, if we are going to ignore this [Bundle.BundleEntryComponent] in this conversion operation.
-     */
-    fun ignoreEntry(src: Bundle.BundleEntryComponent?, targetVersion: FhirPublication): Boolean
+*/ /**
+ * This interface is passed into the version conversion routines when on of the
+ * converters is producing or converting R4 resources.
+ *
+ * The interface allows users of the code to
+ * 1. manage the life cycle of new resources created (or needed) during the conversion process
+ * 2. manage how unknown content etc is handled
+ *
+ * @author grahame
+ */
+interface CodeSystemAdvisor40 {
 
     /**
      * In R2, code systems are internal to value sets, but in subsequent versions, they
@@ -63,11 +54,12 @@ interface VersionConvertorAdvisor50 {
      * @param source
      * @throws FHIRException
      */
+    @JvmDefault
     @Throws(FHIRException::class)
-    fun handleCodeSystem(tgtcs: CodeSystem?, source: ValueSet?)
+    fun handleCodeSystem(tgtcs: CodeSystem, source: ValueSet) {}
 
     /**
-     * when converting from R5 to R2, and converting a value set, the convertor will need
+     * when converting from R4 to R2, and converting a value set, the convertor will need
      * to find the code system a value set is referring to, so it can include it inline.
      *
      * This routine should find the actual resource
@@ -76,6 +68,10 @@ interface VersionConvertorAdvisor50 {
      * @return
      * @throws FHIRException
      */
+    @JvmDefault
     @Throws(FHIRException::class)
-    fun getCodeSystem(src: ValueSet?): CodeSystem?
+    fun getCodeSystem(src: ValueSet?): CodeSystem? {
+        return null
+    }
+
 }

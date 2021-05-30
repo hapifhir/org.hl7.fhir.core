@@ -1,44 +1,36 @@
 package org.hl7.fhir.convertors.loaders;
 
 import org.hl7.fhir.r4.context.SimpleWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.CanonicalType;
-import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.StructureDefinition;
-import org.hl7.fhir.utilities.npm.NpmPackage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class BaseLoaderR4 implements IContextResourceLoader {
 
   public interface ILoaderKnowledgeProvider {
-    /** 
+    /**
      * get the path for references to this resource.
+     *
      * @param resource
      * @return null if not tracking paths
      */
     String getResourcePath(Resource resource);
   }
-  
+
   public static class NullLoaderKnowledgeProvider implements ILoaderKnowledgeProvider {
     @Override
     public String getResourcePath(Resource resource) {
       return null;
     }
   }
+
   protected final String URL_BASE = "http://hl7.org/fhir/";
   protected final String URL_DSTU2 = "http://hl7.org/fhir/1.0/";
   protected final String URL_DSTU2016MAY = "http://hl7.org/fhir/1.4/";
   protected final String URL_DSTU3 = "http://hl7.org/fhir/3.0/";
   protected final String URL_R4 = "http://hl7.org/fhir/4.0/";
-
   protected final String URL_ELEMENT_DEF_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
 
   protected boolean patchUrls;
-  protected boolean killPrimitives;;
-
+  protected boolean killPrimitives;
   private String[] types;
   private ILoaderKnowledgeProvider lkp;
 
@@ -47,7 +39,7 @@ public abstract class BaseLoaderR4 implements IContextResourceLoader {
     this.types = types;
     this.lkp = lkp;
   }
-  
+
   public String[] getTypes() {
     return types;
   }
@@ -80,6 +72,4 @@ public abstract class BaseLoaderR4 implements IContextResourceLoader {
       r.setUserData("path", path);
     }
   }
-
-
 }

@@ -32,7 +32,8 @@ package org.hl7.fhir.convertors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor40;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.loaders.R2016MayToR4Loader;
 import org.hl7.fhir.convertors.loaders.R2ToR4Loader;
 import org.hl7.fhir.convertors.loaders.R3ToR4Loader;
@@ -401,13 +402,13 @@ public class ExtensionDefinitionGenerator {
 
   private byte[] saveResource(Resource resource, FHIRVersion v) throws IOException, FHIRException {
     if (v == FHIRVersion._3_0_1) {
-      org.hl7.fhir.dstu3.model.Resource res = VersionConvertor_30_40.convertResource(resource, true);
+      org.hl7.fhir.dstu3.model.Resource res = VersionConvertor_30_40.convertResource(resource, new BaseAdvisor_30_40(false));
       return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._1_4_0) {
       org.hl7.fhir.dstu2016may.model.Resource res = VersionConvertor_14_40.convertResource(resource);
       return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._1_0_2) {
-      VersionConvertorAdvisor40 advisor = new IGR2ConvertorAdvisor();
+      BaseAdvisor_10_40 advisor = new IGR2ConvertorAdvisor();
       org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_40.convertResource(resource, advisor);
       return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._4_0_0) {
@@ -419,18 +420,17 @@ public class ExtensionDefinitionGenerator {
   private Resource loadResource(InputStream inputStream, FHIRVersion v) throws IOException, FHIRException {
     if (v == FHIRVersion._3_0_1) {
       org.hl7.fhir.dstu3.model.Resource res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream);
-      return VersionConvertor_30_40.convertResource(res, true);
+      return VersionConvertor_30_40.convertResource(res, new BaseAdvisor_30_40(false));
     } else if (v == FHIRVersion._1_4_0) {
       org.hl7.fhir.dstu2016may.model.Resource res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream);
       return VersionConvertor_14_40.convertResource(res);
     } else if (v == FHIRVersion._1_0_2) {
       org.hl7.fhir.dstu2.model.Resource res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream);
-      VersionConvertorAdvisor40 advisor = new IGR2ConvertorAdvisor();
+      BaseAdvisor_10_40 advisor = new IGR2ConvertorAdvisor();
       return VersionConvertor_10_40.convertResource(res, advisor);
     } else if (v == FHIRVersion._4_0_0) {
       return new JsonParser().parse(inputStream);
     } else
       throw new Error("Unsupported version " + v);
   }
-
 }
