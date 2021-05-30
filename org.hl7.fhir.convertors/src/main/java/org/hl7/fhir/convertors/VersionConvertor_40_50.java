@@ -1,9 +1,11 @@
 package org.hl7.fhir.convertors;
 
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
 import org.hl7.fhir.convertors.conv40_50.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /*
@@ -3387,19 +3389,53 @@ public class VersionConvertor_40_50 extends VersionConvertor_Base {
   }
 
   protected static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
+    copyDomainResource(src, tgt, new BaseAdvisor_40_50());
+  }
+
+  protected static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt, BaseAdvisor_40_50 advisor) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(convertNarrative(src.getText()));
-    for (org.hl7.fhir.r4.model.Resource t : src.getContained()) tgt.addContained(convertResource(t));
-    for (org.hl7.fhir.r4.model.Extension t : src.getExtension()) tgt.addExtension(convertExtension(t));
-    for (org.hl7.fhir.r4.model.Extension t : src.getModifierExtension()) tgt.addModifierExtension(convertExtension(t));
+    src.getContained().stream()
+      .map(resource -> convertResource(resource, advisor))
+      .forEach(tgt::addContained);
+    src.getExtension().forEach(extension -> {
+      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
+        org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();
+        advisor.handleExtension("", extension, convertExtension);//TODO add path
+        tgt.addExtension(convertExtension);
+      } else if (!advisor.ignoreExtension("", extension)) {//TODO add path
+        tgt.addExtension(convertExtension(extension));
+      }
+    });
+    src.getModifierExtension().stream()
+      .filter(extension -> !advisor.ignoreExtension("", extension))//TODO add path
+      .map(VersionConvertor_40_50::convertExtension)
+      .forEach(tgt::addModifierExtension);
   }
 
   protected static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt) throws FHIRException {
+    copyDomainResource(src, tgt, new BaseAdvisor_40_50());
+  }
+
+  protected static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt, BaseAdvisor_40_50 advisor) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(convertNarrative(src.getText()));
-    for (org.hl7.fhir.r5.model.Resource t : src.getContained()) tgt.addContained(convertResource(t));
-    for (org.hl7.fhir.r5.model.Extension t : src.getExtension()) tgt.addExtension(convertExtension(t));
-    for (org.hl7.fhir.r5.model.Extension t : src.getModifierExtension()) tgt.addModifierExtension(convertExtension(t));
+    src.getContained().stream()
+      .map(resource -> convertResource(resource, advisor))
+      .forEach(tgt::addContained);
+    src.getExtension().forEach(extension -> {
+      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
+        org.hl7.fhir.r4.model.Extension convertExtension = new org.hl7.fhir.r4.model.Extension();
+        advisor.handleExtension("", extension, convertExtension);//TODO add path
+        tgt.addExtension(convertExtension);
+      } else if (!advisor.ignoreExtension("", extension)) {//TODO add path
+        tgt.addExtension(convertExtension(extension));
+      }
+    });
+    src.getModifierExtension().stream()
+      .filter(extension -> !advisor.ignoreExtension("", extension))//TODO add path
+      .map(VersionConvertor_40_50::convertExtension)
+      .forEach(tgt::addModifierExtension);
   }
 
   protected static void copyResource(org.hl7.fhir.r4.model.Resource src, org.hl7.fhir.r5.model.Resource tgt) throws FHIRException {
@@ -3417,6 +3453,10 @@ public class VersionConvertor_40_50 extends VersionConvertor_Base {
   }
 
   public static org.hl7.fhir.r5.model.Resource convertResource(org.hl7.fhir.r4.model.Resource src) throws FHIRException {
+    return convertResource(src, new BaseAdvisor_40_50());
+  }
+
+  public static org.hl7.fhir.r5.model.Resource convertResource(org.hl7.fhir.r4.model.Resource src, BaseAdvisor_40_50 advisor) throws FHIRException {
     if (src == null) return null;
     if (src instanceof org.hl7.fhir.r4.model.Parameters)
       return Parameters40_50.convertParameters((org.hl7.fhir.r4.model.Parameters) src);
@@ -3664,10 +3704,18 @@ public class VersionConvertor_40_50 extends VersionConvertor_Base {
       return VerificationResult40_50.convertVerificationResult((org.hl7.fhir.r4.model.VerificationResult) src);
     if (src instanceof org.hl7.fhir.r4.model.VisionPrescription)
       return VisionPrescription40_50.convertVisionPrescription((org.hl7.fhir.r4.model.VisionPrescription) src);
-    throw new FHIRException("Unknown resource " + src.fhirType());
+    if (advisor.failFastOnNullOrUnknownEntry()){
+      throw new FHIRException("Unknown resource " + src.fhirType());
+    } else {
+      return null;
+    }
   }
 
   public static org.hl7.fhir.r4.model.Resource convertResource(org.hl7.fhir.r5.model.Resource src) throws FHIRException {
+    return convertResource(src, new BaseAdvisor_40_50());
+  }
+
+  public static org.hl7.fhir.r4.model.Resource convertResource(org.hl7.fhir.r5.model.Resource src, BaseAdvisor_40_50 advisor) throws FHIRException {
     if (src == null) return null;
     if (src instanceof org.hl7.fhir.r5.model.Parameters)
       return Parameters40_50.convertParameters((org.hl7.fhir.r5.model.Parameters) src);
@@ -3916,7 +3964,11 @@ public class VersionConvertor_40_50 extends VersionConvertor_Base {
       return VerificationResult40_50.convertVerificationResult((org.hl7.fhir.r5.model.VerificationResult) src);
     if (src instanceof org.hl7.fhir.r5.model.VisionPrescription)
       return VisionPrescription40_50.convertVisionPrescription((org.hl7.fhir.r5.model.VisionPrescription) src);
-    throw new FHIRException("Unknown resource " + src.fhirType());
+    if (advisor.failFastOnNullOrUnknownEntry()){
+      throw new FHIRException("Unknown resource " + src.fhirType());
+    } else {
+      return null;
+    }
   }
 
   protected static org.hl7.fhir.r5.model.CodeType convertResourceEnum(org.hl7.fhir.r4.model.CodeType src) {

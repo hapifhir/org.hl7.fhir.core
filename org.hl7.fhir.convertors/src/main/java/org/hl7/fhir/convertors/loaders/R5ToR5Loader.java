@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -47,12 +46,13 @@ import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 
-public class R5ToR5Loader extends BaseLoaderR5 implements VersionConvertorAdvisor50 {
+public class R5ToR5Loader extends BaseLoaderR5 {
 
   public R5ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
     super(types, lkp);
   }
 
+  // TODO Grahame, will this ever be populated? No conversion is being done?
   private List<CodeSystem> cslist = new ArrayList<>();
 
   @Override
@@ -143,23 +143,4 @@ public class R5ToR5Loader extends BaseLoaderR5 implements VersionConvertorAdviso
       }
     }    
   }
-
-  @Override
-  public boolean ignoreEntry(BundleEntryComponent src, FhirPublication publication) {
-    return false;
-  }
-
-  @Override
-  public void handleCodeSystem(CodeSystem cs, ValueSet vs) {
-    cs.setId(vs.getId());
-    cs.setValueSet(vs.getUrl());
-    cslist.add(cs);
-    
-  }
-
-  @Override
-  public CodeSystem getCodeSystem(ValueSet src) {
-    return null;
-  }
-
 }

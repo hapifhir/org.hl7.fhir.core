@@ -1,9 +1,6 @@
-package org.hl7.fhir.convertors.advisors
+package org.hl7.fhir.convertors.advisors.interfaces.bundle
 
 import org.hl7.fhir.dstu3.model.Bundle
-import org.hl7.fhir.dstu3.model.CodeSystem
-import org.hl7.fhir.dstu3.model.ValueSet
-import org.hl7.fhir.exceptions.FHIRException
 import org.hl7.fhir.r5.model.FhirPublication
 
 /*
@@ -43,7 +40,7 @@ import org.hl7.fhir.r5.model.FhirPublication
  *
  * @author grahame
  */
-interface VersionConvertorAdvisor30 {
+interface BundleAdvisor30 {
 
     /**
      * When processing a bundle during conversion, we can choose whether to ignore an entry in the bundle. We return
@@ -59,32 +56,8 @@ interface VersionConvertorAdvisor30 {
      * @param targetVersion [FhirPublication] of the target version
      * @return [Boolean] True, if we are going to ignore this [Bundle.BundleEntryComponent] in this conversion operation.
      */
-    fun ignoreEntry(src: Bundle.BundleEntryComponent?, targetVersion: FhirPublication): Boolean
-
-    /**
-     * In R2, code systems are internal to value sets, but in subsequent versions, they
-     * exist as separate resources. The convertor will create the code system, and then
-     * call this routine for the host to decide what to do with it
-     *
-     * It can make it a contained resource, or it can put it somewhere else
-     *
-     * @param tgtcs
-     * @param source
-     * @throws FHIRException
-     */
-    @Throws(FHIRException::class)
-    fun handleCodeSystem(tgtcs: CodeSystem?, source: ValueSet?)
-
-    /**
-     * when converting from R3 to R2, and converting a value set, the convertor will need
-     * to find the code system a value set is referring to, so it can include it inline.
-     *
-     * This routine should find the actual resource
-     *
-     * @param src
-     * @return
-     * @throws FHIRException
-     */
-    @Throws(FHIRException::class)
-    fun getCodeSystem(src: ValueSet?): CodeSystem?
+    @JvmDefault
+    fun ignoreEntry(src: Bundle.BundleEntryComponent, targetVersion: FhirPublication): Boolean {
+        return false
+    }
 }
