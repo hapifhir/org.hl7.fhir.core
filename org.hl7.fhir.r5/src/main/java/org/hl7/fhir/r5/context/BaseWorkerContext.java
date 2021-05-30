@@ -815,7 +815,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         BundleEntryComponent be = batch.addEntry();
         be.setResource(pIn);
         be.getRequest().setMethod(HTTPVerb.POST);
-        be.getRequest().setUrl("ValueSet/$validate-code");
+        be.getRequest().setUrl("CodeSystem/$validate-code");
         be.setUserData("source", t);
         systems.add(t.getCoding().getSystem());
       }
