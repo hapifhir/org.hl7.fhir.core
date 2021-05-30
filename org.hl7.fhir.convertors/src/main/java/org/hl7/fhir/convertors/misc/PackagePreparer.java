@@ -57,7 +57,7 @@ public class PackagePreparer {
           Bundle b = (Bundle) r;
           for (BundleEntryComponent be : b.getEntry()) {
             try {
-              org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_30_40.convertResource(be.getResource(), false);
+              org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_30_40.convertResource(be.getResource());
               if (r4.getId().startsWith(r4.fhirType()+"-"))
                 be.getResource().setId(r4.getId().substring(r4.fhirType().length()+1));
               if (be.getResource().hasId())
@@ -69,7 +69,7 @@ public class PackagePreparer {
             }
           }
         } else if (r.hasId())
-          new org.hl7.fhir.r4.formats.JsonParser().compose(new FileOutputStream(Utilities.path(Utilities.getDirectoryForFile(f.getAbsolutePath()), r.fhirType()+"-"+r.getId()+".json")), VersionConvertor_30_40.convertResource(r, false));
+          new org.hl7.fhir.r4.formats.JsonParser().compose(new FileOutputStream(Utilities.path(Utilities.getDirectoryForFile(f.getAbsolutePath()), r.fhirType()+"-"+r.getId()+".json")), VersionConvertor_30_40.convertResource(r));
         else
           System.out.println(f.getName()+" has no id");
       } catch (Exception e) {

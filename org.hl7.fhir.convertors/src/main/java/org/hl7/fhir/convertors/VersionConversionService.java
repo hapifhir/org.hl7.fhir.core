@@ -235,7 +235,7 @@ public class VersionConversionService {
         throw new FHIRException("Conversion from R3 to 2016May version is not supported for resources of type "+src.fhirType());
     case R4:
       if (useJava && VersionConvertor_30_40.convertsResource(src.fhirType()))
-        return saveResource40(VersionConvertor_30_40.convertResource(src, false), dstFormat, style); 
+        return saveResource40(VersionConvertor_30_40.convertResource(src), dstFormat, style);
       else
         throw new FHIRException("todo: use script based conversion....");
     case STU3: return saveResource30(src, dstFormat, style);
@@ -259,7 +259,7 @@ public class VersionConversionService {
     case R4: return saveResource40(src, dstFormat, style);
     case STU3:
       if (useJava && VersionConvertor_30_40.convertsResource(src.fhirType()))
-        return saveResource30(VersionConvertor_30_40.convertResource(src, false), dstFormat, style);
+        return saveResource30(VersionConvertor_30_40.convertResource(src), dstFormat, style);
       else
         throw new FHIRException("todo: use script based conversion....");
     default: throw new FHIRException("FHIR Version 'unknown' is not supported by the inter-version convertor");

@@ -389,7 +389,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     if (VersionUtilities.isR3Ver(context.getVersion())) {
       org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(bs.toByteArray());
-      return (StructureDefinition) VersionConvertor_30_50.convertResource(r3, false);
+      return (StructureDefinition) VersionConvertor_30_50.convertResource(r3);
     }
     if (VersionUtilities.isR4Ver(context.getVersion())) {
       org.hl7.fhir.r4.model.Resource r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(bs.toByteArray());
