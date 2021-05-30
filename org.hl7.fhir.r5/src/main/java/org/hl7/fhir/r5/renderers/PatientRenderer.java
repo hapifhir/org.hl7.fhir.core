@@ -21,8 +21,6 @@ import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class PatientRenderer extends ResourceRenderer {
 
-
-
   public PatientRenderer(RenderingContext context) {
     super(context);
   }

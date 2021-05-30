@@ -8,6 +8,7 @@ import org.hl7.fhir.dstu3.model.ElementDefinition.ElementDefinitionSlicingDiscri
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 

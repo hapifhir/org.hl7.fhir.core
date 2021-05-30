@@ -84,7 +84,7 @@ public class VersionConvertor {
     } else if (VersionUtilities.isR3Ver(targetVer)) {
       return getBytesDstu3(cnt, format, r3);
     } else if (VersionUtilities.isR4Ver(targetVer)) {
-      return getBytesR4(cnt, format, VersionConvertor_30_40.convertResource(r3, false));
+      return getBytesR4(cnt, format, VersionConvertor_30_40.convertResource(r3));
     } else {
       throw new FHIRException("Target Version not supported yet: " + targetVer);
     }
@@ -107,7 +107,7 @@ public class VersionConvertor {
     } else if (VersionUtilities.isR2BVer(targetVer)) {
       return getBytesDstu2016(cnt, format, VersionConvertor_14_40.convertResource(r4));
     } else if (VersionUtilities.isR3Ver(targetVer)) {
-      return getBytesDstu3(cnt, format, VersionConvertor_30_40.convertResource(r4, false));
+      return getBytesDstu3(cnt, format, VersionConvertor_30_40.convertResource(r4));
     } else if (VersionUtilities.isR4Ver(targetVer)) {
       return getBytesR4(cnt, format, r4);
     } else {

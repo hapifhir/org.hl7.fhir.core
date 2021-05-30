@@ -39,7 +39,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor30;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_30;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
@@ -50,7 +50,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 
-public class IGPackConverter102 implements VersionConvertorAdvisor30 {
+public class IGPackConverter102 extends BaseAdvisor_10_30 {
   
   public static void main(String[] args) throws Exception {
     new IGPackConverter102().process();

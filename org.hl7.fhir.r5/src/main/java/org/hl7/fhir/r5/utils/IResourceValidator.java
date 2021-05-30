@@ -193,7 +193,10 @@ public interface IResourceValidator {
   
   public boolean isNoInvariantChecks();
   public IResourceValidator setNoInvariantChecks(boolean value) ;
-  
+
+  public boolean isWantInvariantInMessage();
+  public IResourceValidator setWantInvariantInMessage(boolean wantInvariantInMessage); 
+
   public boolean isNoTerminologyChecks();
   public IResourceValidator setNoTerminologyChecks(boolean noTerminologyChecks);
 
@@ -300,7 +303,7 @@ public interface IResourceValidator {
 
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object) throws FHIRException;
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, String profile) throws FHIRException;
-  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, List<StructureDefinition> profile) throws FHIRException; 
+  org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, JsonObject object, List<StructureDefinition> profile) throws FHIRException;
 
 
 }

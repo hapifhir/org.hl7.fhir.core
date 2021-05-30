@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hl7.fhir.convertors.*;
-import org.hl7.fhir.convertors.advisors.VersionConvertorAdvisor50;
 import org.hl7.fhir.convertors.txClient.TerminologyClientFactory;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -21,6 +20,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
@@ -127,6 +127,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   @Getter @Setter private Map<String, byte[]> binaries = new HashMap<>();
   @Getter @Setter private boolean doNative;
   @Getter @Setter private boolean noInvariantChecks;
+  @Getter @Setter private boolean wantInvariantInMessage;
   @Getter @Setter private boolean hintAboutNonMustSupport;
   @Getter @Setter private boolean anyExtensionsAllowed = false;
   @Getter @Setter private String version;
@@ -415,12 +416,25 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return Manager.build(getContext(), structureDefinition);
   }
 
-  public DomainResource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
+  public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = igLoader.loadContent(source, "validate", false);
     Resource res = igLoader.loadResourceByVersion(version, cnt.focus, source);
     RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
-    RendererFactory.factory(res, rc).render((DomainResource) res);
-    return (DomainResource) res;
+    genResource(res, rc);
+    return (Resource) res;
+  }
+
+  public void genResource(Resource res, RenderingContext rc) throws IOException, EOperationOutcome {
+    if (res instanceof Bundle) {
+      Bundle bnd = (Bundle) res;
+      for (BundleEntryComponent be : bnd.getEntry()) {
+        if (be.hasResource()) {
+          genResource(be.getResource(), rc);
+        }
+      }
+    } else {
+      RendererFactory.factory(res, rc).render((DomainResource) res);
+    }
   }
 
   public void convert(String source, String output) throws FHIRException, IOException {
@@ -463,7 +477,11 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
     validator.setNoInvariantChecks(isNoInvariantChecks());
+    validator.setWantInvariantInMessage(isWantInvariantInMessage());
     validator.setValidationLanguage(language);
+    if (language != null) {
+      validator.getContext().setValidationMessageLanguage(Locale.forLanguageTag(language));
+    }
     validator.setAssumeValidRestReferences(assumeValidRestReferences);
     validator.setNoExtensibleWarnings(noExtensibleBindingMessages);
     validator.setSecurityChecks(securityChecks);
@@ -527,7 +545,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (fn.endsWith(".html") || fn.endsWith(".htm") && r instanceof DomainResource)
       new XhtmlComposer(XhtmlComposer.HTML, true).compose(s, ((DomainResource) r).getText().getDiv());
     else if (version.startsWith("3.0")) {
-      org.hl7.fhir.dstu3.model.Resource res = VersionConvertor_30_50.convertResource(r, false);
+      org.hl7.fhir.dstu3.model.Resource res = VersionConvertor_30_50.convertResource(r);
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         new org.hl7.fhir.dstu3.formats.XmlParser().setOutputStyle(org.hl7.fhir.dstu3.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
@@ -555,8 +573,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       else
         throw new FHIRException("Unsupported format for " + fn);
     } else if (version.startsWith("1.0")) {
-      VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5();
-      org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_50.convertResource(r, advisor);
+      org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_50.convertResource(r, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         new org.hl7.fhir.dstu2.formats.JsonParser().setOutputStyle(org.hl7.fhir.dstu2.formats.IParser.OutputStyle.PRETTY).compose(s, res);
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))

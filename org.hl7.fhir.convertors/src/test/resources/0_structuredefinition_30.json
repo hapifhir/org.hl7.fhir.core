@@ -1,0 +1,33 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "ehealth-observation",
+  "url": "http://ehealth.sundhed.dk/fhir/StructureDefinition/ehealth-observation",
+  "name": "ehealth-observation",
+  "title": "eHealth Observation",
+  "status": "draft",
+  "kind": "resource",
+  "abstract": "false",
+  "type": "Observation",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Observation",
+  "derivation": "constraint",
+  "snapshot": {
+    "element": [
+      {
+        "id": "Observation.subject",
+        "path": "Observation.subject",
+        "min": "1",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://ehealth.sundhed.dk/fhir/StructureDefinition/ehealth-patient"
+            ],
+            "aggregation": [
+              "referenced"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

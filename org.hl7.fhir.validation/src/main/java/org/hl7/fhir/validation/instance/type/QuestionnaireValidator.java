@@ -226,7 +226,7 @@ public class QuestionnaireValidator extends BaseValidator {
                 return null;
             case STU3:
               org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(json);
-              r5 = VersionConvertor_30_50.convertResource(r3, false);
+              r5 = VersionConvertor_30_50.convertResource(r3);
               if (r5 instanceof Questionnaire)
                 return (Questionnaire) r5;
               else
