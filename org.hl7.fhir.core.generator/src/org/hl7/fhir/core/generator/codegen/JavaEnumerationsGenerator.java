@@ -155,6 +155,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 	      cc = makeConst(cc);
 				write("            case "+cc+": return \""+c.getCode()+"\";\r\n");
 			}
+    write("            case NULL: return null;\r\n");
 		write("            default: return \"?\";\r\n");
 		write("          }\r\n"); 
 		write("        }\r\n"); 
@@ -166,6 +167,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
       cc = makeConst(cc);
       write("            case "+cc+": return \""+c.getSystem()+"\";\r\n");
     }
+    write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
     write("          }\r\n"); 
     write("        }\r\n"); 
@@ -177,6 +179,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 	      cc = makeConst(cc);
 	      write("            case "+cc+": return \""+Utilities.escapeJava(definitions.getCodeDefinition(c.getSystem(), c.getCode()))+"\";\r\n");
 			}
+    write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
     write("          }\r\n"); 
     write("        }\r\n"); 
@@ -188,6 +191,7 @@ public class JavaEnumerationsGenerator extends JavaBaseGenerator {
 	      cc = makeConst(cc);
 	      write("            case "+cc+": return \""+Utilities.escapeJava(Utilities.noString(c.getDisplay()) ? c.getCode() : c.getDisplay())+"\";\r\n");
 			}
+    write("            case NULL: return null;\r\n");
     write("            default: return \"?\";\r\n");
     write("          }\r\n"); 
     write("        }\r\n"); 

@@ -111,7 +111,7 @@ public class XmlGenerator {
 	}
 
 	private void processElement(Element element) throws IOException, FHIRException  {
-		if (!xml.getDefaultNamespace().equals(element.getNamespaceURI()))
+		if (xml.getDefaultNamespace() == null || !xml.getDefaultNamespace().equals(element.getNamespaceURI()))
 			xml.setDefaultNamespace(element.getNamespaceURI());
 
 		processAttributes(element);

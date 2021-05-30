@@ -1,8 +1,9 @@
 package org.hl7.fhir.convertors.conv10_40;
 
 import java.util.List;
-import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
+
 import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.dstu2.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.BooleanType;
@@ -189,7 +190,7 @@ public class ValueSet10_40 {
         return convertValueSet(src, null);
     }
 
-    public static org.hl7.fhir.r4.model.ValueSet convertValueSet(org.hl7.fhir.dstu2.model.ValueSet src, VersionConvertorAdvisor40 advisor) throws FHIRException {
+    public static org.hl7.fhir.r4.model.ValueSet convertValueSet(org.hl7.fhir.dstu2.model.ValueSet src, BaseAdvisor_10_40 advisor) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.ValueSet tgt = new org.hl7.fhir.r4.model.ValueSet();
@@ -263,11 +264,11 @@ public class ValueSet10_40 {
         return tgt;
     }
 
-    public static org.hl7.fhir.dstu2.model.ValueSet convertValueSet(org.hl7.fhir.r4.model.ValueSet src, VersionConvertorAdvisor40 advisor) throws FHIRException {
+    public static org.hl7.fhir.dstu2.model.ValueSet convertValueSet(org.hl7.fhir.r4.model.ValueSet src, BaseAdvisor_10_40 advisor) throws FHIRException {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.ValueSet tgt = new org.hl7.fhir.dstu2.model.ValueSet();
-        VersionConvertor_10_40.copyDomainResource(src, tgt);
+        VersionConvertor_10_40.copyDomainResource(src, tgt, advisor);
         if (src.hasUrlElement())
             tgt.setUrlElement(VersionConvertor_10_40.convertUri(src.getUrlElement()));
         for (org.hl7.fhir.r4.model.Identifier i : src.getIdentifier()) tgt.setIdentifier(VersionConvertor_10_40.convertIdentifier(i));

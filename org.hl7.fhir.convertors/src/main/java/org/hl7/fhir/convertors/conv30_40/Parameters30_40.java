@@ -33,7 +33,7 @@ public class Parameters30_40 {
         if (src.hasValue())
             tgt.setValue(VersionConvertor_30_40.convertType(src.getValue()));
         if (src.hasResource())
-            tgt.setResource(VersionConvertor_30_40.convertResource(src.getResource(), false));
+            tgt.setResource(VersionConvertor_30_40.convertResource(src.getResource()));
         for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
         return tgt;
     }
@@ -48,7 +48,7 @@ public class Parameters30_40 {
         if (src.hasValue())
             tgt.setValue(VersionConvertor_30_40.convertType(src.getValue()));
         if (src.hasResource())
-            tgt.setResource(VersionConvertor_30_40.convertResource(src.getResource(), false));
+            tgt.setResource(VersionConvertor_30_40.convertResource(src.getResource()));
         for (org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
         return tgt;
     }

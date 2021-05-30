@@ -95,6 +95,7 @@ public class TestingUtilities extends BaseTestingUtilities {
 //        ((SimpleWorkerContext) fcontext).connectToTSServer(new TerminologyClientR5("http://tx.fhir.org/r4"), null);
         fcontexts.put(v, fcontext);
       } catch (Exception e) {
+        e.printStackTrace();
         throw new Error(e);
       }
     }

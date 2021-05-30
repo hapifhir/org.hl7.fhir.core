@@ -4,6 +4,7 @@ import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.dstu3.model.ContactDetail;
 import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 public class ActivityDefinition30_50 {
 
@@ -66,7 +67,7 @@ public class ActivityDefinition30_50 {
         if (src.hasTiming())
             tgt.setTiming(VersionConvertor_30_50.convertType(src.getTiming()));
         if (src.hasLocation())
-            tgt.setLocation(VersionConvertor_30_50.convertReference(src.getLocation()));
+            tgt.setLocation(new CodeableReference(VersionConvertor_30_50.convertReference(src.getLocation())));
         for (org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
         if (src.hasProduct())
             tgt.setProduct(VersionConvertor_30_50.convertType(src.getProduct()));
@@ -152,8 +153,8 @@ public class ActivityDefinition30_50 {
             tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
         if (src.hasTiming())
             tgt.setTiming(VersionConvertor_30_50.convertType(src.getTiming()));
-        if (src.hasLocation())
-            tgt.setLocation(VersionConvertor_30_50.convertReference(src.getLocation()));
+        if (src.getLocation().hasReference())
+            tgt.setLocation(VersionConvertor_30_50.convertReference(src.getLocation().getReference()));
         for (org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
         if (src.hasProduct())
             tgt.setProduct(VersionConvertor_30_50.convertType(src.getProduct()));

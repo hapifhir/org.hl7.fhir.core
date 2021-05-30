@@ -37,9 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
 import org.hl7.fhir.convertors.VersionConvertor_30_40;
-import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Resource;
@@ -51,9 +50,9 @@ import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 
-public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader, VersionConvertorAdvisor40 {
+public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader {
 
-  private List<CodeSystem> cslist = new ArrayList<>();
+  private final BaseAdvisor_30_40 advisor = new BaseAdvisor_30_40();
 
   public R3ToR4Loader() {
     super(new String[0], new NullLoaderKnowledgeProvider());
@@ -66,7 +65,7 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
       r3 = new JsonParser().parse(stream);
     else
       r3 = new XmlParser().parse(stream);
-    org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_30_40.convertResource(r3, false);
+    org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_30_40.convertResource(r3, advisor);
     
     Bundle b;
     if (r4 instanceof Bundle)
@@ -77,7 +76,7 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
       b.setType(BundleType.COLLECTION);
       b.addEntry().setResource(r4).setFullUrl(r4 instanceof MetadataResource ? ((MetadataResource) r4).getUrl() : null);
     }
-    for (CodeSystem cs : cslist) {
+    for (CodeSystem cs : advisor.getCslist()) {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
@@ -119,38 +118,4 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
       }
     }    
   }
-
-  @Override
-  public boolean ignoreEntry(BundleEntryComponent src) {
-    return false;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu2.model.Resource convertR2(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu2016may.model.Resource convertR2016May(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public Resource convertR3(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public void handleCodeSystem(CodeSystem cs, ValueSet vs) {
-    cs.setId(vs.getId());
-    cs.setValueSet(vs.getUrl());
-    cslist.add(cs);
-    
-  }
-
-  @Override
-  public CodeSystem getCodeSystem(ValueSet src) {
-    return null;
-  }
-
 }

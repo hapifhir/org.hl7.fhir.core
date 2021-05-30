@@ -30,9 +30,9 @@ import org.hl7.fhir.r5.model.SearchParameter;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
-import org.hl7.fhir.utilities.cache.FilesystemPackageCacheManager;
-import org.hl7.fhir.utilities.cache.NpmPackage;
-import org.hl7.fhir.utilities.cache.ToolsVersion;
+import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
+import org.hl7.fhir.utilities.npm.NpmPackage;
+import org.hl7.fhir.utilities.npm.ToolsVersion;
 
 public class JavaCoreGenerator {
 
@@ -53,7 +53,6 @@ public class JavaCoreGenerator {
       new JavaCoreGenerator().generate(version, src, dest);
     }
   }
-  
 
   private void generate(String version, String src, String dest) throws Exception {
     long start = System.currentTimeMillis();
@@ -65,7 +64,6 @@ public class JavaCoreGenerator {
     String pid = "r5";
     String jid = "r5";
     
-
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     System.out.println("Cache: "+pcm.getFolder());
     System.out.println("Load hl7.fhir."+pid+".core");

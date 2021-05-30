@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.conv40_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.CodeableReference;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -100,7 +101,7 @@ public class ActivityDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasTiming())
             tgt.setTiming(convertType(src.getTiming()));
         if (src.hasLocation())
-            tgt.setLocation(convertReference(src.getLocation()));
+            tgt.setLocation(new CodeableReference(convertReference(src.getLocation())));
         for (org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
         if (src.hasProduct())
             tgt.setProduct(convertType(src.getProduct()));
@@ -181,8 +182,8 @@ public class ActivityDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setDoNotPerformElement(convertBoolean(src.getDoNotPerformElement()));
         if (src.hasTiming())
             tgt.setTiming(convertType(src.getTiming()));
-        if (src.hasLocation())
-            tgt.setLocation(convertReference(src.getLocation()));
+        if (src.getLocation().hasReference())
+            tgt.setLocation(convertReference(src.getLocation().getReference()));
         for (org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
         if (src.hasProduct())
             tgt.setProduct(convertType(src.getProduct()));

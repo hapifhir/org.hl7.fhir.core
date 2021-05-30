@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.NotImplementedException;
+import org.hl7.fhir.convertors.loaders.XVersionLoader;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -171,24 +173,25 @@ public class SnapShotGenerationXTests {
       this.output = output;
     }
 
-    public void load() throws FHIRFormatError, FileNotFoundException, IOException {
+    public void load(String version) throws FHIRFormatError, FileNotFoundException, IOException {
       if (UtilitiesXTests.findTestResource("rX", "snapshot-generation", id + "-input.json"))
-        source = (StructureDefinition) new JsonParser().parse(UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", id + "-input.json"));
+        source = (StructureDefinition) XVersionLoader.loadJson(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", id + "-input.json"));
       else
-        source = (StructureDefinition) new XmlParser().parse(UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", id + "-input.xml"));
+        source = (StructureDefinition) XVersionLoader.loadXml(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", id + "-input.xml"));
       if (!fail)
-        expected = (StructureDefinition) new XmlParser().parse(UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", id + "-expected.xml"));
+        expected = (StructureDefinition) XVersionLoader.loadXml(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", id + "-expected.xml"));
       if (!Utilities.noString(include))
-        included = (StructureDefinition) new XmlParser().parse(UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", include + ".xml"));
+        included = (StructureDefinition) XVersionLoader.loadXml(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", include + ".xml"));
       if (!Utilities.noString(register)) {
         if (UtilitiesXTests.findTestResource("rX", "snapshot-generation", register + ".xml")) {
-          included = (StructureDefinition) new XmlParser().parse(UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", register + ".xml"));
+          included = (StructureDefinition)  XVersionLoader.loadXml(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", register + ".xml"));
         } else {
-          included = (StructureDefinition) new JsonParser().parse(UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", register + ".json"));
+          included = (StructureDefinition)  XVersionLoader.loadJson(version, UtilitiesXTests.loadTestResourceStream("rX", "snapshot-generation", register + ".json"));
         }
       }
     }
 
+ 
     public boolean isNewSliceProcessing() {
       return newSliceProcessing;
     }
@@ -399,7 +402,7 @@ public class SnapShotGenerationXTests {
     while (test != null && test.getNodeName().equals("test")) {
       TestDetails t = new TestDetails(test);
       context.tests.add(t);
-      t.load();
+      t.load(test.getAttribute("load-version"));
       objects.add(new Object[]{t.getId(), t, context});
       test = XMLUtil.getNextSibling(test);
     }

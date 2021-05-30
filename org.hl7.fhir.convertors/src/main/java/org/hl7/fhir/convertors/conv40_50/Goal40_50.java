@@ -60,8 +60,6 @@ public class Goal40_50 extends VersionConvertor_40_50 {
             tgt.setStatusDateElement(convertDate(src.getStatusDateElement()));
         if (src.hasStatusReason())
             tgt.setStatusReasonElement(convertString(src.getStatusReasonElement()));
-        if (src.hasExpressedBy())
-            tgt.setExpressedBy(convertReference(src.getExpressedBy()));
         for (org.hl7.fhir.r4.model.Reference t : src.getAddresses()) tgt.addAddresses(convertReference(t));
         for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCode()) tgt.addOutcome(convertCodeableConceptToCodeableReference(t));
@@ -93,8 +91,6 @@ public class Goal40_50 extends VersionConvertor_40_50 {
             tgt.setStatusDateElement(convertDate(src.getStatusDateElement()));
         if (src.hasStatusReason())
             tgt.setStatusReasonElement(convertString(src.getStatusReasonElement()));
-        if (src.hasExpressedBy())
-            tgt.setExpressedBy(convertReference(src.getExpressedBy()));
         for (org.hl7.fhir.r5.model.Reference t : src.getAddresses()) tgt.addAddresses(convertReference(t));
         for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(convertAnnotation(t));
         for (CodeableReference t : src.getOutcome()) if (t.hasConcept())

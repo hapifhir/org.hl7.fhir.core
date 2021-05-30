@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation;
 
+import com.google.gson.JsonObject;
 import lombok.Getter;
 import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -15,12 +16,15 @@ import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.turtle.Turtle;
+import org.hl7.fhir.utilities.xml.XMLUtil;
 import org.hl7.fhir.validation.cli.utils.Common;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
+import org.w3c.dom.Document;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -61,7 +65,7 @@ public class IgLoader {
 
   public void loadIg(List<ImplementationGuide> igs,
                      Map<String, byte[]> binaries,
-                     String src, 
+                     String src,
                      boolean recursive) throws IOException, FHIRException {
     NpmPackage npm = src.matches(FilesystemPackageCacheManager.PACKAGE_VERSION_REGEX_OPT) && !new File(src).exists() ? getPackageCacheManager().loadPackage(src, null) : null;
     if (npm != null) {
@@ -143,7 +147,7 @@ public class IgLoader {
    * @throws IOException
    **/
   public Map<String, byte[]> loadIgSource(String src,
-                                          boolean recursive, 
+                                          boolean recursive,
                                           boolean explore) throws FHIRException, IOException {
     // src can be one of the following:
     // - a canonical url for an ig - this will be converted to a package id and loaded into the cache
@@ -197,6 +201,43 @@ public class IgLoader {
     Map<String, byte[]> source = loadIgSourceForVersion(src, recursive, true, versions);
     if (source != null && source.containsKey("version.info"))
       versions.see(readInfoVersion(source.get("version.info")), "version.info in " + src);
+  }
+
+  public void scanForVersions(List<String> sources, VersionSourceInformation versions) throws FHIRException, IOException {
+    List<String> refs = new ArrayList<String>();
+    ValidatorUtils.parseSources(sources, refs, context);
+    for (String ref : refs) {
+      Content cnt = loadContent(ref, "validate", false);
+      String s = TextFile.bytesToString(cnt.focus);
+      if (s.contains("http://hl7.org/fhir/3.0")) {
+        versions.see("3.0", "Profile in " + ref);
+      }
+      if (s.contains("http://hl7.org/fhir/1.0")) {
+        versions.see("1.0", "Profile in " + ref);
+      }
+      if (s.contains("http://hl7.org/fhir/4.0")) {
+        versions.see("4.0", "Profile in " + ref);
+      }
+      if (s.contains("http://hl7.org/fhir/1.4")) {
+        versions.see("1.4", "Profile in " + ref);
+      }
+      try {
+        if (s.startsWith("{")) {
+          JsonObject json = JsonTrackingParser.parse(s, null);
+          if (json.has("fhirVersion")) {
+            versions.see(VersionUtilities.getMajMin(JSONUtil.str(json, "fhirVersion")), "fhirVersion in " + ref);
+          }
+        } else {
+          Document doc = ValidatorUtils.parseXml(cnt.focus);
+          String v = XMLUtil.getNamedChildValue(doc.getDocumentElement(), "fhirVersion");
+          if (v != null) {
+            versions.see(VersionUtilities.getMajMin(v), "fhirVersion in " + ref);
+          }
+        }
+      } catch (Exception e) {
+        // nothing
+      }
+    }
   }
 
   protected Map<String, byte[]> readZip(InputStream stream) throws IOException {
@@ -521,7 +562,7 @@ public class IgLoader {
     for (File ff : f.listFiles()) {
       if (ff.isDirectory() && recursive) {
         res.putAll(scanDirectory(ff, true));
-      } else if (!isIgnoreFile(ff)) {
+      } else if (!ff.isDirectory() && !isIgnoreFile(ff)) {
         Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), ff.getAbsolutePath());
         if (fmt != null) {
           res.put(Utilities.changeFileExt(ff.getName(), "." + fmt.getExtension()), TextFile.fileToBytes(ff.getAbsolutePath()));
@@ -608,7 +649,7 @@ public class IgLoader {
         res = new org.hl7.fhir.dstu3.utils.StructureMapUtilities(null).parse(new String(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertor_30_50.convertResource(res, false);
+      r = VersionConvertor_30_50.convertResource(res);
     } else if (fhirVersion.startsWith("4.0")) {
       org.hl7.fhir.r4.model.Resource res;
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
@@ -637,15 +678,14 @@ public class IgLoader {
         res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
-      VersionConvertorAdvisor50 advisor = new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5();
-      r = VersionConvertor_10_50.convertResource(res, advisor);
+      r = VersionConvertor_10_50.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
     } else if (fhirVersion.equals(Constants.VERSION) || "current".equals(fhirVersion)) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         r = new XmlParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".json") && !fn.endsWith("template.json"))
         r = new JsonParser().parse(new ByteArrayInputStream(content));
       else if (fn.endsWith(".txt"))
-        r = new StructureMapUtilities(context, null, null).parse(TextFile.bytesToString(content), fn);
+        r = new StructureMapUtilities(getContext(), null, null).parse(TextFile.bytesToString(content), fn);
       else if (fn.endsWith(".map"))
         r = new StructureMapUtilities(null).parse(new String(content), fn);
       else

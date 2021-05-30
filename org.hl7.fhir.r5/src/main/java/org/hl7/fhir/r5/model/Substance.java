@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,7 +89,6 @@ public class Substance extends DomainResource {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case ENTEREDINERROR: return "entered-in-error";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,7 +97,6 @@ public class Substance extends DomainResource {
             case ACTIVE: return "http://hl7.org/fhir/substance-status";
             case INACTIVE: return "http://hl7.org/fhir/substance-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/substance-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -107,7 +105,6 @@ public class Substance extends DomainResource {
             case ACTIVE: return "The substance is considered for use or reference.";
             case INACTIVE: return "The substance is considered for reference, but not for use.";
             case ENTEREDINERROR: return "The substance was entered in error.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +113,6 @@ public class Substance extends DomainResource {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case ENTEREDINERROR: return "Entered in Error";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -164,279 +160,6 @@ public class Substance extends DomainResource {
       return code.getSystem();
       }
     }
-
-    @Block()
-    public static class SubstanceInstanceComponent extends BackboneElement implements IBaseBackboneElement {
-        /**
-         * Identifier associated with the package/container (usually a label affixed directly).
-         */
-        @Child(name = "identifier", type = {Identifier.class}, order=1, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Identifier of the package/container", formalDefinition="Identifier associated with the package/container (usually a label affixed directly)." )
-        protected Identifier identifier;
-
-        /**
-         * When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.
-         */
-        @Child(name = "expiry", type = {DateTimeType.class}, order=2, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="When no longer valid to use", formalDefinition="When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry." )
-        protected DateTimeType expiry;
-
-        /**
-         * The amount of the substance.
-         */
-        @Child(name = "quantity", type = {Quantity.class}, order=3, min=0, max=1, modifier=false, summary=true)
-        @Description(shortDefinition="Amount of substance in the package", formalDefinition="The amount of the substance." )
-        protected Quantity quantity;
-
-        private static final long serialVersionUID = -1474380480L;
-
-    /**
-     * Constructor
-     */
-      public SubstanceInstanceComponent() {
-        super();
-      }
-
-        /**
-         * @return {@link #identifier} (Identifier associated with the package/container (usually a label affixed directly).)
-         */
-        public Identifier getIdentifier() { 
-          if (this.identifier == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceInstanceComponent.identifier");
-            else if (Configuration.doAutoCreate())
-              this.identifier = new Identifier(); // cc
-          return this.identifier;
-        }
-
-        public boolean hasIdentifier() { 
-          return this.identifier != null && !this.identifier.isEmpty();
-        }
-
-        /**
-         * @param value {@link #identifier} (Identifier associated with the package/container (usually a label affixed directly).)
-         */
-        public SubstanceInstanceComponent setIdentifier(Identifier value) { 
-          this.identifier = value;
-          return this;
-        }
-
-        /**
-         * @return {@link #expiry} (When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.). This is the underlying object with id, value and extensions. The accessor "getExpiry" gives direct access to the value
-         */
-        public DateTimeType getExpiryElement() { 
-          if (this.expiry == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceInstanceComponent.expiry");
-            else if (Configuration.doAutoCreate())
-              this.expiry = new DateTimeType(); // bb
-          return this.expiry;
-        }
-
-        public boolean hasExpiryElement() { 
-          return this.expiry != null && !this.expiry.isEmpty();
-        }
-
-        public boolean hasExpiry() { 
-          return this.expiry != null && !this.expiry.isEmpty();
-        }
-
-        /**
-         * @param value {@link #expiry} (When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.). This is the underlying object with id, value and extensions. The accessor "getExpiry" gives direct access to the value
-         */
-        public SubstanceInstanceComponent setExpiryElement(DateTimeType value) { 
-          this.expiry = value;
-          return this;
-        }
-
-        /**
-         * @return When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.
-         */
-        public Date getExpiry() { 
-          return this.expiry == null ? null : this.expiry.getValue();
-        }
-
-        /**
-         * @param value When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.
-         */
-        public SubstanceInstanceComponent setExpiry(Date value) { 
-          if (value == null)
-            this.expiry = null;
-          else {
-            if (this.expiry == null)
-              this.expiry = new DateTimeType();
-            this.expiry.setValue(value);
-          }
-          return this;
-        }
-
-        /**
-         * @return {@link #quantity} (The amount of the substance.)
-         */
-        public Quantity getQuantity() { 
-          if (this.quantity == null)
-            if (Configuration.errorOnAutoCreate())
-              throw new Error("Attempt to auto-create SubstanceInstanceComponent.quantity");
-            else if (Configuration.doAutoCreate())
-              this.quantity = new Quantity(); // cc
-          return this.quantity;
-        }
-
-        public boolean hasQuantity() { 
-          return this.quantity != null && !this.quantity.isEmpty();
-        }
-
-        /**
-         * @param value {@link #quantity} (The amount of the substance.)
-         */
-        public SubstanceInstanceComponent setQuantity(Quantity value) { 
-          this.quantity = value;
-          return this;
-        }
-
-        protected void listChildren(List<Property> children) {
-          super.listChildren(children);
-          children.add(new Property("identifier", "Identifier", "Identifier associated with the package/container (usually a label affixed directly).", 0, 1, identifier));
-          children.add(new Property("expiry", "dateTime", "When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.", 0, 1, expiry));
-          children.add(new Property("quantity", "Quantity", "The amount of the substance.", 0, 1, quantity));
-        }
-
-        @Override
-        public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
-          switch (_hash) {
-          case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Identifier associated with the package/container (usually a label affixed directly).", 0, 1, identifier);
-          case -1289159373: /*expiry*/  return new Property("expiry", "dateTime", "When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.", 0, 1, expiry);
-          case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The amount of the substance.", 0, 1, quantity);
-          default: return super.getNamedProperty(_hash, _name, _checkValid);
-          }
-
-        }
-
-      @Override
-      public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
-        switch (hash) {
-        case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : new Base[] {this.identifier}; // Identifier
-        case -1289159373: /*expiry*/ return this.expiry == null ? new Base[0] : new Base[] {this.expiry}; // DateTimeType
-        case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
-        default: return super.getProperty(hash, name, checkValid);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(int hash, String name, Base value) throws FHIRException {
-        switch (hash) {
-        case -1618432855: // identifier
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
-          return value;
-        case -1289159373: // expiry
-          this.expiry = TypeConvertor.castToDateTime(value); // DateTimeType
-          return value;
-        case -1285004149: // quantity
-          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
-          return value;
-        default: return super.setProperty(hash, name, value);
-        }
-
-      }
-
-      @Override
-      public Base setProperty(String name, Base value) throws FHIRException {
-        if (name.equals("identifier")) {
-          this.identifier = TypeConvertor.castToIdentifier(value); // Identifier
-        } else if (name.equals("expiry")) {
-          this.expiry = TypeConvertor.castToDateTime(value); // DateTimeType
-        } else if (name.equals("quantity")) {
-          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
-        } else
-          return super.setProperty(name, value);
-        return value;
-      }
-
-      @Override
-      public Base makeProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1618432855:  return getIdentifier();
-        case -1289159373:  return getExpiryElement();
-        case -1285004149:  return getQuantity();
-        default: return super.makeProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public String[] getTypesForProperty(int hash, String name) throws FHIRException {
-        switch (hash) {
-        case -1618432855: /*identifier*/ return new String[] {"Identifier"};
-        case -1289159373: /*expiry*/ return new String[] {"dateTime"};
-        case -1285004149: /*quantity*/ return new String[] {"Quantity"};
-        default: return super.getTypesForProperty(hash, name);
-        }
-
-      }
-
-      @Override
-      public Base addChild(String name) throws FHIRException {
-        if (name.equals("identifier")) {
-          this.identifier = new Identifier();
-          return this.identifier;
-        }
-        else if (name.equals("expiry")) {
-          throw new FHIRException("Cannot call addChild on a primitive type Substance.instance.expiry");
-        }
-        else if (name.equals("quantity")) {
-          this.quantity = new Quantity();
-          return this.quantity;
-        }
-        else
-          return super.addChild(name);
-      }
-
-      public SubstanceInstanceComponent copy() {
-        SubstanceInstanceComponent dst = new SubstanceInstanceComponent();
-        copyValues(dst);
-        return dst;
-      }
-
-      public void copyValues(SubstanceInstanceComponent dst) {
-        super.copyValues(dst);
-        dst.identifier = identifier == null ? null : identifier.copy();
-        dst.expiry = expiry == null ? null : expiry.copy();
-        dst.quantity = quantity == null ? null : quantity.copy();
-      }
-
-      @Override
-      public boolean equalsDeep(Base other_) {
-        if (!super.equalsDeep(other_))
-          return false;
-        if (!(other_ instanceof SubstanceInstanceComponent))
-          return false;
-        SubstanceInstanceComponent o = (SubstanceInstanceComponent) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(expiry, o.expiry, true) && compareDeep(quantity, o.quantity, true)
-          ;
-      }
-
-      @Override
-      public boolean equalsShallow(Base other_) {
-        if (!super.equalsShallow(other_))
-          return false;
-        if (!(other_ instanceof SubstanceInstanceComponent))
-          return false;
-        SubstanceInstanceComponent o = (SubstanceInstanceComponent) other_;
-        return compareValues(expiry, o.expiry, true);
-      }
-
-      public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, expiry, quantity
-          );
-      }
-
-  public String fhirType() {
-    return "Substance.instance";
-
-  }
-
-  }
 
     @Block()
     public static class SubstanceIngredientComponent extends BackboneElement implements IBaseBackboneElement {
@@ -684,16 +407,23 @@ public class Substance extends DomainResource {
   }
 
     /**
-     * Unique identifier for the substance.
+     * Unique identifier for the substance. For an instance, an identifier associated with the package/container (usually a label affixed directly).
      */
     @Child(name = "identifier", type = {Identifier.class}, order=0, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="Unique identifier", formalDefinition="Unique identifier for the substance." )
+    @Description(shortDefinition="Unique identifier", formalDefinition="Unique identifier for the substance. For an instance, an identifier associated with the package/container (usually a label affixed directly)." )
     protected List<Identifier> identifier;
+
+    /**
+     * A boolean to indicate if this an instance of a substance or a kind of one (a definition).
+     */
+    @Child(name = "instance", type = {BooleanType.class}, order=1, min=1, max=1, modifier=true, summary=true)
+    @Description(shortDefinition="Is this an instance of a substance or a kind of one", formalDefinition="A boolean to indicate if this an instance of a substance or a kind of one (a definition)." )
+    protected BooleanType instance;
 
     /**
      * A code to indicate if the substance is actively used.
      */
-    @Child(name = "status", type = {CodeType.class}, order=1, min=0, max=1, modifier=true, summary=true)
+    @Child(name = "status", type = {CodeType.class}, order=2, min=0, max=1, modifier=true, summary=true)
     @Description(shortDefinition="active | inactive | entered-in-error", formalDefinition="A code to indicate if the substance is actively used." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-status")
     protected Enumeration<FHIRSubstanceStatus> status;
@@ -701,7 +431,7 @@ public class Substance extends DomainResource {
     /**
      * A code that classifies the general type of substance.  This is used  for searching, sorting and display purposes.
      */
-    @Child(name = "category", type = {CodeableConcept.class}, order=2, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "category", type = {CodeableConcept.class}, order=3, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="What class/type of substance this is", formalDefinition="A code that classifies the general type of substance.  This is used  for searching, sorting and display purposes." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-category")
     protected List<CodeableConcept> category;
@@ -709,33 +439,40 @@ public class Substance extends DomainResource {
     /**
      * A code (or set of codes) that identify this substance.
      */
-    @Child(name = "code", type = {CodeableConcept.class}, order=3, min=1, max=1, modifier=false, summary=true)
+    @Child(name = "code", type = {CodeableReference.class}, order=4, min=1, max=1, modifier=false, summary=true)
     @Description(shortDefinition="What substance this is", formalDefinition="A code (or set of codes) that identify this substance." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/substance-code")
-    protected CodeableConcept code;
+    protected CodeableReference code;
 
     /**
      * A description of the substance - its appearance, handling requirements, and other usage notes.
      */
-    @Child(name = "description", type = {StringType.class}, order=4, min=0, max=1, modifier=false, summary=true)
+    @Child(name = "description", type = {StringType.class}, order=5, min=0, max=1, modifier=false, summary=true)
     @Description(shortDefinition="Textual description of the substance, comments", formalDefinition="A description of the substance - its appearance, handling requirements, and other usage notes." )
     protected StringType description;
 
     /**
-     * Substance may be used to describe a kind of substance, or a specific package/container of the substance: an instance.
+     * When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.
      */
-    @Child(name = "instance", type = {}, order=5, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
-    @Description(shortDefinition="If this describes a specific package/container of the substance", formalDefinition="Substance may be used to describe a kind of substance, or a specific package/container of the substance: an instance." )
-    protected List<SubstanceInstanceComponent> instance;
+    @Child(name = "expiry", type = {DateTimeType.class}, order=6, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="When no longer valid to use", formalDefinition="When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry." )
+    protected DateTimeType expiry;
+
+    /**
+     * The amount of the substance.
+     */
+    @Child(name = "quantity", type = {Quantity.class}, order=7, min=0, max=1, modifier=false, summary=true)
+    @Description(shortDefinition="Amount of substance in the package", formalDefinition="The amount of the substance." )
+    protected Quantity quantity;
 
     /**
      * A substance can be composed of other substances.
      */
-    @Child(name = "ingredient", type = {}, order=6, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
+    @Child(name = "ingredient", type = {}, order=8, min=0, max=Child.MAX_UNLIMITED, modifier=false, summary=true)
     @Description(shortDefinition="Composition information about the substance", formalDefinition="A substance can be composed of other substances." )
     protected List<SubstanceIngredientComponent> ingredient;
 
-    private static final long serialVersionUID = -1467626602L;
+    private static final long serialVersionUID = -15918775L;
 
   /**
    * Constructor
@@ -747,13 +484,14 @@ public class Substance extends DomainResource {
   /**
    * Constructor
    */
-    public Substance(CodeableConcept code) {
+    public Substance(boolean instance, CodeableReference code) {
       super();
+      this.setInstance(instance);
       this.setCode(code);
     }
 
     /**
-     * @return {@link #identifier} (Unique identifier for the substance.)
+     * @return {@link #identifier} (Unique identifier for the substance. For an instance, an identifier associated with the package/container (usually a label affixed directly).)
      */
     public List<Identifier> getIdentifier() { 
       if (this.identifier == null)
@@ -803,6 +541,51 @@ public class Substance extends DomainResource {
         addIdentifier();
       }
       return getIdentifier().get(0);
+    }
+
+    /**
+     * @return {@link #instance} (A boolean to indicate if this an instance of a substance or a kind of one (a definition).). This is the underlying object with id, value and extensions. The accessor "getInstance" gives direct access to the value
+     */
+    public BooleanType getInstanceElement() { 
+      if (this.instance == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Substance.instance");
+        else if (Configuration.doAutoCreate())
+          this.instance = new BooleanType(); // bb
+      return this.instance;
+    }
+
+    public boolean hasInstanceElement() { 
+      return this.instance != null && !this.instance.isEmpty();
+    }
+
+    public boolean hasInstance() { 
+      return this.instance != null && !this.instance.isEmpty();
+    }
+
+    /**
+     * @param value {@link #instance} (A boolean to indicate if this an instance of a substance or a kind of one (a definition).). This is the underlying object with id, value and extensions. The accessor "getInstance" gives direct access to the value
+     */
+    public Substance setInstanceElement(BooleanType value) { 
+      this.instance = value;
+      return this;
+    }
+
+    /**
+     * @return A boolean to indicate if this an instance of a substance or a kind of one (a definition).
+     */
+    public boolean getInstance() { 
+      return this.instance == null || this.instance.isEmpty() ? false : this.instance.getValue();
+    }
+
+    /**
+     * @param value A boolean to indicate if this an instance of a substance or a kind of one (a definition).
+     */
+    public Substance setInstance(boolean value) { 
+        if (this.instance == null)
+          this.instance = new BooleanType();
+        this.instance.setValue(value);
+      return this;
     }
 
     /**
@@ -910,12 +693,12 @@ public class Substance extends DomainResource {
     /**
      * @return {@link #code} (A code (or set of codes) that identify this substance.)
      */
-    public CodeableConcept getCode() { 
+    public CodeableReference getCode() { 
       if (this.code == null)
         if (Configuration.errorOnAutoCreate())
           throw new Error("Attempt to auto-create Substance.code");
         else if (Configuration.doAutoCreate())
-          this.code = new CodeableConcept(); // cc
+          this.code = new CodeableReference(); // cc
       return this.code;
     }
 
@@ -926,7 +709,7 @@ public class Substance extends DomainResource {
     /**
      * @param value {@link #code} (A code (or set of codes) that identify this substance.)
      */
-    public Substance setCode(CodeableConcept value) { 
+    public Substance setCode(CodeableReference value) { 
       this.code = value;
       return this;
     }
@@ -981,56 +764,76 @@ public class Substance extends DomainResource {
     }
 
     /**
-     * @return {@link #instance} (Substance may be used to describe a kind of substance, or a specific package/container of the substance: an instance.)
+     * @return {@link #expiry} (When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.). This is the underlying object with id, value and extensions. The accessor "getExpiry" gives direct access to the value
      */
-    public List<SubstanceInstanceComponent> getInstance() { 
-      if (this.instance == null)
-        this.instance = new ArrayList<SubstanceInstanceComponent>();
-      return this.instance;
+    public DateTimeType getExpiryElement() { 
+      if (this.expiry == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Substance.expiry");
+        else if (Configuration.doAutoCreate())
+          this.expiry = new DateTimeType(); // bb
+      return this.expiry;
+    }
+
+    public boolean hasExpiryElement() { 
+      return this.expiry != null && !this.expiry.isEmpty();
+    }
+
+    public boolean hasExpiry() { 
+      return this.expiry != null && !this.expiry.isEmpty();
     }
 
     /**
-     * @return Returns a reference to <code>this</code> for easy method chaining
+     * @param value {@link #expiry} (When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.). This is the underlying object with id, value and extensions. The accessor "getExpiry" gives direct access to the value
      */
-    public Substance setInstance(List<SubstanceInstanceComponent> theInstance) { 
-      this.instance = theInstance;
-      return this;
-    }
-
-    public boolean hasInstance() { 
-      if (this.instance == null)
-        return false;
-      for (SubstanceInstanceComponent item : this.instance)
-        if (!item.isEmpty())
-          return true;
-      return false;
-    }
-
-    public SubstanceInstanceComponent addInstance() { //3
-      SubstanceInstanceComponent t = new SubstanceInstanceComponent();
-      if (this.instance == null)
-        this.instance = new ArrayList<SubstanceInstanceComponent>();
-      this.instance.add(t);
-      return t;
-    }
-
-    public Substance addInstance(SubstanceInstanceComponent t) { //3
-      if (t == null)
-        return this;
-      if (this.instance == null)
-        this.instance = new ArrayList<SubstanceInstanceComponent>();
-      this.instance.add(t);
+    public Substance setExpiryElement(DateTimeType value) { 
+      this.expiry = value;
       return this;
     }
 
     /**
-     * @return The first repetition of repeating field {@link #instance}, creating it if it does not already exist {3}
+     * @return When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.
      */
-    public SubstanceInstanceComponent getInstanceFirstRep() { 
-      if (getInstance().isEmpty()) {
-        addInstance();
+    public Date getExpiry() { 
+      return this.expiry == null ? null : this.expiry.getValue();
+    }
+
+    /**
+     * @param value When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.
+     */
+    public Substance setExpiry(Date value) { 
+      if (value == null)
+        this.expiry = null;
+      else {
+        if (this.expiry == null)
+          this.expiry = new DateTimeType();
+        this.expiry.setValue(value);
       }
-      return getInstance().get(0);
+      return this;
+    }
+
+    /**
+     * @return {@link #quantity} (The amount of the substance.)
+     */
+    public Quantity getQuantity() { 
+      if (this.quantity == null)
+        if (Configuration.errorOnAutoCreate())
+          throw new Error("Attempt to auto-create Substance.quantity");
+        else if (Configuration.doAutoCreate())
+          this.quantity = new Quantity(); // cc
+      return this.quantity;
+    }
+
+    public boolean hasQuantity() { 
+      return this.quantity != null && !this.quantity.isEmpty();
+    }
+
+    /**
+     * @param value {@link #quantity} (The amount of the substance.)
+     */
+    public Substance setQuantity(Quantity value) { 
+      this.quantity = value;
+      return this;
     }
 
     /**
@@ -1088,24 +891,28 @@ public class Substance extends DomainResource {
 
       protected void listChildren(List<Property> children) {
         super.listChildren(children);
-        children.add(new Property("identifier", "Identifier", "Unique identifier for the substance.", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("identifier", "Identifier", "Unique identifier for the substance. For an instance, an identifier associated with the package/container (usually a label affixed directly).", 0, java.lang.Integer.MAX_VALUE, identifier));
+        children.add(new Property("instance", "boolean", "A boolean to indicate if this an instance of a substance or a kind of one (a definition).", 0, 1, instance));
         children.add(new Property("status", "code", "A code to indicate if the substance is actively used.", 0, 1, status));
         children.add(new Property("category", "CodeableConcept", "A code that classifies the general type of substance.  This is used  for searching, sorting and display purposes.", 0, java.lang.Integer.MAX_VALUE, category));
-        children.add(new Property("code", "CodeableConcept", "A code (or set of codes) that identify this substance.", 0, 1, code));
+        children.add(new Property("code", "CodeableReference(SubstanceDefinition)", "A code (or set of codes) that identify this substance.", 0, 1, code));
         children.add(new Property("description", "string", "A description of the substance - its appearance, handling requirements, and other usage notes.", 0, 1, description));
-        children.add(new Property("instance", "", "Substance may be used to describe a kind of substance, or a specific package/container of the substance: an instance.", 0, java.lang.Integer.MAX_VALUE, instance));
+        children.add(new Property("expiry", "dateTime", "When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.", 0, 1, expiry));
+        children.add(new Property("quantity", "Quantity", "The amount of the substance.", 0, 1, quantity));
         children.add(new Property("ingredient", "", "A substance can be composed of other substances.", 0, java.lang.Integer.MAX_VALUE, ingredient));
       }
 
       @Override
       public Property getNamedProperty(int _hash, String _name, boolean _checkValid) throws FHIRException {
         switch (_hash) {
-        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique identifier for the substance.", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case -1618432855: /*identifier*/  return new Property("identifier", "Identifier", "Unique identifier for the substance. For an instance, an identifier associated with the package/container (usually a label affixed directly).", 0, java.lang.Integer.MAX_VALUE, identifier);
+        case 555127957: /*instance*/  return new Property("instance", "boolean", "A boolean to indicate if this an instance of a substance or a kind of one (a definition).", 0, 1, instance);
         case -892481550: /*status*/  return new Property("status", "code", "A code to indicate if the substance is actively used.", 0, 1, status);
         case 50511102: /*category*/  return new Property("category", "CodeableConcept", "A code that classifies the general type of substance.  This is used  for searching, sorting and display purposes.", 0, java.lang.Integer.MAX_VALUE, category);
-        case 3059181: /*code*/  return new Property("code", "CodeableConcept", "A code (or set of codes) that identify this substance.", 0, 1, code);
+        case 3059181: /*code*/  return new Property("code", "CodeableReference(SubstanceDefinition)", "A code (or set of codes) that identify this substance.", 0, 1, code);
         case -1724546052: /*description*/  return new Property("description", "string", "A description of the substance - its appearance, handling requirements, and other usage notes.", 0, 1, description);
-        case 555127957: /*instance*/  return new Property("instance", "", "Substance may be used to describe a kind of substance, or a specific package/container of the substance: an instance.", 0, java.lang.Integer.MAX_VALUE, instance);
+        case -1289159373: /*expiry*/  return new Property("expiry", "dateTime", "When the substance is no longer valid to use. For some substances, a single arbitrary date is used for expiry.", 0, 1, expiry);
+        case -1285004149: /*quantity*/  return new Property("quantity", "Quantity", "The amount of the substance.", 0, 1, quantity);
         case -206409263: /*ingredient*/  return new Property("ingredient", "", "A substance can be composed of other substances.", 0, java.lang.Integer.MAX_VALUE, ingredient);
         default: return super.getNamedProperty(_hash, _name, _checkValid);
         }
@@ -1116,11 +923,13 @@ public class Substance extends DomainResource {
       public Base[] getProperty(int hash, String name, boolean checkValid) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return this.identifier == null ? new Base[0] : this.identifier.toArray(new Base[this.identifier.size()]); // Identifier
+        case 555127957: /*instance*/ return this.instance == null ? new Base[0] : new Base[] {this.instance}; // BooleanType
         case -892481550: /*status*/ return this.status == null ? new Base[0] : new Base[] {this.status}; // Enumeration<FHIRSubstanceStatus>
         case 50511102: /*category*/ return this.category == null ? new Base[0] : this.category.toArray(new Base[this.category.size()]); // CodeableConcept
-        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableConcept
+        case 3059181: /*code*/ return this.code == null ? new Base[0] : new Base[] {this.code}; // CodeableReference
         case -1724546052: /*description*/ return this.description == null ? new Base[0] : new Base[] {this.description}; // StringType
-        case 555127957: /*instance*/ return this.instance == null ? new Base[0] : this.instance.toArray(new Base[this.instance.size()]); // SubstanceInstanceComponent
+        case -1289159373: /*expiry*/ return this.expiry == null ? new Base[0] : new Base[] {this.expiry}; // DateTimeType
+        case -1285004149: /*quantity*/ return this.quantity == null ? new Base[0] : new Base[] {this.quantity}; // Quantity
         case -206409263: /*ingredient*/ return this.ingredient == null ? new Base[0] : this.ingredient.toArray(new Base[this.ingredient.size()]); // SubstanceIngredientComponent
         default: return super.getProperty(hash, name, checkValid);
         }
@@ -1133,6 +942,9 @@ public class Substance extends DomainResource {
         case -1618432855: // identifier
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value)); // Identifier
           return value;
+        case 555127957: // instance
+          this.instance = TypeConvertor.castToBoolean(value); // BooleanType
+          return value;
         case -892481550: // status
           value = new FHIRSubstanceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<FHIRSubstanceStatus>
@@ -1141,13 +953,16 @@ public class Substance extends DomainResource {
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value)); // CodeableConcept
           return value;
         case 3059181: // code
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableReference(value); // CodeableReference
           return value;
         case -1724546052: // description
           this.description = TypeConvertor.castToString(value); // StringType
           return value;
-        case 555127957: // instance
-          this.getInstance().add((SubstanceInstanceComponent) value); // SubstanceInstanceComponent
+        case -1289159373: // expiry
+          this.expiry = TypeConvertor.castToDateTime(value); // DateTimeType
+          return value;
+        case -1285004149: // quantity
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
           return value;
         case -206409263: // ingredient
           this.getIngredient().add((SubstanceIngredientComponent) value); // SubstanceIngredientComponent
@@ -1161,17 +976,21 @@ public class Substance extends DomainResource {
       public Base setProperty(String name, Base value) throws FHIRException {
         if (name.equals("identifier")) {
           this.getIdentifier().add(TypeConvertor.castToIdentifier(value));
+        } else if (name.equals("instance")) {
+          this.instance = TypeConvertor.castToBoolean(value); // BooleanType
         } else if (name.equals("status")) {
           value = new FHIRSubstanceStatusEnumFactory().fromType(TypeConvertor.castToCode(value));
           this.status = (Enumeration) value; // Enumeration<FHIRSubstanceStatus>
         } else if (name.equals("category")) {
           this.getCategory().add(TypeConvertor.castToCodeableConcept(value));
         } else if (name.equals("code")) {
-          this.code = TypeConvertor.castToCodeableConcept(value); // CodeableConcept
+          this.code = TypeConvertor.castToCodeableReference(value); // CodeableReference
         } else if (name.equals("description")) {
           this.description = TypeConvertor.castToString(value); // StringType
-        } else if (name.equals("instance")) {
-          this.getInstance().add((SubstanceInstanceComponent) value);
+        } else if (name.equals("expiry")) {
+          this.expiry = TypeConvertor.castToDateTime(value); // DateTimeType
+        } else if (name.equals("quantity")) {
+          this.quantity = TypeConvertor.castToQuantity(value); // Quantity
         } else if (name.equals("ingredient")) {
           this.getIngredient().add((SubstanceIngredientComponent) value);
         } else
@@ -1183,11 +1002,13 @@ public class Substance extends DomainResource {
       public Base makeProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855:  return addIdentifier(); 
+        case 555127957:  return getInstanceElement();
         case -892481550:  return getStatusElement();
         case 50511102:  return addCategory(); 
         case 3059181:  return getCode();
         case -1724546052:  return getDescriptionElement();
-        case 555127957:  return addInstance(); 
+        case -1289159373:  return getExpiryElement();
+        case -1285004149:  return getQuantity();
         case -206409263:  return addIngredient(); 
         default: return super.makeProperty(hash, name);
         }
@@ -1198,11 +1019,13 @@ public class Substance extends DomainResource {
       public String[] getTypesForProperty(int hash, String name) throws FHIRException {
         switch (hash) {
         case -1618432855: /*identifier*/ return new String[] {"Identifier"};
+        case 555127957: /*instance*/ return new String[] {"boolean"};
         case -892481550: /*status*/ return new String[] {"code"};
         case 50511102: /*category*/ return new String[] {"CodeableConcept"};
-        case 3059181: /*code*/ return new String[] {"CodeableConcept"};
+        case 3059181: /*code*/ return new String[] {"CodeableReference"};
         case -1724546052: /*description*/ return new String[] {"string"};
-        case 555127957: /*instance*/ return new String[] {};
+        case -1289159373: /*expiry*/ return new String[] {"dateTime"};
+        case -1285004149: /*quantity*/ return new String[] {"Quantity"};
         case -206409263: /*ingredient*/ return new String[] {};
         default: return super.getTypesForProperty(hash, name);
         }
@@ -1214,6 +1037,9 @@ public class Substance extends DomainResource {
         if (name.equals("identifier")) {
           return addIdentifier();
         }
+        else if (name.equals("instance")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Substance.instance");
+        }
         else if (name.equals("status")) {
           throw new FHIRException("Cannot call addChild on a primitive type Substance.status");
         }
@@ -1221,14 +1047,18 @@ public class Substance extends DomainResource {
           return addCategory();
         }
         else if (name.equals("code")) {
-          this.code = new CodeableConcept();
+          this.code = new CodeableReference();
           return this.code;
         }
         else if (name.equals("description")) {
           throw new FHIRException("Cannot call addChild on a primitive type Substance.description");
         }
-        else if (name.equals("instance")) {
-          return addInstance();
+        else if (name.equals("expiry")) {
+          throw new FHIRException("Cannot call addChild on a primitive type Substance.expiry");
+        }
+        else if (name.equals("quantity")) {
+          this.quantity = new Quantity();
+          return this.quantity;
         }
         else if (name.equals("ingredient")) {
           return addIngredient();
@@ -1255,6 +1085,7 @@ public class Substance extends DomainResource {
           for (Identifier i : identifier)
             dst.identifier.add(i.copy());
         };
+        dst.instance = instance == null ? null : instance.copy();
         dst.status = status == null ? null : status.copy();
         if (category != null) {
           dst.category = new ArrayList<CodeableConcept>();
@@ -1263,11 +1094,8 @@ public class Substance extends DomainResource {
         };
         dst.code = code == null ? null : code.copy();
         dst.description = description == null ? null : description.copy();
-        if (instance != null) {
-          dst.instance = new ArrayList<SubstanceInstanceComponent>();
-          for (SubstanceInstanceComponent i : instance)
-            dst.instance.add(i.copy());
-        };
+        dst.expiry = expiry == null ? null : expiry.copy();
+        dst.quantity = quantity == null ? null : quantity.copy();
         if (ingredient != null) {
           dst.ingredient = new ArrayList<SubstanceIngredientComponent>();
           for (SubstanceIngredientComponent i : ingredient)
@@ -1286,9 +1114,10 @@ public class Substance extends DomainResource {
         if (!(other_ instanceof Substance))
           return false;
         Substance o = (Substance) other_;
-        return compareDeep(identifier, o.identifier, true) && compareDeep(status, o.status, true) && compareDeep(category, o.category, true)
-           && compareDeep(code, o.code, true) && compareDeep(description, o.description, true) && compareDeep(instance, o.instance, true)
-           && compareDeep(ingredient, o.ingredient, true);
+        return compareDeep(identifier, o.identifier, true) && compareDeep(instance, o.instance, true) && compareDeep(status, o.status, true)
+           && compareDeep(category, o.category, true) && compareDeep(code, o.code, true) && compareDeep(description, o.description, true)
+           && compareDeep(expiry, o.expiry, true) && compareDeep(quantity, o.quantity, true) && compareDeep(ingredient, o.ingredient, true)
+          ;
       }
 
       @Override
@@ -1298,12 +1127,13 @@ public class Substance extends DomainResource {
         if (!(other_ instanceof Substance))
           return false;
         Substance o = (Substance) other_;
-        return compareValues(status, o.status, true) && compareValues(description, o.description, true);
+        return compareValues(instance, o.instance, true) && compareValues(status, o.status, true) && compareValues(description, o.description, true)
+           && compareValues(expiry, o.expiry, true);
       }
 
       public boolean isEmpty() {
-        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, status, category
-          , code, description, instance, ingredient);
+        return super.isEmpty() && ca.uhn.fhir.util.ElementUtil.isEmpty(identifier, instance, status
+          , category, code, description, expiry, quantity, ingredient);
       }
 
   @Override
@@ -1336,57 +1166,63 @@ public class Substance extends DomainResource {
    * <p>
    * Description: <b>The code of the substance or ingredient</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Substance.code | (Substance.ingredient.substance as CodeableConcept)</b><br>
+   * Path: <b>Substance.code.concept | (Substance.ingredient.substance as CodeableConcept)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="code", path="Substance.code | (Substance.ingredient.substance as CodeableConcept)", description="The code of the substance or ingredient", type="token" )
+  @SearchParamDefinition(name="code", path="Substance.code.concept | (Substance.ingredient.substance as CodeableConcept)", description="The code of the substance or ingredient", type="token" )
   public static final String SP_CODE = "code";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>code</b>
    * <p>
    * Description: <b>The code of the substance or ingredient</b><br>
    * Type: <b>token</b><br>
-   * Path: <b>Substance.code | (Substance.ingredient.substance as CodeableConcept)</b><br>
+   * Path: <b>Substance.code.concept | (Substance.ingredient.substance as CodeableConcept)</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.TokenClientParam CODE = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CODE);
 
  /**
-   * Search parameter: <b>container-identifier</b>
+   * Search parameter: <b>code-reference</b>
    * <p>
-   * Description: <b>Identifier of the package/container</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Substance.instance.identifier</b><br>
+   * Description: <b>A reference to the defining substance</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Substance.code.reference</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="container-identifier", path="Substance.instance.identifier", description="Identifier of the package/container", type="token" )
-  public static final String SP_CONTAINER_IDENTIFIER = "container-identifier";
+  @SearchParamDefinition(name="code-reference", path="Substance.code.reference", description="A reference to the defining substance", type="reference" )
+  public static final String SP_CODE_REFERENCE = "code-reference";
  /**
-   * <b>Fluent Client</b> search parameter constant for <b>container-identifier</b>
+   * <b>Fluent Client</b> search parameter constant for <b>code-reference</b>
    * <p>
-   * Description: <b>Identifier of the package/container</b><br>
-   * Type: <b>token</b><br>
-   * Path: <b>Substance.instance.identifier</b><br>
+   * Description: <b>A reference to the defining substance</b><br>
+   * Type: <b>reference</b><br>
+   * Path: <b>Substance.code.reference</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.TokenClientParam CONTAINER_IDENTIFIER = new ca.uhn.fhir.rest.gclient.TokenClientParam(SP_CONTAINER_IDENTIFIER);
+  public static final ca.uhn.fhir.rest.gclient.ReferenceClientParam CODE_REFERENCE = new ca.uhn.fhir.rest.gclient.ReferenceClientParam(SP_CODE_REFERENCE);
+
+/**
+   * Constant for fluent queries to be used to add include statements. Specifies
+   * the path value of "<b>Substance:code-reference</b>".
+   */
+  public static final ca.uhn.fhir.model.api.Include INCLUDE_CODE_REFERENCE = new ca.uhn.fhir.model.api.Include("Substance:code-reference").toLocked();
 
  /**
    * Search parameter: <b>expiry</b>
    * <p>
    * Description: <b>Expiry date of package or container of substance</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Substance.instance.expiry</b><br>
+   * Path: <b>Substance.expiry</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="expiry", path="Substance.instance.expiry", description="Expiry date of package or container of substance", type="date" )
+  @SearchParamDefinition(name="expiry", path="Substance.expiry", description="Expiry date of package or container of substance", type="date" )
   public static final String SP_EXPIRY = "expiry";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>expiry</b>
    * <p>
    * Description: <b>Expiry date of package or container of substance</b><br>
    * Type: <b>date</b><br>
-   * Path: <b>Substance.instance.expiry</b><br>
+   * Path: <b>Substance.expiry</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.DateClientParam EXPIRY = new ca.uhn.fhir.rest.gclient.DateClientParam(SP_EXPIRY);
@@ -1416,17 +1252,17 @@ public class Substance extends DomainResource {
    * <p>
    * Description: <b>Amount of substance in the package</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>Substance.instance.quantity</b><br>
+   * Path: <b>Substance.quantity</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="quantity", path="Substance.instance.quantity", description="Amount of substance in the package", type="quantity" )
+  @SearchParamDefinition(name="quantity", path="Substance.quantity", description="Amount of substance in the package", type="quantity" )
   public static final String SP_QUANTITY = "quantity";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>quantity</b>
    * <p>
    * Description: <b>Amount of substance in the package</b><br>
    * Type: <b>quantity</b><br>
-   * Path: <b>Substance.instance.quantity</b><br>
+   * Path: <b>Substance.quantity</b><br>
    * </p>
    */
   public static final ca.uhn.fhir.rest.gclient.QuantityClientParam QUANTITY = new ca.uhn.fhir.rest.gclient.QuantityClientParam(SP_QUANTITY);

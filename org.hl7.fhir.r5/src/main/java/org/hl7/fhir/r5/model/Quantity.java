@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,7 +63,7 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
      * How the value should be understood and represented - whether the actual value is greater or less than the stated value due to measurement issues; e.g. if the comparator is "<" , then the real value is < stated value.
      */
     @Child(name = "comparator", type = {CodeType.class}, order=1, min=0, max=1, modifier=true, summary=true)
-    @Description(shortDefinition="< | <= | >= | > - how to understand the value", formalDefinition="How the value should be understood and represented - whether the actual value is greater or less than the stated value due to measurement issues; e.g. if the comparator is \"<\" , then the real value is < stated value." )
+    @Description(shortDefinition="< | <= | >= | > | ad - how to understand the value", formalDefinition="How the value should be understood and represented - whether the actual value is greater or less than the stated value due to measurement issues; e.g. if the comparator is \"<\" , then the real value is < stated value." )
     @ca.uhn.fhir.model.api.annotation.Binding(valueSet="http://hl7.org/fhir/ValueSet/quantity-comparator")
     protected Enumeration<QuantityComparator> comparator;
 
@@ -586,7 +586,7 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
           , system, code);
       }
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
 @Override
       public String getVersion() {
         return null;
@@ -624,13 +624,6 @@ public class Quantity extends DataType implements ICompositeType, ICoding {
       res.setCode(code);
       return res;
     }
-
-  @Override
-  public String toString() {
-    return getValue().toPlainString()+ (hasUnit() || hasCode() ? " '"+(hasUnit() ? getUnit() : getCode())+"'" : "");
-  }
-   
-   
 // end addition
 
 }

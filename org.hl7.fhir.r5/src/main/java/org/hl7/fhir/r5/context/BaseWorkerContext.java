@@ -205,6 +205,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected TerminologyCache txCache;
   protected TimeTracker clock;
   private boolean tlogging = true;
+  private ICanonicalResourceLocator locator;
   
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     txCache = new TerminologyCache(lock, null);
@@ -498,9 +499,17 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   @Override
   public CodeSystem fetchCodeSystem(String system) {
+    CodeSystem cs;
     synchronized (lock) {
-      return codeSystems.get(system);
+      cs = codeSystems.get(system);
     }
+    if (cs == null && locator != null) {
+      locator.findResource(system);
+      synchronized (lock) {
+        cs = codeSystems.get(system);
+      }
+    }
+    return cs;
   } 
 
   @Override
@@ -863,12 +872,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (options.isUseClient()) {
       // ok, first we try to validate locally
       try {
-        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this); 
-        res = vsc.validateCode(code);
-        if (txCache != null) {
-          txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
+        ValueSetCheckerSimple vsc = new ValueSetCheckerSimple(options, vs, this);
+        if (!vsc.isServerSide(code.getSystem())) {
+          res = vsc.validateCode(code);
+          if (txCache != null) {
+            txCache.cacheValidation(cacheToken, res, TerminologyCache.TRANSIENT);
+          }
+          return res;
         }
-        return res;
       } catch (Exception e) {
       }
     }
@@ -978,7 +989,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (vs != null) {
       if (isTxCaching && cacheId != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
-        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+"|"+vs.getVersion()));        
+        pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+(vs.hasVersion() ? "|"+vs.getVersion() : "")));        
       } else {
         pin.addParameter().setName("valueSet").setResource(vs);
         cached.add(vs.getUrl()+"|"+vs.getVersion());
@@ -1998,6 +2009,14 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     default:
       return "http://hl7.org/fhir";
     }
+  }
+
+  public ICanonicalResourceLocator getLocator() {
+    return locator;
+  }
+
+  public void setLocator(ICanonicalResourceLocator locator) {
+    this.locator = locator;
   }
 
 }

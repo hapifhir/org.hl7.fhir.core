@@ -177,7 +177,9 @@ public class StructureDefinition14_50 {
         if (src.hasDifferential()) {
             if (src.hasDifferential())
                 tgt.setDifferential(convertStructureDefinitionDifferentialComponent(src.getDifferential()));
-            tgt.getDifferential().getElementFirstRep().getType().clear();
+            if (!tgt.getDifferential().getElementFirstRep().getPath().contains(".")) {
+              tgt.getDifferential().getElementFirstRep().getType().clear();
+            }
         }
         if (tgt.getDerivation() == TypeDerivationRule.SPECIALIZATION) {
             for (ElementDefinition ed : tgt.getSnapshot().getElement()) {

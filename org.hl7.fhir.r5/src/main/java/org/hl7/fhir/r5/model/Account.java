@@ -1,8 +1,6 @@
 package org.hl7.fhir.r5.model;
 
 
-
-
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -31,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,7 +103,6 @@ public class Account extends DomainResource {
             case ENTEREDINERROR: return "entered-in-error";
             case ONHOLD: return "on-hold";
             case UNKNOWN: return "unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -116,7 +113,6 @@ public class Account extends DomainResource {
             case ENTEREDINERROR: return "http://hl7.org/fhir/account-status";
             case ONHOLD: return "http://hl7.org/fhir/account-status";
             case UNKNOWN: return "http://hl7.org/fhir/account-status";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -127,7 +123,6 @@ public class Account extends DomainResource {
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
             case ONHOLD: return "This account is on hold.";
             case UNKNOWN: return "The account status is unknown.";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,7 +133,6 @@ public class Account extends DomainResource {
             case ENTEREDINERROR: return "Entered in error";
             case ONHOLD: return "On Hold";
             case UNKNOWN: return "Unknown";
-            case NULL: return null;
             default: return "?";
           }
         }
@@ -1618,7 +1612,7 @@ A coverage may only be responsible for specific types of charges, and the sequen
    * Path: <b>Account.subject.where(resolve() is Patient)</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="patient", path="Account.subject.where(resolve() is Patient)", description="The entity that caused the expenses", type="reference", target={Patient.class } )
+  @SearchParamDefinition(name="patient", path="Account.subject.where(resolve() is Patient)", description="The entity that caused the expenses", type="reference", target={Device.class, HealthcareService.class, Location.class, Organization.class, Patient.class, Practitioner.class, PractitionerRole.class } )
   public static final String SP_PATIENT = "patient";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>patient</b>

@@ -70,24 +70,24 @@ public class TerminologyClientR3 implements TerminologyClient {
 
   @Override
   public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException {
-    org.hl7.fhir.dstu3.model.ValueSet vs2 = (org.hl7.fhir.dstu3.model.ValueSet) VersionConvertor_30_50.convertResource(vs, false);
-    org.hl7.fhir.dstu3.model.ExpansionProfile p2 = (org.hl7.fhir.dstu3.model.ExpansionProfile) VersionConvertor_30_50.convertResource(p, false);
+    org.hl7.fhir.dstu3.model.ValueSet vs2 = (org.hl7.fhir.dstu3.model.ValueSet) VersionConvertor_30_50.convertResource(vs);
+    org.hl7.fhir.dstu3.model.ExpansionProfile p2 = (org.hl7.fhir.dstu3.model.ExpansionProfile) VersionConvertor_30_50.convertResource(p);
     vs2 = client.expandValueset(vs2, p2, params); // todo: second parameter
-    return (ValueSet) VersionConvertor_30_50.convertResource(vs2, false);
+    return (ValueSet) VersionConvertor_30_50.convertResource(vs2);
   }
 
   @Override
   public Parameters validateCS(Parameters pin) throws FHIRException {
-    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertor_30_50.convertResource(pin, false);
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertor_30_50.convertResource(pin);
     p2 = client.operateType(org.hl7.fhir.dstu3.model.CodeSystem.class, "validate-code", p2);
-    return (Parameters) VersionConvertor_30_50.convertResource(p2, false);
+    return (Parameters) VersionConvertor_30_50.convertResource(p2);
   }
 
   @Override
   public Parameters validateVS(Parameters pin) throws FHIRException {
-    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertor_30_50.convertResource(pin, false);
+    org.hl7.fhir.dstu3.model.Parameters p2 = (org.hl7.fhir.dstu3.model.Parameters) VersionConvertor_30_50.convertResource(pin);
     p2 = client.operateType(org.hl7.fhir.dstu3.model.ValueSet.class, "validate-code", p2);
-    return (Parameters) VersionConvertor_30_50.convertResource(p2, false);
+    return (Parameters) VersionConvertor_30_50.convertResource(p2);
   }
 
   @Override
@@ -110,12 +110,12 @@ public class TerminologyClientR3 implements TerminologyClient {
 
   @Override
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException {
-    return (CapabilityStatement) VersionConvertor_30_50.convertResource(client.getCapabilitiesStatementQuick(), false);
+    return (CapabilityStatement) VersionConvertor_30_50.convertResource(client.getCapabilitiesStatementQuick());
   }
 
   @Override
   public Parameters lookupCode(Map<String, String> params) throws FHIRException {
-    return (Parameters) VersionConvertor_30_50.convertResource(client.lookupCode(params), false);
+    return (Parameters) VersionConvertor_30_50.convertResource(client.lookupCode(params));
   }
 
   @Override
@@ -125,7 +125,7 @@ public class TerminologyClientR3 implements TerminologyClient {
  
   @Override
   public Bundle validateBatch(Bundle batch) {
-    return (Bundle) VersionConvertor_30_50.convertResource(client.transaction((org.hl7.fhir.dstu3.model.Bundle) VersionConvertor_30_50.convertResource(batch, false)), false);
+    return (Bundle) VersionConvertor_30_50.convertResource(client.transaction((org.hl7.fhir.dstu3.model.Bundle) VersionConvertor_30_50.convertResource(batch)));
   }
 
   @Override
@@ -140,7 +140,7 @@ public class TerminologyClientR3 implements TerminologyClient {
     if (r3 == null) {
       throw new FHIRException("Unable to fetch resource "+Utilities.pathURL(getAddress(), type, id));
     }
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_30_50.convertResource(r3, false);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_30_50.convertResource(r3);
     if (r5 != null) {
       throw new FHIRException("Unable to convert resource "+Utilities.pathURL(getAddress(), type, id)+" to R5 (internal representation)");
     }
