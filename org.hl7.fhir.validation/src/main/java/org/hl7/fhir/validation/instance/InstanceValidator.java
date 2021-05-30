@@ -5044,7 +5044,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       } else if (inv.getSeverity() == ConstraintSeverity.ERROR) {
         rule(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + msg);
       } else if (inv.getSeverity() == ConstraintSeverity.WARNING) {
-        warning(errors, IssueType.INVARIANT, element.line(), element.line(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + msg);
+        warning(errors, IssueType.INVARIANT, element.line(), element.col(), path, ok, inv.getKey() + ": '" + inv.getHuman()+"' " + msg);
       }
     }
   }
