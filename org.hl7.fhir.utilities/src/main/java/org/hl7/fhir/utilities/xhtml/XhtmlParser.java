@@ -885,6 +885,8 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
     // UInt16 w;
     readChar();
     String c = readUntil(";&'\"><");
+    if (c.isEmpty())
+      throw new FHIRFormatError("Invalid literal declaration following text: " + s);
     if (c.equals("apos"))
       s.append('\'');
     else if (c.equals("quot"))
