@@ -6,6 +6,7 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r5.model.FhirPublication;
+import org.jetbrains.annotations.NotNull;
 
 class PR2Handler extends BaseAdvisor_10_40 {
 
@@ -15,12 +16,12 @@ class PR2Handler extends BaseAdvisor_10_40 {
   }
 
   @Override
-  public void handleCodeSystem(CodeSystem tgtcs, ValueSet source) throws FHIRException {
+  public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet source) throws FHIRException {
     throw new Error("Not done yet");
   }
 
   @Override
-  public CodeSystem getCodeSystem(ValueSet src) throws FHIRException {
+  public CodeSystem getCodeSystem(@NotNull ValueSet src) throws FHIRException {
     throw new Error("Not done yet");
   }
 
