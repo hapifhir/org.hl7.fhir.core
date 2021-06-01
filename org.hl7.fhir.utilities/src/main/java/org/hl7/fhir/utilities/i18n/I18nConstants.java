@@ -274,6 +274,7 @@ public class I18nConstants {
   public static final String OBJECT_MUST_HAVE_SOME_CONTENT = "Object_must_have_some_content";
   public static final String PACKAGE_VERSION_MISMATCH = "PACKAGE_VERSION_MISMATCH";
   public static final String PARSER_TYPE__NOT_SUPPORTED = "Parser_Type__not_supported";
+  public static final String PATTERN_CHECK_STRING = "PATTERN_CHECK_STRING";
   public static final String PROBLEM_EVALUATING_SLICING_EXPRESSION_FOR_ELEMENT_IN_PROFILE__PATH__FHIRPATH___ = "Problem_evaluating_slicing_expression_for_element_in_profile__path__fhirPath___";
   public static final String PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__ = "Problem_processing_expression__in_profile__path__";
   public static final String PROFILE_BASED_DISCRIMINATORS_MUST_HAVE_A_TYPE_WITH_A_PROFILE__IN_PROFILE_ = "Profile_based_discriminators_must_have_a_type_with_a_profile__in_profile_";
