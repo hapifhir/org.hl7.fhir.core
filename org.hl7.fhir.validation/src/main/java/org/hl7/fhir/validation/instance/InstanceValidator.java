@@ -134,6 +134,7 @@ import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
+import org.hl7.fhir.utilities.SIDUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -762,10 +763,40 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     List<Element> lines = new ArrayList<Element>();
     focus.getNamedChildren("line", lines);
-    if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, lines.size() == fixed.getLine().size(), I18nConstants.FIXED_TYPE_CHECKS_DT_ADDRESS_LINE, Integer.toString(fixed.getLine().size()), Integer.toString(lines.size()))) {
-      for (int i = 0; i < lines.size(); i++)
-        checkFixedValue(errors, path + ".coding", lines.get(i), fixed.getLine().get(i), fixedSource, "coding", focus, pattern);
-    }
+    boolean lineSizeCheck;
+    
+    if (pattern) {
+      lineSizeCheck = lines.size() >= fixed.getLine().size();
+      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, lineSizeCheck, I18nConstants.FIXED_TYPE_CHECKS_DT_ADDRESS_LINE, Integer.toString(fixed.getLine().size()),
+        Integer.toString(lines.size()))) {
+        for (int i = 0; i < fixed.getLine().size(); i++) {
+          StringType fixedLine = fixed.getLine().get(i);
+          boolean found = false;
+          List<ValidationMessage> allErrorsFixed = new ArrayList<>();
+          List<ValidationMessage> errorsFixed = null;
+          for (int j = 0; j < lines.size() && !found; ++j) {
+            errorsFixed = new ArrayList<>();
+            checkFixedValue(errorsFixed, path + ".line", lines.get(j), fixedLine, fixedSource, "line", focus, pattern);
+            if (!hasErrors(errorsFixed)) {
+              found = true;
+            } else {
+              errorsFixed.stream().filter(t -> t.getLevel().ordinal() >= IssueSeverity.ERROR.ordinal()).forEach(t -> allErrorsFixed.add(t));
+            }
+          }
+          if (!found) {
+            rule(errorsFixed, IssueType.VALUE, focus.line(), focus.col(), path, false, I18nConstants.PATTERN_CHECK_STRING, fixedLine.getValue(), fixedSource, allErrorsFixed);
+          }
+        }
+      }
+    } else if (!pattern) {
+      lineSizeCheck = lines.size() == fixed.getLine().size();
+      if (rule(errors, IssueType.VALUE, focus.line(), focus.col(), path, lineSizeCheck, I18nConstants.FIXED_TYPE_CHECKS_DT_ADDRESS_LINE,
+        Integer.toString(fixed.getLine().size()), Integer.toString(lines.size()))) {
+        for (int i = 0; i < lines.size(); i++) {
+          checkFixedValue(errors, path + ".line", lines.get(i), fixed.getLine().get(i), fixedSource, "line", focus, pattern);
+        }
+      }
+    }  
   }
 
   private void checkAttachment(List<ValidationMessage> errors, String path, Element focus, Attachment fixed, String fixedSource, boolean pattern) {
@@ -807,8 +838,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_SYSTEM_WRONG_BUILD, system, suggestSystemForBuild(system));        
       return false;
     } else if (system.startsWith("http://hl7.org/fhir") || system.startsWith("https://hl7.org/fhir") || system.startsWith("http://www.hl7.org/fhir") || system.startsWith("https://www.hl7.org/fhir")) {
-      if (Utilities.existsInList(system, "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/cvx", "http://hl7.org/fhir/sid/icd-10", "http://hl7.org/fhir/sid/icd-10-cm", 
-               "http://hl7.org/fhir/sid/icd-9-cm", "http://hl7.org/fhir/sid/icd-9", "http://hl7.org/fhir/sid/ndc", "http://hl7.org/fhir/sid/srt")) {
+      if (SIDUtilities.isknownCodeSystem(system)) {
         return true; // else don't check these (for now)
       } else if (system.startsWith("http://hl7.org/fhir/test")) {
         return true; // we don't validate these
