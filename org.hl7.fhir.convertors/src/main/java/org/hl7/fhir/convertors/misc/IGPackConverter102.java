@@ -49,6 +49,7 @@ import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
+import org.jetbrains.annotations.NotNull;
 
 public class IGPackConverter102 extends BaseAdvisor_10_30 {
   
@@ -85,18 +86,18 @@ public class IGPackConverter102 extends BaseAdvisor_10_30 {
   }
 
   @Override
-  public boolean ignoreEntry(BundleEntryComponent src, FhirPublication publication) {
+  public boolean ignoreEntry(@NotNull BundleEntryComponent src, @NotNull FhirPublication publication) {
     return false;
   }
 
 
   @Override
-  public void handleCodeSystem(CodeSystem tgtcs, ValueSet vs) {
+  public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet vs) {
     cslist.addEntry().setFullUrl(tgtcs.getUrl()).setResource(tgtcs);
   }
 
   @Override
-  public CodeSystem getCodeSystem(ValueSet src) {
+  public CodeSystem getCodeSystem(@NotNull ValueSet src) {
     return null;
   }
 
