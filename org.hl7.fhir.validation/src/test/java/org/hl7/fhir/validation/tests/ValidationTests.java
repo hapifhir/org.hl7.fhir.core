@@ -463,7 +463,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
+  public Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     Element res = null;
     if (url.equals("Patient/test")) {
       res = new ObjectConverter(TestingUtilities.context(version)).convert(new Patient());
@@ -484,7 +484,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
+  public ReferenceValidationPolicy validationPolicy(IResourceValidator validator, Object appContext, String path, String url) {
     if (content.has("validate"))
       return ReferenceValidationPolicy.valueOf(content.get("validate").getAsString());
     else
@@ -492,7 +492,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public boolean resolveURL(Object appContext, String path, String url, String type) throws IOException, FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws IOException, FHIRException {
     return !url.contains("example.org") && !url.startsWith("http://hl7.org/fhir/invalid");
   }
 
@@ -529,19 +529,19 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public byte[] fetchRaw(String source) throws MalformedURLException, IOException {
+  public byte[] fetchRaw(IResourceValidator validator, String source) throws MalformedURLException, IOException {
     URL url = new URL(source);
     URLConnection c = url.openConnection();
     return TextFile.streamToBytes(c.getInputStream());
   }
 
   @Override
-  public CanonicalResource fetchCanonicalResource(String url) {
+  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) {
     return null;
   }
 
   @Override
-  public boolean fetchesCanonicalResource(String url) {
+  public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
     return false;
   }
 }

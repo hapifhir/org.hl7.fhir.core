@@ -171,7 +171,7 @@ public interface IWorkerContext {
   }
 
   public interface ICanonicalResourceLocator {
-    void findResource(String url); // if it can be found, put it in the context
+    void findResource(Object caller, String url); // if it can be found, put it in the context
   }
   
   public interface IContextResourceLoader {

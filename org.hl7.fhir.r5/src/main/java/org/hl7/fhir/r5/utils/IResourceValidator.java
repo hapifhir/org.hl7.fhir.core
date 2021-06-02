@@ -107,11 +107,11 @@ public interface IResourceValidator {
 
   public interface IValidatorResourceFetcher {
 
-    Element fetch(Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException;
-    ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url);
-    boolean resolveURL(Object appContext, String path, String url, String type) throws IOException, FHIRException;
+    Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRFormatError, DefinitionException, FHIRException, IOException;
+    ReferenceValidationPolicy validationPolicy(IResourceValidator validator, Object appContext, String path, String url);
+    boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws IOException, FHIRException;
 
-    byte[] fetchRaw(String url) throws MalformedURLException, IOException; // for attachment checking
+    byte[] fetchRaw(IResourceValidator validator, String url) throws MalformedURLException, IOException; // for attachment checking
 
     IValidatorResourceFetcher setLocale(Locale locale);
     
@@ -126,7 +126,7 @@ public interface IResourceValidator {
      * @return an R5 version of the resource
      * @throws URISyntaxException 
      */
-    CanonicalResource fetchCanonicalResource(String url) throws URISyntaxException;
+    CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) throws URISyntaxException;
     
     /**
      * Whether to try calling fetchCanonicalResource for this reference (not whether it will succeed - just throw an exception from fetchCanonicalResource if it doesn't resolve. This is a policy thing.
@@ -136,7 +136,7 @@ public interface IResourceValidator {
      * @param url
      * @return
      */
-    boolean fetchesCanonicalResource(String url);
+    boolean fetchesCanonicalResource(IResourceValidator validator, String url);
   }
   
   public enum BestPracticeWarningLevel {

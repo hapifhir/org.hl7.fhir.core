@@ -57,6 +57,7 @@ public class Params {
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String CRUMB_TRAIL = "-crumb-trails";
   public static final String SHOW_TIMES = "-show-times";
+  public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -182,6 +183,15 @@ public class Params {
         cliContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {
         cliContext.setCrumbTrails(true);
+      } else if (args[i].equals(ALLOW_EXAMPLE_URLS)) {
+        String bl = args[++i]; 
+        if ("true".equals(bl)) {
+          cliContext.setAllowExampleUrls(true);
+        } else if ("false".equals(bl)) {
+          cliContext.setAllowExampleUrls(false);
+        } else {
+          throw new Error("Value for "+ALLOW_EXAMPLE_URLS+" not understood: "+bl);          
+        }          
       } else if (args[i].equals(SHOW_TIMES)) {
         cliContext.setShowTimes(true);
       } else if (args[i].equals(SCAN)) {

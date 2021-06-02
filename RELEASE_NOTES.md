@@ -4,3 +4,5 @@
 * add medication conversion from dstu2 to r4
 * Adding Maven exec to test validation cli jar
 * Validation of cardinality on address-line elements containing pattern elements fixed
+* Ensure that validator creates errors on example urls by default
+* Add -allow-example-urls option to the validator
