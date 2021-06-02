@@ -488,6 +488,15 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           }
         }
       }
+    } else if (valueset.hasExpansion()) {
+      for (ValueSetExpansionContainsComponent c: valueset.getExpansion().getContains()) {
+        if (c.getCode().equals(code)) {
+          if (sys == null)
+            sys = c.getSystem(); 
+          else
+            return null;
+        }
+      }
     }
 
     return sys;  
