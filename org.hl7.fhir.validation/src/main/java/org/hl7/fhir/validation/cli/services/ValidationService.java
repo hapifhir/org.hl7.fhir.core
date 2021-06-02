@@ -248,6 +248,7 @@ public class ValidationService {
       validator.setSecurityChecks(cliContext.isSecurityChecks());
       validator.setCrumbTrails(cliContext.isCrumbTrails());
       validator.setShowTimes(cliContext.isShowTimes());
+      validator.setAllowExampleUrls(cliContext.isAllowExampleUrls());
       StandAloneValidatorFetcher fetcher = new StandAloneValidatorFetcher(validator.getPcm(), validator.getContext(), validator);
       validator.setFetcher(fetcher);
       validator.getContext().setLocator(fetcher);
