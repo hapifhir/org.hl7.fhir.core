@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.hl7.fhir.convertors.conv14_40.*;
 import org.hl7.fhir.dstu2016may.model.CodeableConcept;
 import org.hl7.fhir.dstu2016may.model.Reference;
@@ -1373,14 +1375,23 @@ public class VersionConvertor_14_40 extends VersionConvertor_Base {
         int slices = 0;
         boolean existsSlicePresent = false;
         boolean notExistsSlicePresent = false;
+        String url = null;
         String existsPath = slicingElement.getPath() + "." + t.asStringValue();
+        if (existsPath.contains(".extension(")) {
+          String suffix = StringUtils.substringAfter(existsPath,"(").substring(1);
+          existsPath = StringUtils.substringBefore(existsPath,"(");
+          suffix = StringUtils.substringBefore(suffix, ")");
+          url = suffix.substring(0,suffix.length()-1);
+        }
         for (int i = pos + 1; i < context.size(); i++) {
           org.hl7.fhir.dstu2016may.model.ElementDefinition e = context.get(i);
           if (e.getPath().equals(slicingElement.getPath())) slices++;
           else if (!e.getPath().startsWith(slicingElement.getPath() + ".")) break;
           else if (e.getPath().equals(existsPath)) {
-            if (e.hasMin() && e.getMin() > 0 && !e.hasFixed()) existsSlicePresent = true;
-            else if (e.hasMax() && e.getMax().equals("0")) notExistsSlicePresent = true;
+            if (url==null || (e.getType().get(0).hasProfile() && e.getType().get(0).getProfile().get(0).equals(url))) {
+              if (e.hasMin() && e.getMin() > 0 && !e.hasFixed()) existsSlicePresent = true;
+              else if (e.hasMax() && e.getMax().equals("0")) notExistsSlicePresent = true;
+            }
           }
         }
         isExists = (slices == 2 && existsSlicePresent && notExistsSlicePresent) || (slices == 1 && existsSlicePresent != notExistsSlicePresent);
