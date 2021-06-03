@@ -8,6 +8,7 @@ import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
 import org.hl7.fhir.utilities.Utilities;
@@ -45,17 +46,17 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IC
   }
 
   @Override
-  public Element fetch(Object appContext, String url) throws FHIRException {
+  public Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRException {
     throw new FHIRException("The URL '" + url + "' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
   }
 
   @Override
-  public ReferenceValidationPolicy validationPolicy(Object appContext, String path, String url) {
+  public ReferenceValidationPolicy validationPolicy(IResourceValidator validator, Object appContext, String path, String url) {
     return ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS;
   }
 
   @Override
-  public boolean resolveURL(Object appContext, String path, String url, String type) throws IOException, FHIRException {
+  public boolean resolveURL(IResourceValidator validator, Object appContext, String path, String url, String type) throws IOException, FHIRException {
     if (!Utilities.isAbsoluteUrl(url)) {
       return false;
     }
@@ -213,7 +214,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IC
   }
 
   @Override
-  public byte[] fetchRaw(String url) throws MalformedURLException, IOException {
+  public byte[] fetchRaw(IResourceValidator validator, String url) throws MalformedURLException, IOException {
     throw new FHIRException("The URL '" + url + "' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
   }
 
@@ -225,7 +226,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IC
   }
 
   @Override
-  public CanonicalResource fetchCanonicalResource(String url) throws URISyntaxException {
+  public CanonicalResource fetchCanonicalResource(IResourceValidator validator, String url) throws URISyntaxException {
     String[] p = url.split("\\/");
     String root = getRoot(p, url);
     if (root != null) {
@@ -247,14 +248,14 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IC
   }
 
   @Override
-  public boolean fetchesCanonicalResource(String url) {
+  public boolean fetchesCanonicalResource(IResourceValidator validator, String url) {
     return true;
   }
 
   @Override
-  public void findResource(String url) {
+  public void findResource(Object validator, String url) {
     try {
-      resolveURL(null, null, url, null);
+      resolveURL((IResourceValidator) validator, null, null, url, null);
     } catch (Exception e) {
     }
   }

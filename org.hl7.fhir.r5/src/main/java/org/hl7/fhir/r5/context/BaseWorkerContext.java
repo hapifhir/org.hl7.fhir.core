@@ -504,7 +504,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       cs = codeSystems.get(system);
     }
     if (cs == null && locator != null) {
-      locator.findResource(system);
+      locator.findResource(this, system);
       synchronized (lock) {
         cs = codeSystems.get(system);
       }

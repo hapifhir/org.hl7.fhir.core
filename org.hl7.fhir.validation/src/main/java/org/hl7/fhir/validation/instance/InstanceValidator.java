@@ -267,7 +267,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         return externalHostServices.resolveReference(c.getAppContext(), url, refContext);
       } else if (fetcher != null) {
         try {
-          return fetcher.fetch(c.getAppContext(), url);
+          return fetcher.fetch(InstanceValidator.this, c.getAppContext(), url);
         } catch (IOException e) {
           throw new FHIRException(e);
         }
@@ -2007,13 +2007,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           boolean found;
           try {
             found = isDefinitionURL(url) || (allowExamples && (url.contains("example.org") || url.contains("acme.com")) || url.contains("acme.org")) || (url.startsWith("http://hl7.org/fhir/tools")) || 
-                SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || fetcher.resolveURL(appContext, path, url, type);
+                SpecialExtensions.isKnownExtension(url) || isXverUrl(url) || fetcher.resolveURL(this, appContext, path, url, type);
           } catch (IOException e1) {
             found = false;
           }
           if (!found) {
             if (type.equals("canonical")) {
-              ReferenceValidationPolicy rp = fetcher.validationPolicy(appContext, path, url);
+              ReferenceValidationPolicy rp = fetcher.validationPolicy(this, appContext, path, url);
               if (rp == ReferenceValidationPolicy.CHECK_EXISTS || rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE) {
                 rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);
               } else {
@@ -2022,16 +2022,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             } else {
               if (url.contains("hl7.org") || url.contains("fhir.org")) {
                 rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
+              } else if (url.contains("example.org") || url.contains("acme.com")) {
+                rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_EXAMPLE, url);
               } else {
                 warning(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_URL_RESOLVE, url);
               }
             }
           } else {
             if (type.equals("canonical")) {
-              ReferenceValidationPolicy rp = fetcher.validationPolicy(appContext, path, url);
+              ReferenceValidationPolicy rp = fetcher.validationPolicy(this, appContext, path, url);
               if (rp == ReferenceValidationPolicy.CHECK_EXISTS_AND_TYPE || rp == ReferenceValidationPolicy.CHECK_TYPE_IF_EXISTS || rp == ReferenceValidationPolicy.CHECK_VALID) {
                 try {
-                  Resource r = fetcher.fetchCanonicalResource(url);
+                  Resource r = fetcher.fetchCanonicalResource(this, url);
                   if (r == null) {
                     rule(errors, IssueType.INVALID, e.line(), e.col(), path, found, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE, url);                    
                   } else if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, isCorrectCanonicalType(r, context), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE, url, r.fhirType(), listExpectedCanonicalTypes(context))) {
@@ -2546,7 +2548,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             if (fetcher == null) {
               fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER, url);  
             } else {
-              byte[] cnt = fetcher.fetchRaw(url);
+              byte[] cnt = fetcher.fetchRaw(this, url);
               size = cnt.length;
             }
           } else if (url.startsWith("file:")) {
@@ -2609,7 +2611,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         refType = "bundled";
       }
     }
-    ReferenceValidationPolicy pol = refType.equals("contained") || refType.equals("bundled") ? ReferenceValidationPolicy.CHECK_VALID : fetcher == null ? ReferenceValidationPolicy.IGNORE : fetcher.validationPolicy(hostContext.getAppContext(), path, ref);
+    ReferenceValidationPolicy pol = refType.equals("contained") || refType.equals("bundled") ? ReferenceValidationPolicy.CHECK_VALID : fetcher == null ? ReferenceValidationPolicy.IGNORE : fetcher.validationPolicy(this, hostContext.getAppContext(), path, ref);
 
     if (pol.checkExists()) {
       if (we == null) {
@@ -2622,7 +2624,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               ext = fetchCache.get(ref);
             } else {
               try {
-                ext = fetcher.fetch(hostContext.getAppContext(), ref);
+                ext = fetcher.fetch(this, hostContext.getAppContext(), ref);
               } catch (IOException e) {
                 throw new FHIRException(e);
               }
@@ -3421,7 +3423,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (fetchCache.containsKey(ref)) {
       return fetchCache.get(ref);
     } else {
-      Element res = fetcher.fetch(appContext, ref);
+      Element res = fetcher.fetch(this, appContext, ref);
       setParents(res);
       fetchCache.put(ref, res);
       return res;
@@ -3960,11 +3962,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               // we'll try fetching it directly from it's source, but this is likely to fail later even if the resolution succeeds
               if (fetcher == null) {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN, profile.primitiveValue());
-              } else if (!fetcher.fetchesCanonicalResource(profile.primitiveValue())) {
+              } else if (!fetcher.fetchesCanonicalResource(this, profile.primitiveValue())) {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY, profile.primitiveValue());                
               } else {
                 try {
-                  sd = (StructureDefinition) fetcher.fetchCanonicalResource(profile.primitiveValue());
+                  sd = (StructureDefinition) fetcher.fetchCanonicalResource(this, profile.primitiveValue());
                 } catch (Exception e) {
                   warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());                
                 }

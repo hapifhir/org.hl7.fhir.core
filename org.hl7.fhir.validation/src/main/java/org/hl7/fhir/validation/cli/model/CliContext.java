@@ -83,6 +83,9 @@ public class CliContext {
   @JsonProperty("crumbTrails")
   private boolean crumbTrails = false;
   
+  @JsonProperty("allowExampleUrls")
+  private boolean allowExampleUrls = false;
+  
   @JsonProperty("showTimes")
   private boolean showTimes = false;
   
@@ -485,6 +488,14 @@ public class CliContext {
     this.crumbTrails = crumbTrails;
   }
 
+  public boolean isAllowExampleUrls() {
+    return allowExampleUrls;
+  }
+
+  public void setAllowExampleUrls(boolean allowExampleUrls) {
+    this.allowExampleUrls = allowExampleUrls;
+  }
+
   public boolean isShowTimes() {
     return showTimes;
   }
@@ -525,6 +536,7 @@ public class CliContext {
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(sources, that.sources) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
+      Objects.equals(allowExampleUrls, that.allowExampleUrls) &&
       Objects.equals(showTimes, that.showTimes) &&
       mode == that.mode &&
       Objects.equals(locale, that.locale) &&
@@ -533,7 +545,7 @@ public class CliContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes);
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls);
   }
 
   @Override
@@ -568,6 +580,7 @@ public class CliContext {
       ", mode=" + mode +
       ", securityChecks=" + securityChecks +
       ", crumbTrails=" + crumbTrails +
+      ", allowExampleUrls=" + allowExampleUrls +
       ", showTimes=" + showTimes +
       ", locale='" + locale + '\'' +
       ", locations=" + locations +
