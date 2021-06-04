@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_50;
 import org.hl7.fhir.convertors.conv14_50.*;
 import org.hl7.fhir.dstu2016may.model.CodeableConcept;
@@ -1394,6 +1395,22 @@ public class VersionConvertor_14_50 extends VersionConvertor_Base {
     return tgt;
   }
 
+  /*
+   * This process deals with the fact that 'exists' slicing didn't have a mechanism to flag it in 2016May.
+   * (Pattern and profile both had '@' flags in the discriminator to distinguish this, but exists did not.)
+   * 'Exists' can thus only be determined by looking at the available slices - and checking to see that there
+   * are exactly two slices, one which is mandatory and one which is prohibited.  We need to do that check
+   * at the level where the slices are defined, rather than only inside the 'slicing' element where we don't
+   * have access to the slices themselves.
+   *
+   * This process checks to see if we have a 'value' discriminator (i.e. no '@') and if so, checks for all
+   * matching slices.  If there are exactly two and one's required and one's prohibited, then it sets a flag
+   * so that the converter will declare a discriminator.type of 'exists'.
+   *
+   * Note that we only need complex processing on the R2B -> newer release, not on the reverse.  On the reverse,
+   * we just strip the discriminator type.  What slices exist is still the same.  In theory, that means that the
+   * exists type is unnecessary, but it's far more efficient (and clear) to have it.
+   */
   public static org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent convertElementDefinitionSlicingComponent(org.hl7.fhir.dstu2016may.model.ElementDefinition.ElementDefinitionSlicingComponent src, List<org.hl7.fhir.dstu2016may.model.ElementDefinition> context, int pos) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent();
@@ -1405,14 +1422,23 @@ public class VersionConvertor_14_50 extends VersionConvertor_Base {
         int slices = 0;
         boolean existsSlicePresent = false;
         boolean notExistsSlicePresent = false;
+        String url = null;
         String existsPath = slicingElement.getPath() + "." + t.asStringValue();
+        if (existsPath.contains(".extension(")) {
+          String suffix = StringUtils.substringAfter(existsPath,"(").substring(1);
+          existsPath = StringUtils.substringBefore(existsPath,"(");
+          suffix = StringUtils.substringBefore(suffix, ")");
+          url = suffix.substring(0,suffix.length()-1);
+        }
         for (int i = pos + 1; i < context.size(); i++) {
           org.hl7.fhir.dstu2016may.model.ElementDefinition e = context.get(i);
           if (e.getPath().equals(slicingElement.getPath())) slices++;
           else if (!e.getPath().startsWith(slicingElement.getPath() + ".")) break;
           else if (e.getPath().equals(existsPath)) {
-            if (e.hasMin() && e.getMin() > 0 && !e.hasFixed()) existsSlicePresent = true;
-            else if (e.hasMax() && e.getMax().equals("0")) notExistsSlicePresent = true;
+            if (url==null || (e.getType().get(0).hasProfile() && e.getType().get(0).getProfile().get(0).equals(url))) {
+              if (e.hasMin() && e.getMin() > 0 && !e.hasFixed()) existsSlicePresent = true;
+              else if (e.hasMax() && e.getMax().equals("0")) notExistsSlicePresent = true;
+            }
           }
         }
         isExists = (slices == 2 && existsSlicePresent && notExistsSlicePresent) || (slices == 1 && existsSlicePresent != notExistsSlicePresent);
