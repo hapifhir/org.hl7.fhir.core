@@ -634,6 +634,12 @@ public class XhtmlNode implements IBaseXhtml {
     return addText(cnt);
   }
 
+  // differs from tx because it returns the owner node, not the created text
+  public XhtmlNode txN(String cnt) {
+    addText(cnt);
+    return this;
+  }
+
   public XhtmlNode tx(int cnt) {
     return addText(Integer.toString(cnt));
   }
