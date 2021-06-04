@@ -1394,6 +1394,22 @@ public class VersionConvertor_14_50 extends VersionConvertor_Base {
     return tgt;
   }
 
+  /*
+   * This process deals with the fact that 'exists' slicing didn't have a mechanism to flag it in 2016May.
+   * (Pattern and profile both had '@' flags in the discriminator to distinguish this, but exists did not.)
+   * 'Exists' can thus only be determined by looking at the available slices - and checking to see that there
+   * are exactly two slices, one which is mandatory and one which is prohibited.  We need to do that check
+   * at the level where the slices are defined, rather than only inside the 'slicing' element where we don't
+   * have access to the slices themselves.
+   *
+   * This process checks to see if we have a 'value' discriminator (i.e. no '@') and if so, checks for all
+   * matching slices.  If there are exactly two and one's required and one's prohibited, then it sets a flag
+   * so that the converter will declare a discriminator.type of 'exists'.
+   *
+   * Note that we only need complex processing on the R2B -> newer release, not on the reverse.  On the reverse,
+   * we just strip the discriminator type.  What slices exist is still the same.  In theory, that means that the
+   * exists type is unnecessary, but it's far more efficient (and clear) to have it.
+   */
   public static org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent convertElementDefinitionSlicingComponent(org.hl7.fhir.dstu2016may.model.ElementDefinition.ElementDefinitionSlicingComponent src, List<org.hl7.fhir.dstu2016may.model.ElementDefinition> context, int pos) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent();
