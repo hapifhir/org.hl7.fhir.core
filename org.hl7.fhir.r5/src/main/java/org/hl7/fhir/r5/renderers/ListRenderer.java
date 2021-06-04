@@ -126,13 +126,13 @@ public class ListRenderer extends ResourceRenderer {
     }    
     tr = t.tr();
     if (list.hasSubject()) {
-      shortForRef(tr.td().tx("Subject: "), list.getSubject());
+      shortForRef(tr.td().txN("Subject: "), list.getSubject());
     }
     if (list.hasEncounter()) {
-      shortForRef(tr.td().tx("Encounter: "), list.getEncounter());
+      shortForRef(tr.td().txN("Encounter: "), list.getEncounter());
     }
     if (list.hasSource()) {
-      shortForRef(tr.td().tx("Source: "), list.getEncounter());
+      shortForRef(tr.td().txN("Source: "), list.getEncounter());
     }
     if (list.hasOrderedBy()) {
       tr.td().tx("Order: "+display(list.getOrderedBy()));
