@@ -488,11 +488,32 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           }
         }
       }
+    } else if (valueset.hasExpansion()) {
+      // Retrieve a list of all systems associated with this code in the expansion
+      List<String> systems = new ArrayList<String>();
+      checkSystems(valueset.getExpansion().getContains(), code, systems);
+      if (systems.size()==1)
+        sys = systems.get(0);
     }
 
     return sys;  
   }
 
+  /*
+   * Recursively go through all codes in the expansion and for any coding that matches the specified code, add the system for that coding
+   * to the passed list. 
+   */
+  private void checkSystems(List<ValueSetExpansionContainsComponent> contains, String code, List<String> systems) {
+    for (ValueSetExpansionContainsComponent c: contains) {
+      if (c.getCode().equals(code)) {
+        if (!systems.contains(c.getSystem()))
+          systems.add(c.getSystem());
+      }
+      if (c.hasContains())
+        checkSystems(c.getContains(), code, systems);
+    }
+  }
+  
   @Override
   public Boolean codeInValueSet(String system, String code) throws FHIRException {
     Boolean result = false;
