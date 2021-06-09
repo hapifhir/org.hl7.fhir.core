@@ -6845,8 +6845,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 profileUri = profiles.get(0).primitiveValue();
               }
             }
-            StructureDefinition profile = this.context.fetchResource(StructureDefinition.class,
-                "http://hl7.org/fhir/StructureDefinition/" + resourceName);
+            StructureDefinition profile = this.context.fetchResource(StructureDefinition.class, profileUri);
             timeTracker.sd(t);
             trackUsage(profile, valContext, element);
             if (rule(errors, NO_RULE_DATE, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(),
