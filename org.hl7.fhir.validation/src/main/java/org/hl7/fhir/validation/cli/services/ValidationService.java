@@ -97,12 +97,12 @@ public class ValidationService {
     if (cliContext.getOutput() == null) {
       if (r instanceof Bundle)
         for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry())
-          ec = ec + displayOperationOutcome((OperationOutcome) e.getResource(), ((Bundle) r).getEntry().size() > 1) + ec;
+          ec = ec + displayOperationOutcome((OperationOutcome) e.getResource(), ((Bundle) r).getEntry().size() > 1, validator.isCrumbTrails()) + ec;
       else if (r == null) {
         ec = ec + 1;
         System.out.println("No output from validation - nothing to validate");
       } else {
-        ec = displayOperationOutcome((OperationOutcome) r, false);
+        ec = displayOperationOutcome((OperationOutcome) r, false, validator.isCrumbTrails());
       }
     } else {
       IParser x;
@@ -262,7 +262,7 @@ public class ValidationService {
     return sessionId;
   }
 
-  public int displayOperationOutcome(OperationOutcome oo, boolean hasMultiples) {
+  public int displayOperationOutcome(OperationOutcome oo, boolean hasMultiples, boolean crumbs) {
     int error = 0;
     int warn = 0;
     int info = 0;
@@ -286,6 +286,16 @@ public class ValidationService {
     System.out.println((error == 0 ? "Success" : "*FAILURE*") + ": " + Integer.toString(error) + " errors, " + Integer.toString(warn) + " warnings, " + Integer.toString(info) + " notes");
     for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
       System.out.println(getIssueSummary(issue));
+      if (crumbs) {
+        ValidationMessage vm = (ValidationMessage) issue.getUserData("source.msg");
+        if (vm != null) {
+          if (vm.sliceText != null) {
+            for (String s : vm.sliceText) {
+              System.out.println("    slice info: "+s);          
+            }
+          }
+        }
+      }
     }
     if (hasMultiples) {
       System.out.print("---");
