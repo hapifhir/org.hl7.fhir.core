@@ -873,6 +873,7 @@ public class FHIRPathEngine {
     private Base thisItem;
     private List<Base> total;
     private Map<String, Base> aliases;
+    private int index;
     
     public ExecutionContext(Object appInfo, Base resource, Base rootResource, Base context, Map<String, Base> aliases, Base thisItem) {
       this.appInfo = appInfo;
@@ -881,6 +882,7 @@ public class FHIRPathEngine {
       this.rootResource = rootResource; 
       this.aliases = aliases;
       this.thisItem = thisItem;
+      this.index = 0;
     }
     public Base getFocusResource() {
       return focusResource;
@@ -894,6 +896,14 @@ public class FHIRPathEngine {
     public List<Base> getTotal() {
       return total;
     }
+    
+    public void next() {
+      index++;
+    }
+    public Base getIndex() {
+      return new IntegerType(index);
+    }
+    
     public void addAlias(String name, List<Base> focus) throws FHIRException {
       if (aliases == null) {
         aliases = new HashMap<String, Base>();
@@ -907,6 +917,10 @@ public class FHIRPathEngine {
     }
     public Base getAlias(String name) {
       return aliases == null ? null : aliases.get(name);
+    }
+    public ExecutionContext setIndex(int i) {
+      index = i;
+      return this;
     }
   }
 
@@ -1334,6 +1348,8 @@ public class FHIRPathEngine {
         work.add(context.getThisItem());
       } else if (atEntry && exp.getName().equals("$total")) {
         work.addAll(context.getTotal());
+      } else if (atEntry && exp.getName().equals("$index")) {
+        work.add(context.getIndex());
       } else {
         for (Base item : focus) {
           List<Base> outcome = execute(context, item, exp, atEntry);
@@ -1439,6 +1455,8 @@ public class FHIRPathEngine {
         result.update(context.getThisItem());
       } else if (atEntry && exp.getName().equals("$total")) {
         result.update(anything(CollectionStatus.UNORDERED));
+      } else if (atEntry && exp.getName().equals("$index")) {
+        result.addType(TypeDetails.FP_Integer);
       } else if (atEntry && focus == null) {
         result.update(executeContextType(context, exp.getName(), exp));
       } else {
@@ -4346,6 +4364,7 @@ public class FHIRPathEngine {
     for (Base item : focus) {
       ExecutionContext c = changeThis(context, item);
       c.total = total;
+      c.next();
       total = execute(c, pc, exp.getParameters().get(0), true);
     }
     return total;
@@ -5117,10 +5136,12 @@ public class FHIRPathEngine {
   private List<Base> funcSelect(ExecutionContext context, List<Base> focus, ExpressionNode exp) throws FHIRException {
     List<Base> result = new ArrayList<Base>();
     List<Base> pc = new ArrayList<Base>();
+    int i = 0;
     for (Base item : focus) {
       pc.clear();
       pc.add(item);
-      result.addAll(execute(changeThis(context, item), pc, exp.getParameters().get(0), true));
+      result.addAll(execute(changeThis(context, item).setIndex(i), pc, exp.getParameters().get(0), true));
+      i++;
     }
     return result;
   }

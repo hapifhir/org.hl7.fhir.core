@@ -489,7 +489,7 @@ public class ExpressionNode {
 		if (!name.startsWith("$"))
 			return true;
 		else
-			return Utilities.existsInList(name, "$this", "$total");  
+			return Utilities.existsInList(name, "$this", "$total", "$index");  
 	}
 
 	public Kind getKind() {
