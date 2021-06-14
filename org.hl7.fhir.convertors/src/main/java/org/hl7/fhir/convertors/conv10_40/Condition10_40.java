@@ -30,7 +30,7 @@ public class Condition10_40 {
             tgt.setSeverity(VersionConvertor_10_40.convertCodeableConcept(src.getSeverity()));
         if (src.hasOnset())
             tgt.setOnset(VersionConvertor_10_40.convertType(src.getOnset()));
-        if (src.hasAbatement())
+        if (src.hasAbatement() && !(src.getAbatement() instanceof org.hl7.fhir.r4.model.BooleanType))
             tgt.setAbatement(VersionConvertor_10_40.convertType(src.getAbatement()));
         if (src.hasStage())
             tgt.setStage(convertConditionStageComponent(src.getStageFirstRep()));
