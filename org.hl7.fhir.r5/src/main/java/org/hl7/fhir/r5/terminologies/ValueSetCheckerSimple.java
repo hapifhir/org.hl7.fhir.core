@@ -130,6 +130,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
 
     ValidationResult res = null;
     boolean inExpansion = false;
+    boolean inInclude = false;
     String system = code.hasSystem() ? code.getSystem() : getValueSetSystemOrNull();
     if (options.getValueSetMode() != ValueSetMode.CHECK_MEMERSHIP_ONLY) {
       if (system == null && !code.hasDisplay()) { // dealing with just a plain code (enum)
@@ -142,6 +143,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         code.setSystem(system);
       }
       inExpansion = checkExpansion(code);
+      inInclude = checkInclude(code);
       CodeSystem cs = context.fetchCodeSystem(system);
       if (cs == null) {
         cs = findSpecialCodeSystem(system);
@@ -181,24 +183,56 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         throw new FHIRException("No try the server");
       }
     } else {
-      // disabled waiting for discussion
-      throw new FHIRException("No try the server");
-//      inExpansion = checkExpansion(code);
+      inExpansion = checkExpansion(code);
+      inInclude = checkInclude(code);
     }
 
     // then, if we have a value set, we check it's in the value set
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
-      if ((res==null || res.isOk()) && !codeInValueSet(system, code.getCode())) {
-        if (!inExpansion) {
-          res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
-        } else if (warningMessage!=null) {
-          res = new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.CODE_FOUND_IN_EXPANSION_HOWEVER_, warningMessage));
-        } else {
-          res.setMessage("Code found in expansion, however: " + res.getMessage());
+      if ((res==null || res.isOk())) { 
+        Boolean ok = codeInValueSet(system, code.getCode());
+        if (ok == null || !ok) {
+          if (res == null) {
+            res = new ValidationResult(null, null);
+          }
+          if (!inExpansion && !inInclude) {
+            res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
+          } else if (warningMessage!=null) {
+            res = new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.CODE_FOUND_IN_EXPANSION_HOWEVER_, warningMessage));
+          } else if (inExpansion) {
+            res.setMessage("Code found in expansion, however: " + res.getMessage());
+          } else if (inInclude) {
+            res.setMessage("Code found in include, however: " + res.getMessage());
+          }
         }
       }
     }
     return res;
+  }
+
+  private boolean checkInclude(Coding code) {
+    if (valueset == null || code.getSystem() == null || code.getCode() == null) {
+      return false;
+    }
+    for (ConceptSetComponent inc : valueset.getCompose().getExclude()) {
+      if (inc.hasSystem() && inc.getSystem().equals(code.getSystem())) {
+        for (ConceptReferenceComponent cc : inc.getConcept()) {
+          if (cc.hasCode() && cc.getCode().equals(code.getCode())) {
+            return false;
+          }
+        }
+      }
+    }
+    for (ConceptSetComponent inc : valueset.getCompose().getInclude()) {
+      if (inc.hasSystem() && inc.getSystem().equals(code.getSystem())) {
+        for (ConceptReferenceComponent cc : inc.getConcept()) {
+          if (cc.hasCode() && cc.getCode().equals(code.getCode())) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   private CodeSystem findSpecialCodeSystem(String system) {

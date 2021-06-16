@@ -56,6 +56,7 @@ public class Params {
   public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String SECURITY_CHECKS = "-security-checks";
   public static final String CRUMB_TRAIL = "-crumb-trails";
+  public static final String VERBOSE = "-verbose";
   public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
 
@@ -182,6 +183,8 @@ public class Params {
       } else if (args[i].equals(SECURITY_CHECKS)) {
         cliContext.setSecurityChecks(true);
       } else if (args[i].equals(CRUMB_TRAIL)) {
+        cliContext.setCrumbTrails(true);
+      } else if (args[i].equals(VERBOSE)) {
         cliContext.setCrumbTrails(true);
       } else if (args[i].equals(ALLOW_EXAMPLE_URLS)) {
         String bl = args[++i]; 
