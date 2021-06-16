@@ -430,6 +430,9 @@ public class CodeSystemUtilities {
   }
 
   public static ConceptDefinitionComponent getCode(CodeSystem cs, String code) {
+    if (code == null) {
+      return null;
+    }
     for (ConceptDefinitionComponent cc : cs.getConcept()) {
       ConceptDefinitionComponent cd = getCode(cc, code);
       if (cd != null) {
