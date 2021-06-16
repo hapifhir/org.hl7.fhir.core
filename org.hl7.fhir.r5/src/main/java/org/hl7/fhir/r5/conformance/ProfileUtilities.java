@@ -4044,6 +4044,9 @@ public class ProfileUtilities extends TranslatingUtilities {
       hint = checkAdd(hint, (hasDef && element.hasSliceName() ? ": " : ""));
       hint = checkAdd(hint, !hasDef ? null : gt(element.getDefinitionElement()));
     }
+    if (element.hasSlicing()) {
+      sName = "Slices for "+sName;
+    }
     Cell left = gen.new Cell(null, ref, sName, hint, null);
     row.getCells().add(left);
     return left;
@@ -4102,9 +4105,7 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     } else {
       res.add(genCardinality(gen, element, row, hasDef, used, null));
-      if (element.hasSlicing())
-        res.add(addCell(row, gen.new Cell(null, corePath+"profiling.html#slicing", "(Slice Definition)", null, null)));
-      else if (hasDef && !"0".equals(element.getMax()) && typesRow == null)
+      if (hasDef && !"0".equals(element.getMax()) && typesRow == null)
         res.add(genTypes(gen, row, element, profileBaseFileName, profile, corePath, imagePath, root, mustSupport));
       else
         res.add(addCell(row, gen.new Cell()));
