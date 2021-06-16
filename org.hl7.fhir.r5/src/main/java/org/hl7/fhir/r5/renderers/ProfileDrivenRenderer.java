@@ -701,17 +701,23 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
              }
            }
         } else if (canDoTable(path, p, grandChildren, x)) {
-          x.addTag(getHeader()).addText(Utilities.capitalize(Utilities.camelCase(Utilities.pluralizeMe(p.getName()))));
-          XhtmlNode tbl = x.table("grid");
+          XhtmlNode xn = new XhtmlNode(NodeType.Element, getHeader());
+          xn.addText(Utilities.capitalize(Utilities.camelCase(Utilities.pluralizeMe(p.getName()))));
+          XhtmlNode tbl = new XhtmlNode(NodeType.Element, "table"); 
+          tbl.setAttribute("class", "grid");
           XhtmlNode tr = tbl.tr();
           tr.td().tx("-"); // work around problem with empty table rows
-          addColumnHeadings(tr, grandChildren);
+          boolean add = addColumnHeadings(tr, grandChildren);          
           for (BaseWrapper v : p.getValues()) {
             if (v != null) {
               tr = tbl.tr();
               tr.td().tx("*"); // work around problem with empty table rows
-              addColumnValues(res, tr, grandChildren, v, showCodeDetails, displayHints, path, indent);
+              add = addColumnValues(res, tr, grandChildren, v, showCodeDetails, displayHints, path, indent) || add;
             }
+          }
+          if (add) {
+            x.add(xn);
+            x.add(tbl);
           }
         } else if (isExtension(p)) {
           for (BaseWrapper v : p.getValues()) {
@@ -776,6 +782,7 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     if (x.getName().equals("p")) {
       return false;
     }
+
     for (ElementDefinition e : grandChildren) {
       List<PropertyWrapper> values = getValues(path, p, e);
       if (values.size() > 1 || !isPrimitive(e) || !canCollapse(e))
@@ -812,24 +819,32 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     return false;
   }
 
-  private void addColumnHeadings(XhtmlNode tr, List<ElementDefinition> grandChildren) {
-    for (ElementDefinition e : grandChildren)
+  private boolean addColumnHeadings(XhtmlNode tr, List<ElementDefinition> grandChildren) {
+    boolean b = false;
+    for (ElementDefinition e : grandChildren) {
+      b = true;
       tr.td().b().addText(Utilities.capitalize(tail(e.getPath())));
+    }
+    return b;
   }
 
-  private void addColumnValues(ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren, BaseWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
+  private boolean addColumnValues(ResourceWrapper res, XhtmlNode tr, List<ElementDefinition> grandChildren, BaseWrapper v, boolean showCodeDetails, Map<String, String> displayHints, String path, int indent) throws FHIRException, UnsupportedEncodingException, IOException, EOperationOutcome {
+    boolean b = false;
     for (ElementDefinition e : grandChildren) {
       PropertyWrapper p = v.getChildByName(e.getPath().substring(e.getPath().lastIndexOf(".")+1));
       XhtmlNode td = tr.td();
-      if (p == null || p.getValues().size() == 0 || p.getValues().get(0) == null)
+      if (p == null || p.getValues().size() == 0 || p.getValues().get(0) == null) {
+        b = true;
         td.tx(" ");
-      else {
+      } else {
         for (BaseWrapper vv : p.getValues()) {
+          b = true;
           td.sep(", ");
           renderLeaf(res, vv, e, td, td, false, showCodeDetails, displayHints, path, indent);
         }
       }
     }
+    return b;
   }
 
   private void filterGrandChildren(List<ElementDefinition> grandChildren,  String string, PropertyWrapper prop) {
