@@ -1209,7 +1209,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       if (class_ == Resource.class || class_ == null) {
         if (structures.has(uri)) {
           return (T) structures.get(uri, version);
-        } 
+        }        
         if (guides.has(uri)) {
           return (T) guides.get(uri, version);
         } 

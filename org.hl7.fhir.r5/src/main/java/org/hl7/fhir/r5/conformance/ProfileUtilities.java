@@ -1,5 +1,9 @@
 package org.hl7.fhir.r5.conformance;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -2226,7 +2230,8 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private boolean checkExtensionDoco(ElementDefinition base) {
     // see task 3970. For an extension, there's no point copying across all the underlying definitional stuff
-    boolean isExtension = base.getPath().equals("Extension") || base.getPath().endsWith(".extension") || base.getPath().endsWith(".modifierExtension");
+    boolean isExtension = (base.getPath().equals("Extension") || base.getPath().endsWith(".extension") || base.getPath().endsWith(".modifierExtension")) &&
+          (!base.hasBase() || !"II.extension".equals(base.getBase().getPath()));
     if (isExtension) {
       base.setDefinition("An Extension");
       base.setShort("Extension");
@@ -3084,6 +3089,10 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean hasBindableType(ElementDefinition ed) {
     for (TypeRefComponent tr : ed.getType()) {
       if (Utilities.existsInList(tr.getWorkingCode(), "Coding", "CodeableConcept", "Quantity", "uri", "string", "code")) {
+        return true;
+      }
+      StructureDefinition sd = context.fetchTypeDefinition(tr.getCode());
+      if (sd != null && sd.hasExtension(ToolingExtensions.EXT_BINDING_STYLE)) {
         return true;
       }
     }
@@ -4496,6 +4505,31 @@ public class ProfileUtilities extends TranslatingUtilities {
           c.getPieces().add(gen.new Piece(null, translate("sd.table", "Slice")+": ", null).addStyle("font-weight:bold"));
           c.getPieces().add(gen.new Piece(null, describeSlice(definition.getSlicing()), null));
         }
+        if (!definition.getPath().contains(".") && ToolingExtensions.hasExtension(profile, ToolingExtensions.EXT_BINDING_STYLE)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          c.getPieces().add(gen.new Piece(null, translate("sd.table", "Binding")+": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, "This type can be bound to a value set using the ", null));
+          c.getPieces().add(gen.new Piece(null, ToolingExtensions.readStringExtension(profile, ToolingExtensions.EXT_BINDING_STYLE), null));
+          c.getPieces().add(gen.new Piece(null, " binding style", null));            
+          
+        }
+        if (definition.hasExtension(ToolingExtensions.EXT_XML_NAME)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          if (definition.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE)) {
+            c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML")+": ", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAME), null));
+            c.getPieces().add(gen.new Piece(null, " (", null));
+            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE), null));
+            c.getPieces().add(gen.new Piece(null, ")", null));            
+          } else {
+            c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Element Name")+": ", null).addStyle("font-weight:bold"));
+            c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAME), null));
+          }            
+        } else if (definition.hasExtension(ToolingExtensions.EXT_XML_NAMESPACE)) {
+          if (!c.getPieces().isEmpty()) { c.addPiece(gen.new Piece("br")); }
+          c.getPieces().add(gen.new Piece(null, translate("sd.table", "XML Namespace")+": ", null).addStyle("font-weight:bold"));
+          c.getPieces().add(gen.new Piece(null, definition.getExtensionString(ToolingExtensions.EXT_XML_NAMESPACE), null));          
+        }
         if (definition != null) {
           ElementDefinitionBindingComponent binding = null;
           if (valueDefn != null && valueDefn.hasBinding() && !valueDefn.getBinding().isEmpty())
@@ -4742,8 +4776,9 @@ public class ProfileUtilities extends TranslatingUtilities {
               String s = b.primitiveValue();
               // ok. let's see if we can find a relevant link for this
               String link = null;
-              if (Utilities.isAbsoluteUrl(s))
+              if (Utilities.isAbsoluteUrl(s)) {
                 link = pkp.getLinkForUrl(corePath, s);
+              }
               c.getPieces().add(gen.new Piece(link, s, null).addStyle("color: darkgreen"));
             } else {
               c = gen.new Cell();
