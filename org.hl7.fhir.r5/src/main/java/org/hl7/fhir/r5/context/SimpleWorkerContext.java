@@ -408,7 +408,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     for (String e : pi.dependencies()) {
       if (!loadedPackages.contains(e) && !VersionUtilities.isCorePackage(e)) {
         NpmPackage npm = pcm.loadPackage(e);
-        if (!version.equals(npm.fhirVersion())) {
+        if (!VersionUtilities.versionsMatch(version, npm.fhirVersion())) {
           System.out.println(formatMessage(I18nConstants.PACKAGE_VERSION_MISMATCH, e, version, npm.fhirVersion(), path));  
         }
         t = t + loadFromPackageAndDependenciesInt(npm, loader.getNewLoader(npm), pcm, path+" -> "+npm.name()+"#"+npm.version());
