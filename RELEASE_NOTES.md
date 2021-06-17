@@ -6,7 +6,12 @@ Validator:
 * add the -verbose parameter, and add additional verbose messages
 * CDA: Fix erroneous type validation on CDA templates
 
+Conversion code:
+
+* Ignoring abatementBoolean when converting from dstu2 to r4
+
 Snapshot generator:
+
 * CDA: Suppress erroneous "Expansion" text appearing in view
 * CDA: Don't delete binding information in snapshot for CDA bindable data types
 
@@ -18,5 +23,3 @@ Other code changes:
 * Improve rendering of questionnaires (icons, option sets)
 * Rendering: add support for CodeableReference
 * Rendering: Support binding mode and XML element information 
-
-
