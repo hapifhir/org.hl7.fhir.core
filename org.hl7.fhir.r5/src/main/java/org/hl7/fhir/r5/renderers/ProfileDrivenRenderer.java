@@ -306,12 +306,14 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
     else if (e instanceof Enumeration) {
       Object ev = ((Enumeration<?>) e).getValue();
       x.addText(ev == null ? "" : ev.toString()); // todo: look up a display name if there is one
-    } else if (e instanceof BooleanType)
+    } else if (e instanceof BooleanType) {
       x.addText(((BooleanType) e).getValue().toString());
-    else if (e instanceof CodeableConcept) {
+    } else if (e instanceof CodeableConcept) {
       renderCodeableConcept(x, (CodeableConcept) e, showCodeDetails);
     } else if (e instanceof Coding) {
       renderCoding(x, (Coding) e, showCodeDetails);
+    } else if (e instanceof CodeableReference) {
+      renderCodeableReference(x, (CodeableReference) e, showCodeDetails);
     } else if (e instanceof Annotation) {
       renderAnnotation(x, (Annotation) e);
     } else if (e instanceof Identifier) {
