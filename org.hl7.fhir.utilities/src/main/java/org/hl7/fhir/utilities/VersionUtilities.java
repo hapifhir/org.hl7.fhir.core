@@ -452,7 +452,6 @@ public class VersionUtilities {
       res.add("TerminologyCapabilities");
       res.add("TestScript");
       res.add("ValueSet");
-
     }
     return res;
   }
@@ -463,6 +462,12 @@ public class VersionUtilities {
       return versionFromCode(p[2]);
     }
     return null;
+  }
+
+  public static boolean versionsMatch(String v1, String v2) {
+    String mm1 = getMajMin(v1);
+    String mm2 = getMajMin(v2);
+    return mm1 != null && mm2 != null && mm1.equals(mm2);
   }
 
 

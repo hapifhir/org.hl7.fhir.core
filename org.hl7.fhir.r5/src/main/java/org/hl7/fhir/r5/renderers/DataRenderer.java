@@ -17,6 +17,7 @@ import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CanonicalType;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.CodeableConcept;
+import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ContactPoint;
 import org.hl7.fhir.r5.model.DataRequirement;
@@ -552,6 +553,15 @@ public class DataRenderer extends Renderer {
     renderCodeableConcept(x, cc, false);
   }
   
+  protected void renderCodeableReference(XhtmlNode x, CodeableReference e, boolean showCodeDetails) {
+    if (e.hasConcept()) {
+      renderCodeableConcept(x, e.getConcept(), showCodeDetails);
+    }
+    if (e.hasReference()) {
+      renderReference(x, e.getReference());
+    }
+  }
+
   protected void renderCodeableConcept(XhtmlNode x, CodeableConcept cc, boolean showCodeDetails) {
     if (cc.isEmpty()) {
       return;
