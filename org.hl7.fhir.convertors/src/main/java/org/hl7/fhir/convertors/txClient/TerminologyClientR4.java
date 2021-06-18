@@ -34,9 +34,8 @@ package org.hl7.fhir.convertors.txClient;
 import java.net.URISyntaxException;
 import java.util.Map;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.TerminologyCapabilities40_50;
+import org.hl7.fhir.convertors.conv40_50.resources40_50.TerminologyCapabilities40_50;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.utils.client.FHIRToolingClient;
