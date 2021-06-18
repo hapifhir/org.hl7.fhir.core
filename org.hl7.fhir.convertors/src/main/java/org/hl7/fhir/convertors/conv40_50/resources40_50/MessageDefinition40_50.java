@@ -236,7 +236,7 @@ public class MessageDefinition40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent();
         Element40_50.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(convertResourceEnum(src.getCodeElement()));
+            tgt.setCodeElement(Code40_50.convertResourceEnum(src.getCodeElement()));
         if (src.hasProfile())
             tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
         if (src.hasMin())
@@ -252,7 +252,7 @@ public class MessageDefinition40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.r4.model.MessageDefinition.MessageDefinitionFocusComponent();
         Element40_50.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(convertResourceEnum(src.getCodeElement()));
+            tgt.setCodeElement(Code40_50.convertResourceEnum(src.getCodeElement()));
         if (src.hasProfile())
             tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
         if (src.hasMin())

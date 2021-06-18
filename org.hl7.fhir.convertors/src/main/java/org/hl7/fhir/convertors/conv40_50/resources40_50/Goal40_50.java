@@ -70,8 +70,8 @@ public class Goal40_50 extends VersionConvertor_40_50 {
             tgt.setStatusReasonElement(String40_50.convertString(src.getStatusReasonElement()));
         for (org.hl7.fhir.r4.model.Reference t : src.getAddresses()) tgt.addAddresses(Reference40_50.convertReference(t));
         for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCode()) tgt.addOutcome(convertCodeableConceptToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference()) tgt.addOutcome(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCode()) tgt.addOutcome(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference()) tgt.addOutcome(Reference40_50.convertReferenceToCodeableReference(t));
         return tgt;
     }
 

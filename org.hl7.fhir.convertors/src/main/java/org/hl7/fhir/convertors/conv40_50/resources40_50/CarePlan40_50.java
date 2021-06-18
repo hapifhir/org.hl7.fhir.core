@@ -73,7 +73,7 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
         for (org.hl7.fhir.r4.model.Reference t : src.getContributor()) tgt.addContributor(Reference40_50.convertReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getCareTeam()) tgt.addCareTeam(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getAddresses()) tgt.addAddresses(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getAddresses()) tgt.addAddresses(Reference40_50.convertReferenceToCodeableReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(Reference40_50.convertReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getGoal()) tgt.addGoal(Reference40_50.convertReference(t));
         for (org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent t : src.getActivity()) tgt.addActivity(convertCarePlanActivityComponent(t));
@@ -245,8 +245,8 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r5.model.CarePlan.CarePlanActivityComponent();
         Element40_50.copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCodeableConcept()) tgt.addPerformedActivity(convertCodeableConceptToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference()) tgt.addPerformedActivity(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCodeableConcept()) tgt.addPerformedActivity(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getOutcomeReference()) tgt.addPerformedActivity(Reference40_50.convertReferenceToCodeableReference(t));
         for (org.hl7.fhir.r4.model.Annotation t : src.getProgress()) tgt.addProgress(Annotation40_50.convertAnnotation(t));
         if (src.hasReference())
             tgt.setPlannedActivityReference(Reference40_50.convertReference(src.getReference()));
@@ -283,8 +283,8 @@ public class CarePlan40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiatesUri().add(Uri40_50.convertUri(t));
         if (src.hasCode())
             tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(Reference40_50.convertReferenceToCodeableReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getGoal()) tgt.addGoal(Reference40_50.convertReference(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertCarePlanActivityStatus(src.getStatusElement()));

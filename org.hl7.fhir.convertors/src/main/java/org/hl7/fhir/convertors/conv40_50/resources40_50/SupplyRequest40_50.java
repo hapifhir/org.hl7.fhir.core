@@ -72,8 +72,8 @@ public class SupplyRequest40_50 extends VersionConvertor_40_50 {
         if (src.hasRequester())
             tgt.setRequester(Reference40_50.convertReference(src.getRequester()));
         for (org.hl7.fhir.r4.model.Reference t : src.getSupplier()) tgt.addSupplier(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(Reference40_50.convertReferenceToCodeableReference(t));
         if (src.hasDeliverFrom())
             tgt.setDeliverFrom(Reference40_50.convertReference(src.getDeliverFrom()));
         if (src.hasDeliverTo())

@@ -66,7 +66,7 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
             tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(Boolean40_50.convertBoolean(src.getExperimentalElement()));
-        for (org.hl7.fhir.r4.model.CodeType t : src.getSubjectType()) tgt.getSubjectType().add(convertResourceEnum(t));
+        for (org.hl7.fhir.r4.model.CodeType t : src.getSubjectType()) tgt.getSubjectType().add(Code40_50.convertResourceEnum(t));
         if (src.hasDate())
             tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
@@ -110,7 +110,7 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
             tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
             tgt.setExperimentalElement(Boolean40_50.convertBoolean(src.getExperimentalElement()));
-        for (CodeType t : src.getSubjectType()) tgt.getSubjectType().add(convertResourceEnum(t));
+        for (CodeType t : src.getSubjectType()) tgt.getSubjectType().add(Code40_50.convertResourceEnum(t));
         if (src.hasDate())
             tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())

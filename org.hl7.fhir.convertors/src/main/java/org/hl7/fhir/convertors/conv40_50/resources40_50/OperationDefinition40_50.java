@@ -79,7 +79,7 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setCommentElement(MarkDown40_50.convertMarkdown(src.getCommentElement()));
         if (src.hasBase())
             tgt.setBaseElement(Canonical40_50.convertCanonical(src.getBaseElement()));
-        for (org.hl7.fhir.r4.model.CodeType t : src.getResource()) tgt.getResource().add(convertResourceEnum(t));
+        for (org.hl7.fhir.r4.model.CodeType t : src.getResource()) tgt.getResource().add(Code40_50.convertResourceEnum(t));
         if (src.hasSystem())
             tgt.setSystemElement(Boolean40_50.convertBoolean(src.getSystemElement()));
         if (src.hasType())
@@ -133,7 +133,7 @@ public class OperationDefinition40_50 extends VersionConvertor_40_50 {
             tgt.setCommentElement(MarkDown40_50.convertMarkdown(src.getCommentElement()));
         if (src.hasBase())
             tgt.setBaseElement(Canonical40_50.convertCanonical(src.getBaseElement()));
-        for (CodeType t : src.getResource()) tgt.getResource().add(convertResourceEnum(t));
+        for (CodeType t : src.getResource()) tgt.getResource().add(Code40_50.convertResourceEnum(t));
         if (src.hasSystem())
             tgt.setSystemElement(Boolean40_50.convertBoolean(src.getSystemElement()));
         if (src.hasType())

@@ -350,7 +350,7 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent();
         Element40_50.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
+            tgt.setTypeElement(Code40_50.convertResourceEnum(src.getTypeElement()));
         if (src.hasProfile())
             tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
         for (org.hl7.fhir.r4.model.CanonicalType t : src.getSupportedProfile()) tgt.getSupportedProfile().add(Canonical40_50.convertCanonical(t));
@@ -387,7 +387,7 @@ public class CapabilityStatement40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent tgt = new org.hl7.fhir.r4.model.CapabilityStatement.CapabilityStatementRestResourceComponent();
         Element40_50.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
+            tgt.setTypeElement(Code40_50.convertResourceEnum(src.getTypeElement()));
         if (src.hasProfile())
             tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
         for (org.hl7.fhir.r5.model.CanonicalType t : src.getSupportedProfile()) tgt.getSupportedProfile().add(Canonical40_50.convertCanonical(t));

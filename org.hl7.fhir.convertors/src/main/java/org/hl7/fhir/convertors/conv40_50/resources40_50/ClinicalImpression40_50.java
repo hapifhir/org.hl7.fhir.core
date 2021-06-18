@@ -170,9 +170,9 @@ public class ClinicalImpression40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent();
         Element40_50.copyElement(src, tgt);
         if (src.hasItemCodeableConcept())
-            tgt.setItem(convertCodeableConceptToCodeableReference(src.getItemCodeableConcept()));
+            tgt.setItem(CodeableConcept40_50.convertCodeableConceptToCodeableReference(src.getItemCodeableConcept()));
         if (src.hasItemReference())
-            tgt.setItem(convertReferenceToCodeableReference(src.getItemReference()));
+            tgt.setItem(Reference40_50.convertReferenceToCodeableReference(src.getItemReference()));
         if (src.hasBasis())
             tgt.setBasisElement(String40_50.convertString(src.getBasisElement()));
         return tgt;

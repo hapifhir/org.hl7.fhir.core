@@ -75,8 +75,8 @@ public class Procedure40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent t : src.getPerformer()) tgt.addPerformer(convertProcedurePerformerComponent(t));
         if (src.hasLocation())
             tgt.setLocation(Reference40_50.convertReference(src.getLocation()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(Reference40_50.convertReferenceToCodeableReference(t));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite()) tgt.addBodySite(CodeableConcept40_50.convertCodeableConcept(t));
         if (src.hasOutcome())
             tgt.setOutcome(CodeableConcept40_50.convertCodeableConcept(src.getOutcome()));
@@ -86,8 +86,8 @@ public class Procedure40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getFollowUp()) tgt.addFollowUp(CodeableConcept40_50.convertCodeableConcept(t));
         for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
         for (org.hl7.fhir.r4.model.Procedure.ProcedureFocalDeviceComponent t : src.getFocalDevice()) tgt.addFocalDevice(convertProcedureFocalDeviceComponent(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getUsedReference()) tgt.addUsed(convertReferenceToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getUsedCode()) tgt.addUsed(convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getUsedReference()) tgt.addUsed(Reference40_50.convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getUsedCode()) tgt.addUsed(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
         return tgt;
     }
 

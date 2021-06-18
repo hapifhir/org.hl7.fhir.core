@@ -70,8 +70,8 @@ public class RiskAssessment40_50 extends VersionConvertor_40_50 {
             tgt.setCondition(Reference40_50.convertReference(src.getCondition()));
         if (src.hasPerformer())
             tgt.setPerformer(Reference40_50.convertReference(src.getPerformer()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(Reference40_50.convertReferenceToCodeableReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getBasis()) tgt.addBasis(Reference40_50.convertReference(t));
         for (org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent t : src.getPrediction()) tgt.addPrediction(convertRiskAssessmentPredictionComponent(t));
         if (src.hasMitigation())

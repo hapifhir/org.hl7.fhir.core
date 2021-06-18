@@ -84,8 +84,8 @@ public class Immunization40_50 extends VersionConvertor_40_50 {
             tgt.setDoseQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getDoseQuantity()));
         for (org.hl7.fhir.r4.model.Immunization.ImmunizationPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertImmunizationPerformerComponent(t));
         for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(Reference40_50.convertReferenceToCodeableReference(t));
         if (src.hasIsSubpotent())
             tgt.setIsSubpotentElement(Boolean40_50.convertBoolean(src.getIsSubpotentElement()));
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSubpotentReason()) tgt.addSubpotentReason(CodeableConcept40_50.convertCodeableConcept(t));

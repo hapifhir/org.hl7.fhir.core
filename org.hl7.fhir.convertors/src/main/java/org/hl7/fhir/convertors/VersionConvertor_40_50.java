@@ -41,57 +41,7 @@ import java.util.Arrays;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_40_50 extends VersionConvertor_Base {
-
-  protected static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
-    copyDomainResource(src, tgt, new BaseAdvisor_40_50());
-  }
-
-  protected static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt, BaseAdvisor_40_50 advisor) throws FHIRException {
-    copyResource(src, tgt);
-    if (src.hasText()) tgt.setText(Narrative40_50.convertNarrative(src.getText()));
-    src.getContained().stream()
-      .map(resource -> convertResource(resource, advisor))
-      .forEach(tgt::addContained);
-    src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
-        org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();
-        advisor.handleExtension("", extension, convertExtension);//TODO add path
-        tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension("", extension)) {//TODO add path
-        tgt.addExtension(Extension40_50.convertExtension(extension));
-      }
-    });
-    src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension("", extension))//TODO add path
-      .map(Extension40_50::convertExtension)
-      .forEach(tgt::addModifierExtension);
-  }
-
-  protected static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt) throws FHIRException {
-    copyDomainResource(src, tgt, new BaseAdvisor_40_50());
-  }
-
-  protected static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt, BaseAdvisor_40_50 advisor) throws FHIRException {
-    copyResource(src, tgt);
-    if (src.hasText()) tgt.setText(Narrative40_50.convertNarrative(src.getText()));
-    src.getContained().stream()
-      .map(resource -> convertResource(resource, advisor))
-      .forEach(tgt::addContained);
-    src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
-        org.hl7.fhir.r4.model.Extension convertExtension = new org.hl7.fhir.r4.model.Extension();
-        advisor.handleExtension("", extension, convertExtension);//TODO add path
-        tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension("", extension)) {//TODO add path
-        tgt.addExtension(Extension40_50.convertExtension(extension));
-      }
-    });
-    src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension("", extension))//TODO add path
-      .map(Extension40_50::convertExtension)
-      .forEach(tgt::addModifierExtension);
-  }
+public class VersionConvertor_40_50 {
 
   protected static void copyResource(org.hl7.fhir.r4.model.Resource src, org.hl7.fhir.r5.model.Resource tgt) throws FHIRException {
     if (src.hasId()) tgt.setIdElement(Id40_50.convertId(src.getIdElement()));
@@ -626,23 +576,53 @@ public class VersionConvertor_40_50 extends VersionConvertor_Base {
     }
   }
 
-  protected static org.hl7.fhir.r5.model.CodeType convertResourceEnum(org.hl7.fhir.r4.model.CodeType src) {
-    return Code40_50.convertCode(src);
+  protected static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
+    copyDomainResource(src, tgt, new BaseAdvisor_40_50());
   }
 
-  protected static org.hl7.fhir.r4.model.CodeType convertResourceEnum(org.hl7.fhir.r5.model.CodeType src) {
-    return Code40_50.convertCode(src);
+  protected static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt, BaseAdvisor_40_50 advisor) throws FHIRException {
+    copyResource(src, tgt);
+    if (src.hasText()) tgt.setText(Narrative40_50.convertNarrative(src.getText()));
+    src.getContained().stream()
+      .map(resource -> convertResource(resource, advisor))
+      .forEach(tgt::addContained);
+    src.getExtension().forEach(extension -> {
+      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
+        org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();
+        advisor.handleExtension("", extension, convertExtension);//TODO add path
+        tgt.addExtension(convertExtension);
+      } else if (!advisor.ignoreExtension("", extension)) {//TODO add path
+        tgt.addExtension(Extension40_50.convertExtension(extension));
+      }
+    });
+    src.getModifierExtension().stream()
+      .filter(extension -> !advisor.ignoreExtension("", extension))//TODO add path
+      .map(Extension40_50::convertExtension)
+      .forEach(tgt::addModifierExtension);
   }
 
-  protected static CodeableReference convertReferenceToCodeableReference(org.hl7.fhir.r4.model.Reference src) {
-    CodeableReference tgt = new CodeableReference();
-    tgt.setReference(Reference40_50.convertReference(src));
-    return tgt;
+  protected static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt) throws FHIRException {
+    copyDomainResource(src, tgt, new BaseAdvisor_40_50());
   }
 
-  protected static CodeableReference convertCodeableConceptToCodeableReference(org.hl7.fhir.r4.model.CodeableConcept src) {
-    CodeableReference tgt = new CodeableReference();
-    tgt.setConcept(CodeableConcept40_50.convertCodeableConcept(src));
-    return tgt;
+  protected static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt, BaseAdvisor_40_50 advisor) throws FHIRException {
+    copyResource(src, tgt);
+    if (src.hasText()) tgt.setText(Narrative40_50.convertNarrative(src.getText()));
+    src.getContained().stream()
+      .map(resource -> convertResource(resource, advisor))
+      .forEach(tgt::addContained);
+    src.getExtension().forEach(extension -> {
+      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
+        org.hl7.fhir.r4.model.Extension convertExtension = new org.hl7.fhir.r4.model.Extension();
+        advisor.handleExtension("", extension, convertExtension);//TODO add path
+        tgt.addExtension(convertExtension);
+      } else if (!advisor.ignoreExtension("", extension)) {//TODO add path
+        tgt.addExtension(Extension40_50.convertExtension(extension));
+      }
+    });
+    src.getModifierExtension().stream()
+      .filter(extension -> !advisor.ignoreExtension("", extension))//TODO add path
+      .map(Extension40_50::convertExtension)
+      .forEach(tgt::addModifierExtension);
   }
 }

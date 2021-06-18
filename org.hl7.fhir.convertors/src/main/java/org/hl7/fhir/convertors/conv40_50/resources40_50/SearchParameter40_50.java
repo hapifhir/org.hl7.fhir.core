@@ -73,7 +73,7 @@ public class SearchParameter40_50 extends VersionConvertor_40_50 {
             tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
         if (src.hasCode())
             tgt.setCodeElement(Code40_50.convertCode(src.getCodeElement()));
-        for (org.hl7.fhir.r4.model.CodeType t : src.getBase()) tgt.getBase().add(convertResourceEnum(t));
+        for (org.hl7.fhir.r4.model.CodeType t : src.getBase()) tgt.getBase().add(Code40_50.convertResourceEnum(t));
         if (src.hasType())
             tgt.setTypeElement(Enumerations40_50.convertSearchParamType(src.getTypeElement()));
         if (src.hasExpression())
@@ -82,7 +82,7 @@ public class SearchParameter40_50 extends VersionConvertor_40_50 {
             tgt.setXpathElement(String40_50.convertString(src.getXpathElement()));
         if (src.hasXpathUsage())
             tgt.setXpathUsageElement(convertXPathUsageType(src.getXpathUsageElement()));
-        for (org.hl7.fhir.r4.model.CodeType t : src.getTarget()) tgt.getTarget().add(convertResourceEnum(t));
+        for (org.hl7.fhir.r4.model.CodeType t : src.getTarget()) tgt.getTarget().add(Code40_50.convertResourceEnum(t));
         if (src.hasMultipleOr())
             tgt.setMultipleOrElement(Boolean40_50.convertBoolean(src.getMultipleOrElement()));
         if (src.hasMultipleAnd())
@@ -128,7 +128,7 @@ public class SearchParameter40_50 extends VersionConvertor_40_50 {
             tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
         if (src.hasCode())
             tgt.setCodeElement(Code40_50.convertCode(src.getCodeElement()));
-        for (CodeType t : src.getBase()) tgt.getBase().add(convertResourceEnum(t));
+        for (CodeType t : src.getBase()) tgt.getBase().add(Code40_50.convertResourceEnum(t));
         if (src.hasType())
             tgt.setTypeElement(Enumerations40_50.convertSearchParamType(src.getTypeElement()));
         if (src.hasExpression())
@@ -137,7 +137,7 @@ public class SearchParameter40_50 extends VersionConvertor_40_50 {
             tgt.setXpathElement(String40_50.convertString(src.getXpathElement()));
         if (src.hasXpathUsage())
             tgt.setXpathUsageElement(convertXPathUsageType(src.getXpathUsageElement()));
-        for (CodeType t : src.getTarget()) tgt.getTarget().add(convertResourceEnum(t));
+        for (CodeType t : src.getTarget()) tgt.getTarget().add(Code40_50.convertResourceEnum(t));
         if (src.hasMultipleOr())
             tgt.setMultipleOrElement(Boolean40_50.convertBoolean(src.getMultipleOrElement()));
         if (src.hasMultipleAnd())

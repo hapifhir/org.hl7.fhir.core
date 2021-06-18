@@ -67,7 +67,7 @@ public class GraphDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasPurpose())
             tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
         if (src.hasStart())
-            tgt.setStartElement(convertResourceEnum(src.getStartElement()));
+            tgt.setStartElement(Code40_50.convertResourceEnum(src.getStartElement()));
         if (src.hasProfile())
             tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
         for (org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink()) tgt.addLink(convertGraphDefinitionLinkComponent(t));
@@ -101,7 +101,7 @@ public class GraphDefinition40_50 extends VersionConvertor_40_50 {
         if (src.hasPurpose())
             tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
         if (src.hasStart())
-            tgt.setStartElement(convertResourceEnum(src.getStartElement()));
+            tgt.setStartElement(Code40_50.convertResourceEnum(src.getStartElement()));
         if (src.hasProfile())
             tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
         for (org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkComponent t : src.getLink()) tgt.addLink(convertGraphDefinitionLinkComponent(t));
@@ -152,7 +152,7 @@ public class GraphDefinition40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.r5.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
         Element40_50.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
+            tgt.setTypeElement(Code40_50.convertResourceEnum(src.getTypeElement()));
         if (src.hasParams())
             tgt.setParamsElement(String40_50.convertString(src.getParamsElement()));
         if (src.hasProfile())
@@ -168,7 +168,7 @@ public class GraphDefinition40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetComponent tgt = new org.hl7.fhir.r4.model.GraphDefinition.GraphDefinitionLinkTargetComponent();
         Element40_50.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
+            tgt.setTypeElement(Code40_50.convertResourceEnum(src.getTypeElement()));
         if (src.hasParams())
             tgt.setParamsElement(String40_50.convertString(src.getParamsElement()));
         if (src.hasProfile())

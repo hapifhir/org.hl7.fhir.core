@@ -2271,7 +2271,7 @@ public class ImplementationGuide40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideGlobalComponent();
         Element40_50.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
+            tgt.setTypeElement(Code40_50.convertResourceEnum(src.getTypeElement()));
         if (src.hasProfile())
             tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
         return tgt;
@@ -2283,7 +2283,7 @@ public class ImplementationGuide40_50 extends VersionConvertor_40_50 {
         org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideGlobalComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideGlobalComponent();
         Element40_50.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setTypeElement(convertResourceEnum(src.getTypeElement()));
+            tgt.setTypeElement(Code40_50.convertResourceEnum(src.getTypeElement()));
         if (src.hasProfile())
             tgt.setProfileElement(Canonical40_50.convertCanonical(src.getProfileElement()));
         return tgt;

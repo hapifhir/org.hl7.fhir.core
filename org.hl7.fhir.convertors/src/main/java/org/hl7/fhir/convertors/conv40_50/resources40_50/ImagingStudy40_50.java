@@ -76,8 +76,8 @@ public class ImagingStudy40_50 extends VersionConvertor_40_50 {
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProcedureCode()) tgt.addProcedure().setValue(CodeableConcept40_50.convertCodeableConcept(t));
         if (src.hasLocation())
             tgt.setLocation(Reference40_50.convertReference(src.getLocation()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(Reference40_50.convertReferenceToCodeableReference(t));
         for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
         if (src.hasDescription())
             tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));

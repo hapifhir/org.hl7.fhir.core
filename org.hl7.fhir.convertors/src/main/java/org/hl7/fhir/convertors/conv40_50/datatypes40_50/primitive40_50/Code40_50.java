@@ -15,4 +15,12 @@ public class Code40_50 {
     Element40_50.copyElement(src, tgt);
     return tgt;
   }
+
+  public static org.hl7.fhir.r5.model.CodeType convertResourceEnum(org.hl7.fhir.r4.model.CodeType src) {
+    return Code40_50.convertCode(src);
+  }
+
+  public static org.hl7.fhir.r4.model.CodeType convertResourceEnum(org.hl7.fhir.r5.model.CodeType src) {
+    return Code40_50.convertCode(src);
+  }
 }

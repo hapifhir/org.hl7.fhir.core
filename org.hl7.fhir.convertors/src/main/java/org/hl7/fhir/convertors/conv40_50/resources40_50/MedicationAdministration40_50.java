@@ -70,8 +70,8 @@ public class MedicationAdministration40_50 extends VersionConvertor_40_50 {
         if (src.hasEffective())
             tgt.setOccurence(Type40_50.convertType(src.getEffective()));
         for (org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer()) tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(convertCodeableConceptToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(convertReferenceToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(Reference40_50.convertReferenceToCodeableReference(t));
         if (src.hasRequest())
             tgt.setRequest(Reference40_50.convertReference(src.getRequest()));
         for (org.hl7.fhir.r4.model.Reference t : src.getDevice()) tgt.addDevice(Reference40_50.convertReference(t));
