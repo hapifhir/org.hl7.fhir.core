@@ -43,14 +43,14 @@ import java.util.Arrays;
 
 public class VersionConvertor_40_50 {
 
-  protected static void copyResource(org.hl7.fhir.r4.model.Resource src, org.hl7.fhir.r5.model.Resource tgt) throws FHIRException {
+  public static void copyResource(org.hl7.fhir.r4.model.Resource src, org.hl7.fhir.r5.model.Resource tgt) throws FHIRException {
     if (src.hasId()) tgt.setIdElement(Id40_50.convertId(src.getIdElement()));
     if (src.hasMeta()) tgt.setMeta(Meta40_50.convertMeta(src.getMeta()));
     if (src.hasImplicitRules()) tgt.setImplicitRulesElement(Uri40_50.convertUri(src.getImplicitRulesElement()));
     if (src.hasLanguage()) tgt.setLanguageElement(Code40_50.convertCode(src.getLanguageElement()));
   }
 
-  protected static void copyResource(org.hl7.fhir.r5.model.Resource src, org.hl7.fhir.r4.model.Resource tgt) throws FHIRException {
+  public static void copyResource(org.hl7.fhir.r5.model.Resource src, org.hl7.fhir.r4.model.Resource tgt) throws FHIRException {
     if (src.hasId()) tgt.setIdElement(Id40_50.convertId(src.getIdElement()));
     if (src.hasMeta()) tgt.setMeta(Meta40_50.convertMeta(src.getMeta()));
     if (src.hasImplicitRules()) tgt.setImplicitRulesElement(Uri40_50.convertUri(src.getImplicitRulesElement()));
@@ -576,11 +576,11 @@ public class VersionConvertor_40_50 {
     }
   }
 
-  protected static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
+  public static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
     copyDomainResource(src, tgt, new BaseAdvisor_40_50());
   }
 
-  protected static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt, BaseAdvisor_40_50 advisor) throws FHIRException {
+  public static void copyDomainResource(org.hl7.fhir.r4.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt, BaseAdvisor_40_50 advisor) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative40_50.convertNarrative(src.getText()));
     src.getContained().stream()
@@ -601,11 +601,11 @@ public class VersionConvertor_40_50 {
       .forEach(tgt::addModifierExtension);
   }
 
-  protected static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt) throws FHIRException {
+  public static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt) throws FHIRException {
     copyDomainResource(src, tgt, new BaseAdvisor_40_50());
   }
 
-  protected static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt, BaseAdvisor_40_50 advisor) throws FHIRException {
+  public static void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt, BaseAdvisor_40_50 advisor) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative40_50.convertNarrative(src.getText()));
     src.getContained().stream()
