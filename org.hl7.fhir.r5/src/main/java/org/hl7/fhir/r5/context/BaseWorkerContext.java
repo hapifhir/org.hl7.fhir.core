@@ -1840,6 +1840,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
   
   public String getLinkForUrl(String corePath, String url) {
+    if (url == null) {
+      return null;
+    }
+    
     if (codeSystems.has(url)) {
       return codeSystems.get(url).getUserString("path");
     }
