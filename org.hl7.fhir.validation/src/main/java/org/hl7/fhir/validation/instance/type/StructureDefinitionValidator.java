@@ -247,8 +247,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
         StructureDefinition t = determineBaseType(sd);
         if (t == null) {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
-          throw new Error("What to do about this?");
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd.getKind() == StructureDefinitionKind.RESOURCE, I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
         }
@@ -260,8 +259,7 @@ public class StructureDefinitionValidator extends BaseValidator {
       if (warning(errors, IssueType.EXCEPTION, stack.getLiteralPath(), sd != null, I18nConstants.SD_ED_TYPE_PROFILE_UNKNOWN, p)) {
         StructureDefinition t = determineBaseType(sd);
         if (t == null) {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), code.equals(t), I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
-          throw new Error("What to do about this?");
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isInstanceOf(t, code), I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
         }
@@ -317,7 +315,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         if (t == null) {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
         } else if (!VersionUtilities.isR5Ver(context.getVersion())) {
-          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()) || "Resource".equals(t), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource");
+          rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()) || "Resource".equals(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource");
         } else {
           rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), VersionUtilities.getCanonicalResourceNames(context.getVersion()).contains(t.getType()), I18nConstants.SD_ED_TYPE_PROFILE_WRONG_TARGET, p, t, code, path, "Canonical Resource");
         }  

@@ -583,6 +583,7 @@ public class I18nConstants {
   public static final String VALIDATION_VAL_PROFILE_NOTSLICE = "Validation_VAL_Profile_NotSlice";
   public static final String VALIDATION_VAL_PROFILE_NOTYPE = "Validation_VAL_Profile_NoType";
   public static final String VALIDATION_VAL_PROFILE_OUTOFORDER = "Validation_VAL_Profile_OutOfOrder";
+  public static final String VALIDATION_VAL_PROFILE_SIGNPOST_BASE = "VALIDATION_VAL_PROFILE_SIGNPOST_BASE";
   public static final String VALIDATION_VAL_PROFILE_SIGNPOST = "VALIDATION_VAL_PROFILE_SIGNPOST";
   public static final String VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL = "VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL";
   public static final String VALIDATION_VAL_PROFILE_SIGNPOST_META = "VALIDATION_VAL_PROFILE_SIGNPOST_META";
