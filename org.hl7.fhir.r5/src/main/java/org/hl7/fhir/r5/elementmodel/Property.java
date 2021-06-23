@@ -228,9 +228,13 @@ public class Property {
 	    return !definition.getPath().contains(".") && (structure.getKind() == StructureDefinitionKind.RESOURCE);
 	}
 
-	public boolean isList() {
-	  return !"1".equals(definition.getMax());
-	}
+  public boolean isList() {
+    return !"1".equals(definition.getMax());
+  }
+
+  public boolean isBaseList() {
+    return !"1".equals(definition.getBase().getMax());
+  }
 
   public String getScopedPropertyName() {
     return definition.getBase().getPath();

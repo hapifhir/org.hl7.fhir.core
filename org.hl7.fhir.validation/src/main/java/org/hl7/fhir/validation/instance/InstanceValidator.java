@@ -3270,8 +3270,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setResource(nstack.getElement());
             rr.setFocus(nstack.getElement());
             rr.setExternal(false);
-            rr.setStack(nstack.push(nstack.getElement(), -1, nstack.getElement().getProperty().getDefinition(), nstack.getElement().getProperty().getDefinition()));
-            rr.getStack().qualifyPath(".ofType("+nstack.getElement().fhirType()+")");
+            rr.setStack(nstack);
+//            rr.getStack().qualifyPath(".ofType("+nstack.getElement().fhirType()+")");
+            System.out.println("-->"+nstack.getLiteralPath());
             return rr;            
           }
           if (nstack.getElement().getSpecial() == SpecialElement.CONTAINED) {
@@ -3951,7 +3952,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   // checkSpecials = we're only going to run these tests if we are actually validating this content (as opposed to we looked it up)
   private void start(ValidatorHostContext hostContext, List<ValidationMessage> errors, Element resource, Element element, StructureDefinition defn, NodeStack stack) throws FHIRException {
     checkLang(resource, stack);
-    signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST, defn.getUrl());
+    if (crumbTrails) {
+      element.addMessage(signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST, defn.getUrl()));
+    }
 
     if (BUNDLE.equals(element.fhirType())) {
       resolveBundleReferences(element, new ArrayList<Element>());
@@ -3996,7 +3999,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               }
             }
             if (sd != null) {
-              signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_META, sd.getUrl());
+              if (crumbTrails) {
+                element.addMessage(signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_META, sd.getUrl()));
+              }
               stack.resetIds();
               startInner(hostContext, errors, resource, element, sd, stack, false);
             }
@@ -4011,7 +4016,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (rt.equals(gl.getType())) {
           StructureDefinition sd = context.fetchResource(StructureDefinition.class, gl.getProfile());
           if (warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath(), sd != null, I18nConstants.VALIDATION_VAL_GLOBAL_PROFILE_UNKNOWN, gl.getProfile())) {
-            signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), !crumbTrails, I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL, sd.getUrl(), ig.getUrl());
+            if (crumbTrails) {
+              element.addMessage(signpost(errors, IssueType.INFORMATIONAL, element.line(), element.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_GLOBAL, sd.getUrl(), ig.getUrl()));
+            }
             stack.resetIds();
             startInner(hostContext, errors, resource, element, sd, stack, false);
           }
@@ -4517,13 +4524,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         type = null;
       }
     }
-    NodeStack localStack = stack.push(ei.getElement(), ei.count, checkDefn, type == null ? typeDefn : resolveType(type, checkDefn.getType()));
+    NodeStack localStack = stack.push(ei.getElement(), "*".equals(ei.getDefinition().getBase().getMax()) && ei.count == -1 ? 0 : ei.count, checkDefn, type == null ? typeDefn : resolveType(type, checkDefn.getType()));
 //      if (debug) {
 //        System.out.println("  check " + localStack.getLiteralPath()+" against "+ei.getDefinition().getId()+" in profile "+profile.getUrl());
 //      }
-    String localStackLiterapPath = localStack.getLiteralPath();
+    String localStackLiteralPath = localStack.getLiteralPath();
     String eiPath = ei.getPath();
-    assert (eiPath.equals(localStackLiterapPath)) : "ei.path: " + ei.getPath() + "  -  localStack.getLiteralPath: " + localStackLiterapPath;
+    if (!eiPath.equals(localStackLiteralPath)) {
+      assert (eiPath.equals(localStackLiteralPath)) : "ei.path: " + ei.getPath() + "  -  localStack.getLiteralPath: " + localStackLiteralPath;
+    }
     boolean thisIsCodeableConcept = false;
     String thisExtension = null;
     boolean checkDisplay = true;

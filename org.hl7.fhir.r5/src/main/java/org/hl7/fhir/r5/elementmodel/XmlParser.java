@@ -203,6 +203,7 @@ public class XmlParser extends ParserBase {
       return null;
 
     Element result = new Element(element.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd));
+    result.setPath(element.getLocalName());
     checkElement(element, path, result.getProperty());
     result.markLocation(line(element), col(element));
     result.setType(element.getLocalName());
@@ -262,6 +263,7 @@ public class XmlParser extends ParserBase {
   public Element parse(org.w3c.dom.Element base, String type) throws Exception {
     StructureDefinition sd = getDefinition(0, 0, FormatUtilities.FHIR_NS, type);
     Element result = new Element(base.getLocalName(), new Property(context, sd.getSnapshot().getElement().get(0), sd));
+    result.setPath(base.getLocalName());
     String path = "/"+pathPrefix(base.getNamespaceURI())+base.getLocalName();
     checkElement(base, path, result.getProperty());
     result.setType(base.getLocalName());
@@ -283,13 +285,18 @@ public class XmlParser extends ParserBase {
     	if (property != null) {
         if ("ED.data[x]".equals(property.getDefinition().getId()) || (property.getDefinition()!=null && property.getDefinition().getBase()!=null && "ED.data[x]".equals(property.getDefinition().getBase().getPath()))) {
           if ("B64".equals(node.getAttribute("representation"))) {
-            element.getChildren().add(new Element("dataBase64Binary", property, "base64Binary", text).markLocation(line, col));
+            Element n = new Element("dataBase64Binary", property, "base64Binary", text).markLocation(line, col);
+            n.setPath(element.getPath()+"."+property.getName());
+            element.getChildren().add(n);
           } else {
-            element.getChildren().add(new Element("dataString", property, "string", text).markLocation(line, col));
+            Element n = new Element("dataString", property, "string", text).markLocation(line, col);
+            n.setPath(element.getPath()+"."+property.getName());
+            element.getChildren().add(n);
           }
         } else {
-          element.getChildren().add(
-              new Element(property.getName(), property, property.getType(), text).markLocation(line, col));
+          Element n = new Element(property.getName(), property, property.getType(), text).markLocation(line, col);
+          n.setPath(element.getPath()+"."+property.getName());
+          element.getChildren().add(n);
         }
       } 
     	else {
@@ -325,8 +332,11 @@ public class XmlParser extends ParserBase {
 	    	  	av = convertForDateFormatFromExternal(ToolingExtensions.readStringExtension(property.getDefinition(), "http://www.healthintersections.com.au/fhir/StructureDefinition/elementdefinition-dateformat"), av);
 	    		if (property.getName().equals("value") && element.isPrimitive())
 	    			element.setValue(av);
-	    		else
-	    	    element.getChildren().add(new Element(property.getName(), property, property.getType(), av).markLocation(line, col));
+	    		else {
+	    	    Element n = new Element(property.getName(), property, property.getType(), av).markLocation(line, col);
+            n.setPath(element.getPath()+"."+property.getName());
+            element.getChildren().add(n);
+	    		}
         } else {
           boolean ok = false;
           if (FormatUtilities.FHIR_NS.equals(node.getNamespaceURI())) {
@@ -342,21 +352,36 @@ public class XmlParser extends ParserBase {
     	}
     }
     
+    String lastName = null;
+    int repeatCount = 0;
     Node child = node.getFirstChild();
     while (child != null) {
     	if (child.getNodeType() == Node.ELEMENT_NODE) {
     		Property property = getElementProp(properties, child.getLocalName(), child.getNamespaceURI());
     		if (property != null) {
+    		  if (property.getName().equals(lastName)) {
+    		    repeatCount++;
+    		  } else {
+    		    lastName = property.getName();
+    		    repeatCount = 0;
+    		  }
     			if (!property.isChoice() && "xhtml".equals(property.getType())) {
     			  XhtmlNode xhtml;
     			  if (property.getDefinition().hasRepresentation(PropertyRepresentation.CDATEXT))
     			    xhtml = new CDANarrativeFormat().convert((org.w3c.dom.Element) child);
           	else 
               xhtml = new XhtmlParser().setValidatorMode(true).parseHtmlNode((org.w3c.dom.Element) child);
-						element.getChildren().add(new Element(property.getName(), property, "xhtml", new XhtmlComposer(XhtmlComposer.XML, false).compose(xhtml)).setXhtml(xhtml).markLocation(line(child), col(child)));
+						Element n = new Element(property.getName(), property, "xhtml", new XhtmlComposer(XhtmlComposer.XML, false).compose(xhtml)).setXhtml(xhtml).markLocation(line(child), col(child));
+            n.setPath(element.getPath()+"."+property.getName());
+            element.getChildren().add(n);
     			} else {
     			  String npath = path+"/"+pathPrefix(child.getNamespaceURI())+child.getLocalName();
     				Element n = new Element(child.getLocalName(), property).markLocation(line(child), col(child));
+    				if (property.isList()) {
+              n.setPath(element.getPath()+"."+property.getName()+"["+repeatCount+"]");    				  
+    				} else {
+              n.setPath(element.getPath()+"."+property.getName());
+    				}
     				checkElement((org.w3c.dom.Element) child, npath, n.getProperty());
     				boolean ok = true;
     				if (property.isChoice()) {

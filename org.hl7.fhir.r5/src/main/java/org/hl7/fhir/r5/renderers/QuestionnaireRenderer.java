@@ -132,7 +132,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
           li.tx(opt.getValue().primitiveValue());
         } else if (opt.getValue() instanceof Coding) {
           Coding c = (Coding) opt.getValue(); 
-          String link = context.getWorker().getLinkForUrl(context.getSpecificationLink(), c.getSystem());
+          String link = c.hasSystem() ? context.getWorker().getLinkForUrl(context.getSpecificationLink(), c.getSystem()) : null;
           if (link == null) {
             li.tx(c.getSystem()+"#"+c.getCode());
           } else {
