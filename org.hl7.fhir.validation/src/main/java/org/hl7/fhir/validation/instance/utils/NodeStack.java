@@ -34,7 +34,7 @@ public class NodeStack {
     this.context = context;
     ids = new HashMap<>();
     this.element = element;
-    literalPath = element.getName();
+    literalPath = element.getPath();
     workingLang = validationLanguage;
     if (!element.getName().equals(element.fhirType())) {
       logicalPaths = new ArrayList<>();
