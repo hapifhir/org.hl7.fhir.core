@@ -170,6 +170,27 @@ public interface IWorkerContext {
     }
   }
 
+  public class PackageDetails extends PackageVersion {
+    private String name;
+    private String canonical;
+    private String web;
+    public PackageDetails(String id, String version, String name, String canonical, String web) {
+      super(id, version);
+      this.name = name;
+      this.canonical = canonical;
+      this.web = web;
+    }
+    public String getName() {
+      return name;
+    }
+    public String getCanonical() {
+      return canonical;
+    }
+    public String getWeb() {
+      return web;
+    }
+    
+  }
   public interface ICanonicalResourceLocator {
     void findResource(Object caller, String url); // if it can be found, put it in the context
   }
@@ -387,7 +408,7 @@ public interface IWorkerContext {
    *  
    * @param packageInfo
    */
-  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies);
+  public void cachePackage(PackageDetails packageDetails, List<PackageVersion> dependencies);
   
   // -- profile services ---------------------------------------------------------
   
@@ -779,10 +800,14 @@ public interface IWorkerContext {
    */
    int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
 
-  public boolean hasPackage(String id, String ver);
+   public boolean hasPackage(String id, String ver);
+   public boolean hasPackage(PackageVersion pack);
+   public PackageDetails getPackage(PackageVersion pack);
 
   public int getClientRetryCount();
   public IWorkerContext setClientRetryCount(int value);
   
   public TimeTracker clock();
+
+  public PackageVersion getPackageForUrl(String url);
 }

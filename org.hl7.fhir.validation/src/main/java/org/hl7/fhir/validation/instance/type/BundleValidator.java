@@ -112,7 +112,9 @@ public class BundleValidator extends BaseValidator{
             } else {
               Element res = entry.getNamedChild(RESOURCE);
               NodeStack rstack = estack.push(res, -1, null, null);
-              signpost(errors, IssueType.INFORMATIONAL, res.line(), res.col(), stack.getLiteralPath(), !validator.isCrumbTrails(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM, defn.getUrl());
+              if (validator.isCrumbTrails()) {
+                res.addMessage(signpost(errors, IssueType.INFORMATIONAL, res.line(), res.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM, defn.getUrl()));
+              }
               stack.resetIds();
               validator.startInner(hostContext, errors, res, res, defn, rstack, false);
             }
