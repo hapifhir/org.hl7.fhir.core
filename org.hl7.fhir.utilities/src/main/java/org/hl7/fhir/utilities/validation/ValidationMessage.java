@@ -790,8 +790,9 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     return signpost;
   }
 
-  public void setSignpost(boolean signpost) {
+  public ValidationMessage setSignpost(boolean signpost) {
     this.signpost = signpost;
+    return this;
   }
 
 
