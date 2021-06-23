@@ -55,6 +55,7 @@ import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.utilities.ElementDecoration;
 import org.hl7.fhir.utilities.ElementDecoration.DecorationType;
+import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
@@ -102,6 +103,8 @@ public class Element extends Base {
 	private String explicitType; // for xsi:type attribute
 	private Element parentForValidator;
 	private boolean hasParentForValidator;
+	private String path;
+	private List<ValidationMessage> messages;
 
 	public Element(String name) {
 		super();
@@ -706,6 +709,13 @@ public class Element extends Base {
       return property.isList();
   }
   
+  public boolean isBaseList() {
+    if (elementProperty != null)
+      return elementProperty.isBaseList();
+    else
+      return property.isBaseList();
+  }
+  
   @Override
   public String[] getTypesForProperty(int hash, String name) throws FHIRException {
     Property p = property.getChildSimpleName(this.name, name);
@@ -938,6 +948,29 @@ public class Element extends Base {
     property = null;
     elementProperty = null;
     xhtml = null;
+    path = null;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
   }  
   
+  public void addMessage(ValidationMessage vm) {
+    if (messages == null) {
+      messages = new ArrayList<>();
+    }
+    messages.add(vm);
+  }
+
+  public boolean hasMessages() {
+    return messages != null && !messages.isEmpty();
+  }
+
+  public List<ValidationMessage> getMessages() {
+    return messages;
+  }
 }
