@@ -1,12 +1,11 @@
 package org.hl7.fhir.convertors.conv10_50;
 
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.VersionConvertor_Base;
 import org.hl7.fhir.dstu2.model.UnsignedIntType;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableConcept;
 
-public class Appointment10_50 extends VersionConvertor_Base {
+public class Appointment10_50 {
 
     public static org.hl7.fhir.dstu2.model.Appointment convertAppointment(org.hl7.fhir.r5.model.Appointment src) throws FHIRException {
         if (src == null || src.isEmpty())
@@ -45,6 +44,14 @@ public class Appointment10_50 extends VersionConvertor_Base {
       VersionConvertor_10_50.copyElement(src, tgt);      
       return tgt;
     }
+
+    public static org.hl7.fhir.r5.model.CodeableConcept convertAppointmentPriorityToR5(int priority) {
+      return null;
+    }
+
+    public static int convertAppointmentPriorityFromR5(org.hl7.fhir.r5.model.CodeableConcept priority) {
+    return 0;
+  }
 
     public static org.hl7.fhir.r5.model.Appointment convertAppointment(org.hl7.fhir.dstu2.model.Appointment src) throws FHIRException {
         if (src == null || src.isEmpty())

@@ -56,7 +56,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_10_50 extends VersionConvertor_Base {
+public class VersionConvertor_10_50 {
   static public List<String> CANONICAL_URLS = new ArrayList<String>();
 
   static {

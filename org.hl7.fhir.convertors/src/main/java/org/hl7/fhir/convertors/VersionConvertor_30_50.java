@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class VersionConvertor_30_50 extends VersionConvertor_Base {
+public class VersionConvertor_30_50 {
   static final public String EXT_SRC_TYPE = "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type";
   static public List<String> CANONICAL_URLS = new ArrayList<>();
 
