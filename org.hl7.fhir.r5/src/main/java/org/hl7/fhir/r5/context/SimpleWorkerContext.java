@@ -54,6 +54,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.r5.formats.IParser;
@@ -810,15 +811,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     this.progress = progress;
   }
 
-  @Override
-  public boolean hasPackage(String id, String ver) {
-    return loadedPackages.contains(id+"#"+ver);
-  }
-
-  public boolean hasPackage(String idAndver) {
-    return loadedPackages.contains(idAndver);
-  }
-
   public void setClock(TimeTracker tt) {
     clock = tt;
   }
@@ -837,5 +829,34 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
    return xverManager;
   }
+  
+  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies) {
+    // nothing yet
+  }
+
+  @Override
+  public boolean hasPackage(String id, String ver) {
+    return loadedPackages.contains(id+"#"+ver);
+  }
+
+  public boolean hasPackage(String idAndver) {
+    return loadedPackages.contains(idAndver);
+  }
+
+  @Override
+  public void cachePackage(PackageDetails packageDetails, List<PackageVersion> dependencies) {
+    // TODO Auto-generated method stub    
+  }
+
+  @Override
+  public boolean hasPackage(PackageVersion pack) {
+    return false;
+  }
+
+  @Override
+  public PackageDetails getPackage(PackageVersion pack) {
+    return null;
+  }
+
 }
 

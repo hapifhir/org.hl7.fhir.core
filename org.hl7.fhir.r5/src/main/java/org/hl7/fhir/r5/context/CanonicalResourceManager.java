@@ -292,6 +292,20 @@ public class CanonicalResourceManager<T extends CanonicalResource> {
     return map.containsKey(url) ? map.get(url).getResource() : null;
   }
   
+  public PackageVersion getPackageInfo(String system, String version) {
+    if (version == null) {
+      return map.containsKey(system) ? map.get(system).getPackageInfo() : null;
+    } else {
+      if (map.containsKey(system+"|"+version))
+        return map.get(system+"|"+version).getPackageInfo();
+      String mm = VersionUtilities.getMajMin(version);
+      if (mm != null && map.containsKey(system+"|"+mm))
+        return map.get(system+"|"+mm).getPackageInfo();
+      else
+        return null;
+    }
+  }
+  
   public boolean has(String url) {
     return map.containsKey(url);
   }

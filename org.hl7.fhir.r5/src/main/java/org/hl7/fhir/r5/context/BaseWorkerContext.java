@@ -53,6 +53,7 @@ import org.hl7.fhir.exceptions.NoTerminologyServiceException;
 import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.TerminologyCache.CacheToken;
 import org.hl7.fhir.r5.model.BooleanType;
@@ -159,7 +160,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   }
 
   private Object lock = new Object(); // used as a lock for the data that follows
-  protected String version;
+  protected String version; // although the internal resources are all R5, the version of FHIR they describe may not be 
   private String cacheId;
   private boolean isTxCaching;
   private Set<String> cached = new HashSet<>();
@@ -266,10 +267,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
   
-  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies) {
-    // nothing yet
-  }
-
+  
   public void cacheResource(Resource r) throws FHIRException {
     cacheResourceFromPackage(r, null);  
   }
@@ -1317,6 +1315,65 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  public PackageVersion getPackageForUrl(String uri) {
+    if (uri == null) {
+      return null;
+    }
+    uri = ProfileUtilities.sdNs(uri, getOverrideVersionNs());
+
+    synchronized (lock) {
+
+      String version = null;
+      if (uri.contains("|")) {
+        version = uri.substring(uri.lastIndexOf("|")+1);
+        uri = uri.substring(0, uri.lastIndexOf("|"));
+      }
+      if (uri.contains("#")) {
+        uri = uri.substring(0, uri.indexOf("#"));
+      } 
+      if (structures.has(uri)) {
+        return structures.getPackageInfo(uri, version);
+      }        
+      if (guides.has(uri)) {
+        return guides.getPackageInfo(uri, version);
+      } 
+      if (capstmts.has(uri)) {
+        return capstmts.getPackageInfo(uri, version);
+      } 
+      if (measures.has(uri)) {
+        return measures.getPackageInfo(uri, version);
+      } 
+      if (libraries.has(uri)) {
+        return libraries.getPackageInfo(uri, version);
+      } 
+      if (valueSets.has(uri)) {
+        return valueSets.getPackageInfo(uri, version);
+      } 
+      if (codeSystems.has(uri)) {
+        return codeSystems.getPackageInfo(uri, version);
+      } 
+      if (operations.has(uri)) {
+        return operations.getPackageInfo(uri, version);
+      } 
+      if (searchParameters.has(uri)) {
+        return searchParameters.getPackageInfo(uri, version);
+      } 
+      if (plans.has(uri)) {
+        return plans.getPackageInfo(uri, version);
+      } 
+      if (maps.has(uri)) {
+        return maps.getPackageInfo(uri, version);
+      } 
+      if (transforms.has(uri)) {
+        return transforms.getPackageInfo(uri, version);
+      } 
+      if (questionnaires.has(uri)) {
+        return questionnaires.getPackageInfo(uri, version);
+      }         
+      return null;
+    }
+  }
+  
   @SuppressWarnings("unchecked")
   public <T extends Resource> T fetchResourceWithException(String cls, String uri, CanonicalResource source) throws FHIRException {
     if (uri == null) {
