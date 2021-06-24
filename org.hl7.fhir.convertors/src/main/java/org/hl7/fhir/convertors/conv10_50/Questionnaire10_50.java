@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv10_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat;
@@ -10,6 +11,7 @@ import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireAnswerConstraint;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemAnswerOptionComponent;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 
 public class Questionnaire10_50 {
 
@@ -126,8 +128,11 @@ public class Questionnaire10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormatEnumFactory());
-        VersionConvertor_10_50.copyElement(src, tgt);
-        switch(src.getValue()) {
+        VersionConvertor_10_50.copyElement(src, tgt, VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL);
+        if (src.hasExtension(VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) {
+          tgt.setValueAsString(src.getExtensionString(VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL));
+        } else {
+          switch(src.getValue()) {
             case BOOLEAN:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat.BOOLEAN);
                 break;
@@ -173,6 +178,7 @@ public class Questionnaire10_50 {
             default:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat.NULL);
                 break;
+        }
         }
         return tgt;
     }
@@ -239,6 +245,7 @@ public class Questionnaire10_50 {
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemTypeEnumFactory());
         VersionConvertor_10_50.copyElement(src, tgt);
+        tgt.addExtension(VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL, new CodeType(src.getValueAsString()));
         switch(src.getValue()) {
             case BOOLEAN:
                 tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.BOOLEAN);

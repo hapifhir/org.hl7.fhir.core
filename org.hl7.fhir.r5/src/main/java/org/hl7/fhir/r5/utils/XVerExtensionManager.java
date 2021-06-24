@@ -20,6 +20,7 @@ import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.npm.PackageHacker;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -84,7 +85,7 @@ public class XVerExtensionManager {
     
     StructureDefinition sd = new StructureDefinition();
     sd.setUserData(XVER_EXT_MARKER, "true");
-    sd.setUserData("path", "http://hl7.org/fhir/versions.html#extensions");
+    sd.setUserData("path", PackageHacker.fixPackageUrl("https://hl7.org/fhir/versions.html#extensions"));
     sd.setUrl(url);
     sd.setVersion(context.getVersion());
     sd.setFhirVersion(FHIRVersion.fromCode(context.getVersion()));
@@ -138,7 +139,11 @@ public class XVerExtensionManager {
           for (String p : s.substring(0, s.length()-1).split("\\|")) {
             if ("Any".equals(p)) {
               tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/Resource");
-            } else {
+            } else if (p.contains(",")) {
+              for (String pp : p.split("\\,")) {
+                tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+pp);                              
+              }
+            } else  {
               tr.addTargetProfile("http://hl7.org/fhir/StructureDefinition/"+p);              
             }
           }

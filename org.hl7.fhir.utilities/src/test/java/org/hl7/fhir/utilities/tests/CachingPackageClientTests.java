@@ -66,7 +66,7 @@ public class CachingPackageClientTests {
     Assertions.assertTrue(client.exists("hl7.fhir.r4.core", "4.0.1"));
     Assertions.assertTrue(!client.exists("hl7.fhir.r4.core", "1.0.2"));
     Assertions.assertTrue(!client.exists("hl7.fhir.nothing", "1.0.1"));
-    Assertions.assertTrue(client.exists("hl7.fhir.pubpack", "0.0.7"));
+    Assertions.assertTrue(client.exists("hl7.fhir.pubpack", "0.0.9"));
   }
 
   @Test

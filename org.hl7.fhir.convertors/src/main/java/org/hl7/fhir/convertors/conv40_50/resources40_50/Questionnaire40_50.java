@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
@@ -15,6 +16,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireAnswerConstraint;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -216,6 +218,7 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemTypeEnumFactory());
         Element40_50.copyElement(src, tgt);
+        tgt.addExtension(VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL, new CodeType(src.getValueAsString()));
         switch(src.getValue()) {
             case GROUP:
                 tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.GROUP);
@@ -279,60 +282,64 @@ public class Questionnaire40_50 extends VersionConvertor_40_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemTypeEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case GROUP:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.GROUP);
-                break;
-            case DISPLAY:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DISPLAY);
-                break;
+        Element40_50.copyElement(src, tgt, VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL);
+        if (src.hasExtension(VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) {
+          tgt.setValueAsString(src.getExtensionString(VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL));
+        } else {
+          switch(src.getValue()) {
+          case GROUP:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.GROUP);
+            break;
+          case DISPLAY:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DISPLAY);
+            break;
             // case QUESTION: return org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.QUESTION;
-            case BOOLEAN:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.BOOLEAN);
-                break;
-            case DECIMAL:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DECIMAL);
-                break;
-            case INTEGER:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.INTEGER);
-                break;
-            case DATE:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DATE);
-                break;
-            case DATETIME:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DATETIME);
-                break;
-            case TIME:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.TIME);
-                break;
-            case STRING:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.STRING);
-                break;
-            case TEXT:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.TEXT);
-                break;
-            case URL:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.URL);
-                break;
-            case CODING:
-              if (constraint == QuestionnaireAnswerConstraint.OPTIONSORSTRING)
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.OPENCHOICE);
-              else 
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.CHOICE);
-              break;
-            case ATTACHMENT:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.ATTACHMENT);
-                break;
-            case REFERENCE:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.REFERENCE);
-                break;
-            case QUANTITY:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.QUANTITY);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.NULL);
-                break;
+          case BOOLEAN:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.BOOLEAN);
+            break;
+          case DECIMAL:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DECIMAL);
+            break;
+          case INTEGER:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.INTEGER);
+            break;
+          case DATE:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DATE);
+            break;
+          case DATETIME:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.DATETIME);
+            break;
+          case TIME:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.TIME);
+            break;
+          case STRING:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.STRING);
+            break;
+          case TEXT:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.TEXT);
+            break;
+          case URL:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.URL);
+            break;
+          case CODING:
+            if (constraint == QuestionnaireAnswerConstraint.OPTIONSORSTRING)
+              tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.OPENCHOICE);
+            else 
+              tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.CHOICE);
+            break;
+          case ATTACHMENT:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.ATTACHMENT);
+            break;
+          case REFERENCE:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.REFERENCE);
+            break;
+          case QUANTITY:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.QUANTITY);
+            break;
+          default:
+            tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.NULL);
+            break;
+          }
         }
         return tgt;
     }
