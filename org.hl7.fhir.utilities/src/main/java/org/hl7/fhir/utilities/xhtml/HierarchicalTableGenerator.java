@@ -857,7 +857,6 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
 
 
   private void checkModel(TableModel model) throws FHIRException  {
-    check(!model.getRows().isEmpty(), "Must have rows");
     check(!model.getTitles().isEmpty(), "Must have titles");
     int tc = 0;
     for (Cell c : model.getTitles()) {
