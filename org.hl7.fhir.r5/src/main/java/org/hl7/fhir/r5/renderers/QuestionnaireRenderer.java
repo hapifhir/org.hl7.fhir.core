@@ -38,6 +38,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class QuestionnaireRenderer extends TerminologyRenderer {
+  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = "http://hl7.org/fhir/tools/StructureDefinition/original-item-type";
 
   public QuestionnaireRenderer(RenderingContext context) {
     super(context);
@@ -222,7 +223,12 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     String txt = (i.hasPrefix() ? i.getPrefix() + ". " : "") + i.getText();
     r.getCells().add(gen.new Cell(null, null, txt, null, null));
     r.getCells().add(gen.new Cell(null, null, (i.getRequired() ? "1" : "0")+".."+(i.getRepeats() ? "*" : "1"), null, null));
-    r.getCells().add(gen.new Cell(null, context.getSpecificationLink()+"codesystem-item-type.html#"+i.getType().toCode(), i.getType().toCode(), null, null));
+    if (i.getTypeElement().hasExtension(EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) {
+      String t = i.getTypeElement().getExtensionString(EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL);
+      r.getCells().add(gen.new Cell(null, context.getSpecificationLink()+"codesystem-item-type.html#item-type-"+t, t, null, null));
+    } else {
+      r.getCells().add(gen.new Cell(null, context.getSpecificationLink()+"codesystem-item-type.html#item-type-"+i.getType().toCode(), i.getType().toCode(), null, null));
+    }
 
     if (hasFlags) {
       // flags:

@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv14_50;
 
+import org.hl7.fhir.convertors.VersionConvertorConstants;
 import org.hl7.fhir.convertors.VersionConvertor_14_50;
 import org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -7,6 +8,7 @@ import org.hl7.fhir.r5.model.CodeType;
 import org.hl7.fhir.r5.model.ContactDetail;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireAnswerConstraint;
 import org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemOperator;
+import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.model.UsageContext;
 
 public class Questionnaire14_50 {
@@ -202,6 +204,7 @@ public class Questionnaire14_50 {
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemTypeEnumFactory());
         VersionConvertor_14_50.copyElement(src, tgt);
+        tgt.addExtension(VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL, new CodeType(src.getValueAsString()));
         switch(src.getValue()) {
             case GROUP:
                 tgt.setValue(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemType.GROUP);
@@ -268,8 +271,11 @@ public class Questionnaire14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemTypeEnumFactory());
-        VersionConvertor_14_50.copyElement(src, tgt);
-        switch(src.getValue()) {
+        VersionConvertor_14_50.copyElement(src, tgt, VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL);
+        if (src.hasExtension(VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) {
+          tgt.setValueAsString(src.getExtensionString(VersionConvertorConstants.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL));
+        } else {
+          switch(src.getValue()) {
             case GROUP:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.GROUP);
                 break;
@@ -321,6 +327,7 @@ public class Questionnaire14_50 {
             default:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.Questionnaire.QuestionnaireItemType.NULL);
                 break;
+        }
         }
         return tgt;
     }

@@ -719,7 +719,8 @@ public class NpmPackage {
   public String fhirVersion() {
     if ("hl7.fhir.core".equals(JSONUtil.str(npm, "name")))
       return JSONUtil.str(npm, "version");
-    else if (JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r3.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r5."))
+    else if (JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r3.") || 
+          JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r5."))
       return JSONUtil.str(npm, "version");
     else {        
       JsonObject dep = npm.getAsJsonObject("dependencies");
