@@ -1,5 +1,7 @@
 package org.hl7.fhir.convertors;
 
+import org.hl7.fhir.r5.renderers.QuestionnaireRenderer;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -101,4 +103,5 @@ public class VersionConvertorConstants {
 
   public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
   public static final String EXT_ACTUAL_RESOURCE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/original-resource-name";
+  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = QuestionnaireRenderer.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL;
 }
