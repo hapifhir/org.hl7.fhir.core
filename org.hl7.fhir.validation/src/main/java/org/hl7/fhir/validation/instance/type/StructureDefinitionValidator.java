@@ -291,8 +291,8 @@ public class StructureDefinitionValidator extends BaseValidator {
       StructureDefinition t = determineBaseType(sd);
       if (t == null) {
         rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_NOTYPE, p);
-      } else {
-        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), isInstanceOf(t, code), I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
+      } else if (!isInstanceOf(t, code)) {
+        rule(errors, IssueType.EXCEPTION, stack.getLiteralPath(), false, I18nConstants.SD_ED_TYPE_PROFILE_WRONG, p, t, code, path);
       }
     }
   }
@@ -343,7 +343,7 @@ public class StructureDefinitionValidator extends BaseValidator {
   }
 
   private StructureDefinition determineBaseType(StructureDefinition sd) {
-    while (sd != null && !sd.hasType() && sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
+    while (sd != null && sd.getDerivation() == TypeDerivationRule.CONSTRAINT) {
       sd = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
     }
     return sd;
