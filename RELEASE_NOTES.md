@@ -1,6 +1,7 @@
 Validator:
 * Fix problem importing x-version extensions with multiple targets
 * fix bug validating profiles on bundle.entry.resource
+* Fix loading issues with German translations (Unicode encoding problem)
 
 Version Conversion:
 
