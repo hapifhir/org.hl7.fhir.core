@@ -503,7 +503,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   private boolean isKnownExtension(String url) {
     // Added structuredefinition-expression and following extensions explicitly because they weren't defined in the version of the spec they need to be used with
-    if ((allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || url.contains("nema.org") || url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression"))
+    if ((allowExamples && (url.contains("example.org") || url.contains("acme.com"))) || url.contains("nema.org") || 
+        url.startsWith("http://hl7.org/fhir/tools/StructureDefinition/") || url.equals("http://hl7.org/fhir/StructureDefinition/structuredefinition-expression") ||
+        url.equals("http://hl7.org/fhir/StructureDefinition/codesystem-properties-mode"))
       return true;
     for (String s : extensionDomains)
       if (url.startsWith(s))
