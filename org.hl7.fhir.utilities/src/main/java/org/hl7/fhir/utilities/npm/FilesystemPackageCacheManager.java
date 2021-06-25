@@ -359,7 +359,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
     
     if (npm.name() == null || id == null || !id.equalsIgnoreCase(npm.name())) {
-      if (!id.equals("hl7.fhir.r5.core")) {// temporary work around
+      if (!id.equals("hl7.fhir.r5.core") && !id.equals("hl7.fhir.us.immds")) {// temporary work around
         throw new IOException("Attempt to import a mis-identified package. Expected " + id + ", got " + npm.name());
       }
     }
