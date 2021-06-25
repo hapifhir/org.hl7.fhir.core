@@ -755,7 +755,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   
   @Override
   public void generateSnapshot(StructureDefinition p, boolean logical) throws DefinitionException, FHIRException {
-    if (!p.hasSnapshot() && (logical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
+    if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p) ) && (logical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
       if (!p.hasBaseDefinition())
         throw new DefinitionException(formatMessage(I18nConstants.PROFILE___HAS_NO_BASE_AND_NO_SNAPSHOT, p.getName(), p.getUrl()));
       StructureDefinition sd = fetchResource(StructureDefinition.class, p.getBaseDefinition());
@@ -789,6 +789,15 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         throw new FHIRException(formatMessage(I18nConstants.PROFILE___ERROR_GENERATING_SNAPSHOT, p.getName(), p.getUrl()));
       pu = null;
     }
+  }
+
+  // work around the fact that some Implementation guides were published with old snapshot generators that left invalid snapshots behind.
+  private boolean isProfileNeedsRegenerate(StructureDefinition p) {
+    boolean needs = !p.hasUserData("hack.regnerated") && Utilities.existsInList(p.getUrl(), "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaireresponse");
+    if (needs) {
+      p.setUserData("hack.regnerated", "yes");
+    }
+    return needs;
   }
 
   public boolean isIgnoreProfileErrors() {
