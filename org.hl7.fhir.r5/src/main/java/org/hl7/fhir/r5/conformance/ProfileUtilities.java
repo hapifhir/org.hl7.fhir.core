@@ -662,7 +662,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         }
       }
       
-      if (!derived.getSnapshot().getElementFirstRep().getType().isEmpty())
+      if (derived.getKind() != StructureDefinitionKind.LOGICAL && !derived.getSnapshot().getElementFirstRep().getType().isEmpty())
         throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_SNAPSHOT_ELEMENT_FOR__IN__FROM_, derived.getSnapshot().getElementFirstRep().getPath(), derived.getUrl(), base.getUrl()));
       updateMaps(base, derived);
 
@@ -785,7 +785,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (derived.hasDifferential() && !derived.getDifferential().getElementFirstRep().getPath().contains(".") && !derived.getDifferential().getElementFirstRep().getType().isEmpty()) {
       if (wantFixDifferentialFirstElementType && typeMatchesAncestor(derived.getDifferential().getElementFirstRep().getType(), derived.getBaseDefinition())) {
         derived.getDifferential().getElementFirstRep().getType().clear();
-      } else {
+      } else if (derived.getKind() != StructureDefinitionKind.LOGICAL) {
         throw new Error(context.formatMessage(I18nConstants.TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT));
       }
     }
@@ -3004,10 +3004,10 @@ public class ProfileUtilities extends TranslatingUtilities {
       }
     }
     if (dest.hasFixed()) {
-      checkTypeOk(dest, dest.getFixed().fhirType());
+      checkTypeOk(dest, dest.getFixed().fhirType(), srcSD);
     }
     if (dest.hasPattern()) {
-      checkTypeOk(dest, dest.getPattern().fhirType());
+      checkTypeOk(dest, dest.getPattern().fhirType(), srcSD);
     }
   }
 
@@ -3072,14 +3072,20 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  public void checkTypeOk(ElementDefinition dest, String ft) {
+  public void checkTypeOk(ElementDefinition dest, String ft, StructureDefinition sd) {
     boolean ok = false;
     Set<String> types = new HashSet<>();
-    for (TypeRefComponent t : dest.getType()) {
-      if (t.hasCode()) {
-        types.add(t.getWorkingCode());
+    if (dest.getPath().contains(".")) {
+      for (TypeRefComponent t : dest.getType()) {
+        if (t.hasCode()) {
+          types.add(t.getWorkingCode());
+        }
+        ok = ft.equals(t.getWorkingCode());
       }
-      ok = ft.equals(t.getWorkingCode());
+    } else {
+      types.add(sd.getType());
+      ok = ft.equals(sd.getType());
+
     }
     if (!ok) {
       messages.add(new ValidationMessage(Source.InstanceValidator, IssueType.CONFLICT, dest.getId(), "The fixed value has type '"+ft+"' which is not valid (valid "+Utilities.pluralize("type", dest.getType().size())+": "+types.toString()+")", IssueSeverity.ERROR));
