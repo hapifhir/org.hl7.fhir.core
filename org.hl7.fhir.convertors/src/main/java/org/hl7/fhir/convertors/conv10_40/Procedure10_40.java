@@ -15,8 +15,8 @@ public class Procedure10_40 {
         for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
         if (src.hasSubject())
             tgt.setSubject(VersionConvertor_10_40.convertReference(src.getSubject()));
-        if (src.hasStatus() && src.hasNotPerformed()) {
-            if (src.getNotPerformed()) {
+        if (src.hasStatus()) {
+            if (src.hasNotPerformed() && src.getNotPerformed()) {
                 tgt.setStatus(Procedure.ProcedureStatus.NOTDONE);
             } else {
                 tgt.setStatus(convertProcedureStatus(src.getStatus()));
