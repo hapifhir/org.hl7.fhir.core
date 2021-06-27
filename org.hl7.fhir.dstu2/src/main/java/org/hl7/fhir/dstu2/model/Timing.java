@@ -641,7 +641,15 @@ public class Timing extends Type implements ICompositeType {
         /**
          * @param value {@link #bounds} (Either a duration for the length of the timing schedule, a range of possible length, or outer bounds for start and/or end limits of the timing schedule.)
          */
-        public TimingRepeatComponent setBounds(Type value) { 
+        public TimingRepeatComponent setBounds(Type value) {
+          if (value instanceof Quantity) {
+              Quantity asQuantity = (Quantity) value;
+              value = new Duration().setValue(asQuantity.getValue())
+                      .setComparator(asQuantity.getComparator())
+                      .setUnit(asQuantity.getUnit())
+                      .setSystem(asQuantity.getSystem())
+                      .setCode(asQuantity.getCode());
+          }
           this.bounds = value;
           return this;
         }
