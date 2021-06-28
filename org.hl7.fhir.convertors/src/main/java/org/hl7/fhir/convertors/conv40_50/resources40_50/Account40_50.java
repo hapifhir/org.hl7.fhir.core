@@ -2,6 +2,9 @@ package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
 
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_A;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -41,58 +44,58 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Account40_50 extends VersionConvertor_40_50 {
+public class Account40_50 {
 
     public static org.hl7.fhir.r5.model.Account convertAccount(org.hl7.fhir.r4.model.Account src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Account tgt = new org.hl7.fhir.r5.model.Account();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
-        if (src.hasType())
-            tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-        if (src.hasName())
-            tgt.setNameElement(String40_50.convertString(src.getNameElement()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getSubject()) tgt.addSubject(Reference40_50.convertReference(t));
-        if (src.hasServicePeriod())
-            tgt.setServicePeriod(Period40_50.convertPeriod(src.getServicePeriod()));
-        for (org.hl7.fhir.r4.model.Account.CoverageComponent t : src.getCoverage()) tgt.addCoverage(convertCoverageComponent(t));
-        if (src.hasOwner())
-            tgt.setOwner(Reference40_50.convertReference(src.getOwner()));
-        if (src.hasDescription())
-            tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-        for (org.hl7.fhir.r4.model.Account.GuarantorComponent t : src.getGuarantor()) tgt.addGuarantor(convertGuarantorComponent(t));
-        if (src.hasPartOf())
-            tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
-        return tgt;
+      if (src == null)
+          return null;
+      org.hl7.fhir.r5.model.Account tgt = new org.hl7.fhir.r5.model.Account();
+      VersionConvertor_40_50_Context.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+      for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+      if (src.hasStatus())
+          tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
+      if (src.hasType())
+          tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+      if (src.hasName())
+          tgt.setNameElement(String40_50.convertString(src.getNameElement()));
+      for (org.hl7.fhir.r4.model.Reference t : src.getSubject()) tgt.addSubject(Reference40_50.convertReference(t));
+      if (src.hasServicePeriod())
+          tgt.setServicePeriod(Period40_50.convertPeriod(src.getServicePeriod()));
+      for (org.hl7.fhir.r4.model.Account.CoverageComponent t : src.getCoverage()) tgt.addCoverage(convertCoverageComponent(t));
+      if (src.hasOwner())
+          tgt.setOwner(Reference40_50.convertReference(src.getOwner()));
+      if (src.hasDescription())
+          tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+      for (org.hl7.fhir.r4.model.Account.GuarantorComponent t : src.getGuarantor()) tgt.addGuarantor(convertGuarantorComponent(t));
+      if (src.hasPartOf())
+          tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
+      return tgt;
     }
 
     public static org.hl7.fhir.r4.model.Account convertAccount(org.hl7.fhir.r5.model.Account src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Account tgt = new org.hl7.fhir.r4.model.Account();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
-        if (src.hasType())
-            tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-        if (src.hasName())
-            tgt.setNameElement(String40_50.convertString(src.getNameElement()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getSubject()) tgt.addSubject(Reference40_50.convertReference(t));
-        if (src.hasServicePeriod())
-            tgt.setServicePeriod(Period40_50.convertPeriod(src.getServicePeriod()));
-        for (org.hl7.fhir.r5.model.Account.CoverageComponent t : src.getCoverage()) tgt.addCoverage(convertCoverageComponent(t));
-        if (src.hasOwner())
-            tgt.setOwner(Reference40_50.convertReference(src.getOwner()));
-        if (src.hasDescription())
-            tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-        for (org.hl7.fhir.r5.model.Account.GuarantorComponent t : src.getGuarantor()) tgt.addGuarantor(convertGuarantorComponent(t));
-        if (src.hasPartOf())
-            tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
-        return tgt;
+      if (src == null)
+          return null;
+      org.hl7.fhir.r4.model.Account tgt = new org.hl7.fhir.r4.model.Account();
+      VersionConvertor_40_50_Context.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+      for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+      if (src.hasStatus())
+          tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
+      if (src.hasType())
+          tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+      if (src.hasName())
+          tgt.setNameElement(String40_50.convertString(src.getNameElement()));
+      for (org.hl7.fhir.r5.model.Reference t : src.getSubject()) tgt.addSubject(Reference40_50.convertReference(t));
+      if (src.hasServicePeriod())
+          tgt.setServicePeriod(Period40_50.convertPeriod(src.getServicePeriod()));
+      for (org.hl7.fhir.r5.model.Account.CoverageComponent t : src.getCoverage()) tgt.addCoverage(convertCoverageComponent(t));
+      if (src.hasOwner())
+          tgt.setOwner(Reference40_50.convertReference(src.getOwner()));
+      if (src.hasDescription())
+          tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+      for (org.hl7.fhir.r5.model.Account.GuarantorComponent t : src.getGuarantor()) tgt.addGuarantor(convertGuarantorComponent(t));
+      if (src.hasPartOf())
+          tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
+      return tgt;
     }
 
     static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Account.AccountStatus> convertAccountStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Account.AccountStatus> src) throws FHIRException {
