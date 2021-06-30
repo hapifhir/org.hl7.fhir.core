@@ -25,7 +25,7 @@ jobs:
 
     - name: Set version
       run: |
-        sed -i -e s/GITHUB_RUN_NUMBER/$GITHUB_RUN_NUMBER/g config.py
+        sed -i -e s/GITHUB_RUN_NUMBER/$GITHUB_RUN_NUMBER/g $(find . -name pom.xml)
 
     - name: Publish to CodeArtifact
       run: |
