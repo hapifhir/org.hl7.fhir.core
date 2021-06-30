@@ -1,0 +1,56 @@
+name: Publish Package
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    env:
+      SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFY_TOKEN }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DEV_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_DEV_SECRET }}
+      AWS_DEFAULT_REGION: us-east-1
+      SLACK_CHAT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+    steps:
+    - name: Setup Python
+      uses: actions/setup-python@master
+      with:
+        python-version: 3.8
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Set version
+      run: |
+        sed -i -e s/GITHUB_RUN_NUMBER/$GITHUB_RUN_NUMBER/g config.py
+
+    - name: Publish to CodeArtifact
+      run: |
+        mvn deploy
+
+    - name: Notify package
+      run: |
+        version=$(python -c 'import config
+        print(config.package_version)')
+        message="A new version of *alike_medical_record* is now available! :tada:
+        version number: $version"
+        alike-send-slack-message alike-packages "$message" $SLACK_CHAT_TOKEN
+
+    - name: Notify slack success
+      if: success()
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: build_notifications
+        status: SUCCESS
+        color: good
+
+    - name: Notify slack fail
+      if: failure()
+      uses: voxmedia/github-action-slack-notify-build@v1
+      with:
+        channel: build_notifications
+        status: FAILED
+        color: danger
