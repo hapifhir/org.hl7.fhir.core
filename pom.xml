@@ -14,7 +14,7 @@
     HAPI FHIR
     -->
     <artifactId>org.hl7.fhir.core</artifactId>
-    <version>3.0.GITHUB_RUN_NUMBER-ALIKE</version>
+	 <version>3.0.GITHUB_RUN_NUMBER</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -47,32 +47,13 @@
         <!-- The report project exists only to aggregate the test results from the other projects into a central report. -->
         <module>org.hl7.fhir.report</module>
     </modules>
-
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-dnault-maven</id>
-            <name>bintray</name>
-            <url>https://dl.bintray.com/dnault/maven</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>github-releases</id>
-            <url>https://maven.pkg.github.com/FHIR/fhir-test-cases/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
+	<distributionManagement>
+  <repository>
+    <id>alike-mvn-store</id>
+    <name>alike-mvn-store</name>
+    <url>https://alike-359782056790.d.codeartifact.us-east-1.amazonaws.com/maven/mvn-store/</url>
+  </repository>
+</distributionManagement>
     <dependencies>
         <!-- Use logback for tests -->
         <dependency>
@@ -367,44 +348,4 @@
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>github-repo</id>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-                <property>
-                    <name>deployToGitHub</name>
-                </property>
-            </activation>
-            <distributionManagement>
-                <repository>
-                    <id>codeartifact</id>
-                    <name>codeartifact</name>
-                    <url>https://alike-359782056790.d.codeartifact.us-east-1.amazonaws.com/maven/mvn-store/</url>
-                </repository>
-            </distributionManagement>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                                <configuration>
-                                    <keyname>${gpg.keyname}</keyname>
-                                    <passphraseServerId>${gpg.keyname}</passphraseServerId>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-</project>
+ </project>

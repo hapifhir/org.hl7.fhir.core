@@ -29,7 +29,8 @@ jobs:
 
     - name: Publish to CodeArtifact
       run: |
-        mvn deploy
+        export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain alike --domain-owner 359782056790 --query authorizationToken --output text`
+        mvn deploy --settings settings.xml
 
     - name: Notify package
       run: |
