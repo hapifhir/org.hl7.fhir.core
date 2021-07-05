@@ -4528,10 +4528,6 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String thisExtension = null;
     boolean checkDisplay = true;
 
-    // Lloyd: Changed onlyNonInherited to false because inherited invariants can be overridden and it's important to check both.  
-    // Caching logic should make checking inherited constraints more efficient now.
-    // Added choice around checkInvariants because azatadha/example-params-1 test was treating the '%resource' in the bdl-3 constraint for 
-    // evaluating the Bundle rule as Parameters, not Bundle
     SpecialElement special = ei.getElement().getSpecial();
     if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.PARAMETER) {
       checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, ei.getElement(), ei.getElement(), localStack, false);
