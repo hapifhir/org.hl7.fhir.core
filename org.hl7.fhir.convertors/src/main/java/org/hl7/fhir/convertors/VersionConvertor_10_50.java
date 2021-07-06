@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
-import org.hl7.fhir.convertors.conv10_50.*;
+import org.hl7.fhir.convertors.conv10_50.resources10_50.*;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu2.model.Extension;
 import org.hl7.fhir.dstu2.model.Parameters;

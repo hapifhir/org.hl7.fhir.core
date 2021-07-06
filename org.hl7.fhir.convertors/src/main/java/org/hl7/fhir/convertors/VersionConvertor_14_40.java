@@ -2,15 +2,12 @@ package org.hl7.fhir.convertors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_40;
-import org.hl7.fhir.convertors.conv14_40.*;
+import org.hl7.fhir.convertors.conv14_40.resources14_40.*;
 import org.hl7.fhir.dstu2016may.model.CodeableConcept;
-import org.hl7.fhir.dstu2016may.model.Extension;
 import org.hl7.fhir.dstu2016may.model.Reference;
-import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.model.CanonicalType;
-import org.hl7.fhir.r4.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.utilities.Utilities;
 

@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
-import org.hl7.fhir.convertors.conv30_40.*;
+import org.hl7.fhir.convertors.conv30_40.resources30_40.*;
 import org.hl7.fhir.dstu3.model.Parameters;
 import org.hl7.fhir.dstu3.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.exceptions.FHIRException;
