@@ -1,1 +1,0 @@
-Fixed issue where validator fails to detect invariant issue when there are multiple profiles that use the same invariant on the same element. Also addressed issue revealed by the fix where the context resource wasn't being set properly when checking certain invariants (identified by one of the existing test cases).
