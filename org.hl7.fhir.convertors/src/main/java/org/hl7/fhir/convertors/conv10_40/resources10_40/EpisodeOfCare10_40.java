@@ -1,6 +1,11 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Period10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class EpisodeOfCare10_40 {
@@ -10,20 +15,20 @@ public class EpisodeOfCare10_40 {
             return null;
         org.hl7.fhir.dstu2.model.EpisodeOfCare tgt = new org.hl7.fhir.dstu2.model.EpisodeOfCare();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
         for (org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent t : src.getStatusHistory()) tgt.addStatusHistory(convertEpisodeOfCareStatusHistoryComponent(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_40.convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(CodeableConcept10_40.convertCodeableConcept(t));
         if (src.hasPatient())
-            tgt.setPatient(VersionConvertor_10_40.convertReference(src.getPatient()));
+            tgt.setPatient(Reference10_40.convertReference(src.getPatient()));
         if (src.hasManagingOrganization())
-            tgt.setManagingOrganization(VersionConvertor_10_40.convertReference(src.getManagingOrganization()));
+            tgt.setManagingOrganization(Reference10_40.convertReference(src.getManagingOrganization()));
         if (src.hasPeriod())
-            tgt.setPeriod(VersionConvertor_10_40.convertPeriod(src.getPeriod()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getReferralRequest()) tgt.addReferralRequest(VersionConvertor_10_40.convertReference(t));
+            tgt.setPeriod(Period10_40.convertPeriod(src.getPeriod()));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReferralRequest()) tgt.addReferralRequest(Reference10_40.convertReference(t));
         if (src.hasCareManager())
-            tgt.setCareManager(VersionConvertor_10_40.convertReference(src.getCareManager()));
+            tgt.setCareManager(Reference10_40.convertReference(src.getCareManager()));
         return tgt;
     }
 
@@ -32,20 +37,20 @@ public class EpisodeOfCare10_40 {
             return null;
         org.hl7.fhir.r4.model.EpisodeOfCare tgt = new org.hl7.fhir.r4.model.EpisodeOfCare();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
         for (org.hl7.fhir.dstu2.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent t : src.getStatusHistory()) tgt.addStatusHistory(convertEpisodeOfCareStatusHistoryComponent(t));
-        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getType()) tgt.addType(VersionConvertor_10_40.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getType()) tgt.addType(CodeableConcept10_40.convertCodeableConcept(t));
         if (src.hasPatient())
-            tgt.setPatient(VersionConvertor_10_40.convertReference(src.getPatient()));
+            tgt.setPatient(Reference10_40.convertReference(src.getPatient()));
         if (src.hasManagingOrganization())
-            tgt.setManagingOrganization(VersionConvertor_10_40.convertReference(src.getManagingOrganization()));
+            tgt.setManagingOrganization(Reference10_40.convertReference(src.getManagingOrganization()));
         if (src.hasPeriod())
-            tgt.setPeriod(VersionConvertor_10_40.convertPeriod(src.getPeriod()));
-        for (org.hl7.fhir.dstu2.model.Reference t : src.getReferralRequest()) tgt.addReferralRequest(VersionConvertor_10_40.convertReference(t));
+            tgt.setPeriod(Period10_40.convertPeriod(src.getPeriod()));
+        for (org.hl7.fhir.dstu2.model.Reference t : src.getReferralRequest()) tgt.addReferralRequest(Reference10_40.convertReference(t));
         if (src.hasCareManager())
-            tgt.setCareManager(VersionConvertor_10_40.convertReference(src.getCareManager()));
+            tgt.setCareManager(Reference10_40.convertReference(src.getCareManager()));
         return tgt;
     }
 
@@ -53,7 +58,7 @@ public class EpisodeOfCare10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case PLANNED:
                 tgt.setValue(org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatus.PLANNED);
@@ -84,7 +89,7 @@ public class EpisodeOfCare10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.EpisodeOfCare.EpisodeOfCareStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.EpisodeOfCare.EpisodeOfCareStatusEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case PLANNED:
                 tgt.setValue(org.hl7.fhir.dstu2.model.EpisodeOfCare.EpisodeOfCareStatus.PLANNED);
@@ -115,11 +120,11 @@ public class EpisodeOfCare10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent tgt = new org.hl7.fhir.r4.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent();
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         if (src.hasStatus())
             tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
         if (src.hasPeriod())
-            tgt.setPeriod(VersionConvertor_10_40.convertPeriod(src.getPeriod()));
+            tgt.setPeriod(Period10_40.convertPeriod(src.getPeriod()));
         return tgt;
     }
 
@@ -127,11 +132,11 @@ public class EpisodeOfCare10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent tgt = new org.hl7.fhir.dstu2.model.EpisodeOfCare.EpisodeOfCareStatusHistoryComponent();
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         if (src.hasStatus())
             tgt.setStatusElement(convertEpisodeOfCareStatus(src.getStatusElement()));
         if (src.hasPeriod())
-            tgt.setPeriod(VersionConvertor_10_40.convertPeriod(src.getPeriod()));
+            tgt.setPeriod(Period10_40.convertPeriod(src.getPeriod()));
         return tgt;
     }
 }

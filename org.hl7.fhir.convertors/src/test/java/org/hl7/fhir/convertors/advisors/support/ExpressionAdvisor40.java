@@ -1,14 +1,11 @@
 package org.hl7.fhir.convertors.advisors.support;
 
-import kotlin.jvm.internal.Intrinsics;
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Uri10_40;
 import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseExtension;
 import org.hl7.fhir.r4.model.Expression;
 import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.Type;
 import org.jetbrains.annotations.NotNull;
 
 public final class ExpressionAdvisor40 extends BaseAdvisor_10_40 {
@@ -25,7 +22,7 @@ public final class ExpressionAdvisor40 extends BaseAdvisor_10_40 {
         type.setValueAsString(((Expression)src.getValue()).getExpression());
         tgt.setValue((org.hl7.fhir.dstu2.model.Type)type);
         if (src.hasUrlElement()) {
-          tgt.setUrlElement(VersionConvertor_10_40.convertUri(src.getUrlElement()));
+          tgt.setUrlElement(Uri10_40.convertUri(src.getUrlElement()));
         }
       }
     } else {

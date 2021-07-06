@@ -1,6 +1,14 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Address10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.ContactPoint10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Decimal10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Location10_40 {
@@ -10,28 +18,28 @@ public class Location10_40 {
             return null;
         org.hl7.fhir.dstu2.model.Location tgt = new org.hl7.fhir.dstu2.model.Location();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertLocationStatus(src.getStatusElement()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_40.convertString(src.getNameElement()));
+            tgt.setNameElement(String10_40.convertString(src.getNameElement()));
         if (src.hasDescriptionElement())
-            tgt.setDescriptionElement(VersionConvertor_10_40.convertString(src.getDescriptionElement()));
+            tgt.setDescriptionElement(String10_40.convertString(src.getDescriptionElement()));
         if (src.hasMode())
             tgt.setModeElement(convertLocationMode(src.getModeElement()));
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_40.convertCodeableConcept(src.getTypeFirstRep()));
-        for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_40.convertContactPoint(t));
+            tgt.setType(CodeableConcept10_40.convertCodeableConcept(src.getTypeFirstRep()));
+        for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint10_40.convertContactPoint(t));
         if (src.hasAddress())
-            tgt.setAddress(VersionConvertor_10_40.convertAddress(src.getAddress()));
+            tgt.setAddress(Address10_40.convertAddress(src.getAddress()));
         if (src.hasPhysicalType())
-            tgt.setPhysicalType(VersionConvertor_10_40.convertCodeableConcept(src.getPhysicalType()));
+            tgt.setPhysicalType(CodeableConcept10_40.convertCodeableConcept(src.getPhysicalType()));
         if (src.hasPosition())
             tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
         if (src.hasManagingOrganization())
-            tgt.setManagingOrganization(VersionConvertor_10_40.convertReference(src.getManagingOrganization()));
+            tgt.setManagingOrganization(Reference10_40.convertReference(src.getManagingOrganization()));
         if (src.hasPartOf())
-            tgt.setPartOf(VersionConvertor_10_40.convertReference(src.getPartOf()));
+            tgt.setPartOf(Reference10_40.convertReference(src.getPartOf()));
         return tgt;
     }
 
@@ -40,28 +48,28 @@ public class Location10_40 {
             return null;
         org.hl7.fhir.r4.model.Location tgt = new org.hl7.fhir.r4.model.Location();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertLocationStatus(src.getStatusElement()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_40.convertString(src.getNameElement()));
+            tgt.setNameElement(String10_40.convertString(src.getNameElement()));
         if (src.hasDescriptionElement())
-            tgt.setDescriptionElement(VersionConvertor_10_40.convertString(src.getDescriptionElement()));
+            tgt.setDescriptionElement(String10_40.convertString(src.getDescriptionElement()));
         if (src.hasMode())
             tgt.setModeElement(convertLocationMode(src.getModeElement()));
         if (src.hasType())
-            tgt.addType(VersionConvertor_10_40.convertCodeableConcept(src.getType()));
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_40.convertContactPoint(t));
+            tgt.addType(CodeableConcept10_40.convertCodeableConcept(src.getType()));
+        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint10_40.convertContactPoint(t));
         if (src.hasAddress())
-            tgt.setAddress(VersionConvertor_10_40.convertAddress(src.getAddress()));
+            tgt.setAddress(Address10_40.convertAddress(src.getAddress()));
         if (src.hasPhysicalType())
-            tgt.setPhysicalType(VersionConvertor_10_40.convertCodeableConcept(src.getPhysicalType()));
+            tgt.setPhysicalType(CodeableConcept10_40.convertCodeableConcept(src.getPhysicalType()));
         if (src.hasPosition())
             tgt.setPosition(convertLocationPositionComponent(src.getPosition()));
         if (src.hasManagingOrganization())
-            tgt.setManagingOrganization(VersionConvertor_10_40.convertReference(src.getManagingOrganization()));
+            tgt.setManagingOrganization(Reference10_40.convertReference(src.getManagingOrganization()));
         if (src.hasPartOf())
-            tgt.setPartOf(VersionConvertor_10_40.convertReference(src.getPartOf()));
+            tgt.setPartOf(Reference10_40.convertReference(src.getPartOf()));
         return tgt;
     }
 
@@ -69,7 +77,7 @@ public class Location10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Location.LocationModeEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case INSTANCE:
                 tgt.setValue(org.hl7.fhir.r4.model.Location.LocationMode.INSTANCE);
@@ -88,7 +96,7 @@ public class Location10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Location.LocationMode> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Location.LocationModeEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case INSTANCE:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Location.LocationMode.INSTANCE);
@@ -107,13 +115,13 @@ public class Location10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.r4.model.Location.LocationPositionComponent();
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         if (src.hasLongitudeElement())
-            tgt.setLongitudeElement(VersionConvertor_10_40.convertDecimal(src.getLongitudeElement()));
+            tgt.setLongitudeElement(Decimal10_40.convertDecimal(src.getLongitudeElement()));
         if (src.hasLatitudeElement())
-            tgt.setLatitudeElement(VersionConvertor_10_40.convertDecimal(src.getLatitudeElement()));
+            tgt.setLatitudeElement(Decimal10_40.convertDecimal(src.getLatitudeElement()));
         if (src.hasAltitudeElement())
-            tgt.setAltitudeElement(VersionConvertor_10_40.convertDecimal(src.getAltitudeElement()));
+            tgt.setAltitudeElement(Decimal10_40.convertDecimal(src.getAltitudeElement()));
         return tgt;
     }
 
@@ -121,13 +129,13 @@ public class Location10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Location.LocationPositionComponent tgt = new org.hl7.fhir.dstu2.model.Location.LocationPositionComponent();
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         if (src.hasLongitudeElement())
-            tgt.setLongitudeElement(VersionConvertor_10_40.convertDecimal(src.getLongitudeElement()));
+            tgt.setLongitudeElement(Decimal10_40.convertDecimal(src.getLongitudeElement()));
         if (src.hasLatitudeElement())
-            tgt.setLatitudeElement(VersionConvertor_10_40.convertDecimal(src.getLatitudeElement()));
+            tgt.setLatitudeElement(Decimal10_40.convertDecimal(src.getLatitudeElement()));
         if (src.hasAltitudeElement())
-            tgt.setAltitudeElement(VersionConvertor_10_40.convertDecimal(src.getAltitudeElement()));
+            tgt.setAltitudeElement(Decimal10_40.convertDecimal(src.getAltitudeElement()));
         return tgt;
     }
 
@@ -135,7 +143,7 @@ public class Location10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Location.LocationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Location.LocationStatusEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.r4.model.Location.LocationStatus.ACTIVE);
@@ -157,7 +165,7 @@ public class Location10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Location.LocationStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Location.LocationStatusEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Location.LocationStatus.ACTIVE);

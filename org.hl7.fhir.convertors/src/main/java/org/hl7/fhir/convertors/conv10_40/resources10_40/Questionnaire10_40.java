@@ -1,7 +1,15 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Coding10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.ContactPoint10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Boolean10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Canonical10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.DateTime10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.ContactDetail;
 import org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemAnswerOptionComponent;
@@ -14,22 +22,22 @@ public class Questionnaire10_40 {
     org.hl7.fhir.dstu2.model.Questionnaire tgt = new org.hl7.fhir.dstu2.model.Questionnaire();
     VersionConvertor_10_40.copyDomainResource(src, tgt, advisor);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+      tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasVersionElement())
-      tgt.setVersionElement(VersionConvertor_10_40.convertString(src.getVersionElement()));
+      tgt.setVersionElement(String10_40.convertString(src.getVersionElement()));
     if (src.hasStatus())
       tgt.setStatusElement(convertQuestionnaireStatus(src.getStatusElement()));
     if (src.hasDate())
-      tgt.setDateElement(VersionConvertor_10_40.convertDateTime(src.getDateElement()));
+      tgt.setDateElement(DateTime10_40.convertDateTime(src.getDateElement()));
     if (src.hasPublisherElement())
-      tgt.setPublisherElement(VersionConvertor_10_40.convertString(src.getPublisherElement()));
+      tgt.setPublisherElement(String10_40.convertString(src.getPublisherElement()));
     for (ContactDetail t : src.getContact())
       for (org.hl7.fhir.r4.model.ContactPoint t1 : t.getTelecom())
-        tgt.addTelecom(VersionConvertor_10_40.convertContactPoint(t1));
+        tgt.addTelecom(ContactPoint10_40.convertContactPoint(t1));
     org.hl7.fhir.dstu2.model.Questionnaire.GroupComponent root = tgt.getGroup();
     root.setTitle(src.getTitle());
     for (org.hl7.fhir.r4.model.Coding t : src.getCode()) {
-      root.addConcept(VersionConvertor_10_40.convertCoding(t));
+      root.addConcept(Coding10_40.convertCoding(t));
     }
     for (org.hl7.fhir.r4.model.CodeType t : src.getSubjectType()) tgt.addSubjectType(t.getValue());
     for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent t : src.getItem())
@@ -50,20 +58,20 @@ public class Questionnaire10_40 {
     org.hl7.fhir.r4.model.Questionnaire tgt = new org.hl7.fhir.r4.model.Questionnaire();
     VersionConvertor_10_40.copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
-      tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+      tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasVersionElement())
-      tgt.setVersionElement(VersionConvertor_10_40.convertString(src.getVersionElement()));
+      tgt.setVersionElement(String10_40.convertString(src.getVersionElement()));
     if (src.hasStatus())
       tgt.setStatusElement(convertQuestionnaireStatus(src.getStatusElement()));
     if (src.hasDate())
-      tgt.setDateElement(VersionConvertor_10_40.convertDateTime(src.getDateElement()));
+      tgt.setDateElement(DateTime10_40.convertDateTime(src.getDateElement()));
     if (src.hasPublisherElement())
-      tgt.setPublisherElement(VersionConvertor_10_40.convertString(src.getPublisherElement()));
+      tgt.setPublisherElement(String10_40.convertString(src.getPublisherElement()));
     for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom())
       tgt.addContact(convertQuestionnaireContactComponent(t));
     org.hl7.fhir.dstu2.model.Questionnaire.GroupComponent root = src.getGroup();
     tgt.setTitle(root.getTitle());
-    for (org.hl7.fhir.dstu2.model.Coding t : root.getConcept()) tgt.addCode(VersionConvertor_10_40.convertCoding(t));
+    for (org.hl7.fhir.dstu2.model.Coding t : root.getConcept()) tgt.addCode(Coding10_40.convertCoding(t));
     for (org.hl7.fhir.dstu2.model.CodeType t : src.getSubjectType()) tgt.addSubjectType(t.getValue());
     tgt.addItem(convertQuestionnaireGroupComponent(root));
     return tgt;
@@ -73,8 +81,8 @@ public class Questionnaire10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.ContactDetail tgt = new org.hl7.fhir.r4.model.ContactDetail();
-    VersionConvertor_10_40.copyElement(src, tgt);
-    tgt.addTelecom(VersionConvertor_10_40.convertContactPoint(src));
+    Element10_40.copyElement(src, tgt);
+    tgt.addTelecom(ContactPoint10_40.convertContactPoint(src));
     return tgt;
   }
 
@@ -82,16 +90,16 @@ public class Questionnaire10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Questionnaire.GroupComponent tgt = new org.hl7.fhir.dstu2.model.Questionnaire.GroupComponent();
-    VersionConvertor_10_40.copyElement(src, tgt);
+    Element10_40.copyElement(src, tgt);
     if (src.hasLinkIdElement())
-      tgt.setLinkIdElement(VersionConvertor_10_40.convertString(src.getLinkIdElement()));
-    for (org.hl7.fhir.r4.model.Coding t : src.getCode()) tgt.addConcept(VersionConvertor_10_40.convertCoding(t));
+      tgt.setLinkIdElement(String10_40.convertString(src.getLinkIdElement()));
+    for (org.hl7.fhir.r4.model.Coding t : src.getCode()) tgt.addConcept(Coding10_40.convertCoding(t));
     if (src.hasTextElement())
-      tgt.setTextElement(VersionConvertor_10_40.convertString(src.getTextElement()));
+      tgt.setTextElement(String10_40.convertString(src.getTextElement()));
     if (src.hasRequiredElement())
-      tgt.setRequiredElement(VersionConvertor_10_40.convertBoolean(src.getRequiredElement()));
+      tgt.setRequiredElement(Boolean10_40.convertBoolean(src.getRequiredElement()));
     if (src.hasRepeatsElement())
-      tgt.setRepeatsElement(VersionConvertor_10_40.convertBoolean(src.getRepeatsElement()));
+      tgt.setRepeatsElement(Boolean10_40.convertBoolean(src.getRepeatsElement()));
     for (org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent t : src.getItem())
       if (t.getType() == org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.GROUP)
         tgt.addGroup(convertQuestionnaireGroupComponent(t));
@@ -104,17 +112,17 @@ public class Questionnaire10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent tgt = new org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent();
-    VersionConvertor_10_40.copyElement(src, tgt);
+    Element10_40.copyElement(src, tgt);
     if (src.hasLinkIdElement())
-      tgt.setLinkIdElement(VersionConvertor_10_40.convertString(src.getLinkIdElement()));
-    for (org.hl7.fhir.dstu2.model.Coding t : src.getConcept()) tgt.addCode(VersionConvertor_10_40.convertCoding(t));
+      tgt.setLinkIdElement(String10_40.convertString(src.getLinkIdElement()));
+    for (org.hl7.fhir.dstu2.model.Coding t : src.getConcept()) tgt.addCode(Coding10_40.convertCoding(t));
     if (src.hasTextElement())
-      tgt.setTextElement(VersionConvertor_10_40.convertString(src.getTextElement()));
+      tgt.setTextElement(String10_40.convertString(src.getTextElement()));
     tgt.setType(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.GROUP);
     if (src.hasRequiredElement())
-      tgt.setRequiredElement(VersionConvertor_10_40.convertBoolean(src.getRequiredElement()));
+      tgt.setRequiredElement(Boolean10_40.convertBoolean(src.getRequiredElement()));
     if (src.hasRepeatsElement())
-      tgt.setRepeatsElement(VersionConvertor_10_40.convertBoolean(src.getRepeatsElement()));
+      tgt.setRepeatsElement(Boolean10_40.convertBoolean(src.getRepeatsElement()));
     for (org.hl7.fhir.dstu2.model.Questionnaire.GroupComponent t : src.getGroup())
       tgt.addItem(convertQuestionnaireGroupComponent(t));
     for (org.hl7.fhir.dstu2.model.Questionnaire.QuestionComponent t : src.getQuestion())
@@ -126,7 +134,7 @@ public class Questionnaire10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormatEnumFactory());
-    VersionConvertor_10_40.copyElement(src, tgt);
+    Element10_40.copyElement(src, tgt);
     switch (src.getValue()) {
       case BOOLEAN:
         tgt.setValue(org.hl7.fhir.dstu2.model.Questionnaire.AnswerFormat.BOOLEAN);
@@ -181,24 +189,24 @@ public class Questionnaire10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Questionnaire.QuestionComponent tgt = new org.hl7.fhir.dstu2.model.Questionnaire.QuestionComponent();
-    VersionConvertor_10_40.copyElement(src, tgt);
+    Element10_40.copyElement(src, tgt);
     if (src.hasLinkIdElement())
-      tgt.setLinkIdElement(VersionConvertor_10_40.convertString(src.getLinkIdElement()));
-    for (org.hl7.fhir.r4.model.Coding t : src.getCode()) tgt.addConcept(VersionConvertor_10_40.convertCoding(t));
+      tgt.setLinkIdElement(String10_40.convertString(src.getLinkIdElement()));
+    for (org.hl7.fhir.r4.model.Coding t : src.getCode()) tgt.addConcept(Coding10_40.convertCoding(t));
     if (src.hasTextElement())
-      tgt.setTextElement(VersionConvertor_10_40.convertString(src.getTextElement()));
+      tgt.setTextElement(String10_40.convertString(src.getTextElement()));
     if (src.hasType())
       tgt.setTypeElement(convertQuestionnaireItemType(src.getTypeElement()));
     if (src.hasRequiredElement())
-      tgt.setRequiredElement(VersionConvertor_10_40.convertBoolean(src.getRequiredElement()));
+      tgt.setRequiredElement(Boolean10_40.convertBoolean(src.getRequiredElement()));
     if (src.hasRepeatsElement())
-      tgt.setRepeatsElement(VersionConvertor_10_40.convertBoolean(src.getRepeatsElement()));
+      tgt.setRepeatsElement(Boolean10_40.convertBoolean(src.getRepeatsElement()));
     if (src.hasAnswerValueSetElement())
-      tgt.setOptions(VersionConvertor_10_40.convertCanonicalToReference(src.getAnswerValueSetElement()));
+      tgt.setOptions(Canonical10_40.convertCanonicalToReference(src.getAnswerValueSetElement()));
     for (QuestionnaireItemAnswerOptionComponent t : src.getAnswerOption())
       if (t.hasValueCoding())
         try {
-          tgt.addOption(VersionConvertor_10_40.convertCoding(t.getValueCoding()));
+          tgt.addOption(Coding10_40.convertCoding(t.getValueCoding()));
         } catch (org.hl7.fhir.exceptions.FHIRException e) {
           throw new FHIRException(e);
         }
@@ -211,22 +219,22 @@ public class Questionnaire10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent tgt = new org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemComponent();
-    VersionConvertor_10_40.copyElement(src, tgt);
+    Element10_40.copyElement(src, tgt);
     if (src.hasLinkIdElement())
-      tgt.setLinkIdElement(VersionConvertor_10_40.convertString(src.getLinkIdElement()));
-    for (org.hl7.fhir.dstu2.model.Coding t : src.getConcept()) tgt.addCode(VersionConvertor_10_40.convertCoding(t));
+      tgt.setLinkIdElement(String10_40.convertString(src.getLinkIdElement()));
+    for (org.hl7.fhir.dstu2.model.Coding t : src.getConcept()) tgt.addCode(Coding10_40.convertCoding(t));
     if (src.hasTextElement())
-      tgt.setTextElement(VersionConvertor_10_40.convertString(src.getTextElement()));
+      tgt.setTextElement(String10_40.convertString(src.getTextElement()));
     if (src.hasType())
       tgt.setTypeElement(convertQuestionnaireQuestionType(src.getTypeElement()));
     if (src.hasRequiredElement())
-      tgt.setRequiredElement(VersionConvertor_10_40.convertBoolean(src.getRequiredElement()));
+      tgt.setRequiredElement(Boolean10_40.convertBoolean(src.getRequiredElement()));
     if (src.hasRepeatsElement())
-      tgt.setRepeatsElement(VersionConvertor_10_40.convertBoolean(src.getRepeatsElement()));
+      tgt.setRepeatsElement(Boolean10_40.convertBoolean(src.getRepeatsElement()));
     if (src.hasOptions())
-      tgt.setAnswerValueSetElement(VersionConvertor_10_40.convertReferenceToCanonical(src.getOptions()));
+      tgt.setAnswerValueSetElement(Canonical10_40.convertReferenceToCanonical(src.getOptions()));
     for (org.hl7.fhir.dstu2.model.Coding t : src.getOption())
-      tgt.addAnswerOption().setValue(VersionConvertor_10_40.convertCoding(t));
+      tgt.addAnswerOption().setValue(Coding10_40.convertCoding(t));
     for (org.hl7.fhir.dstu2.model.Questionnaire.GroupComponent t : src.getGroup())
       tgt.addItem(convertQuestionnaireGroupComponent(t));
     return tgt;
@@ -236,7 +244,7 @@ public class Questionnaire10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemTypeEnumFactory());
-    VersionConvertor_10_40.copyElement(src, tgt);
+    Element10_40.copyElement(src, tgt);
     switch (src.getValue()) {
       case BOOLEAN:
         tgt.setValue(org.hl7.fhir.r4.model.Questionnaire.QuestionnaireItemType.BOOLEAN);
@@ -294,7 +302,7 @@ public class Questionnaire10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Questionnaire.QuestionnaireStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Questionnaire.QuestionnaireStatusEnumFactory());
-    VersionConvertor_10_40.copyElement(src, tgt);
+    Element10_40.copyElement(src, tgt);
     switch (src.getValue()) {
       case DRAFT:
         tgt.setValue(org.hl7.fhir.dstu2.model.Questionnaire.QuestionnaireStatus.DRAFT);
@@ -316,7 +324,7 @@ public class Questionnaire10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.PublicationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory());
-    VersionConvertor_10_40.copyElement(src, tgt);
+    Element10_40.copyElement(src, tgt);
     switch (src.getValue()) {
       case DRAFT:
         tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.DRAFT);

@@ -1,6 +1,10 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.ContactPoint10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Instant10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Subscription10_40 {
@@ -11,18 +15,18 @@ public class Subscription10_40 {
         org.hl7.fhir.r4.model.Subscription tgt = new org.hl7.fhir.r4.model.Subscription();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
         if (src.hasCriteriaElement())
-            tgt.setCriteriaElement(VersionConvertor_10_40.convertString(src.getCriteriaElement()));
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_40.convertContactPoint(t));
+            tgt.setCriteriaElement(String10_40.convertString(src.getCriteriaElement()));
+        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getContact()) tgt.addContact(ContactPoint10_40.convertContactPoint(t));
         if (src.hasReasonElement())
-            tgt.setReasonElement(VersionConvertor_10_40.convertString(src.getReasonElement()));
+            tgt.setReasonElement(String10_40.convertString(src.getReasonElement()));
         if (src.hasStatus())
             tgt.setStatusElement(convertSubscriptionStatus(src.getStatusElement()));
         if (src.hasErrorElement())
-            tgt.setErrorElement(VersionConvertor_10_40.convertString(src.getErrorElement()));
+            tgt.setErrorElement(String10_40.convertString(src.getErrorElement()));
         if (src.hasChannel())
             tgt.setChannel(convertSubscriptionChannelComponent(src.getChannel()));
         if (src.hasEndElement())
-            tgt.setEndElement(VersionConvertor_10_40.convertInstant(src.getEndElement()));
+            tgt.setEndElement(Instant10_40.convertInstant(src.getEndElement()));
         return tgt;
     }
 
@@ -32,18 +36,18 @@ public class Subscription10_40 {
         org.hl7.fhir.dstu2.model.Subscription tgt = new org.hl7.fhir.dstu2.model.Subscription();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
         if (src.hasCriteriaElement())
-            tgt.setCriteriaElement(VersionConvertor_10_40.convertString(src.getCriteriaElement()));
-        for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact()) tgt.addContact(VersionConvertor_10_40.convertContactPoint(t));
+            tgt.setCriteriaElement(String10_40.convertString(src.getCriteriaElement()));
+        for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact()) tgt.addContact(ContactPoint10_40.convertContactPoint(t));
         if (src.hasReasonElement())
-            tgt.setReasonElement(VersionConvertor_10_40.convertString(src.getReasonElement()));
+            tgt.setReasonElement(String10_40.convertString(src.getReasonElement()));
         if (src.hasStatus())
             tgt.setStatusElement(convertSubscriptionStatus(src.getStatusElement()));
         if (src.hasErrorElement())
-            tgt.setErrorElement(VersionConvertor_10_40.convertString(src.getErrorElement()));
+            tgt.setErrorElement(String10_40.convertString(src.getErrorElement()));
         if (src.hasChannel())
             tgt.setChannel(convertSubscriptionChannelComponent(src.getChannel()));
         if (src.hasEndElement())
-            tgt.setEndElement(VersionConvertor_10_40.convertInstant(src.getEndElement()));
+            tgt.setEndElement(Instant10_40.convertInstant(src.getEndElement()));
         return tgt;
     }
 
@@ -51,7 +55,7 @@ public class Subscription10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Subscription.SubscriptionChannelComponent tgt = new org.hl7.fhir.r4.model.Subscription.SubscriptionChannelComponent();
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertSubscriptionChannelType(src.getTypeElement()));
         if (src.hasEndpoint())
@@ -66,7 +70,7 @@ public class Subscription10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelComponent tgt = new org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelComponent();
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertSubscriptionChannelType(src.getTypeElement()));
         if (src.hasEndpoint())
@@ -74,7 +78,7 @@ public class Subscription10_40 {
         if (src.hasPayload())
             tgt.setPayload(src.getPayload());
         if (src.hasHeader())
-            tgt.setHeaderElement(VersionConvertor_10_40.convertString(src.getHeader().get(0)));
+            tgt.setHeaderElement(String10_40.convertString(src.getHeader().get(0)));
         return tgt;
     }
 
@@ -82,7 +86,7 @@ public class Subscription10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelTypeEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case RESTHOOK:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionChannelType.RESTHOOK);
@@ -110,7 +114,7 @@ public class Subscription10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Subscription.SubscriptionChannelType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Subscription.SubscriptionChannelTypeEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case RESTHOOK:
                 tgt.setValue(org.hl7.fhir.r4.model.Subscription.SubscriptionChannelType.RESTHOOK);
@@ -138,7 +142,7 @@ public class Subscription10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Subscription.SubscriptionStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Subscription.SubscriptionStatusEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case REQUESTED:
                 tgt.setValue(org.hl7.fhir.r4.model.Subscription.SubscriptionStatus.REQUESTED);
@@ -163,7 +167,7 @@ public class Subscription10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatusEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case REQUESTED:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Subscription.SubscriptionStatus.REQUESTED);

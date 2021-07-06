@@ -1,6 +1,12 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Timing10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Instant10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class DeviceMetric10_40 {
@@ -11,15 +17,15 @@ public class DeviceMetric10_40 {
         org.hl7.fhir.r4.model.DeviceMetric tgt = new org.hl7.fhir.r4.model.DeviceMetric();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_40.convertCodeableConcept(src.getType()));
+            tgt.setType(CodeableConcept10_40.convertCodeableConcept(src.getType()));
         if (src.hasIdentifier())
-            tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(src.getIdentifier()));
+            tgt.addIdentifier(Identifier10_40.convertIdentifier(src.getIdentifier()));
         if (src.hasUnit())
-            tgt.setUnit(VersionConvertor_10_40.convertCodeableConcept(src.getUnit()));
+            tgt.setUnit(CodeableConcept10_40.convertCodeableConcept(src.getUnit()));
         if (src.hasSource())
-            tgt.setSource(VersionConvertor_10_40.convertReference(src.getSource()));
+            tgt.setSource(Reference10_40.convertReference(src.getSource()));
         if (src.hasParent())
-            tgt.setParent(VersionConvertor_10_40.convertReference(src.getParent()));
+            tgt.setParent(Reference10_40.convertReference(src.getParent()));
         if (src.hasOperationalStatus())
             tgt.setOperationalStatusElement(convertDeviceMetricOperationalStatus(src.getOperationalStatusElement()));
         if (src.hasColor())
@@ -27,7 +33,7 @@ public class DeviceMetric10_40 {
         if (src.hasCategory())
             tgt.setCategoryElement(convertDeviceMetricCategory(src.getCategoryElement()));
         if (src.hasMeasurementPeriod())
-            tgt.setMeasurementPeriod(VersionConvertor_10_40.convertTiming(src.getMeasurementPeriod()));
+            tgt.setMeasurementPeriod(Timing10_40.convertTiming(src.getMeasurementPeriod()));
         for (org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration()) tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
         return tgt;
     }
@@ -38,15 +44,15 @@ public class DeviceMetric10_40 {
         org.hl7.fhir.dstu2.model.DeviceMetric tgt = new org.hl7.fhir.dstu2.model.DeviceMetric();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_40.convertCodeableConcept(src.getType()));
+            tgt.setType(CodeableConcept10_40.convertCodeableConcept(src.getType()));
         if (src.hasIdentifier())
-            tgt.setIdentifier(VersionConvertor_10_40.convertIdentifier(src.getIdentifierFirstRep()));
+            tgt.setIdentifier(Identifier10_40.convertIdentifier(src.getIdentifierFirstRep()));
         if (src.hasUnit())
-            tgt.setUnit(VersionConvertor_10_40.convertCodeableConcept(src.getUnit()));
+            tgt.setUnit(CodeableConcept10_40.convertCodeableConcept(src.getUnit()));
         if (src.hasSource())
-            tgt.setSource(VersionConvertor_10_40.convertReference(src.getSource()));
+            tgt.setSource(Reference10_40.convertReference(src.getSource()));
         if (src.hasParent())
-            tgt.setParent(VersionConvertor_10_40.convertReference(src.getParent()));
+            tgt.setParent(Reference10_40.convertReference(src.getParent()));
         if (src.hasOperationalStatus())
             tgt.setOperationalStatusElement(convertDeviceMetricOperationalStatus(src.getOperationalStatusElement()));
         if (src.hasColor())
@@ -54,7 +60,7 @@ public class DeviceMetric10_40 {
         if (src.hasCategory())
             tgt.setCategoryElement(convertDeviceMetricCategory(src.getCategoryElement()));
         if (src.hasMeasurementPeriod())
-            tgt.setMeasurementPeriod(VersionConvertor_10_40.convertTiming(src.getMeasurementPeriod()));
+            tgt.setMeasurementPeriod(Timing10_40.convertTiming(src.getMeasurementPeriod()));
         for (org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent t : src.getCalibration()) tgt.addCalibration(convertDeviceMetricCalibrationComponent(t));
         return tgt;
     }
@@ -63,13 +69,13 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationComponent tgt = new org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationComponent();
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertDeviceMetricCalibrationType(src.getTypeElement()));
         if (src.hasState())
             tgt.setStateElement(convertDeviceMetricCalibrationState(src.getStateElement()));
         if (src.hasTimeElement())
-            tgt.setTimeElement(VersionConvertor_10_40.convertInstant(src.getTimeElement()));
+            tgt.setTimeElement(Instant10_40.convertInstant(src.getTimeElement()));
         return tgt;
     }
 
@@ -77,13 +83,13 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent tgt = new org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationComponent();
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertDeviceMetricCalibrationType(src.getTypeElement()));
         if (src.hasState())
             tgt.setStateElement(convertDeviceMetricCalibrationState(src.getStateElement()));
         if (src.hasTimeElement())
-            tgt.setTimeElement(VersionConvertor_10_40.convertInstant(src.getTimeElement()));
+            tgt.setTimeElement(Instant10_40.convertInstant(src.getTimeElement()));
         return tgt;
     }
 
@@ -91,7 +97,7 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationState> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationStateEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case NOTCALIBRATED:
                 tgt.setValue(org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationState.NOTCALIBRATED);
@@ -116,7 +122,7 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationState> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationStateEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case NOTCALIBRATED:
                 tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationState.NOTCALIBRATED);
@@ -141,7 +147,7 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationTypeEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case UNSPECIFIED:
                 tgt.setValue(org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCalibrationType.UNSPECIFIED);
@@ -166,7 +172,7 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationTypeEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case UNSPECIFIED:
                 tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCalibrationType.UNSPECIFIED);
@@ -191,7 +197,7 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCategory> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCategoryEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case MEASUREMENT:
                 tgt.setValue(org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricCategory.MEASUREMENT);
@@ -216,7 +222,7 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCategory> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCategoryEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case MEASUREMENT:
                 tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricCategory.MEASUREMENT);
@@ -241,7 +247,7 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricColor> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricColorEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case BLACK:
                 tgt.setValue(org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricColor.BLACK);
@@ -278,7 +284,7 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColorEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case BLACK:
                 tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricColor.BLACK);
@@ -315,7 +321,7 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricOperationalStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricOperationalStatusEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ON:
                 tgt.setValue(org.hl7.fhir.r4.model.DeviceMetric.DeviceMetricOperationalStatus.ON);
@@ -337,7 +343,7 @@ public class DeviceMetric10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricOperationalStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricOperationalStatusEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ON:
                 tgt.setValue(org.hl7.fhir.dstu2.model.DeviceMetric.DeviceMetricOperationalStatus.ON);

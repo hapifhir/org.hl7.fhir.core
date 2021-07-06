@@ -1,6 +1,10 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Date10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Basic10_40 {
@@ -10,15 +14,15 @@ public class Basic10_40 {
             return null;
         org.hl7.fhir.r4.model.Basic tgt = new org.hl7.fhir.r4.model.Basic();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_10_40.convertCodeableConcept(src.getCode()));
+            tgt.setCode(CodeableConcept10_40.convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
-            tgt.setSubject(VersionConvertor_10_40.convertReference(src.getSubject()));
+            tgt.setSubject(Reference10_40.convertReference(src.getSubject()));
         if (src.hasCreatedElement())
-            tgt.setCreatedElement(VersionConvertor_10_40.convertDate(src.getCreatedElement()));
+            tgt.setCreatedElement(Date10_40.convertDate(src.getCreatedElement()));
         if (src.hasAuthor())
-            tgt.setAuthor(VersionConvertor_10_40.convertReference(src.getAuthor()));
+            tgt.setAuthor(Reference10_40.convertReference(src.getAuthor()));
         return tgt;
     }
 
@@ -27,15 +31,15 @@ public class Basic10_40 {
             return null;
         org.hl7.fhir.dstu2.model.Basic tgt = new org.hl7.fhir.dstu2.model.Basic();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_10_40.convertCodeableConcept(src.getCode()));
+            tgt.setCode(CodeableConcept10_40.convertCodeableConcept(src.getCode()));
         if (src.hasSubject())
-            tgt.setSubject(VersionConvertor_10_40.convertReference(src.getSubject()));
+            tgt.setSubject(Reference10_40.convertReference(src.getSubject()));
         if (src.hasCreatedElement())
-            tgt.setCreatedElement(VersionConvertor_10_40.convertDate(src.getCreatedElement()));
+            tgt.setCreatedElement(Date10_40.convertDate(src.getCreatedElement()));
         if (src.hasAuthor())
-            tgt.setAuthor(VersionConvertor_10_40.convertReference(src.getAuthor()));
+            tgt.setAuthor(Reference10_40.convertReference(src.getAuthor()));
         return tgt;
     }
 }

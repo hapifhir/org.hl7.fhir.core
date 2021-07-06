@@ -1,16 +1,10 @@
 package org.hl7.fhir.convertors.advisors.support;
 
-import kotlin.jvm.internal.Intrinsics;
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
-import org.hl7.fhir.dstu2.model.Extension;
 import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.dstu2.model.Type;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.instance.model.api.IBaseExtension;
-import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Expression;
 import org.jetbrains.annotations.NotNull;
 

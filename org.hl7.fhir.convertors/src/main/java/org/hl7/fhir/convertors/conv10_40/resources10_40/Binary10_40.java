@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Code10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Binary10_40 {
@@ -11,7 +12,7 @@ public class Binary10_40 {
         org.hl7.fhir.dstu2.model.Binary tgt = new org.hl7.fhir.dstu2.model.Binary();
         VersionConvertor_10_40.copyResource(src, tgt);
         if (src.hasContentTypeElement())
-            tgt.setContentTypeElement(VersionConvertor_10_40.convertCode(src.getContentTypeElement()));
+            tgt.setContentTypeElement(Code10_40.convertCode(src.getContentTypeElement()));
         tgt.setContent(src.getContent());
         return tgt;
     }
@@ -22,7 +23,7 @@ public class Binary10_40 {
         org.hl7.fhir.r4.model.Binary tgt = new org.hl7.fhir.r4.model.Binary();
         VersionConvertor_10_40.copyResource(src, tgt);
         if (src.hasContentTypeElement())
-            tgt.setContentTypeElement(VersionConvertor_10_40.convertCode(src.getContentTypeElement()));
+            tgt.setContentTypeElement(Code10_40.convertCode(src.getContentTypeElement()));
         if (src.hasContent())
             tgt.setContent(src.getContent());
         return tgt;

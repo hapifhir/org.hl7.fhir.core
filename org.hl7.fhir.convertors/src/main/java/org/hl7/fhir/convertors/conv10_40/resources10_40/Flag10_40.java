@@ -1,6 +1,11 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Period10_40;
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Flag10_40 {
@@ -10,21 +15,21 @@ public class Flag10_40 {
             return null;
         org.hl7.fhir.r4.model.Flag tgt = new org.hl7.fhir.r4.model.Flag();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
         if (src.hasCategory())
-            tgt.addCategory(VersionConvertor_10_40.convertCodeableConcept(src.getCategory()));
+            tgt.addCategory(CodeableConcept10_40.convertCodeableConcept(src.getCategory()));
         if (src.hasStatus())
             tgt.setStatusElement(convertFlagStatus(src.getStatusElement()));
         if (src.hasPeriod())
-            tgt.setPeriod(VersionConvertor_10_40.convertPeriod(src.getPeriod()));
+            tgt.setPeriod(Period10_40.convertPeriod(src.getPeriod()));
         if (src.hasSubject())
-            tgt.setSubject(VersionConvertor_10_40.convertReference(src.getSubject()));
+            tgt.setSubject(Reference10_40.convertReference(src.getSubject()));
         if (src.hasEncounter())
-            tgt.setEncounter(VersionConvertor_10_40.convertReference(src.getEncounter()));
+            tgt.setEncounter(Reference10_40.convertReference(src.getEncounter()));
         if (src.hasAuthor())
-            tgt.setAuthor(VersionConvertor_10_40.convertReference(src.getAuthor()));
+            tgt.setAuthor(Reference10_40.convertReference(src.getAuthor()));
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_10_40.convertCodeableConcept(src.getCode()));
+            tgt.setCode(CodeableConcept10_40.convertCodeableConcept(src.getCode()));
         return tgt;
     }
 
@@ -33,21 +38,21 @@ public class Flag10_40 {
             return null;
         org.hl7.fhir.dstu2.model.Flag tgt = new org.hl7.fhir.dstu2.model.Flag();
         VersionConvertor_10_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_40.convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
         if (src.hasCategory())
-            tgt.setCategory(VersionConvertor_10_40.convertCodeableConcept(src.getCategoryFirstRep()));
+            tgt.setCategory(CodeableConcept10_40.convertCodeableConcept(src.getCategoryFirstRep()));
         if (src.hasStatus())
             tgt.setStatusElement(convertFlagStatus(src.getStatusElement()));
         if (src.hasPeriod())
-            tgt.setPeriod(VersionConvertor_10_40.convertPeriod(src.getPeriod()));
+            tgt.setPeriod(Period10_40.convertPeriod(src.getPeriod()));
         if (src.hasSubject())
-            tgt.setSubject(VersionConvertor_10_40.convertReference(src.getSubject()));
+            tgt.setSubject(Reference10_40.convertReference(src.getSubject()));
         if (src.hasEncounter())
-            tgt.setEncounter(VersionConvertor_10_40.convertReference(src.getEncounter()));
+            tgt.setEncounter(Reference10_40.convertReference(src.getEncounter()));
         if (src.hasAuthor())
-            tgt.setAuthor(VersionConvertor_10_40.convertReference(src.getAuthor()));
+            tgt.setAuthor(Reference10_40.convertReference(src.getAuthor()));
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_10_40.convertCodeableConcept(src.getCode()));
+            tgt.setCode(CodeableConcept10_40.convertCodeableConcept(src.getCode()));
         return tgt;
     }
 
@@ -55,7 +60,7 @@ public class Flag10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Flag.FlagStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Flag.FlagStatusEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Flag.FlagStatus.ACTIVE);
@@ -77,7 +82,7 @@ public class Flag10_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Flag.FlagStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Flag.FlagStatusEnumFactory());
-        VersionConvertor_10_40.copyElement(src, tgt);
+        Element10_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.r4.model.Flag.FlagStatus.ACTIVE);
