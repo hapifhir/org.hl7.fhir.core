@@ -2157,9 +2157,9 @@ public class VersionConvertor_10_40 {
       return convertUnsignedInt((org.hl7.fhir.dstu2.model.UnsignedIntType) src);
     if (src instanceof org.hl7.fhir.dstu2.model.IntegerType)
       return convertInteger((org.hl7.fhir.dstu2.model.IntegerType) src);
-    if (src instanceof org.hl7.fhir.dstu2.model.UriType) return convertUri((org.hl7.fhir.dstu2.model.UriType) src);
     if (src instanceof org.hl7.fhir.dstu2.model.UuidType)
       return convertUuid((org.hl7.fhir.dstu2.model.UuidType) src);
+    if (src instanceof org.hl7.fhir.dstu2.model.UriType) return convertUri((org.hl7.fhir.dstu2.model.UriType) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Extension)
       return convertExtension((org.hl7.fhir.dstu2.model.Extension) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Narrative)
@@ -2174,8 +2174,6 @@ public class VersionConvertor_10_40 {
     if (src instanceof org.hl7.fhir.dstu2.model.Identifier)
       return convertIdentifier((org.hl7.fhir.dstu2.model.Identifier) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Period) return convertPeriod((org.hl7.fhir.dstu2.model.Period) src);
-    if (src instanceof org.hl7.fhir.dstu2.model.Quantity)
-      return convertQuantity((org.hl7.fhir.dstu2.model.Quantity) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Range) return convertRange((org.hl7.fhir.dstu2.model.Range) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Ratio) return convertRatio((org.hl7.fhir.dstu2.model.Ratio) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Reference)
@@ -2201,6 +2199,8 @@ public class VersionConvertor_10_40 {
     if (src instanceof org.hl7.fhir.dstu2.model.Money) return convertMoney((org.hl7.fhir.dstu2.model.Money) src);
     if (src instanceof org.hl7.fhir.dstu2.model.SimpleQuantity)
       return convertSimpleQuantity((org.hl7.fhir.dstu2.model.SimpleQuantity) src);
+    if (src instanceof org.hl7.fhir.dstu2.model.Quantity)
+      return convertQuantity((org.hl7.fhir.dstu2.model.Quantity) src);
     throw new FHIRException("Unknown type " + src.fhirType());
   }
 
@@ -2231,8 +2231,8 @@ public class VersionConvertor_10_40 {
       return convertUnsignedInt((org.hl7.fhir.r4.model.UnsignedIntType) src);
     if (src instanceof org.hl7.fhir.r4.model.IntegerType)
       return convertInteger((org.hl7.fhir.r4.model.IntegerType) src);
-    if (src instanceof org.hl7.fhir.r4.model.UriType) return convertUri((org.hl7.fhir.r4.model.UriType) src);
     if (src instanceof org.hl7.fhir.r4.model.UuidType) return convertUuid((org.hl7.fhir.r4.model.UuidType) src);
+    if (src instanceof org.hl7.fhir.r4.model.UriType) return convertUri((org.hl7.fhir.r4.model.UriType) src);
     if (src instanceof org.hl7.fhir.r4.model.Extension)
       return convertExtension((org.hl7.fhir.r4.model.Extension) src);
     if (src instanceof org.hl7.fhir.r4.model.Narrative)
@@ -2247,7 +2247,6 @@ public class VersionConvertor_10_40 {
     if (src instanceof org.hl7.fhir.r4.model.Identifier)
       return convertIdentifier((org.hl7.fhir.r4.model.Identifier) src);
     if (src instanceof org.hl7.fhir.r4.model.Period) return convertPeriod((org.hl7.fhir.r4.model.Period) src);
-    if (src instanceof org.hl7.fhir.r4.model.Quantity) return convertQuantity((org.hl7.fhir.r4.model.Quantity) src);
     if (src instanceof org.hl7.fhir.r4.model.Range) return convertRange((org.hl7.fhir.r4.model.Range) src);
     if (src instanceof org.hl7.fhir.r4.model.Ratio) return convertRatio((org.hl7.fhir.r4.model.Ratio) src);
     if (src instanceof org.hl7.fhir.r4.model.Reference)
@@ -2270,6 +2269,7 @@ public class VersionConvertor_10_40 {
     if (src instanceof org.hl7.fhir.r4.model.Money) return convertMoney((org.hl7.fhir.r4.model.Money) src);
     if (src instanceof org.hl7.fhir.r4.model.SimpleQuantity)
       return convertSimpleQuantity((org.hl7.fhir.r4.model.SimpleQuantity) src);
+    if (src instanceof org.hl7.fhir.r4.model.Quantity) return convertQuantity((org.hl7.fhir.r4.model.Quantity) src);
     throw new FHIRException("Unknown type " + src.fhirType());
   }
 
