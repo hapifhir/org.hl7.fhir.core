@@ -1,6 +1,12 @@
 package org.hl7.fhir.convertors;
 
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.TypeSpec;
+
 import java.io.File;
+import javax.lang.model.element.Modifier;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,26 +22,28 @@ public class Generator {
   List<String> specialClasses;
   List<String> datatypeClasses;
 
+  public final static String ABS_PATH_BASE = "/home/mark/Documents/Projects/FHIR/temp/";
+
   public Generator() {
     filePaths = new ArrayList<>();
-    filePaths.add("/home/mark/Documents/Projects/FHIR/temp/org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30");
-    filePaths.add("/home/mark/Documents/Projects/FHIR/temp/org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_40");
-    filePaths.add("/home/mark/Documents/Projects/FHIR/temp/org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_50");
-    filePaths.add("/home/mark/Documents/Projects/FHIR/temp/org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv14_30");
-    filePaths.add("/home/mark/Documents/Projects/FHIR/temp/org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv14_40");
-    filePaths.add("/home/mark/Documents/Projects/FHIR/temp/org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv14_50");
-    filePaths.add("/home/mark/Documents/Projects/FHIR/temp/org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv30_40");
-    filePaths.add("/home/mark/Documents/Projects/FHIR/temp/org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv30_50");
+    filePaths.add("org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_30");
+    filePaths.add("org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_40");
+    filePaths.add("org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv10_50");
+    filePaths.add("org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv14_30");
+    filePaths.add("org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv14_40");
+    filePaths.add("org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv14_50");
+    filePaths.add("org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv30_40");
+    filePaths.add("org.hl7.fhir.core/org.hl7.fhir.convertors/src/main/java/org/hl7/fhir/convertors/conv30_50");
 
     mainFolders = new ArrayList<>();
     mainFolders.add("/datatypes");
     mainFolders.add("/resources");
 
     subFolders = new ArrayList<>();
-    mainFolders.add("/general");
-    mainFolders.add("/metadata");
-    mainFolders.add("/primitive");
-    mainFolders.add("/special");
+    subFolders.add("/general");
+    subFolders.add("/metadata");
+    subFolders.add("/primitive");
+    subFolders.add("/special");
 
     generalClasses = new ArrayList<>();
     generalClasses.add("Address");
@@ -110,28 +118,109 @@ public class Generator {
   public static void main(String[] args) {
     Generator generator = new Generator();
     generateFoldersForVersion(generator);
-
   }
 
   public static void generateFoldersForVersion(Generator gen) {
     gen.filePaths.forEach(mainDir -> {
+      String lastFourDigits = mainDir.substring(mainDir.length() - 5);
       gen.mainFolders.forEach(mainFolder -> {
-        createDirectory(mainDir + mainFolder);
+        createDirectory(mainDir + mainFolder + lastFourDigits);
         if (mainFolder.equals("/datatypes")) {
+          try {
+            createFile(lastFourDigits,
+              mainDir + mainFolder + lastFourDigits,
+              ("org/hl7/fhir.convertors/" + "conv" + lastFourDigits + mainFolder + lastFourDigits).replace("/", "."),
+              "BackboneElement");
+            createFile(lastFourDigits,
+              mainDir + mainFolder + lastFourDigits,
+              ("org/hl7/fhir.convertors/" + "conv" + lastFourDigits + mainFolder + lastFourDigits).replace("/", "."),
+              "Element");
+            createFile(lastFourDigits,
+              mainDir + mainFolder + lastFourDigits,
+              ("org/hl7/fhir.convertors/" + "conv" + lastFourDigits + mainFolder + lastFourDigits).replace("/", "."),
+              "Type");
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
           gen.subFolders.forEach(subFolder -> {
-            createDirectory(mainDir + mainFolder + subFolder);
+            createDirectory(mainDir + mainFolder + lastFourDigits + subFolder + lastFourDigits);
+            switch (subFolder) {
+              case "/general":
+                gen.generalClasses.forEach(className -> {
+                  try {
+                    createFile(lastFourDigits,
+                      mainDir + mainFolder + lastFourDigits + subFolder + lastFourDigits,
+                      ("org/hl7/fhir.convertors/" + "conv" + lastFourDigits + mainFolder + lastFourDigits + subFolder + lastFourDigits).replace("/", "."),
+                      className);
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
+                });
+                break;
+              case "/metadata":
+                gen.metaDataClasses.forEach(className -> {
+                  try {
+                    createFile(lastFourDigits,
+                      mainDir + mainFolder + lastFourDigits + subFolder + lastFourDigits,
+                      ("org/hl7/fhir.convertors/" + "conv" + lastFourDigits + mainFolder + lastFourDigits + subFolder + lastFourDigits).replace("/", "."),
+                      className);
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
+                });
+                break;
+              case "/primitive":
+                gen.primitiveClasses.forEach(className -> {
+                  try {
+                    createFile(lastFourDigits,
+                      mainDir + mainFolder + lastFourDigits + subFolder + lastFourDigits,
+                      ("org/hl7/fhir.convertors/" + "conv" + lastFourDigits + mainFolder + lastFourDigits + subFolder + lastFourDigits).replace("/", "."),
+                      className);
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
+                });
+                break;
+              case "/special":
+                gen.specialClasses.forEach(className -> {
+                  try {
+                    createFile(lastFourDigits,
+                      mainDir + mainFolder + lastFourDigits + subFolder + lastFourDigits,
+                      ("org/hl7/fhir.convertors/" + "conv" + lastFourDigits + mainFolder + lastFourDigits + subFolder + lastFourDigits).replace("/", "."),
+                      className);
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
+                });
+                break;
+              default:
+                break;
+            }
           });
         }
       });
     });
-
   }
 
   public static void createDirectory(String path) {
-    File theDir = new File(path);
+    System.out.println("creating folder -> " + path);
+    File theDir = new File(ABS_PATH_BASE + path);
     if (!theDir.exists()){
       theDir.mkdirs();
     }
+  }
+
+  public static void createFile(String version, String path, String packageName, String className) throws IOException {
+    TypeSpec typeSpec = TypeSpec.classBuilder(className + version)
+      .addModifiers(Modifier.PUBLIC)
+      .build();
+    JavaFile javaFile = JavaFile.builder(packageName, typeSpec)
+      .build();
+    FileWriter writer = new FileWriter(ABS_PATH_BASE + path + "/" + className + version + ".java");
+    writer.append(javaFile.toString());
+    writer.flush();
+    writer.close();
+    //javaFile.writeTo(new File(ABS_PATH_BASE + path + "/" + className + version));
   }
 
   public static void listAllFilesInDirectory(String path) {
