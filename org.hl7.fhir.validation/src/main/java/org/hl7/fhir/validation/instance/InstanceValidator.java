@@ -4539,7 +4539,12 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String thisExtension = null;
     boolean checkDisplay = true;
 
-    checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, resource, ei.getElement(), localStack, true);
+    SpecialElement special = ei.getElement().getSpecial();
+    if (special == SpecialElement.BUNDLE_ENTRY || special == SpecialElement.BUNDLE_OUTCOME || special == SpecialElement.PARAMETER) {
+      checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, ei.getElement(), ei.getElement(), localStack, false);
+    } else {
+      checkInvariants(hostContext, errors, profile, typeDefn != null ? typeDefn : checkDefn, resource, ei.getElement(), localStack, false);
+    }
 
     ei.getElement().markValidation(profile, checkDefn);
     boolean elementValidated = false;
@@ -5014,18 +5019,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     for (ElementDefinitionConstraintComponent inv : ed.getConstraint()) {
       if (inv.hasExpression() && (!onlyNonInherited || !inv.hasSource() || (!isInheritedProfile(profile, inv.getSource()) && !isInheritedProfile(ed.getType(), inv.getSource())) )) {
         @SuppressWarnings("unchecked")
-        Set<String> invList = executionId.equals(element.getUserString(EXECUTION_ID)) ? (Set<String>) element.getUserData(EXECUTED_CONSTRAINT_LIST) : null;
-        if (invList == null) {
-          invList = new HashSet<>();
-          element.setUserData(EXECUTED_CONSTRAINT_LIST, invList);
+        Map<String, List<ValidationMessage>> invMap = executionId.equals(element.getUserString(EXECUTION_ID)) ? (Map<String, List<ValidationMessage>>) element.getUserData(EXECUTED_CONSTRAINT_LIST) : null;
+        if (invMap == null) {
+          invMap = new HashMap<>();
+          element.setUserData(EXECUTED_CONSTRAINT_LIST, invMap);
           element.setUserData(EXECUTION_ID, executionId);
         }
-        if (!invList.contains(inv.getKey())) {
-          invList.add(inv.getKey());
-          checkInvariant(hostContext, errors, path, profile, resource, element, inv);
+        List<ValidationMessage> invErrors = null;
+        // We key based on inv.expression rather than inv.key because expressions can change in derived profiles and aren't guaranteed to be consistent across profiles.
+        String key = fixExpr(inv.getExpression(), inv.getKey());
+        if (!invMap.keySet().contains(key)) {
+          invErrors = new ArrayList<ValidationMessage>();
+          invMap.put(key, invErrors);
+          checkInvariant(hostContext, invErrors, path, profile, resource, element, inv);
         } else {
-          //System.out.println("Skip "+inv.getKey()+" on "+path);
+          invErrors = (ArrayList<ValidationMessage>)invMap.get(key);
         }
+        errors.addAll(invErrors);
       }
     }
   }
