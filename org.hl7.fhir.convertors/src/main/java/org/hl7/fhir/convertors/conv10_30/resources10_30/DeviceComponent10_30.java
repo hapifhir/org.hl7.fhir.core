@@ -1,6 +1,12 @@
 package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Element10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.CodeableConcept10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identifier10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Instant10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class DeviceComponent10_30 {
@@ -11,23 +17,23 @@ public class DeviceComponent10_30 {
         org.hl7.fhir.dstu2.model.DeviceComponent tgt = new org.hl7.fhir.dstu2.model.DeviceComponent();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
+            tgt.setType(CodeableConcept10_30.convertCodeableConcept(src.getType()));
         if (src.hasIdentifier())
-            tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
+            tgt.setIdentifier(Identifier10_30.convertIdentifier(src.getIdentifier()));
         if (src.hasLastSystemChangeElement())
-            tgt.setLastSystemChangeElement(VersionConvertor_10_30.convertInstant(src.getLastSystemChangeElement()));
+            tgt.setLastSystemChangeElement(Instant10_30.convertInstant(src.getLastSystemChangeElement()));
         if (src.hasSource())
-            tgt.setSource(VersionConvertor_10_30.convertReference(src.getSource()));
+            tgt.setSource(Reference10_30.convertReference(src.getSource()));
         if (src.hasParent())
-            tgt.setParent(VersionConvertor_10_30.convertReference(src.getParent()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getOperationalStatus()) tgt.addOperationalStatus(VersionConvertor_10_30.convertCodeableConcept(t));
+            tgt.setParent(Reference10_30.convertReference(src.getParent()));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getOperationalStatus()) tgt.addOperationalStatus(CodeableConcept10_30.convertCodeableConcept(t));
         if (src.hasParameterGroup())
-            tgt.setParameterGroup(VersionConvertor_10_30.convertCodeableConcept(src.getParameterGroup()));
+            tgt.setParameterGroup(CodeableConcept10_30.convertCodeableConcept(src.getParameterGroup()));
         if (src.hasMeasurementPrinciple())
             tgt.setMeasurementPrincipleElement(convertMeasmntPrinciple(src.getMeasurementPrincipleElement()));
         for (org.hl7.fhir.dstu3.model.DeviceComponent.DeviceComponentProductionSpecificationComponent t : src.getProductionSpecification()) tgt.addProductionSpecification(convertDeviceComponentProductionSpecificationComponent(t));
         if (src.hasLanguageCode())
-            tgt.setLanguageCode(VersionConvertor_10_30.convertCodeableConcept(src.getLanguageCode()));
+            tgt.setLanguageCode(CodeableConcept10_30.convertCodeableConcept(src.getLanguageCode()));
         return tgt;
     }
 
@@ -37,23 +43,23 @@ public class DeviceComponent10_30 {
         org.hl7.fhir.dstu3.model.DeviceComponent tgt = new org.hl7.fhir.dstu3.model.DeviceComponent();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
+            tgt.setType(CodeableConcept10_30.convertCodeableConcept(src.getType()));
         if (src.hasIdentifier())
-            tgt.setIdentifier(VersionConvertor_10_30.convertIdentifier(src.getIdentifier()));
+            tgt.setIdentifier(Identifier10_30.convertIdentifier(src.getIdentifier()));
         if (src.hasLastSystemChangeElement())
-            tgt.setLastSystemChangeElement(VersionConvertor_10_30.convertInstant(src.getLastSystemChangeElement()));
+            tgt.setLastSystemChangeElement(Instant10_30.convertInstant(src.getLastSystemChangeElement()));
         if (src.hasSource())
-            tgt.setSource(VersionConvertor_10_30.convertReference(src.getSource()));
+            tgt.setSource(Reference10_30.convertReference(src.getSource()));
         if (src.hasParent())
-            tgt.setParent(VersionConvertor_10_30.convertReference(src.getParent()));
-        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getOperationalStatus()) tgt.addOperationalStatus(VersionConvertor_10_30.convertCodeableConcept(t));
+            tgt.setParent(Reference10_30.convertReference(src.getParent()));
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getOperationalStatus()) tgt.addOperationalStatus(CodeableConcept10_30.convertCodeableConcept(t));
         if (src.hasParameterGroup())
-            tgt.setParameterGroup(VersionConvertor_10_30.convertCodeableConcept(src.getParameterGroup()));
+            tgt.setParameterGroup(CodeableConcept10_30.convertCodeableConcept(src.getParameterGroup()));
         if (src.hasMeasurementPrinciple())
             tgt.setMeasurementPrincipleElement(convertMeasmntPrinciple(src.getMeasurementPrincipleElement()));
         for (org.hl7.fhir.dstu2.model.DeviceComponent.DeviceComponentProductionSpecificationComponent t : src.getProductionSpecification()) tgt.addProductionSpecification(convertDeviceComponentProductionSpecificationComponent(t));
         if (src.hasLanguageCode())
-            tgt.setLanguageCode(VersionConvertor_10_30.convertCodeableConcept(src.getLanguageCode()));
+            tgt.setLanguageCode(CodeableConcept10_30.convertCodeableConcept(src.getLanguageCode()));
         return tgt;
     }
 
@@ -61,13 +67,13 @@ public class DeviceComponent10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.DeviceComponent.DeviceComponentProductionSpecificationComponent tgt = new org.hl7.fhir.dstu3.model.DeviceComponent.DeviceComponentProductionSpecificationComponent();
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         if (src.hasSpecType())
-            tgt.setSpecType(VersionConvertor_10_30.convertCodeableConcept(src.getSpecType()));
+            tgt.setSpecType(CodeableConcept10_30.convertCodeableConcept(src.getSpecType()));
         if (src.hasComponentId())
-            tgt.setComponentId(VersionConvertor_10_30.convertIdentifier(src.getComponentId()));
+            tgt.setComponentId(Identifier10_30.convertIdentifier(src.getComponentId()));
         if (src.hasProductionSpecElement())
-            tgt.setProductionSpecElement(VersionConvertor_10_30.convertString(src.getProductionSpecElement()));
+            tgt.setProductionSpecElement(String10_30.convertString(src.getProductionSpecElement()));
         return tgt;
     }
 
@@ -75,13 +81,13 @@ public class DeviceComponent10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.DeviceComponent.DeviceComponentProductionSpecificationComponent tgt = new org.hl7.fhir.dstu2.model.DeviceComponent.DeviceComponentProductionSpecificationComponent();
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         if (src.hasSpecType())
-            tgt.setSpecType(VersionConvertor_10_30.convertCodeableConcept(src.getSpecType()));
+            tgt.setSpecType(CodeableConcept10_30.convertCodeableConcept(src.getSpecType()));
         if (src.hasComponentId())
-            tgt.setComponentId(VersionConvertor_10_30.convertIdentifier(src.getComponentId()));
+            tgt.setComponentId(Identifier10_30.convertIdentifier(src.getComponentId()));
         if (src.hasProductionSpecElement())
-            tgt.setProductionSpecElement(VersionConvertor_10_30.convertString(src.getProductionSpecElement()));
+            tgt.setProductionSpecElement(String10_30.convertString(src.getProductionSpecElement()));
         return tgt;
     }
 
@@ -89,7 +95,7 @@ public class DeviceComponent10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrincipleEnumFactory());
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         switch(src.getValue()) {
             case OTHER:
                 tgt.setValue(org.hl7.fhir.dstu3.model.DeviceComponent.MeasmntPrinciple.OTHER);
@@ -135,7 +141,7 @@ public class DeviceComponent10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrincipleEnumFactory());
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         switch(src.getValue()) {
             case OTHER:
                 tgt.setValue(org.hl7.fhir.dstu2.model.DeviceComponent.MeasmntPrinciple.OTHER);

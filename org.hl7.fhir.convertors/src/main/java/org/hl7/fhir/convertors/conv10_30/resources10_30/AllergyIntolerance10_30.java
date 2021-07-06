@@ -1,6 +1,14 @@
 package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Element10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Annotation10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.CodeableConcept10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identifier10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.DateTime10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Extension10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
 import org.hl7.fhir.dstu2.model.AllergyIntolerance;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -10,19 +18,19 @@ public class AllergyIntolerance10_30 {
             return null;
         org.hl7.fhir.dstu3.model.AllergyIntolerance tgt = new org.hl7.fhir.dstu3.model.AllergyIntolerance();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier identifier : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(identifier));
+        for (org.hl7.fhir.dstu2.model.Identifier identifier : src.getIdentifier()) tgt.addIdentifier(Identifier10_30.convertIdentifier(identifier));
         if (src.hasOnset())
-            tgt.setOnset(VersionConvertor_10_30.convertDateTime(src.getOnsetElement()));
+            tgt.setOnset(DateTime10_30.convertDateTime(src.getOnsetElement()));
         if (src.hasRecordedDate())
-            tgt.setAssertedDateElement(VersionConvertor_10_30.convertDateTime(src.getRecordedDateElement()));
+            tgt.setAssertedDateElement(DateTime10_30.convertDateTime(src.getRecordedDateElement()));
         if (src.hasRecorder())
-            tgt.setRecorder(VersionConvertor_10_30.convertReference(src.getRecorder()));
+            tgt.setRecorder(Reference10_30.convertReference(src.getRecorder()));
         if (src.hasPatient())
-            tgt.setPatient(VersionConvertor_10_30.convertReference(src.getPatient()));
+            tgt.setPatient(Reference10_30.convertReference(src.getPatient()));
         if (src.hasReporter())
-            tgt.setAsserter(VersionConvertor_10_30.convertReference(src.getReporter()));
+            tgt.setAsserter(Reference10_30.convertReference(src.getReporter()));
         if (src.hasSubstance())
-            tgt.setCode(VersionConvertor_10_30.convertCodeableConcept(src.getSubstance()));
+            tgt.setCode(CodeableConcept10_30.convertCodeableConcept(src.getSubstance()));
         if (src.hasStatus()) {
             if (src.getStatus() != org.hl7.fhir.dstu2.model.AllergyIntolerance.AllergyIntoleranceStatus.REFUTED
                 && src.getStatus() != org.hl7.fhir.dstu2.model.AllergyIntolerance.AllergyIntoleranceStatus.ENTEREDINERROR) {
@@ -40,9 +48,9 @@ public class AllergyIntolerance10_30 {
         if (src.hasCategory())
             tgt.addCategory(org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceCategory.fromCode(src.getCategory().toCode()));
         if (src.hasLastOccurence())
-            tgt.setLastOccurrenceElement(VersionConvertor_10_30.convertDateTime(src.getLastOccurenceElement()));
+            tgt.setLastOccurrenceElement(DateTime10_30.convertDateTime(src.getLastOccurenceElement()));
         if (src.hasNote())
-            tgt.addNote(VersionConvertor_10_30.convertAnnotation(src.getNote()));
+            tgt.addNote(Annotation10_30.convertAnnotation(src.getNote()));
         for (org.hl7.fhir.dstu2.model.AllergyIntolerance.AllergyIntoleranceReactionComponent reaction : src.getReaction())
             tgt.addReaction(algReaction(reaction));
         return tgt;
@@ -52,26 +60,26 @@ public class AllergyIntolerance10_30 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent tgt = new org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceReactionComponent();
-        VersionConvertor_10_30.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Extension extension : src.getModifierExtension()) tgt.addExtension(VersionConvertor_10_30.convertExtension(extension));
+        Element10_30.copyElement(src, tgt);
+        for (org.hl7.fhir.dstu2.model.Extension extension : src.getModifierExtension()) tgt.addExtension(Extension10_30.convertExtension(extension));
         if (src.hasSubstance())
-            tgt.setSubstance(VersionConvertor_10_30.convertCodeableConcept(src.getSubstance()));
+            tgt.setSubstance(CodeableConcept10_30.convertCodeableConcept(src.getSubstance()));
         if (src.hasCertainty())
             tgt.addExtension(new org.hl7.fhir.dstu3.model.Extension(
                     "http://hl7.org/fhir/AllergyIntolerance-r2-certainty",
                            new org.hl7.fhir.dstu3.model.StringType(src.getCertainty().toCode())
             ));
-        for (org.hl7.fhir.dstu2.model.CodeableConcept concept : src.getManifestation()) tgt.addManifestation(VersionConvertor_10_30.convertCodeableConcept(concept));
+        for (org.hl7.fhir.dstu2.model.CodeableConcept concept : src.getManifestation()) tgt.addManifestation(CodeableConcept10_30.convertCodeableConcept(concept));
         if (src.hasDescription())
-            tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
+            tgt.setDescriptionElement(String10_30.convertString(src.getDescriptionElement()));
         if (src.hasOnset())
-            tgt.setOnsetElement(VersionConvertor_10_30.convertDateTime(src.getOnsetElement()));
+            tgt.setOnsetElement(DateTime10_30.convertDateTime(src.getOnsetElement()));
         if (src.hasSeverity())
             tgt.setSeverity(org.hl7.fhir.dstu3.model.AllergyIntolerance.AllergyIntoleranceSeverity.fromCode(src.getSeverity().toCode()));
         if (src.hasExposureRoute())
-            tgt.setExposureRoute(VersionConvertor_10_30.convertCodeableConcept(src.getExposureRoute()));
+            tgt.setExposureRoute(CodeableConcept10_30.convertCodeableConcept(src.getExposureRoute()));
         if (src.hasNote())
-            tgt.addNote(VersionConvertor_10_30.convertAnnotation(src.getNote()));
+            tgt.addNote(Annotation10_30.convertAnnotation(src.getNote()));
         return tgt;
     }
 

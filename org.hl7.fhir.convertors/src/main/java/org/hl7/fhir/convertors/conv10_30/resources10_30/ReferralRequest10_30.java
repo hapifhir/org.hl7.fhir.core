@@ -1,6 +1,12 @@
 package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Element10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.CodeableConcept10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identifier10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Period10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.String10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.dstu3.model.ReferralRequest.ReferralPriority;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -47,26 +53,26 @@ public class ReferralRequest10_30 {
             return null;
         org.hl7.fhir.dstu2.model.ReferralRequest tgt = new org.hl7.fhir.dstu2.model.ReferralRequest();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertReferralStatus(src.getStatusElement()));
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
+            tgt.setType(CodeableConcept10_30.convertCodeableConcept(src.getType()));
         if (src.hasPriority())
             tgt.setPriority(convertReferralPriorityCode(src.getPriority()));
         if (src.hasSubject())
-            tgt.setPatient(VersionConvertor_10_30.convertReference(src.getSubject()));
+            tgt.setPatient(Reference10_30.convertReference(src.getSubject()));
         if (src.hasOccurrencePeriod())
-            tgt.setFulfillmentTime(VersionConvertor_10_30.convertPeriod(src.getOccurrencePeriod()));
-        tgt.setRequester(VersionConvertor_10_30.convertReference(src.getRequester().getAgent()));
+            tgt.setFulfillmentTime(Period10_30.convertPeriod(src.getOccurrencePeriod()));
+        tgt.setRequester(Reference10_30.convertReference(src.getRequester().getAgent()));
         if (src.hasSpecialty())
-            tgt.setSpecialty(VersionConvertor_10_30.convertCodeableConcept(src.getSpecialty()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getRecipient()) tgt.addRecipient(VersionConvertor_10_30.convertReference(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept cc : src.getReasonCode()) tgt.setReason(VersionConvertor_10_30.convertCodeableConcept(cc));
+            tgt.setSpecialty(CodeableConcept10_30.convertCodeableConcept(src.getSpecialty()));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getRecipient()) tgt.addRecipient(Reference10_30.convertReference(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept cc : src.getReasonCode()) tgt.setReason(CodeableConcept10_30.convertCodeableConcept(cc));
         if (src.hasDescriptionElement())
-            tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getServiceRequested()) tgt.addServiceRequested(VersionConvertor_10_30.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInformation(VersionConvertor_10_30.convertReference(t));
+            tgt.setDescriptionElement(String10_30.convertString(src.getDescriptionElement()));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getServiceRequested()) tgt.addServiceRequested(CodeableConcept10_30.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInformation(Reference10_30.convertReference(t));
         return tgt;
     }
 
@@ -75,27 +81,27 @@ public class ReferralRequest10_30 {
             return null;
         org.hl7.fhir.dstu3.model.ReferralRequest tgt = new org.hl7.fhir.dstu3.model.ReferralRequest();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertReferralStatus(src.getStatusElement()));
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_30.convertCodeableConcept(src.getType()));
+            tgt.setType(CodeableConcept10_30.convertCodeableConcept(src.getType()));
         if (src.hasPriority())
             tgt.setPriority(convertReferralPriorityCode(src.getPriority()));
         if (src.hasPatient())
-            tgt.setSubject(VersionConvertor_10_30.convertReference(src.getPatient()));
+            tgt.setSubject(Reference10_30.convertReference(src.getPatient()));
         if (src.hasFulfillmentTime())
-            tgt.setOccurrence(VersionConvertor_10_30.convertPeriod(src.getFulfillmentTime()));
-        tgt.getRequester().setAgent(VersionConvertor_10_30.convertReference(src.getRequester()));
+            tgt.setOccurrence(Period10_30.convertPeriod(src.getFulfillmentTime()));
+        tgt.getRequester().setAgent(Reference10_30.convertReference(src.getRequester()));
         if (src.hasSpecialty())
-            tgt.setSpecialty(VersionConvertor_10_30.convertCodeableConcept(src.getSpecialty()));
-        for (org.hl7.fhir.dstu2.model.Reference t : src.getRecipient()) tgt.addRecipient(VersionConvertor_10_30.convertReference(t));
+            tgt.setSpecialty(CodeableConcept10_30.convertCodeableConcept(src.getSpecialty()));
+        for (org.hl7.fhir.dstu2.model.Reference t : src.getRecipient()) tgt.addRecipient(Reference10_30.convertReference(t));
         if (src.hasReason())
-            tgt.addReasonCode(VersionConvertor_10_30.convertCodeableConcept(src.getReason()));
+            tgt.addReasonCode(CodeableConcept10_30.convertCodeableConcept(src.getReason()));
         if (src.hasDescriptionElement())
-            tgt.setDescriptionElement(VersionConvertor_10_30.convertString(src.getDescriptionElement()));
-        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getServiceRequested()) tgt.addServiceRequested(VersionConvertor_10_30.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu2.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInfo(VersionConvertor_10_30.convertReference(t));
+            tgt.setDescriptionElement(String10_30.convertString(src.getDescriptionElement()));
+        for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getServiceRequested()) tgt.addServiceRequested(CodeableConcept10_30.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu2.model.Reference t : src.getSupportingInformation()) tgt.addSupportingInfo(Reference10_30.convertReference(t));
         return tgt;
     }
 
@@ -103,7 +109,7 @@ public class ReferralRequest10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatusEnumFactory());
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         switch(src.getValue()) {
             case DRAFT:
                 tgt.setValue(org.hl7.fhir.dstu2.model.ReferralRequest.ReferralStatus.DRAFT);
@@ -131,7 +137,7 @@ public class ReferralRequest10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatusEnumFactory());
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         switch(src.getValue()) {
             case DRAFT:
                 tgt.setValue(org.hl7.fhir.dstu3.model.ReferralRequest.ReferralRequestStatus.DRAFT);

@@ -2,7 +2,13 @@ package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Element10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.CodeableConcept10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.ContactPoint10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identifier10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.*;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.ElementDefinition10_30;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class DataElement10_30 {
@@ -13,30 +19,30 @@ public class DataElement10_30 {
         org.hl7.fhir.dstu2.model.DataElement tgt = new org.hl7.fhir.dstu2.model.DataElement();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
         if (src.hasUrlElement())
-            tgt.setUrlElement(VersionConvertor_10_30.convertUri(src.getUrlElement()));
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+            tgt.setUrlElement(Uri10_30.convertUri(src.getUrlElement()));
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
         if (src.hasVersionElement())
-            tgt.setVersionElement(VersionConvertor_10_30.convertString(src.getVersionElement()));
+            tgt.setVersionElement(String10_30.convertString(src.getVersionElement()));
         if (src.hasStatus())
-            tgt.setStatusElement(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatusElement()));
+            tgt.setStatusElement(Enumerations10_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
-            tgt.setExperimentalElement(VersionConvertor_10_30.convertBoolean(src.getExperimentalElement()));
+            tgt.setExperimentalElement(Boolean10_30.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisherElement())
-            tgt.setPublisherElement(VersionConvertor_10_30.convertString(src.getPublisherElement()));
+            tgt.setPublisherElement(String10_30.convertString(src.getPublisherElement()));
         if (src.hasDate())
-            tgt.setDateElement(VersionConvertor_10_30.convertDateTime(src.getDateElement()));
+            tgt.setDateElement(DateTime10_30.convertDateTime(src.getDateElement()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
+            tgt.setNameElement(String10_30.convertString(src.getNameElement()));
         for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(convertDataElementContactComponent(t));
         for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) if (t.hasValueCodeableConcept())
-            tgt.addUseContext(VersionConvertor_10_30.convertCodeableConcept(t.getValueCodeableConcept()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addUseContext(VersionConvertor_10_30.convertCodeableConcept(t));
+            tgt.addUseContext(CodeableConcept10_30.convertCodeableConcept(t.getValueCodeableConcept()));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addUseContext(CodeableConcept10_30.convertCodeableConcept(t));
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
         if (src.hasStringency())
             tgt.setStringencyElement(convertDataElementStringency(src.getStringencyElement()));
         for (org.hl7.fhir.dstu3.model.DataElement.DataElementMappingComponent t : src.getMapping()) tgt.addMapping(convertDataElementMappingComponent(t));
-        for (org.hl7.fhir.dstu3.model.ElementDefinition t : src.getElement()) tgt.addElement(VersionConvertor_10_30.convertElementDefinition(t));
+        for (org.hl7.fhir.dstu3.model.ElementDefinition t : src.getElement()) tgt.addElement(ElementDefinition10_30.convertElementDefinition(t));
         return tgt;
     }
 
@@ -46,25 +52,25 @@ public class DataElement10_30 {
         org.hl7.fhir.dstu3.model.DataElement tgt = new org.hl7.fhir.dstu3.model.DataElement();
         VersionConvertor_10_30.copyDomainResource(src, tgt);
         if (src.hasUrlElement())
-            tgt.setUrlElement(VersionConvertor_10_30.convertUri(src.getUrlElement()));
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_30.convertIdentifier(t));
+            tgt.setUrlElement(Uri10_30.convertUri(src.getUrlElement()));
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
         if (src.hasVersionElement())
-            tgt.setVersionElement(VersionConvertor_10_30.convertString(src.getVersionElement()));
+            tgt.setVersionElement(String10_30.convertString(src.getVersionElement()));
         if (src.hasStatus())
-            tgt.setStatusElement(VersionConvertor_10_30.convertConformanceResourceStatus(src.getStatusElement()));
+            tgt.setStatusElement(Enumerations10_30.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
-            tgt.setExperimentalElement(VersionConvertor_10_30.convertBoolean(src.getExperimentalElement()));
+            tgt.setExperimentalElement(Boolean10_30.convertBoolean(src.getExperimentalElement()));
         if (src.hasPublisherElement())
-            tgt.setPublisherElement(VersionConvertor_10_30.convertString(src.getPublisherElement()));
+            tgt.setPublisherElement(String10_30.convertString(src.getPublisherElement()));
         if (src.hasDate())
-            tgt.setDateElement(VersionConvertor_10_30.convertDateTime(src.getDateElement()));
+            tgt.setDateElement(DateTime10_30.convertDateTime(src.getDateElement()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
+            tgt.setNameElement(String10_30.convertString(src.getNameElement()));
         for (org.hl7.fhir.dstu2.model.DataElement.DataElementContactComponent t : src.getContact()) tgt.addContact(convertDataElementContactComponent(t));
         for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getUseContext()) if (VersionConvertor_10_30.isJurisdiction(t))
-            tgt.addJurisdiction(VersionConvertor_10_30.convertCodeableConcept(t));
+            tgt.addJurisdiction(CodeableConcept10_30.convertCodeableConcept(t));
         else
-            tgt.addUseContext(VersionConvertor_10_30.convertCodeableConceptToUsageContext(t));
+            tgt.addUseContext(CodeableConcept10_30.convertCodeableConceptToUsageContext(t));
         if (src.hasCopyright())
             tgt.setCopyright(src.getCopyright());
         if (src.hasStringency())
@@ -74,7 +80,7 @@ public class DataElement10_30 {
         for (org.hl7.fhir.dstu2.model.ElementDefinition t : src.getElement()) {
             if (t.hasSlicing())
                 slicePaths.add(t.getPath());
-            tgt.addElement(VersionConvertor_10_30.convertElementDefinition(t, slicePaths));
+            tgt.addElement(ElementDefinition10_30.convertElementDefinition(t, slicePaths));
         }
         return tgt;
     }
@@ -83,10 +89,10 @@ public class DataElement10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.ContactDetail tgt = new org.hl7.fhir.dstu3.model.ContactDetail();
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+            tgt.setNameElement(String10_30.convertString(src.getNameElement()));
+        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint10_30.convertContactPoint(t));
         return tgt;
     }
 
@@ -94,10 +100,10 @@ public class DataElement10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.DataElement.DataElementContactComponent tgt = new org.hl7.fhir.dstu2.model.DataElement.DataElementContactComponent();
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
-        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_30.convertContactPoint(t));
+            tgt.setNameElement(String10_30.convertString(src.getNameElement()));
+        for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint10_30.convertContactPoint(t));
         return tgt;
     }
 
@@ -105,15 +111,15 @@ public class DataElement10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.DataElement.DataElementMappingComponent tgt = new org.hl7.fhir.dstu3.model.DataElement.DataElementMappingComponent();
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         if (src.hasIdentityElement())
-            tgt.setIdentityElement(VersionConvertor_10_30.convertId(src.getIdentityElement()));
+            tgt.setIdentityElement(Id10_30.convertId(src.getIdentityElement()));
         if (src.hasUriElement())
-            tgt.setUriElement(VersionConvertor_10_30.convertUri(src.getUriElement()));
+            tgt.setUriElement(Uri10_30.convertUri(src.getUriElement()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
+            tgt.setNameElement(String10_30.convertString(src.getNameElement()));
         if (src.hasCommentsElement())
-            tgt.setCommentElement(VersionConvertor_10_30.convertString(src.getCommentsElement()));
+            tgt.setCommentElement(String10_30.convertString(src.getCommentsElement()));
         return tgt;
     }
 
@@ -121,15 +127,15 @@ public class DataElement10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.DataElement.DataElementMappingComponent tgt = new org.hl7.fhir.dstu2.model.DataElement.DataElementMappingComponent();
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         if (src.hasIdentityElement())
-            tgt.setIdentityElement(VersionConvertor_10_30.convertId(src.getIdentityElement()));
+            tgt.setIdentityElement(Id10_30.convertId(src.getIdentityElement()));
         if (src.hasUriElement())
-            tgt.setUriElement(VersionConvertor_10_30.convertUri(src.getUriElement()));
+            tgt.setUriElement(Uri10_30.convertUri(src.getUriElement()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_30.convertString(src.getNameElement()));
+            tgt.setNameElement(String10_30.convertString(src.getNameElement()));
         if (src.hasCommentElement())
-            tgt.setCommentsElement(VersionConvertor_10_30.convertString(src.getCommentElement()));
+            tgt.setCommentsElement(String10_30.convertString(src.getCommentElement()));
         return tgt;
     }
 
@@ -137,7 +143,7 @@ public class DataElement10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DataElement.DataElementStringency> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DataElement.DataElementStringencyEnumFactory());
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         switch(src.getValue()) {
             case COMPARABLE:
                 tgt.setValue(org.hl7.fhir.dstu2.model.DataElement.DataElementStringency.COMPARABLE);
@@ -168,7 +174,7 @@ public class DataElement10_30 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DataElement.DataElementStringency> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.DataElement.DataElementStringencyEnumFactory());
-        VersionConvertor_10_30.copyElement(src, tgt);
+        Element10_30.copyElement(src, tgt);
         switch(src.getValue()) {
             case COMPARABLE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.DataElement.DataElementStringency.COMPARABLE);

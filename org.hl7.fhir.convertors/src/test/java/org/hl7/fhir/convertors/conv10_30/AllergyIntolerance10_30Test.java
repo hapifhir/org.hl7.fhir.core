@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.conv10_30;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_30;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_30;
-import org.hl7.fhir.convertors.loaders.R2ToR3Loader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

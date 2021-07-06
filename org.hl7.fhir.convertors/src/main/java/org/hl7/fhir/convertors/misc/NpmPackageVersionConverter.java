@@ -11,6 +11,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.hl7.fhir.convertors.*;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_50;
+import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
