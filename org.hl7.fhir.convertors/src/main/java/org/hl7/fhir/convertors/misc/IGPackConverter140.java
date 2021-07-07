@@ -35,7 +35,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-import org.hl7.fhir.convertors.VersionConvertor_14_30;
+import org.hl7.fhir.convertors.conv14_30.VersionConvertor_14_30;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 
 public class IGPackConverter140 {
