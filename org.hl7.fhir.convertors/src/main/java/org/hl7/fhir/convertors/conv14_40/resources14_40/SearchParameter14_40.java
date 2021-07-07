@@ -1,6 +1,11 @@
 package org.hl7.fhir.convertors.conv14_40.resources14_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_14_40;
+import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Element14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.CodeableConcept14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.ContactPoint14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Expression14_40;
+import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.*;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class SearchParameter14_40 {
@@ -11,35 +16,35 @@ public class SearchParameter14_40 {
         org.hl7.fhir.r4.model.SearchParameter tgt = new org.hl7.fhir.r4.model.SearchParameter();
         VersionConvertor_14_40.copyDomainResource(src, tgt);
         if (src.hasUrlElement())
-            tgt.setUrlElement(VersionConvertor_14_40.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri14_40.convertUri(src.getUrlElement()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_14_40.convertString(src.getNameElement()));
+            tgt.setNameElement(String14_40.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatusElement(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatusElement()));
+            tgt.setStatusElement(Enumerations14_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
-            tgt.setExperimentalElement(VersionConvertor_14_40.convertBoolean(src.getExperimentalElement()));
+            tgt.setExperimentalElement(Boolean14_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
-            tgt.setDateElement(VersionConvertor_14_40.convertDateTime(src.getDateElement()));
+            tgt.setDateElement(DateTime14_40.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
-            tgt.setPublisherElement(VersionConvertor_14_40.convertString(src.getPublisherElement()));
+            tgt.setPublisherElement(String14_40.convertString(src.getPublisherElement()));
         for (org.hl7.fhir.dstu2016may.model.SearchParameter.SearchParameterContactComponent t : src.getContact()) tgt.addContact(convertSearchParameterContactComponent(t));
         for (org.hl7.fhir.dstu2016may.model.CodeableConcept t : src.getUseContext()) if (VersionConvertor_14_40.isJurisdiction(t))
-            tgt.addJurisdiction(VersionConvertor_14_40.convertCodeableConcept(t));
+            tgt.addJurisdiction(CodeableConcept14_40.convertCodeableConcept(t));
         else
-            tgt.addUseContext(VersionConvertor_14_40.convertCodeableConceptToUsageContext(t));
+            tgt.addUseContext(CodeableConcept14_40.convertCodeableConceptToUsageContext(t));
         if (src.hasRequirements())
             tgt.setPurpose(src.getRequirements());
         if (src.hasCodeElement())
-            tgt.setCodeElement(VersionConvertor_14_40.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code14_40.convertCode(src.getCodeElement()));
         tgt.addBase(src.getBase());
         if (src.hasType())
-            tgt.setTypeElement(VersionConvertor_14_40.convertSearchParamType(src.getTypeElement()));
+            tgt.setTypeElement(Enumerations14_40.convertSearchParamType(src.getTypeElement()));
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         if (src.hasExpression())
-            tgt.setExpression(VersionConvertor_14_40.convertToR4Expression(src.getExpression()));
+            tgt.setExpression(Expression14_40.convertToR4Expression(src.getExpression()));
         if (src.hasXpath())
-            tgt.setXpathElement(VersionConvertor_14_40.convertString(src.getXpathElement()));
+            tgt.setXpathElement(String14_40.convertString(src.getXpathElement()));
         if (src.hasXpathUsage())
             tgt.setXpathUsageElement(convertXPathUsageType(src.getXpathUsageElement()));
         for (org.hl7.fhir.dstu2016may.model.CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
@@ -52,34 +57,34 @@ public class SearchParameter14_40 {
         org.hl7.fhir.dstu2016may.model.SearchParameter tgt = new org.hl7.fhir.dstu2016may.model.SearchParameter();
         VersionConvertor_14_40.copyDomainResource(src, tgt);
         if (src.hasUrlElement())
-            tgt.setUrlElement(VersionConvertor_14_40.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri14_40.convertUri(src.getUrlElement()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_14_40.convertString(src.getNameElement()));
+            tgt.setNameElement(String14_40.convertString(src.getNameElement()));
         if (src.hasStatus())
-            tgt.setStatusElement(VersionConvertor_14_40.convertConformanceResourceStatus(src.getStatusElement()));
+            tgt.setStatusElement(Enumerations14_40.convertConformanceResourceStatus(src.getStatusElement()));
         if (src.hasExperimental())
-            tgt.setExperimentalElement(VersionConvertor_14_40.convertBoolean(src.getExperimentalElement()));
+            tgt.setExperimentalElement(Boolean14_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
-            tgt.setDateElement(VersionConvertor_14_40.convertDateTime(src.getDateElement()));
+            tgt.setDateElement(DateTime14_40.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
-            tgt.setPublisherElement(VersionConvertor_14_40.convertString(src.getPublisherElement()));
+            tgt.setPublisherElement(String14_40.convertString(src.getPublisherElement()));
         for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(convertSearchParameterContactComponent(t));
         for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) if (t.hasValueCodeableConcept())
-            tgt.addUseContext(VersionConvertor_14_40.convertCodeableConcept(t.getValueCodeableConcept()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addUseContext(VersionConvertor_14_40.convertCodeableConcept(t));
+            tgt.addUseContext(CodeableConcept14_40.convertCodeableConcept(t.getValueCodeableConcept()));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addUseContext(CodeableConcept14_40.convertCodeableConcept(t));
         if (src.hasPurpose())
             tgt.setRequirements(src.getPurpose());
         if (src.hasCodeElement())
-            tgt.setCodeElement(VersionConvertor_14_40.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code14_40.convertCode(src.getCodeElement()));
         for (org.hl7.fhir.r4.model.CodeType t : src.getBase()) tgt.setBase(t.asStringValue());
         if (src.hasType())
-            tgt.setTypeElement(VersionConvertor_14_40.convertSearchParamType(src.getTypeElement()));
+            tgt.setTypeElement(Enumerations14_40.convertSearchParamType(src.getTypeElement()));
         if (src.hasDescription())
             tgt.setDescription(src.getDescription());
         if (src.hasExpression())
-            tgt.setExpression(VersionConvertor_14_40.convertTo2016MayExpression(src.getExpression()));
+            tgt.setExpression(Expression14_40.convertTo2016MayExpression(src.getExpression()));
         if (src.hasXpath())
-            tgt.setXpathElement(VersionConvertor_14_40.convertString(src.getXpathElement()));
+            tgt.setXpathElement(String14_40.convertString(src.getXpathElement()));
         if (src.hasXpathUsage())
             tgt.setXpathUsageElement(convertXPathUsageType(src.getXpathUsageElement()));
         for (org.hl7.fhir.r4.model.CodeType t : src.getTarget()) tgt.addTarget(t.getValue());
@@ -90,10 +95,10 @@ public class SearchParameter14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.ContactDetail tgt = new org.hl7.fhir.r4.model.ContactDetail();
-        VersionConvertor_14_40.copyElement(src, tgt);
+        Element14_40.copyElement(src, tgt);
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_14_40.convertString(src.getNameElement()));
-        for (org.hl7.fhir.dstu2016may.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_14_40.convertContactPoint(t));
+            tgt.setNameElement(String14_40.convertString(src.getNameElement()));
+        for (org.hl7.fhir.dstu2016may.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint14_40.convertContactPoint(t));
         return tgt;
     }
 
@@ -101,10 +106,10 @@ public class SearchParameter14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.SearchParameter.SearchParameterContactComponent tgt = new org.hl7.fhir.dstu2016may.model.SearchParameter.SearchParameterContactComponent();
-        VersionConvertor_14_40.copyElement(src, tgt);
+        Element14_40.copyElement(src, tgt);
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_14_40.convertString(src.getNameElement()));
-        for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_14_40.convertContactPoint(t));
+            tgt.setNameElement(String14_40.convertString(src.getNameElement()));
+        for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint14_40.convertContactPoint(t));
         return tgt;
     }
 
@@ -112,7 +117,7 @@ public class SearchParameter14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.SearchParameter.XPathUsageTypeEnumFactory());
-        VersionConvertor_14_40.copyElement(src, tgt);
+        Element14_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case NORMAL:
                 tgt.setValue(org.hl7.fhir.r4.model.SearchParameter.XPathUsageType.NORMAL);
@@ -140,7 +145,7 @@ public class SearchParameter14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageTypeEnumFactory());
-        VersionConvertor_14_40.copyElement(src, tgt);
+        Element14_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case NORMAL:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NORMAL);
