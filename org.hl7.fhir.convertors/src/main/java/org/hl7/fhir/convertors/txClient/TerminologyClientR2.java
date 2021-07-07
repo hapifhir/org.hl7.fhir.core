@@ -34,12 +34,11 @@ package org.hl7.fhir.convertors.txClient;
 import java.net.URISyntaxException;
 import java.util.Map;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.resources10_50.TerminologyCapabilities10_50;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu2.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.TerminologyServiceException;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.CanonicalResource;
 import org.hl7.fhir.r5.model.CapabilityStatement;
@@ -60,7 +59,7 @@ public class TerminologyClientR2 implements TerminologyClient {
 
   @Override
   public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException {
-    return VersionConvertor_10_50.convertTerminologyCapabilities(client.getTerminologyCapabilities());
+    return TerminologyCapabilities10_50.convertTerminologyCapabilities(client.getTerminologyCapabilities());
   }
 
   @Override

@@ -1,6 +1,15 @@
 package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Element10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Type10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complexTypes10_50.CodeableConcept10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complexTypes10_50.Identifier10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complexTypes10_50.Period10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Boolean10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.UnsignedInt10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Reference10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Group10_50 {
@@ -10,17 +19,17 @@ public class Group10_50 {
             return null;
         org.hl7.fhir.dstu2.model.Group tgt = new org.hl7.fhir.dstu2.model.Group();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_50.convertIdentifier(t));
         if (src.hasType())
             tgt.setTypeElement(convertGroupType(src.getTypeElement()));
         if (src.hasActualElement())
-            tgt.setActualElement(VersionConvertor_10_50.convertBoolean(src.getActualElement()));
+            tgt.setActualElement(Boolean10_50.convertBoolean(src.getActualElement()));
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
+            tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String10_50.convertString(src.getNameElement()));
         if (src.hasQuantityElement())
-            tgt.setQuantityElement(VersionConvertor_10_50.convertUnsignedInt(src.getQuantityElement()));
+            tgt.setQuantityElement(UnsignedInt10_50.convertUnsignedInt(src.getQuantityElement()));
         for (org.hl7.fhir.r5.model.Group.GroupCharacteristicComponent t : src.getCharacteristic()) tgt.addCharacteristic(convertGroupCharacteristicComponent(t));
         for (org.hl7.fhir.r5.model.Group.GroupMemberComponent t : src.getMember()) tgt.addMember(convertGroupMemberComponent(t));
         return tgt;
@@ -31,17 +40,17 @@ public class Group10_50 {
             return null;
         org.hl7.fhir.r5.model.Group tgt = new org.hl7.fhir.r5.model.Group();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_50.convertIdentifier(t));
         if (src.hasType())
             tgt.setTypeElement(convertGroupType(src.getTypeElement()));
         if (src.hasActualElement())
-            tgt.setActualElement(VersionConvertor_10_50.convertBoolean(src.getActualElement()));
+            tgt.setActualElement(Boolean10_50.convertBoolean(src.getActualElement()));
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
+            tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String10_50.convertString(src.getNameElement()));
         if (src.hasQuantityElement())
-            tgt.setQuantityElement(VersionConvertor_10_50.convertUnsignedInt(src.getQuantityElement()));
+            tgt.setQuantityElement(UnsignedInt10_50.convertUnsignedInt(src.getQuantityElement()));
         for (org.hl7.fhir.dstu2.model.Group.GroupCharacteristicComponent t : src.getCharacteristic()) tgt.addCharacteristic(convertGroupCharacteristicComponent(t));
         for (org.hl7.fhir.dstu2.model.Group.GroupMemberComponent t : src.getMember()) tgt.addMember(convertGroupMemberComponent(t));
         return tgt;
@@ -51,15 +60,15 @@ public class Group10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Group.GroupCharacteristicComponent tgt = new org.hl7.fhir.dstu2.model.Group.GroupCharacteristicComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
+            tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
         if (src.hasValue())
-            tgt.setValue(VersionConvertor_10_50.convertType(src.getValue()));
+            tgt.setValue(Type10_50.convertType(src.getValue()));
         if (src.hasExcludeElement())
-            tgt.setExcludeElement(VersionConvertor_10_50.convertBoolean(src.getExcludeElement()));
+            tgt.setExcludeElement(Boolean10_50.convertBoolean(src.getExcludeElement()));
         if (src.hasPeriod())
-            tgt.setPeriod(VersionConvertor_10_50.convertPeriod(src.getPeriod()));
+            tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
         return tgt;
     }
 
@@ -67,15 +76,15 @@ public class Group10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Group.GroupCharacteristicComponent tgt = new org.hl7.fhir.r5.model.Group.GroupCharacteristicComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
+            tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
         if (src.hasValue())
-            tgt.setValue(VersionConvertor_10_50.convertType(src.getValue()));
+            tgt.setValue(Type10_50.convertType(src.getValue()));
         if (src.hasExcludeElement())
-            tgt.setExcludeElement(VersionConvertor_10_50.convertBoolean(src.getExcludeElement()));
+            tgt.setExcludeElement(Boolean10_50.convertBoolean(src.getExcludeElement()));
         if (src.hasPeriod())
-            tgt.setPeriod(VersionConvertor_10_50.convertPeriod(src.getPeriod()));
+            tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
         return tgt;
     }
 
@@ -83,13 +92,13 @@ public class Group10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Group.GroupMemberComponent tgt = new org.hl7.fhir.r5.model.Group.GroupMemberComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasEntity())
-            tgt.setEntity(VersionConvertor_10_50.convertReference(src.getEntity()));
+            tgt.setEntity(Reference10_50.convertReference(src.getEntity()));
         if (src.hasPeriod())
-            tgt.setPeriod(VersionConvertor_10_50.convertPeriod(src.getPeriod()));
+            tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
         if (src.hasInactiveElement())
-            tgt.setInactiveElement(VersionConvertor_10_50.convertBoolean(src.getInactiveElement()));
+            tgt.setInactiveElement(Boolean10_50.convertBoolean(src.getInactiveElement()));
         return tgt;
     }
 
@@ -97,13 +106,13 @@ public class Group10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Group.GroupMemberComponent tgt = new org.hl7.fhir.dstu2.model.Group.GroupMemberComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasEntity())
-            tgt.setEntity(VersionConvertor_10_50.convertReference(src.getEntity()));
+            tgt.setEntity(Reference10_50.convertReference(src.getEntity()));
         if (src.hasPeriod())
-            tgt.setPeriod(VersionConvertor_10_50.convertPeriod(src.getPeriod()));
+            tgt.setPeriod(Period10_50.convertPeriod(src.getPeriod()));
         if (src.hasInactiveElement())
-            tgt.setInactiveElement(VersionConvertor_10_50.convertBoolean(src.getInactiveElement()));
+            tgt.setInactiveElement(Boolean10_50.convertBoolean(src.getInactiveElement()));
         return tgt;
     }
 
@@ -111,7 +120,7 @@ public class Group10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Group.GroupType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Group.GroupTypeEnumFactory());
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case PERSON:
                 tgt.setValue(org.hl7.fhir.r5.model.Group.GroupType.PERSON);
@@ -142,7 +151,7 @@ public class Group10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Group.GroupType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Group.GroupTypeEnumFactory());
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case PERSON:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Group.GroupType.PERSON);

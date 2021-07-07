@@ -1,6 +1,11 @@
 package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Element10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complexTypes10_50.*;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Boolean10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Reference10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Organization10_50 {
@@ -10,17 +15,17 @@ public class Organization10_50 {
             return null;
         org.hl7.fhir.r5.model.Organization tgt = new org.hl7.fhir.r5.model.Organization();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_50.convertIdentifier(t));
         if (src.hasActiveElement())
-            tgt.setActiveElement(VersionConvertor_10_50.convertBoolean(src.getActiveElement()));
+            tgt.setActiveElement(Boolean10_50.convertBoolean(src.getActiveElement()));
         if (src.hasType())
-            tgt.addType(VersionConvertor_10_50.convertCodeableConcept(src.getType()));
+            tgt.addType(CodeableConcept10_50.convertCodeableConcept(src.getType()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_50.convertString(src.getNameElement()));
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
-        for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_50.convertAddress(t));
+            tgt.setNameElement(String10_50.convertString(src.getNameElement()));
+        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint10_50.convertContactPoint(t));
+        for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(Address10_50.convertAddress(t));
         if (src.hasPartOf())
-            tgt.setPartOf(VersionConvertor_10_50.convertReference(src.getPartOf()));
+            tgt.setPartOf(Reference10_50.convertReference(src.getPartOf()));
         for (org.hl7.fhir.dstu2.model.Organization.OrganizationContactComponent t : src.getContact()) tgt.addContact(convertOrganizationContactComponent(t));
         return tgt;
     }
@@ -30,17 +35,17 @@ public class Organization10_50 {
             return null;
         org.hl7.fhir.dstu2.model.Organization tgt = new org.hl7.fhir.dstu2.model.Organization();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_50.convertIdentifier(t));
         if (src.hasActiveElement())
-            tgt.setActiveElement(VersionConvertor_10_50.convertBoolean(src.getActiveElement()));
+            tgt.setActiveElement(Boolean10_50.convertBoolean(src.getActiveElement()));
         if (src.hasType())
-            tgt.setType(VersionConvertor_10_50.convertCodeableConcept(src.getTypeFirstRep()));
+            tgt.setType(CodeableConcept10_50.convertCodeableConcept(src.getTypeFirstRep()));
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_50.convertString(src.getNameElement()));
-        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
-        for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(VersionConvertor_10_50.convertAddress(t));
+            tgt.setNameElement(String10_50.convertString(src.getNameElement()));
+        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint10_50.convertContactPoint(t));
+        for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(Address10_50.convertAddress(t));
         if (src.hasPartOf())
-            tgt.setPartOf(VersionConvertor_10_50.convertReference(src.getPartOf()));
+            tgt.setPartOf(Reference10_50.convertReference(src.getPartOf()));
         for (org.hl7.fhir.r5.model.Organization.OrganizationContactComponent t : src.getContact()) tgt.addContact(convertOrganizationContactComponent(t));
         return tgt;
     }
@@ -49,14 +54,14 @@ public class Organization10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.dstu2.model.Organization.OrganizationContactComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasPurpose())
-            tgt.setPurpose(VersionConvertor_10_50.convertCodeableConcept(src.getPurpose()));
+            tgt.setPurpose(CodeableConcept10_50.convertCodeableConcept(src.getPurpose()));
         if (src.hasName())
-            tgt.setName(VersionConvertor_10_50.convertHumanName(src.getName()));
-        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
+            tgt.setName(HumanName10_50.convertHumanName(src.getName()));
+        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint10_50.convertContactPoint(t));
         if (src.hasAddress())
-            tgt.setAddress(VersionConvertor_10_50.convertAddress(src.getAddress()));
+            tgt.setAddress(Address10_50.convertAddress(src.getAddress()));
         return tgt;
     }
 
@@ -64,14 +69,14 @@ public class Organization10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.r5.model.Organization.OrganizationContactComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasPurpose())
-            tgt.setPurpose(VersionConvertor_10_50.convertCodeableConcept(src.getPurpose()));
+            tgt.setPurpose(CodeableConcept10_50.convertCodeableConcept(src.getPurpose()));
         if (src.hasName())
-            tgt.setName(VersionConvertor_10_50.convertHumanName(src.getName()));
-        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(VersionConvertor_10_50.convertContactPoint(t));
+            tgt.setName(HumanName10_50.convertHumanName(src.getName()));
+        for (org.hl7.fhir.dstu2.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint10_50.convertContactPoint(t));
         if (src.hasAddress())
-            tgt.setAddress(VersionConvertor_10_50.convertAddress(src.getAddress()));
+            tgt.setAddress(Address10_50.convertAddress(src.getAddress()));
         return tgt;
     }
 }

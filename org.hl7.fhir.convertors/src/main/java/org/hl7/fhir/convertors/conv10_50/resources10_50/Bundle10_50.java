@@ -1,7 +1,10 @@
 package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Element10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complexTypes10_50.Signature10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.FhirPublication;
 
@@ -15,11 +18,11 @@ public class Bundle10_50 {
         if (src.hasType())
             tgt.setTypeElement(convertBundleType(src.getTypeElement()));
         if (src.hasTotal())
-            tgt.setTotalElement(VersionConvertor_10_50.convertUnsignedInt(src.getTotalElement()));
+            tgt.setTotalElement(UnsignedInt10_50.convertUnsignedInt(src.getTotalElement()));
         for (org.hl7.fhir.dstu2.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
         for (org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t));
         if (src.hasSignature())
-            tgt.setSignature(VersionConvertor_10_50.convertSignature(src.getSignature()));
+            tgt.setSignature(Signature10_50.convertSignature(src.getSignature()));
         return tgt;
     }
 
@@ -35,11 +38,11 @@ public class Bundle10_50 {
         if (src.hasType())
             tgt.setTypeElement(convertBundleType(src.getTypeElement()));
         if (src.hasTotal())
-            tgt.setTotalElement(VersionConvertor_10_50.convertUnsignedInt(src.getTotalElement()));
+            tgt.setTotalElement(UnsignedInt10_50.convertUnsignedInt(src.getTotalElement()));
         for (org.hl7.fhir.r5.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
         for (org.hl7.fhir.r5.model.Bundle.BundleEntryComponent t : src.getEntry()) tgt.addEntry(convertBundleEntryComponent(t, advisor));
         if (src.hasSignature())
-            tgt.setSignature(VersionConvertor_10_50.convertSignature(src.getSignature()));
+            tgt.setSignature(Signature10_50.convertSignature(src.getSignature()));
         return tgt;
     }
 
@@ -47,10 +50,10 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntryComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         for (org.hl7.fhir.dstu2.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
         if (src.hasFullUrlElement())
-            tgt.setFullUrlElement(VersionConvertor_10_50.convertUri(src.getFullUrlElement()));
+            tgt.setFullUrlElement(Uri10_50.convertUri(src.getFullUrlElement()));
         if (src.hasResource())
             tgt.setResource(VersionConvertor_10_50.convertResource(src.getResource()));
         if (src.hasSearch())
@@ -68,10 +71,10 @@ public class Bundle10_50 {
         if (advisor.ignoreEntry(src, FhirPublication.DSTU2))
             return null;
         org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleEntryComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         for (org.hl7.fhir.r5.model.Bundle.BundleLinkComponent t : src.getLink()) tgt.addLink(convertBundleLinkComponent(t));
         if (src.hasFullUrlElement())
-            tgt.setFullUrlElement(VersionConvertor_10_50.convertUri(src.getFullUrlElement()));
+            tgt.setFullUrlElement(Uri10_50.convertUri(src.getFullUrlElement()));
         org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_50.convertResource(src.getResource());
         tgt.setResource(res);
         if (src.hasSearch())
@@ -91,19 +94,19 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleEntryRequestComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasMethod())
             tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
         if (src.hasUrlElement())
-            tgt.setUrlElement(VersionConvertor_10_50.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri10_50.convertUri(src.getUrlElement()));
         if (src.hasIfNoneMatchElement())
-            tgt.setIfNoneMatchElement(VersionConvertor_10_50.convertString(src.getIfNoneMatchElement()));
+            tgt.setIfNoneMatchElement(String10_50.convertString(src.getIfNoneMatchElement()));
         if (src.hasIfModifiedSinceElement())
-            tgt.setIfModifiedSinceElement(VersionConvertor_10_50.convertInstant(src.getIfModifiedSinceElement()));
+            tgt.setIfModifiedSinceElement(Instant10_50.convertInstant(src.getIfModifiedSinceElement()));
         if (src.hasIfMatchElement())
-            tgt.setIfMatchElement(VersionConvertor_10_50.convertString(src.getIfMatchElement()));
+            tgt.setIfMatchElement(String10_50.convertString(src.getIfMatchElement()));
         if (src.hasIfNoneExistElement())
-            tgt.setIfNoneExistElement(VersionConvertor_10_50.convertString(src.getIfNoneExistElement()));
+            tgt.setIfNoneExistElement(String10_50.convertString(src.getIfNoneExistElement()));
         return tgt;
     }
 
@@ -111,19 +114,19 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntryRequestComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasMethod())
             tgt.setMethodElement(convertHTTPVerb(src.getMethodElement()));
         if (src.hasUrlElement())
-            tgt.setUrlElement(VersionConvertor_10_50.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri10_50.convertUri(src.getUrlElement()));
         if (src.hasIfNoneMatchElement())
-            tgt.setIfNoneMatchElement(VersionConvertor_10_50.convertString(src.getIfNoneMatchElement()));
+            tgt.setIfNoneMatchElement(String10_50.convertString(src.getIfNoneMatchElement()));
         if (src.hasIfModifiedSinceElement())
-            tgt.setIfModifiedSinceElement(VersionConvertor_10_50.convertInstant(src.getIfModifiedSinceElement()));
+            tgt.setIfModifiedSinceElement(Instant10_50.convertInstant(src.getIfModifiedSinceElement()));
         if (src.hasIfMatchElement())
-            tgt.setIfMatchElement(VersionConvertor_10_50.convertString(src.getIfMatchElement()));
+            tgt.setIfMatchElement(String10_50.convertString(src.getIfMatchElement()));
         if (src.hasIfNoneExistElement())
-            tgt.setIfNoneExistElement(VersionConvertor_10_50.convertString(src.getIfNoneExistElement()));
+            tgt.setIfNoneExistElement(String10_50.convertString(src.getIfNoneExistElement()));
         return tgt;
     }
 
@@ -131,15 +134,15 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleEntryResponseComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasStatusElement())
-            tgt.setStatusElement(VersionConvertor_10_50.convertString(src.getStatusElement()));
+            tgt.setStatusElement(String10_50.convertString(src.getStatusElement()));
         if (src.hasLocationElement())
-            tgt.setLocationElement(VersionConvertor_10_50.convertUri(src.getLocationElement()));
+            tgt.setLocationElement(Uri10_50.convertUri(src.getLocationElement()));
         if (src.hasEtagElement())
-            tgt.setEtagElement(VersionConvertor_10_50.convertString(src.getEtagElement()));
+            tgt.setEtagElement(String10_50.convertString(src.getEtagElement()));
         if (src.hasLastModifiedElement())
-            tgt.setLastModifiedElement(VersionConvertor_10_50.convertInstant(src.getLastModifiedElement()));
+            tgt.setLastModifiedElement(Instant10_50.convertInstant(src.getLastModifiedElement()));
         return tgt;
     }
 
@@ -147,15 +150,15 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Bundle.BundleEntryResponseComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntryResponseComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasStatusElement())
-            tgt.setStatusElement(VersionConvertor_10_50.convertString(src.getStatusElement()));
+            tgt.setStatusElement(String10_50.convertString(src.getStatusElement()));
         if (src.hasLocationElement())
-            tgt.setLocationElement(VersionConvertor_10_50.convertUri(src.getLocationElement()));
+            tgt.setLocationElement(Uri10_50.convertUri(src.getLocationElement()));
         if (src.hasEtagElement())
-            tgt.setEtagElement(VersionConvertor_10_50.convertString(src.getEtagElement()));
+            tgt.setEtagElement(String10_50.convertString(src.getEtagElement()));
         if (src.hasLastModifiedElement())
-            tgt.setLastModifiedElement(VersionConvertor_10_50.convertInstant(src.getLastModifiedElement()));
+            tgt.setLastModifiedElement(Instant10_50.convertInstant(src.getLastModifiedElement()));
         return tgt;
     }
 
@@ -163,11 +166,11 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleEntrySearchComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasMode())
             tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
         if (src.hasScoreElement())
-            tgt.setScoreElement(VersionConvertor_10_50.convertDecimal(src.getScoreElement()));
+            tgt.setScoreElement(Decimal10_50.convertDecimal(src.getScoreElement()));
         return tgt;
     }
 
@@ -175,11 +178,11 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleEntrySearchComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasMode())
             tgt.setModeElement(convertSearchEntryMode(src.getModeElement()));
         if (src.hasScoreElement())
-            tgt.setScoreElement(VersionConvertor_10_50.convertDecimal(src.getScoreElement()));
+            tgt.setScoreElement(Decimal10_50.convertDecimal(src.getScoreElement()));
         return tgt;
     }
 
@@ -187,11 +190,11 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.r5.model.Bundle.BundleLinkComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasRelationElement())
-            tgt.setRelationElement(VersionConvertor_10_50.convertString(src.getRelationElement()));
+            tgt.setRelationElement(String10_50.convertString(src.getRelationElement()));
         if (src.hasUrlElement())
-            tgt.setUrlElement(VersionConvertor_10_50.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri10_50.convertUri(src.getUrlElement()));
         return tgt;
     }
 
@@ -199,11 +202,11 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Bundle.BundleLinkComponent tgt = new org.hl7.fhir.dstu2.model.Bundle.BundleLinkComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasRelationElement())
-            tgt.setRelationElement(VersionConvertor_10_50.convertString(src.getRelationElement()));
+            tgt.setRelationElement(String10_50.convertString(src.getRelationElement()));
         if (src.hasUrlElement())
-            tgt.setUrlElement(VersionConvertor_10_50.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri10_50.convertUri(src.getUrlElement()));
         return tgt;
     }
 
@@ -211,7 +214,7 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Bundle.BundleType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Bundle.BundleTypeEnumFactory());
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case DOCUMENT:
                 tgt.setValue(org.hl7.fhir.r5.model.Bundle.BundleType.DOCUMENT);
@@ -251,7 +254,7 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.BundleType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Bundle.BundleTypeEnumFactory());
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case DOCUMENT:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.BundleType.DOCUMENT);
@@ -291,7 +294,7 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Bundle.HTTPVerb> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Bundle.HTTPVerbEnumFactory());
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case GET:
                 tgt.setValue(org.hl7.fhir.r5.model.Bundle.HTTPVerb.GET);
@@ -316,7 +319,7 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.HTTPVerb> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Bundle.HTTPVerbEnumFactory());
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case GET:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.HTTPVerb.GET);
@@ -341,7 +344,7 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Bundle.SearchEntryMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Bundle.SearchEntryModeEnumFactory());
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case MATCH:
                 tgt.setValue(org.hl7.fhir.r5.model.Bundle.SearchEntryMode.MATCH);
@@ -363,7 +366,7 @@ public class Bundle10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Bundle.SearchEntryModeEnumFactory());
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case MATCH:
                 tgt.setValue(org.hl7.fhir.dstu2.model.Bundle.SearchEntryMode.MATCH);

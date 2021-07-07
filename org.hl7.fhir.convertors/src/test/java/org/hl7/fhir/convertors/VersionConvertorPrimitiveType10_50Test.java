@@ -1,6 +1,8 @@
 package org.hl7.fhir.convertors;
 
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Type10_50;
 import org.hl7.fhir.dstu2.model.Base64BinaryType;
 import org.hl7.fhir.dstu2.model.BooleanType;
 import org.hl7.fhir.dstu2.model.CodeType;
@@ -50,7 +52,7 @@ public class VersionConvertorPrimitiveType10_50Test {
   @MethodSource("r5PrimitiveTypes")
   public <T extends org.hl7.fhir.r5.model.PrimitiveType> void testNullValueR5Primitive(String classname, T obj) {
     obj.addExtension().setUrl("http://example.com/AnyValue").setValue(new org.hl7.fhir.r5.model.StringType("A value"));
-    Assertions.assertNull(((PrimitiveType) VersionConvertor_10_50.convertType(obj)).getValue());
+    Assertions.assertNull(((PrimitiveType) Type10_50.convertType(obj)).getValue());
   }
 
   public static Stream<Arguments> dstu2PrimitiveTypes() {

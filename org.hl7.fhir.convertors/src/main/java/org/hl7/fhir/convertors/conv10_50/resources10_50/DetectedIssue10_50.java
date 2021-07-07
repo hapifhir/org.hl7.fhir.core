@@ -1,6 +1,13 @@
 package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Element10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complexTypes10_50.CodeableConcept10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.complexTypes10_50.Identifier10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.DateTime10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Reference10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class DetectedIssue10_50 {
@@ -11,22 +18,22 @@ public class DetectedIssue10_50 {
         org.hl7.fhir.dstu2.model.DetectedIssue tgt = new org.hl7.fhir.dstu2.model.DetectedIssue();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
         if (src.hasPatient())
-            tgt.setPatient(VersionConvertor_10_50.convertReference(src.getPatient()));
+            tgt.setPatient(Reference10_50.convertReference(src.getPatient()));
         if (src.hasCode())
-            tgt.setCategory(VersionConvertor_10_50.convertCodeableConcept(src.getCode()));
+            tgt.setCategory(CodeableConcept10_50.convertCodeableConcept(src.getCode()));
         if (src.hasSeverity())
             tgt.setSeverityElement(convertDetectedIssueSeverity(src.getSeverityElement()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_10_50.convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getImplicated()) tgt.addImplicated(Reference10_50.convertReference(t));
         if (src.hasDetailElement())
-            tgt.setDetailElement(VersionConvertor_10_50.convertString(src.getDetailElement()));
+            tgt.setDetailElement(String10_50.convertString(src.getDetailElement()));
         if (src.hasIdentifiedDateTimeType())
-            tgt.setDateElement(VersionConvertor_10_50.convertDateTime(src.getIdentifiedDateTimeType()));
+            tgt.setDateElement(DateTime10_50.convertDateTime(src.getIdentifiedDateTimeType()));
         if (src.hasAuthor())
-            tgt.setAuthor(VersionConvertor_10_50.convertReference(src.getAuthor()));
+            tgt.setAuthor(Reference10_50.convertReference(src.getAuthor()));
         if (src.hasIdentifier())
-            tgt.setIdentifier(VersionConvertor_10_50.convertIdentifier(src.getIdentifierFirstRep()));
+            tgt.setIdentifier(Identifier10_50.convertIdentifier(src.getIdentifierFirstRep()));
         if (src.hasReferenceElement())
-            tgt.setReferenceElement(VersionConvertor_10_50.convertUri(src.getReferenceElement()));
+            tgt.setReferenceElement(Uri10_50.convertUri(src.getReferenceElement()));
         for (org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
         return tgt;
     }
@@ -37,22 +44,22 @@ public class DetectedIssue10_50 {
         org.hl7.fhir.r5.model.DetectedIssue tgt = new org.hl7.fhir.r5.model.DetectedIssue();
         VersionConvertor_10_50.copyDomainResource(src, tgt);
         if (src.hasPatient())
-            tgt.setPatient(VersionConvertor_10_50.convertReference(src.getPatient()));
+            tgt.setPatient(Reference10_50.convertReference(src.getPatient()));
         if (src.hasCategory())
-            tgt.setCode(VersionConvertor_10_50.convertCodeableConcept(src.getCategory()));
+            tgt.setCode(CodeableConcept10_50.convertCodeableConcept(src.getCategory()));
         if (src.hasSeverity())
             tgt.setSeverityElement(convertDetectedIssueSeverity(src.getSeverityElement()));
-        for (org.hl7.fhir.dstu2.model.Reference t : src.getImplicated()) tgt.addImplicated(VersionConvertor_10_50.convertReference(t));
+        for (org.hl7.fhir.dstu2.model.Reference t : src.getImplicated()) tgt.addImplicated(Reference10_50.convertReference(t));
         if (src.hasDetailElement())
-            tgt.setDetailElement(VersionConvertor_10_50.convertString(src.getDetailElement()));
+            tgt.setDetailElement(String10_50.convertString(src.getDetailElement()));
         if (src.hasDate())
-            tgt.setIdentified(VersionConvertor_10_50.convertDateTime(src.getDateElement()));
+            tgt.setIdentified(DateTime10_50.convertDateTime(src.getDateElement()));
         if (src.hasAuthor())
-            tgt.setAuthor(VersionConvertor_10_50.convertReference(src.getAuthor()));
+            tgt.setAuthor(Reference10_50.convertReference(src.getAuthor()));
         if (src.hasIdentifier())
-            tgt.addIdentifier(VersionConvertor_10_50.convertIdentifier(src.getIdentifier()));
+            tgt.addIdentifier(Identifier10_50.convertIdentifier(src.getIdentifier()));
         if (src.hasReferenceElement())
-            tgt.setReferenceElement(VersionConvertor_10_50.convertUri(src.getReferenceElement()));
+            tgt.setReferenceElement(Uri10_50.convertUri(src.getReferenceElement()));
         for (org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueMitigationComponent t : src.getMitigation()) tgt.addMitigation(convertDetectedIssueMitigationComponent(t));
         return tgt;
     }
@@ -61,13 +68,13 @@ public class DetectedIssue10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueMitigationComponent tgt = new org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueMitigationComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasAction())
-            tgt.setAction(VersionConvertor_10_50.convertCodeableConcept(src.getAction()));
+            tgt.setAction(CodeableConcept10_50.convertCodeableConcept(src.getAction()));
         if (src.hasDate())
-            tgt.setDateElement(VersionConvertor_10_50.convertDateTime(src.getDateElement()));
+            tgt.setDateElement(DateTime10_50.convertDateTime(src.getDateElement()));
         if (src.hasAuthor())
-            tgt.setAuthor(VersionConvertor_10_50.convertReference(src.getAuthor()));
+            tgt.setAuthor(Reference10_50.convertReference(src.getAuthor()));
         return tgt;
     }
 
@@ -75,13 +82,13 @@ public class DetectedIssue10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueMitigationComponent tgt = new org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueMitigationComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasAction())
-            tgt.setAction(VersionConvertor_10_50.convertCodeableConcept(src.getAction()));
+            tgt.setAction(CodeableConcept10_50.convertCodeableConcept(src.getAction()));
         if (src.hasDate())
-            tgt.setDateElement(VersionConvertor_10_50.convertDateTime(src.getDateElement()));
+            tgt.setDateElement(DateTime10_50.convertDateTime(src.getDateElement()));
         if (src.hasAuthor())
-            tgt.setAuthor(VersionConvertor_10_50.convertReference(src.getAuthor()));
+            tgt.setAuthor(Reference10_50.convertReference(src.getAuthor()));
         return tgt;
     }
 
@@ -89,7 +96,7 @@ public class DetectedIssue10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverityEnumFactory());
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case HIGH:
                 tgt.setValue(org.hl7.fhir.r5.model.DetectedIssue.DetectedIssueSeverity.HIGH);
@@ -111,7 +118,7 @@ public class DetectedIssue10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverityEnumFactory());
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case HIGH:
                 tgt.setValue(org.hl7.fhir.dstu2.model.DetectedIssue.DetectedIssueSeverity.HIGH);

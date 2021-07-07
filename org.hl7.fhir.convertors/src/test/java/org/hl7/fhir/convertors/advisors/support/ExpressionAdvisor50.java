@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.advisors.support;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.Uri10_50;
 import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.dstu2.model.Type;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -23,7 +23,7 @@ public class ExpressionAdvisor50 extends BaseAdvisor_10_50 {
         type.setValueAsString(((Expression) src.getValue()).getExpression());
         tgt.setValue((Type)type);
         if (src.hasUrlElement()) {
-          tgt.setUrlElement(VersionConvertor_10_50.convertUri(src.getUrlElement()));
+          tgt.setUrlElement(Uri10_50.convertUri(src.getUrlElement()));
         }
       }
     } else {

@@ -1,6 +1,9 @@
 package org.hl7.fhir.convertors.conv10_50.resources10_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Element10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.Type10_50;
+import org.hl7.fhir.convertors.conv10_50.datatypes10_50.primitivetypes10_50.String10_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Parameters10_50 {
@@ -27,11 +30,11 @@ public class Parameters10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String10_50.convertString(src.getNameElement()));
         if (src.hasValue())
-            tgt.setValue(VersionConvertor_10_50.convertType(src.getValue()));
+            tgt.setValue(Type10_50.convertType(src.getValue()));
         if (src.hasResource())
             tgt.setResource(VersionConvertor_10_50.convertResource(src.getResource()));
         for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
@@ -42,11 +45,11 @@ public class Parameters10_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent();
-        VersionConvertor_10_50.copyElement(src, tgt);
+        Element10_50.copyElement(src, tgt);
         if (src.hasNameElement())
-            tgt.setNameElement(VersionConvertor_10_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String10_50.convertString(src.getNameElement()));
         if (src.hasValue())
-            tgt.setValue(VersionConvertor_10_50.convertType(src.getValue()));
+            tgt.setValue(Type10_50.convertType(src.getValue()));
         if (src.hasResource())
             tgt.setResource(VersionConvertor_10_50.convertResource(src.getResource()));
         for (org.hl7.fhir.dstu2.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
