@@ -1,6 +1,12 @@
 package org.hl7.fhir.convertors.conv14_50.resources14_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Element14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Type14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.Identifier14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.DateTime14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.String14_50;
+import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Reference14_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class QuestionnaireResponse14_50 {
@@ -11,21 +17,21 @@ public class QuestionnaireResponse14_50 {
         org.hl7.fhir.dstu2016may.model.QuestionnaireResponse tgt = new org.hl7.fhir.dstu2016may.model.QuestionnaireResponse();
         VersionConvertor_14_50.copyDomainResource(src, tgt);
         if (src.hasIdentifier())
-            tgt.setIdentifier(VersionConvertor_14_50.convertIdentifier(src.getIdentifier()));
+            tgt.setIdentifier(Identifier14_50.convertIdentifier(src.getIdentifier()));
         if (src.hasQuestionnaireElement())
-            tgt.setQuestionnaire(VersionConvertor_14_50.convertCanonicalToReference(src.getQuestionnaireElement()));
+            tgt.setQuestionnaire(Reference14_50.convertCanonicalToReference(src.getQuestionnaireElement()));
         if (src.hasStatus())
             tgt.setStatusElement(convertQuestionnaireResponseStatus(src.getStatusElement()));
         if (src.hasSubject())
-            tgt.setSubject(VersionConvertor_14_50.convertReference(src.getSubject()));
+            tgt.setSubject(Reference14_50.convertReference(src.getSubject()));
         if (src.hasEncounter())
-            tgt.setEncounter(VersionConvertor_14_50.convertReference(src.getEncounter()));
+            tgt.setEncounter(Reference14_50.convertReference(src.getEncounter()));
         if (src.hasAuthor())
-            tgt.setAuthor(VersionConvertor_14_50.convertReference(src.getAuthor()));
+            tgt.setAuthor(Reference14_50.convertReference(src.getAuthor()));
         if (src.hasAuthored())
-            tgt.setAuthoredElement(VersionConvertor_14_50.convertDateTime(src.getAuthoredElement()));
+            tgt.setAuthoredElement(DateTime14_50.convertDateTime(src.getAuthoredElement()));
         if (src.hasSource())
-            tgt.setSource(VersionConvertor_14_50.convertReference(src.getSource()));
+            tgt.setSource(Reference14_50.convertReference(src.getSource()));
         for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
         return tgt;
     }
@@ -36,21 +42,21 @@ public class QuestionnaireResponse14_50 {
         org.hl7.fhir.r5.model.QuestionnaireResponse tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse();
         VersionConvertor_14_50.copyDomainResource(src, tgt);
         if (src.hasIdentifier())
-            tgt.setIdentifier(VersionConvertor_14_50.convertIdentifier(src.getIdentifier()));
+            tgt.setIdentifier(Identifier14_50.convertIdentifier(src.getIdentifier()));
         if (src.hasQuestionnaire())
-            tgt.setQuestionnaireElement(VersionConvertor_14_50.convertReferenceToCanonical(src.getQuestionnaire()));
+            tgt.setQuestionnaireElement(Reference14_50.convertReferenceToCanonical(src.getQuestionnaire()));
         if (src.hasStatus())
             tgt.setStatusElement(convertQuestionnaireResponseStatus(src.getStatusElement()));
         if (src.hasSubject())
-            tgt.setSubject(VersionConvertor_14_50.convertReference(src.getSubject()));
+            tgt.setSubject(Reference14_50.convertReference(src.getSubject()));
         if (src.hasEncounter())
-            tgt.setEncounter(VersionConvertor_14_50.convertReference(src.getEncounter()));
+            tgt.setEncounter(Reference14_50.convertReference(src.getEncounter()));
         if (src.hasAuthor())
-            tgt.setAuthor(VersionConvertor_14_50.convertReference(src.getAuthor()));
+            tgt.setAuthor(Reference14_50.convertReference(src.getAuthor()));
         if (src.hasAuthored())
-            tgt.setAuthoredElement(VersionConvertor_14_50.convertDateTime(src.getAuthoredElement()));
+            tgt.setAuthoredElement(DateTime14_50.convertDateTime(src.getAuthoredElement()));
         if (src.hasSource())
-            tgt.setSource(VersionConvertor_14_50.convertReference(src.getSource()));
+            tgt.setSource(Reference14_50.convertReference(src.getSource()));
         for (org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
         return tgt;
     }
@@ -59,9 +65,9 @@ public class QuestionnaireResponse14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
-        VersionConvertor_14_50.copyElement(src, tgt);
+        Element14_50.copyElement(src, tgt);
         if (src.hasValue())
-            tgt.setValue(VersionConvertor_14_50.convertType(src.getValue()));
+            tgt.setValue(Type14_50.convertType(src.getValue()));
         for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
         return tgt;
     }
@@ -70,9 +76,9 @@ public class QuestionnaireResponse14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
-        VersionConvertor_14_50.copyElement(src, tgt);
+        Element14_50.copyElement(src, tgt);
         if (src.hasValue())
-            tgt.setValue(VersionConvertor_14_50.convertType(src.getValue()));
+            tgt.setValue(Type14_50.convertType(src.getValue()));
         for (org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
         return tgt;
     }
@@ -81,11 +87,11 @@ public class QuestionnaireResponse14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
-        VersionConvertor_14_50.copyElement(src, tgt);
+        Element14_50.copyElement(src, tgt);
         if (src.hasLinkId())
-            tgt.setLinkIdElement(VersionConvertor_14_50.convertString(src.getLinkIdElement()));
+            tgt.setLinkIdElement(String14_50.convertString(src.getLinkIdElement()));
         if (src.hasText())
-            tgt.setTextElement(VersionConvertor_14_50.convertString(src.getTextElement()));
+            tgt.setTextElement(String14_50.convertString(src.getTextElement()));
         for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswer()) tgt.addAnswer(convertQuestionnaireResponseItemAnswerComponent(t));
         for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
         return tgt;
@@ -95,11 +101,11 @@ public class QuestionnaireResponse14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
-        VersionConvertor_14_50.copyElement(src, tgt);
+        Element14_50.copyElement(src, tgt);
         if (src.hasLinkId())
-            tgt.setLinkIdElement(VersionConvertor_14_50.convertString(src.getLinkIdElement()));
+            tgt.setLinkIdElement(String14_50.convertString(src.getLinkIdElement()));
         if (src.hasText())
-            tgt.setTextElement(VersionConvertor_14_50.convertString(src.getTextElement()));
+            tgt.setTextElement(String14_50.convertString(src.getTextElement()));
         for (org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswer()) tgt.addAnswer(convertQuestionnaireResponseItemAnswerComponent(t));
         for (org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
         return tgt;
@@ -109,7 +115,7 @@ public class QuestionnaireResponse14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatusEnumFactory());
-        VersionConvertor_14_50.copyElement(src, tgt);
+        Element14_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case INPROGRESS:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS);
@@ -131,7 +137,7 @@ public class QuestionnaireResponse14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatusEnumFactory());
-        VersionConvertor_14_50.copyElement(src, tgt);
+        Element14_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case INPROGRESS:
                 tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS);
