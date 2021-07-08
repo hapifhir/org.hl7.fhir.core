@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.conv10_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor;
 import org.hl7.fhir.r4.formats.JsonParser;

@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors;
 
+import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
 import org.hl7.fhir.dstu2.model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,14 +15,14 @@ public class VersionConvertorPrimitiveType10_40Test {
   @MethodSource("dstu2PrimitiveTypes")
   public <T extends PrimitiveType> void testNullValueDstu2Primitive(String classname, T obj) {
     obj.addExtension().setUrl("http://example.com/AnyValue").setValue(new StringType("A value"));
-    Assertions.assertNull(((org.hl7.fhir.r4.model.PrimitiveType) VersionConvertor_10_40.convertType(obj)).getValue());
+    Assertions.assertNull(((org.hl7.fhir.r4.model.PrimitiveType) Type10_40.convertType(obj)).getValue());
   }
 
   @ParameterizedTest(name = "Testing r4 -> dstu2 conversion of null value {0}.")
   @MethodSource("r4PrimitiveTypes")
   public <T extends org.hl7.fhir.r4.model.PrimitiveType> void testNullValueR4Primitive(String classname, T obj) {
     obj.addExtension().setUrl("http://example.com/AnyValue").setValue(new org.hl7.fhir.r4.model.StringType("A value"));
-    Assertions.assertNull(((PrimitiveType) VersionConvertor_10_40.convertType(obj)).getValue());
+    Assertions.assertNull(((PrimitiveType) Type10_40.convertType(obj)).getValue());
   }
 
   public static Stream<Arguments> dstu2PrimitiveTypes() {
