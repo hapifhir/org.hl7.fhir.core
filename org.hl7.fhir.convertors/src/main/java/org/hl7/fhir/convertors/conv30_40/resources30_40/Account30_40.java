@@ -1,7 +1,15 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
 
-import org.hl7.fhir.convertors.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.PositiveInt30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -40,23 +48,23 @@ public class Account30_40 extends VersionConvertor_30_40 {
             return null;
         org.hl7.fhir.r4.model.Account tgt = new org.hl7.fhir.r4.model.Account();
         copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
         if (src.hasType())
-            tgt.setType(convertCodeableConcept(src.getType()));
+            tgt.setType(CodeableConcept30_40.convertCodeableConcept(src.getType()));
         if (src.hasName())
-            tgt.setNameElement(convertString(src.getNameElement()));
+            tgt.setNameElement(String30_40.convertString(src.getNameElement()));
         if (src.hasSubject()) {
-            tgt.addSubject(convertReference(src.getSubject()));
+            tgt.addSubject(Reference30_40.convertReference(src.getSubject()));
         }
         if (src.hasPeriod())
-            tgt.setServicePeriod(convertPeriod(src.getPeriod()));
+            tgt.setServicePeriod(Period30_40.convertPeriod(src.getPeriod()));
         for (org.hl7.fhir.dstu3.model.Account.CoverageComponent t : src.getCoverage()) tgt.addCoverage(convertCoverageComponent(t));
         if (src.hasOwner())
-            tgt.setOwner(convertReference(src.getOwner()));
+            tgt.setOwner(Reference30_40.convertReference(src.getOwner()));
         if (src.hasDescription())
-            tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
+            tgt.setDescriptionElement(String30_40.convertString(src.getDescriptionElement()));
         for (org.hl7.fhir.dstu3.model.Account.GuarantorComponent t : src.getGuarantor()) tgt.addGuarantor(convertGuarantorComponent(t));
         return tgt;
     }
@@ -66,23 +74,23 @@ public class Account30_40 extends VersionConvertor_30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Account tgt = new org.hl7.fhir.dstu3.model.Account();
         copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
         if (src.hasType())
-            tgt.setType(convertCodeableConcept(src.getType()));
+            tgt.setType(CodeableConcept30_40.convertCodeableConcept(src.getType()));
         if (src.hasName())
-            tgt.setNameElement(convertString(src.getNameElement()));
+            tgt.setNameElement(String30_40.convertString(src.getNameElement()));
         if (src.getSubject().size() > 0) {
-            tgt.setSubject(convertReference(src.getSubjectFirstRep()));
+            tgt.setSubject(Reference30_40.convertReference(src.getSubjectFirstRep()));
         }
         if (src.hasServicePeriod())
-            tgt.setPeriod(convertPeriod(src.getServicePeriod()));
+            tgt.setPeriod(Period30_40.convertPeriod(src.getServicePeriod()));
         for (org.hl7.fhir.r4.model.Account.CoverageComponent t : src.getCoverage()) tgt.addCoverage(convertCoverageComponent(t));
         if (src.hasOwner())
-            tgt.setOwner(convertReference(src.getOwner()));
+            tgt.setOwner(Reference30_40.convertReference(src.getOwner()));
         if (src.hasDescription())
-            tgt.setDescriptionElement(convertString(src.getDescriptionElement()));
+            tgt.setDescriptionElement(String30_40.convertString(src.getDescriptionElement()));
         for (org.hl7.fhir.r4.model.Account.GuarantorComponent t : src.getGuarantor()) tgt.addGuarantor(convertGuarantorComponent(t));
         return tgt;
     }
@@ -91,7 +99,7 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Account.AccountStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Account.AccountStatusEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.r4.model.Account.AccountStatus.ACTIVE);
@@ -113,7 +121,7 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Account.AccountStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Account.AccountStatusEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Account.AccountStatus.ACTIVE);
@@ -141,11 +149,11 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Account.CoverageComponent tgt = new org.hl7.fhir.r4.model.Account.CoverageComponent();
-        copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasCoverage())
-            tgt.setCoverage(convertReference(src.getCoverage()));
+            tgt.setCoverage(Reference30_40.convertReference(src.getCoverage()));
         if (src.hasPriority())
-            tgt.setPriorityElement(convertPositiveInt(src.getPriorityElement()));
+            tgt.setPriorityElement(PositiveInt30_40.convertPositiveInt(src.getPriorityElement()));
         return tgt;
     }
 
@@ -153,11 +161,11 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Account.CoverageComponent tgt = new org.hl7.fhir.dstu3.model.Account.CoverageComponent();
-        copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasCoverage())
-            tgt.setCoverage(convertReference(src.getCoverage()));
+            tgt.setCoverage(Reference30_40.convertReference(src.getCoverage()));
         if (src.hasPriority())
-            tgt.setPriorityElement(convertPositiveInt(src.getPriorityElement()));
+            tgt.setPriorityElement(PositiveInt30_40.convertPositiveInt(src.getPriorityElement()));
         return tgt;
     }
 
@@ -165,13 +173,13 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Account.GuarantorComponent tgt = new org.hl7.fhir.r4.model.Account.GuarantorComponent();
-        copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasParty())
-            tgt.setParty(convertReference(src.getParty()));
+            tgt.setParty(Reference30_40.convertReference(src.getParty()));
         if (src.hasOnHold())
-            tgt.setOnHoldElement(convertBoolean(src.getOnHoldElement()));
+            tgt.setOnHoldElement(Boolean30_40.convertBoolean(src.getOnHoldElement()));
         if (src.hasPeriod())
-            tgt.setPeriod(convertPeriod(src.getPeriod()));
+            tgt.setPeriod(Period30_40.convertPeriod(src.getPeriod()));
         return tgt;
     }
 
@@ -179,13 +187,13 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Account.GuarantorComponent tgt = new org.hl7.fhir.dstu3.model.Account.GuarantorComponent();
-        copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasParty())
-            tgt.setParty(convertReference(src.getParty()));
+            tgt.setParty(Reference30_40.convertReference(src.getParty()));
         if (src.hasOnHold())
-            tgt.setOnHoldElement(convertBoolean(src.getOnHoldElement()));
+            tgt.setOnHoldElement(Boolean30_40.convertBoolean(src.getOnHoldElement()));
         if (src.hasPeriod())
-            tgt.setPeriod(convertPeriod(src.getPeriod()));
+            tgt.setPeriod(Period30_40.convertPeriod(src.getPeriod()));
         return tgt;
     }
 }

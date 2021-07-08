@@ -1,6 +1,12 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Date30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class PaymentNotice30_40 {
@@ -10,23 +16,23 @@ public class PaymentNotice30_40 {
             return null;
         org.hl7.fhir.r4.model.PaymentNotice tgt = new org.hl7.fhir.r4.model.PaymentNotice();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertPaymentNoticeStatus(src.getStatusElement()));
         if (src.hasRequest())
-            tgt.setRequest(VersionConvertor_30_40.convertReference(src.getRequest()));
+            tgt.setRequest(Reference30_40.convertReference(src.getRequest()));
         if (src.hasResponse())
-            tgt.setResponse(VersionConvertor_30_40.convertReference(src.getResponse()));
+            tgt.setResponse(Reference30_40.convertReference(src.getResponse()));
         if (src.hasStatusDate())
-            tgt.setPaymentDateElement(VersionConvertor_30_40.convertDate(src.getStatusDateElement()));
+            tgt.setPaymentDateElement(Date30_40.convertDate(src.getStatusDateElement()));
         if (src.hasCreated())
-            tgt.setCreatedElement(VersionConvertor_30_40.convertDateTime(src.getCreatedElement()));
+            tgt.setCreatedElement(DateTime30_40.convertDateTime(src.getCreatedElement()));
         if (src.hasTarget())
-            tgt.setRecipient(VersionConvertor_30_40.convertReference(src.getTarget()));
+            tgt.setRecipient(Reference30_40.convertReference(src.getTarget()));
         if (src.hasProvider())
-            tgt.setProvider(VersionConvertor_30_40.convertReference(src.getProvider()));
+            tgt.setProvider(Reference30_40.convertReference(src.getProvider()));
         if (src.hasPaymentStatus())
-            tgt.setPaymentStatus(VersionConvertor_30_40.convertCodeableConcept(src.getPaymentStatus()));
+            tgt.setPaymentStatus(CodeableConcept30_40.convertCodeableConcept(src.getPaymentStatus()));
         return tgt;
     }
 
@@ -35,23 +41,23 @@ public class PaymentNotice30_40 {
             return null;
         org.hl7.fhir.dstu3.model.PaymentNotice tgt = new org.hl7.fhir.dstu3.model.PaymentNotice();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertPaymentNoticeStatus(src.getStatusElement()));
         if (src.hasRequest())
-            tgt.setRequest(VersionConvertor_30_40.convertReference(src.getRequest()));
+            tgt.setRequest(Reference30_40.convertReference(src.getRequest()));
         if (src.hasResponse())
-            tgt.setResponse(VersionConvertor_30_40.convertReference(src.getResponse()));
+            tgt.setResponse(Reference30_40.convertReference(src.getResponse()));
         if (src.hasPaymentDate())
-            tgt.setStatusDateElement(VersionConvertor_30_40.convertDate(src.getPaymentDateElement()));
+            tgt.setStatusDateElement(Date30_40.convertDate(src.getPaymentDateElement()));
         if (src.hasCreated())
-            tgt.setCreatedElement(VersionConvertor_30_40.convertDateTime(src.getCreatedElement()));
+            tgt.setCreatedElement(DateTime30_40.convertDateTime(src.getCreatedElement()));
         if (src.hasRecipient())
-            tgt.setTarget(VersionConvertor_30_40.convertReference(src.getRecipient()));
+            tgt.setTarget(Reference30_40.convertReference(src.getRecipient()));
         if (src.hasProvider())
-            tgt.setProvider(VersionConvertor_30_40.convertReference(src.getProvider()));
+            tgt.setProvider(Reference30_40.convertReference(src.getProvider()));
         if (src.hasPaymentStatus())
-            tgt.setPaymentStatus(VersionConvertor_30_40.convertCodeableConcept(src.getPaymentStatus()));
+            tgt.setPaymentStatus(CodeableConcept30_40.convertCodeableConcept(src.getPaymentStatus()));
         return tgt;
     }
 
@@ -59,7 +65,7 @@ public class PaymentNotice30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatusEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.ACTIVE);
@@ -84,7 +90,7 @@ public class PaymentNotice30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatusEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.PaymentNotice.PaymentNoticeStatus.ACTIVE);

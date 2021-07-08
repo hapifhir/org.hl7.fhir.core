@@ -36,6 +36,7 @@ import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.loaders.R2016MayToR4Loader;
 import org.hl7.fhir.convertors.loaders.R2ToR4Loader;
 import org.hl7.fhir.convertors.loaders.R3ToR4Loader;

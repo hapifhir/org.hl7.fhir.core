@@ -1,6 +1,14 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Coding30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Timing30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.ContactDetail30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.*;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.stream.Collectors;
@@ -13,46 +21,46 @@ public class CodeSystem30_40 {
         org.hl7.fhir.r4.model.CodeSystem tgt = new org.hl7.fhir.r4.model.CodeSystem();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         if (src.hasUrl())
-            tgt.setUrlElement(VersionConvertor_30_40.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri30_40.convertUri(src.getUrlElement()));
         if (src.hasIdentifier())
-            tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(src.getIdentifier()));
+            tgt.addIdentifier(Identifier30_40.convertIdentifier(src.getIdentifier()));
         if (src.hasVersion())
-            tgt.setVersionElement(VersionConvertor_30_40.convertString(src.getVersionElement()));
+            tgt.setVersionElement(String30_40.convertString(src.getVersionElement()));
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_30_40.convertString(src.getNameElement()));
+            tgt.setNameElement(String30_40.convertString(src.getNameElement()));
         if (src.hasTitle())
-            tgt.setTitleElement(VersionConvertor_30_40.convertString(src.getTitleElement()));
+            tgt.setTitleElement(String30_40.convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatusElement(VersionConvertor_30_40.convertPublicationStatus(src.getStatusElement()));
+            tgt.setStatusElement(Enumerations30_40.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
-            tgt.setExperimentalElement(VersionConvertor_30_40.convertBoolean(src.getExperimentalElement()));
+            tgt.setExperimentalElement(Boolean30_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDateElement())
-            tgt.setDateElement(VersionConvertor_30_40.convertDateTime(src.getDateElement()));
+            tgt.setDateElement(DateTime30_40.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
-            tgt.setPublisherElement(VersionConvertor_30_40.convertString(src.getPublisherElement()));
-        for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+            tgt.setPublisherElement(String30_40.convertString(src.getPublisherElement()));
+        for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(ContactDetail30_40.convertContactDetail(t));
         if (src.hasDescription())
-            tgt.setDescriptionElement(VersionConvertor_30_40.convertMarkdown(src.getDescriptionElement()));
-        for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
+            tgt.setDescriptionElement(MarkDown30_40.convertMarkdown(src.getDescriptionElement()));
+        for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(Timing30_40.convertUsageContext(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(CodeableConcept30_40.convertCodeableConcept(t));
         if (src.hasPurpose())
-            tgt.setPurposeElement(VersionConvertor_30_40.convertMarkdown(src.getPurposeElement()));
+            tgt.setPurposeElement(MarkDown30_40.convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
-            tgt.setCopyrightElement(VersionConvertor_30_40.convertMarkdown(src.getCopyrightElement()));
+            tgt.setCopyrightElement(MarkDown30_40.convertMarkdown(src.getCopyrightElement()));
         if (src.hasCaseSensitive())
-            tgt.setCaseSensitiveElement(VersionConvertor_30_40.convertBoolean(src.getCaseSensitiveElement()));
+            tgt.setCaseSensitiveElement(Boolean30_40.convertBoolean(src.getCaseSensitiveElement()));
         if (src.hasValueSet())
             tgt.setValueSet(src.getValueSet());
         if (src.hasHierarchyMeaning())
             tgt.setHierarchyMeaningElement(convertCodeSystemHierarchyMeaning(src.getHierarchyMeaningElement()));
         if (src.hasCompositional())
-            tgt.setCompositionalElement(VersionConvertor_30_40.convertBoolean(src.getCompositionalElement()));
+            tgt.setCompositionalElement(Boolean30_40.convertBoolean(src.getCompositionalElement()));
         if (src.hasVersionNeeded())
-            tgt.setVersionNeededElement(VersionConvertor_30_40.convertBoolean(src.getVersionNeededElement()));
+            tgt.setVersionNeededElement(Boolean30_40.convertBoolean(src.getVersionNeededElement()));
         if (src.hasContent())
             tgt.setContentElement(convertCodeSystemContentMode(src.getContentElement()));
         if (src.hasCount())
-            tgt.setCountElement(VersionConvertor_30_40.convertUnsignedInt(src.getCountElement()));
+            tgt.setCountElement(UnsignedInt30_40.convertUnsignedInt(src.getCountElement()));
         for (org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemFilterComponent t : src.getFilter()) tgt.addFilter(convertCodeSystemFilterComponent(t));
         for (org.hl7.fhir.dstu3.model.CodeSystem.PropertyComponent t : src.getProperty()) tgt.addProperty(convertPropertyComponent(t));
         for (org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent t : src.getConcept()) tgt.addConcept(convertConceptDefinitionComponent(t));
@@ -65,46 +73,46 @@ public class CodeSystem30_40 {
         org.hl7.fhir.dstu3.model.CodeSystem tgt = new org.hl7.fhir.dstu3.model.CodeSystem();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         if (src.hasUrl())
-            tgt.setUrlElement(VersionConvertor_30_40.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri30_40.convertUri(src.getUrlElement()));
         if (src.hasIdentifier())
-            tgt.setIdentifier(VersionConvertor_30_40.convertIdentifier(src.getIdentifierFirstRep()));
+            tgt.setIdentifier(Identifier30_40.convertIdentifier(src.getIdentifierFirstRep()));
         if (src.hasVersion())
-            tgt.setVersionElement(VersionConvertor_30_40.convertString(src.getVersionElement()));
+            tgt.setVersionElement(String30_40.convertString(src.getVersionElement()));
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_30_40.convertString(src.getNameElement()));
+            tgt.setNameElement(String30_40.convertString(src.getNameElement()));
         if (src.hasTitle())
-            tgt.setTitleElement(VersionConvertor_30_40.convertString(src.getTitleElement()));
+            tgt.setTitleElement(String30_40.convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatusElement(VersionConvertor_30_40.convertPublicationStatus(src.getStatusElement()));
+            tgt.setStatusElement(Enumerations30_40.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
-            tgt.setExperimentalElement(VersionConvertor_30_40.convertBoolean(src.getExperimentalElement()));
+            tgt.setExperimentalElement(Boolean30_40.convertBoolean(src.getExperimentalElement()));
         if (src.hasDateElement())
-            tgt.setDateElement(VersionConvertor_30_40.convertDateTime(src.getDateElement()));
+            tgt.setDateElement(DateTime30_40.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
-            tgt.setPublisherElement(VersionConvertor_30_40.convertString(src.getPublisherElement()));
-        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_40.convertContactDetail(t));
+            tgt.setPublisherElement(String30_40.convertString(src.getPublisherElement()));
+        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(ContactDetail30_40.convertContactDetail(t));
         if (src.hasDescription())
-            tgt.setDescriptionElement(VersionConvertor_30_40.convertMarkdown(src.getDescriptionElement()));
-        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_40.convertUsageContext(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_40.convertCodeableConcept(t));
+            tgt.setDescriptionElement(MarkDown30_40.convertMarkdown(src.getDescriptionElement()));
+        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(Timing30_40.convertUsageContext(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(CodeableConcept30_40.convertCodeableConcept(t));
         if (src.hasPurpose())
-            tgt.setPurposeElement(VersionConvertor_30_40.convertMarkdown(src.getPurposeElement()));
+            tgt.setPurposeElement(MarkDown30_40.convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
-            tgt.setCopyrightElement(VersionConvertor_30_40.convertMarkdown(src.getCopyrightElement()));
+            tgt.setCopyrightElement(MarkDown30_40.convertMarkdown(src.getCopyrightElement()));
         if (src.hasCaseSensitive())
-            tgt.setCaseSensitiveElement(VersionConvertor_30_40.convertBoolean(src.getCaseSensitiveElement()));
+            tgt.setCaseSensitiveElement(Boolean30_40.convertBoolean(src.getCaseSensitiveElement()));
         if (src.hasValueSet())
             tgt.setValueSet(src.getValueSet());
         if (src.hasHierarchyMeaning())
             tgt.setHierarchyMeaningElement(convertCodeSystemHierarchyMeaning(src.getHierarchyMeaningElement()));
         if (src.hasCompositional())
-            tgt.setCompositionalElement(VersionConvertor_30_40.convertBoolean(src.getCompositionalElement()));
+            tgt.setCompositionalElement(Boolean30_40.convertBoolean(src.getCompositionalElement()));
         if (src.hasVersionNeeded())
-            tgt.setVersionNeededElement(VersionConvertor_30_40.convertBoolean(src.getVersionNeededElement()));
+            tgt.setVersionNeededElement(Boolean30_40.convertBoolean(src.getVersionNeededElement()));
         if (src.hasContent())
             tgt.setContentElement(convertCodeSystemContentMode(src.getContentElement()));
         if (src.hasCount())
-            tgt.setCountElement(VersionConvertor_30_40.convertUnsignedInt(src.getCountElement()));
+            tgt.setCountElement(UnsignedInt30_40.convertUnsignedInt(src.getCountElement()));
         for (org.hl7.fhir.r4.model.CodeSystem.CodeSystemFilterComponent t : src.getFilter()) tgt.addFilter(convertCodeSystemFilterComponent(t));
         for (org.hl7.fhir.r4.model.CodeSystem.PropertyComponent t : src.getProperty()) tgt.addProperty(convertPropertyComponent(t));
         for (org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent t : src.getConcept()) tgt.addConcept(convertConceptDefinitionComponent(t));
@@ -115,7 +123,7 @@ public class CodeSystem30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemContentMode> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemContentModeEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case NOTPRESENT:
                 tgt.setValue(org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemContentMode.NOTPRESENT);
@@ -140,7 +148,7 @@ public class CodeSystem30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentModeEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case NOTPRESENT:
                 tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.NOTPRESENT);
@@ -165,16 +173,16 @@ public class CodeSystem30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemFilterComponent tgt = new org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemFilterComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(VersionConvertor_30_40.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
         if (src.hasDescription())
-            tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
+            tgt.setDescriptionElement(String30_40.convertString(src.getDescriptionElement()));
         tgt.setOperator(src.getOperator().stream()
                 .map(CodeSystem30_40::convertFilterOperator)
                 .collect(Collectors.toList()));
         if (src.hasValue())
-            tgt.setValueElement(VersionConvertor_30_40.convertString(src.getValueElement()));
+            tgt.setValueElement(String30_40.convertString(src.getValueElement()));
         return tgt;
     }
 
@@ -182,16 +190,16 @@ public class CodeSystem30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.CodeSystem.CodeSystemFilterComponent tgt = new org.hl7.fhir.r4.model.CodeSystem.CodeSystemFilterComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(VersionConvertor_30_40.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
         if (src.hasDescription())
-            tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
+            tgt.setDescriptionElement(String30_40.convertString(src.getDescriptionElement()));
         tgt.setOperator(src.getOperator().stream()
                 .map(CodeSystem30_40::convertFilterOperator)
                 .collect(Collectors.toList()));
         if (src.hasValue())
-            tgt.setValueElement(VersionConvertor_30_40.convertString(src.getValueElement()));
+            tgt.setValueElement(String30_40.convertString(src.getValueElement()));
         return tgt;
     }
 
@@ -199,7 +207,7 @@ public class CodeSystem30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemHierarchyMeaning> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemHierarchyMeaningEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case GROUPEDBY:
                 tgt.setValue(org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemHierarchyMeaning.GROUPEDBY);
@@ -224,7 +232,7 @@ public class CodeSystem30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaningEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case GROUPEDBY:
                 tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemHierarchyMeaning.GROUPEDBY);
@@ -249,13 +257,13 @@ public class CodeSystem30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent tgt = new org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(VersionConvertor_30_40.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
         if (src.hasDisplay())
-            tgt.setDisplayElement(VersionConvertor_30_40.convertString(src.getDisplayElement()));
+            tgt.setDisplayElement(String30_40.convertString(src.getDisplayElement()));
         if (src.hasDefinition())
-            tgt.setDefinitionElement(VersionConvertor_30_40.convertString(src.getDefinitionElement()));
+            tgt.setDefinitionElement(String30_40.convertString(src.getDefinitionElement()));
         for (org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionDesignationComponent t : src.getDesignation()) tgt.addDesignation(convertConceptDefinitionDesignationComponent(t));
         for (org.hl7.fhir.r4.model.CodeSystem.ConceptPropertyComponent t : src.getProperty()) tgt.addProperty(convertConceptPropertyComponent(t));
         for (org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent t : src.getConcept()) tgt.addConcept(convertConceptDefinitionComponent(t));
@@ -266,13 +274,13 @@ public class CodeSystem30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent tgt = new org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(VersionConvertor_30_40.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
         if (src.hasDisplay())
-            tgt.setDisplayElement(VersionConvertor_30_40.convertString(src.getDisplayElement()));
+            tgt.setDisplayElement(String30_40.convertString(src.getDisplayElement()));
         if (src.hasDefinition())
-            tgt.setDefinitionElement(VersionConvertor_30_40.convertString(src.getDefinitionElement()));
+            tgt.setDefinitionElement(String30_40.convertString(src.getDefinitionElement()));
         for (org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionDesignationComponent t : src.getDesignation()) tgt.addDesignation(convertConceptDefinitionDesignationComponent(t));
         for (org.hl7.fhir.dstu3.model.CodeSystem.ConceptPropertyComponent t : src.getProperty()) tgt.addProperty(convertConceptPropertyComponent(t));
         for (org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent t : src.getConcept()) tgt.addConcept(convertConceptDefinitionComponent(t));
@@ -283,13 +291,13 @@ public class CodeSystem30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionDesignationComponent tgt = new org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionDesignationComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasLanguage())
-            tgt.setLanguageElement(VersionConvertor_30_40.convertCode(src.getLanguageElement()));
+            tgt.setLanguageElement(Code30_40.convertCode(src.getLanguageElement()));
         if (src.hasUse())
-            tgt.setUse(VersionConvertor_30_40.convertCoding(src.getUse()));
+            tgt.setUse(Coding30_40.convertCoding(src.getUse()));
         if (src.hasValue())
-            tgt.setValueElement(VersionConvertor_30_40.convertString(src.getValueElement()));
+            tgt.setValueElement(String30_40.convertString(src.getValueElement()));
         return tgt;
     }
 
@@ -297,13 +305,13 @@ public class CodeSystem30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionDesignationComponent tgt = new org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionDesignationComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasLanguage())
-            tgt.setLanguageElement(VersionConvertor_30_40.convertCode(src.getLanguageElement()));
+            tgt.setLanguageElement(Code30_40.convertCode(src.getLanguageElement()));
         if (src.hasUse())
-            tgt.setUse(VersionConvertor_30_40.convertCoding(src.getUse()));
+            tgt.setUse(Coding30_40.convertCoding(src.getUse()));
         if (src.hasValue())
-            tgt.setValueElement(VersionConvertor_30_40.convertString(src.getValueElement()));
+            tgt.setValueElement(String30_40.convertString(src.getValueElement()));
         return tgt;
     }
 
@@ -311,11 +319,11 @@ public class CodeSystem30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.CodeSystem.ConceptPropertyComponent tgt = new org.hl7.fhir.dstu3.model.CodeSystem.ConceptPropertyComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(VersionConvertor_30_40.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
         if (src.hasValue())
-            tgt.setValue(VersionConvertor_30_40.convertType(src.getValue()));
+            tgt.setValue(Type30_40.convertType(src.getValue()));
         return tgt;
     }
 
@@ -323,11 +331,11 @@ public class CodeSystem30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.CodeSystem.ConceptPropertyComponent tgt = new org.hl7.fhir.r4.model.CodeSystem.ConceptPropertyComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(VersionConvertor_30_40.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
         if (src.hasValue())
-            tgt.setValue(VersionConvertor_30_40.convertType(src.getValue()));
+            tgt.setValue(Type30_40.convertType(src.getValue()));
         return tgt;
     }
 
@@ -335,13 +343,13 @@ public class CodeSystem30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.CodeSystem.PropertyComponent tgt = new org.hl7.fhir.r4.model.CodeSystem.PropertyComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(VersionConvertor_30_40.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
         if (src.hasUri())
-            tgt.setUriElement(VersionConvertor_30_40.convertUri(src.getUriElement()));
+            tgt.setUriElement(Uri30_40.convertUri(src.getUriElement()));
         if (src.hasDescription())
-            tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
+            tgt.setDescriptionElement(String30_40.convertString(src.getDescriptionElement()));
         if (src.hasType())
             tgt.setTypeElement(convertPropertyType(src.getTypeElement()));
         return tgt;
@@ -351,13 +359,13 @@ public class CodeSystem30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.CodeSystem.PropertyComponent tgt = new org.hl7.fhir.dstu3.model.CodeSystem.PropertyComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(VersionConvertor_30_40.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code30_40.convertCode(src.getCodeElement()));
         if (src.hasUri())
-            tgt.setUriElement(VersionConvertor_30_40.convertUri(src.getUriElement()));
+            tgt.setUriElement(Uri30_40.convertUri(src.getUriElement()));
         if (src.hasDescription())
-            tgt.setDescriptionElement(VersionConvertor_30_40.convertString(src.getDescriptionElement()));
+            tgt.setDescriptionElement(String30_40.convertString(src.getDescriptionElement()));
         if (src.hasType())
             tgt.setTypeElement(convertPropertyType(src.getTypeElement()));
         return tgt;
@@ -367,7 +375,7 @@ public class CodeSystem30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.PropertyType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CodeSystem.PropertyTypeEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case CODE:
                 tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.PropertyType.CODE);
@@ -398,7 +406,7 @@ public class CodeSystem30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CodeSystem.PropertyType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CodeSystem.PropertyTypeEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case CODE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.CodeSystem.PropertyType.CODE);
@@ -429,7 +437,7 @@ public class CodeSystem30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.FilterOperator> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CodeSystem.FilterOperatorEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch (src.getValue()) {
             case EQUAL:
                 tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.FilterOperator.EQUAL);
@@ -469,7 +477,7 @@ public class CodeSystem30_40 {
             if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CodeSystem.FilterOperator> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CodeSystem.FilterOperatorEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch (src.getValue()) {
             case EQUAL:
                 tgt.setValue(org.hl7.fhir.dstu3.model.CodeSystem.FilterOperator.EQUAL);

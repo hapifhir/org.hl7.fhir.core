@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.conv30_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

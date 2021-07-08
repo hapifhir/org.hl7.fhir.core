@@ -1,7 +1,15 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
 import java.util.List;
-import org.hl7.fhir.convertors.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Reference;
 
@@ -13,17 +21,17 @@ public class ProcedureRequest30_40 {
         org.hl7.fhir.r4.model.ServiceRequest tgt = new org.hl7.fhir.r4.model.ServiceRequest();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) {
-            tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+            tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         }
         for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) {
-            tgt.addBasedOn(VersionConvertor_30_40.convertReference(t));
+            tgt.addBasedOn(Reference30_40.convertReference(t));
         }
         for (org.hl7.fhir.dstu3.model.Reference t : src.getReplaces()) {
-            tgt.addReplaces(VersionConvertor_30_40.convertReference(t));
+            tgt.addReplaces(Reference30_40.convertReference(t));
         }
         if (src.hasRequisition()) {
             if (src.hasRequisition())
-                tgt.setRequisition(VersionConvertor_30_40.convertIdentifier(src.getRequisition()));
+                tgt.setRequisition(Identifier30_40.convertIdentifier(src.getRequisition()));
         }
         if (src.hasStatus()) {
             if (src.hasStatus())
@@ -39,69 +47,69 @@ public class ProcedureRequest30_40 {
         }
         if (src.hasDoNotPerform()) {
             if (src.hasDoNotPerformElement())
-                tgt.setDoNotPerformElement(VersionConvertor_30_40.convertBoolean(src.getDoNotPerformElement()));
+                tgt.setDoNotPerformElement(Boolean30_40.convertBoolean(src.getDoNotPerformElement()));
         }
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) {
-            tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
+            tgt.addCategory(CodeableConcept30_40.convertCodeableConcept(t));
         }
         if (src.hasCode()) {
             if (src.hasCode())
-                tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
+                tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
         }
         if (src.hasSubject()) {
             if (src.hasSubject())
-                tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
+                tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
         }
         if (src.hasContext()) {
             if (src.hasContext())
-                tgt.setEncounter(VersionConvertor_30_40.convertReference(src.getContext()));
+                tgt.setEncounter(Reference30_40.convertReference(src.getContext()));
         }
         if (src.hasOccurrence()) {
             if (src.hasOccurrence())
-                tgt.setOccurrence(VersionConvertor_30_40.convertType(src.getOccurrence()));
+                tgt.setOccurrence(Type30_40.convertType(src.getOccurrence()));
         }
         if (src.hasAsNeeded()) {
             if (src.hasAsNeeded())
-                tgt.setAsNeeded(VersionConvertor_30_40.convertType(src.getAsNeeded()));
+                tgt.setAsNeeded(Type30_40.convertType(src.getAsNeeded()));
         }
         if (src.hasAuthoredOn()) {
             if (src.hasAuthoredOnElement())
-                tgt.setAuthoredOnElement(VersionConvertor_30_40.convertDateTime(src.getAuthoredOnElement()));
+                tgt.setAuthoredOnElement(DateTime30_40.convertDateTime(src.getAuthoredOnElement()));
         }
         if (src.hasRequester()) {
             org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestRequesterComponent requester = src.getRequester();
             if (requester.hasAgent()) {
-                tgt.setRequester(VersionConvertor_30_40.convertReference(requester.getAgent()));
+                tgt.setRequester(Reference30_40.convertReference(requester.getAgent()));
             }
         }
         if (src.hasPerformerType()) {
             if (src.hasPerformerType())
-                tgt.setPerformerType(VersionConvertor_30_40.convertCodeableConcept(src.getPerformerType()));
+                tgt.setPerformerType(CodeableConcept30_40.convertCodeableConcept(src.getPerformerType()));
         }
         if (src.hasPerformer()) {
             if (src.hasPerformer())
-                tgt.addPerformer(VersionConvertor_30_40.convertReference(src.getPerformer()));
+                tgt.addPerformer(Reference30_40.convertReference(src.getPerformer()));
         }
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode()) {
-            tgt.addReasonCode(VersionConvertor_30_40.convertCodeableConcept(t));
+            tgt.addReasonCode(CodeableConcept30_40.convertCodeableConcept(t));
         }
         for (org.hl7.fhir.dstu3.model.Reference t : src.getReasonReference()) {
-            tgt.addReasonReference(VersionConvertor_30_40.convertReference(t));
+            tgt.addReasonReference(Reference30_40.convertReference(t));
         }
         for (org.hl7.fhir.dstu3.model.Reference t : src.getSupportingInfo()) {
-            tgt.addSupportingInfo(VersionConvertor_30_40.convertReference(t));
+            tgt.addSupportingInfo(Reference30_40.convertReference(t));
         }
         for (org.hl7.fhir.dstu3.model.Reference t : src.getSpecimen()) {
-            tgt.addSpecimen(VersionConvertor_30_40.convertReference(t));
+            tgt.addSpecimen(Reference30_40.convertReference(t));
         }
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getBodySite()) {
-            tgt.addBodySite(VersionConvertor_30_40.convertCodeableConcept(t));
+            tgt.addBodySite(CodeableConcept30_40.convertCodeableConcept(t));
         }
         for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) {
-            tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+            tgt.addNote(Annotation30_40.convertAnnotation(t));
         }
         for (org.hl7.fhir.dstu3.model.Reference t : src.getRelevantHistory()) {
-            tgt.addRelevantHistory(VersionConvertor_30_40.convertReference(t));
+            tgt.addRelevantHistory(Reference30_40.convertReference(t));
         }
         return tgt;
     }
@@ -112,17 +120,17 @@ public class ProcedureRequest30_40 {
         org.hl7.fhir.dstu3.model.ProcedureRequest tgt = new org.hl7.fhir.dstu3.model.ProcedureRequest();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) {
-            tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+            tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         }
         for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) {
-            tgt.addBasedOn(VersionConvertor_30_40.convertReference(t));
+            tgt.addBasedOn(Reference30_40.convertReference(t));
         }
         for (org.hl7.fhir.r4.model.Reference t : src.getReplaces()) {
-            tgt.addReplaces(VersionConvertor_30_40.convertReference(t));
+            tgt.addReplaces(Reference30_40.convertReference(t));
         }
         if (src.hasRequisition()) {
             if (src.hasRequisition())
-                tgt.setRequisition(VersionConvertor_30_40.convertIdentifier(src.getRequisition()));
+                tgt.setRequisition(Identifier30_40.convertIdentifier(src.getRequisition()));
         }
         if (src.hasStatus()) {
             if (src.hasStatus())
@@ -138,68 +146,68 @@ public class ProcedureRequest30_40 {
         }
         if (src.hasDoNotPerform()) {
             if (src.hasDoNotPerformElement())
-                tgt.setDoNotPerformElement(VersionConvertor_30_40.convertBoolean(src.getDoNotPerformElement()));
+                tgt.setDoNotPerformElement(Boolean30_40.convertBoolean(src.getDoNotPerformElement()));
         }
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) {
-            tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
+            tgt.addCategory(CodeableConcept30_40.convertCodeableConcept(t));
         }
         if (src.hasCode()) {
             if (src.hasCode())
-                tgt.setCode(VersionConvertor_30_40.convertCodeableConcept(src.getCode()));
+                tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
         }
         if (src.hasSubject()) {
             if (src.hasSubject())
-                tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
+                tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
         }
         if (src.hasEncounter()) {
             if (src.hasEncounter())
-                tgt.setContext(VersionConvertor_30_40.convertReference(src.getEncounter()));
+                tgt.setContext(Reference30_40.convertReference(src.getEncounter()));
         }
         if (src.hasOccurrence()) {
             if (src.hasOccurrence())
-                tgt.setOccurrence(VersionConvertor_30_40.convertType(src.getOccurrence()));
+                tgt.setOccurrence(Type30_40.convertType(src.getOccurrence()));
         }
         if (src.hasAsNeeded()) {
             if (src.hasAsNeeded())
-                tgt.setAsNeeded(VersionConvertor_30_40.convertType(src.getAsNeeded()));
+                tgt.setAsNeeded(Type30_40.convertType(src.getAsNeeded()));
         }
         if (src.hasAuthoredOn()) {
             if (src.hasAuthoredOnElement())
-                tgt.setAuthoredOnElement(VersionConvertor_30_40.convertDateTime(src.getAuthoredOnElement()));
+                tgt.setAuthoredOnElement(DateTime30_40.convertDateTime(src.getAuthoredOnElement()));
         }
         if (src.hasRequester()) {
-            tgt.setRequester(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestRequesterComponent(VersionConvertor_30_40.convertReference(src.getRequester())));
+            tgt.setRequester(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestRequesterComponent(Reference30_40.convertReference(src.getRequester())));
         }
         if (src.hasPerformerType()) {
             if (src.hasPerformerType())
-                tgt.setPerformerType(VersionConvertor_30_40.convertCodeableConcept(src.getPerformerType()));
+                tgt.setPerformerType(CodeableConcept30_40.convertCodeableConcept(src.getPerformerType()));
         }
         List<Reference> performers = src.getPerformer();
         if (performers.size() > 0) {
-            tgt.setPerformer(VersionConvertor_30_40.convertReference(performers.get(0)));
+            tgt.setPerformer(Reference30_40.convertReference(performers.get(0)));
             if (performers.size() > 1) {
             }
         }
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) {
-            tgt.addReasonCode(VersionConvertor_30_40.convertCodeableConcept(t));
+            tgt.addReasonCode(CodeableConcept30_40.convertCodeableConcept(t));
         }
         for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) {
-            tgt.addReasonReference(VersionConvertor_30_40.convertReference(t));
+            tgt.addReasonReference(Reference30_40.convertReference(t));
         }
         for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo()) {
-            tgt.addSupportingInfo(VersionConvertor_30_40.convertReference(t));
+            tgt.addSupportingInfo(Reference30_40.convertReference(t));
         }
         for (org.hl7.fhir.r4.model.Reference t : src.getSpecimen()) {
-            tgt.addSpecimen(VersionConvertor_30_40.convertReference(t));
+            tgt.addSpecimen(Reference30_40.convertReference(t));
         }
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite()) {
-            tgt.addBodySite(VersionConvertor_30_40.convertCodeableConcept(t));
+            tgt.addBodySite(CodeableConcept30_40.convertCodeableConcept(t));
         }
         for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) {
-            tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+            tgt.addNote(Annotation30_40.convertAnnotation(t));
         }
         for (org.hl7.fhir.r4.model.Reference t : src.getRelevantHistory()) {
-            tgt.addRelevantHistory(VersionConvertor_30_40.convertReference(t));
+            tgt.addRelevantHistory(Reference30_40.convertReference(t));
         }
         return tgt;
     }
@@ -208,7 +216,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntentEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case FILLERORDER:
                 tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent.FILLERORDER);
@@ -245,7 +253,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntentEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case DIRECTIVE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.NULL);
@@ -285,7 +293,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriorityEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ASAP:
                 tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.ASAP);
@@ -310,7 +318,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriorityEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ASAP:
                 tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority.ASAP);
@@ -335,7 +343,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatusEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ACTIVE);
@@ -369,7 +377,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatusEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus.ACTIVE);

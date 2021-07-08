@@ -17,6 +17,7 @@ import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv14_30.VersionConvertor_14_30;
 import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;

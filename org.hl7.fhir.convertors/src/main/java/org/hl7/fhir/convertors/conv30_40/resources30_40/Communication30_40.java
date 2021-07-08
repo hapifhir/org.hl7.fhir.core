@@ -1,6 +1,13 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Communication30_40 {
@@ -10,34 +17,34 @@ public class Communication30_40 {
             return null;
         org.hl7.fhir.dstu3.model.Communication tgt = new org.hl7.fhir.dstu3.model.Communication();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         for (org.hl7.fhir.r4.model.UriType t : src.getInstantiatesCanonical()) tgt.addDefinition(new org.hl7.fhir.dstu3.model.Reference(t.getValue()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(VersionConvertor_30_40.convertReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(VersionConvertor_30_40.convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference30_40.convertReference(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference30_40.convertReference(t));
         if (src.hasStatus())
             if (src.getStatus() == org.hl7.fhir.r4.model.Communication.CommunicationStatus.NOTDONE)
                 tgt.setNotDone(true);
             else
                 tgt.setStatusElement(convertCommunicationStatus(src.getStatusElement()));
         if (src.hasStatusReason())
-            tgt.setNotDoneReason(VersionConvertor_30_40.convertCodeableConcept(src.getStatusReason()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getMedium()) tgt.addMedium(VersionConvertor_30_40.convertCodeableConcept(t));
+            tgt.setNotDoneReason(CodeableConcept30_40.convertCodeableConcept(src.getStatusReason()));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(CodeableConcept30_40.convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getMedium()) tgt.addMedium(CodeableConcept30_40.convertCodeableConcept(t));
         if (src.hasSubject())
-            tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getRecipient()) tgt.addRecipient(VersionConvertor_30_40.convertReference(t));
+            tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
+        for (org.hl7.fhir.r4.model.Reference t : src.getRecipient()) tgt.addRecipient(Reference30_40.convertReference(t));
         if (src.hasEncounter())
-            tgt.setContext(VersionConvertor_30_40.convertReference(src.getEncounter()));
+            tgt.setContext(Reference30_40.convertReference(src.getEncounter()));
         if (src.hasSent())
-            tgt.setSentElement(VersionConvertor_30_40.convertDateTime(src.getSentElement()));
+            tgt.setSentElement(DateTime30_40.convertDateTime(src.getSentElement()));
         if (src.hasReceived())
-            tgt.setReceivedElement(VersionConvertor_30_40.convertDateTime(src.getReceivedElement()));
+            tgt.setReceivedElement(DateTime30_40.convertDateTime(src.getReceivedElement()));
         if (src.hasSender())
-            tgt.setSender(VersionConvertor_30_40.convertReference(src.getSender()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReasonCode(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReasonReference(VersionConvertor_30_40.convertReference(t));
+            tgt.setSender(Reference30_40.convertReference(src.getSender()));
+        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReasonCode(CodeableConcept30_40.convertCodeableConcept(t));
+        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReasonReference(Reference30_40.convertReference(t));
         for (org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent t : src.getPayload()) tgt.addPayload(convertCommunicationPayloadComponent(t));
-        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_40.convertAnnotation(t));
         return tgt;
     }
 
@@ -46,33 +53,33 @@ public class Communication30_40 {
             return null;
         org.hl7.fhir.r4.model.Communication tgt = new org.hl7.fhir.r4.model.Communication();
         VersionConvertor_30_40.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_40.convertIdentifier(t));
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getDefinition()) tgt.addInstantiatesCanonical(t.getReference());
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) tgt.addBasedOn(VersionConvertor_30_40.convertReference(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getPartOf()) tgt.addPartOf(VersionConvertor_30_40.convertReference(t));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference30_40.convertReference(t));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference30_40.convertReference(t));
         if (src.hasNotDone())
             tgt.setStatus(org.hl7.fhir.r4.model.Communication.CommunicationStatus.NOTDONE);
         else if (src.hasStatus())
             tgt.setStatusElement(convertCommunicationStatus(src.getStatusElement()));
         if (src.hasNotDoneReason())
-            tgt.setStatusReason(VersionConvertor_30_40.convertCodeableConcept(src.getNotDoneReason()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getMedium()) tgt.addMedium(VersionConvertor_30_40.convertCodeableConcept(t));
+            tgt.setStatusReason(CodeableConcept30_40.convertCodeableConcept(src.getNotDoneReason()));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(CodeableConcept30_40.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getMedium()) tgt.addMedium(CodeableConcept30_40.convertCodeableConcept(t));
         if (src.hasSubject())
-            tgt.setSubject(VersionConvertor_30_40.convertReference(src.getSubject()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getRecipient()) tgt.addRecipient(VersionConvertor_30_40.convertReference(t));
+            tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getRecipient()) tgt.addRecipient(Reference30_40.convertReference(t));
         if (src.hasContext())
-            tgt.setEncounter(VersionConvertor_30_40.convertReference(src.getContext()));
+            tgt.setEncounter(Reference30_40.convertReference(src.getContext()));
         if (src.hasSent())
-            tgt.setSentElement(VersionConvertor_30_40.convertDateTime(src.getSentElement()));
+            tgt.setSentElement(DateTime30_40.convertDateTime(src.getSentElement()));
         if (src.hasReceived())
-            tgt.setReceivedElement(VersionConvertor_30_40.convertDateTime(src.getReceivedElement()));
+            tgt.setReceivedElement(DateTime30_40.convertDateTime(src.getReceivedElement()));
         if (src.hasSender())
-            tgt.setSender(VersionConvertor_30_40.convertReference(src.getSender()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode()) tgt.addReasonCode(VersionConvertor_30_40.convertCodeableConcept(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getReasonReference()) tgt.addReasonReference(VersionConvertor_30_40.convertReference(t));
+            tgt.setSender(Reference30_40.convertReference(src.getSender()));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode()) tgt.addReasonCode(CodeableConcept30_40.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getReasonReference()) tgt.addReasonReference(Reference30_40.convertReference(t));
         for (org.hl7.fhir.dstu3.model.Communication.CommunicationPayloadComponent t : src.getPayload()) tgt.addPayload(convertCommunicationPayloadComponent(t));
-        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(VersionConvertor_30_40.convertAnnotation(t));
+        for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_40.convertAnnotation(t));
         return tgt;
     }
 
@@ -80,9 +87,9 @@ public class Communication30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.dstu3.model.Communication.CommunicationPayloadComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasContent())
-            tgt.setContent(VersionConvertor_30_40.convertType(src.getContent()));
+            tgt.setContent(Type30_40.convertType(src.getContent()));
         return tgt;
     }
 
@@ -90,9 +97,9 @@ public class Communication30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent();
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         if (src.hasContent())
-            tgt.setContent(VersionConvertor_30_40.convertType(src.getContent()));
+            tgt.setContent(Type30_40.convertType(src.getContent()));
         return tgt;
     }
 
@@ -100,7 +107,7 @@ public class Communication30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Communication.CommunicationStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Communication.CommunicationStatusEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case PREPARATION:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Communication.CommunicationStatus.PREPARATION);
@@ -134,7 +141,7 @@ public class Communication30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Communication.CommunicationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Communication.CommunicationStatusEnumFactory());
-        VersionConvertor_30_40.copyElement(src, tgt);
+        Element30_40.copyElement(src, tgt);
         switch(src.getValue()) {
             case PREPARATION:
                 tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.PREPARATION);
