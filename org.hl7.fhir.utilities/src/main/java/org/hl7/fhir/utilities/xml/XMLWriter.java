@@ -257,7 +257,7 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
 	 protected String xmlEscape(String s) {
      StringBuilder b = new StringBuilder();
      for (char c : s.toCharArray()) {
-       if (c < ' ' || c > '~') {
+       if (c < ' ') {
          b.append("&#x");
          b.append(Integer.toHexString(c).toUpperCase());
          b.append(";");
@@ -266,7 +266,8 @@ public class XMLWriter extends OutputStreamWriter implements IXMLWriter {
      }
      return b.toString();
    }
-	/* (non-Javadoc)
+
+	 /* (non-Javadoc)
 	 * @see org.eclipse.ohf.utilities.xml.IXMLWriter#attribute(java.lang.String, java.lang.String, java.lang.String, boolean)
 	 */
 	@Override
