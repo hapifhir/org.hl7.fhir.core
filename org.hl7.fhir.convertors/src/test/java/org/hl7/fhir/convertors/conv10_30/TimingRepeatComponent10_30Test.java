@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv10_30;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Timing10_30;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ public class TimingRepeatComponent10_30Test {
     org.hl7.fhir.dstu2.model.Timing.TimingRepeatComponent src = new org.hl7.fhir.dstu2.model.Timing.TimingRepeatComponent();
     src.setCount(SET_COUNT);
 
-    org.hl7.fhir.dstu3.model.Timing.TimingRepeatComponent tgt = VersionConvertor_10_30.convertTimingRepeatComponent(src);
+    org.hl7.fhir.dstu3.model.Timing.TimingRepeatComponent tgt = Timing10_30.convertTimingRepeatComponent(src);
 
     Assertions.assertEquals(SET_COUNT, tgt.getCount(), "Count field not preserved through version conversion.");
     Assertions.assertFalse(tgt.hasWhen(), "hasWhen() should return false for this conversion.");

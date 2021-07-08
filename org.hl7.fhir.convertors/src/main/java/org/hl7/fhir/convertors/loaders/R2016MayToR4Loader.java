@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertor_14_40;
+import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_40;
 import org.hl7.fhir.dstu2016may.formats.JsonParser;
 import org.hl7.fhir.dstu2016may.formats.XmlParser;
@@ -53,8 +53,6 @@ import org.hl7.fhir.r4.model.MetadataResource;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.UriType;
-import org.hl7.fhir.r4.model.ValueSet;
-import org.hl7.fhir.r5.model.FhirPublication;
 
 public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResourceLoader {
 

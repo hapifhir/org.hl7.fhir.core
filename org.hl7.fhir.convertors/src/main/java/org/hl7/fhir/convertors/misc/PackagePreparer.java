@@ -35,7 +35,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.utilities.Utilities;
