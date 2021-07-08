@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.advisors;
 
-import org.hl7.fhir.convertors.VersionConvertor_10_50;
+import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.convertors.advisors.support.ExpressionAdvisor50;
 import org.hl7.fhir.r5.model.Expression;
