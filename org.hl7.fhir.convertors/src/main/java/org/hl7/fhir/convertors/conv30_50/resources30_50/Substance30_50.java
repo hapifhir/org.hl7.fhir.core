@@ -1,6 +1,14 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Element30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Type30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Ratio30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.SimpleQuantity30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Identifier;
 
@@ -10,7 +18,7 @@ public class Substance30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Substance.FHIRSubstanceStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Substance.FHIRSubstanceStatusEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.r5.model.Substance.FHIRSubstanceStatus.ACTIVE);
@@ -32,7 +40,7 @@ public class Substance30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatusEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Substance.FHIRSubstanceStatus.ACTIVE);
@@ -55,14 +63,14 @@ public class Substance30_50 {
             return null;
         org.hl7.fhir.r5.model.Substance tgt = new org.hl7.fhir.r5.model.Substance();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertFHIRSubstanceStatus(src.getStatusElement()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCategory()) tgt.addCategory(CodeableConcept30_50.convertCodeableConcept(t));
         if (src.hasCode())
-            tgt.getCode().setConcept(VersionConvertor_30_50.convertCodeableConcept(src.getCode()));
+            tgt.getCode().setConcept(CodeableConcept30_50.convertCodeableConcept(src.getCode()));
         if (src.hasDescription())
-            tgt.setDescriptionElement(VersionConvertor_30_50.convertString(src.getDescriptionElement()));
+            tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
         for (org.hl7.fhir.dstu3.model.Substance.SubstanceInstanceComponent t : src.getInstance()) convertSubstanceInstanceComponent(t, tgt);
         for (org.hl7.fhir.dstu3.model.Substance.SubstanceIngredientComponent t : src.getIngredient()) tgt.addIngredient(convertSubstanceIngredientComponent(t));
         return tgt;
@@ -73,14 +81,14 @@ public class Substance30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Substance tgt = new org.hl7.fhir.dstu3.model.Substance();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertFHIRSubstanceStatus(src.getStatusElement()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(CodeableConcept30_50.convertCodeableConcept(t));
         if (src.getCode().hasConcept())
-            tgt.setCode(VersionConvertor_30_50.convertCodeableConcept(src.getCode().getConcept()));
+            tgt.setCode(CodeableConcept30_50.convertCodeableConcept(src.getCode().getConcept()));
         if (src.hasDescription())
-            tgt.setDescriptionElement(VersionConvertor_30_50.convertString(src.getDescriptionElement()));
+            tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
         if (src.getInstance())  {
           tgt.addInstance(convertSubstanceInstanceComponent(src));
         }
@@ -92,11 +100,11 @@ public class Substance30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Substance.SubstanceIngredientComponent tgt = new org.hl7.fhir.dstu3.model.Substance.SubstanceIngredientComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasQuantity())
-            tgt.setQuantity(VersionConvertor_30_50.convertRatio(src.getQuantity()));
+            tgt.setQuantity(Ratio30_50.convertRatio(src.getQuantity()));
         if (src.hasSubstance())
-            tgt.setSubstance(VersionConvertor_30_50.convertType(src.getSubstance()));
+            tgt.setSubstance(Type30_50.convertType(src.getSubstance()));
         return tgt;
     }
 
@@ -104,33 +112,33 @@ public class Substance30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.Substance.SubstanceIngredientComponent tgt = new org.hl7.fhir.r5.model.Substance.SubstanceIngredientComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasQuantity())
-            tgt.setQuantity(VersionConvertor_30_50.convertRatio(src.getQuantity()));
+            tgt.setQuantity(Ratio30_50.convertRatio(src.getQuantity()));
         if (src.hasSubstance())
-            tgt.setSubstance(VersionConvertor_30_50.convertType(src.getSubstance()));
+            tgt.setSubstance(Type30_50.convertType(src.getSubstance()));
         return tgt;
     }
 
     public static void convertSubstanceInstanceComponent(org.hl7.fhir.dstu3.model.Substance.SubstanceInstanceComponent src, org.hl7.fhir.r5.model.Substance tgt) throws FHIRException {
       tgt.setInstance(true);
         if (src.hasIdentifier())
-            tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(src.getIdentifier()));
+            tgt.addIdentifier(Identifier30_50.convertIdentifier(src.getIdentifier()));
         if (src.hasExpiry())
-            tgt.setExpiryElement(VersionConvertor_30_50.convertDateTime(src.getExpiryElement()));
+            tgt.setExpiryElement(DateTime30_50.convertDateTime(src.getExpiryElement()));
         if (src.hasQuantity())
-            tgt.setQuantity(VersionConvertor_30_50.convertSimpleQuantity(src.getQuantity()));
+            tgt.setQuantity(SimpleQuantity30_50.convertSimpleQuantity(src.getQuantity()));
     }
 
     public static org.hl7.fhir.dstu3.model.Substance.SubstanceInstanceComponent convertSubstanceInstanceComponent(org.hl7.fhir.r5.model.Substance src) throws FHIRException {
         org.hl7.fhir.dstu3.model.Substance.SubstanceInstanceComponent tgt = new org.hl7.fhir.dstu3.model.Substance.SubstanceInstanceComponent();
         for (Identifier t : src.getIdentifier()) {
-          tgt.setIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+          tgt.setIdentifier(Identifier30_50.convertIdentifier(t));
       }
       if (src.hasExpiry())
-          tgt.setExpiryElement(VersionConvertor_30_50.convertDateTime(src.getExpiryElement()));
+          tgt.setExpiryElement(DateTime30_50.convertDateTime(src.getExpiryElement()));
       if (src.hasQuantity())
-          tgt.setQuantity(VersionConvertor_30_50.convertSimpleQuantity(src.getQuantity()));
+          tgt.setQuantity(SimpleQuantity30_50.convertSimpleQuantity(src.getQuantity()));
       return tgt;
 
     }

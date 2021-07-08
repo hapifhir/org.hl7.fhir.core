@@ -1,6 +1,15 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Element30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Quantity30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Decimal30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Integer30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Sequence30_50 {
@@ -9,7 +18,7 @@ public class Sequence30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.QualityType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.QualityTypeEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case INDEL:
                 tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.QualityType.INDEL);
@@ -31,7 +40,7 @@ public class Sequence30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Sequence.QualityType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Sequence.QualityTypeEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case INDEL:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Sequence.QualityType.INDEL);
@@ -53,7 +62,7 @@ public class Sequence30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Sequence.RepositoryType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Sequence.RepositoryTypeEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case DIRECTLINK:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Sequence.RepositoryType.DIRECTLINK);
@@ -81,7 +90,7 @@ public class Sequence30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.RepositoryType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.RepositoryTypeEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case DIRECTLINK:
                 tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.DIRECTLINK);
@@ -110,31 +119,31 @@ public class Sequence30_50 {
             return null;
         org.hl7.fhir.r5.model.MolecularSequence tgt = new org.hl7.fhir.r5.model.MolecularSequence();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
         if (src.hasType())
             tgt.setTypeElement(convertSequenceType(src.getTypeElement()));
         if (src.hasCoordinateSystem())
-            tgt.setCoordinateSystemElement(VersionConvertor_30_50.convertInteger(src.getCoordinateSystemElement()));
+            tgt.setCoordinateSystemElement(Integer30_50.convertInteger(src.getCoordinateSystemElement()));
         if (src.hasPatient())
-            tgt.setPatient(VersionConvertor_30_50.convertReference(src.getPatient()));
+            tgt.setPatient(Reference30_50.convertReference(src.getPatient()));
         if (src.hasSpecimen())
-            tgt.setSpecimen(VersionConvertor_30_50.convertReference(src.getSpecimen()));
+            tgt.setSpecimen(Reference30_50.convertReference(src.getSpecimen()));
         if (src.hasDevice())
-            tgt.setDevice(VersionConvertor_30_50.convertReference(src.getDevice()));
+            tgt.setDevice(Reference30_50.convertReference(src.getDevice()));
         if (src.hasPerformer())
-            tgt.setPerformer(VersionConvertor_30_50.convertReference(src.getPerformer()));
+            tgt.setPerformer(Reference30_50.convertReference(src.getPerformer()));
         if (src.hasQuantity())
-            tgt.setQuantity(VersionConvertor_30_50.convertQuantity(src.getQuantity()));
+            tgt.setQuantity(Quantity30_50.convertQuantity(src.getQuantity()));
         if (src.hasReferenceSeq())
             tgt.setReferenceSeq(convertSequenceReferenceSeqComponent(src.getReferenceSeq()));
         for (org.hl7.fhir.dstu3.model.Sequence.SequenceVariantComponent t : src.getVariant()) tgt.addVariant(convertSequenceVariantComponent(t));
         if (src.hasObservedSeq())
-            tgt.setObservedSeqElement(VersionConvertor_30_50.convertString(src.getObservedSeqElement()));
+            tgt.setObservedSeqElement(String30_50.convertString(src.getObservedSeqElement()));
         for (org.hl7.fhir.dstu3.model.Sequence.SequenceQualityComponent t : src.getQuality()) tgt.addQuality(convertSequenceQualityComponent(t));
         if (src.hasReadCoverage())
-            tgt.setReadCoverageElement(VersionConvertor_30_50.convertInteger(src.getReadCoverageElement()));
+            tgt.setReadCoverageElement(Integer30_50.convertInteger(src.getReadCoverageElement()));
         for (org.hl7.fhir.dstu3.model.Sequence.SequenceRepositoryComponent t : src.getRepository()) tgt.addRepository(convertSequenceRepositoryComponent(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getPointer()) tgt.addPointer(VersionConvertor_30_50.convertReference(t));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getPointer()) tgt.addPointer(Reference30_50.convertReference(t));
         return tgt;
     }
 
@@ -143,31 +152,31 @@ public class Sequence30_50 {
             return null;
         org.hl7.fhir.dstu3.model.Sequence tgt = new org.hl7.fhir.dstu3.model.Sequence();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
         if (src.hasType())
             tgt.setTypeElement(convertSequenceType(src.getTypeElement()));
         if (src.hasCoordinateSystem())
-            tgt.setCoordinateSystemElement(VersionConvertor_30_50.convertInteger(src.getCoordinateSystemElement()));
+            tgt.setCoordinateSystemElement(Integer30_50.convertInteger(src.getCoordinateSystemElement()));
         if (src.hasPatient())
-            tgt.setPatient(VersionConvertor_30_50.convertReference(src.getPatient()));
+            tgt.setPatient(Reference30_50.convertReference(src.getPatient()));
         if (src.hasSpecimen())
-            tgt.setSpecimen(VersionConvertor_30_50.convertReference(src.getSpecimen()));
+            tgt.setSpecimen(Reference30_50.convertReference(src.getSpecimen()));
         if (src.hasDevice())
-            tgt.setDevice(VersionConvertor_30_50.convertReference(src.getDevice()));
+            tgt.setDevice(Reference30_50.convertReference(src.getDevice()));
         if (src.hasPerformer())
-            tgt.setPerformer(VersionConvertor_30_50.convertReference(src.getPerformer()));
+            tgt.setPerformer(Reference30_50.convertReference(src.getPerformer()));
         if (src.hasQuantity())
-            tgt.setQuantity(VersionConvertor_30_50.convertQuantity(src.getQuantity()));
+            tgt.setQuantity(Quantity30_50.convertQuantity(src.getQuantity()));
         if (src.hasReferenceSeq())
             tgt.setReferenceSeq(convertSequenceReferenceSeqComponent(src.getReferenceSeq()));
         for (org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceVariantComponent t : src.getVariant()) tgt.addVariant(convertSequenceVariantComponent(t));
         if (src.hasObservedSeq())
-            tgt.setObservedSeqElement(VersionConvertor_30_50.convertString(src.getObservedSeqElement()));
+            tgt.setObservedSeqElement(String30_50.convertString(src.getObservedSeqElement()));
         for (org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceQualityComponent t : src.getQuality()) tgt.addQuality(convertSequenceQualityComponent(t));
         if (src.hasReadCoverage())
-            tgt.setReadCoverageElement(VersionConvertor_30_50.convertInteger(src.getReadCoverageElement()));
+            tgt.setReadCoverageElement(Integer30_50.convertInteger(src.getReadCoverageElement()));
         for (org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceRepositoryComponent t : src.getRepository()) tgt.addRepository(convertSequenceRepositoryComponent(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getPointer()) tgt.addPointer(VersionConvertor_30_50.convertReference(t));
+        for (org.hl7.fhir.r5.model.Reference t : src.getPointer()) tgt.addPointer(Reference30_50.convertReference(t));
         return tgt;
     }
 
@@ -175,35 +184,35 @@ public class Sequence30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Sequence.SequenceQualityComponent tgt = new org.hl7.fhir.dstu3.model.Sequence.SequenceQualityComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertQualityType(src.getTypeElement()));
         if (src.hasStandardSequence())
-            tgt.setStandardSequence(VersionConvertor_30_50.convertCodeableConcept(src.getStandardSequence()));
+            tgt.setStandardSequence(CodeableConcept30_50.convertCodeableConcept(src.getStandardSequence()));
         if (src.hasStart())
-            tgt.setStartElement(VersionConvertor_30_50.convertInteger(src.getStartElement()));
+            tgt.setStartElement(Integer30_50.convertInteger(src.getStartElement()));
         if (src.hasEnd())
-            tgt.setEndElement(VersionConvertor_30_50.convertInteger(src.getEndElement()));
+            tgt.setEndElement(Integer30_50.convertInteger(src.getEndElement()));
         if (src.hasScore())
-            tgt.setScore(VersionConvertor_30_50.convertQuantity(src.getScore()));
+            tgt.setScore(Quantity30_50.convertQuantity(src.getScore()));
         if (src.hasMethod())
-            tgt.setMethod(VersionConvertor_30_50.convertCodeableConcept(src.getMethod()));
+            tgt.setMethod(CodeableConcept30_50.convertCodeableConcept(src.getMethod()));
         if (src.hasTruthTP())
-            tgt.setTruthTPElement(VersionConvertor_30_50.convertDecimal(src.getTruthTPElement()));
+            tgt.setTruthTPElement(Decimal30_50.convertDecimal(src.getTruthTPElement()));
         if (src.hasQueryTP())
-            tgt.setQueryTPElement(VersionConvertor_30_50.convertDecimal(src.getQueryTPElement()));
+            tgt.setQueryTPElement(Decimal30_50.convertDecimal(src.getQueryTPElement()));
         if (src.hasTruthFN())
-            tgt.setTruthFNElement(VersionConvertor_30_50.convertDecimal(src.getTruthFNElement()));
+            tgt.setTruthFNElement(Decimal30_50.convertDecimal(src.getTruthFNElement()));
         if (src.hasQueryFP())
-            tgt.setQueryFPElement(VersionConvertor_30_50.convertDecimal(src.getQueryFPElement()));
+            tgt.setQueryFPElement(Decimal30_50.convertDecimal(src.getQueryFPElement()));
         if (src.hasGtFP())
-            tgt.setGtFPElement(VersionConvertor_30_50.convertDecimal(src.getGtFPElement()));
+            tgt.setGtFPElement(Decimal30_50.convertDecimal(src.getGtFPElement()));
         if (src.hasPrecision())
-            tgt.setPrecisionElement(VersionConvertor_30_50.convertDecimal(src.getPrecisionElement()));
+            tgt.setPrecisionElement(Decimal30_50.convertDecimal(src.getPrecisionElement()));
         if (src.hasRecall())
-            tgt.setRecallElement(VersionConvertor_30_50.convertDecimal(src.getRecallElement()));
+            tgt.setRecallElement(Decimal30_50.convertDecimal(src.getRecallElement()));
         if (src.hasFScore())
-            tgt.setFScoreElement(VersionConvertor_30_50.convertDecimal(src.getFScoreElement()));
+            tgt.setFScoreElement(Decimal30_50.convertDecimal(src.getFScoreElement()));
         return tgt;
     }
 
@@ -211,35 +220,35 @@ public class Sequence30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceQualityComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceQualityComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertQualityType(src.getTypeElement()));
         if (src.hasStandardSequence())
-            tgt.setStandardSequence(VersionConvertor_30_50.convertCodeableConcept(src.getStandardSequence()));
+            tgt.setStandardSequence(CodeableConcept30_50.convertCodeableConcept(src.getStandardSequence()));
         if (src.hasStart())
-            tgt.setStartElement(VersionConvertor_30_50.convertInteger(src.getStartElement()));
+            tgt.setStartElement(Integer30_50.convertInteger(src.getStartElement()));
         if (src.hasEnd())
-            tgt.setEndElement(VersionConvertor_30_50.convertInteger(src.getEndElement()));
+            tgt.setEndElement(Integer30_50.convertInteger(src.getEndElement()));
         if (src.hasScore())
-            tgt.setScore(VersionConvertor_30_50.convertQuantity(src.getScore()));
+            tgt.setScore(Quantity30_50.convertQuantity(src.getScore()));
         if (src.hasMethod())
-            tgt.setMethod(VersionConvertor_30_50.convertCodeableConcept(src.getMethod()));
+            tgt.setMethod(CodeableConcept30_50.convertCodeableConcept(src.getMethod()));
         if (src.hasTruthTP())
-            tgt.setTruthTPElement(VersionConvertor_30_50.convertDecimal(src.getTruthTPElement()));
+            tgt.setTruthTPElement(Decimal30_50.convertDecimal(src.getTruthTPElement()));
         if (src.hasQueryTP())
-            tgt.setQueryTPElement(VersionConvertor_30_50.convertDecimal(src.getQueryTPElement()));
+            tgt.setQueryTPElement(Decimal30_50.convertDecimal(src.getQueryTPElement()));
         if (src.hasTruthFN())
-            tgt.setTruthFNElement(VersionConvertor_30_50.convertDecimal(src.getTruthFNElement()));
+            tgt.setTruthFNElement(Decimal30_50.convertDecimal(src.getTruthFNElement()));
         if (src.hasQueryFP())
-            tgt.setQueryFPElement(VersionConvertor_30_50.convertDecimal(src.getQueryFPElement()));
+            tgt.setQueryFPElement(Decimal30_50.convertDecimal(src.getQueryFPElement()));
         if (src.hasGtFP())
-            tgt.setGtFPElement(VersionConvertor_30_50.convertDecimal(src.getGtFPElement()));
+            tgt.setGtFPElement(Decimal30_50.convertDecimal(src.getGtFPElement()));
         if (src.hasPrecision())
-            tgt.setPrecisionElement(VersionConvertor_30_50.convertDecimal(src.getPrecisionElement()));
+            tgt.setPrecisionElement(Decimal30_50.convertDecimal(src.getPrecisionElement()));
         if (src.hasRecall())
-            tgt.setRecallElement(VersionConvertor_30_50.convertDecimal(src.getRecallElement()));
+            tgt.setRecallElement(Decimal30_50.convertDecimal(src.getRecallElement()));
         if (src.hasFScore())
-            tgt.setFScoreElement(VersionConvertor_30_50.convertDecimal(src.getFScoreElement()));
+            tgt.setFScoreElement(Decimal30_50.convertDecimal(src.getFScoreElement()));
         return tgt;
     }
 
@@ -247,21 +256,21 @@ public class Sequence30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceReferenceSeqComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceReferenceSeqComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasChromosome())
-            tgt.setChromosome(VersionConvertor_30_50.convertCodeableConcept(src.getChromosome()));
+            tgt.setChromosome(CodeableConcept30_50.convertCodeableConcept(src.getChromosome()));
         if (src.hasGenomeBuild())
-            tgt.setGenomeBuildElement(VersionConvertor_30_50.convertString(src.getGenomeBuildElement()));
+            tgt.setGenomeBuildElement(String30_50.convertString(src.getGenomeBuildElement()));
         if (src.hasReferenceSeqId())
-            tgt.setReferenceSeqId(VersionConvertor_30_50.convertCodeableConcept(src.getReferenceSeqId()));
+            tgt.setReferenceSeqId(CodeableConcept30_50.convertCodeableConcept(src.getReferenceSeqId()));
         if (src.hasReferenceSeqPointer())
-            tgt.setReferenceSeqPointer(VersionConvertor_30_50.convertReference(src.getReferenceSeqPointer()));
+            tgt.setReferenceSeqPointer(Reference30_50.convertReference(src.getReferenceSeqPointer()));
         if (src.hasReferenceSeqString())
-            tgt.setReferenceSeqStringElement(VersionConvertor_30_50.convertString(src.getReferenceSeqStringElement()));
+            tgt.setReferenceSeqStringElement(String30_50.convertString(src.getReferenceSeqStringElement()));
         if (src.hasWindowStart())
-            tgt.setWindowStartElement(VersionConvertor_30_50.convertInteger(src.getWindowStartElement()));
+            tgt.setWindowStartElement(Integer30_50.convertInteger(src.getWindowStartElement()));
         if (src.hasWindowEnd())
-            tgt.setWindowEndElement(VersionConvertor_30_50.convertInteger(src.getWindowEndElement()));
+            tgt.setWindowEndElement(Integer30_50.convertInteger(src.getWindowEndElement()));
         return tgt;
     }
 
@@ -269,21 +278,21 @@ public class Sequence30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Sequence.SequenceReferenceSeqComponent tgt = new org.hl7.fhir.dstu3.model.Sequence.SequenceReferenceSeqComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasChromosome())
-            tgt.setChromosome(VersionConvertor_30_50.convertCodeableConcept(src.getChromosome()));
+            tgt.setChromosome(CodeableConcept30_50.convertCodeableConcept(src.getChromosome()));
         if (src.hasGenomeBuild())
-            tgt.setGenomeBuildElement(VersionConvertor_30_50.convertString(src.getGenomeBuildElement()));
+            tgt.setGenomeBuildElement(String30_50.convertString(src.getGenomeBuildElement()));
         if (src.hasReferenceSeqId())
-            tgt.setReferenceSeqId(VersionConvertor_30_50.convertCodeableConcept(src.getReferenceSeqId()));
+            tgt.setReferenceSeqId(CodeableConcept30_50.convertCodeableConcept(src.getReferenceSeqId()));
         if (src.hasReferenceSeqPointer())
-            tgt.setReferenceSeqPointer(VersionConvertor_30_50.convertReference(src.getReferenceSeqPointer()));
+            tgt.setReferenceSeqPointer(Reference30_50.convertReference(src.getReferenceSeqPointer()));
         if (src.hasReferenceSeqString())
-            tgt.setReferenceSeqStringElement(VersionConvertor_30_50.convertString(src.getReferenceSeqStringElement()));
+            tgt.setReferenceSeqStringElement(String30_50.convertString(src.getReferenceSeqStringElement()));
         if (src.hasWindowStart())
-            tgt.setWindowStartElement(VersionConvertor_30_50.convertInteger(src.getWindowStartElement()));
+            tgt.setWindowStartElement(Integer30_50.convertInteger(src.getWindowStartElement()));
         if (src.hasWindowEnd())
-            tgt.setWindowEndElement(VersionConvertor_30_50.convertInteger(src.getWindowEndElement()));
+            tgt.setWindowEndElement(Integer30_50.convertInteger(src.getWindowEndElement()));
         return tgt;
     }
 
@@ -291,19 +300,19 @@ public class Sequence30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Sequence.SequenceRepositoryComponent tgt = new org.hl7.fhir.dstu3.model.Sequence.SequenceRepositoryComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertRepositoryType(src.getTypeElement()));
         if (src.hasUrl())
-            tgt.setUrlElement(VersionConvertor_30_50.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri30_50.convertUri(src.getUrlElement()));
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String30_50.convertString(src.getNameElement()));
         if (src.hasDatasetId())
-            tgt.setDatasetIdElement(VersionConvertor_30_50.convertString(src.getDatasetIdElement()));
+            tgt.setDatasetIdElement(String30_50.convertString(src.getDatasetIdElement()));
         if (src.hasVariantsetId())
-            tgt.setVariantsetIdElement(VersionConvertor_30_50.convertString(src.getVariantsetIdElement()));
+            tgt.setVariantsetIdElement(String30_50.convertString(src.getVariantsetIdElement()));
         if (src.hasReadsetId())
-            tgt.setReadsetIdElement(VersionConvertor_30_50.convertString(src.getReadsetIdElement()));
+            tgt.setReadsetIdElement(String30_50.convertString(src.getReadsetIdElement()));
         return tgt;
     }
 
@@ -311,19 +320,19 @@ public class Sequence30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceRepositoryComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceRepositoryComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertRepositoryType(src.getTypeElement()));
         if (src.hasUrl())
-            tgt.setUrlElement(VersionConvertor_30_50.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri30_50.convertUri(src.getUrlElement()));
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String30_50.convertString(src.getNameElement()));
         if (src.hasDatasetId())
-            tgt.setDatasetIdElement(VersionConvertor_30_50.convertString(src.getDatasetIdElement()));
+            tgt.setDatasetIdElement(String30_50.convertString(src.getDatasetIdElement()));
         if (src.hasVariantsetId())
-            tgt.setVariantsetIdElement(VersionConvertor_30_50.convertString(src.getVariantsetIdElement()));
+            tgt.setVariantsetIdElement(String30_50.convertString(src.getVariantsetIdElement()));
         if (src.hasReadsetId())
-            tgt.setReadsetIdElement(VersionConvertor_30_50.convertString(src.getReadsetIdElement()));
+            tgt.setReadsetIdElement(String30_50.convertString(src.getReadsetIdElement()));
         return tgt;
     }
 
@@ -331,7 +340,7 @@ public class Sequence30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Sequence.SequenceType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Sequence.SequenceTypeEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case AA:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Sequence.SequenceType.AA);
@@ -353,7 +362,7 @@ public class Sequence30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.SequenceType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.SequenceTypeEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case AA:
                 tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.SequenceType.AA);
@@ -375,19 +384,19 @@ public class Sequence30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Sequence.SequenceVariantComponent tgt = new org.hl7.fhir.dstu3.model.Sequence.SequenceVariantComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasStart())
-            tgt.setStartElement(VersionConvertor_30_50.convertInteger(src.getStartElement()));
+            tgt.setStartElement(Integer30_50.convertInteger(src.getStartElement()));
         if (src.hasEnd())
-            tgt.setEndElement(VersionConvertor_30_50.convertInteger(src.getEndElement()));
+            tgt.setEndElement(Integer30_50.convertInteger(src.getEndElement()));
         if (src.hasObservedAllele())
-            tgt.setObservedAlleleElement(VersionConvertor_30_50.convertString(src.getObservedAlleleElement()));
+            tgt.setObservedAlleleElement(String30_50.convertString(src.getObservedAlleleElement()));
         if (src.hasReferenceAllele())
-            tgt.setReferenceAlleleElement(VersionConvertor_30_50.convertString(src.getReferenceAlleleElement()));
+            tgt.setReferenceAlleleElement(String30_50.convertString(src.getReferenceAlleleElement()));
         if (src.hasCigar())
-            tgt.setCigarElement(VersionConvertor_30_50.convertString(src.getCigarElement()));
+            tgt.setCigarElement(String30_50.convertString(src.getCigarElement()));
         if (src.hasVariantPointer())
-            tgt.setVariantPointer(VersionConvertor_30_50.convertReference(src.getVariantPointer()));
+            tgt.setVariantPointer(Reference30_50.convertReference(src.getVariantPointer()));
         return tgt;
     }
 
@@ -395,19 +404,19 @@ public class Sequence30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceVariantComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceVariantComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasStart())
-            tgt.setStartElement(VersionConvertor_30_50.convertInteger(src.getStartElement()));
+            tgt.setStartElement(Integer30_50.convertInteger(src.getStartElement()));
         if (src.hasEnd())
-            tgt.setEndElement(VersionConvertor_30_50.convertInteger(src.getEndElement()));
+            tgt.setEndElement(Integer30_50.convertInteger(src.getEndElement()));
         if (src.hasObservedAllele())
-            tgt.setObservedAlleleElement(VersionConvertor_30_50.convertString(src.getObservedAlleleElement()));
+            tgt.setObservedAlleleElement(String30_50.convertString(src.getObservedAlleleElement()));
         if (src.hasReferenceAllele())
-            tgt.setReferenceAlleleElement(VersionConvertor_30_50.convertString(src.getReferenceAlleleElement()));
+            tgt.setReferenceAlleleElement(String30_50.convertString(src.getReferenceAlleleElement()));
         if (src.hasCigar())
-            tgt.setCigarElement(VersionConvertor_30_50.convertString(src.getCigarElement()));
+            tgt.setCigarElement(String30_50.convertString(src.getCigarElement()));
         if (src.hasVariantPointer())
-            tgt.setVariantPointer(VersionConvertor_30_50.convertReference(src.getVariantPointer()));
+            tgt.setVariantPointer(Reference30_50.convertReference(src.getVariantPointer()));
         return tgt;
     }
 }

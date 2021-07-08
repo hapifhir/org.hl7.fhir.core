@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle;

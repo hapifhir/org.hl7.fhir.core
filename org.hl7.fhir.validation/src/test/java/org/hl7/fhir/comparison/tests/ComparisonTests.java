@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
 import org.hl7.fhir.convertors.loaders.R4ToR5Loader;

@@ -1,6 +1,15 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Element30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Base64Binary30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Instant30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class AuditEvent30_50 {
@@ -11,17 +20,17 @@ public class AuditEvent30_50 {
         org.hl7.fhir.r5.model.AuditEvent tgt = new org.hl7.fhir.r5.model.AuditEvent();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasType())
-            tgt.setType(VersionConvertor_30_50.convertCoding(src.getType()));
-        for (org.hl7.fhir.dstu3.model.Coding t : src.getSubtype()) tgt.addSubtype(VersionConvertor_30_50.convertCoding(t));
+            tgt.setType(Coding30_50.convertCoding(src.getType()));
+        for (org.hl7.fhir.dstu3.model.Coding t : src.getSubtype()) tgt.addSubtype(Coding30_50.convertCoding(t));
         if (src.hasAction())
             tgt.setActionElement(convertAuditEventAction(src.getActionElement()));
         if (src.hasRecorded())
-            tgt.setRecordedElement(VersionConvertor_30_50.convertInstant(src.getRecordedElement()));
+            tgt.setRecordedElement(Instant30_50.convertInstant(src.getRecordedElement()));
         if (src.hasOutcome())
           tgt.getOutcome().addCoding().setSystem("http://terminology.hl7.org/CodeSystem/audit-event-outcome").setCode(src.getOutcome().toCode());
         if (src.hasOutcomeDesc())
-          tgt.getOutcome().setTextElement(VersionConvertor_30_50.convertString(src.getOutcomeDescElement()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getPurposeOfEvent()) tgt.addPurposeOfEvent(VersionConvertor_30_50.convertCodeableConcept(t));
+          tgt.getOutcome().setTextElement(String30_50.convertString(src.getOutcomeDescElement()));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getPurposeOfEvent()) tgt.addPurposeOfEvent(CodeableConcept30_50.convertCodeableConcept(t));
         for (org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentComponent t : src.getAgent()) tgt.addAgent(convertAuditEventAgentComponent(t));
         if (src.hasSource())
             tgt.setSource(convertAuditEventSourceComponent(src.getSource()));
@@ -35,17 +44,17 @@ public class AuditEvent30_50 {
         org.hl7.fhir.dstu3.model.AuditEvent tgt = new org.hl7.fhir.dstu3.model.AuditEvent();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasType())
-            tgt.setType(VersionConvertor_30_50.convertCoding(src.getType()));
-        for (org.hl7.fhir.r5.model.Coding t : src.getSubtype()) tgt.addSubtype(VersionConvertor_30_50.convertCoding(t));
+            tgt.setType(Coding30_50.convertCoding(src.getType()));
+        for (org.hl7.fhir.r5.model.Coding t : src.getSubtype()) tgt.addSubtype(Coding30_50.convertCoding(t));
         if (src.hasAction())
             tgt.setActionElement(convertAuditEventAction(src.getActionElement()));
         if (src.hasRecorded())
-            tgt.setRecordedElement(VersionConvertor_30_50.convertInstant(src.getRecordedElement()));
+            tgt.setRecordedElement(Instant30_50.convertInstant(src.getRecordedElement()));
         if (src.hasOutcome() && src.getOutcome().hasCoding("http://terminology.hl7.org/CodeSystem/audit-event-outcome"))
             tgt.getOutcomeElement().setValueAsString(src.getOutcome().getCode("http://terminology.hl7.org/CodeSystem/audit-event-outcome"));
         if (src.getOutcome().hasText())
-            tgt.setOutcomeDescElement(VersionConvertor_30_50.convertString(src.getOutcome().getTextElement()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPurposeOfEvent()) tgt.addPurposeOfEvent(VersionConvertor_30_50.convertCodeableConcept(t));
+            tgt.setOutcomeDescElement(String30_50.convertString(src.getOutcome().getTextElement()));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPurposeOfEvent()) tgt.addPurposeOfEvent(CodeableConcept30_50.convertCodeableConcept(t));
         for (org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentComponent t : src.getAgent()) tgt.addAgent(convertAuditEventAgentComponent(t));
         if (src.hasSource())
             tgt.setSource(convertAuditEventSourceComponent(src.getSource()));
@@ -57,7 +66,7 @@ public class AuditEvent30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.AuditEvent.AuditEventAction> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.AuditEvent.AuditEventActionEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case C:
                 tgt.setValue(org.hl7.fhir.r5.model.AuditEvent.AuditEventAction.C);
@@ -85,7 +94,7 @@ public class AuditEvent30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventActionEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case C:
                 tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAction.C);
@@ -113,26 +122,26 @@ public class AuditEvent30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentComponent tgt = new org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getRole()) tgt.addRole(VersionConvertor_30_50.convertCodeableConcept(t));
+        Element30_50.copyElement(src, tgt);
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getRole()) tgt.addRole(CodeableConcept30_50.convertCodeableConcept(t));
         if (src.hasReference())
-            tgt.setWho(VersionConvertor_30_50.convertReference(src.getReference()));
+            tgt.setWho(Reference30_50.convertReference(src.getReference()));
         if (src.hasUserId())
-            tgt.getWho().setIdentifier(VersionConvertor_30_50.convertIdentifier(src.getUserId()));
+            tgt.getWho().setIdentifier(Identifier30_50.convertIdentifier(src.getUserId()));
         if (src.hasAltId())
-            tgt.setAltIdElement(VersionConvertor_30_50.convertString(src.getAltIdElement()));
+            tgt.setAltIdElement(String30_50.convertString(src.getAltIdElement()));
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String30_50.convertString(src.getNameElement()));
         if (src.hasRequestor())
-            tgt.setRequestorElement(VersionConvertor_30_50.convertBoolean(src.getRequestorElement()));
+            tgt.setRequestorElement(Boolean30_50.convertBoolean(src.getRequestorElement()));
         if (src.hasLocation())
-            tgt.setLocation(VersionConvertor_30_50.convertReference(src.getLocation()));
+            tgt.setLocation(Reference30_50.convertReference(src.getLocation()));
         for (org.hl7.fhir.dstu3.model.UriType t : src.getPolicy()) tgt.addPolicy(t.getValue());
         if (src.hasMedia())
-            tgt.setMedia(VersionConvertor_30_50.convertCoding(src.getMedia()));
+            tgt.setMedia(Coding30_50.convertCoding(src.getMedia()));
         if (src.hasNetwork())
             tgt.setNetwork(convertAuditEventAgentNetworkComponent(src.getNetwork()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getPurposeOfUse()) tgt.addPurposeOfUse(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getPurposeOfUse()) tgt.addPurposeOfUse(CodeableConcept30_50.convertCodeableConcept(t));
         return tgt;
     }
 
@@ -140,28 +149,28 @@ public class AuditEvent30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getRole()) tgt.addRole(VersionConvertor_30_50.convertCodeableConcept(t));
+        Element30_50.copyElement(src, tgt);
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getRole()) tgt.addRole(CodeableConcept30_50.convertCodeableConcept(t));
         if (src.hasWho()) {
             if (src.getWho().hasIdentifier())
-                tgt.setUserId(VersionConvertor_30_50.convertIdentifier(src.getWho().getIdentifier()));
+                tgt.setUserId(Identifier30_50.convertIdentifier(src.getWho().getIdentifier()));
             if (src.getWho().hasReference() || src.getWho().hasDisplay() || src.getWho().hasExtension() || src.getWho().hasId())
-                tgt.setReference(VersionConvertor_30_50.convertReference(src.getWho()));
+                tgt.setReference(Reference30_50.convertReference(src.getWho()));
         }
         if (src.hasAltId())
-            tgt.setAltIdElement(VersionConvertor_30_50.convertString(src.getAltIdElement()));
+            tgt.setAltIdElement(String30_50.convertString(src.getAltIdElement()));
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String30_50.convertString(src.getNameElement()));
         if (src.hasRequestor())
-            tgt.setRequestorElement(VersionConvertor_30_50.convertBoolean(src.getRequestorElement()));
+            tgt.setRequestorElement(Boolean30_50.convertBoolean(src.getRequestorElement()));
         if (src.hasLocation())
-            tgt.setLocation(VersionConvertor_30_50.convertReference(src.getLocation()));
+            tgt.setLocation(Reference30_50.convertReference(src.getLocation()));
         for (org.hl7.fhir.r5.model.UriType t : src.getPolicy()) tgt.addPolicy(t.getValue());
         if (src.hasMedia())
-            tgt.setMedia(VersionConvertor_30_50.convertCoding(src.getMedia()));
+            tgt.setMedia(Coding30_50.convertCoding(src.getMedia()));
         if (src.hasNetwork())
             tgt.setNetwork(convertAuditEventAgentNetworkComponent(src.getNetwork()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPurposeOfUse()) tgt.addPurposeOfUse(VersionConvertor_30_50.convertCodeableConcept(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPurposeOfUse()) tgt.addPurposeOfUse(CodeableConcept30_50.convertCodeableConcept(t));
         return tgt;
     }
 
@@ -169,9 +178,9 @@ public class AuditEvent30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasAddress())
-            tgt.setAddressElement(VersionConvertor_30_50.convertString(src.getAddressElement()));
+            tgt.setAddressElement(String30_50.convertString(src.getAddressElement()));
         if (src.hasType())
             tgt.setTypeElement(convertAuditEventAgentNetworkType(src.getTypeElement()));
         return tgt;
@@ -181,9 +190,9 @@ public class AuditEvent30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentNetworkComponent tgt = new org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentNetworkComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasAddress())
-            tgt.setAddressElement(VersionConvertor_30_50.convertString(src.getAddressElement()));
+            tgt.setAddressElement(String30_50.convertString(src.getAddressElement()));
         if (src.hasType())
             tgt.setTypeElement(convertAuditEventAgentNetworkType(src.getTypeElement()));
         return tgt;
@@ -193,7 +202,7 @@ public class AuditEvent30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentNetworkType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentNetworkTypeEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case _1:
                 tgt.setValue(org.hl7.fhir.r5.model.AuditEvent.AuditEventAgentNetworkType._1);
@@ -221,7 +230,7 @@ public class AuditEvent30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkTypeEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case _1:
                 tgt.setValue(org.hl7.fhir.dstu3.model.AuditEvent.AuditEventAgentNetworkType._1);
@@ -249,22 +258,22 @@ public class AuditEvent30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.AuditEvent.AuditEventEntityComponent tgt = new org.hl7.fhir.r5.model.AuditEvent.AuditEventEntityComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasIdentifier())
-            tgt.getWhat().setIdentifier(VersionConvertor_30_50.convertIdentifier(src.getIdentifier()));
+            tgt.getWhat().setIdentifier(Identifier30_50.convertIdentifier(src.getIdentifier()));
         if (src.hasReference())
-            tgt.setWhat(VersionConvertor_30_50.convertReference(src.getReference()));
+            tgt.setWhat(Reference30_50.convertReference(src.getReference()));
         if (src.hasType())
-            tgt.setType(VersionConvertor_30_50.convertCoding(src.getType()));
+            tgt.setType(Coding30_50.convertCoding(src.getType()));
         if (src.hasRole())
-            tgt.setRole(VersionConvertor_30_50.convertCoding(src.getRole()));
+            tgt.setRole(Coding30_50.convertCoding(src.getRole()));
         if (src.hasLifecycle())
-            tgt.setLifecycle(VersionConvertor_30_50.convertCoding(src.getLifecycle()));
-        for (org.hl7.fhir.dstu3.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_30_50.convertCoding(t));
+            tgt.setLifecycle(Coding30_50.convertCoding(src.getLifecycle()));
+        for (org.hl7.fhir.dstu3.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(Coding30_50.convertCoding(t));
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String30_50.convertString(src.getNameElement()));
         if (src.hasQuery())
-            tgt.setQueryElement(VersionConvertor_30_50.convertBase64Binary(src.getQueryElement()));
+            tgt.setQueryElement(Base64Binary30_50.convertBase64Binary(src.getQueryElement()));
         for (org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityDetailComponent t : src.getDetail()) tgt.addDetail(convertAuditEventEntityDetailComponent(t));
         return tgt;
     }
@@ -273,24 +282,24 @@ public class AuditEvent30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasWhat()) {
             if (src.getWhat().hasIdentifier())
-                tgt.setIdentifier(VersionConvertor_30_50.convertIdentifier(src.getWhat().getIdentifier()));
+                tgt.setIdentifier(Identifier30_50.convertIdentifier(src.getWhat().getIdentifier()));
             if (src.getWhat().hasReference() || src.getWhat().hasDisplay() || src.getWhat().hasExtension() || src.getWhat().hasId())
-                tgt.setReference(VersionConvertor_30_50.convertReference(src.getWhat()));
+                tgt.setReference(Reference30_50.convertReference(src.getWhat()));
         }
         if (src.hasType())
-            tgt.setType(VersionConvertor_30_50.convertCoding(src.getType()));
+            tgt.setType(Coding30_50.convertCoding(src.getType()));
         if (src.hasRole())
-            tgt.setRole(VersionConvertor_30_50.convertCoding(src.getRole()));
+            tgt.setRole(Coding30_50.convertCoding(src.getRole()));
         if (src.hasLifecycle())
-            tgt.setLifecycle(VersionConvertor_30_50.convertCoding(src.getLifecycle()));
-        for (org.hl7.fhir.r5.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(VersionConvertor_30_50.convertCoding(t));
+            tgt.setLifecycle(Coding30_50.convertCoding(src.getLifecycle()));
+        for (org.hl7.fhir.r5.model.Coding t : src.getSecurityLabel()) tgt.addSecurityLabel(Coding30_50.convertCoding(t));
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String30_50.convertString(src.getNameElement()));
         if (src.hasQuery())
-            tgt.setQueryElement(VersionConvertor_30_50.convertBase64Binary(src.getQueryElement()));
+            tgt.setQueryElement(Base64Binary30_50.convertBase64Binary(src.getQueryElement()));
         for (org.hl7.fhir.r5.model.AuditEvent.AuditEventEntityDetailComponent t : src.getDetail()) tgt.addDetail(convertAuditEventEntityDetailComponent(t));
         return tgt;
     }
@@ -299,9 +308,9 @@ public class AuditEvent30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityDetailComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventEntityDetailComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setTypeElement(VersionConvertor_30_50.convertString(src.getTypeElement()));
+            tgt.setTypeElement(String30_50.convertString(src.getTypeElement()));
         if (src.hasValueStringType())
             tgt.setValue(src.getValueStringType().getValue().getBytes());
         else if (src.hasValueBase64BinaryType())
@@ -313,9 +322,9 @@ public class AuditEvent30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.AuditEvent.AuditEventEntityDetailComponent tgt = new org.hl7.fhir.r5.model.AuditEvent.AuditEventEntityDetailComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasType())
-            tgt.setTypeElement(VersionConvertor_30_50.convertString(src.getTypeElement()));
+            tgt.setTypeElement(String30_50.convertString(src.getTypeElement()));
         if (src.hasValue())
             tgt.setValue(new org.hl7.fhir.r5.model.Base64BinaryType(src.getValue()));
         return tgt;
@@ -326,12 +335,12 @@ public class AuditEvent30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.AuditEvent.AuditEventSourceComponent tgt = new org.hl7.fhir.dstu3.model.AuditEvent.AuditEventSourceComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasSite())
-            tgt.setSiteElement(VersionConvertor_30_50.convertString(src.getSiteElement()));
+            tgt.setSiteElement(String30_50.convertString(src.getSiteElement()));
         if (src.hasObserver())
-            tgt.setIdentifier(VersionConvertor_30_50.convertIdentifier(src.getObserver().getIdentifier()));
-        for (org.hl7.fhir.r5.model.Coding t : src.getType()) tgt.addType(VersionConvertor_30_50.convertCoding(t));
+            tgt.setIdentifier(Identifier30_50.convertIdentifier(src.getObserver().getIdentifier()));
+        for (org.hl7.fhir.r5.model.Coding t : src.getType()) tgt.addType(Coding30_50.convertCoding(t));
         return tgt;
     }
 
@@ -339,12 +348,12 @@ public class AuditEvent30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.AuditEvent.AuditEventSourceComponent tgt = new org.hl7.fhir.r5.model.AuditEvent.AuditEventSourceComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasSite())
-            tgt.setSiteElement(VersionConvertor_30_50.convertString(src.getSiteElement()));
+            tgt.setSiteElement(String30_50.convertString(src.getSiteElement()));
         if (src.hasIdentifier())
-            tgt.getObserver().setIdentifier(VersionConvertor_30_50.convertIdentifier(src.getIdentifier()));
-        for (org.hl7.fhir.dstu3.model.Coding t : src.getType()) tgt.addType(VersionConvertor_30_50.convertCoding(t));
+            tgt.getObserver().setIdentifier(Identifier30_50.convertIdentifier(src.getIdentifier()));
+        for (org.hl7.fhir.dstu3.model.Coding t : src.getType()) tgt.addType(Coding30_50.convertCoding(t));
         return tgt;
     }
 }

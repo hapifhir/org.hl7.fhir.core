@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_50;
 import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.formats.XmlParser;

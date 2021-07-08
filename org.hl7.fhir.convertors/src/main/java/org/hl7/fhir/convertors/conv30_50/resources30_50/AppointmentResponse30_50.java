@@ -1,6 +1,12 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Element30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Instant30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class AppointmentResponse30_50 {
@@ -10,20 +16,20 @@ public class AppointmentResponse30_50 {
             return null;
         org.hl7.fhir.r5.model.AppointmentResponse tgt = new org.hl7.fhir.r5.model.AppointmentResponse();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
         if (src.hasAppointment())
-            tgt.setAppointment(VersionConvertor_30_50.convertReference(src.getAppointment()));
+            tgt.setAppointment(Reference30_50.convertReference(src.getAppointment()));
         if (src.hasStart())
-            tgt.setStartElement(VersionConvertor_30_50.convertInstant(src.getStartElement()));
+            tgt.setStartElement(Instant30_50.convertInstant(src.getStartElement()));
         if (src.hasEnd())
-            tgt.setEndElement(VersionConvertor_30_50.convertInstant(src.getEndElement()));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_30_50.convertCodeableConcept(t));
+            tgt.setEndElement(Instant30_50.convertInstant(src.getEndElement()));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(CodeableConcept30_50.convertCodeableConcept(t));
         if (src.hasActor())
-            tgt.setActor(VersionConvertor_30_50.convertReference(src.getActor()));
+            tgt.setActor(Reference30_50.convertReference(src.getActor()));
         if (src.hasParticipantStatus())
             tgt.setParticipantStatusElement(convertParticipantStatus(src.getParticipantStatusElement()));
         if (src.hasComment())
-            tgt.setCommentElement(VersionConvertor_30_50.convertString(src.getCommentElement()));
+            tgt.setCommentElement(String30_50.convertString(src.getCommentElement()));
         return tgt;
     }
 
@@ -32,20 +38,20 @@ public class AppointmentResponse30_50 {
             return null;
         org.hl7.fhir.dstu3.model.AppointmentResponse tgt = new org.hl7.fhir.dstu3.model.AppointmentResponse();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(t));
+        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
         if (src.hasAppointment())
-            tgt.setAppointment(VersionConvertor_30_50.convertReference(src.getAppointment()));
+            tgt.setAppointment(Reference30_50.convertReference(src.getAppointment()));
         if (src.hasStart())
-            tgt.setStartElement(VersionConvertor_30_50.convertInstant(src.getStartElement()));
+            tgt.setStartElement(Instant30_50.convertInstant(src.getStartElement()));
         if (src.hasEnd())
-            tgt.setEndElement(VersionConvertor_30_50.convertInstant(src.getEndElement()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(VersionConvertor_30_50.convertCodeableConcept(t));
+            tgt.setEndElement(Instant30_50.convertInstant(src.getEndElement()));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(CodeableConcept30_50.convertCodeableConcept(t));
         if (src.hasActor())
-            tgt.setActor(VersionConvertor_30_50.convertReference(src.getActor()));
+            tgt.setActor(Reference30_50.convertReference(src.getActor()));
         if (src.hasParticipantStatus())
             tgt.setParticipantStatusElement(convertParticipantStatus(src.getParticipantStatusElement()));
         if (src.hasComment())
-            tgt.setCommentElement(VersionConvertor_30_50.convertString(src.getCommentElement()));
+            tgt.setCommentElement(String30_50.convertString(src.getCommentElement()));
         return tgt;
     }
 
@@ -53,7 +59,7 @@ public class AppointmentResponse30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.AppointmentResponse.ParticipantStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.AppointmentResponse.ParticipantStatusEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACCEPTED:
                 tgt.setValue(org.hl7.fhir.dstu3.model.AppointmentResponse.ParticipantStatus.ACCEPTED);
@@ -78,7 +84,7 @@ public class AppointmentResponse30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ParticipationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ParticipationStatusEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case ACCEPTED:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.ACCEPTED);

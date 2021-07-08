@@ -1,6 +1,14 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Element30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.ContactDetail30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class MessageDefinition30_50 {
@@ -11,38 +19,38 @@ public class MessageDefinition30_50 {
         org.hl7.fhir.dstu3.model.MessageDefinition tgt = new org.hl7.fhir.dstu3.model.MessageDefinition();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasUrl())
-            tgt.setUrlElement(VersionConvertor_30_50.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri30_50.convertUri(src.getUrlElement()));
         if (src.hasIdentifier())
-            tgt.setIdentifier(VersionConvertor_30_50.convertIdentifier(src.getIdentifierFirstRep()));
+            tgt.setIdentifier(Identifier30_50.convertIdentifier(src.getIdentifierFirstRep()));
         if (src.hasVersion())
-            tgt.setVersionElement(VersionConvertor_30_50.convertString(src.getVersionElement()));
+            tgt.setVersionElement(String30_50.convertString(src.getVersionElement()));
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String30_50.convertString(src.getNameElement()));
         if (src.hasTitle())
-            tgt.setTitleElement(VersionConvertor_30_50.convertString(src.getTitleElement()));
+            tgt.setTitleElement(String30_50.convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatusElement(VersionConvertor_30_50.convertPublicationStatus(src.getStatusElement()));
+            tgt.setStatusElement(Enumerations30_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
-            tgt.setExperimentalElement(VersionConvertor_30_50.convertBoolean(src.getExperimentalElement()));
+            tgt.setExperimentalElement(Boolean30_50.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
-            tgt.setDateElement(VersionConvertor_30_50.convertDateTime(src.getDateElement()));
+            tgt.setDateElement(DateTime30_50.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
-            tgt.setPublisherElement(VersionConvertor_30_50.convertString(src.getPublisherElement()));
-        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
+            tgt.setPublisherElement(String30_50.convertString(src.getPublisherElement()));
+        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(ContactDetail30_50.convertContactDetail(t));
         if (src.hasDescription())
-            tgt.setDescriptionElement(VersionConvertor_30_50.convertMarkdown(src.getDescriptionElement()));
-        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_50.convertUsageContext(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_50.convertCodeableConcept(t));
+            tgt.setDescriptionElement(MarkDown30_50.convertMarkdown(src.getDescriptionElement()));
+        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(UsageContext30_50.convertUsageContext(t));
+        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(CodeableConcept30_50.convertCodeableConcept(t));
         if (src.hasPurpose())
-            tgt.setPurposeElement(VersionConvertor_30_50.convertMarkdown(src.getPurposeElement()));
+            tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
-            tgt.setCopyrightElement(VersionConvertor_30_50.convertMarkdown(src.getCopyrightElement()));
+            tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
         if (src.hasBase())
-            tgt.setBase(VersionConvertor_30_50.convertCanonicalToReference(src.getBaseElement()));
-        for (org.hl7.fhir.r5.model.CanonicalType t : src.getParent()) tgt.addParent(VersionConvertor_30_50.convertCanonicalToReference(t));
-        for (org.hl7.fhir.r5.model.CanonicalType t : src.getReplaces()) tgt.addReplaces(VersionConvertor_30_50.convertCanonicalToReference(t));
+            tgt.setBase(Reference30_50.convertCanonicalToReference(src.getBaseElement()));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getParent()) tgt.addParent(Reference30_50.convertCanonicalToReference(t));
+        for (org.hl7.fhir.r5.model.CanonicalType t : src.getReplaces()) tgt.addReplaces(Reference30_50.convertCanonicalToReference(t));
         if (src.hasEventCoding())
-            tgt.setEvent(VersionConvertor_30_50.convertCoding(src.getEventCoding()));
+            tgt.setEvent(Coding30_50.convertCoding(src.getEventCoding()));
         if (src.hasCategory())
             tgt.setCategoryElement(convertMessageSignificanceCategory(src.getCategoryElement()));
         for (org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
@@ -58,38 +66,38 @@ public class MessageDefinition30_50 {
         org.hl7.fhir.r5.model.MessageDefinition tgt = new org.hl7.fhir.r5.model.MessageDefinition();
         VersionConvertor_30_50.copyDomainResource(src, tgt);
         if (src.hasUrl())
-            tgt.setUrlElement(VersionConvertor_30_50.convertUri(src.getUrlElement()));
+            tgt.setUrlElement(Uri30_50.convertUri(src.getUrlElement()));
         if (src.hasIdentifier())
-            tgt.addIdentifier(VersionConvertor_30_50.convertIdentifier(src.getIdentifier()));
+            tgt.addIdentifier(Identifier30_50.convertIdentifier(src.getIdentifier()));
         if (src.hasVersion())
-            tgt.setVersionElement(VersionConvertor_30_50.convertString(src.getVersionElement()));
+            tgt.setVersionElement(String30_50.convertString(src.getVersionElement()));
         if (src.hasName())
-            tgt.setNameElement(VersionConvertor_30_50.convertString(src.getNameElement()));
+            tgt.setNameElement(String30_50.convertString(src.getNameElement()));
         if (src.hasTitle())
-            tgt.setTitleElement(VersionConvertor_30_50.convertString(src.getTitleElement()));
+            tgt.setTitleElement(String30_50.convertString(src.getTitleElement()));
         if (src.hasStatus())
-            tgt.setStatusElement(VersionConvertor_30_50.convertPublicationStatus(src.getStatusElement()));
+            tgt.setStatusElement(Enumerations30_50.convertPublicationStatus(src.getStatusElement()));
         if (src.hasExperimental())
-            tgt.setExperimentalElement(VersionConvertor_30_50.convertBoolean(src.getExperimentalElement()));
+            tgt.setExperimentalElement(Boolean30_50.convertBoolean(src.getExperimentalElement()));
         if (src.hasDate())
-            tgt.setDateElement(VersionConvertor_30_50.convertDateTime(src.getDateElement()));
+            tgt.setDateElement(DateTime30_50.convertDateTime(src.getDateElement()));
         if (src.hasPublisher())
-            tgt.setPublisherElement(VersionConvertor_30_50.convertString(src.getPublisherElement()));
-        for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(VersionConvertor_30_50.convertContactDetail(t));
+            tgt.setPublisherElement(String30_50.convertString(src.getPublisherElement()));
+        for (org.hl7.fhir.dstu3.model.ContactDetail t : src.getContact()) tgt.addContact(ContactDetail30_50.convertContactDetail(t));
         if (src.hasDescription())
-            tgt.setDescriptionElement(VersionConvertor_30_50.convertMarkdown(src.getDescriptionElement()));
-        for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(VersionConvertor_30_50.convertUsageContext(t));
-        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(VersionConvertor_30_50.convertCodeableConcept(t));
+            tgt.setDescriptionElement(MarkDown30_50.convertMarkdown(src.getDescriptionElement()));
+        for (org.hl7.fhir.dstu3.model.UsageContext t : src.getUseContext()) tgt.addUseContext(UsageContext30_50.convertUsageContext(t));
+        for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getJurisdiction()) tgt.addJurisdiction(CodeableConcept30_50.convertCodeableConcept(t));
         if (src.hasPurpose())
-            tgt.setPurposeElement(VersionConvertor_30_50.convertMarkdown(src.getPurposeElement()));
+            tgt.setPurposeElement(MarkDown30_50.convertMarkdown(src.getPurposeElement()));
         if (src.hasCopyright())
-            tgt.setCopyrightElement(VersionConvertor_30_50.convertMarkdown(src.getCopyrightElement()));
+            tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
         if (src.hasBase())
-            tgt.setBaseElement(VersionConvertor_30_50.convertReferenceToCanonical(src.getBase()));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getParent()) tgt.getParent().add(VersionConvertor_30_50.convertReferenceToCanonical(t));
-        for (org.hl7.fhir.dstu3.model.Reference t : src.getReplaces()) tgt.getReplaces().add(VersionConvertor_30_50.convertReferenceToCanonical(t));
+            tgt.setBaseElement(Reference30_50.convertReferenceToCanonical(src.getBase()));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getParent()) tgt.getParent().add(Reference30_50.convertReferenceToCanonical(t));
+        for (org.hl7.fhir.dstu3.model.Reference t : src.getReplaces()) tgt.getReplaces().add(Reference30_50.convertReferenceToCanonical(t));
         if (src.hasEvent())
-            tgt.setEvent(VersionConvertor_30_50.convertCoding(src.getEvent()));
+            tgt.setEvent(Coding30_50.convertCoding(src.getEvent()));
         if (src.hasCategory())
             tgt.setCategoryElement(convertMessageSignificanceCategory(src.getCategoryElement()));
         for (org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionFocusComponent t : src.getFocus()) tgt.addFocus(convertMessageDefinitionFocusComponent(t));
@@ -103,11 +111,11 @@ public class MessageDefinition30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionAllowedResponseComponent tgt = new org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionAllowedResponseComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasMessage())
-            tgt.setMessage(VersionConvertor_30_50.convertCanonicalToReference(src.getMessageElement()));
+            tgt.setMessage(Reference30_50.convertCanonicalToReference(src.getMessageElement()));
         if (src.hasSituation())
-            tgt.setSituationElement(VersionConvertor_30_50.convertMarkdown(src.getSituationElement()));
+            tgt.setSituationElement(MarkDown30_50.convertMarkdown(src.getSituationElement()));
         return tgt;
     }
 
@@ -115,11 +123,11 @@ public class MessageDefinition30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionAllowedResponseComponent tgt = new org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionAllowedResponseComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasMessage())
-            tgt.setMessageElement(VersionConvertor_30_50.convertReferenceToCanonical(src.getMessage()));
+            tgt.setMessageElement(Reference30_50.convertReferenceToCanonical(src.getMessage()));
         if (src.hasSituation())
-            tgt.setSituationElement(VersionConvertor_30_50.convertMarkdown(src.getSituationElement()));
+            tgt.setSituationElement(MarkDown30_50.convertMarkdown(src.getSituationElement()));
         return tgt;
     }
 
@@ -127,15 +135,15 @@ public class MessageDefinition30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.dstu3.model.MessageDefinition.MessageDefinitionFocusComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(VersionConvertor_30_50.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
         if (src.hasProfile())
-            tgt.setProfile(VersionConvertor_30_50.convertCanonicalToReference(src.getProfileElement()));
+            tgt.setProfile(Reference30_50.convertCanonicalToReference(src.getProfileElement()));
         if (src.hasMin())
-            tgt.setMinElement(VersionConvertor_30_50.convertUnsignedInt(src.getMinElement()));
+            tgt.setMinElement(UnsignedInt30_50.convertUnsignedInt(src.getMinElement()));
         if (src.hasMax())
-            tgt.setMaxElement(VersionConvertor_30_50.convertString(src.getMaxElement()));
+            tgt.setMaxElement(String30_50.convertString(src.getMaxElement()));
         return tgt;
     }
 
@@ -143,15 +151,15 @@ public class MessageDefinition30_50 {
         if (src == null)
             return null;
         org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent tgt = new org.hl7.fhir.r5.model.MessageDefinition.MessageDefinitionFocusComponent();
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         if (src.hasCode())
-            tgt.setCodeElement(VersionConvertor_30_50.convertCode(src.getCodeElement()));
+            tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
         if (src.hasProfile())
-            tgt.setProfileElement(VersionConvertor_30_50.convertReferenceToCanonical(src.getProfile()));
+            tgt.setProfileElement(Reference30_50.convertReferenceToCanonical(src.getProfile()));
         if (src.hasMin())
-            tgt.setMinElement(VersionConvertor_30_50.convertUnsignedInt(src.getMinElement()));
+            tgt.setMinElement(UnsignedInt30_50.convertUnsignedInt(src.getMinElement()));
         if (src.hasMax())
-            tgt.setMaxElement(VersionConvertor_30_50.convertString(src.getMaxElement()));
+            tgt.setMaxElement(String30_50.convertString(src.getMaxElement()));
         return tgt;
     }
 
@@ -159,7 +167,7 @@ public class MessageDefinition30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategoryEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case CONSEQUENCE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.MessageDefinition.MessageSignificanceCategory.CONSEQUENCE);
@@ -181,7 +189,7 @@ public class MessageDefinition30_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategoryEnumFactory());
-        VersionConvertor_30_50.copyElement(src, tgt);
+        Element30_50.copyElement(src, tgt);
         switch(src.getValue()) {
             case CONSEQUENCE:
                 tgt.setValue(org.hl7.fhir.r5.model.MessageDefinition.MessageSignificanceCategory.CONSEQUENCE);
