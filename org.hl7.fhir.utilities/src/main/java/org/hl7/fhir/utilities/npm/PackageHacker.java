@@ -139,8 +139,14 @@ public class PackageHacker {
     case "file://C:\\GitHub\\hl7.fhir.uv.security-label-ds4p#0.1.0\\output": return "http://hl7.org/fhir/uv/security-label-ds4p/2020May"; 
     case "file://C:\\GitHub\\hl7.fhir.uv.shorthand#0.12.0\\output":          return "http://hl7.org/fhir/uv/shorthand/2020May"; 
     }
+
+    // https://github.com/HL7/fhir-ig-publisher/issues/295
+    if (webref.contains("hl7.org/fhir/us/core/STU4.0.0")) {
+      webref.replace("hl7.org/fhir/us/core/STU4.0.0", "hl7.org/fhir/us/core/STU4");
+    }
+
     if (isUseSecureReferences()) {
-    return webref.replace("http://hl7.org/fhir", "https://hl7.org/fhir").replace("http://build.fhir.org", "https://build.fhir.org");
+      return webref.replace("http://hl7.org/fhir", "https://hl7.org/fhir").replace("http://build.fhir.org", "https://build.fhir.org");
     } else {
       return webref;
     }
