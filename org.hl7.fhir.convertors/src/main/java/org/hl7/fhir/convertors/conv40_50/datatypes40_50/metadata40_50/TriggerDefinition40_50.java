@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50;
 
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -9,11 +9,12 @@ public class TriggerDefinition40_50 {
   public static org.hl7.fhir.r5.model.TriggerDefinition convertTriggerDefinition(org.hl7.fhir.r4.model.TriggerDefinition src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.TriggerDefinition tgt = new org.hl7.fhir.r5.model.TriggerDefinition();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasType()) tgt.setTypeElement(convertTriggerType(src.getTypeElement()));
     if (src.hasName()) tgt.setNameElement(String40_50.convertString(src.getNameElement()));
-    if (src.hasTiming()) tgt.setTiming(Type40_50.convertType(src.getTiming()));
-    for (org.hl7.fhir.r4.model.DataRequirement t : src.getData()) tgt.addData(DataRequirement40_50.convertDataRequirement(t));
+    if (src.hasTiming()) tgt.setTiming(VersionConvertor_40_50.convertType(src.getTiming()));
+    for (org.hl7.fhir.r4.model.DataRequirement t : src.getData())
+      tgt.addData(DataRequirement40_50.convertDataRequirement(t));
     if (src.hasCondition()) tgt.setCondition(Expression40_50.convertExpression(src.getCondition()));
     return tgt;
   }
@@ -21,11 +22,12 @@ public class TriggerDefinition40_50 {
   public static org.hl7.fhir.r4.model.TriggerDefinition convertTriggerDefinition(org.hl7.fhir.r5.model.TriggerDefinition src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.TriggerDefinition tgt = new org.hl7.fhir.r4.model.TriggerDefinition();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasType()) tgt.setTypeElement(convertTriggerType(src.getTypeElement()));
     if (src.hasName()) tgt.setNameElement(String40_50.convertString(src.getNameElement()));
-    if (src.hasTiming()) tgt.setTiming(Type40_50.convertType(src.getTiming()));
-    for (org.hl7.fhir.r5.model.DataRequirement t : src.getData()) tgt.addData(DataRequirement40_50.convertDataRequirement(t));
+    if (src.hasTiming()) tgt.setTiming(VersionConvertor_40_50.convertType(src.getTiming()));
+    for (org.hl7.fhir.r5.model.DataRequirement t : src.getData())
+      tgt.addData(DataRequirement40_50.convertDataRequirement(t));
     if (src.hasCondition()) tgt.setCondition(Expression40_50.convertExpression(src.getCondition()));
     return tgt;
   }
@@ -33,7 +35,7 @@ public class TriggerDefinition40_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TriggerDefinition.TriggerType> convertTriggerType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TriggerDefinition.TriggerType> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TriggerDefinition.TriggerType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.TriggerDefinition.TriggerTypeEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r5.model.TriggerDefinition.TriggerType.NULL);
     } else {
@@ -73,7 +75,7 @@ public class TriggerDefinition40_50 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TriggerDefinition.TriggerType> convertTriggerType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.TriggerDefinition.TriggerType> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.TriggerDefinition.TriggerType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.TriggerDefinition.TriggerTypeEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r4.model.TriggerDefinition.TriggerType.NULL);
     } else {

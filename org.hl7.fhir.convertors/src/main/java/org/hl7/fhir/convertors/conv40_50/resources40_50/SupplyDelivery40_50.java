@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuantity40_50;
@@ -39,131 +37,133 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class SupplyDelivery40_50 extends VersionConvertor_40_50 {
+public class SupplyDelivery40_50 {
 
-    public static org.hl7.fhir.r5.model.SupplyDelivery convertSupplyDelivery(org.hl7.fhir.r4.model.SupplyDelivery src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.SupplyDelivery tgt = new org.hl7.fhir.r5.model.SupplyDelivery();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertSupplyDeliveryStatus(src.getStatusElement()));
-        if (src.hasPatient())
-            tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
-        if (src.hasType())
-            tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-        if (src.hasSuppliedItem())
-            tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
-        if (src.hasOccurrence())
-            tgt.setOccurrence(Type40_50.convertType(src.getOccurrence()));
-        if (src.hasSupplier())
-            tgt.setSupplier(Reference40_50.convertReference(src.getSupplier()));
-        if (src.hasDestination())
-            tgt.setDestination(Reference40_50.convertReference(src.getDestination()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getReceiver()) tgt.addReceiver(Reference40_50.convertReference(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.SupplyDelivery convertSupplyDelivery(org.hl7.fhir.r4.model.SupplyDelivery src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.SupplyDelivery tgt = new org.hl7.fhir.r5.model.SupplyDelivery();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertSupplyDeliveryStatus(src.getStatusElement()));
+    if (src.hasPatient())
+      tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
+    if (src.hasType())
+      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+    if (src.hasSuppliedItem())
+      tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
+    if (src.hasOccurrence())
+      tgt.setOccurrence(VersionConvertor_40_50.convertType(src.getOccurrence()));
+    if (src.hasSupplier())
+      tgt.setSupplier(Reference40_50.convertReference(src.getSupplier()));
+    if (src.hasDestination())
+      tgt.setDestination(Reference40_50.convertReference(src.getDestination()));
+    for (org.hl7.fhir.r4.model.Reference t : src.getReceiver()) tgt.addReceiver(Reference40_50.convertReference(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.SupplyDelivery convertSupplyDelivery(org.hl7.fhir.r5.model.SupplyDelivery src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.SupplyDelivery tgt = new org.hl7.fhir.r4.model.SupplyDelivery();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertSupplyDeliveryStatus(src.getStatusElement()));
-        if (src.hasPatient())
-            tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
-        if (src.hasType())
-            tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-        if (src.hasSuppliedItem())
-            tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
-        if (src.hasOccurrence())
-            tgt.setOccurrence(Type40_50.convertType(src.getOccurrence()));
-        if (src.hasSupplier())
-            tgt.setSupplier(Reference40_50.convertReference(src.getSupplier()));
-        if (src.hasDestination())
-            tgt.setDestination(Reference40_50.convertReference(src.getDestination()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getReceiver()) tgt.addReceiver(Reference40_50.convertReference(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.SupplyDelivery convertSupplyDelivery(org.hl7.fhir.r5.model.SupplyDelivery src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.SupplyDelivery tgt = new org.hl7.fhir.r4.model.SupplyDelivery();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertSupplyDeliveryStatus(src.getStatusElement()));
+    if (src.hasPatient())
+      tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
+    if (src.hasType())
+      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+    if (src.hasSuppliedItem())
+      tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
+    if (src.hasOccurrence())
+      tgt.setOccurrence(VersionConvertor_40_50.convertType(src.getOccurrence()));
+    if (src.hasSupplier())
+      tgt.setSupplier(Reference40_50.convertReference(src.getSupplier()));
+    if (src.hasDestination())
+      tgt.setDestination(Reference40_50.convertReference(src.getDestination()));
+    for (org.hl7.fhir.r5.model.Reference t : src.getReceiver()) tgt.addReceiver(Reference40_50.convertReference(t));
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus> convertSupplyDeliveryStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case INPROGRESS:
-                tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS);
-                break;
-            case COMPLETED:
-                tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.COMPLETED);
-                break;
-            case ABANDONED:
-                tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ABANDONED);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus> convertSupplyDeliveryStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatusEnumFactory());
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case INPROGRESS:
+        tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS);
+        break;
+      case COMPLETED:
+        tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.COMPLETED);
+        break;
+      case ABANDONED:
+        tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ABANDONED);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus> convertSupplyDeliveryStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case INPROGRESS:
-                tgt.setValue(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS);
-                break;
-            case COMPLETED:
-                tgt.setValue(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.COMPLETED);
-                break;
-            case ABANDONED:
-                tgt.setValue(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.ABANDONED);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus> convertSupplyDeliveryStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliveryStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatusEnumFactory());
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case INPROGRESS:
+        tgt.setValue(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS);
+        break;
+      case COMPLETED:
+        tgt.setValue(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.COMPLETED);
+        break;
+      case ABANDONED:
+        tgt.setValue(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.ABANDONED);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.ENTEREDINERROR);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent convertSupplyDeliverySuppliedItemComponent(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent tgt = new org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasQuantity())
-            tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
-        if (src.hasItem())
-            tgt.setItem(Type40_50.convertType(src.getItem()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent convertSupplyDeliverySuppliedItemComponent(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent tgt = new org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasQuantity())
+      tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
+    if (src.hasItem())
+      tgt.setItem(VersionConvertor_40_50.convertType(src.getItem()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent convertSupplyDeliverySuppliedItemComponent(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent tgt = new org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasQuantity())
-            tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
-        if (src.hasItem())
-            tgt.setItem(Type40_50.convertType(src.getItem()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent convertSupplyDeliverySuppliedItemComponent(org.hl7.fhir.r5.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent tgt = new org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliverySuppliedItemComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasQuantity())
+      tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
+    if (src.hasItem())
+      tgt.setItem(VersionConvertor_40_50.convertType(src.getItem()));
+    return tgt;
+  }
 }

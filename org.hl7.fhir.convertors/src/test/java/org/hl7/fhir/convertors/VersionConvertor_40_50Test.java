@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,6 +28,7 @@ class VersionConvertor_40_50Test {
 
   @Test
   void testThreads() throws InterruptedException {
+    List<VersionConvertor_40_50_Context> listOfConvertors = new ArrayList<>();
     Runnable r1 = new Runnable() {
       @SneakyThrows
       @Override
@@ -35,7 +38,6 @@ class VersionConvertor_40_50Test {
         InputStream accountr4InputStream = this.getClass().getResourceAsStream("/account_r4.json");
         org.hl7.fhir.r4.model.Account account_r4 = (org.hl7.fhir.r4.model.Account) r4parser.parse(accountr4InputStream);
         Resource account_r5 = VersionConvertor_40_50.convertResource(account_r4);
-        System.out.println(r5parser.composeString(account_r5));
       }
     };
     Thread thread1 = new Thread(r1);
@@ -47,6 +49,16 @@ class VersionConvertor_40_50Test {
     thread1.join();
     thread2.join();
     thread3.join();
+  }
+
+  @Test
+  void convertBundleContainingAccountsToTestPathing() throws IOException {
+    JsonParser r4parser = new JsonParser();
+    org.hl7.fhir.r5.formats.JsonParser r5parser = new org.hl7.fhir.r5.formats.JsonParser();
+    InputStream accountr4InputStream = this.getClass().getResourceAsStream("/bundle_of_accounts_path_test_r4.json");
+    org.hl7.fhir.r4.model.Bundle bundle_r4 = (org.hl7.fhir.r4.model.Bundle) r4parser.parse(accountr4InputStream);
+    Resource account_r5 = VersionConvertor_40_50.convertResource(bundle_r4);
+    System.out.println(r5parser.composeString(account_r5));
   }
 
   @Test

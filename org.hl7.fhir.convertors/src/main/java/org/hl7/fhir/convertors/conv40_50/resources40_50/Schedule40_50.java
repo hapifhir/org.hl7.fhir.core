@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
@@ -39,43 +38,51 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Schedule40_50 extends VersionConvertor_40_50 {
+public class Schedule40_50 {
 
-    public static org.hl7.fhir.r5.model.Schedule convertSchedule(org.hl7.fhir.r4.model.Schedule src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Schedule tgt = new org.hl7.fhir.r5.model.Schedule();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasActive())
-            tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceCategory()) tgt.addServiceCategory(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType()) tgt.addServiceType(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getActor()) tgt.addActor(Reference40_50.convertReference(t));
-        if (src.hasPlanningHorizon())
-            tgt.setPlanningHorizon(Period40_50.convertPeriod(src.getPlanningHorizon()));
-        if (src.hasComment())
-            tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Schedule convertSchedule(org.hl7.fhir.r4.model.Schedule src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Schedule tgt = new org.hl7.fhir.r5.model.Schedule();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasActive())
+      tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceCategory())
+      tgt.addServiceCategory(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getServiceType())
+      tgt.addServiceType(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty())
+      tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getActor()) tgt.addActor(Reference40_50.convertReference(t));
+    if (src.hasPlanningHorizon())
+      tgt.setPlanningHorizon(Period40_50.convertPeriod(src.getPlanningHorizon()));
+    if (src.hasComment())
+      tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Schedule convertSchedule(org.hl7.fhir.r5.model.Schedule src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Schedule tgt = new org.hl7.fhir.r4.model.Schedule();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasActive())
-            tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceCategory()) tgt.addServiceCategory(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType()) tgt.addServiceType(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getActor()) tgt.addActor(Reference40_50.convertReference(t));
-        if (src.hasPlanningHorizon())
-            tgt.setPlanningHorizon(Period40_50.convertPeriod(src.getPlanningHorizon()));
-        if (src.hasComment())
-            tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Schedule convertSchedule(org.hl7.fhir.r5.model.Schedule src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Schedule tgt = new org.hl7.fhir.r4.model.Schedule();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasActive())
+      tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceCategory())
+      tgt.addServiceCategory(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getServiceType())
+      tgt.addServiceType(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty())
+      tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getActor()) tgt.addActor(Reference40_50.convertReference(t));
+    if (src.hasPlanningHorizon())
+      tgt.setPlanningHorizon(Period40_50.convertPeriod(src.getPlanningHorizon()));
+    if (src.hasComment())
+      tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
+    return tgt;
+  }
 }

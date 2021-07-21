@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50;
 
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
@@ -11,7 +11,7 @@ public class ParameterDefinition40_50 {
   public static org.hl7.fhir.r5.model.ParameterDefinition convertParameterDefinition(org.hl7.fhir.r4.model.ParameterDefinition src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ParameterDefinition tgt = new org.hl7.fhir.r5.model.ParameterDefinition();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasName()) tgt.setNameElement(Code40_50.convertCode(src.getNameElement()));
     if (src.hasUse()) tgt.setUseElement(convertParameterUse(src.getUseElement()));
     if (src.hasMin()) tgt.setMinElement(Integer40_50.convertInteger(src.getMinElement()));
@@ -25,7 +25,7 @@ public class ParameterDefinition40_50 {
   public static org.hl7.fhir.r4.model.ParameterDefinition convertParameterDefinition(org.hl7.fhir.r5.model.ParameterDefinition src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ParameterDefinition tgt = new org.hl7.fhir.r4.model.ParameterDefinition();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasName()) tgt.setNameElement(Code40_50.convertCode(src.getNameElement()));
     if (src.hasUse()) tgt.setUseElement(convertParameterUse(src.getUseElement()));
     if (src.hasMin()) tgt.setMinElement(Integer40_50.convertInteger(src.getMinElement()));
@@ -39,7 +39,7 @@ public class ParameterDefinition40_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.OperationParameterUse> convertParameterUse(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ParameterDefinition.ParameterUse> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.OperationParameterUse> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.OperationParameterUseEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r5.model.Enumerations.OperationParameterUse.NULL);
     } else {
@@ -61,7 +61,7 @@ public class ParameterDefinition40_50 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ParameterDefinition.ParameterUse> convertParameterUse(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.OperationParameterUse> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ParameterDefinition.ParameterUse> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ParameterDefinition.ParameterUseEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r4.model.ParameterDefinition.ParameterUse.NULL);
     } else {

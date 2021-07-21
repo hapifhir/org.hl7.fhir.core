@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -33,146 +32,147 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Media40_50 extends VersionConvertor_40_50 {
+public class Media40_50 {
 
-    public static org.hl7.fhir.r5.model.DocumentReference convertMedia(org.hl7.fhir.r4.model.Media src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.DocumentReference tgt = new org.hl7.fhir.r5.model.DocumentReference();
-        copyDomainResource(src, tgt);
-        // for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
-        // tgt.addIdentifier(convertIdentifier(t));
-        // for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn())
-        // tgt.addBasedOn(convertReference(t));
-        // for (org.hl7.fhir.r4.model.Reference t : src.getPartOf())
-        // tgt.addPartOf(convertReference(t));
-        // if (src.hasStatus())
-        // tgt.setStatus(convertMediaStatus(src.getStatus()));
-        // if (src.hasType())
-        // tgt.setType(convertCodeableConcept(src.getType()));
-        // if (src.hasModality())
-        // tgt.setModality(convertCodeableConcept(src.getModality()));
-        // if (src.hasView())
-        // tgt.setView(convertCodeableConcept(src.getView()));
-        // if (src.hasSubject())
-        // tgt.setSubject(convertReference(src.getSubject()));
-        // if (src.hasEncounter())
-        // tgt.setEncounter(convertReference(src.getEncounter()));
-        // if (src.hasCreated())
-        // tgt.setCreated(convertType(src.getCreated()));
-        // if (src.hasIssued())
-        // tgt.setIssuedElement(convertInstant(src.getIssuedElement()));
-        // if (src.hasOperator())
-        // tgt.setOperator(convertReference(src.getOperator()));
-        // for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
-        // tgt.addReasonCode(convertCodeableConcept(t));
-        // if (src.hasBodySite())
-        // tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
-        // if (src.hasDeviceName())
-        // tgt.setDeviceNameElement(convertString(src.getDeviceNameElement()));
-        // if (src.hasDevice())
-        // tgt.setDevice(convertReference(src.getDevice()));
-        // if (src.hasHeight())
-        // tgt.setHeightElement(convertPositiveInt(src.getHeightElement()));
-        // if (src.hasWidth())
-        // tgt.setWidthElement(convertPositiveInt(src.getWidthElement()));
-        // if (src.hasFrames())
-        // tgt.setFramesElement(convertPositiveInt(src.getFramesElement()));
-        // if (src.hasDuration())
-        // tgt.setDurationElement(convertDecimal(src.getDurationElement()));
-        // if (src.hasContent())
-        // tgt.setContent(convertAttachment(src.getContent()));
-        // for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
-        // tgt.addNote(convertAnnotation(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.DocumentReference convertMedia(org.hl7.fhir.r4.model.Media src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.DocumentReference tgt = new org.hl7.fhir.r5.model.DocumentReference();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    // for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+    // tgt.addIdentifier(convertIdentifier(t));
+    // for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn())
+    // tgt.addBasedOn(convertReference(t));
+    // for (org.hl7.fhir.r4.model.Reference t : src.getPartOf())
+    // tgt.addPartOf(convertReference(t));
+    // if (src.hasStatus())
+    // tgt.setStatus(convertMediaStatus(src.getStatus()));
+    // if (src.hasType())
+    // tgt.setType(convertCodeableConcept(src.getType()));
+    // if (src.hasModality())
+    // tgt.setModality(convertCodeableConcept(src.getModality()));
+    // if (src.hasView())
+    // tgt.setView(convertCodeableConcept(src.getView()));
+    // if (src.hasSubject())
+    // tgt.setSubject(convertReference(src.getSubject()));
+    // if (src.hasEncounter())
+    // tgt.setEncounter(convertReference(src.getEncounter()));
+    // if (src.hasCreated())
+    // tgt.setCreated(convertType(src.getCreated()));
+    // if (src.hasIssued())
+    // tgt.setIssuedElement(convertInstant(src.getIssuedElement()));
+    // if (src.hasOperator())
+    // tgt.setOperator(convertReference(src.getOperator()));
+    // for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
+    // tgt.addReasonCode(convertCodeableConcept(t));
+    // if (src.hasBodySite())
+    // tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
+    // if (src.hasDeviceName())
+    // tgt.setDeviceNameElement(convertString(src.getDeviceNameElement()));
+    // if (src.hasDevice())
+    // tgt.setDevice(convertReference(src.getDevice()));
+    // if (src.hasHeight())
+    // tgt.setHeightElement(convertPositiveInt(src.getHeightElement()));
+    // if (src.hasWidth())
+    // tgt.setWidthElement(convertPositiveInt(src.getWidthElement()));
+    // if (src.hasFrames())
+    // tgt.setFramesElement(convertPositiveInt(src.getFramesElement()));
+    // if (src.hasDuration())
+    // tgt.setDurationElement(convertDecimal(src.getDurationElement()));
+    // if (src.hasContent())
+    // tgt.setContent(convertAttachment(src.getContent()));
+    // for (org.hl7.fhir.r4.model.Annotation t : src.getNote())
+    // tgt.addNote(convertAnnotation(t));
+    return tgt;
+  }
 
-    /**
-     * Todo: how do you decide that it maps to a media?
-     * @param src
-     * @return
-     * @throws FHIRException
-     */
-    public static org.hl7.fhir.r4.model.Media convertMedia(org.hl7.fhir.r5.model.DocumentReference src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Media tgt = new org.hl7.fhir.r4.model.Media();
-        copyDomainResource(src, tgt);
-        // for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
-        // tgt.addIdentifier(convertIdentifier(t));
-        // for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn())
-        // tgt.addBasedOn(convertReference(t));
-        // for (org.hl7.fhir.r5.model.Reference t : src.getPartOf())
-        // tgt.addPartOf(convertReference(t));
-        // if (src.hasStatus())
-        // tgt.setStatus(convertMediaStatus(src.getStatus()));
-        // if (src.hasType())
-        // tgt.setType(convertCodeableConcept(src.getType()));
-        // if (src.hasModality())
-        // tgt.setModality(convertCodeableConcept(src.getModality()));
-        // if (src.hasView())
-        // tgt.setView(convertCodeableConcept(src.getView()));
-        // if (src.hasSubject())
-        // tgt.setSubject(convertReference(src.getSubject()));
-        // if (src.hasEncounter())
-        // tgt.setEncounter(convertReference(src.getEncounter()));
-        // if (src.hasCreated())
-        // tgt.setCreated(convertType(src.getCreated()));
-        // if (src.hasIssued())
-        // tgt.setIssuedElement(convertInstant(src.getIssuedElement()));
-        // if (src.hasOperator())
-        // tgt.setOperator(convertReference(src.getOperator()));
-        // for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
-        // tgt.addReasonCode(convertCodeableConcept(t));
-        // if (src.hasBodySite())
-        // tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
-        // if (src.hasDeviceName())
-        // tgt.setDeviceNameElement(convertString(src.getDeviceNameElement()));
-        // if (src.hasDevice())
-        // tgt.setDevice(convertReference(src.getDevice()));
-        // if (src.hasHeight())
-        // tgt.setHeightElement(convertPositiveInt(src.getHeightElement()));
-        // if (src.hasWidth())
-        // tgt.setWidthElement(convertPositiveInt(src.getWidthElement()));
-        // if (src.hasFrames())
-        // tgt.setFramesElement(convertPositiveInt(src.getFramesElement()));
-        // if (src.hasDuration())
-        // tgt.setDurationElement(convertDecimal(src.getDurationElement()));
-        // if (src.hasContent())
-        // tgt.setContent(convertAttachment(src.getContent()));
-        // for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
-        // tgt.addNote(convertAnnotation(t));
-        return tgt;
-    }
-    // public static org.hl7.fhir.r5.model.Media.MediaStatus convertMediaStatus(org.hl7.fhir.r4.model.Media.MediaStatus src) throws FHIRException {
-    // if (src == null)
-    // return null;
-    // switch (src) {
-    // case PREPARATION: return org.hl7.fhir.r5.model.Media.MediaStatus.PREPARATION;
-    // case INPROGRESS: return org.hl7.fhir.r5.model.Media.MediaStatus.INPROGRESS;
-    // case NOTDONE: return org.hl7.fhir.r5.model.Media.MediaStatus.NOTDONE;
-    // case ONHOLD: return org.hl7.fhir.r5.model.Media.MediaStatus.ONHOLD;
-    // case STOPPED: return org.hl7.fhir.r5.model.Media.MediaStatus.STOPPED;
-    // case COMPLETED: return org.hl7.fhir.r5.model.Media.MediaStatus.COMPLETED;
-    // case ENTEREDINERROR: return org.hl7.fhir.r5.model.Media.MediaStatus.ENTEREDINERROR;
-    // case UNKNOWN: return org.hl7.fhir.r5.model.Media.MediaStatus.UNKNOWN;
-    // default: return org.hl7.fhir.r5.model.Media.MediaStatus.NULL;
-    // }
-    // }
-    // 
-    // public static org.hl7.fhir.r4.model.Media.MediaStatus convertMediaStatus(org.hl7.fhir.r5.model.Media.MediaStatus src) throws FHIRException {
-    // if (src == null)
-    // return null;
-    // switch (src) {
-    // case PREPARATION: return org.hl7.fhir.r4.model.Media.MediaStatus.PREPARATION;
-    // case INPROGRESS: return org.hl7.fhir.r4.model.Media.MediaStatus.INPROGRESS;
-    // case NOTDONE: return org.hl7.fhir.r4.model.Media.MediaStatus.NOTDONE;
-    // case ONHOLD: return org.hl7.fhir.r4.model.Media.MediaStatus.ONHOLD;
-    // case STOPPED: return org.hl7.fhir.r4.model.Media.MediaStatus.STOPPED;
-    // case COMPLETED: return org.hl7.fhir.r4.model.Media.MediaStatus.COMPLETED;
-    // case ENTEREDINERROR: return org.hl7.fhir.r4.model.Media.MediaStatus.ENTEREDINERROR;
-    // case UNKNOWN: return org.hl7.fhir.r4.model.Media.MediaStatus.UNKNOWN;
-    // default: return org.hl7.fhir.r4.model.Media.MediaStatus.NULL;
-    // }
-    // }
+  /**
+   * Todo: how do you decide that it maps to a media?
+   *
+   * @param src
+   * @return
+   * @throws FHIRException
+   */
+  public static org.hl7.fhir.r4.model.Media convertMedia(org.hl7.fhir.r5.model.DocumentReference src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Media tgt = new org.hl7.fhir.r4.model.Media();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    // for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+    // tgt.addIdentifier(convertIdentifier(t));
+    // for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn())
+    // tgt.addBasedOn(convertReference(t));
+    // for (org.hl7.fhir.r5.model.Reference t : src.getPartOf())
+    // tgt.addPartOf(convertReference(t));
+    // if (src.hasStatus())
+    // tgt.setStatus(convertMediaStatus(src.getStatus()));
+    // if (src.hasType())
+    // tgt.setType(convertCodeableConcept(src.getType()));
+    // if (src.hasModality())
+    // tgt.setModality(convertCodeableConcept(src.getModality()));
+    // if (src.hasView())
+    // tgt.setView(convertCodeableConcept(src.getView()));
+    // if (src.hasSubject())
+    // tgt.setSubject(convertReference(src.getSubject()));
+    // if (src.hasEncounter())
+    // tgt.setEncounter(convertReference(src.getEncounter()));
+    // if (src.hasCreated())
+    // tgt.setCreated(convertType(src.getCreated()));
+    // if (src.hasIssued())
+    // tgt.setIssuedElement(convertInstant(src.getIssuedElement()));
+    // if (src.hasOperator())
+    // tgt.setOperator(convertReference(src.getOperator()));
+    // for (org.hl7.fhir.r5.model.CodeableConcept t : src.getReasonCode())
+    // tgt.addReasonCode(convertCodeableConcept(t));
+    // if (src.hasBodySite())
+    // tgt.setBodySite(convertCodeableConcept(src.getBodySite()));
+    // if (src.hasDeviceName())
+    // tgt.setDeviceNameElement(convertString(src.getDeviceNameElement()));
+    // if (src.hasDevice())
+    // tgt.setDevice(convertReference(src.getDevice()));
+    // if (src.hasHeight())
+    // tgt.setHeightElement(convertPositiveInt(src.getHeightElement()));
+    // if (src.hasWidth())
+    // tgt.setWidthElement(convertPositiveInt(src.getWidthElement()));
+    // if (src.hasFrames())
+    // tgt.setFramesElement(convertPositiveInt(src.getFramesElement()));
+    // if (src.hasDuration())
+    // tgt.setDurationElement(convertDecimal(src.getDurationElement()));
+    // if (src.hasContent())
+    // tgt.setContent(convertAttachment(src.getContent()));
+    // for (org.hl7.fhir.r5.model.Annotation t : src.getNote())
+    // tgt.addNote(convertAnnotation(t));
+    return tgt;
+  }
+  // public static org.hl7.fhir.r5.model.Media.MediaStatus convertMediaStatus(org.hl7.fhir.r4.model.Media.MediaStatus src) throws FHIRException {
+  // if (src == null)
+  // return null;
+  // switch (src) {
+  // case PREPARATION: return org.hl7.fhir.r5.model.Media.MediaStatus.PREPARATION;
+  // case INPROGRESS: return org.hl7.fhir.r5.model.Media.MediaStatus.INPROGRESS;
+  // case NOTDONE: return org.hl7.fhir.r5.model.Media.MediaStatus.NOTDONE;
+  // case ONHOLD: return org.hl7.fhir.r5.model.Media.MediaStatus.ONHOLD;
+  // case STOPPED: return org.hl7.fhir.r5.model.Media.MediaStatus.STOPPED;
+  // case COMPLETED: return org.hl7.fhir.r5.model.Media.MediaStatus.COMPLETED;
+  // case ENTEREDINERROR: return org.hl7.fhir.r5.model.Media.MediaStatus.ENTEREDINERROR;
+  // case UNKNOWN: return org.hl7.fhir.r5.model.Media.MediaStatus.UNKNOWN;
+  // default: return org.hl7.fhir.r5.model.Media.MediaStatus.NULL;
+  // }
+  // }
+  //
+  // public static org.hl7.fhir.r4.model.Media.MediaStatus convertMediaStatus(org.hl7.fhir.r5.model.Media.MediaStatus src) throws FHIRException {
+  // if (src == null)
+  // return null;
+  // switch (src) {
+  // case PREPARATION: return org.hl7.fhir.r4.model.Media.MediaStatus.PREPARATION;
+  // case INPROGRESS: return org.hl7.fhir.r4.model.Media.MediaStatus.INPROGRESS;
+  // case NOTDONE: return org.hl7.fhir.r4.model.Media.MediaStatus.NOTDONE;
+  // case ONHOLD: return org.hl7.fhir.r4.model.Media.MediaStatus.ONHOLD;
+  // case STOPPED: return org.hl7.fhir.r4.model.Media.MediaStatus.STOPPED;
+  // case COMPLETED: return org.hl7.fhir.r4.model.Media.MediaStatus.COMPLETED;
+  // case ENTEREDINERROR: return org.hl7.fhir.r4.model.Media.MediaStatus.ENTEREDINERROR;
+  // case UNKNOWN: return org.hl7.fhir.r4.model.Media.MediaStatus.UNKNOWN;
+  // default: return org.hl7.fhir.r4.model.Media.MediaStatus.NULL;
+  // }
+  // }
 }

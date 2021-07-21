@@ -94,7 +94,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
-      objects.add(new Object[]{id, examples.get(id)});
+      //if (id.equals("patient-translated-codes"))
+        objects.add(new Object[]{id, examples.get(id)});
     }
     return objects;
   }

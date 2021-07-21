@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50;
 
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Base64Binary40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Instant40_50;
@@ -11,7 +11,7 @@ public class Signature40_50 {
   public static org.hl7.fhir.r5.model.Signature convertSignature(org.hl7.fhir.r4.model.Signature src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.Signature tgt = new org.hl7.fhir.r5.model.Signature();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     for (org.hl7.fhir.r4.model.Coding t : src.getType()) tgt.addType(Coding40_50.convertCoding(t));
     if (src.hasWhen()) tgt.setWhenElement(Instant40_50.convertInstant(src.getWhenElement()));
     if (src.hasWho()) tgt.setWho(Reference40_50.convertReference(src.getWho()));
@@ -25,7 +25,7 @@ public class Signature40_50 {
   public static org.hl7.fhir.r4.model.Signature convertSignature(org.hl7.fhir.r5.model.Signature src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.Signature tgt = new org.hl7.fhir.r4.model.Signature();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     for (org.hl7.fhir.r5.model.Coding t : src.getType()) tgt.addType(Coding40_50.convertCoding(t));
     if (src.hasWhen()) tgt.setWhenElement(Instant40_50.convertInstant(src.getWhenElement()));
     if (src.hasWho()) tgt.setWho(Reference40_50.convertReference(src.getWho()));

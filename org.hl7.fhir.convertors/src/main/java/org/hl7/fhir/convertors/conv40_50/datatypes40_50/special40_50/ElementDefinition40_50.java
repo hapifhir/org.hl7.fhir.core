@@ -1,11 +1,11 @@
 package org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50;
 
-import org.hl7.fhir.convertors.conv40_50.resources40_50.Enumerations40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.BackboneElement40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
+import org.hl7.fhir.convertors.conv40_50.resources40_50.Enumerations40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.stream.Collectors;
@@ -31,26 +31,28 @@ public class ElementDefinition40_50 {
     if (src.hasMin()) tgt.setMinElement(UnsignedInt40_50.convertUnsignedInt(src.getMinElement()));
     if (src.hasMax()) tgt.setMaxElement(String40_50.convertString(src.getMaxElement()));
     if (src.hasBase()) tgt.setBase(convertElementDefinitionBaseComponent(src.getBase()));
-    if (src.hasContentReference()) tgt.setContentReferenceElement(Uri40_50.convertUri(src.getContentReferenceElement()));
+    if (src.hasContentReference())
+      tgt.setContentReferenceElement(Uri40_50.convertUri(src.getContentReferenceElement()));
     for (org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent t : src.getType())
       tgt.addType(convertTypeRefComponent(t));
-    if (src.hasDefaultValue()) tgt.setDefaultValue(Type40_50.convertType(src.getDefaultValue()));
+    if (src.hasDefaultValue()) tgt.setDefaultValue(VersionConvertor_40_50.convertType(src.getDefaultValue()));
     if (src.hasMeaningWhenMissing())
       tgt.setMeaningWhenMissingElement(MarkDown40_50.convertMarkdown(src.getMeaningWhenMissingElement()));
     if (src.hasOrderMeaning()) tgt.setOrderMeaningElement(String40_50.convertString(src.getOrderMeaningElement()));
-    if (src.hasFixed()) tgt.setFixed(Type40_50.convertType(src.getFixed()));
-    if (src.hasPattern()) tgt.setPattern(Type40_50.convertType(src.getPattern()));
+    if (src.hasFixed()) tgt.setFixed(VersionConvertor_40_50.convertType(src.getFixed()));
+    if (src.hasPattern()) tgt.setPattern(VersionConvertor_40_50.convertType(src.getPattern()));
     for (org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionExampleComponent t : src.getExample())
       tgt.addExample(convertElementDefinitionExampleComponent(t));
-    if (src.hasMinValue()) tgt.setMinValue(Type40_50.convertType(src.getMinValue()));
-    if (src.hasMaxValue()) tgt.setMaxValue(Type40_50.convertType(src.getMaxValue()));
+    if (src.hasMinValue()) tgt.setMinValue(VersionConvertor_40_50.convertType(src.getMinValue()));
+    if (src.hasMaxValue()) tgt.setMaxValue(VersionConvertor_40_50.convertType(src.getMaxValue()));
     if (src.hasMaxLength()) tgt.setMaxLengthElement(Integer40_50.convertInteger(src.getMaxLengthElement()));
     for (org.hl7.fhir.r4.model.IdType t : src.getCondition()) tgt.getCondition().add(Id40_50.convertId(t));
     for (org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent t : src.getConstraint())
       tgt.addConstraint(convertElementDefinitionConstraintComponent(t));
     if (src.hasMustSupport()) tgt.setMustSupportElement(Boolean40_50.convertBoolean(src.getMustSupportElement()));
     if (src.hasIsModifier()) tgt.setIsModifierElement(Boolean40_50.convertBoolean(src.getIsModifierElement()));
-    if (src.hasIsModifierReason()) tgt.setIsModifierReasonElement(String40_50.convertString(src.getIsModifierReasonElement()));
+    if (src.hasIsModifierReason())
+      tgt.setIsModifierReasonElement(String40_50.convertString(src.getIsModifierReasonElement()));
     if (src.hasIsSummary()) tgt.setIsSummaryElement(Boolean40_50.convertBoolean(src.getIsSummaryElement()));
     if (src.hasBinding()) tgt.setBinding(convertElementDefinitionBindingComponent(src.getBinding()));
     for (org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionMappingComponent t : src.getMapping())
@@ -78,26 +80,28 @@ public class ElementDefinition40_50 {
     if (src.hasMin()) tgt.setMinElement(UnsignedInt40_50.convertUnsignedInt(src.getMinElement()));
     if (src.hasMax()) tgt.setMaxElement(String40_50.convertString(src.getMaxElement()));
     if (src.hasBase()) tgt.setBase(convertElementDefinitionBaseComponent(src.getBase()));
-    if (src.hasContentReference()) tgt.setContentReferenceElement(Uri40_50.convertUri(src.getContentReferenceElement()));
+    if (src.hasContentReference())
+      tgt.setContentReferenceElement(Uri40_50.convertUri(src.getContentReferenceElement()));
     for (org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent t : src.getType())
       tgt.addType(convertTypeRefComponent(t));
-    if (src.hasDefaultValue()) tgt.setDefaultValue(Type40_50.convertType(src.getDefaultValue()));
+    if (src.hasDefaultValue()) tgt.setDefaultValue(VersionConvertor_40_50.convertType(src.getDefaultValue()));
     if (src.hasMeaningWhenMissing())
       tgt.setMeaningWhenMissingElement(MarkDown40_50.convertMarkdown(src.getMeaningWhenMissingElement()));
     if (src.hasOrderMeaning()) tgt.setOrderMeaningElement(String40_50.convertString(src.getOrderMeaningElement()));
-    if (src.hasFixed()) tgt.setFixed(Type40_50.convertType(src.getFixed()));
-    if (src.hasPattern()) tgt.setPattern(Type40_50.convertType(src.getPattern()));
+    if (src.hasFixed()) tgt.setFixed(VersionConvertor_40_50.convertType(src.getFixed()));
+    if (src.hasPattern()) tgt.setPattern(VersionConvertor_40_50.convertType(src.getPattern()));
     for (org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent t : src.getExample())
       tgt.addExample(convertElementDefinitionExampleComponent(t));
-    if (src.hasMinValue()) tgt.setMinValue(Type40_50.convertType(src.getMinValue()));
-    if (src.hasMaxValue()) tgt.setMaxValue(Type40_50.convertType(src.getMaxValue()));
+    if (src.hasMinValue()) tgt.setMinValue(VersionConvertor_40_50.convertType(src.getMinValue()));
+    if (src.hasMaxValue()) tgt.setMaxValue(VersionConvertor_40_50.convertType(src.getMaxValue()));
     if (src.hasMaxLength()) tgt.setMaxLengthElement(Integer40_50.convertInteger(src.getMaxLengthElement()));
     for (org.hl7.fhir.r5.model.IdType t : src.getCondition()) tgt.getCondition().add(Id40_50.convertId(t));
     for (org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent t : src.getConstraint())
       tgt.addConstraint(convertElementDefinitionConstraintComponent(t));
     if (src.hasMustSupport()) tgt.setMustSupportElement(Boolean40_50.convertBoolean(src.getMustSupportElement()));
     if (src.hasIsModifier()) tgt.setIsModifierElement(Boolean40_50.convertBoolean(src.getIsModifierElement()));
-    if (src.hasIsModifierReason()) tgt.setIsModifierReasonElement(String40_50.convertString(src.getIsModifierReasonElement()));
+    if (src.hasIsModifierReason())
+      tgt.setIsModifierReasonElement(String40_50.convertString(src.getIsModifierReasonElement()));
     if (src.hasIsSummary()) tgt.setIsSummaryElement(Boolean40_50.convertBoolean(src.getIsSummaryElement()));
     if (src.hasBinding()) tgt.setBinding(convertElementDefinitionBindingComponent(src.getBinding()));
     for (org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent t : src.getMapping())
@@ -108,7 +112,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation> convertPropertyRepresentation(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.PropertyRepresentation> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentationEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation.NULL);
     } else {
@@ -139,7 +143,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.PropertyRepresentation> convertPropertyRepresentation(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.PropertyRepresentation> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ElementDefinition.PropertyRepresentationEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r4.model.ElementDefinition.PropertyRepresentation.NULL);
     } else {
@@ -170,7 +174,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent convertElementDefinitionSlicingComponent(org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     for (org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent t : src.getDiscriminator())
       tgt.addDiscriminator(convertElementDefinitionSlicingDiscriminatorComponent(t));
     if (src.hasDescription()) tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
@@ -182,7 +186,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingComponent convertElementDefinitionSlicingComponent(org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     for (org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent t : src.getDiscriminator())
       tgt.addDiscriminator(convertElementDefinitionSlicingDiscriminatorComponent(t));
     if (src.hasDescription()) tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
@@ -194,7 +198,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.SlicingRules> convertSlicingRules(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.SlicingRules> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.SlicingRules> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ElementDefinition.SlicingRulesEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r5.model.ElementDefinition.SlicingRules.NULL);
     } else {
@@ -219,7 +223,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.SlicingRules> convertSlicingRules(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.SlicingRules> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.SlicingRules> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ElementDefinition.SlicingRulesEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r4.model.ElementDefinition.SlicingRules.NULL);
     } else {
@@ -244,7 +248,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent convertElementDefinitionSlicingDiscriminatorComponent(org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasType()) tgt.setTypeElement(convertDiscriminatorType(src.getTypeElement()));
     if (src.hasPath()) tgt.setPathElement(String40_50.convertString(src.getPathElement()));
     return tgt;
@@ -253,7 +257,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent convertElementDefinitionSlicingDiscriminatorComponent(org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasType()) tgt.setTypeElement(convertDiscriminatorType(src.getTypeElement()));
     if (src.hasPath()) tgt.setPathElement(String40_50.convertString(src.getPathElement()));
     return tgt;
@@ -262,7 +266,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType> convertDiscriminatorType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.DiscriminatorType> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorTypeEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType.NULL);
     } else {
@@ -293,7 +297,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.DiscriminatorType> convertDiscriminatorType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.DiscriminatorType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ElementDefinition.DiscriminatorTypeEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r4.model.ElementDefinition.DiscriminatorType.NULL);
     } else {
@@ -324,7 +328,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBaseComponent convertElementDefinitionBaseComponent(org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBaseComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBaseComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBaseComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String40_50.convertString(src.getPathElement()));
     if (src.hasMin()) tgt.setMinElement(UnsignedInt40_50.convertUnsignedInt(src.getMinElement()));
     if (src.hasMax()) tgt.setMaxElement(String40_50.convertString(src.getMaxElement()));
@@ -334,7 +338,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBaseComponent convertElementDefinitionBaseComponent(org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBaseComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBaseComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBaseComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String40_50.convertString(src.getPathElement()));
     if (src.hasMin()) tgt.setMinElement(UnsignedInt40_50.convertUnsignedInt(src.getMinElement()));
     if (src.hasMax()) tgt.setMaxElement(String40_50.convertString(src.getMaxElement()));
@@ -344,9 +348,10 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent convertTypeRefComponent(org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasCode()) tgt.setCodeElement(Uri40_50.convertUri(src.getCodeElement()));
-    for (org.hl7.fhir.r4.model.CanonicalType t : src.getProfile()) tgt.getProfile().add(Canonical40_50.convertCanonical(t));
+    for (org.hl7.fhir.r4.model.CanonicalType t : src.getProfile())
+      tgt.getProfile().add(Canonical40_50.convertCanonical(t));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfile().add(Canonical40_50.convertCanonical(t));
     tgt.setAggregation(src.getAggregation().stream().map(ElementDefinition40_50::convertAggregationMode).collect(Collectors.toList()));
@@ -357,9 +362,10 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent convertTypeRefComponent(org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasCode()) tgt.setCodeElement(Uri40_50.convertUri(src.getCodeElement()));
-    for (org.hl7.fhir.r5.model.CanonicalType t : src.getProfile()) tgt.getProfile().add(Canonical40_50.convertCanonical(t));
+    for (org.hl7.fhir.r5.model.CanonicalType t : src.getProfile())
+      tgt.getProfile().add(Canonical40_50.convertCanonical(t));
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getTargetProfile())
       tgt.getTargetProfile().add(Canonical40_50.convertCanonical(t));
     tgt.setAggregation(src.getAggregation().stream().map(ElementDefinition40_50::convertAggregationMode).collect(Collectors.toList()));
@@ -370,7 +376,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.AggregationMode> convertAggregationMode(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.AggregationMode> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.AggregationMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ElementDefinition.AggregationModeEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r5.model.ElementDefinition.AggregationMode.NULL);
     } else {
@@ -395,7 +401,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.AggregationMode> convertAggregationMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.AggregationMode> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.AggregationMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ElementDefinition.AggregationModeEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r4.model.ElementDefinition.AggregationMode.NULL);
     } else {
@@ -420,7 +426,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.ReferenceVersionRules> convertReferenceVersionRules(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.ReferenceVersionRules> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.ReferenceVersionRules> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ElementDefinition.ReferenceVersionRulesEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r5.model.ElementDefinition.ReferenceVersionRules.NULL);
     } else {
@@ -445,7 +451,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.ReferenceVersionRules> convertReferenceVersionRules(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.ReferenceVersionRules> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.ReferenceVersionRules> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ElementDefinition.ReferenceVersionRulesEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r4.model.ElementDefinition.ReferenceVersionRules.NULL);
     } else {
@@ -470,25 +476,25 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent convertElementDefinitionExampleComponent(org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionExampleComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasLabel()) tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
-    if (src.hasValue()) tgt.setValue(Type40_50.convertType(src.getValue()));
+    if (src.hasValue()) tgt.setValue(VersionConvertor_40_50.convertType(src.getValue()));
     return tgt;
   }
 
   public static org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionExampleComponent convertElementDefinitionExampleComponent(org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionExampleComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionExampleComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasLabel()) tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
-    if (src.hasValue()) tgt.setValue(Type40_50.convertType(src.getValue()));
+    if (src.hasValue()) tgt.setValue(VersionConvertor_40_50.convertType(src.getValue()));
     return tgt;
   }
 
   public static org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent convertElementDefinitionConstraintComponent(org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasKey()) tgt.setKeyElement(Id40_50.convertId(src.getKeyElement()));
     if (src.hasRequirements()) tgt.setRequirementsElement(String40_50.convertString(src.getRequirementsElement()));
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
@@ -502,7 +508,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent convertElementDefinitionConstraintComponent(org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasKey()) tgt.setKeyElement(Id40_50.convertId(src.getKeyElement()));
     if (src.hasRequirements()) tgt.setRequirementsElement(String40_50.convertString(src.getRequirementsElement()));
     if (src.hasSeverity()) tgt.setSeverityElement(convertConstraintSeverity(src.getSeverityElement()));
@@ -516,7 +522,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.ConstraintSeverity> convertConstraintSeverity(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.ConstraintSeverity> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.ConstraintSeverity> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.ElementDefinition.ConstraintSeverityEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r5.model.ElementDefinition.ConstraintSeverity.NULL);
     } else {
@@ -538,7 +544,7 @@ public class ElementDefinition40_50 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.ConstraintSeverity> convertConstraintSeverity(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.ElementDefinition.ConstraintSeverity> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ElementDefinition.ConstraintSeverity> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ElementDefinition.ConstraintSeverityEnumFactory());
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r4.model.ElementDefinition.ConstraintSeverity.NULL);
     } else {
@@ -560,7 +566,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent convertElementDefinitionBindingComponent(org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasStrength()) tgt.setStrengthElement(Enumerations40_50.convertBindingStrength(src.getStrengthElement()));
     if (src.hasDescription()) tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasValueSet()) tgt.setValueSetElement(Canonical40_50.convertCanonical(src.getValueSetElement()));
@@ -570,7 +576,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent convertElementDefinitionBindingComponent(org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionBindingComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasStrength()) tgt.setStrengthElement(Enumerations40_50.convertBindingStrength(src.getStrengthElement()));
     if (src.hasDescription()) tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasValueSet()) tgt.setValueSetElement(Canonical40_50.convertCanonical(src.getValueSetElement()));
@@ -580,7 +586,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent convertElementDefinitionMappingComponent(org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionMappingComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasIdentity()) tgt.setIdentityElement(Id40_50.convertId(src.getIdentityElement()));
     if (src.hasLanguage()) tgt.setLanguageElement(Code40_50.convertCode(src.getLanguageElement()));
     if (src.hasMap()) tgt.setMapElement(String40_50.convertString(src.getMapElement()));
@@ -591,7 +597,7 @@ public class ElementDefinition40_50 {
   public static org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionMappingComponent convertElementDefinitionMappingComponent(org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionMappingComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionMappingComponent();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasIdentity()) tgt.setIdentityElement(Id40_50.convertId(src.getIdentityElement()));
     if (src.hasLanguage()) tgt.setLanguageElement(Code40_50.convertCode(src.getLanguageElement()));
     if (src.hasMap()) tgt.setMapElement(String40_50.convertString(src.getMapElement()));

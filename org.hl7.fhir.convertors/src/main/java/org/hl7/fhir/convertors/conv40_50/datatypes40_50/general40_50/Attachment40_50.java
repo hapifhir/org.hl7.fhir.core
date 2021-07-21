@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50;
 
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -8,7 +8,7 @@ public class Attachment40_50 {
   public static org.hl7.fhir.r5.model.Attachment convertAttachment(org.hl7.fhir.r4.model.Attachment src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.Attachment tgt = new org.hl7.fhir.r5.model.Attachment();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasContentType()) tgt.setContentTypeElement(Code40_50.convertCode(src.getContentTypeElement()));
     if (src.hasLanguage()) tgt.setLanguageElement(Code40_50.convertCode(src.getLanguageElement()));
     if (src.hasData()) tgt.setDataElement(Base64Binary40_50.convertBase64Binary(src.getDataElement()));
@@ -23,7 +23,7 @@ public class Attachment40_50 {
   public static org.hl7.fhir.r4.model.Attachment convertAttachment(org.hl7.fhir.r5.model.Attachment src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.Attachment tgt = new org.hl7.fhir.r4.model.Attachment();
-    Element40_50.copyElement(src, tgt);
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
     if (src.hasContentType()) tgt.setContentTypeElement(Code40_50.convertCode(src.getContentTypeElement()));
     if (src.hasLanguage()) tgt.setLanguageElement(Code40_50.convertCode(src.getLanguageElement()));
     if (src.hasData()) tgt.setDataElement(Base64Binary40_50.convertBase64Binary(src.getDataElement()));

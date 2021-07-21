@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -40,123 +38,135 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Condition40_50 extends VersionConvertor_40_50 {
+public class Condition40_50 {
 
-    public static org.hl7.fhir.r5.model.Condition convertCondition(org.hl7.fhir.r4.model.Condition src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Condition tgt = new org.hl7.fhir.r5.model.Condition();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasClinicalStatus())
-            tgt.setClinicalStatus(CodeableConcept40_50.convertCodeableConcept(src.getClinicalStatus()));
-        if (src.hasVerificationStatus())
-            tgt.setVerificationStatus(CodeableConcept40_50.convertCodeableConcept(src.getVerificationStatus()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasSeverity())
-            tgt.setSeverity(CodeableConcept40_50.convertCodeableConcept(src.getSeverity()));
-        if (src.hasCode())
-            tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite()) tgt.addBodySite(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasEncounter())
-            tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
-        if (src.hasOnset())
-            tgt.setOnset(Type40_50.convertType(src.getOnset()));
-        if (src.hasAbatement())
-            tgt.setAbatement(Type40_50.convertType(src.getAbatement()));
-        if (src.hasRecordedDate())
-            tgt.setRecordedDateElement(DateTime40_50.convertDateTime(src.getRecordedDateElement()));
-        if (src.hasRecorder())
-            tgt.setRecorder(Reference40_50.convertReference(src.getRecorder()));
-        if (src.hasAsserter())
-            tgt.setAsserter(Reference40_50.convertReference(src.getAsserter()));
-        for (org.hl7.fhir.r4.model.Condition.ConditionStageComponent t : src.getStage()) tgt.addStage(convertConditionStageComponent(t));
-        for (org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent t : src.getEvidence()) tgt.addEvidence(convertConditionEvidenceComponent(t));
-        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Condition convertCondition(org.hl7.fhir.r4.model.Condition src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Condition tgt = new org.hl7.fhir.r5.model.Condition();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasClinicalStatus())
+      tgt.setClinicalStatus(CodeableConcept40_50.convertCodeableConcept(src.getClinicalStatus()));
+    if (src.hasVerificationStatus())
+      tgt.setVerificationStatus(CodeableConcept40_50.convertCodeableConcept(src.getVerificationStatus()));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
+      tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasSeverity())
+      tgt.setSeverity(CodeableConcept40_50.convertCodeableConcept(src.getSeverity()));
+    if (src.hasCode())
+      tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getBodySite())
+      tgt.addBodySite(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasEncounter())
+      tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
+    if (src.hasOnset())
+      tgt.setOnset(VersionConvertor_40_50.convertType(src.getOnset()));
+    if (src.hasAbatement())
+      tgt.setAbatement(VersionConvertor_40_50.convertType(src.getAbatement()));
+    if (src.hasRecordedDate())
+      tgt.setRecordedDateElement(DateTime40_50.convertDateTime(src.getRecordedDateElement()));
+    if (src.hasRecorder())
+      tgt.setRecorder(Reference40_50.convertReference(src.getRecorder()));
+    if (src.hasAsserter())
+      tgt.setAsserter(Reference40_50.convertReference(src.getAsserter()));
+    for (org.hl7.fhir.r4.model.Condition.ConditionStageComponent t : src.getStage())
+      tgt.addStage(convertConditionStageComponent(t));
+    for (org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent t : src.getEvidence())
+      tgt.addEvidence(convertConditionEvidenceComponent(t));
+    for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Condition convertCondition(org.hl7.fhir.r5.model.Condition src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Condition tgt = new org.hl7.fhir.r4.model.Condition();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasClinicalStatus())
-            tgt.setClinicalStatus(CodeableConcept40_50.convertCodeableConcept(src.getClinicalStatus()));
-        if (src.hasVerificationStatus())
-            tgt.setVerificationStatus(CodeableConcept40_50.convertCodeableConcept(src.getVerificationStatus()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasSeverity())
-            tgt.setSeverity(CodeableConcept40_50.convertCodeableConcept(src.getSeverity()));
-        if (src.hasCode())
-            tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySite()) tgt.addBodySite(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasEncounter())
-            tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
-        if (src.hasOnset())
-            tgt.setOnset(Type40_50.convertType(src.getOnset()));
-        if (src.hasAbatement())
-            tgt.setAbatement(Type40_50.convertType(src.getAbatement()));
-        if (src.hasRecordedDate())
-            tgt.setRecordedDateElement(DateTime40_50.convertDateTime(src.getRecordedDateElement()));
-        if (src.hasRecorder())
-            tgt.setRecorder(Reference40_50.convertReference(src.getRecorder()));
-        if (src.hasAsserter())
-            tgt.setAsserter(Reference40_50.convertReference(src.getAsserter()));
-        for (org.hl7.fhir.r5.model.Condition.ConditionStageComponent t : src.getStage()) tgt.addStage(convertConditionStageComponent(t));
-        for (org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent t : src.getEvidence()) tgt.addEvidence(convertConditionEvidenceComponent(t));
-        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Condition convertCondition(org.hl7.fhir.r5.model.Condition src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Condition tgt = new org.hl7.fhir.r4.model.Condition();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasClinicalStatus())
+      tgt.setClinicalStatus(CodeableConcept40_50.convertCodeableConcept(src.getClinicalStatus()));
+    if (src.hasVerificationStatus())
+      tgt.setVerificationStatus(CodeableConcept40_50.convertCodeableConcept(src.getVerificationStatus()));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory())
+      tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasSeverity())
+      tgt.setSeverity(CodeableConcept40_50.convertCodeableConcept(src.getSeverity()));
+    if (src.hasCode())
+      tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getBodySite())
+      tgt.addBodySite(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasEncounter())
+      tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
+    if (src.hasOnset())
+      tgt.setOnset(VersionConvertor_40_50.convertType(src.getOnset()));
+    if (src.hasAbatement())
+      tgt.setAbatement(VersionConvertor_40_50.convertType(src.getAbatement()));
+    if (src.hasRecordedDate())
+      tgt.setRecordedDateElement(DateTime40_50.convertDateTime(src.getRecordedDateElement()));
+    if (src.hasRecorder())
+      tgt.setRecorder(Reference40_50.convertReference(src.getRecorder()));
+    if (src.hasAsserter())
+      tgt.setAsserter(Reference40_50.convertReference(src.getAsserter()));
+    for (org.hl7.fhir.r5.model.Condition.ConditionStageComponent t : src.getStage())
+      tgt.addStage(convertConditionStageComponent(t));
+    for (org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent t : src.getEvidence())
+      tgt.addEvidence(convertConditionEvidenceComponent(t));
+    for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.Condition.ConditionStageComponent convertConditionStageComponent(org.hl7.fhir.r4.model.Condition.ConditionStageComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.r5.model.Condition.ConditionStageComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasSummary())
-            tgt.setSummary(CodeableConcept40_50.convertCodeableConcept(src.getSummary()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getAssessment()) tgt.addAssessment(Reference40_50.convertReference(t));
-        if (src.hasType())
-            tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Condition.ConditionStageComponent convertConditionStageComponent(org.hl7.fhir.r4.model.Condition.ConditionStageComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.r5.model.Condition.ConditionStageComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasSummary())
+      tgt.setSummary(CodeableConcept40_50.convertCodeableConcept(src.getSummary()));
+    for (org.hl7.fhir.r4.model.Reference t : src.getAssessment()) tgt.addAssessment(Reference40_50.convertReference(t));
+    if (src.hasType())
+      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Condition.ConditionStageComponent convertConditionStageComponent(org.hl7.fhir.r5.model.Condition.ConditionStageComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.r4.model.Condition.ConditionStageComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasSummary())
-            tgt.setSummary(CodeableConcept40_50.convertCodeableConcept(src.getSummary()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getAssessment()) tgt.addAssessment(Reference40_50.convertReference(t));
-        if (src.hasType())
-            tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Condition.ConditionStageComponent convertConditionStageComponent(org.hl7.fhir.r5.model.Condition.ConditionStageComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.r4.model.Condition.ConditionStageComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasSummary())
+      tgt.setSummary(CodeableConcept40_50.convertCodeableConcept(src.getSummary()));
+    for (org.hl7.fhir.r5.model.Reference t : src.getAssessment()) tgt.addAssessment(Reference40_50.convertReference(t));
+    if (src.hasType())
+      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent convertConditionEvidenceComponent(org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent();
-        Element40_50.copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getDetail()) tgt.addDetail(Reference40_50.convertReference(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent convertConditionEvidenceComponent(org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode())
+      tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getDetail()) tgt.addDetail(Reference40_50.convertReference(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent convertConditionEvidenceComponent(org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent();
-        Element40_50.copyElement(src, tgt);
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getDetail()) tgt.addDetail(Reference40_50.convertReference(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent convertConditionEvidenceComponent(org.hl7.fhir.r5.model.Condition.ConditionEvidenceComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode())
+      tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getDetail()) tgt.addDetail(Reference40_50.convertReference(t));
+    return tgt;
+  }
 }

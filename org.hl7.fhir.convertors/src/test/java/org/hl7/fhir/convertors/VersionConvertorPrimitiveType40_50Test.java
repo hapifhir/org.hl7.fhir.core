@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors;
 
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r4.model.Base64BinaryType;
 import org.hl7.fhir.r4.model.BooleanType;
@@ -53,14 +52,14 @@ public class VersionConvertorPrimitiveType40_50Test {
   @MethodSource("r4PrimitiveTypes")
   public <T extends PrimitiveType> void testNullValueDstu2Primitive(String classname, T obj) {
     obj.addExtension().setUrl("http://example.com/AnyValue").setValue(new StringType("A value"));
-    Assertions.assertNull(((org.hl7.fhir.r5.model.PrimitiveType) Type40_50.convertType(obj)).getValue());
+    Assertions.assertNull(((org.hl7.fhir.r5.model.PrimitiveType) VersionConvertor_40_50.convertType(obj)).getValue());
   }
 
   @ParameterizedTest(name = "Testing r5 -> r4 conversion of null value {0}.")
   @MethodSource("r5PrimitiveTypes")
   public <T extends org.hl7.fhir.r5.model.PrimitiveType> void testNullValueR5Primitive(String classname, T obj) {
     obj.addExtension().setUrl("http://example.com/AnyValue").setValue(new org.hl7.fhir.r5.model.StringType("A value"));
-    Assertions.assertNull(((PrimitiveType) Type40_50.convertType(obj)).getValue());
+    Assertions.assertNull(((PrimitiveType) VersionConvertor_40_50.convertType(obj)).getValue());
   }
 
   public static Stream<Arguments> r4PrimitiveTypes() {

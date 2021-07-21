@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Attachment40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -39,47 +38,51 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class BodyStructure40_50 extends VersionConvertor_40_50 {
+public class BodyStructure40_50 {
 
-    public static org.hl7.fhir.r5.model.BodyStructure convertBodyStructure(org.hl7.fhir.r4.model.BodyStructure src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.BodyStructure tgt = new org.hl7.fhir.r5.model.BodyStructure();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasActive())
-            tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
-        if (src.hasMorphology())
-            tgt.setMorphology(CodeableConcept40_50.convertCodeableConcept(src.getMorphology()));
-        if (src.hasLocation())
-            tgt.setLocation(CodeableConcept40_50.convertCodeableConcept(src.getLocation()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getLocationQualifier()) tgt.addLocationQualifier(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasDescription())
-            tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-        for (org.hl7.fhir.r4.model.Attachment t : src.getImage()) tgt.addImage(Attachment40_50.convertAttachment(t));
-        if (src.hasPatient())
-            tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.BodyStructure convertBodyStructure(org.hl7.fhir.r4.model.BodyStructure src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.BodyStructure tgt = new org.hl7.fhir.r5.model.BodyStructure();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasActive())
+      tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
+    if (src.hasMorphology())
+      tgt.setMorphology(CodeableConcept40_50.convertCodeableConcept(src.getMorphology()));
+    if (src.hasLocation())
+      tgt.setLocation(CodeableConcept40_50.convertCodeableConcept(src.getLocation()));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getLocationQualifier())
+      tgt.addLocationQualifier(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasDescription())
+      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+    for (org.hl7.fhir.r4.model.Attachment t : src.getImage()) tgt.addImage(Attachment40_50.convertAttachment(t));
+    if (src.hasPatient())
+      tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.BodyStructure convertBodyStructure(org.hl7.fhir.r5.model.BodyStructure src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.BodyStructure tgt = new org.hl7.fhir.r4.model.BodyStructure();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasActive())
-            tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
-        if (src.hasMorphology())
-            tgt.setMorphology(CodeableConcept40_50.convertCodeableConcept(src.getMorphology()));
-        if (src.hasLocation())
-            tgt.setLocation(CodeableConcept40_50.convertCodeableConcept(src.getLocation()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getLocationQualifier()) tgt.addLocationQualifier(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasDescription())
-            tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-        for (org.hl7.fhir.r5.model.Attachment t : src.getImage()) tgt.addImage(Attachment40_50.convertAttachment(t));
-        if (src.hasPatient())
-            tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.BodyStructure convertBodyStructure(org.hl7.fhir.r5.model.BodyStructure src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.BodyStructure tgt = new org.hl7.fhir.r4.model.BodyStructure();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasActive())
+      tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
+    if (src.hasMorphology())
+      tgt.setMorphology(CodeableConcept40_50.convertCodeableConcept(src.getMorphology()));
+    if (src.hasLocation())
+      tgt.setLocation(CodeableConcept40_50.convertCodeableConcept(src.getLocation()));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getLocationQualifier())
+      tgt.addLocationQualifier(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasDescription())
+      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+    for (org.hl7.fhir.r5.model.Attachment t : src.getImage()) tgt.addImage(Attachment40_50.convertAttachment(t));
+    if (src.hasPatient())
+      tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
+    return tgt;
+  }
 }

@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
@@ -39,221 +37,231 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Specimen40_50 extends VersionConvertor_40_50 {
+public class Specimen40_50 {
 
-    public static org.hl7.fhir.r5.model.Specimen convertSpecimen(org.hl7.fhir.r4.model.Specimen src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Specimen tgt = new org.hl7.fhir.r5.model.Specimen();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasAccessionIdentifier())
-            tgt.setAccessionIdentifier(Identifier40_50.convertIdentifier(src.getAccessionIdentifier()));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertSpecimenStatus(src.getStatusElement()));
-        if (src.hasType())
-            tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasReceivedTime())
-            tgt.setReceivedTimeElement(DateTime40_50.convertDateTime(src.getReceivedTimeElement()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getParent()) tgt.addParent(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getRequest()) tgt.addRequest(Reference40_50.convertReference(t));
-        if (src.hasCollection())
-            tgt.setCollection(convertSpecimenCollectionComponent(src.getCollection()));
-        for (org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent t : src.getProcessing()) tgt.addProcessing(convertSpecimenProcessingComponent(t));
-        for (org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent t : src.getContainer()) tgt.addContainer(convertSpecimenContainerComponent(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCondition()) tgt.addCondition(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Specimen convertSpecimen(org.hl7.fhir.r4.model.Specimen src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Specimen tgt = new org.hl7.fhir.r5.model.Specimen();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasAccessionIdentifier())
+      tgt.setAccessionIdentifier(Identifier40_50.convertIdentifier(src.getAccessionIdentifier()));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertSpecimenStatus(src.getStatusElement()));
+    if (src.hasType())
+      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasReceivedTime())
+      tgt.setReceivedTimeElement(DateTime40_50.convertDateTime(src.getReceivedTimeElement()));
+    for (org.hl7.fhir.r4.model.Reference t : src.getParent()) tgt.addParent(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getRequest()) tgt.addRequest(Reference40_50.convertReference(t));
+    if (src.hasCollection())
+      tgt.setCollection(convertSpecimenCollectionComponent(src.getCollection()));
+    for (org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent t : src.getProcessing())
+      tgt.addProcessing(convertSpecimenProcessingComponent(t));
+    for (org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent t : src.getContainer())
+      tgt.addContainer(convertSpecimenContainerComponent(t));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCondition())
+      tgt.addCondition(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Specimen convertSpecimen(org.hl7.fhir.r5.model.Specimen src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Specimen tgt = new org.hl7.fhir.r4.model.Specimen();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasAccessionIdentifier())
-            tgt.setAccessionIdentifier(Identifier40_50.convertIdentifier(src.getAccessionIdentifier()));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertSpecimenStatus(src.getStatusElement()));
-        if (src.hasType())
-            tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasReceivedTime())
-            tgt.setReceivedTimeElement(DateTime40_50.convertDateTime(src.getReceivedTimeElement()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getParent()) tgt.addParent(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getRequest()) tgt.addRequest(Reference40_50.convertReference(t));
-        if (src.hasCollection())
-            tgt.setCollection(convertSpecimenCollectionComponent(src.getCollection()));
-        for (org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent t : src.getProcessing()) tgt.addProcessing(convertSpecimenProcessingComponent(t));
-        for (org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent t : src.getContainer()) tgt.addContainer(convertSpecimenContainerComponent(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCondition()) tgt.addCondition(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Specimen convertSpecimen(org.hl7.fhir.r5.model.Specimen src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Specimen tgt = new org.hl7.fhir.r4.model.Specimen();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasAccessionIdentifier())
+      tgt.setAccessionIdentifier(Identifier40_50.convertIdentifier(src.getAccessionIdentifier()));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertSpecimenStatus(src.getStatusElement()));
+    if (src.hasType())
+      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasReceivedTime())
+      tgt.setReceivedTimeElement(DateTime40_50.convertDateTime(src.getReceivedTimeElement()));
+    for (org.hl7.fhir.r5.model.Reference t : src.getParent()) tgt.addParent(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getRequest()) tgt.addRequest(Reference40_50.convertReference(t));
+    if (src.hasCollection())
+      tgt.setCollection(convertSpecimenCollectionComponent(src.getCollection()));
+    for (org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent t : src.getProcessing())
+      tgt.addProcessing(convertSpecimenProcessingComponent(t));
+    for (org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent t : src.getContainer())
+      tgt.addContainer(convertSpecimenContainerComponent(t));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCondition())
+      tgt.addCondition(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Specimen.SpecimenStatus> convertSpecimenStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Specimen.SpecimenStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Specimen.SpecimenStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Specimen.SpecimenStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case AVAILABLE:
-                tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.AVAILABLE);
-                break;
-            case UNAVAILABLE:
-                tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.UNAVAILABLE);
-                break;
-            case UNSATISFACTORY:
-                tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.UNSATISFACTORY);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.ENTEREDINERROR);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Specimen.SpecimenStatus> convertSpecimenStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Specimen.SpecimenStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Specimen.SpecimenStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Specimen.SpecimenStatusEnumFactory());
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case AVAILABLE:
+        tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.AVAILABLE);
+        break;
+      case UNAVAILABLE:
+        tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.UNAVAILABLE);
+        break;
+      case UNSATISFACTORY:
+        tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.UNSATISFACTORY);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.ENTEREDINERROR);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r5.model.Specimen.SpecimenStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Specimen.SpecimenStatus> convertSpecimenStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Specimen.SpecimenStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Specimen.SpecimenStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Specimen.SpecimenStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case AVAILABLE:
-                tgt.setValue(org.hl7.fhir.r4.model.Specimen.SpecimenStatus.AVAILABLE);
-                break;
-            case UNAVAILABLE:
-                tgt.setValue(org.hl7.fhir.r4.model.Specimen.SpecimenStatus.UNAVAILABLE);
-                break;
-            case UNSATISFACTORY:
-                tgt.setValue(org.hl7.fhir.r4.model.Specimen.SpecimenStatus.UNSATISFACTORY);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r4.model.Specimen.SpecimenStatus.ENTEREDINERROR);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.Specimen.SpecimenStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Specimen.SpecimenStatus> convertSpecimenStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Specimen.SpecimenStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Specimen.SpecimenStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Specimen.SpecimenStatusEnumFactory());
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case AVAILABLE:
+        tgt.setValue(org.hl7.fhir.r4.model.Specimen.SpecimenStatus.AVAILABLE);
+        break;
+      case UNAVAILABLE:
+        tgt.setValue(org.hl7.fhir.r4.model.Specimen.SpecimenStatus.UNAVAILABLE);
+        break;
+      case UNSATISFACTORY:
+        tgt.setValue(org.hl7.fhir.r4.model.Specimen.SpecimenStatus.UNSATISFACTORY);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r4.model.Specimen.SpecimenStatus.ENTEREDINERROR);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r4.model.Specimen.SpecimenStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.Specimen.SpecimenCollectionComponent convertSpecimenCollectionComponent(org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Specimen.SpecimenCollectionComponent tgt = new org.hl7.fhir.r5.model.Specimen.SpecimenCollectionComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasCollector())
-            tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
-        if (src.hasCollected())
-            tgt.setCollected(Type40_50.convertType(src.getCollected()));
-        if (src.hasDuration())
-            tgt.setDuration(Duration40_50.convertDuration(src.getDuration()));
-        if (src.hasQuantity())
-            tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
-        if (src.hasMethod())
-            tgt.setMethod(CodeableConcept40_50.convertCodeableConcept(src.getMethod()));
-        if (src.hasBodySite())
-            tgt.setBodySite(CodeableConcept40_50.convertCodeableConcept(src.getBodySite()));
-        if (src.hasFastingStatus())
-            tgt.setFastingStatus(Type40_50.convertType(src.getFastingStatus()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Specimen.SpecimenCollectionComponent convertSpecimenCollectionComponent(org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Specimen.SpecimenCollectionComponent tgt = new org.hl7.fhir.r5.model.Specimen.SpecimenCollectionComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasCollector())
+      tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
+    if (src.hasCollected())
+      tgt.setCollected(VersionConvertor_40_50.convertType(src.getCollected()));
+    if (src.hasDuration())
+      tgt.setDuration(Duration40_50.convertDuration(src.getDuration()));
+    if (src.hasQuantity())
+      tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
+    if (src.hasMethod())
+      tgt.setMethod(CodeableConcept40_50.convertCodeableConcept(src.getMethod()));
+    if (src.hasBodySite())
+      tgt.setBodySite(CodeableConcept40_50.convertCodeableConcept(src.getBodySite()));
+    if (src.hasFastingStatus())
+      tgt.setFastingStatus(VersionConvertor_40_50.convertType(src.getFastingStatus()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent convertSpecimenCollectionComponent(org.hl7.fhir.r5.model.Specimen.SpecimenCollectionComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasCollector())
-            tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
-        if (src.hasCollected())
-            tgt.setCollected(Type40_50.convertType(src.getCollected()));
-        if (src.hasDuration())
-            tgt.setDuration(Duration40_50.convertDuration(src.getDuration()));
-        if (src.hasQuantity())
-            tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
-        if (src.hasMethod())
-            tgt.setMethod(CodeableConcept40_50.convertCodeableConcept(src.getMethod()));
-        if (src.hasBodySite())
-            tgt.setBodySite(CodeableConcept40_50.convertCodeableConcept(src.getBodySite()));
-        if (src.hasFastingStatus())
-            tgt.setFastingStatus(Type40_50.convertType(src.getFastingStatus()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent convertSpecimenCollectionComponent(org.hl7.fhir.r5.model.Specimen.SpecimenCollectionComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenCollectionComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasCollector())
+      tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
+    if (src.hasCollected())
+      tgt.setCollected(VersionConvertor_40_50.convertType(src.getCollected()));
+    if (src.hasDuration())
+      tgt.setDuration(Duration40_50.convertDuration(src.getDuration()));
+    if (src.hasQuantity())
+      tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
+    if (src.hasMethod())
+      tgt.setMethod(CodeableConcept40_50.convertCodeableConcept(src.getMethod()));
+    if (src.hasBodySite())
+      tgt.setBodySite(CodeableConcept40_50.convertCodeableConcept(src.getBodySite()));
+    if (src.hasFastingStatus())
+      tgt.setFastingStatus(VersionConvertor_40_50.convertType(src.getFastingStatus()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent convertSpecimenProcessingComponent(org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent tgt = new org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasDescription())
-            tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-        if (src.hasProcedure())
-            tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference40_50.convertReference(t));
-        if (src.hasTime())
-            tgt.setTime(Type40_50.convertType(src.getTime()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent convertSpecimenProcessingComponent(org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent tgt = new org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasDescription())
+      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+    if (src.hasProcedure())
+      tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
+    for (org.hl7.fhir.r4.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference40_50.convertReference(t));
+    if (src.hasTime())
+      tgt.setTime(VersionConvertor_40_50.convertType(src.getTime()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent convertSpecimenProcessingComponent(org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasDescription())
-            tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-        if (src.hasProcedure())
-            tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference40_50.convertReference(t));
-        if (src.hasTime())
-            tgt.setTime(Type40_50.convertType(src.getTime()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent convertSpecimenProcessingComponent(org.hl7.fhir.r5.model.Specimen.SpecimenProcessingComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenProcessingComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasDescription())
+      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+    if (src.hasProcedure())
+      tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
+    for (org.hl7.fhir.r5.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference40_50.convertReference(t));
+    if (src.hasTime())
+      tgt.setTime(VersionConvertor_40_50.convertType(src.getTime()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent convertSpecimenContainerComponent(org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent();
-        Element40_50.copyElement(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasDescription())
-            tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-        if (src.hasType())
-            tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-        if (src.hasCapacity())
-            tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
-        if (src.hasSpecimenQuantity())
-            tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
-        if (src.hasAdditive())
-            tgt.setAdditive(Type40_50.convertType(src.getAdditive()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent convertSpecimenContainerComponent(org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasDescription())
+      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+    if (src.hasType())
+      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+    if (src.hasCapacity())
+      tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
+    if (src.hasSpecimenQuantity())
+      tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
+    if (src.hasAdditive())
+      tgt.setAdditive(VersionConvertor_40_50.convertType(src.getAdditive()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent convertSpecimenContainerComponent(org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent();
-        Element40_50.copyElement(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasDescription())
-            tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-        if (src.hasType())
-            tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-        if (src.hasCapacity())
-            tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
-        if (src.hasSpecimenQuantity())
-            tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
-        if (src.hasAdditive())
-            tgt.setAdditive(Type40_50.convertType(src.getAdditive()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent convertSpecimenContainerComponent(org.hl7.fhir.r5.model.Specimen.SpecimenContainerComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent tgt = new org.hl7.fhir.r4.model.Specimen.SpecimenContainerComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasDescription())
+      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+    if (src.hasType())
+      tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
+    if (src.hasCapacity())
+      tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
+    if (src.hasSpecimenQuantity())
+      tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
+    if (src.hasAdditive())
+      tgt.setAdditive(VersionConvertor_40_50.convertType(src.getAdditive()));
+    return tgt;
+  }
 }

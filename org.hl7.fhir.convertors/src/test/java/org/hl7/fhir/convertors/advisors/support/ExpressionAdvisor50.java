@@ -21,7 +21,7 @@ public class ExpressionAdvisor50 extends BaseAdvisor_10_50 {
         throw new NullPointerException("null cannot be cast to non-null type org.hl7.fhir.r5.model.Expression");
       } else {
         type.setValueAsString(((Expression) src.getValue()).getExpression());
-        tgt.setValue((Type)type);
+        tgt.setValue(type);
         if (src.hasUrlElement()) {
           tgt.setUrlElement(Uri10_50.convertUri(src.getUrlElement()));
         }

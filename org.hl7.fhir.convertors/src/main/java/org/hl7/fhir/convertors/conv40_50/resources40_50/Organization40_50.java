@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
@@ -38,77 +36,87 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Organization40_50 extends VersionConvertor_40_50 {
+public class Organization40_50 {
 
-    public static org.hl7.fhir.r5.model.Organization convertOrganization(org.hl7.fhir.r4.model.Organization src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Organization tgt = new org.hl7.fhir.r5.model.Organization();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasActive())
-            tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType()) tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasName())
-            tgt.setNameElement(String40_50.convertString(src.getNameElement()));
-        for (org.hl7.fhir.r4.model.StringType t : src.getAlias()) tgt.getAlias().add(String40_50.convertString(t));
-        for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
-        for (org.hl7.fhir.r4.model.Address t : src.getAddress()) tgt.addAddress(Address40_50.convertAddress(t));
-        if (src.hasPartOf())
-            tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
-        for (org.hl7.fhir.r4.model.Organization.OrganizationContactComponent t : src.getContact()) tgt.addContact(convertOrganizationContactComponent(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Organization convertOrganization(org.hl7.fhir.r4.model.Organization src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Organization tgt = new org.hl7.fhir.r5.model.Organization();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasActive())
+      tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
+      tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasName())
+      tgt.setNameElement(String40_50.convertString(src.getNameElement()));
+    for (org.hl7.fhir.r4.model.StringType t : src.getAlias()) tgt.getAlias().add(String40_50.convertString(t));
+    for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
+      tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
+    for (org.hl7.fhir.r4.model.Address t : src.getAddress()) tgt.addAddress(Address40_50.convertAddress(t));
+    if (src.hasPartOf())
+      tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
+    for (org.hl7.fhir.r4.model.Organization.OrganizationContactComponent t : src.getContact())
+      tgt.addContact(convertOrganizationContactComponent(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Organization convertOrganization(org.hl7.fhir.r5.model.Organization src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Organization tgt = new org.hl7.fhir.r4.model.Organization();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasActive())
-            tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType()) tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasName())
-            tgt.setNameElement(String40_50.convertString(src.getNameElement()));
-        for (org.hl7.fhir.r5.model.StringType t : src.getAlias()) tgt.getAlias().add(String40_50.convertString(t));
-        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
-        for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(Address40_50.convertAddress(t));
-        if (src.hasPartOf())
-            tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
-        for (org.hl7.fhir.r5.model.Organization.OrganizationContactComponent t : src.getContact()) tgt.addContact(convertOrganizationContactComponent(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Organization convertOrganization(org.hl7.fhir.r5.model.Organization src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Organization tgt = new org.hl7.fhir.r4.model.Organization();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasActive())
+      tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
+      tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasName())
+      tgt.setNameElement(String40_50.convertString(src.getNameElement()));
+    for (org.hl7.fhir.r5.model.StringType t : src.getAlias()) tgt.getAlias().add(String40_50.convertString(t));
+    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
+      tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
+    for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(Address40_50.convertAddress(t));
+    if (src.hasPartOf())
+      tgt.setPartOf(Reference40_50.convertReference(src.getPartOf()));
+    for (org.hl7.fhir.r5.model.Organization.OrganizationContactComponent t : src.getContact())
+      tgt.addContact(convertOrganizationContactComponent(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.r4.model.Organization.OrganizationContactComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.r5.model.Organization.OrganizationContactComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasPurpose())
-            tgt.setPurpose(CodeableConcept40_50.convertCodeableConcept(src.getPurpose()));
-        if (src.hasName())
-            tgt.setName(HumanName40_50.convertHumanName(src.getName()));
-        for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
-        if (src.hasAddress())
-            tgt.setAddress(Address40_50.convertAddress(src.getAddress()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.r4.model.Organization.OrganizationContactComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.r5.model.Organization.OrganizationContactComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasPurpose())
+      tgt.setPurpose(CodeableConcept40_50.convertCodeableConcept(src.getPurpose()));
+    if (src.hasName())
+      tgt.setName(HumanName40_50.convertHumanName(src.getName()));
+    for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
+      tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
+    if (src.hasAddress())
+      tgt.setAddress(Address40_50.convertAddress(src.getAddress()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.r5.model.Organization.OrganizationContactComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.r4.model.Organization.OrganizationContactComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasPurpose())
-            tgt.setPurpose(CodeableConcept40_50.convertCodeableConcept(src.getPurpose()));
-        if (src.hasName())
-            tgt.setName(HumanName40_50.convertHumanName(src.getName()));
-        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
-        if (src.hasAddress())
-            tgt.setAddress(Address40_50.convertAddress(src.getAddress()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Organization.OrganizationContactComponent convertOrganizationContactComponent(org.hl7.fhir.r5.model.Organization.OrganizationContactComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Organization.OrganizationContactComponent tgt = new org.hl7.fhir.r4.model.Organization.OrganizationContactComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasPurpose())
+      tgt.setPurpose(CodeableConcept40_50.convertCodeableConcept(src.getPurpose()));
+    if (src.hasName())
+      tgt.setName(HumanName40_50.convertHumanName(src.getName()));
+    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
+      tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
+    if (src.hasAddress())
+      tgt.setAddress(Address40_50.convertAddress(src.getAddress()));
+    return tgt;
+  }
 }

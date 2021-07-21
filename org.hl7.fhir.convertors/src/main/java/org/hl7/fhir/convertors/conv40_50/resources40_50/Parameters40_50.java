@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -36,53 +34,57 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Parameters40_50 extends VersionConvertor_40_50 {
+public class Parameters40_50 {
 
-    public static org.hl7.fhir.r5.model.Parameters convertParameters(org.hl7.fhir.r4.model.Parameters src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Parameters tgt = new org.hl7.fhir.r5.model.Parameters();
-        copyResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Parameters convertParameters(org.hl7.fhir.r4.model.Parameters src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Parameters tgt = new org.hl7.fhir.r5.model.Parameters();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getParameter())
+      tgt.addParameter(convertParametersParameterComponent(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Parameters convertParameters(org.hl7.fhir.r5.model.Parameters src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Parameters tgt = new org.hl7.fhir.r4.model.Parameters();
-        copyResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getParameter()) tgt.addParameter(convertParametersParameterComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Parameters convertParameters(org.hl7.fhir.r5.model.Parameters src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Parameters tgt = new org.hl7.fhir.r4.model.Parameters();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getParameter())
+      tgt.addParameter(convertParametersParameterComponent(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent convertParametersParameterComponent(org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasName())
-            tgt.setNameElement(String40_50.convertString(src.getNameElement()));
-        if (src.hasValue())
-            tgt.setValue(Type40_50.convertType(src.getValue()));
-        if (src.hasResource())
-            tgt.setResource(convertResource(src.getResource()));
-        for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent convertParametersParameterComponent(org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasName())
+      tgt.setNameElement(String40_50.convertString(src.getNameElement()));
+    if (src.hasValue())
+      tgt.setValue(VersionConvertor_40_50.convertType(src.getValue()));
+    if (src.hasResource())
+      tgt.setResource(VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().convertResource(src.getResource()));
+    for (org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent t : src.getPart())
+      tgt.addPart(convertParametersParameterComponent(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent convertParametersParameterComponent(org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasName())
-            tgt.setNameElement(String40_50.convertString(src.getNameElement()));
-        if (src.hasValue())
-            tgt.setValue(Type40_50.convertType(src.getValue()));
-        if (src.hasResource())
-            tgt.setResource(convertResource(src.getResource()));
-        for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getPart()) tgt.addPart(convertParametersParameterComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent convertParametersParameterComponent(org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent tgt = new org.hl7.fhir.r4.model.Parameters.ParametersParameterComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasName())
+      tgt.setNameElement(String40_50.convertString(src.getNameElement()));
+    if (src.hasValue())
+      tgt.setValue(VersionConvertor_40_50.convertType(src.getValue()));
+    if (src.hasResource())
+      tgt.setResource(VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().convertResource(src.getResource()));
+    for (org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent t : src.getPart())
+      tgt.addPart(convertParametersParameterComponent(t));
+    return tgt;
+  }
 }

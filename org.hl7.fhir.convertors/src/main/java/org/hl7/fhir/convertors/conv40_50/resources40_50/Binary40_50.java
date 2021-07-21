@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Base64Binary40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
@@ -36,33 +35,33 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Binary40_50 extends VersionConvertor_40_50 {
+public class Binary40_50 {
 
-    public static org.hl7.fhir.r5.model.Binary convertBinary(org.hl7.fhir.r4.model.Binary src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Binary tgt = new org.hl7.fhir.r5.model.Binary();
-        copyResource(src, tgt);
-        if (src.hasContentType())
-            tgt.setContentTypeElement(Code40_50.convertCode(src.getContentTypeElement()));
-        if (src.hasSecurityContext())
-            tgt.setSecurityContext(Reference40_50.convertReference(src.getSecurityContext()));
-        if (src.hasData())
-            tgt.setDataElement(Base64Binary40_50.convertBase64Binary(src.getDataElement()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Binary convertBinary(org.hl7.fhir.r4.model.Binary src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Binary tgt = new org.hl7.fhir.r5.model.Binary();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyResource(src, tgt);
+    if (src.hasContentType())
+      tgt.setContentTypeElement(Code40_50.convertCode(src.getContentTypeElement()));
+    if (src.hasSecurityContext())
+      tgt.setSecurityContext(Reference40_50.convertReference(src.getSecurityContext()));
+    if (src.hasData())
+      tgt.setDataElement(Base64Binary40_50.convertBase64Binary(src.getDataElement()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Binary convertBinary(org.hl7.fhir.r5.model.Binary src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Binary tgt = new org.hl7.fhir.r4.model.Binary();
-        copyResource(src, tgt);
-        if (src.hasContentType())
-            tgt.setContentTypeElement(Code40_50.convertCode(src.getContentTypeElement()));
-        if (src.hasSecurityContext())
-            tgt.setSecurityContext(Reference40_50.convertReference(src.getSecurityContext()));
-        if (src.hasData())
-            tgt.setDataElement(Base64Binary40_50.convertBase64Binary(src.getDataElement()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Binary convertBinary(org.hl7.fhir.r5.model.Binary src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Binary tgt = new org.hl7.fhir.r4.model.Binary();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyResource(src, tgt);
+    if (src.hasContentType())
+      tgt.setContentTypeElement(Code40_50.convertCode(src.getContentTypeElement()));
+    if (src.hasSecurityContext())
+      tgt.setSecurityContext(Reference40_50.convertReference(src.getSecurityContext()));
+    if (src.hasData())
+      tgt.setDataElement(Base64Binary40_50.convertBase64Binary(src.getDataElement()));
+    return tgt;
+  }
 }

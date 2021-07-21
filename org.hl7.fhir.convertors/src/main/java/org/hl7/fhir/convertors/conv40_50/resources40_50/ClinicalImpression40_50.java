@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
 import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
+import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -42,153 +40,163 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class ClinicalImpression40_50 extends VersionConvertor_40_50 {
+public class ClinicalImpression40_50 {
 
-    public static org.hl7.fhir.r5.model.ClinicalImpression convertClinicalImpression(org.hl7.fhir.r4.model.ClinicalImpression src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.ClinicalImpression tgt = new org.hl7.fhir.r5.model.ClinicalImpression();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertClinicalImpressionStatus(src.getStatusElement()));
-        if (src.hasStatusReason())
-            tgt.setStatusReason(CodeableConcept40_50.convertCodeableConcept(src.getStatusReason()));
-        // if (src.hasCode())
-        // tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasDescription())
-            tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasEncounter())
-            tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
-        if (src.hasEffective())
-            tgt.setEffective(Type40_50.convertType(src.getEffective()));
-        if (src.hasDate())
-            tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
-        if (src.hasAssessor())
-            tgt.setPerformer(Reference40_50.convertReference(src.getAssessor()));
-        if (src.hasPrevious())
-            tgt.setPrevious(Reference40_50.convertReference(src.getPrevious()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getProblem()) tgt.addProblem(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r4.model.UriType t : src.getProtocol()) tgt.getProtocol().add(Uri40_50.convertUri(t));
-        if (src.hasSummary())
-            tgt.setSummaryElement(String40_50.convertString(src.getSummaryElement()));
-        for (org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding()) tgt.addFinding(convertClinicalImpressionFindingComponent(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPrognosisCodeableConcept()) tgt.addPrognosisCodeableConcept(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getPrognosisReference()) tgt.addPrognosisReference(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.ClinicalImpression convertClinicalImpression(org.hl7.fhir.r4.model.ClinicalImpression src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.ClinicalImpression tgt = new org.hl7.fhir.r5.model.ClinicalImpression();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertClinicalImpressionStatus(src.getStatusElement()));
+    if (src.hasStatusReason())
+      tgt.setStatusReason(CodeableConcept40_50.convertCodeableConcept(src.getStatusReason()));
+    // if (src.hasCode())
+    // tgt.setCode(convertCodeableConcept(src.getCode()));
+    if (src.hasDescription())
+      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasEncounter())
+      tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
+    if (src.hasEffective())
+      tgt.setEffective(VersionConvertor_40_50.convertType(src.getEffective()));
+    if (src.hasDate())
+      tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
+    if (src.hasAssessor())
+      tgt.setPerformer(Reference40_50.convertReference(src.getAssessor()));
+    if (src.hasPrevious())
+      tgt.setPrevious(Reference40_50.convertReference(src.getPrevious()));
+    for (org.hl7.fhir.r4.model.Reference t : src.getProblem()) tgt.addProblem(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r4.model.UriType t : src.getProtocol()) tgt.getProtocol().add(Uri40_50.convertUri(t));
+    if (src.hasSummary())
+      tgt.setSummaryElement(String40_50.convertString(src.getSummaryElement()));
+    for (org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding())
+      tgt.addFinding(convertClinicalImpressionFindingComponent(t));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getPrognosisCodeableConcept())
+      tgt.addPrognosisCodeableConcept(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getPrognosisReference())
+      tgt.addPrognosisReference(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInfo())
+      tgt.addSupportingInfo(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.ClinicalImpression convertClinicalImpression(org.hl7.fhir.r5.model.ClinicalImpression src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.ClinicalImpression tgt = new org.hl7.fhir.r4.model.ClinicalImpression();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertClinicalImpressionStatus(src.getStatusElement()));
-        if (src.hasStatusReason())
-            tgt.setStatusReason(CodeableConcept40_50.convertCodeableConcept(src.getStatusReason()));
-        // if (src.hasCode())
-        // tgt.setCode(convertCodeableConcept(src.getCode()));
-        if (src.hasDescription())
-            tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasEncounter())
-            tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
-        if (src.hasEffective())
-            tgt.setEffective(Type40_50.convertType(src.getEffective()));
-        if (src.hasDate())
-            tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
-        if (src.hasPerformer())
-            tgt.setAssessor(Reference40_50.convertReference(src.getPerformer()));
-        if (src.hasPrevious())
-            tgt.setPrevious(Reference40_50.convertReference(src.getPrevious()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getProblem()) tgt.addProblem(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.UriType t : src.getProtocol()) tgt.getProtocol().add(Uri40_50.convertUri(t));
-        if (src.hasSummary())
-            tgt.setSummaryElement(String40_50.convertString(src.getSummaryElement()));
-        for (org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding()) tgt.addFinding(convertClinicalImpressionFindingComponent(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPrognosisCodeableConcept()) tgt.addPrognosisCodeableConcept(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getPrognosisReference()) tgt.addPrognosisReference(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo()) tgt.addSupportingInfo(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.ClinicalImpression convertClinicalImpression(org.hl7.fhir.r5.model.ClinicalImpression src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.ClinicalImpression tgt = new org.hl7.fhir.r4.model.ClinicalImpression();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertClinicalImpressionStatus(src.getStatusElement()));
+    if (src.hasStatusReason())
+      tgt.setStatusReason(CodeableConcept40_50.convertCodeableConcept(src.getStatusReason()));
+    // if (src.hasCode())
+    // tgt.setCode(convertCodeableConcept(src.getCode()));
+    if (src.hasDescription())
+      tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasEncounter())
+      tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
+    if (src.hasEffective())
+      tgt.setEffective(VersionConvertor_40_50.convertType(src.getEffective()));
+    if (src.hasDate())
+      tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
+    if (src.hasPerformer())
+      tgt.setAssessor(Reference40_50.convertReference(src.getPerformer()));
+    if (src.hasPrevious())
+      tgt.setPrevious(Reference40_50.convertReference(src.getPrevious()));
+    for (org.hl7.fhir.r5.model.Reference t : src.getProblem()) tgt.addProblem(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.UriType t : src.getProtocol()) tgt.getProtocol().add(Uri40_50.convertUri(t));
+    if (src.hasSummary())
+      tgt.setSummaryElement(String40_50.convertString(src.getSummaryElement()));
+    for (org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent t : src.getFinding())
+      tgt.addFinding(convertClinicalImpressionFindingComponent(t));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getPrognosisCodeableConcept())
+      tgt.addPrognosisCodeableConcept(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getPrognosisReference())
+      tgt.addPrognosisReference(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInfo())
+      tgt.addSupportingInfo(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> convertClinicalImpressionStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.EventStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case INPROGRESS:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.INPROGRESS);
-                break;
-            case COMPLETED:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.COMPLETED);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.ENTEREDINERROR);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> convertClinicalImpressionStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.EventStatusEnumFactory());
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case INPROGRESS:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.INPROGRESS);
+        break;
+      case COMPLETED:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.COMPLETED);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.ENTEREDINERROR);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus> convertClinicalImpressionStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case INPROGRESS:
-                tgt.setValue(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus.INPROGRESS);
-                break;
-            case COMPLETED:
-                tgt.setValue(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus.COMPLETED);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus.ENTEREDINERROR);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus> convertClinicalImpressionStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatusEnumFactory());
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case INPROGRESS:
+        tgt.setValue(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus.INPROGRESS);
+        break;
+      case COMPLETED:
+        tgt.setValue(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus.COMPLETED);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus.ENTEREDINERROR);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent convertClinicalImpressionFindingComponent(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasItemCodeableConcept())
-            tgt.setItem(CodeableConcept40_50.convertCodeableConceptToCodeableReference(src.getItemCodeableConcept()));
-        if (src.hasItemReference())
-            tgt.setItem(Reference40_50.convertReferenceToCodeableReference(src.getItemReference()));
-        if (src.hasBasis())
-            tgt.setBasisElement(String40_50.convertString(src.getBasisElement()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent convertClinicalImpressionFindingComponent(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasItemCodeableConcept())
+      tgt.setItem(CodeableConcept40_50.convertCodeableConceptToCodeableReference(src.getItemCodeableConcept()));
+    if (src.hasItemReference())
+      tgt.setItem(Reference40_50.convertReferenceToCodeableReference(src.getItemReference()));
+    if (src.hasBasis())
+      tgt.setBasisElement(String40_50.convertString(src.getBasisElement()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent convertClinicalImpressionFindingComponent(org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasItem() && src.getItem().hasConcept())
-            tgt.setItemCodeableConcept(CodeableConcept40_50.convertCodeableConcept(src.getItem().getConcept()));
-        if (src.hasItem() && src.getItem().hasReference())
-            tgt.setItemReference(Reference40_50.convertReference(src.getItem().getReference()));
-        if (src.hasBasis())
-            tgt.setBasisElement(String40_50.convertString(src.getBasisElement()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent convertClinicalImpressionFindingComponent(org.hl7.fhir.r5.model.ClinicalImpression.ClinicalImpressionFindingComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent();
+    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    if (src.hasItem() && src.getItem().hasConcept())
+      tgt.setItemCodeableConcept(CodeableConcept40_50.convertCodeableConcept(src.getItem().getConcept()));
+    if (src.hasItem() && src.getItem().hasReference())
+      tgt.setItemReference(Reference40_50.convertReference(src.getItem().getReference()));
+    if (src.hasBasis())
+      tgt.setBasisElement(String40_50.convertString(src.getBasisElement()));
+    return tgt;
+  }
 }
