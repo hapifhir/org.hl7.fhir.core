@@ -4,11 +4,8 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
-import java.util.stream.Collectors;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -59,6 +56,12 @@ public class VersionConvertorContext<T> {
    */
   private final ThreadLocal<Stack<String>> threadLocalPath = new ThreadLocal<>();
 
+  /**
+   * Initializes the conversion context. If a context already exists, this will just add the path to the current tracked
+   * path for the conversion context.
+   * @param versionConvertor Instance of the version convertor context to use.
+   * @param path Current path (i.e. String label) for the given conversion.
+   */
   public void init(T versionConvertor, String path) {
     if (versionConvertor == null) {
       throw new FHIRException("Null convertor is not allowed!");
@@ -80,6 +83,12 @@ public class VersionConvertorContext<T> {
     threadLocalPath.set(stack);
   }
 
+  /**
+   * Closes the current path. This removes the label from the current stored path.
+   * If there is no remaining path set after this path is removed, the context convertor and path are cleared from
+   * memory.
+   * @param path {@link String} label path to add.
+   */
   public void close(String path) {
     Stack<String> stack = threadLocalPath.get();
     if (stack == null) {
@@ -110,6 +119,9 @@ public class VersionConvertorContext<T> {
     return String.join(".", new ArrayList<>(threadLocalPath.get()));
   }
 
+  /**
+   * Returns the current instance of the version convertor.
+   */
   public T getVersionConvertor() {
     T result = threadLocalVersionConverter.get();
     logger.debug(result.toString());
