@@ -53,8 +53,8 @@ public class TerminologyClientR2 implements TerminologyClient {
 
   private FHIRToolingClient client; // todo: use the R2 client
 
-  public TerminologyClientR2(String address) throws URISyntaxException {
-    client = new FHIRToolingClient(address);
+  public TerminologyClientR2(String address, String accessToken) throws URISyntaxException {
+    client = new FHIRToolingClient(address, accessToken);
   }
 
   @Override

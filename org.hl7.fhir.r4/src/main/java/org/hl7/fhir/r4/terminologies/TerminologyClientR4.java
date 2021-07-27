@@ -46,8 +46,8 @@ public class TerminologyClientR4 implements TerminologyClient {
 
   private FHIRToolingClient client;
   
-  public TerminologyClientR4(String address) throws URISyntaxException {
-    client = new FHIRToolingClient(address);
+  public TerminologyClientR4(String address, String accessToken) throws URISyntaxException {
+    client = new FHIRToolingClient(address, accessToken);
   }
 
   @Override
