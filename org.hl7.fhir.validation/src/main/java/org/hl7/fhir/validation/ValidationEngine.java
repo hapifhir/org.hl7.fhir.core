@@ -256,7 +256,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return ep;
   }
 
-  public String connectToTSServer(String url, String log, FhirPublication version) throws URISyntaxException, FHIRException {
+  public String connectToTSServer(String url, String log, String accessToken, FhirPublication version) throws URISyntaxException, FHIRException {
     context.setTlogging(false);
     if (url == null) {
       context.setCanRunWithoutTerminology(true);
@@ -264,7 +264,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       return "n/a: No Terminology Server";
     } else {
       try {
-        return context.connectToTSServer(TerminologyClientFactory.makeClient(url, version), log);
+        return context.connectToTSServer(TerminologyClientFactory.makeClient(url, accessToken, version), log);
       } catch (Exception e) {
         if (context.isCanRunWithoutTerminology()) {
           return "n/a: Running without Terminology Server (error: " + e.getMessage() + ")";
@@ -659,8 +659,8 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     throw new FHIRException("Source/Target version not supported: " + version + " -> " + targetVer);
   }
 
-  public String setTerminologyServer(String src, String log, FhirPublication version) throws FHIRException, URISyntaxException {
-    return connectToTSServer(src, log, version);
+  public String setTerminologyServer(String src, String log, String accessToken, FhirPublication version) throws FHIRException, URISyntaxException {
+    return connectToTSServer(src, log, accessToken, version);
   }
 
   public ValidationEngine setMapLog(String mapLog) throws FileNotFoundException {

@@ -36,6 +36,7 @@ public class Params {
   public static final String SCAN = "-scan";
   public static final String TERMINOLOGY = "-tx";
   public static final String TERMINOLOGY_LOG = "-txLog";
+  public static final String TERMINOLOGY_ACCESSTOKEN = "-txAccessToken";
   public static final String LOG = "-log";
   public static final String LANGUAGE = "-language";
   public static final String IMPLEMENTATION_GUIDE = "-ig";
@@ -209,6 +210,11 @@ public class Params {
           throw new Error("Specified -txLog without indicating file");
         else
           cliContext.setTxLog(args[++i]);
+      } else if (args[i].equals(TERMINOLOGY_ACCESSTOKEN)) {
+        if (i + 1 == args.length)
+          throw new Error("Specified -txAccessToken without indicating access token");
+        else
+          cliContext.setTxAccessToken(args[++i]);
       } else if (args[i].equals(LOG)) {
         if (i + 1 == args.length)
           throw new Error("Specified -log without indicating file");

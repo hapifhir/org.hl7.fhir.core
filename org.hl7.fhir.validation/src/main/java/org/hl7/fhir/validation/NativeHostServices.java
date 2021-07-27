@@ -159,8 +159,8 @@ public class NativeHostServices {
    * @param txServer - the URL of the terminology service (http://tx.fhir.org/r4 default)
    * @throws Exception
    */
-  public void connectToTxSvc(String txServer, String log) throws Exception {
-    validator.connectToTSServer(txServer, log, FhirPublication.R5);
+  public void connectToTxSvc(String txServer, String log, Strong accessToken) throws Exception {
+    validator.connectToTSServer(txServer, log, accessToken, FhirPublication.R5);
   }
 
   /**

@@ -34,6 +34,7 @@ The following parameters are supported:
      To run without terminology value, specific n/a as the URL
 -txLog [file]: Produce a log of the terminology server operations in [file]
      Default value is not to produce a log
+-txAccessToken [token]: Provide an OAuth2 bearer access token for inclusion in HTTP Authorization request header to the terminology server.
 -profile [url]: the canonical URL to validate against (same as if it was 
      specified in Resource.meta.profile). If no profile is specified, the 
      resource is validated against the base specification. This parameter 

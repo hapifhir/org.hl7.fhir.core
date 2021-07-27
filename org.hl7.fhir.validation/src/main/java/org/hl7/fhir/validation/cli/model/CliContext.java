@@ -53,6 +53,8 @@ public class CliContext {
   private String sv = null;
   @JsonProperty("txLog")
   private String txLog = null;
+  @JsonProperty("txAccessToken")
+  private String txAccessToken = null;
   @JsonProperty("mapLog")
   private String mapLog = null;
   @JsonProperty("lang")
@@ -340,6 +342,18 @@ public class CliContext {
     return this;
   }
 
+  @JsonProperty("txAccessToken")
+  public String getTxAccessToken() {
+    return txAccessToken;
+  }
+
+  @JsonProperty("txAccessToken")
+  public CliContext setTxAccessToken(String txAccessToken) {
+    this.txAccessToken = txAccessToken;
+    return this;
+  }
+  
+
   @JsonProperty("mapLog")
   public String getMapLog() {
     return mapLog;
@@ -526,6 +540,7 @@ public class CliContext {
       Objects.equals(txServer, that.txServer) &&
       Objects.equals(sv, that.sv) &&
       Objects.equals(txLog, that.txLog) &&
+      Objects.equals(txAccessToken, that.txAccessToken) &&
       Objects.equals(mapLog, that.mapLog) &&
       Objects.equals(lang, that.lang) &&
       Objects.equals(fhirpath, that.fhirpath) &&
@@ -545,7 +560,7 @@ public class CliContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls);
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, txAccessToken, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls);
   }
 
   @Override
@@ -568,6 +583,7 @@ public class CliContext {
       ", txServer='" + txServer + '\'' +
       ", sv='" + sv + '\'' +
       ", txLog='" + txLog + '\'' +
+      ", txAccessToken='" + txAccessToken + '\'' +
       ", mapLog='" + mapLog + '\'' +
       ", lang='" + lang + '\'' +
       ", fhirpath='" + fhirpath + '\'' +

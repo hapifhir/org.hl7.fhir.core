@@ -86,9 +86,13 @@ public class Common {
   }
 
   public static ValidationEngine getValidationEngine(String version, String txServer, String definitions, String txLog, TimeTracker tt) throws Exception {
+    return getValidationEngine(version, DEFAULT_TX_SERVER, definitions, txLog, null, tt);
+  }
+
+  public static ValidationEngine getValidationEngine(String version, String txServer, String definitions, String txLog, String txAccessToken, TimeTracker tt) throws Exception {
     System.out.println("Loading (v = " + version + ", tx server -> " + txServer + ")");
     ValidationEngine ve = new ValidationEngine(definitions, version, tt);
-    ve.connectToTSServer(txServer, txLog, FhirPublication.fromCode(version));
+    ve.connectToTSServer(txServer, txLog, txAccessToken, FhirPublication.fromCode(version));
     return ve;
   }
 
