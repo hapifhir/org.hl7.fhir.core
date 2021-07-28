@@ -54,7 +54,7 @@ public class TerminologyClientR3 implements TerminologyClient {
   private FHIRToolingClient client; // todo: use the R2 client
   
   public TerminologyClientR3(String address, String accessToken) throws URISyntaxException {
-    client = new FHIRToolingClient(address, accessToken);
+    client = new FHIRToolingClient(address, accessToken, null, null);
   }
 
   @Override

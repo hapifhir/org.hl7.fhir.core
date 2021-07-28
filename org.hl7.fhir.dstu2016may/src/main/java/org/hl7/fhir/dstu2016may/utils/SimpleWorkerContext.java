@@ -127,7 +127,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 	}
 
 	public void connectToTSServer(String url, String accessToken) throws URISyntaxException {
-	  txServer = new FHIRToolingClient(url, accessToken);
+	  txServer = new FHIRToolingClient(url, accessToken, null, null);
 	}
 
 	private void loadFromFile(InputStream stream, String name) throws IOException, FHIRException {

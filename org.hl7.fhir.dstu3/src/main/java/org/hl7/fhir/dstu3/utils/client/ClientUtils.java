@@ -197,12 +197,7 @@ public class ClientUtils {
       }
     }
     if (accessToken != null) {
-      try {
-        byte[] b = Base64.encodeBase64((accessToken).getBytes("ASCII"));
-        String b64 = new String(b, StandardCharsets.US_ASCII);
-        httpget.setHeader("Authorization", "Bearer " + b64);
-      } catch (UnsupportedEncodingException e) {
-      }
+        httpget.setHeader("Authorization", "Bearer " + accessToken);
     }
   }
 

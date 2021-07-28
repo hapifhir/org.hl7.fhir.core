@@ -93,7 +93,6 @@ public class FHIRToolingClient {
 
 	private String base;
 	private ResourceAddress resourceAddress;
-	private String accessToken;
 	private ResourceFormat preferredResourceFormat;
 	private HttpHost proxy;
 	private int maxResultSetSize = -1;//_count
@@ -105,21 +104,16 @@ public class FHIRToolingClient {
 	public FHIRToolingClient(String baseServiceUrl) throws URISyntaxException {
 		preferredResourceFormat = ResourceFormat.RESOURCE_XML;
     detectProxy();
-    initialize(baseServiceUrl, null);
-	}
-
-	public FHIRToolingClient(String baseServiceUrl, String accessToken) throws URISyntaxException {
-		preferredResourceFormat = ResourceFormat.RESOURCE_XML;
-    detectProxy();
-    initialize(baseServiceUrl, accessToken);
+    initialize(baseServiceUrl);
 	}
 
   public FHIRToolingClient(String baseServiceUrl, String accessToken, String username, String password) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
     utils.setUsername(username);
     utils.setPassword(password);
+	utils.setAccessToken(accessToken);
     detectProxy();
-    initialize(baseServiceUrl, accessToken);
+    initialize(baseServiceUrl);
 	}
 	
 	public void configureProxy(String proxyHost, int proxyPort) {
@@ -143,10 +137,9 @@ public class FHIRToolingClient {
 		}
 	}
 	
-	public void initialize(String baseServiceUrl, String accessToken)  throws URISyntaxException {
+	public void initialize(String baseServiceUrl)  throws URISyntaxException {
 	  base = baseServiceUrl;
 		resourceAddress = new ResourceAddress(baseServiceUrl);
-		this.accessToken = accessToken;
 		this.maxResultSetSize = -1;
 		checkConformance();
 	}
@@ -844,6 +837,13 @@ public class FHIRToolingClient {
     utils.setPassword(password);
   }
 
+  public String getAccessToken() {
+    return utils.getAccessToken();
+  }
+
+  public void setAccessToken(String accessToken) {
+    utils.setAccessToken(accessToken);
+  }
   
   public Parameters getTerminologyCapabilities() {
     return (Parameters) utils.issueGetResourceRequest(resourceAddress.resolveMetadataTxCaps(), getPreferredResourceFormat(), TIMEOUT_NORMAL).getReference();

@@ -305,4 +305,3 @@ local.properties
 /org.hl7.fhir.r5.new
 /org.hl7.fhir.r5.newc
 .vscode/settings.json
-.gitignore

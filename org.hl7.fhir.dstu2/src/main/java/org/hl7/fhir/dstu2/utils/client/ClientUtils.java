@@ -103,6 +103,7 @@ public class ClientUtils {
   private int timeout = 5000;
   private String username;
   private String password;
+  private String accessToken;
   private ToolingClientLogger logger;
   private int retryCount;
 
@@ -136,6 +137,14 @@ public class ClientUtils {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getAccessToken() {
+    return accessToken;
+  }
+
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
   }
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat, int timeoutLoading) {
@@ -184,7 +193,10 @@ public class ClientUtils {
       } catch (UnsupportedEncodingException e) {
       }
     }
-  }
+    if (accessToken != null) {
+        httpget.setHeader("Authorization", "Bearer " + accessToken);
+    }
+}
 
   public Bundle postBatchRequest(URI resourceUri, byte[] payload, String resourceFormat, int timeoutLoading) {
     HttpPost httpPost = new HttpPost(resourceUri);
