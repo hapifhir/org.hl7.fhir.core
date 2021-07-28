@@ -13,7 +13,7 @@ public class NativeHostServiceTester {
     
     NativeHostServices svc = new NativeHostServices();
     svc.init("hl7.fhir.r4.core#4.0.1");
-    svc.connectToTxSvc("http://tx.fhir.org/r4", null);
+    svc.connectToTxSvc("http://tx.fhir.org/r4", null, null);
     System.out.println("base: "+svc.status());
 
     svc.seeResource(TestingUtilities.loadTestResourceBytes("validator", "misc", "ValueSet-dicm-2-AnatomicModifier.json"), FhirFormat.JSON);
