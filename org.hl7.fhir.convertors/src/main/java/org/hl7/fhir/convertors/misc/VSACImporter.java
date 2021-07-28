@@ -34,7 +34,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
   private void process(String source, String dest, String username, String password) throws FHIRException, FileNotFoundException, IOException, URISyntaxException {
     CSVReader csv = new CSVReader(new FileInputStream(source));
     csv.readHeaders();
-    FHIRToolingClient client = new FHIRToolingClient("https://cts.nlm.nih.gov/fhir", "", username, password);
+    FHIRToolingClient client = new FHIRToolingClient("https://cts.nlm.nih.gov/fhir", null, username, password);
     int i = 0;
     while (csv.line()) {
       String oid = csv.cell("OID");

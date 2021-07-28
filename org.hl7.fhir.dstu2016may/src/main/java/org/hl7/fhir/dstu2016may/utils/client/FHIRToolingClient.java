@@ -106,7 +106,7 @@ public class FHIRToolingClient {
 	public FHIRToolingClient(String baseServiceUrl) throws URISyntaxException {
 		preferredResourceFormat = ResourceFormat.RESOURCE_XML;
     detectProxy();
-    initialize(baseServiceUrl, "");
+    initialize(baseServiceUrl, null);
 	}
 
 	public FHIRToolingClient(String baseServiceUrl, String accessToken) throws URISyntaxException {

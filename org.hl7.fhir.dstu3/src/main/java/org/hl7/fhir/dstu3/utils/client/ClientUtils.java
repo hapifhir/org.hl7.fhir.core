@@ -105,6 +105,7 @@ public class ClientUtils {
   private int timeout = TIMEOUT_SOCKET;
   private String username;
   private String password;
+  private String accessToken;
   private ToolingClientLogger logger;
   private int retryCount;
   private HttpClient httpclient;
@@ -139,6 +140,14 @@ public class ClientUtils {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getAccessToken() {
+    return accessToken;
+  }
+
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
   }
 
   public <T extends Resource> ResourceRequest<T> issueOptionsRequest(URI optionsUri, String resourceFormat, String message, int timeout) {
@@ -184,6 +193,14 @@ public class ClientUtils {
         byte[] b = Base64.encodeBase64((username+":"+password).getBytes("ASCII"));
         String b64 = new String(b, StandardCharsets.US_ASCII);
         httpget.setHeader("Authorization", "Basic " + b64);
+      } catch (UnsupportedEncodingException e) {
+      }
+    }
+    if (accessToken != null) {
+      try {
+        byte[] b = Base64.encodeBase64((accessToken).getBytes("ASCII"));
+        String b64 = new String(b, StandardCharsets.US_ASCII);
+        httpget.setHeader("Authorization", "Bearer " + b64);
       } catch (UnsupportedEncodingException e) {
       }
     }

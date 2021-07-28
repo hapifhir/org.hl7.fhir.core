@@ -95,7 +95,7 @@ public class FHIRToolingClient {
   //Pass enpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
-    initialize(baseServiceUrl, "");
+    initialize(baseServiceUrl, null);
   }
 
   public FHIRToolingClient(String baseServiceUrl, String accessToken) throws URISyntaxException {
