@@ -227,7 +227,7 @@ public class ValidationService {
       System.out.println(" - " + validator.getContext().countAllCaches() + " resources (" + tt.milestone() + ")");
       igLoader.loadIg(validator.getIgs(), validator.getBinaries(), "hl7.terminology", false);
       System.out.print("  Terminology server " + cliContext.getTxServer());
-      String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), ver);
+      String txver = validator.setTerminologyServer(cliContext.getTxServer(), cliContext.getTxLog(), cliContext.getTxAccessToken(), ver);
       System.out.println(" - Version " + txver + " (" + tt.milestone() + ")");
       validator.setDebug(cliContext.isDoDebug());
       for (String src : cliContext.getIgs()) {

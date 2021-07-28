@@ -86,6 +86,7 @@ public class FHIRToolingClient {
 
   private String base;
   private ResourceAddress resourceAddress;
+  private String accessToken;
   private ResourceFormat preferredResourceFormat;
   private int maxResultSetSize = -1;//_count
   private CapabilityStatement capabilities;
@@ -94,12 +95,18 @@ public class FHIRToolingClient {
   //Pass enpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
-    initialize(baseServiceUrl);
+    initialize(baseServiceUrl, "");
   }
 
-  public void initialize(String baseServiceUrl) throws URISyntaxException {
+  public FHIRToolingClient(String baseServiceUrl, String accessToken) throws URISyntaxException {
+    preferredResourceFormat = ResourceFormat.RESOURCE_XML;
+    initialize(baseServiceUrl, accessToken);
+  }
+
+  public void initialize(String baseServiceUrl, String accessToken) throws URISyntaxException {
     base = baseServiceUrl;
     resourceAddress = new ResourceAddress(baseServiceUrl);
+    this.accessToken = accessToken;
     this.maxResultSetSize = -1;
     checkCapabilities();
   }

@@ -94,6 +94,7 @@ public class FHIRToolingClient {
 
 	private String base;
 	private ResourceAddress resourceAddress;
+	private String accessToken;
 	private ResourceFormat preferredResourceFormat;
 	private HttpHost proxy;
 	private int maxResultSetSize = -1;//_count
@@ -101,18 +102,25 @@ public class FHIRToolingClient {
 	private ClientUtils utils = new ClientUtils();
 
 	//Pass enpoint for client - URI
+
 	public FHIRToolingClient(String baseServiceUrl) throws URISyntaxException {
 		preferredResourceFormat = ResourceFormat.RESOURCE_XML;
     detectProxy();
-    initialize(baseServiceUrl);
+    initialize(baseServiceUrl, "");
 	}
 
-  public FHIRToolingClient(String baseServiceUrl, String username, String password) throws URISyntaxException {
+	public FHIRToolingClient(String baseServiceUrl, String accessToken) throws URISyntaxException {
+		preferredResourceFormat = ResourceFormat.RESOURCE_XML;
+    detectProxy();
+    initialize(baseServiceUrl, accessToken);
+	}
+
+  public FHIRToolingClient(String baseServiceUrl, String accessToken, String username, String password) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
     utils.setUsername(username);
     utils.setPassword(password);
     detectProxy();
-    initialize(baseServiceUrl);
+    initialize(baseServiceUrl, accessToken);
   }
   
 	public void configureProxy(String proxyHost, int proxyPort) {
@@ -136,9 +144,10 @@ public class FHIRToolingClient {
 		}
 	}
 
-	public void initialize(String baseServiceUrl)  throws URISyntaxException {
+	public void initialize(String baseServiceUrl, String accessToken)  throws URISyntaxException {
 	  base = baseServiceUrl;
 		resourceAddress = new ResourceAddress(baseServiceUrl);
+		this.accessToken = accessToken;
 		this.maxResultSetSize = -1;
 		checkConformance();
 	}

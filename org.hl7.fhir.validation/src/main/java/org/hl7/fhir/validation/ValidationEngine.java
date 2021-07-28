@@ -182,17 +182,17 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String txsrvr, String txLog, String txAccessToken, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, null);
     getContext().setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
-    setTerminologyServer(txsrvr, txLog, version);
+    setTerminologyServer(txsrvr, txLog, txAccessToken, version);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String txsrvr, String txLog, String txAccessToken, FhirPublication version, String vString) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, null);
-    setTerminologyServer(txsrvr, txLog, version);
+    setTerminologyServer(txsrvr, txLog, txAccessToken, version);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
