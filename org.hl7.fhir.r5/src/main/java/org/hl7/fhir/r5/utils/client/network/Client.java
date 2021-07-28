@@ -27,6 +27,7 @@ public class Client {
   private static final long DEFAULT_TIMEOUT = 5000;
   private String username;
   private String password;
+  private String accessToken;   // missing setAuth() method in R5 !!!
   private ToolingClientLogger logger;
   private int retryCount;
   private long timeout = DEFAULT_TIMEOUT;
@@ -45,6 +46,14 @@ public class Client {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getAccesToken() {
+    return accessToken;
+  }
+
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
   }
 
   public ToolingClientLogger getLogger() {
