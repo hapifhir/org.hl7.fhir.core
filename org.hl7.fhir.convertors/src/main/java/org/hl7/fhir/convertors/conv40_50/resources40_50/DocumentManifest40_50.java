@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
@@ -44,7 +44,7 @@ public class DocumentManifest40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.DocumentManifest tgt = new org.hl7.fhir.r5.model.DocumentManifest();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasMasterIdentifier())
       tgt.setMasterIdentifier(Identifier40_50.convertIdentifier(src.getMasterIdentifier()));
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
@@ -73,7 +73,7 @@ public class DocumentManifest40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DocumentManifest tgt = new org.hl7.fhir.r4.model.DocumentManifest();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasMasterIdentifier())
       tgt.setMasterIdentifier(Identifier40_50.convertIdentifier(src.getMasterIdentifier()));
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
@@ -102,7 +102,7 @@ public class DocumentManifest40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.DocumentManifest.DocumentManifestRelatedComponent tgt = new org.hl7.fhir.r5.model.DocumentManifest.DocumentManifestRelatedComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
     if (src.hasRef())
@@ -114,7 +114,7 @@ public class DocumentManifest40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.DocumentManifest.DocumentManifestRelatedComponent tgt = new org.hl7.fhir.r4.model.DocumentManifest.DocumentManifestRelatedComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
     if (src.hasRef())

@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -47,7 +47,7 @@ public class MedicationAdministration40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MedicationAdministration tgt = new org.hl7.fhir.r5.model.MedicationAdministration();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.UriType t : src.getInstantiates()) tgt.getInstantiatesUri().add(Uri40_50.convertUri(t));
@@ -69,7 +69,7 @@ public class MedicationAdministration40_50 {
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(Reference40_50.convertReference(t));
     if (src.hasEffective())
-      tgt.setOccurence(VersionConvertor_40_50.convertType(src.getEffective()));
+      tgt.setOccurence(VersionConvertorFactory_40_50.convertType(src.getEffective()));
     for (org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
@@ -91,7 +91,7 @@ public class MedicationAdministration40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationAdministration tgt = new org.hl7.fhir.r4.model.MedicationAdministration();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     for (org.hl7.fhir.r5.model.UriType t : src.getInstantiatesUri()) tgt.getInstantiates().add(Uri40_50.convertUri(t));
@@ -103,9 +103,9 @@ public class MedicationAdministration40_50 {
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.getMedication().hasConcept())
-      tgt.setMedication(VersionConvertor_40_50.convertType(src.getMedication().getConcept()));
+      tgt.setMedication(VersionConvertorFactory_40_50.convertType(src.getMedication().getConcept()));
     if (src.getMedication().hasReference())
-      tgt.setMedication(VersionConvertor_40_50.convertType(src.getMedication().getReference()));
+      tgt.setMedication(VersionConvertorFactory_40_50.convertType(src.getMedication().getReference()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
@@ -113,7 +113,7 @@ public class MedicationAdministration40_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(Reference40_50.convertReference(t));
     if (src.hasOccurence())
-      tgt.setEffective(VersionConvertor_40_50.convertType(src.getOccurence()));
+      tgt.setEffective(VersionConvertorFactory_40_50.convertType(src.getOccurence()));
     for (org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
     for (CodeableReference t : src.getReason())
@@ -137,7 +137,7 @@ public class MedicationAdministration40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodesEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     //
     switch (src.getValue()) {
       case COMPLETED:
@@ -172,7 +172,7 @@ public class MedicationAdministration40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationStatusEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     //
     switch (src.getValue()) {
       case COMPLETED:
@@ -207,7 +207,7 @@ public class MedicationAdministration40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent tgt = new org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_50.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
@@ -219,7 +219,7 @@ public class MedicationAdministration40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent tgt = new org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationPerformerComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_50.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
@@ -231,7 +231,7 @@ public class MedicationAdministration40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent tgt = new org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationDosageComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasText())
       tgt.setTextElement(String40_50.convertString(src.getTextElement()));
     if (src.hasSite())
@@ -243,7 +243,7 @@ public class MedicationAdministration40_50 {
     if (src.hasDose())
       tgt.setDose(SimpleQuantity40_50.convertSimpleQuantity(src.getDose()));
     if (src.hasRate())
-      tgt.setRate(VersionConvertor_40_50.convertType(src.getRate()));
+      tgt.setRate(VersionConvertorFactory_40_50.convertType(src.getRate()));
     return tgt;
   }
 
@@ -251,7 +251,7 @@ public class MedicationAdministration40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent tgt = new org.hl7.fhir.r4.model.MedicationAdministration.MedicationAdministrationDosageComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasText())
       tgt.setTextElement(String40_50.convertString(src.getTextElement()));
     if (src.hasSite())
@@ -263,7 +263,7 @@ public class MedicationAdministration40_50 {
     if (src.hasDose())
       tgt.setDose(SimpleQuantity40_50.convertSimpleQuantity(src.getDose()));
     if (src.hasRate())
-      tgt.setRate(VersionConvertor_40_50.convertType(src.getRate()));
+      tgt.setRate(VersionConvertorFactory_40_50.convertType(src.getRate()));
     return tgt;
   }
 }

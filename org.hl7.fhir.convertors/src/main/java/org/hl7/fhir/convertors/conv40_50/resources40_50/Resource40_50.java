@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Id40_50;
@@ -522,16 +522,16 @@ public class Resource40_50 {
       .map(this::convertResource)
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(VersionConvertor_40_50_Context.INSTANCE.path(), extension)) {
+      if (advisor.useAdvisorForExtension(ConversionContext40_50.INSTANCE.path(), extension)) {
         org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();
-        advisor.handleExtension(VersionConvertor_40_50_Context.INSTANCE.path(), extension, convertExtension);
+        advisor.handleExtension(ConversionContext40_50.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(VersionConvertor_40_50_Context.INSTANCE.path(), extension)) {
+      } else if (!advisor.ignoreExtension(ConversionContext40_50.INSTANCE.path(), extension)) {
         tgt.addExtension(Extension40_50.convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(VersionConvertor_40_50_Context.INSTANCE.path(), extension))
+      .filter(extension -> !advisor.ignoreExtension(ConversionContext40_50.INSTANCE.path(), extension))
       .map(Extension40_50::convertExtension)
       .forEach(tgt::addModifierExtension);
   }
@@ -543,16 +543,16 @@ public class Resource40_50 {
       .map(this::convertResource)
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension(VersionConvertor_40_50_Context.INSTANCE.path(), extension)) {
+      if (advisor.useAdvisorForExtension(ConversionContext40_50.INSTANCE.path(), extension)) {
         org.hl7.fhir.r4.model.Extension convertExtension = new org.hl7.fhir.r4.model.Extension();
-        advisor.handleExtension(VersionConvertor_40_50_Context.INSTANCE.path(), extension, convertExtension);
+        advisor.handleExtension(ConversionContext40_50.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension(VersionConvertor_40_50_Context.INSTANCE.path(), extension)) {
+      } else if (!advisor.ignoreExtension(ConversionContext40_50.INSTANCE.path(), extension)) {
         tgt.addExtension(Extension40_50.convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension(VersionConvertor_40_50_Context.INSTANCE.path(), extension))
+      .filter(extension -> !advisor.ignoreExtension(ConversionContext40_50.INSTANCE.path(), extension))
       .map(Extension40_50::convertExtension)
       .forEach(tgt::addModifierExtension);
   }

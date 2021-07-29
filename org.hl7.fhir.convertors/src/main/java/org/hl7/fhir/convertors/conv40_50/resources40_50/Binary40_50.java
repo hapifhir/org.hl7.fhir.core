@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Base64Binary40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
@@ -41,7 +41,7 @@ public class Binary40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Binary tgt = new org.hl7.fhir.r5.model.Binary();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyResource(src, tgt);
     if (src.hasContentType())
       tgt.setContentTypeElement(Code40_50.convertCode(src.getContentTypeElement()));
     if (src.hasSecurityContext())
@@ -55,7 +55,7 @@ public class Binary40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Binary tgt = new org.hl7.fhir.r4.model.Binary();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyResource(src, tgt);
     if (src.hasContentType())
       tgt.setContentTypeElement(Code40_50.convertCode(src.getContentTypeElement()));
     if (src.hasSecurityContext())

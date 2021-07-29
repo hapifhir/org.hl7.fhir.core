@@ -15,7 +15,8 @@ import java.util.Map;
 
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -203,7 +204,7 @@ public class UTGVersionSorter {
     System.out.println("Load "+id);
     NpmPackage npm = pcm.loadPackage(id);
     for (PackageResourceInformation p : npm.listIndexedResources("CodeSystem", "ValueSet")) {
-      CanonicalResource r = (CanonicalResource) VersionConvertor_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(npm.load(p)));
+      CanonicalResource r = (CanonicalResource) VersionConvertorFactory_30_50.convertResource(new org.hl7.fhir.dstu3.formats.JsonParser().parse(npm.load(p)));
       res.put(r.getUrl(), r);
     }
     return res;
@@ -217,7 +218,7 @@ public class UTGVersionSorter {
     System.out.println("Load "+id);
     NpmPackage npm = pcm.loadPackage(id);
     for (PackageResourceInformation p : npm.listIndexedResources("CodeSystem", "ValueSet")) {
-      CanonicalResource r = (CanonicalResource) VersionConvertor_40_50.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(npm.load(p)));
+      CanonicalResource r = (CanonicalResource) VersionConvertorFactory_40_50.convertResource(new org.hl7.fhir.r4.formats.JsonParser().parse(npm.load(p)));
       res.put(r.getUrl(), r);
     }
     return res;

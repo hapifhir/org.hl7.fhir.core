@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -38,7 +38,7 @@ public class Media40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.DocumentReference tgt = new org.hl7.fhir.r5.model.DocumentReference();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     // for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
     // tgt.addIdentifier(convertIdentifier(t));
     // for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn())
@@ -97,7 +97,7 @@ public class Media40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Media tgt = new org.hl7.fhir.r4.model.Media();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     // for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
     // tgt.addIdentifier(convertIdentifier(t));
     // for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn())

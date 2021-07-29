@@ -1,6 +1,5 @@
-package org.hl7.fhir.convertors;
+package org.hl7.fhir.convertors.context;
 
-import java.util.ArrayList;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -30,13 +29,15 @@ import java.util.ArrayList;
   POSSIBILITY OF SUCH DAMAGE.
  */
 
-public enum VersionConvertor_40_50_Context {
+import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+
+public enum ConversionContext30_50 {
   INSTANCE;
 
-  private final VersionConvertorContext<VersionConvertor_40_50_A> context = new VersionConvertorContext<>();
+  private final VersionConvertorContext<VersionConvertor_30_50> context = new VersionConvertorContext<>();
 
-  public void init(VersionConvertor_40_50_A versionConvertor_40_50_a, String path) {
-    context.init(versionConvertor_40_50_a, path);
+  public void init(VersionConvertor_30_50 versionConvertor_30_50, String path) {
+    context.init(versionConvertor_30_50, path);
   }
 
   public void close(String path) {
@@ -47,7 +48,7 @@ public enum VersionConvertor_40_50_Context {
     return context.getPath();
   }
 
-  public VersionConvertor_40_50_A getVersionConvertor_40_50_a() {
+  public VersionConvertor_30_50 getVersionConvertor_30_50() {
     return context.getVersionConvertor();
   }
 }

@@ -1,9 +1,9 @@
 package org.hl7.fhir.convertors;
 
 import lombok.SneakyThrows;
-import org.hl7.fhir.convertors.conv40_50.resources40_50.Account40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.r4.formats.JsonParser;
-import org.hl7.fhir.r4.model.Account;
 import org.hl7.fhir.r5.model.Resource;
 import org.junit.jupiter.api.Test;
 
@@ -12,9 +12,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class VersionConvertor_40_50Test {
+class Convertor_Factory_40_50Test {
 
   @Test
   void convertResource() throws IOException {
@@ -22,13 +20,13 @@ class VersionConvertor_40_50Test {
     org.hl7.fhir.r5.formats.JsonParser r5parser = new org.hl7.fhir.r5.formats.JsonParser();
     InputStream accountr4InputStream = this.getClass().getResourceAsStream("/account_r4.json");
     org.hl7.fhir.r4.model.Account account_r4 = (org.hl7.fhir.r4.model.Account) r4parser.parse(accountr4InputStream);
-    Resource account_r5 = VersionConvertor_40_50.convertResource(account_r4);
+    Resource account_r5 = VersionConvertorFactory_40_50.convertResource(account_r4);
     System.out.println(r5parser.composeString(account_r5));
   }
 
   @Test
   void testThreads() throws InterruptedException {
-    List<VersionConvertor_40_50_Context> listOfConvertors = new ArrayList<>();
+    List<ConversionContext40_50> listOfConvertors = new ArrayList<>();
     Runnable r1 = new Runnable() {
       @SneakyThrows
       @Override
@@ -37,7 +35,7 @@ class VersionConvertor_40_50Test {
         org.hl7.fhir.r5.formats.JsonParser r5parser = new org.hl7.fhir.r5.formats.JsonParser();
         InputStream accountr4InputStream = this.getClass().getResourceAsStream("/account_r4.json");
         org.hl7.fhir.r4.model.Account account_r4 = (org.hl7.fhir.r4.model.Account) r4parser.parse(accountr4InputStream);
-        Resource account_r5 = VersionConvertor_40_50.convertResource(account_r4);
+        Resource account_r5 = VersionConvertorFactory_40_50.convertResource(account_r4);
       }
     };
     Thread thread1 = new Thread(r1);
@@ -57,7 +55,7 @@ class VersionConvertor_40_50Test {
     org.hl7.fhir.r5.formats.JsonParser r5parser = new org.hl7.fhir.r5.formats.JsonParser();
     InputStream accountr4InputStream = this.getClass().getResourceAsStream("/bundle_of_accounts_path_test_r4.json");
     org.hl7.fhir.r4.model.Bundle bundle_r4 = (org.hl7.fhir.r4.model.Bundle) r4parser.parse(accountr4InputStream);
-    Resource account_r5 = VersionConvertor_40_50.convertResource(bundle_r4);
+    Resource account_r5 = VersionConvertorFactory_40_50.convertResource(bundle_r4);
     System.out.println(r5parser.composeString(account_r5));
   }
 

@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -46,7 +46,7 @@ public class Immunization40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Immunization tgt = new org.hl7.fhir.r5.model.Immunization();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasStatus())
@@ -60,7 +60,7 @@ public class Immunization40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertor_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
     if (src.hasRecorded())
       tgt.setRecordedElement(DateTime40_50.convertDateTime(src.getRecordedElement()));
     if (src.hasPrimarySource())
@@ -109,7 +109,7 @@ public class Immunization40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Immunization tgt = new org.hl7.fhir.r4.model.Immunization();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasStatus())
@@ -123,7 +123,7 @@ public class Immunization40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertor_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
     if (src.hasRecorded())
       tgt.setRecordedElement(DateTime40_50.convertDateTime(src.getRecordedElement()));
     if (src.hasPrimarySource())
@@ -174,7 +174,7 @@ public class Immunization40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodesEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case COMPLETED:
         tgt.setValue(org.hl7.fhir.r5.model.Immunization.ImmunizationStatusCodes.COMPLETED);
@@ -196,7 +196,7 @@ public class Immunization40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Immunization.ImmunizationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Immunization.ImmunizationStatusEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case COMPLETED:
         tgt.setValue(org.hl7.fhir.r4.model.Immunization.ImmunizationStatus.COMPLETED);
@@ -218,7 +218,7 @@ public class Immunization40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent tgt = new org.hl7.fhir.r5.model.Immunization.ImmunizationPerformerComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_50.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
@@ -230,7 +230,7 @@ public class Immunization40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Immunization.ImmunizationPerformerComponent tgt = new org.hl7.fhir.r4.model.Immunization.ImmunizationPerformerComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasFunction())
       tgt.setFunction(CodeableConcept40_50.convertCodeableConcept(src.getFunction()));
     if (src.hasActor())
@@ -242,7 +242,7 @@ public class Immunization40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent tgt = new org.hl7.fhir.r5.model.Immunization.ImmunizationEducationComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasDocumentType())
       tgt.setDocumentTypeElement(String40_50.convertString(src.getDocumentTypeElement()));
     if (src.hasReference())
@@ -258,7 +258,7 @@ public class Immunization40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent tgt = new org.hl7.fhir.r4.model.Immunization.ImmunizationEducationComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasDocumentType())
       tgt.setDocumentTypeElement(String40_50.convertString(src.getDocumentTypeElement()));
     if (src.hasReference())
@@ -274,7 +274,7 @@ public class Immunization40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Immunization.ImmunizationReactionComponent tgt = new org.hl7.fhir.r5.model.Immunization.ImmunizationReactionComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
     if (src.hasDetail())
@@ -288,7 +288,7 @@ public class Immunization40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Immunization.ImmunizationReactionComponent tgt = new org.hl7.fhir.r4.model.Immunization.ImmunizationReactionComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
     if (src.hasDetail())
@@ -302,7 +302,7 @@ public class Immunization40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Immunization.ImmunizationProtocolAppliedComponent tgt = new org.hl7.fhir.r5.model.Immunization.ImmunizationProtocolAppliedComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasSeries())
       tgt.setSeriesElement(String40_50.convertString(src.getSeriesElement()));
     if (src.hasAuthority())
@@ -320,7 +320,7 @@ public class Immunization40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Immunization.ImmunizationProtocolAppliedComponent tgt = new org.hl7.fhir.r4.model.Immunization.ImmunizationProtocolAppliedComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasSeries())
       tgt.setSeriesElement(String40_50.convertString(src.getSeriesElement()));
     if (src.hasAuthority())
@@ -328,9 +328,9 @@ public class Immunization40_50 {
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getTargetDisease())
       tgt.addTargetDisease(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasDoseNumber())
-      tgt.setDoseNumber(VersionConvertor_40_50.convertType(src.getDoseNumberElement()));
+      tgt.setDoseNumber(VersionConvertorFactory_40_50.convertType(src.getDoseNumberElement()));
     if (src.hasSeriesDoses())
-      tgt.setSeriesDoses(VersionConvertor_40_50.convertType(src.getSeriesDosesElement()));
+      tgt.setSeriesDoses(VersionConvertorFactory_40_50.convertType(src.getSeriesDosesElement()));
     return tgt;
   }
 }

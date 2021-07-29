@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -46,7 +46,7 @@ public class Goal40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Goal tgt = new org.hl7.fhir.r5.model.Goal();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasLifecycleStatus())
@@ -62,7 +62,7 @@ public class Goal40_50 {
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasStart())
-      tgt.setStart(VersionConvertor_40_50.convertType(src.getStart()));
+      tgt.setStart(VersionConvertorFactory_40_50.convertType(src.getStart()));
     for (org.hl7.fhir.r4.model.Goal.GoalTargetComponent t : src.getTarget())
       tgt.addTarget(convertGoalTargetComponent(t));
     if (src.hasStatusDate())
@@ -82,7 +82,7 @@ public class Goal40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Goal tgt = new org.hl7.fhir.r4.model.Goal();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasLifecycleStatus())
@@ -98,7 +98,7 @@ public class Goal40_50 {
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasStart())
-      tgt.setStart(VersionConvertor_40_50.convertType(src.getStart()));
+      tgt.setStart(VersionConvertorFactory_40_50.convertType(src.getStart()));
     for (org.hl7.fhir.r5.model.Goal.GoalTargetComponent t : src.getTarget())
       tgt.addTarget(convertGoalTargetComponent(t));
     if (src.hasStatusDate())
@@ -120,7 +120,7 @@ public class Goal40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Goal.GoalLifecycleStatusEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case PROPOSED:
         tgt.setValue(org.hl7.fhir.r5.model.Goal.GoalLifecycleStatus.PROPOSED);
@@ -160,7 +160,7 @@ public class Goal40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Goal.GoalLifecycleStatusEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case PROPOSED:
         tgt.setValue(org.hl7.fhir.r4.model.Goal.GoalLifecycleStatus.PROPOSED);
@@ -200,13 +200,13 @@ public class Goal40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Goal.GoalTargetComponent tgt = new org.hl7.fhir.r5.model.Goal.GoalTargetComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasMeasure())
       tgt.setMeasure(CodeableConcept40_50.convertCodeableConcept(src.getMeasure()));
     if (src.hasDetail())
-      tgt.setDetail(VersionConvertor_40_50.convertType(src.getDetail()));
+      tgt.setDetail(VersionConvertorFactory_40_50.convertType(src.getDetail()));
     if (src.hasDue())
-      tgt.setDue(VersionConvertor_40_50.convertType(src.getDue()));
+      tgt.setDue(VersionConvertorFactory_40_50.convertType(src.getDue()));
     return tgt;
   }
 
@@ -214,13 +214,13 @@ public class Goal40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Goal.GoalTargetComponent tgt = new org.hl7.fhir.r4.model.Goal.GoalTargetComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasMeasure())
       tgt.setMeasure(CodeableConcept40_50.convertCodeableConcept(src.getMeasure()));
     if (src.hasDetail())
-      tgt.setDetail(VersionConvertor_40_50.convertType(src.getDetail()));
+      tgt.setDetail(VersionConvertorFactory_40_50.convertType(src.getDetail()));
     if (src.hasDue())
-      tgt.setDue(VersionConvertor_40_50.convertType(src.getDue()));
+      tgt.setDue(VersionConvertorFactory_40_50.convertType(src.getDue()));
     return tgt;
   }
 }

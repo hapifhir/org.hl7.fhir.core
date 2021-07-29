@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Attachment40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -43,7 +43,7 @@ public class SubstanceNucleicAcid40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceNucleicAcid tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasSequenceType())
       tgt.setSequenceType(CodeableConcept40_50.convertCodeableConcept(src.getSequenceType()));
     if (src.hasNumberOfSubunits())
@@ -61,7 +61,7 @@ public class SubstanceNucleicAcid40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceNucleicAcid tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasSequenceType())
       tgt.setSequenceType(CodeableConcept40_50.convertCodeableConcept(src.getSequenceType()));
     if (src.hasNumberOfSubunits())
@@ -79,7 +79,7 @@ public class SubstanceNucleicAcid40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasSubunit())
       tgt.setSubunitElement(Integer40_50.convertInteger(src.getSubunitElement()));
     if (src.hasSequence())
@@ -103,7 +103,7 @@ public class SubstanceNucleicAcid40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasSubunit())
       tgt.setSubunitElement(Integer40_50.convertInteger(src.getSubunitElement()));
     if (src.hasSequence())
@@ -127,7 +127,7 @@ public class SubstanceNucleicAcid40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasConnectivity())
       tgt.setConnectivityElement(String40_50.convertString(src.getConnectivityElement()));
     if (src.hasIdentifier())
@@ -143,7 +143,7 @@ public class SubstanceNucleicAcid40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitLinkageComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasConnectivity())
       tgt.setConnectivityElement(String40_50.convertString(src.getConnectivityElement()));
     if (src.hasIdentifier())
@@ -159,7 +159,7 @@ public class SubstanceNucleicAcid40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent tgt = new org.hl7.fhir.r5.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
     if (src.hasName())
@@ -173,7 +173,7 @@ public class SubstanceNucleicAcid40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent tgt = new org.hl7.fhir.r4.model.SubstanceNucleicAcid.SubstanceNucleicAcidSubunitSugarComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
     if (src.hasName())

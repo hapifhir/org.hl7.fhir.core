@@ -1,15 +1,11 @@
-package org.hl7.fhir.convertors;
+package org.hl7.fhir.convertors.conv40_50;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
+import org.hl7.fhir.convertors.conv40_50.resources40_50.Resource40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Code40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Id40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Meta40_50;
-import org.hl7.fhir.convertors.conv40_50.resources40_50.*;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.Parameters;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -40,15 +36,15 @@ import org.hl7.fhir.r4.model.Parameters;
  */
 
 /**
- * Our conversion class needs to be able to handle all the base datatypes in FHIR; Resources, DomainResource, Element
+ * Our conversion class needs to be able to handle all the base data-types in FHIR; Resources, DomainResource, Element
  */
-public class VersionConvertor_40_50_A {
+public class VersionConvertor_40_50 {
   private final BaseAdvisor_40_50 advisor;
   private final Element40_50 elementConvertor;
   private final Resource40_50 resourceConvertor;
   private final Type40_50 typeConvertor;
 
-  public VersionConvertor_40_50_A(BaseAdvisor_40_50 advisor) {
+  public VersionConvertor_40_50(BaseAdvisor_40_50 advisor) {
     this.advisor = advisor;
     this.elementConvertor = new Element40_50(advisor);
     this.resourceConvertor = new Resource40_50(advisor);
@@ -68,38 +64,38 @@ public class VersionConvertor_40_50_A {
   }
 
   public org.hl7.fhir.r5.model.Resource convertResource(org.hl7.fhir.r4.model.Resource src) throws FHIRException {
-    VersionConvertor_40_50_Context.INSTANCE.init(this, src.fhirType());
+    ConversionContext40_50.INSTANCE.init(this, src.fhirType());
     try {
       return resourceConvertor.convertResource(src);
     } finally {
-      VersionConvertor_40_50_Context.INSTANCE.close(src.fhirType());
+      ConversionContext40_50.INSTANCE.close(src.fhirType());
     }
   }
 
   public org.hl7.fhir.r4.model.Resource convertResource(org.hl7.fhir.r5.model.Resource src) throws FHIRException {
-    VersionConvertor_40_50_Context.INSTANCE.init(this, src.fhirType());
+    ConversionContext40_50.INSTANCE.init(this, src.fhirType());
     try {
       return resourceConvertor.convertResource(src);
     } finally {
-      VersionConvertor_40_50_Context.INSTANCE.close(src.fhirType());
+      ConversionContext40_50.INSTANCE.close(src.fhirType());
     }
   }
 
   public org.hl7.fhir.r5.model.DataType convertType(org.hl7.fhir.r4.model.Type src) throws FHIRException {
-    VersionConvertor_40_50_Context.INSTANCE.init(this, src.fhirType());
+    ConversionContext40_50.INSTANCE.init(this, src.fhirType());
     try {
       return typeConvertor.convertType(src);
     } finally {
-      VersionConvertor_40_50_Context.INSTANCE.close(src.fhirType());
+      ConversionContext40_50.INSTANCE.close(src.fhirType());
     }
   }
 
   public org.hl7.fhir.r4.model.Type convertType(org.hl7.fhir.r5.model.DataType src) throws FHIRException {
-    VersionConvertor_40_50_Context.INSTANCE.init(this, src.fhirType());
+    ConversionContext40_50.INSTANCE.init(this, src.fhirType());
     try {
       return typeConvertor.convertType(src);
     } finally {
-      VersionConvertor_40_50_Context.INSTANCE.close(src.fhirType());
+      ConversionContext40_50.INSTANCE.close(src.fhirType());
     }
   }
 
@@ -112,11 +108,11 @@ public class VersionConvertor_40_50_A {
   }
 
   public void copyElement(org.hl7.fhir.r4.model.Element src, org.hl7.fhir.r5.model.Element tgt, String... var) throws FHIRException {
-    elementConvertor.copyElement(src, tgt, VersionConvertor_40_50_Context.INSTANCE.path(), var);
+    elementConvertor.copyElement(src, tgt, ConversionContext40_50.INSTANCE.path(), var);
   }
 
   public void copyElement(org.hl7.fhir.r5.model.Element src, org.hl7.fhir.r4.model.Element tgt, String... var) throws FHIRException {
-    elementConvertor.copyElement(src, tgt, VersionConvertor_40_50_Context.INSTANCE.path(), var);
+    elementConvertor.copyElement(src, tgt, ConversionContext40_50.INSTANCE.path(), var);
   }
 
 

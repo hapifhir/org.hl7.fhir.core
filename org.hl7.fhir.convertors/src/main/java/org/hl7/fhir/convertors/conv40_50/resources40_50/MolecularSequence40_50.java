@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Quantity40_50;
@@ -43,7 +43,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MolecularSequence tgt = new org.hl7.fhir.r5.model.MolecularSequence();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasType())
@@ -82,7 +82,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence tgt = new org.hl7.fhir.r4.model.MolecularSequence();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasType())
@@ -121,7 +121,7 @@ public class MolecularSequence40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.SequenceType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.SequenceTypeEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case AA:
         tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.SequenceType.AA);
@@ -143,7 +143,7 @@ public class MolecularSequence40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.SequenceType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MolecularSequence.SequenceTypeEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case AA:
         tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.SequenceType.AA);
@@ -165,7 +165,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceReferenceSeqComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceReferenceSeqComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasChromosome())
       tgt.setChromosome(CodeableConcept40_50.convertCodeableConcept(src.getChromosome()));
     if (src.hasGenomeBuild())
@@ -191,7 +191,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceReferenceSeqComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceReferenceSeqComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasChromosome())
       tgt.setChromosome(CodeableConcept40_50.convertCodeableConcept(src.getChromosome()));
     if (src.hasGenomeBuild())
@@ -217,7 +217,7 @@ public class MolecularSequence40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.OrientationType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.OrientationTypeEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case SENSE:
         tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.OrientationType.SENSE);
@@ -236,7 +236,7 @@ public class MolecularSequence40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.OrientationType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MolecularSequence.OrientationTypeEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case SENSE:
         tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.OrientationType.SENSE);
@@ -255,7 +255,7 @@ public class MolecularSequence40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.StrandType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.StrandTypeEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case WATSON:
         tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.StrandType.WATSON);
@@ -274,7 +274,7 @@ public class MolecularSequence40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.StrandType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MolecularSequence.StrandTypeEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case WATSON:
         tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.StrandType.WATSON);
@@ -293,7 +293,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceVariantComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceVariantComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasStart())
       tgt.setStartElement(Integer40_50.convertInteger(src.getStartElement()));
     if (src.hasEnd())
@@ -313,7 +313,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceVariantComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceVariantComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasStart())
       tgt.setStartElement(Integer40_50.convertInteger(src.getStartElement()));
     if (src.hasEnd())
@@ -333,7 +333,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceQualityComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceQualityComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setTypeElement(convertQualityType(src.getTypeElement()));
     if (src.hasStandardSequence())
@@ -371,7 +371,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceQualityComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceQualityComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setTypeElement(convertQualityType(src.getTypeElement()));
     if (src.hasStandardSequence())
@@ -409,7 +409,7 @@ public class MolecularSequence40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.QualityType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.QualityTypeEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case INDEL:
         tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.QualityType.INDEL);
@@ -431,7 +431,7 @@ public class MolecularSequence40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.QualityType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MolecularSequence.QualityTypeEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case INDEL:
         tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.QualityType.INDEL);
@@ -453,7 +453,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceQualityRocComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceQualityRocComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     for (org.hl7.fhir.r4.model.IntegerType t : src.getScore()) tgt.getScore().add(Integer40_50.convertInteger(t));
     for (org.hl7.fhir.r4.model.IntegerType t : src.getNumTP()) tgt.getNumTP().add(Integer40_50.convertInteger(t));
     for (org.hl7.fhir.r4.model.IntegerType t : src.getNumFP()) tgt.getNumFP().add(Integer40_50.convertInteger(t));
@@ -470,7 +470,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceQualityRocComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceQualityRocComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     for (org.hl7.fhir.r5.model.IntegerType t : src.getScore()) tgt.getScore().add(Integer40_50.convertInteger(t));
     for (org.hl7.fhir.r5.model.IntegerType t : src.getNumTP()) tgt.getNumTP().add(Integer40_50.convertInteger(t));
     for (org.hl7.fhir.r5.model.IntegerType t : src.getNumFP()) tgt.getNumFP().add(Integer40_50.convertInteger(t));
@@ -487,7 +487,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceRepositoryComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceRepositoryComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setTypeElement(convertRepositoryType(src.getTypeElement()));
     if (src.hasUrl())
@@ -507,7 +507,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceRepositoryComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceRepositoryComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setTypeElement(convertRepositoryType(src.getTypeElement()));
     if (src.hasUrl())
@@ -527,7 +527,7 @@ public class MolecularSequence40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.MolecularSequence.RepositoryType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.MolecularSequence.RepositoryTypeEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case DIRECTLINK:
         tgt.setValue(org.hl7.fhir.r5.model.MolecularSequence.RepositoryType.DIRECTLINK);
@@ -555,7 +555,7 @@ public class MolecularSequence40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MolecularSequence.RepositoryType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MolecularSequence.RepositoryTypeEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case DIRECTLINK:
         tgt.setValue(org.hl7.fhir.r4.model.MolecularSequence.RepositoryType.DIRECTLINK);
@@ -583,7 +583,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceStructureVariantComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceStructureVariantComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasVariantType())
       tgt.setVariantType(CodeableConcept40_50.convertCodeableConcept(src.getVariantType()));
     if (src.hasExact())
@@ -601,7 +601,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceStructureVariantComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceStructureVariantComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasVariantType())
       tgt.setVariantType(CodeableConcept40_50.convertCodeableConcept(src.getVariantType()));
     if (src.hasExact())
@@ -619,7 +619,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceStructureVariantOuterComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceStructureVariantOuterComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasStart())
       tgt.setStartElement(Integer40_50.convertInteger(src.getStartElement()));
     if (src.hasEnd())
@@ -631,7 +631,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceStructureVariantOuterComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceStructureVariantOuterComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasStart())
       tgt.setStartElement(Integer40_50.convertInteger(src.getStartElement()));
     if (src.hasEnd())
@@ -643,7 +643,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceStructureVariantInnerComponent tgt = new org.hl7.fhir.r5.model.MolecularSequence.MolecularSequenceStructureVariantInnerComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasStart())
       tgt.setStartElement(Integer40_50.convertInteger(src.getStartElement()));
     if (src.hasEnd())
@@ -655,7 +655,7 @@ public class MolecularSequence40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceStructureVariantInnerComponent tgt = new org.hl7.fhir.r4.model.MolecularSequence.MolecularSequenceStructureVariantInnerComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasStart())
       tgt.setStartElement(Integer40_50.convertInteger(src.getStartElement()));
     if (src.hasEnd())

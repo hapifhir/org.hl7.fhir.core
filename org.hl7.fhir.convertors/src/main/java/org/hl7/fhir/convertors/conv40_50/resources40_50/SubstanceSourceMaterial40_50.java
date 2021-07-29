@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
@@ -41,7 +41,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceSourceMaterial tgt = new org.hl7.fhir.r5.model.SubstanceSourceMaterial();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasSourceMaterialClass())
       tgt.setSourceMaterialClass(CodeableConcept40_50.convertCodeableConcept(src.getSourceMaterialClass()));
     if (src.hasSourceMaterialType())
@@ -75,7 +75,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceSourceMaterial tgt = new org.hl7.fhir.r4.model.SubstanceSourceMaterial();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasSourceMaterialClass())
       tgt.setSourceMaterialClass(CodeableConcept40_50.convertCodeableConcept(src.getSourceMaterialClass()));
     if (src.hasSourceMaterialType())
@@ -109,7 +109,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialFractionDescriptionComponent tgt = new org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialFractionDescriptionComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasFraction())
       tgt.setFractionElement(String40_50.convertString(src.getFractionElement()));
     if (src.hasMaterialType())
@@ -121,7 +121,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialFractionDescriptionComponent tgt = new org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialFractionDescriptionComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasFraction())
       tgt.setFractionElement(String40_50.convertString(src.getFractionElement()));
     if (src.hasMaterialType())
@@ -133,7 +133,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismComponent tgt = new org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasFamily())
       tgt.setFamily(CodeableConcept40_50.convertCodeableConcept(src.getFamily()));
     if (src.hasGenus())
@@ -157,7 +157,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismComponent tgt = new org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasFamily())
       tgt.setFamily(CodeableConcept40_50.convertCodeableConcept(src.getFamily()));
     if (src.hasGenus())
@@ -181,7 +181,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismAuthorComponent tgt = new org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismAuthorComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasAuthorType())
       tgt.setAuthorType(CodeableConcept40_50.convertCodeableConcept(src.getAuthorType()));
     if (src.hasAuthorDescription())
@@ -193,7 +193,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismAuthorComponent tgt = new org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismAuthorComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasAuthorType())
       tgt.setAuthorType(CodeableConcept40_50.convertCodeableConcept(src.getAuthorType()));
     if (src.hasAuthorDescription())
@@ -205,7 +205,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismHybridComponent tgt = new org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismHybridComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasMaternalOrganismId())
       tgt.setMaternalOrganismIdElement(String40_50.convertString(src.getMaternalOrganismIdElement()));
     if (src.hasMaternalOrganismName())
@@ -223,7 +223,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismHybridComponent tgt = new org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismHybridComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasMaternalOrganismId())
       tgt.setMaternalOrganismIdElement(String40_50.convertString(src.getMaternalOrganismIdElement()));
     if (src.hasMaternalOrganismName())
@@ -241,7 +241,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismOrganismGeneralComponent tgt = new org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismOrganismGeneralComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasKingdom())
       tgt.setKingdom(CodeableConcept40_50.convertCodeableConcept(src.getKingdom()));
     if (src.hasPhylum())
@@ -257,7 +257,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismOrganismGeneralComponent tgt = new org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialOrganismOrganismGeneralComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasKingdom())
       tgt.setKingdom(CodeableConcept40_50.convertCodeableConcept(src.getKingdom()));
     if (src.hasPhylum())
@@ -273,7 +273,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialPartDescriptionComponent tgt = new org.hl7.fhir.r5.model.SubstanceSourceMaterial.SubstanceSourceMaterialPartDescriptionComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasPart())
       tgt.setPart(CodeableConcept40_50.convertCodeableConcept(src.getPart()));
     if (src.hasPartLocation())
@@ -285,7 +285,7 @@ public class SubstanceSourceMaterial40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialPartDescriptionComponent tgt = new org.hl7.fhir.r4.model.SubstanceSourceMaterial.SubstanceSourceMaterialPartDescriptionComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasPart())
       tgt.setPart(CodeableConcept40_50.convertCodeableConcept(src.getPart()));
     if (src.hasPartLocation())

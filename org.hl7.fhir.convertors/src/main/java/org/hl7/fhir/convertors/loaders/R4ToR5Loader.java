@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.JsonParser;
@@ -65,7 +65,7 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       r4 = new JsonParser().parse(stream);
     else
       r4 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_40_50.convertResource(r4, advisor);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_40_50.convertResource(r4, advisor);
     
     Bundle b;
     if (r5 instanceof Bundle)
@@ -115,7 +115,7 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       r4 = new JsonParser().parse(stream);
     else
       r4 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_40_50.convertResource(r4);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_40_50.convertResource(r4);
     setPath(r5);
 
     if (!advisor.getCslist().isEmpty()) {

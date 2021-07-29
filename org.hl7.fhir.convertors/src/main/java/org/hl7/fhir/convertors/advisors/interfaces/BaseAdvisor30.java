@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseAdvisor30<T extends IBaseExtension> extends BaseAdvisor {
 
+  // TODO switch to java Notnull annotation
   public boolean ignoreEntry(@NotNull Bundle.BundleEntryComponent src, @NotNull FhirPublication publication) {
     return false;
   }

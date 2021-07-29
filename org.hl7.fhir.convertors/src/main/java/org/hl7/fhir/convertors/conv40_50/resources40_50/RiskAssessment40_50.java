@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -46,7 +46,7 @@ public class RiskAssessment40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.RiskAssessment tgt = new org.hl7.fhir.r5.model.RiskAssessment();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasBasedOn())
@@ -64,7 +64,7 @@ public class RiskAssessment40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertor_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
     if (src.hasCondition())
       tgt.setCondition(Reference40_50.convertReference(src.getCondition()));
     if (src.hasPerformer())
@@ -86,7 +86,7 @@ public class RiskAssessment40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.RiskAssessment tgt = new org.hl7.fhir.r4.model.RiskAssessment();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasBasedOn())
@@ -104,7 +104,7 @@ public class RiskAssessment40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertor_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
     if (src.hasCondition())
       tgt.setCondition(Reference40_50.convertReference(src.getCondition()));
     if (src.hasPerformer())
@@ -128,7 +128,7 @@ public class RiskAssessment40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ObservationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ObservationStatusEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case REGISTERED:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ObservationStatus.REGISTERED);
@@ -165,7 +165,7 @@ public class RiskAssessment40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatusEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case REGISTERED:
         tgt.setValue(org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentStatus.REGISTERED);
@@ -202,17 +202,17 @@ public class RiskAssessment40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent tgt = new org.hl7.fhir.r5.model.RiskAssessment.RiskAssessmentPredictionComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasOutcome())
       tgt.setOutcome(CodeableConcept40_50.convertCodeableConcept(src.getOutcome()));
     if (src.hasProbability())
-      tgt.setProbability(VersionConvertor_40_50.convertType(src.getProbability()));
+      tgt.setProbability(VersionConvertorFactory_40_50.convertType(src.getProbability()));
     if (src.hasQualitativeRisk())
       tgt.setQualitativeRisk(CodeableConcept40_50.convertCodeableConcept(src.getQualitativeRisk()));
     if (src.hasRelativeRisk())
       tgt.setRelativeRiskElement(Decimal40_50.convertDecimal(src.getRelativeRiskElement()));
     if (src.hasWhen())
-      tgt.setWhen(VersionConvertor_40_50.convertType(src.getWhen()));
+      tgt.setWhen(VersionConvertorFactory_40_50.convertType(src.getWhen()));
     if (src.hasRationale())
       tgt.setRationaleElement(String40_50.convertString(src.getRationaleElement()));
     return tgt;
@@ -222,17 +222,17 @@ public class RiskAssessment40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent tgt = new org.hl7.fhir.r4.model.RiskAssessment.RiskAssessmentPredictionComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasOutcome())
       tgt.setOutcome(CodeableConcept40_50.convertCodeableConcept(src.getOutcome()));
     if (src.hasProbability())
-      tgt.setProbability(VersionConvertor_40_50.convertType(src.getProbability()));
+      tgt.setProbability(VersionConvertorFactory_40_50.convertType(src.getProbability()));
     if (src.hasQualitativeRisk())
       tgt.setQualitativeRisk(CodeableConcept40_50.convertCodeableConcept(src.getQualitativeRisk()));
     if (src.hasRelativeRisk())
       tgt.setRelativeRiskElement(Decimal40_50.convertDecimal(src.getRelativeRiskElement()));
     if (src.hasWhen())
-      tgt.setWhen(VersionConvertor_40_50.convertType(src.getWhen()));
+      tgt.setWhen(VersionConvertorFactory_40_50.convertType(src.getWhen()));
     if (src.hasRationale())
       tgt.setRationaleElement(String40_50.convertString(src.getRationaleElement()));
     return tgt;

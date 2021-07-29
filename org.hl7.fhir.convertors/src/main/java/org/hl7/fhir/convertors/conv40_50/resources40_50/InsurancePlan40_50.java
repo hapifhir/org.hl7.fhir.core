@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.PositiveInt40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
@@ -42,7 +42,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.InsurancePlan tgt = new org.hl7.fhir.r5.model.InsurancePlan();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasStatus())
@@ -75,7 +75,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.InsurancePlan tgt = new org.hl7.fhir.r4.model.InsurancePlan();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasStatus())
@@ -108,7 +108,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanContactComponent tgt = new org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanContactComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasPurpose())
       tgt.setPurpose(CodeableConcept40_50.convertCodeableConcept(src.getPurpose()));
     if (src.hasName())
@@ -124,7 +124,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanContactComponent tgt = new org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanContactComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasPurpose())
       tgt.setPurpose(CodeableConcept40_50.convertCodeableConcept(src.getPurpose()));
     if (src.hasName())
@@ -140,7 +140,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanCoverageComponent tgt = new org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanCoverageComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.r4.model.Reference t : src.getNetwork()) tgt.addNetwork(Reference40_50.convertReference(t));
@@ -153,7 +153,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanCoverageComponent tgt = new org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanCoverageComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.r5.model.Reference t : src.getNetwork()) tgt.addNetwork(Reference40_50.convertReference(t));
@@ -166,7 +166,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.InsurancePlan.CoverageBenefitComponent tgt = new org.hl7.fhir.r5.model.InsurancePlan.CoverageBenefitComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasRequirement())
@@ -180,7 +180,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.InsurancePlan.CoverageBenefitComponent tgt = new org.hl7.fhir.r4.model.InsurancePlan.CoverageBenefitComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasRequirement())
@@ -194,7 +194,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.InsurancePlan.CoverageBenefitLimitComponent tgt = new org.hl7.fhir.r5.model.InsurancePlan.CoverageBenefitLimitComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasValue())
       tgt.setValue(Quantity40_50.convertQuantity(src.getValue()));
     if (src.hasCode())
@@ -206,7 +206,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.InsurancePlan.CoverageBenefitLimitComponent tgt = new org.hl7.fhir.r4.model.InsurancePlan.CoverageBenefitLimitComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasValue())
       tgt.setValue(Quantity40_50.convertQuantity(src.getValue()));
     if (src.hasCode())
@@ -218,7 +218,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanPlanComponent tgt = new org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanPlanComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasType())
@@ -237,7 +237,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanPlanComponent tgt = new org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanPlanComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     if (src.hasType())
@@ -256,7 +256,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanPlanGeneralCostComponent tgt = new org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanPlanGeneralCostComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasGroupSize())
@@ -272,7 +272,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanPlanGeneralCostComponent tgt = new org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanPlanGeneralCostComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasGroupSize())
@@ -288,7 +288,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanPlanSpecificCostComponent tgt = new org.hl7.fhir.r5.model.InsurancePlan.InsurancePlanPlanSpecificCostComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     for (org.hl7.fhir.r4.model.InsurancePlan.PlanBenefitComponent t : src.getBenefit())
@@ -300,7 +300,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanPlanSpecificCostComponent tgt = new org.hl7.fhir.r4.model.InsurancePlan.InsurancePlanPlanSpecificCostComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategory()));
     for (org.hl7.fhir.r5.model.InsurancePlan.PlanBenefitComponent t : src.getBenefit())
@@ -312,7 +312,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.InsurancePlan.PlanBenefitComponent tgt = new org.hl7.fhir.r5.model.InsurancePlan.PlanBenefitComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.r4.model.InsurancePlan.PlanBenefitCostComponent t : src.getCost())
@@ -324,7 +324,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.InsurancePlan.PlanBenefitComponent tgt = new org.hl7.fhir.r4.model.InsurancePlan.PlanBenefitComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.r5.model.InsurancePlan.PlanBenefitCostComponent t : src.getCost())
@@ -336,7 +336,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.InsurancePlan.PlanBenefitCostComponent tgt = new org.hl7.fhir.r5.model.InsurancePlan.PlanBenefitCostComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasApplicability())
@@ -352,7 +352,7 @@ public class InsurancePlan40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.InsurancePlan.PlanBenefitCostComponent tgt = new org.hl7.fhir.r4.model.InsurancePlan.PlanBenefitCostComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasApplicability())

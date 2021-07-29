@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Attachment40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -43,7 +43,7 @@ public class SubstanceProtein40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceProtein tgt = new org.hl7.fhir.r5.model.SubstanceProtein();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasSequenceType())
       tgt.setSequenceType(CodeableConcept40_50.convertCodeableConcept(src.getSequenceType()));
     if (src.hasNumberOfSubunits())
@@ -59,7 +59,7 @@ public class SubstanceProtein40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceProtein tgt = new org.hl7.fhir.r4.model.SubstanceProtein();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasSequenceType())
       tgt.setSequenceType(CodeableConcept40_50.convertCodeableConcept(src.getSequenceType()));
     if (src.hasNumberOfSubunits())
@@ -75,7 +75,7 @@ public class SubstanceProtein40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent tgt = new org.hl7.fhir.r5.model.SubstanceProtein.SubstanceProteinSubunitComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasSubunit())
       tgt.setSubunitElement(Integer40_50.convertInteger(src.getSubunitElement()));
     if (src.hasSequence())
@@ -99,7 +99,7 @@ public class SubstanceProtein40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent tgt = new org.hl7.fhir.r4.model.SubstanceProtein.SubstanceProteinSubunitComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasSubunit())
       tgt.setSubunitElement(Integer40_50.convertInteger(src.getSubunitElement()));
     if (src.hasSequence())

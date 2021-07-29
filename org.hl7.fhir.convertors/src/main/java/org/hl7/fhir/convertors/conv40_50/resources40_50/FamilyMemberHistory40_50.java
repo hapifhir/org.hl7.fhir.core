@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -45,7 +45,7 @@ public class FamilyMemberHistory40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.FamilyMemberHistory tgt = new org.hl7.fhir.r5.model.FamilyMemberHistory();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical())
@@ -67,13 +67,13 @@ public class FamilyMemberHistory40_50 {
     if (src.hasSex())
       tgt.setSex(CodeableConcept40_50.convertCodeableConcept(src.getSex()));
     if (src.hasBorn())
-      tgt.setBorn(VersionConvertor_40_50.convertType(src.getBorn()));
+      tgt.setBorn(VersionConvertorFactory_40_50.convertType(src.getBorn()));
     if (src.hasAge())
-      tgt.setAge(VersionConvertor_40_50.convertType(src.getAge()));
+      tgt.setAge(VersionConvertorFactory_40_50.convertType(src.getAge()));
     if (src.hasEstimatedAge())
       tgt.setEstimatedAgeElement(Boolean40_50.convertBoolean(src.getEstimatedAgeElement()));
     if (src.hasDeceased())
-      tgt.setDeceased(VersionConvertor_40_50.convertType(src.getDeceased()));
+      tgt.setDeceased(VersionConvertorFactory_40_50.convertType(src.getDeceased()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
       tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
@@ -88,7 +88,7 @@ public class FamilyMemberHistory40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.FamilyMemberHistory tgt = new org.hl7.fhir.r4.model.FamilyMemberHistory();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical())
@@ -110,13 +110,13 @@ public class FamilyMemberHistory40_50 {
     if (src.hasSex())
       tgt.setSex(CodeableConcept40_50.convertCodeableConcept(src.getSex()));
     if (src.hasBorn())
-      tgt.setBorn(VersionConvertor_40_50.convertType(src.getBorn()));
+      tgt.setBorn(VersionConvertorFactory_40_50.convertType(src.getBorn()));
     if (src.hasAge())
-      tgt.setAge(VersionConvertor_40_50.convertType(src.getAge()));
+      tgt.setAge(VersionConvertorFactory_40_50.convertType(src.getAge()));
     if (src.hasEstimatedAge())
       tgt.setEstimatedAgeElement(Boolean40_50.convertBoolean(src.getEstimatedAgeElement()));
     if (src.hasDeceased())
-      tgt.setDeceased(VersionConvertor_40_50.convertType(src.getDeceased()));
+      tgt.setDeceased(VersionConvertorFactory_40_50.convertType(src.getDeceased()));
     for (CodeableReference t : src.getReason())
       if (t.hasConcept())
         tgt.addReasonCode(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));
@@ -133,7 +133,7 @@ public class FamilyMemberHistory40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatusEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case PARTIAL:
         tgt.setValue(org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL);
@@ -158,7 +158,7 @@ public class FamilyMemberHistory40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatusEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case PARTIAL:
         tgt.setValue(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL);
@@ -183,7 +183,7 @@ public class FamilyMemberHistory40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.r5.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasOutcome())
@@ -191,7 +191,7 @@ public class FamilyMemberHistory40_50 {
     if (src.hasContributedToDeath())
       tgt.setContributedToDeathElement(Boolean40_50.convertBoolean(src.getContributedToDeathElement()));
     if (src.hasOnset())
-      tgt.setOnset(VersionConvertor_40_50.convertType(src.getOnset()));
+      tgt.setOnset(VersionConvertorFactory_40_50.convertType(src.getOnset()));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
     return tgt;
   }
@@ -200,7 +200,7 @@ public class FamilyMemberHistory40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasOutcome())
@@ -208,7 +208,7 @@ public class FamilyMemberHistory40_50 {
     if (src.hasContributedToDeath())
       tgt.setContributedToDeathElement(Boolean40_50.convertBoolean(src.getContributedToDeathElement()));
     if (src.hasOnset())
-      tgt.setOnset(VersionConvertor_40_50.convertType(src.getOnset()));
+      tgt.setOnset(VersionConvertorFactory_40_50.convertType(src.getOnset()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
     return tgt;
   }

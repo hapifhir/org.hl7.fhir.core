@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50_Context;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -49,7 +49,7 @@ public class Communication40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Communication tgt = new org.hl7.fhir.r5.model.Communication();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getInstantiatesCanonical())
@@ -98,7 +98,7 @@ public class Communication40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Communication tgt = new org.hl7.fhir.r4.model.Communication();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyDomainResource(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getInstantiatesCanonical())
@@ -149,7 +149,7 @@ public class Communication40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.EventStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.EventStatusEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case PREPARATION:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.EventStatus.PREPARATION);
@@ -186,7 +186,7 @@ public class Communication40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Communication.CommunicationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Communication.CommunicationStatusEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case PREPARATION:
         tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.PREPARATION);
@@ -223,7 +223,7 @@ public class Communication40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RequestPriority> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RequestPriorityEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case ROUTINE:
         tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RequestPriority.ROUTINE);
@@ -248,7 +248,7 @@ public class Communication40_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Communication.CommunicationPriority> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Communication.CommunicationPriorityEnumFactory());
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case ROUTINE:
         tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationPriority.ROUTINE);
@@ -273,16 +273,16 @@ public class Communication40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasContent()) {
       if (src.getContent() instanceof StringType) {
         CodeableConcept tgtc = new CodeableConcept();
-        VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src.getContent(), tgtc);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src.getContent(), tgtc);
         tgtc.setText(src.getContentStringType().getValue());
         tgt.setContent(tgtc);
       } else {
         if (src.hasContent())
-          tgt.setContent(VersionConvertor_40_50.convertType(src.getContent()));
+          tgt.setContent(VersionConvertorFactory_40_50.convertType(src.getContent()));
       }
     }
     return tgt;
@@ -292,16 +292,16 @@ public class Communication40_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent();
-    VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasContent()) {
       if (src.hasContentCodeableConcept()) {
         StringType tgts = new StringType();
-        VersionConvertor_40_50_Context.INSTANCE.getVersionConvertor_40_50_a().copyElement(src.getContent(), tgts);
+        ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src.getContent(), tgts);
         tgts.setValue(src.getContentCodeableConcept().getText());
         tgt.setContent(tgts);
       } else {
         if (src.hasContent())
-          tgt.setContent(VersionConvertor_40_50.convertType(src.getContent()));
+          tgt.setContent(VersionConvertorFactory_40_50.convertType(src.getContent()));
       }
     }
     return tgt;
