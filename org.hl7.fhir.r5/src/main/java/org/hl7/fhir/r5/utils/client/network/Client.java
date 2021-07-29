@@ -196,6 +196,11 @@ public class Client {
                                                              String message,
                                                              int retryCount,
                                                              long timeout) throws IOException {
+
+    if (accessToken != null) {
+      request.addHeader("Authorization", accessToken);
+    }
+                                                          
     return new FhirRequestBuilder(request)
       .withLogger(logger)
       .withResourceFormat(resourceFormat)
@@ -212,6 +217,10 @@ public class Client {
                                                                        String message,
                                                                        int retryCount,
                                                                        long timeout) throws IOException {
+    if (accessToken != null) {
+      request.addHeader("Authorization", accessToken);
+    }
+    
     return new FhirRequestBuilder(request)
       .withLogger(logger)
       .withResourceFormat(resourceFormat)
