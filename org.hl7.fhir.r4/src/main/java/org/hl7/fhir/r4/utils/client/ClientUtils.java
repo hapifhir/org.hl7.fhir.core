@@ -252,7 +252,10 @@ public class ClientUtils {
     } else {
       response = sendRequest(request);
     }
-    T resource = unmarshalReference(response, resourceFormat);
+    T resource = null;
+    if (response != null) {
+      resource = unmarshalReference(response, resourceFormat);
+    }
     return new ResourceRequest<T>(resource, response.getStatusLine().getStatusCode(), getLocationHeader(response));
   }
 
