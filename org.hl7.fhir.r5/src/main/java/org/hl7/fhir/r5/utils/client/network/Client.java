@@ -199,6 +199,9 @@ public class Client {
 
     if (accessToken != null) {
       request.addHeader("Authorization", accessToken);
+
+      // THIS IS A WORKAROUND FOR THE TERMINOLOGY SERVER REQUIRING THIS API-VERSION=1 HEADER
+      request.addHeader("api-version", "1");
     }
                                                           
     return new FhirRequestBuilder(request)
@@ -219,6 +222,9 @@ public class Client {
                                                                        long timeout) throws IOException {
     if (accessToken != null) {
       request.addHeader("Authorization", accessToken);
+
+      // THIS IS A WORKAROUND FOR THE TERMINOLOGY SERVER REQUIRING THIS API-VERSION=1 HEADER
+      request.addHeader("api-version", "1");
     }
     
     return new FhirRequestBuilder(request)
