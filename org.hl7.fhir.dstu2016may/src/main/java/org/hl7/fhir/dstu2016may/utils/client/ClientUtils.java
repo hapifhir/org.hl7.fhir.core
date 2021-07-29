@@ -195,6 +195,7 @@ public class ClientUtils {
     }
     if (accessToken != null) {
         httpget.setHeader("Authorization", "Bearer " + accessToken);
+        httpget.setHeader("api-version", "1");
     }
  }
 
