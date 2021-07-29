@@ -180,7 +180,7 @@ public class FHIRToolingClient {
 		  TerminologyCapabilities tc = new TerminologyCapabilities();
 		    tc.setStatus(Enumerations.PublicationStatus.ACTIVE);
 		    tc.setDateElement(DateTimeType.now());
-		    tc.setKind(CapabilityStatement.CapabilityStatementKind.INSTANCE);
+		    tc.setKind(TerminologyCapabilities.CapabilityStatementKind.INSTANCE);
 	      return tc;
         }
 	}
