@@ -13,6 +13,7 @@ import java.util.Map;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -220,7 +221,7 @@ public class QuestionnaireValidator extends BaseValidator {
                 return null;
             case DSTU2016May:
               org.hl7.fhir.dstu2016may.model.Resource r2a = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(json);
-              r5 = VersionConvertor_14_50.convertResource(r2a);
+              r5 = VersionConvertorFactory_14_50.convertResource(r2a);
               if (r5 instanceof Questionnaire)
                 return (Questionnaire) r5;
               else

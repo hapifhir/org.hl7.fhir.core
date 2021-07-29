@@ -11,6 +11,7 @@ import java.util.Set;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -388,7 +389,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     }
     if (VersionUtilities.isR2BVer(context.getVersion())) {
       org.hl7.fhir.dstu2016may.model.Resource r2b = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(bs.toByteArray());
-      return (StructureDefinition) VersionConvertor_14_50.convertResource(r2b);
+      return (StructureDefinition) VersionConvertorFactory_14_50.convertResource(r2b);
     }
     if (VersionUtilities.isR3Ver(context.getVersion())) {
       org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(bs.toByteArray());

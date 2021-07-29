@@ -6,7 +6,7 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.Codeab
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.ContactPoint14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.*;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.ElementDefinition14_50;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext14_50; 
 import org.hl7.fhir.r5.model.CodeType;
 
 public class SearchParameter14_50 {
@@ -15,7 +15,7 @@ public class SearchParameter14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.SearchParameter tgt = new org.hl7.fhir.dstu2016may.model.SearchParameter();
-        VersionConvertor_14_50.copyDomainResource(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyDomainResource(src, tgt);
         if (src.hasUrlElement())
             tgt.setUrlElement(Uri14_50.convertUri(src.getUrlElement()));
         if (src.hasNameElement())
@@ -55,7 +55,7 @@ public class SearchParameter14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.SearchParameter tgt = new org.hl7.fhir.r5.model.SearchParameter();
-        VersionConvertor_14_50.copyDomainResource(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyDomainResource(src, tgt);
         if (src.hasUrlElement())
             tgt.setUrlElement(Uri14_50.convertUri(src.getUrlElement()));
         if (src.hasNameElement())
@@ -96,7 +96,7 @@ public class SearchParameter14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.ContactDetail tgt = new org.hl7.fhir.r5.model.ContactDetail();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasName())
             tgt.setNameElement(String14_50.convertString(src.getNameElement()));
         for (org.hl7.fhir.dstu2016may.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint14_50.convertContactPoint(t));
@@ -107,7 +107,7 @@ public class SearchParameter14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.SearchParameter.SearchParameterContactComponent tgt = new org.hl7.fhir.dstu2016may.model.SearchParameter.SearchParameterContactComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasName())
             tgt.setNameElement(String14_50.convertString(src.getNameElement()));
         for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint14_50.convertContactPoint(t));
@@ -118,7 +118,7 @@ public class SearchParameter14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageTypeEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case NORMAL:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.SearchParameter.XPathUsageType.NORMAL);
@@ -146,7 +146,7 @@ public class SearchParameter14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.SearchParameter.XPathUsageType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.SearchParameter.XPathUsageTypeEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case NORMAL:
                 tgt.setValue(org.hl7.fhir.r5.model.SearchParameter.XPathUsageType.NORMAL);

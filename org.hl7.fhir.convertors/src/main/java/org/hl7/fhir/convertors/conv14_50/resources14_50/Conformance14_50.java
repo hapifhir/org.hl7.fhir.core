@@ -8,7 +8,7 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.Coding
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.ContactPoint14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.*;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Reference14_50;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext14_50; 
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent;
 import org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent;
 
@@ -18,7 +18,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.ConditionalDeleteStatus> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Conformance.ConditionalDeleteStatusEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case NOTSUPPORTED:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.Conformance.ConditionalDeleteStatus.NOTSUPPORTED);
@@ -40,7 +40,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.ConditionalDeleteStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CapabilityStatement.ConditionalDeleteStatusEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case NOTSUPPORTED:
                 tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.ConditionalDeleteStatus.NOTSUPPORTED);
@@ -62,7 +62,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement tgt = new org.hl7.fhir.r5.model.CapabilityStatement();
-        VersionConvertor_14_50.copyDomainResource(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(Uri14_50.convertUri(src.getUrlElement()));
         if (src.hasVersion())
@@ -109,7 +109,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance tgt = new org.hl7.fhir.dstu2016may.model.Conformance();
-        VersionConvertor_14_50.copyDomainResource(src, tgt, "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(Uri14_50.convertUri(src.getUrlElement()));
         if (src.hasVersion())
@@ -155,7 +155,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ConformanceContactComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceContactComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasName())
             tgt.setNameElement(String14_50.convertString(src.getNameElement()));
         for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint14_50.convertContactPoint(t));
@@ -166,7 +166,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.ContactDetail tgt = new org.hl7.fhir.r5.model.ContactDetail();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasName())
             tgt.setNameElement(String14_50.convertString(src.getNameElement()));
         for (org.hl7.fhir.dstu2016may.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint14_50.convertContactPoint(t));
@@ -177,7 +177,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementDocumentComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementDocumentComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasMode())
             tgt.setModeElement(convertDocumentMode(src.getModeElement()));
         if (src.hasDocumentation())
@@ -191,7 +191,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ConformanceDocumentComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceDocumentComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasMode())
             tgt.setModeElement(convertDocumentMode(src.getModeElement()));
         if (src.hasDocumentation())
@@ -205,7 +205,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementImplementationComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementImplementationComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasDescriptionElement())
             tgt.setDescriptionElement(String14_50.convertString(src.getDescriptionElement()));
         if (src.hasUrl())
@@ -217,7 +217,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ConformanceImplementationComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceImplementationComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasDescriptionElement())
             tgt.setDescriptionElement(String14_50.convertString(src.getDescriptionElement()));
         if (src.hasUrl())
@@ -229,7 +229,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         for (org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent t : src.getEndpoint()) tgt.addEndpoint(convertConformanceMessagingEndpointComponent(t));
         if (src.hasReliableCache())
             tgt.setReliableCacheElement(UnsignedInt14_50.convertUnsignedInt(src.getReliableCacheElement()));
@@ -247,7 +247,7 @@ public class Conformance14_50 {
                 event.setFocus(focusE.getValue().toString());
             else {
                 event.setFocusElement(new org.hl7.fhir.dstu2016may.model.CodeType());
-                Element14_50.copyElement(focusE.getValue(), event.getFocusElement());
+                ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(focusE.getValue(), event.getFocusElement());
             }
             event.setRequest(Reference14_50.convertReference((org.hl7.fhir.r5.model.Reference) e.getExtensionByUrl("request").getValue()));
             event.setResponse(Reference14_50.convertReference((org.hl7.fhir.r5.model.Reference) e.getExtensionByUrl("response").getValue()));
@@ -261,7 +261,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         for (org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingEndpointComponent t : src.getEndpoint()) tgt.addEndpoint(convertConformanceMessagingEndpointComponent(t));
         if (src.hasReliableCache())
             tgt.setReliableCacheElement(UnsignedInt14_50.convertUnsignedInt(src.getReliableCacheElement()));
@@ -278,7 +278,7 @@ public class Conformance14_50 {
             else {
                 org.hl7.fhir.r5.model.CodeType focus = new org.hl7.fhir.r5.model.CodeType();
                 org.hl7.fhir.r5.model.Extension focusE = new org.hl7.fhir.r5.model.Extension("focus", focus);
-                Element14_50.copyElement(t.getFocusElement(), focus);
+                ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(t.getFocusElement(), focus);
                 e.addExtension(focusE);
             }
             e.addExtension(new org.hl7.fhir.r5.model.Extension("request", Reference14_50.convertReference(t.getRequest())));
@@ -294,7 +294,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingEndpointComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceMessagingEndpointComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasProtocol())
             tgt.setProtocol(Coding14_50.convertCoding(src.getProtocol()));
         if (src.hasAddress())
@@ -306,7 +306,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementMessagingEndpointComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasProtocol())
             tgt.setProtocol(Coding14_50.convertCoding(src.getProtocol()));
         if (src.hasAddress())
@@ -318,7 +318,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasMode())
             tgt.setModeElement(convertRestfulConformanceMode(src.getModeElement()));
         if (src.hasDocumentation())
@@ -337,7 +337,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ConformanceRestComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceRestComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasMode())
             tgt.setModeElement(convertRestfulConformanceMode(src.getModeElement()));
         if (src.hasDocumentation())
@@ -356,7 +356,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ConformanceRestOperationComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceRestOperationComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasNameElement())
             tgt.setNameElement(String14_50.convertString(src.getNameElement()));
         if (src.hasDefinitionElement())
@@ -368,7 +368,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceOperationComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasNameElement())
             tgt.setNameElement(String14_50.convertString(src.getNameElement()));
         if (src.hasDefinition())
@@ -380,7 +380,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ConformanceRestResourceComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceRestResourceComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasType()) {
             if (src.hasTypeElement())
                 tgt.setTypeElement(Code14_50.convertCode(src.getTypeElement()));
@@ -410,7 +410,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasTypeElement())
             tgt.setTypeElement(Code14_50.convertCode(src.getTypeElement()));
         if (src.hasProfile())
@@ -438,7 +438,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ConformanceRestResourceSearchParamComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceRestResourceSearchParamComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasNameElement())
             tgt.setNameElement(String14_50.convertString(src.getNameElement()));
         if (src.hasDefinition())
@@ -454,7 +454,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestResourceSearchParamComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasNameElement())
             tgt.setNameElement(String14_50.convertString(src.getNameElement()));
         if (src.hasDefinition())
@@ -470,7 +470,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestSecurityComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementRestSecurityComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasCors())
             tgt.setCorsElement(Boolean14_50.convertBoolean(src.getCorsElement()));
         for (org.hl7.fhir.dstu2016may.model.CodeableConcept t : src.getService()) tgt.addService(CodeableConcept14_50.convertCodeableConcept(t));
@@ -483,7 +483,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ConformanceRestSecurityComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceRestSecurityComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasCors())
             tgt.setCorsElement(Boolean14_50.convertBoolean(src.getCorsElement()));
         for (org.hl7.fhir.r5.model.CodeableConcept t : src.getService()) tgt.addService(CodeableConcept14_50.convertCodeableConcept(t));
@@ -496,7 +496,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementSoftwareComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.CapabilityStatementSoftwareComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasNameElement())
             tgt.setNameElement(String14_50.convertString(src.getNameElement()));
         if (src.hasVersion())
@@ -510,7 +510,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ConformanceSoftwareComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceSoftwareComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasNameElement())
             tgt.setNameElement(String14_50.convertString(src.getNameElement()));
         if (src.hasVersion())
@@ -524,7 +524,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKindEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case INSTANCE:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CapabilityStatementKind.INSTANCE);
@@ -546,7 +546,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.ConformanceStatementKind> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceStatementKindEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case INSTANCE:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.Conformance.ConformanceStatementKind.INSTANCE);
@@ -568,7 +568,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.DocumentMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CapabilityStatement.DocumentModeEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case PRODUCER:
                 tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.DocumentMode.PRODUCER);
@@ -587,7 +587,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.DocumentMode> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Conformance.DocumentModeEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case PRODUCER:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.Conformance.DocumentMode.PRODUCER);
@@ -606,7 +606,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.ResourceInteractionComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCodeElement(convertTypeRestfulInteraction(src.getCodeElement()));
         if (src.hasDocumentation())
@@ -618,7 +618,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.ResourceInteractionComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.ResourceInteractionComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCodeElement(convertTypeRestfulInteraction(src.getCodeElement()));
         if (src.hasDocumentation())
@@ -630,7 +630,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.ResourceVersionPolicy> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CapabilityStatement.ResourceVersionPolicyEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case NOVERSION:
                 tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.ResourceVersionPolicy.NOVERSION);
@@ -652,7 +652,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.ResourceVersionPolicy> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Conformance.ResourceVersionPolicyEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case NOVERSION:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.Conformance.ResourceVersionPolicy.NOVERSION);
@@ -674,7 +674,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityModeEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case CLIENT:
                 tgt.setValue(org.hl7.fhir.r5.model.Enumerations.RestfulCapabilityMode.CLIENT);
@@ -693,7 +693,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.RestfulConformanceMode> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Conformance.RestfulConformanceModeEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case CLIENT:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.Conformance.RestfulConformanceMode.CLIENT);
@@ -712,7 +712,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Conformance.SystemInteractionComponent tgt = new org.hl7.fhir.dstu2016may.model.Conformance.SystemInteractionComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCodeElement(convertSystemRestfulInteraction(src.getCodeElement()));
         if (src.hasDocumentation())
@@ -724,7 +724,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent tgt = new org.hl7.fhir.r5.model.CapabilityStatement.SystemInteractionComponent();
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCodeElement(convertSystemRestfulInteraction(src.getCodeElement()));
         if (src.hasDocumentation())
@@ -736,7 +736,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteractionEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case TRANSACTION:
                 tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.SystemRestfulInteraction.TRANSACTION);
@@ -758,7 +758,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.SystemRestfulInteraction> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Conformance.SystemRestfulInteractionEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case TRANSACTION:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.Conformance.SystemRestfulInteraction.TRANSACTION);
@@ -780,7 +780,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.TypeRestfulInteraction> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Conformance.TypeRestfulInteractionEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case READ:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.Conformance.TypeRestfulInteraction.READ);
@@ -817,7 +817,7 @@ public class Conformance14_50 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteractionEnumFactory());
-        Element14_50.copyElement(src, tgt);
+        ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
         switch(src.getValue()) {
             case READ:
                 tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.TypeRestfulInteraction.READ);
@@ -853,7 +853,7 @@ public class Conformance14_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.EventCapabilityMode> convertConformanceEventMode(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventMode> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.EventCapabilityMode> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.CapabilityStatement.EventCapabilityModeEnumFactory());
-    Element14_50.copyElement(src, tgt);
+    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r5.model.CapabilityStatement.EventCapabilityMode.NULL);
     } else {
@@ -875,7 +875,7 @@ public class Conformance14_50 {
   static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventMode> convertConformanceEventMode(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.CapabilityStatement.EventCapabilityMode> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventMode> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventModeEnumFactory());
-    Element14_50.copyElement(src, tgt);
+    ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.dstu2016may.model.Conformance.ConformanceEventMode.NULL);
     } else {

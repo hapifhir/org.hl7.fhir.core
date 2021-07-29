@@ -37,6 +37,7 @@ import java.io.IOException;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
@@ -354,7 +355,7 @@ public class NativeHostServices {
       } else if (VersionUtilities.isR2BVer(version)) {
         org.hl7.fhir.dstu2016may.formats.ParserBase p2 = org.hl7.fhir.dstu2016may.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.dstu2016may.model.Resource res2 = p2.parse(r);
-        Resource res4 = VersionConvertor_14_50.convertResource(res2);
+        Resource res4 = VersionConvertorFactory_14_50.convertResource(res2);
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         convertCount++;
         return p4.composeBytes(res4);
@@ -405,7 +406,7 @@ public class NativeHostServices {
       } else if ("1.4".equals(version) || "1.4.0".equals(version)) {
         org.hl7.fhir.r5.formats.ParserBase p4 = org.hl7.fhir.r5.formats.FormatUtilities.makeParser(fmt);
         org.hl7.fhir.r5.model.Resource res4 = p4.parse(r);
-        org.hl7.fhir.dstu2016may.model.Resource res2 = VersionConvertor_14_50.convertResource(res4);
+        org.hl7.fhir.dstu2016may.model.Resource res2 = VersionConvertorFactory_14_50.convertResource(res4);
         org.hl7.fhir.dstu2016may.formats.ParserBase p2 = org.hl7.fhir.dstu2016may.formats.FormatUtilities.makeParser(fmt);
         unConvertCount++;
         return p2.composeBytes(res2);

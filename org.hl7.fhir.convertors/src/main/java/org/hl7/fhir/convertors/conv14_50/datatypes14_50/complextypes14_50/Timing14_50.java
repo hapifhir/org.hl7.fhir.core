@@ -4,7 +4,7 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Element14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Type14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.Decimal14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.UnsignedInt14_50;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext14_50; 
 
 import java.util.Collections;
 
@@ -12,7 +12,7 @@ public class Timing14_50 {
     public static org.hl7.fhir.r5.model.Timing convertTiming(org.hl7.fhir.dstu2016may.model.Timing src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r5.model.Timing tgt = new org.hl7.fhir.r5.model.Timing();
-      Element14_50.copyElement(src, tgt);
+      ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
       for (org.hl7.fhir.dstu2016may.model.DateTimeType t : src.getEvent()) tgt.addEvent(t.getValue());
       if (src.hasRepeat()) tgt.setRepeat(convertTimingRepeatComponent(src.getRepeat()));
       if (src.hasCode()) tgt.setCode(CodeableConcept14_50.convertCodeableConcept(src.getCode()));
@@ -22,7 +22,7 @@ public class Timing14_50 {
     public static org.hl7.fhir.dstu2016may.model.Timing convertTiming(org.hl7.fhir.r5.model.Timing src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu2016may.model.Timing tgt = new org.hl7.fhir.dstu2016may.model.Timing();
-      Element14_50.copyElement(src, tgt);
+      ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
       for (org.hl7.fhir.r5.model.DateTimeType t : src.getEvent()) tgt.addEvent(t.getValue());
       if (src.hasRepeat()) tgt.setRepeat(convertTimingRepeatComponent(src.getRepeat()));
       if (src.hasCode()) tgt.setCode(CodeableConcept14_50.convertCodeableConcept(src.getCode()));
@@ -32,8 +32,8 @@ public class Timing14_50 {
     public static org.hl7.fhir.r5.model.Timing.TimingRepeatComponent convertTimingRepeatComponent(org.hl7.fhir.dstu2016may.model.Timing.TimingRepeatComponent src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r5.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.r5.model.Timing.TimingRepeatComponent();
-      Element14_50.copyElement(src, tgt);
-      if (src.hasBounds()) tgt.setBounds(Type14_50.convertType(src.getBounds()));
+      ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
+      if (src.hasBounds()) tgt.setBounds(ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getBounds()));
       if (src.hasCount()) tgt.setCount(src.getCount());
       if (src.hasCountMax()) tgt.setCountMax(src.getCountMax());
       if (src.hasDuration()) tgt.setDurationElement(Decimal14_50.convertDecimal(src.getDurationElement()));
@@ -52,8 +52,8 @@ public class Timing14_50 {
     public static org.hl7.fhir.dstu2016may.model.Timing.TimingRepeatComponent convertTimingRepeatComponent(org.hl7.fhir.r5.model.Timing.TimingRepeatComponent src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu2016may.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.dstu2016may.model.Timing.TimingRepeatComponent();
-      Element14_50.copyElement(src, tgt);
-      if (src.hasBounds()) tgt.setBounds(Type14_50.convertType(src.getBounds()));
+      ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
+      if (src.hasBounds()) tgt.setBounds(ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().convertType(src.getBounds()));
       if (src.hasCount()) tgt.setCount(src.getCount());
       if (src.hasCountMax()) tgt.setCountMax(src.getCountMax());
       if (src.hasDuration()) tgt.setDurationElement(Decimal14_50.convertDecimal(src.getDurationElement()));
@@ -72,7 +72,7 @@ public class Timing14_50 {
     static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.UnitsOfTime> convertUnitsOfTime(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.UnitsOfTime> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Timing.UnitsOfTimeEnumFactory());
-      Element14_50.copyElement(src, tgt);
+      ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.r5.model.Timing.UnitsOfTime.NULL);
       } else {
@@ -109,7 +109,7 @@ public class Timing14_50 {
     static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime> convertUnitsOfTime(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.UnitsOfTime> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTimeEnumFactory());
-      Element14_50.copyElement(src, tgt);
+      ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.UnitsOfTime.NULL);
       } else {
@@ -146,7 +146,7 @@ public class Timing14_50 {
     static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.EventTiming> convertEventTiming(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Timing.EventTiming> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.EventTiming> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Timing.EventTimingEnumFactory());
-      Element14_50.copyElement(src, tgt);
+      ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.r5.model.Timing.EventTiming.NULL);
       } else {
@@ -204,7 +204,7 @@ public class Timing14_50 {
     static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Timing.EventTiming> convertEventTiming(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Timing.EventTiming> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Timing.EventTiming> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Timing.EventTimingEnumFactory());
-      Element14_50.copyElement(src, tgt);
+      ConversionContext14_50.INSTANCE.getVersionConvertor_14_50().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.dstu2016may.model.Timing.EventTiming.NULL);
       } else {
