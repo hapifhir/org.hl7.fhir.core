@@ -48,8 +48,8 @@ public class TerminologyClientFactory {
     case DSTU1: throw new Error("The version "+v.toString()+" is not currently supported");
     case DSTU2: return new TerminologyClientR2(checkEndsWith("/r2", url), accessToken);
     case STU3: return new TerminologyClientR3(checkEndsWith("/r3", url), accessToken);
-    case R4: return new TerminologyClientR5(checkEndsWith("/r4", url), accessToken);
-    case R5: return new TerminologyClientR5(checkEndsWith("/r4", url), accessToken); // r4 for now, since the terminology is currently the same
+    case R4: return new TerminologyClientR4(checkEndsWith("/r4", url), accessToken);
+    case R5: return new TerminologyClientR4(checkEndsWith("/r4", url), accessToken); // r4 for now, since the terminology is currently the same
         default: throw new Error("The version "+v.toString()+" is not currently supported");
     }
   }
@@ -63,7 +63,7 @@ public class TerminologyClientFactory {
     case "1.4": return new TerminologyClientR3(checkEndsWith("/r3", url), accessToken); // r3 is the least worst match 
     case "3.0": return new TerminologyClientR3(checkEndsWith("/r3", url), accessToken);
     case "4.0": return new TerminologyClientR4(checkEndsWith("/r4", url), accessToken);
-    case "4.5": return new TerminologyClientR5(checkEndsWith("/r4", url), accessToken); // r4 for now, since the terminology is currently the same
+    case "4.5": return new TerminologyClientR4(checkEndsWith("/r4", url), accessToken); // r4 for now, since the terminology is currently the same
     default: throw new Error("The version "+v.toString()+" is not currently supported");
     }
   }
