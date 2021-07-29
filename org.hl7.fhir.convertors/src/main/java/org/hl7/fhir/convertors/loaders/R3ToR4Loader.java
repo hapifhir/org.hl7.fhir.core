@@ -39,6 +39,7 @@ import java.util.UUID;
 
 import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu3.formats.JsonParser;
 import org.hl7.fhir.dstu3.formats.XmlParser;
 import org.hl7.fhir.dstu3.model.Resource;
@@ -65,7 +66,7 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
       r3 = new JsonParser().parse(stream);
     else
       r3 = new XmlParser().parse(stream);
-    org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_30_40.convertResource(r3, advisor);
+    org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_30_40.convertResource(r3, advisor);
     
     Bundle b;
     if (r4 instanceof Bundle)

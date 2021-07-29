@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40;
 
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 
 public class Duration30_40 {
     public static org.hl7.fhir.r4.model.Duration convertDuration(org.hl7.fhir.dstu3.model.Duration src) throws FHIRException {

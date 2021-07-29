@@ -1,10 +1,10 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 
 public class OperationOutcome30_40 {
 
@@ -12,7 +12,7 @@ public class OperationOutcome30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverityEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case FATAL:
                 tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueSeverity.FATAL);
@@ -37,7 +37,7 @@ public class OperationOutcome30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.OperationOutcome.IssueSeverityEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case FATAL:
                 tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.FATAL);
@@ -62,7 +62,7 @@ public class OperationOutcome30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.OperationOutcome.IssueType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.OperationOutcome.IssueTypeEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case INVALID:
                 tgt.setValue(org.hl7.fhir.dstu3.model.OperationOutcome.IssueType.INVALID);
@@ -162,7 +162,7 @@ public class OperationOutcome30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.OperationOutcome.IssueTypeEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case INVALID:
                 tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.INVALID);
@@ -262,7 +262,7 @@ public class OperationOutcome30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.OperationOutcome tgt = new org.hl7.fhir.dstu3.model.OperationOutcome();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
         return tgt;
     }
@@ -271,7 +271,7 @@ public class OperationOutcome30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.OperationOutcome tgt = new org.hl7.fhir.r4.model.OperationOutcome();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
         return tgt;
     }
@@ -280,7 +280,7 @@ public class OperationOutcome30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.dstu3.model.OperationOutcome.OperationOutcomeIssueComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasSeverity())
             tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
         if (src.hasCode())
@@ -298,7 +298,7 @@ public class OperationOutcome30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasSeverity())
             tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
         if (src.hasCode())

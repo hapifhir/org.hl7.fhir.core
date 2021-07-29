@@ -1,12 +1,12 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Date30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 
 public class Person30_40 {
 
@@ -14,7 +14,7 @@ public class Person30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Person.IdentityAssuranceLevelEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case LEVEL1:
                 tgt.setValue(org.hl7.fhir.r4.model.Person.IdentityAssuranceLevel.LEVEL1);
@@ -39,7 +39,7 @@ public class Person30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevelEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case LEVEL1:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Person.IdentityAssuranceLevel.LEVEL1);
@@ -64,7 +64,7 @@ public class Person30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Person tgt = new org.hl7.fhir.r4.model.Person();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         for (org.hl7.fhir.dstu3.model.HumanName t : src.getName()) tgt.addName(HumanName30_40.convertHumanName(t));
         for (org.hl7.fhir.dstu3.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint30_40.convertContactPoint(t));
@@ -87,7 +87,7 @@ public class Person30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Person tgt = new org.hl7.fhir.dstu3.model.Person();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         for (org.hl7.fhir.r4.model.HumanName t : src.getName()) tgt.addName(HumanName30_40.convertHumanName(t));
         for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint30_40.convertContactPoint(t));
@@ -110,7 +110,7 @@ public class Person30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Person.PersonLinkComponent tgt = new org.hl7.fhir.r4.model.Person.PersonLinkComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasTarget())
             tgt.setTarget(Reference30_40.convertReference(src.getTarget()));
         if (src.hasAssurance())
@@ -122,7 +122,7 @@ public class Person30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Person.PersonLinkComponent tgt = new org.hl7.fhir.dstu3.model.Person.PersonLinkComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasTarget())
             tgt.setTarget(Reference30_40.convertReference(src.getTarget()));
         if (src.hasAssurance())

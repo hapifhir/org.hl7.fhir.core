@@ -9,11 +9,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class BaseAdvisor_30_50 extends BaseAdvisor50<org.hl7.fhir.dstu3.model.Extension> {
 
-  final List<String> valueSetIgnoredUrls = Arrays.asList("http://hl7.org/fhir/StructureDefinition/valueset-extensible");
+  final List<String> valueSetIgnoredUrls = Collections.singletonList("http://hl7.org/fhir/StructureDefinition/valueset-extensible");
   final List<String> capabilityStatementIgnoredUrls = Arrays.asList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown",
     "http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.profile");
 

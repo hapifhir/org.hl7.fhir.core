@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Attachment30_40;
@@ -8,7 +8,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Codeab
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.PositiveInt30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.r4.model.CodeableConcept;
 
 public class Media30_40 {
@@ -19,7 +19,7 @@ public class Media30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Media tgt = new org.hl7.fhir.dstu3.model.Media();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) {
             tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         }
@@ -53,7 +53,7 @@ public class Media30_40 {
         }
         if (src.hasCreated()) {
             if (src.hasCreated())
-                tgt.setOccurrence(Type30_40.convertType(src.getCreated()));
+                tgt.setOccurrence(VersionConvertorFactory_30_40.convertType(src.getCreated()));
         }
         if (src.hasOperator()) {
             if (src.hasOperator())
@@ -99,7 +99,7 @@ public class Media30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Media tgt = new org.hl7.fhir.r4.model.Media();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) {
             tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         }
@@ -131,7 +131,7 @@ public class Media30_40 {
         }
         if (src.hasOccurrence()) {
             if (src.hasOccurrence())
-                tgt.setCreated(Type30_40.convertType(src.getOccurrence()));
+                tgt.setCreated(VersionConvertorFactory_30_40.convertType(src.getOccurrence()));
         }
         if (src.hasOperator()) {
             if (src.hasOperator())

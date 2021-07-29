@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
@@ -8,7 +8,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Bool
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Dosage30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 
 public class MedicationDispense30_40 {
 
@@ -16,7 +16,7 @@ public class MedicationDispense30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.MedicationDispense tgt = new org.hl7.fhir.dstu3.model.MedicationDispense();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference30_40.convertReference(t));
         if (src.hasStatus())
@@ -24,7 +24,7 @@ public class MedicationDispense30_40 {
         if (src.hasCategory())
             tgt.setCategory(CodeableConcept30_40.convertCodeableConcept(src.getCategory()));
         if (src.hasMedication())
-            tgt.setMedication(Type30_40.convertType(src.getMedication()));
+            tgt.setMedication(VersionConvertorFactory_30_40.convertType(src.getMedication()));
         if (src.hasSubject())
             tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
         if (src.hasContext())
@@ -58,7 +58,7 @@ public class MedicationDispense30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.MedicationDispense tgt = new org.hl7.fhir.r4.model.MedicationDispense();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference30_40.convertReference(t));
         if (src.hasStatus())
@@ -66,7 +66,7 @@ public class MedicationDispense30_40 {
         if (src.hasCategory())
             tgt.setCategory(CodeableConcept30_40.convertCodeableConcept(src.getCategory()));
         if (src.hasMedication())
-            tgt.setMedication(Type30_40.convertType(src.getMedication()));
+            tgt.setMedication(VersionConvertorFactory_30_40.convertType(src.getMedication()));
         if (src.hasSubject())
             tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
         if (src.hasContext())
@@ -100,7 +100,7 @@ public class MedicationDispense30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispensePerformerComponent tgt = new org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispensePerformerComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasActor())
             tgt.setActor(Reference30_40.convertReference(src.getActor()));
         return tgt;
@@ -110,7 +110,7 @@ public class MedicationDispense30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.MedicationDispense.MedicationDispensePerformerComponent tgt = new org.hl7.fhir.r4.model.MedicationDispense.MedicationDispensePerformerComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasActor())
             tgt.setActor(Reference30_40.convertReference(src.getActor()));
         return tgt;
@@ -120,7 +120,7 @@ public class MedicationDispense30_40 {
       if (src == null)
           return null;
       org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatusEnumFactory());
-      Element30_40.copyElement(src, tgt);
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
       switch(src.getValue()) {
       case COMPLETED:
         tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.COMPLETED);
@@ -151,7 +151,7 @@ public class MedicationDispense30_40 {
       if (src == null)
           return null;
       org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatusEnumFactory());
-      Element30_40.copyElement(src, tgt);
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
       switch(src.getValue()) {
       case CANCELLED:
         tgt.setValue(org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseStatus.STOPPED);
@@ -191,7 +191,7 @@ public class MedicationDispense30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseSubstitutionComponent tgt = new org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseSubstitutionComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasWasSubstituted())
             tgt.setWasSubstitutedElement(Boolean30_40.convertBoolean(src.getWasSubstitutedElement()));
         if (src.hasType())
@@ -205,7 +205,7 @@ public class MedicationDispense30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseSubstitutionComponent tgt = new org.hl7.fhir.dstu3.model.MedicationDispense.MedicationDispenseSubstitutionComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasWasSubstituted())
             tgt.setWasSubstitutedElement(Boolean30_40.convertBoolean(src.getWasSubstitutedElement()));
         if (src.hasType())

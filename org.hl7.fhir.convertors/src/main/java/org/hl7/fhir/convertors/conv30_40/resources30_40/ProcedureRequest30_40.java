@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
 import java.util.List;
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
@@ -10,7 +10,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identi
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.r4.model.Reference;
 
 public class ProcedureRequest30_40 {
@@ -19,7 +19,7 @@ public class ProcedureRequest30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.ServiceRequest tgt = new org.hl7.fhir.r4.model.ServiceRequest();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) {
             tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         }
@@ -66,11 +66,11 @@ public class ProcedureRequest30_40 {
         }
         if (src.hasOccurrence()) {
             if (src.hasOccurrence())
-                tgt.setOccurrence(Type30_40.convertType(src.getOccurrence()));
+                tgt.setOccurrence(VersionConvertorFactory_30_40.convertType(src.getOccurrence()));
         }
         if (src.hasAsNeeded()) {
             if (src.hasAsNeeded())
-                tgt.setAsNeeded(Type30_40.convertType(src.getAsNeeded()));
+                tgt.setAsNeeded(VersionConvertorFactory_30_40.convertType(src.getAsNeeded()));
         }
         if (src.hasAuthoredOn()) {
             if (src.hasAuthoredOnElement())
@@ -118,7 +118,7 @@ public class ProcedureRequest30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.ProcedureRequest tgt = new org.hl7.fhir.dstu3.model.ProcedureRequest();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) {
             tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         }
@@ -165,11 +165,11 @@ public class ProcedureRequest30_40 {
         }
         if (src.hasOccurrence()) {
             if (src.hasOccurrence())
-                tgt.setOccurrence(Type30_40.convertType(src.getOccurrence()));
+                tgt.setOccurrence(VersionConvertorFactory_30_40.convertType(src.getOccurrence()));
         }
         if (src.hasAsNeeded()) {
             if (src.hasAsNeeded())
-                tgt.setAsNeeded(Type30_40.convertType(src.getAsNeeded()));
+                tgt.setAsNeeded(VersionConvertorFactory_30_40.convertType(src.getAsNeeded()));
         }
         if (src.hasAuthoredOn()) {
             if (src.hasAuthoredOnElement())
@@ -216,7 +216,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntentEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case FILLERORDER:
                 tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestIntent.FILLERORDER);
@@ -253,7 +253,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntentEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case DIRECTIVE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestIntent.NULL);
@@ -293,7 +293,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriorityEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case ASAP:
                 tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestPriority.ASAP);
@@ -318,7 +318,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriorityEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case ASAP:
                 tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestPriority.ASAP);
@@ -343,7 +343,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.ProcedureRequest.ProcedureRequestStatus.ACTIVE);
@@ -377,7 +377,7 @@ public class ProcedureRequest30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.r4.model.ServiceRequest.ServiceRequestStatus.ACTIVE);

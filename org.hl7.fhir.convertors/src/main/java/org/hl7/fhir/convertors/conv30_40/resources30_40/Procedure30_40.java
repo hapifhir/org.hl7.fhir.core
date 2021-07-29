@@ -1,13 +1,13 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 
 public class Procedure30_40 {
 
@@ -15,7 +15,7 @@ public class Procedure30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Procedure tgt = new org.hl7.fhir.r4.model.Procedure();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) {
             tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         }
@@ -53,7 +53,7 @@ public class Procedure30_40 {
         }
         if (src.hasPerformed()) {
             if (src.hasPerformed())
-                tgt.setPerformed(Type30_40.convertType(src.getPerformed()));
+                tgt.setPerformed(VersionConvertorFactory_30_40.convertType(src.getPerformed()));
         }
         for (org.hl7.fhir.dstu3.model.Procedure.ProcedurePerformerComponent t : src.getPerformer()) {
             tgt.addPerformer(convertProcedurePerformerComponent(t));
@@ -106,7 +106,7 @@ public class Procedure30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Procedure tgt = new org.hl7.fhir.dstu3.model.Procedure();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) {
             tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         }
@@ -147,7 +147,7 @@ public class Procedure30_40 {
         }
         if (src.hasPerformed()) {
             if (src.hasPerformed())
-                tgt.setPerformed(Type30_40.convertType(src.getPerformed()));
+                tgt.setPerformed(VersionConvertorFactory_30_40.convertType(src.getPerformed()));
         }
         for (org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent t : src.getPerformer()) {
             tgt.addPerformer(convertProcedurePerformerComponent(t));
@@ -200,7 +200,7 @@ public class Procedure30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Procedure.ProcedureFocalDeviceComponent tgt = new org.hl7.fhir.dstu3.model.Procedure.ProcedureFocalDeviceComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasAction()) {
             if (src.hasAction())
                 tgt.setAction(CodeableConcept30_40.convertCodeableConcept(src.getAction()));
@@ -216,7 +216,7 @@ public class Procedure30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Procedure.ProcedureFocalDeviceComponent tgt = new org.hl7.fhir.r4.model.Procedure.ProcedureFocalDeviceComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasAction()) {
             if (src.hasAction())
                 tgt.setAction(CodeableConcept30_40.convertCodeableConcept(src.getAction()));
@@ -232,7 +232,7 @@ public class Procedure30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent tgt = new org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasRole()) {
             if (src.hasRole())
                 tgt.setFunction(CodeableConcept30_40.convertCodeableConcept(src.getRole()));
@@ -252,7 +252,7 @@ public class Procedure30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Procedure.ProcedurePerformerComponent tgt = new org.hl7.fhir.dstu3.model.Procedure.ProcedurePerformerComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasFunction()) {
             if (src.hasFunction())
                 tgt.setRole(CodeableConcept30_40.convertCodeableConcept(src.getFunction()));
@@ -272,7 +272,7 @@ public class Procedure30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Procedure.ProcedureStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Procedure.ProcedureStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case PREPARATION:
                 tgt.setValue(org.hl7.fhir.r4.model.Procedure.ProcedureStatus.PREPARATION);
@@ -306,7 +306,7 @@ public class Procedure30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Procedure.ProcedureStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case PREPARATION:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.PREPARATION);

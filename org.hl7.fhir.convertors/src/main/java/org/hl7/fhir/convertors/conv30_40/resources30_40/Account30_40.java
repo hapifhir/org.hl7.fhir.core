@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
 
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
@@ -10,7 +10,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Bool
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.PositiveInt30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -41,13 +41,13 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Account30_40 extends VersionConvertor_30_40 {
+public class Account30_40 {
 
     public static org.hl7.fhir.r4.model.Account convertAccount(org.hl7.fhir.dstu3.model.Account src) throws FHIRException {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Account tgt = new org.hl7.fhir.r4.model.Account();
-        copyDomainResource(src, tgt);
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
@@ -73,7 +73,7 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Account tgt = new org.hl7.fhir.dstu3.model.Account();
-        copyDomainResource(src, tgt);
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertAccountStatus(src.getStatusElement()));
@@ -99,7 +99,7 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Account.AccountStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Account.AccountStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.r4.model.Account.AccountStatus.ACTIVE);
@@ -121,7 +121,7 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Account.AccountStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Account.AccountStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Account.AccountStatus.ACTIVE);
@@ -149,7 +149,7 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Account.CoverageComponent tgt = new org.hl7.fhir.r4.model.Account.CoverageComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasCoverage())
             tgt.setCoverage(Reference30_40.convertReference(src.getCoverage()));
         if (src.hasPriority())
@@ -161,7 +161,7 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Account.CoverageComponent tgt = new org.hl7.fhir.dstu3.model.Account.CoverageComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasCoverage())
             tgt.setCoverage(Reference30_40.convertReference(src.getCoverage()));
         if (src.hasPriority())
@@ -173,7 +173,7 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Account.GuarantorComponent tgt = new org.hl7.fhir.r4.model.Account.GuarantorComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasParty())
             tgt.setParty(Reference30_40.convertReference(src.getParty()));
         if (src.hasOnHold())
@@ -187,7 +187,7 @@ public class Account30_40 extends VersionConvertor_30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Account.GuarantorComponent tgt = new org.hl7.fhir.dstu3.model.Account.GuarantorComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasParty())
             tgt.setParty(Reference30_40.convertReference(src.getParty()));
         if (src.hasOnHold())

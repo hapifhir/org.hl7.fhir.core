@@ -36,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.utilities.Utilities;
@@ -57,7 +58,7 @@ public class PackagePreparer {
           Bundle b = (Bundle) r;
           for (BundleEntryComponent be : b.getEntry()) {
             try {
-              org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_30_40.convertResource(be.getResource());
+              org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_30_40.convertResource(be.getResource());
               if (r4.getId().startsWith(r4.fhirType()+"-"))
                 be.getResource().setId(r4.getId().substring(r4.fhirType().length()+1));
               if (be.getResource().hasId())
@@ -69,7 +70,7 @@ public class PackagePreparer {
             }
           }
         } else if (r.hasId())
-          new org.hl7.fhir.r4.formats.JsonParser().compose(new FileOutputStream(Utilities.path(Utilities.getDirectoryForFile(f.getAbsolutePath()), r.fhirType()+"-"+r.getId()+".json")), VersionConvertor_30_40.convertResource(r));
+          new org.hl7.fhir.r4.formats.JsonParser().compose(new FileOutputStream(Utilities.path(Utilities.getDirectoryForFile(f.getAbsolutePath()), r.fhirType()+"-"+r.getId()+".json")), VersionConvertorFactory_30_40.convertResource(r));
         else
           System.out.println(f.getName()+" has no id");
       } catch (Exception e) {

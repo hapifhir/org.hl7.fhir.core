@@ -4,13 +4,13 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Decimal30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.PositiveInt30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 
 public class SampledData30_40 {
     public static org.hl7.fhir.r4.model.SampledData convertSampledData(org.hl7.fhir.dstu3.model.SampledData src) throws FHIRException {
       if (src == null) return null;
       org.hl7.fhir.r4.model.SampledData tgt = new org.hl7.fhir.r4.model.SampledData();
-      Element30_40.copyElement(src, tgt);
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
       if (src.hasOrigin()) tgt.setOrigin(SimpleQuantity30_40.convertSimpleQuantity(src.getOrigin()));
       if (src.hasPeriod()) tgt.setPeriodElement(Decimal30_40.convertDecimal(src.getPeriodElement()));
       if (src.hasFactor()) tgt.setFactorElement(Decimal30_40.convertDecimal(src.getFactorElement()));
@@ -24,7 +24,7 @@ public class SampledData30_40 {
     public static org.hl7.fhir.dstu3.model.SampledData convertSampledData(org.hl7.fhir.r4.model.SampledData src) throws FHIRException {
       if (src == null) return null;
       org.hl7.fhir.dstu3.model.SampledData tgt = new org.hl7.fhir.dstu3.model.SampledData();
-      Element30_40.copyElement(src, tgt);
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
       if (src.hasOrigin()) tgt.setOrigin(SimpleQuantity30_40.convertSimpleQuantity(src.getOrigin()));
       if (src.hasPeriod()) tgt.setPeriodElement(Decimal30_40.convertDecimal(src.getPeriodElement()));
       if (src.hasFactor()) tgt.setFactorElement(Decimal30_40.convertDecimal(src.getFactorElement()));

@@ -2,13 +2,13 @@ package org.hl7.fhir.convertors.conv30_40.datatypes30_40;
 
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Attachment30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 
 public class RelatedArtifact30_40 {
     public static org.hl7.fhir.r4.model.RelatedArtifact convertRelatedArtifact(org.hl7.fhir.dstu3.model.RelatedArtifact src) throws FHIRException {
       if (src == null) return null;
       org.hl7.fhir.r4.model.RelatedArtifact tgt = new org.hl7.fhir.r4.model.RelatedArtifact();
-      Element30_40.copyElement(src, tgt);
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
       if (src.hasType()) tgt.setTypeElement(convertRelatedArtifactType(src.getTypeElement()));
       if (src.hasDisplay()) tgt.setDisplayElement(String30_40.convertString(src.getDisplayElement()));
       if (src.hasCitation()) tgt.setCitation(src.getCitation());
@@ -21,7 +21,7 @@ public class RelatedArtifact30_40 {
     public static org.hl7.fhir.dstu3.model.RelatedArtifact convertRelatedArtifact(org.hl7.fhir.r4.model.RelatedArtifact src) throws FHIRException {
       if (src == null) return null;
       org.hl7.fhir.dstu3.model.RelatedArtifact tgt = new org.hl7.fhir.dstu3.model.RelatedArtifact();
-      Element30_40.copyElement(src, tgt);
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
       if (src.hasType()) tgt.setTypeElement(convertRelatedArtifactType(src.getTypeElement()));
       if (src.hasDisplay()) tgt.setDisplayElement(String30_40.convertString(src.getDisplayElement()));
       if (src.hasCitation()) tgt.setCitation(src.getCitation());
@@ -34,7 +34,7 @@ public class RelatedArtifact30_40 {
     static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType> convertRelatedArtifactType(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactTypeEnumFactory());
-      Element30_40.copyElement(src, tgt);
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType.NULL);
       } else {
@@ -74,7 +74,7 @@ public class RelatedArtifact30_40 {
     static public org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType> convertRelatedArtifactType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.RelatedArtifact.RelatedArtifactType> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactTypeEnumFactory());
-      Element30_40.copyElement(src, tgt);
+      ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.dstu3.model.RelatedArtifact.RelatedArtifactType.NULL);
       } else {

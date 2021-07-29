@@ -3,7 +3,7 @@ package org.hl7.fhir.convertors.conv30_40.resources30_40;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.dstu3.model.ExpansionProfile.DesignationIncludeDesignationComponent;
 import org.hl7.fhir.dstu3.model.ExpansionProfile.SystemVersionProcessingMode;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.r4.model.Type;
 
 public class ExpansionProfile30_40 {

@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
 import java.util.List;
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Coding30_40;
@@ -11,7 +11,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Stri
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.UnsignedInt30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.dstu3.model.Reference;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.r4.model.CodeableConcept;
 
 public class ImagingStudy30_40 {
@@ -22,7 +22,7 @@ public class ImagingStudy30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.ImagingStudy tgt = new org.hl7.fhir.dstu3.model.ImagingStudy();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) {
             if (URN_DICOM_UID.equals(t.getSystem())) {
                 tgt.setUid(t.getValue());
@@ -109,7 +109,7 @@ public class ImagingStudy30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.ImagingStudy tgt = new org.hl7.fhir.r4.model.ImagingStudy();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         if (src.hasUid()) {
             org.hl7.fhir.r4.model.Identifier i = new org.hl7.fhir.r4.model.Identifier();
             i.setSystem(URN_DICOM_UID);
@@ -201,7 +201,7 @@ public class ImagingStudy30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesComponent tgt = new org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasUid()) {
             if (src.hasUid())
                 tgt.setUid(src.getUid());
@@ -247,7 +247,7 @@ public class ImagingStudy30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesComponent tgt = new org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasUid()) {
             if (src.hasUid())
                 tgt.setUid(src.getUid());
@@ -293,7 +293,7 @@ public class ImagingStudy30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesInstanceComponent tgt = new org.hl7.fhir.r4.model.ImagingStudy.ImagingStudySeriesInstanceComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasUid()) {
             if (src.hasUid())
                 tgt.setUid(src.getUid());
@@ -319,7 +319,7 @@ public class ImagingStudy30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesInstanceComponent tgt = new org.hl7.fhir.dstu3.model.ImagingStudy.ImagingStudySeriesInstanceComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasUid()) {
             if (src.hasUid())
                 tgt.setUid(src.getUid());

@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
 import java.util.List;
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
@@ -9,7 +9,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Bool
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.dstu3.model.Reference;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.r4.model.Coding;
 
 public class CarePlan30_40 {
@@ -20,7 +20,7 @@ public class CarePlan30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.CarePlan tgt = new org.hl7.fhir.dstu3.model.CarePlan();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) {
             tgt.addBasedOn(Reference30_40.convertReference(t));
@@ -91,7 +91,7 @@ public class CarePlan30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.CarePlan tgt = new org.hl7.fhir.r4.model.CarePlan();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) {
             tgt.addBasedOn(Reference30_40.convertReference(t));
@@ -164,7 +164,7 @@ public class CarePlan30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getOutcomeCodeableConcept()) {
             tgt.addOutcomeCodeableConcept(CodeableConcept30_40.convertCodeableConcept(t));
         }
@@ -189,7 +189,7 @@ public class CarePlan30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOutcomeCodeableConcept()) {
             tgt.addOutcomeCodeableConcept(CodeableConcept30_40.convertCodeableConcept(t));
         }
@@ -214,11 +214,11 @@ public class CarePlan30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasCategory()) {
             org.hl7.fhir.r4.model.Extension t = new org.hl7.fhir.r4.model.Extension();
             t.setUrl(CarePlanActivityDetailComponentExtension);
-            t.setValue(Type30_40.convertType(src.getCategory()));
+            t.setValue(VersionConvertorFactory_30_40.convertType(src.getCategory()));
             tgt.addExtension(t);
         }
         if (src.hasCode()) {
@@ -250,7 +250,7 @@ public class CarePlan30_40 {
         }
         if (src.hasScheduled()) {
             if (src.hasScheduled())
-                tgt.setScheduled(Type30_40.convertType(src.getScheduled()));
+                tgt.setScheduled(VersionConvertorFactory_30_40.convertType(src.getScheduled()));
         }
         if (src.hasLocation()) {
             if (src.hasLocation())
@@ -261,7 +261,7 @@ public class CarePlan30_40 {
         }
         if (src.hasProduct()) {
             if (src.hasProduct())
-                tgt.setProduct(Type30_40.convertType(src.getProduct()));
+                tgt.setProduct(VersionConvertorFactory_30_40.convertType(src.getProduct()));
         }
         if (src.hasDailyAmount()) {
             if (src.hasDailyAmount())
@@ -282,7 +282,7 @@ public class CarePlan30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityDetailComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasExtension()) {
             org.hl7.fhir.r4.model.Extension extension = src.getExtensionByUrl(CarePlanActivityDetailComponentExtension);
             if (extension != null) {
@@ -321,7 +321,7 @@ public class CarePlan30_40 {
         }
         if (src.hasScheduled()) {
             if (src.hasScheduled())
-                tgt.setScheduled(Type30_40.convertType(src.getScheduled()));
+                tgt.setScheduled(VersionConvertorFactory_30_40.convertType(src.getScheduled()));
         }
         if (src.hasLocation()) {
             if (src.hasLocation())
@@ -332,7 +332,7 @@ public class CarePlan30_40 {
         }
         if (src.hasProduct()) {
             if (src.hasProduct())
-                tgt.setProduct(Type30_40.convertType(src.getProduct()));
+                tgt.setProduct(VersionConvertorFactory_30_40.convertType(src.getProduct()));
         }
         if (src.hasDailyAmount()) {
             if (src.hasDailyAmount())
@@ -353,7 +353,7 @@ public class CarePlan30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case CANCELLED:
                 tgt.setValue(org.hl7.fhir.dstu3.model.CarePlan.CarePlanActivityStatus.CANCELLED);
@@ -387,7 +387,7 @@ public class CarePlan30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case CANCELLED:
                 tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.CANCELLED);
@@ -421,7 +421,7 @@ public class CarePlan30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanIntent> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CarePlan.CarePlanIntentEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case OPTION:
                 tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanIntent.OPTION);
@@ -446,7 +446,7 @@ public class CarePlan30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CarePlan.CarePlanIntent> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CarePlan.CarePlanIntentEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case OPTION:
                 tgt.setValue(org.hl7.fhir.dstu3.model.CarePlan.CarePlanIntent.OPTION);
@@ -471,7 +471,7 @@ public class CarePlan30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.CarePlan.CarePlanStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.CarePlan.CarePlanStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.CarePlan.CarePlanStatus.ACTIVE);
@@ -505,7 +505,7 @@ public class CarePlan30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CarePlan.CarePlanStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case ACTIVE:
                 tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.ACTIVE);

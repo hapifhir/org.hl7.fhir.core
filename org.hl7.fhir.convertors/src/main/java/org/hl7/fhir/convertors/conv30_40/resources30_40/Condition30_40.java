@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
@@ -8,7 +8,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Codeab
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 
 public class Condition30_40 {
 
@@ -24,7 +24,7 @@ public class Condition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Condition tgt = new org.hl7.fhir.r4.model.Condition();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         if (src.hasClinicalStatus())
             tgt.setClinicalStatus(convertConditionClinicalStatus(src.getClinicalStatus()));
@@ -41,9 +41,9 @@ public class Condition30_40 {
         if (src.hasContext())
             tgt.setEncounter(Reference30_40.convertReference(src.getContext()));
         if (src.hasOnset())
-            tgt.setOnset(Type30_40.convertType(src.getOnset()));
+            tgt.setOnset(VersionConvertorFactory_30_40.convertType(src.getOnset()));
         if (src.hasAbatement())
-            tgt.setAbatement(Type30_40.convertType(src.getAbatement()));
+            tgt.setAbatement(VersionConvertorFactory_30_40.convertType(src.getAbatement()));
         if (src.hasAssertedDate())
             tgt.setRecordedDateElement(DateTime30_40.convertDateTime(src.getAssertedDateElement()));
         if (src.hasAsserter())
@@ -59,7 +59,7 @@ public class Condition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Condition tgt = new org.hl7.fhir.dstu3.model.Condition();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         if (src.hasClinicalStatus())
             tgt.setClinicalStatus(convertConditionClinicalStatus(src.getClinicalStatus()));
@@ -76,9 +76,9 @@ public class Condition30_40 {
         if (src.hasEncounter())
             tgt.setContext(Reference30_40.convertReference(src.getEncounter()));
         if (src.hasOnset())
-            tgt.setOnset(Type30_40.convertType(src.getOnset()));
+            tgt.setOnset(VersionConvertorFactory_30_40.convertType(src.getOnset()));
         if (src.hasAbatement())
-            tgt.setAbatement(Type30_40.convertType(src.getAbatement()));
+            tgt.setAbatement(VersionConvertorFactory_30_40.convertType(src.getAbatement()));
         if (src.hasRecordedDate())
             tgt.setAssertedDateElement(DateTime30_40.convertDateTime(src.getRecordedDateElement()));
         if (src.hasAsserter())
@@ -135,7 +135,7 @@ public class Condition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.dstu3.model.Condition.ConditionEvidenceComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(CodeableConcept30_40.convertCodeableConcept(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getDetail()) tgt.addDetail(Reference30_40.convertReference(t));
         return tgt;
@@ -145,7 +145,7 @@ public class Condition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getCode()) tgt.addCode(CodeableConcept30_40.convertCodeableConcept(t));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getDetail()) tgt.addDetail(Reference30_40.convertReference(t));
         return tgt;
@@ -155,7 +155,7 @@ public class Condition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.r4.model.Condition.ConditionStageComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasSummary())
             tgt.setSummary(CodeableConcept30_40.convertCodeableConcept(src.getSummary()));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getAssessment()) tgt.addAssessment(Reference30_40.convertReference(t));
@@ -166,7 +166,7 @@ public class Condition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.dstu3.model.Condition.ConditionStageComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasSummary())
             tgt.setSummary(CodeableConcept30_40.convertCodeableConcept(src.getSummary()));
         for (org.hl7.fhir.r4.model.Reference t : src.getAssessment()) tgt.addAssessment(Reference30_40.convertReference(t));

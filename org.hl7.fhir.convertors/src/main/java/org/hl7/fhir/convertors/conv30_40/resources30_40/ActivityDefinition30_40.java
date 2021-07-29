@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
@@ -11,7 +11,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Dosage30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.dstu3.model.ContactDetail;
 import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 
 public class ActivityDefinition30_40 {
 
@@ -19,7 +19,7 @@ public class ActivityDefinition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.ActivityDefinition tgt = new org.hl7.fhir.dstu3.model.ActivityDefinition();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(Uri30_40.convertUri(src.getUrlElement()));
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
@@ -86,12 +86,12 @@ public class ActivityDefinition30_40 {
         if (src.hasCode())
             tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
         if (src.hasTiming())
-            tgt.setTiming(Type30_40.convertType(src.getTiming()));
+            tgt.setTiming(VersionConvertorFactory_30_40.convertType(src.getTiming()));
         if (src.hasLocation())
             tgt.setLocation(Reference30_40.convertReference(src.getLocation()));
         for (org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
         if (src.hasProduct())
-            tgt.setProduct(Type30_40.convertType(src.getProduct()));
+            tgt.setProduct(VersionConvertorFactory_30_40.convertType(src.getProduct()));
         if (src.hasQuantity())
             tgt.setQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getQuantity()));
         for (org.hl7.fhir.r4.model.Dosage t : src.getDosage()) tgt.addDosage(Dosage30_40.convertDosage(t));
@@ -106,7 +106,7 @@ public class ActivityDefinition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.ActivityDefinition tgt = new org.hl7.fhir.r4.model.ActivityDefinition();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(Uri30_40.convertUri(src.getUrlElement()));
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
@@ -159,12 +159,12 @@ public class ActivityDefinition30_40 {
         if (src.hasCode())
             tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
         if (src.hasTiming())
-            tgt.setTiming(Type30_40.convertType(src.getTiming()));
+            tgt.setTiming(VersionConvertorFactory_30_40.convertType(src.getTiming()));
         if (src.hasLocation())
             tgt.setLocation(Reference30_40.convertReference(src.getLocation()));
         for (org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipant()) tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
         if (src.hasProduct())
-            tgt.setProduct(Type30_40.convertType(src.getProduct()));
+            tgt.setProduct(VersionConvertorFactory_30_40.convertType(src.getProduct()));
         if (src.hasQuantity())
             tgt.setQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getQuantity()));
         for (org.hl7.fhir.dstu3.model.Dosage t : src.getDosage()) tgt.addDosage(Dosage30_40.convertDosage(t));
@@ -179,7 +179,7 @@ public class ActivityDefinition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent tgt = new org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasDescription())
             tgt.getExpression().setDescription(src.getDescription());
         if (src.hasPath())
@@ -195,7 +195,7 @@ public class ActivityDefinition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent tgt = new org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionDynamicValueComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasPath())
             tgt.setPathElement(String30_40.convertString(src.getPathElement()));
         if (src.getExpression().hasDescription())
@@ -211,7 +211,7 @@ public class ActivityDefinition30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKindEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case APPOINTMENT:
                 tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENT);
@@ -272,7 +272,7 @@ public class ActivityDefinition30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKindEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case APPOINTMENT:
                 tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionKind.APPOINTMENT);
@@ -330,7 +330,7 @@ public class ActivityDefinition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionParticipantComponent tgt = new org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionParticipantComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertActivityParticipantType(src.getTypeElement()));
         if (src.hasRole())
@@ -342,7 +342,7 @@ public class ActivityDefinition30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent tgt = new org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertActivityParticipantType(src.getTypeElement()));
         if (src.hasRole())
@@ -354,7 +354,7 @@ public class ActivityDefinition30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantTypeEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case PATIENT:
                 tgt.setValue(org.hl7.fhir.r4.model.ActivityDefinition.ActivityParticipantType.PATIENT);
@@ -376,7 +376,7 @@ public class ActivityDefinition30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantTypeEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case PATIENT:
                 tgt.setValue(org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityParticipantType.PATIENT);

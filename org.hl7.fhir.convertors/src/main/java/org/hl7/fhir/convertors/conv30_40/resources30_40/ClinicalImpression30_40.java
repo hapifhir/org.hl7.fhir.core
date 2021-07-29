@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
@@ -9,7 +9,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identi
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 
 public class ClinicalImpression30_40 {
 
@@ -17,7 +17,7 @@ public class ClinicalImpression30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.ClinicalImpression tgt = new org.hl7.fhir.dstu3.model.ClinicalImpression();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertClinicalImpressionStatus(src.getStatusElement()));
@@ -30,7 +30,7 @@ public class ClinicalImpression30_40 {
         if (src.hasEncounter())
             tgt.setContext(Reference30_40.convertReference(src.getEncounter()));
         if (src.hasEffective())
-            tgt.setEffective(Type30_40.convertType(src.getEffective()));
+            tgt.setEffective(VersionConvertorFactory_30_40.convertType(src.getEffective()));
         if (src.hasDateElement())
             tgt.setDateElement(DateTime30_40.convertDateTime(src.getDateElement()));
         if (src.hasAssessor())
@@ -53,7 +53,7 @@ public class ClinicalImpression30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.ClinicalImpression tgt = new org.hl7.fhir.r4.model.ClinicalImpression();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
         if (src.hasStatus())
             tgt.setStatusElement(convertClinicalImpressionStatus(src.getStatusElement()));
@@ -66,7 +66,7 @@ public class ClinicalImpression30_40 {
         if (src.hasContext())
             tgt.setEncounter(Reference30_40.convertReference(src.getContext()));
         if (src.hasEffective())
-            tgt.setEffective(Type30_40.convertType(src.getEffective()));
+            tgt.setEffective(VersionConvertorFactory_30_40.convertType(src.getEffective()));
         if (src.hasDateElement())
             tgt.setDateElement(DateTime30_40.convertDateTime(src.getDateElement()));
         if (src.hasAssessor())
@@ -89,7 +89,7 @@ public class ClinicalImpression30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionFindingComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasItemCodeableConcept())
             tgt.setItemCodeableConcept(CodeableConcept30_40.convertCodeableConcept(src.getItemCodeableConcept()));
         if (src.hasItemReference())
@@ -103,11 +103,11 @@ public class ClinicalImpression30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasItemCodeableConcept())
-            tgt.setItem(Type30_40.convertType(src.getItemCodeableConcept()));
+            tgt.setItem(VersionConvertorFactory_30_40.convertType(src.getItemCodeableConcept()));
         else if (src.hasItemReference())
-            tgt.setItem(Type30_40.convertType(src.getItemReference()));
+            tgt.setItem(VersionConvertorFactory_30_40.convertType(src.getItemReference()));
         if (src.hasBasis())
             tgt.setBasisElement(String30_40.convertString(src.getBasisElement()));
         return tgt;
@@ -117,7 +117,7 @@ public class ClinicalImpression30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionInvestigationComponent tgt = new org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionInvestigationComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getItem()) tgt.addItem(Reference30_40.convertReference(t));
@@ -128,7 +128,7 @@ public class ClinicalImpression30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionInvestigationComponent tgt = new org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionInvestigationComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasCode())
             tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
         for (org.hl7.fhir.r4.model.Reference t : src.getItem()) tgt.addItem(Reference30_40.convertReference(t));
@@ -139,7 +139,7 @@ public class ClinicalImpression30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case DRAFT:
                 tgt.setValue(org.hl7.fhir.r4.model.ClinicalImpression.ClinicalImpressionStatus.INPROGRESS);
@@ -161,7 +161,7 @@ public class ClinicalImpression30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatusEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case INPROGRESS:
                 tgt.setValue(org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionStatus.DRAFT);

@@ -5,6 +5,7 @@ import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.conv14_30.VersionConvertor_14_30;
 import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
 import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -88,7 +89,7 @@ public class VersionConvertor {
     } else if (VersionUtilities.isR3Ver(targetVer)) {
       return getBytesDstu3(cnt, format, r3);
     } else if (VersionUtilities.isR4Ver(targetVer)) {
-      return getBytesR4(cnt, format, VersionConvertor_30_40.convertResource(r3));
+      return getBytesR4(cnt, format, VersionConvertorFactory_30_40.convertResource(r3));
     } else {
       throw new FHIRException("Target Version not supported yet: " + targetVer);
     }
@@ -111,7 +112,7 @@ public class VersionConvertor {
     } else if (VersionUtilities.isR2BVer(targetVer)) {
       return getBytesDstu2016(cnt, format, VersionConvertor_14_40.convertResource(r4));
     } else if (VersionUtilities.isR3Ver(targetVer)) {
-      return getBytesDstu3(cnt, format, VersionConvertor_30_40.convertResource(r4));
+      return getBytesDstu3(cnt, format, VersionConvertorFactory_30_40.convertResource(r4));
     } else if (VersionUtilities.isR4Ver(targetVer)) {
       return getBytesR4(cnt, format, r4);
     } else {

@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
 import java.util.List;
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Type30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
@@ -11,7 +11,7 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Uri30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Identifier;
 
@@ -21,7 +21,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Consent tgt = new org.hl7.fhir.r4.model.Consent();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         if (src.hasIdentifier())
             tgt.addIdentifier(Identifier30_40.convertIdentifier(src.getIdentifier()));
         if (src.hasStatus())
@@ -34,7 +34,7 @@ public class Consent30_40 {
         for (org.hl7.fhir.dstu3.model.Reference t : src.getConsentingParty()) tgt.addPerformer(Reference30_40.convertReference(t));
         for (org.hl7.fhir.dstu3.model.Reference t : src.getOrganization()) tgt.addOrganization(Reference30_40.convertReference(t));
         if (src.hasSource())
-            tgt.setSource(Type30_40.convertType(src.getSource()));
+            tgt.setSource(VersionConvertorFactory_30_40.convertType(src.getSource()));
         for (org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent t : src.getPolicy()) tgt.addPolicy(convertConsentPolicyComponent(t));
         if (src.hasPolicyRule()) {
             org.hl7.fhir.r4.model.Coding c = new org.hl7.fhir.r4.model.Coding();
@@ -63,7 +63,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Consent tgt = new org.hl7.fhir.dstu3.model.Consent();
-        VersionConvertor_30_40.copyDomainResource(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
         List<Identifier> identifier = src.getIdentifier();
         if (identifier.size() > 0) {
             tgt.setIdentifier(Identifier30_40.convertIdentifier(identifier.get(0)));
@@ -80,7 +80,7 @@ public class Consent30_40 {
         for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addConsentingParty(Reference30_40.convertReference(t));
         for (org.hl7.fhir.r4.model.Reference t : src.getOrganization()) tgt.addOrganization(Reference30_40.convertReference(t));
         if (src.hasSource())
-            tgt.setSource(Type30_40.convertType(src.getSource()));
+            tgt.setSource(VersionConvertorFactory_30_40.convertType(src.getSource()));
         for (org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent t : src.getPolicy()) tgt.addPolicy(convertConsentPolicyComponent(t));
         if (src.hasPolicyRule()) {
             for (org.hl7.fhir.r4.model.Coding c : src.getPolicyRule().getCoding()) {
@@ -110,7 +110,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Consent.ConsentActorComponent tgt = new org.hl7.fhir.dstu3.model.Consent.ConsentActorComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasRole())
             tgt.setRole(CodeableConcept30_40.convertCodeableConcept(src.getRole()));
         if (src.hasReference())
@@ -122,7 +122,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Consent.provisionActorComponent tgt = new org.hl7.fhir.r4.model.Consent.provisionActorComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasRole())
             tgt.setRole(CodeableConcept30_40.convertCodeableConcept(src.getRole()));
         if (src.hasReference())
@@ -134,7 +134,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Consent.provisionDataComponent tgt = new org.hl7.fhir.r4.model.Consent.provisionDataComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasMeaning())
             tgt.setMeaningElement(convertConsentDataMeaning(src.getMeaningElement()));
         if (src.hasReference())
@@ -146,7 +146,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Consent.ConsentDataComponent tgt = new org.hl7.fhir.dstu3.model.Consent.ConsentDataComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasMeaning())
             tgt.setMeaningElement(convertConsentDataMeaning(src.getMeaningElement()));
         if (src.hasReference())
@@ -158,7 +158,7 @@ public class Consent30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Consent.ConsentDataMeaningEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case INSTANCE:
                 tgt.setValue(org.hl7.fhir.r4.model.Consent.ConsentDataMeaning.INSTANCE);
@@ -183,7 +183,7 @@ public class Consent30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaningEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case INSTANCE:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentDataMeaning.INSTANCE);
@@ -208,7 +208,7 @@ public class Consent30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentProvisionType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Consent.ConsentProvisionTypeEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case DENY:
                 tgt.setValue(org.hl7.fhir.r4.model.Consent.ConsentProvisionType.DENY);
@@ -227,7 +227,7 @@ public class Consent30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Consent.ConsentExceptType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Consent.ConsentExceptTypeEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case DENY:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentExceptType.DENY);
@@ -246,7 +246,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasAuthority())
             tgt.setAuthorityElement(Uri30_40.convertUri(src.getAuthorityElement()));
         if (src.hasUri())
@@ -258,7 +258,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent tgt = new org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasAuthority())
             tgt.setAuthorityElement(Uri30_40.convertUri(src.getAuthorityElement()));
         if (src.hasUri())
@@ -270,7 +270,7 @@ public class Consent30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Consent.ConsentState> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Consent.ConsentStateEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case DRAFT:
                 tgt.setValue(org.hl7.fhir.dstu3.model.Consent.ConsentState.DRAFT);
@@ -301,7 +301,7 @@ public class Consent30_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Consent.ConsentState> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Consent.ConsentStateEnumFactory());
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case DRAFT:
                 tgt.setValue(org.hl7.fhir.r4.model.Consent.ConsentState.DRAFT);
@@ -332,7 +332,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Consent.ExceptActorComponent tgt = new org.hl7.fhir.dstu3.model.Consent.ExceptActorComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasRole())
             tgt.setRole(CodeableConcept30_40.convertCodeableConcept(src.getRole()));
         if (src.hasReference())
@@ -344,7 +344,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Consent.provisionActorComponent tgt = new org.hl7.fhir.r4.model.Consent.provisionActorComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasRole())
             tgt.setRole(CodeableConcept30_40.convertCodeableConcept(src.getRole()));
         if (src.hasReference())
@@ -356,7 +356,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Consent.ExceptComponent tgt = new org.hl7.fhir.dstu3.model.Consent.ExceptComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertConsentExceptType(src.getTypeElement()));
         if (src.hasPeriod())
@@ -377,7 +377,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Consent.provisionComponent tgt = new org.hl7.fhir.r4.model.Consent.provisionComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasType())
             tgt.setTypeElement(convertConsentExceptType(src.getTypeElement()));
         if (src.hasPeriod())
@@ -398,7 +398,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.dstu3.model.Consent.ExceptDataComponent tgt = new org.hl7.fhir.dstu3.model.Consent.ExceptDataComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasMeaning())
             tgt.setMeaningElement(convertConsentDataMeaning(src.getMeaningElement()));
         if (src.hasReference())
@@ -410,7 +410,7 @@ public class Consent30_40 {
         if (src == null)
             return null;
         org.hl7.fhir.r4.model.Consent.provisionDataComponent tgt = new org.hl7.fhir.r4.model.Consent.provisionDataComponent();
-        Element30_40.copyElement(src, tgt);
+        ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
         if (src.hasMeaning())
             tgt.setMeaningElement(convertConsentDataMeaning(src.getMeaningElement()));
         if (src.hasReference())
