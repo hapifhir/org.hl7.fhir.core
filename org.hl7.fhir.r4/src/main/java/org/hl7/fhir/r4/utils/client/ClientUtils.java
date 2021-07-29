@@ -253,7 +253,8 @@ public class ClientUtils {
       response = sendRequest(request);
     }
     T resource = null;
-    if (response != null) {
+    System.out.println(response);
+    if (response.getStatusLine().getStatusCode() != 404) {
       resource = unmarshalReference(response, resourceFormat);
     }
     return new ResourceRequest<T>(resource, response.getStatusLine().getStatusCode(), getLocationHeader(response));
