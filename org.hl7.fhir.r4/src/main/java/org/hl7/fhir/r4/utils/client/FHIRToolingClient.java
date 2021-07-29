@@ -173,9 +173,18 @@ public class FHIRToolingClient {
 	}
 	
 	public TerminologyCapabilities getTerminologyCapabilities() {
-    return (TerminologyCapabilities) utils.issueGetResourceRequest(resourceAddress.resolveMetadataTxCaps(), getPreferredResourceFormat(), "TerminologyCapabilities", TIMEOUT_NORMAL).getReference();
+  	  try {
+		return (TerminologyCapabilities) utils.issueGetResourceRequest(resourceAddress.resolveMetadataTxCaps(), getPreferredResourceFormat(), "TerminologyCapabilities", TIMEOUT_NORMAL).getReference();
+	  } catch(Exception e) {
+		  // THIS IS A WORKAROUND FOR THE TERMINOLOGY SERVER RESPONDING WITH A 404 TO /metadata
+		  TerminologyCapabilities tc = new TerminologyCapabilities();
+		    tc.setStatus(Enumerations.PublicationStatus.ACTIVE);
+		    tc.setDateElement(DateTimeType.now());
+		    tc.setKind(CapabilityStatement.CapabilityStatementKind.INSTANCE);
+	      return tc;
+        }
 	}
-	
+
 	public CapabilityStatement getCapabilitiesStatement() {
 	  CapabilityStatement conformance = null;
 		try {
