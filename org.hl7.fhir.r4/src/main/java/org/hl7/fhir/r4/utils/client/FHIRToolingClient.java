@@ -56,6 +56,12 @@ import org.hl7.fhir.r4.model.TerminologyCapabilities;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.r4.model.Enumerations;
+import org.hl7.fhir.r4.model.DateTimeType;
+//import org.hl7.fhir.r4.model.Enumeration;
+//import org.hl7.fhir.r4.model.Enumerations.FHIRVersion;
+//import org.hl7.fhir.r4.model.Enumerations.PublicationStatus;
+//import org.hl7.fhir.r4.model.codesystems.CapabilityStatementKind;
 
 /**
  * Very Simple RESTful client. This is purely for use in the standalone 
@@ -190,7 +196,14 @@ public class FHIRToolingClient {
     try {
       capabilities = (CapabilityStatement)utils.issueGetResourceRequest(resourceAddress.resolveMetadataUri(true), getPreferredResourceFormat(), "CapabilitiesStatement-Quick", TIMEOUT_NORMAL).getReference();
     } catch(Exception e) {
-      handleException("An error has occurred while trying to fetch the server's conformance statement", e);
+        // THIS IS A WORKAROUND FOR THE TERMINOLOGY SERVER RESPONDING WITH A 404 TO /metadata
+		CapabilityStatement cs = new CapabilityStatement();
+		cs.setStatus(Enumerations.PublicationStatus.ACTIVE);
+		cs.setDateElement(DateTimeType.now());
+		cs.setKind(CapabilityStatement.CapabilityStatementKind.INSTANCE);
+		cs.setFhirVersion(Enumerations.FHIRVersion._4_0_0);
+		return cs;
+		//handleException("An error has occurred while trying to fetch the server's conformance statement", e);
     }
     return capabilities;
   }

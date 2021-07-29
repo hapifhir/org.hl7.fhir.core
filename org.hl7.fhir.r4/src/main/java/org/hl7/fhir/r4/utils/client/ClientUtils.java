@@ -198,6 +198,8 @@ public class ClientUtils {
     }
     if (accessToken != null) {
         httpget.setHeader("Authorization", "Bearer " + accessToken);
+
+        // THIS IS A WORKAROUND FOR THE TERMINOLOGY SERVER REQUIRING THIS API-VERSION=1 HEADER
         httpget.setHeader("api-version", "1");
       }
 }
@@ -253,7 +255,8 @@ public class ClientUtils {
       response = sendRequest(request);
     }
     T resource = null;
-    System.out.println(response);
+    
+    // THIS IS A WORKAROUND FOR THE TERMINOLOGY SERVER RESPONDING WITH A 404 TO /metadata
     if (response.getStatusLine().getStatusCode() != 404) {
       resource = unmarshalReference(response, resourceFormat);
     }

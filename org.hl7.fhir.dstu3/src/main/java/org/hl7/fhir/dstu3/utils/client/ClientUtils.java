@@ -198,6 +198,8 @@ public class ClientUtils {
     }
     if (accessToken != null) {
         httpget.setHeader("Authorization", "Bearer " + accessToken);
+
+        // THIS IS A WORKAROUND FOR THE TERMINOLOGY SERVER REQUIRING THIS API-VERSION=1 HEADER
         httpget.setHeader("api-version", "1");
       }
   }
