@@ -74,6 +74,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 import org.hl7.fhir.r4.formats.IParser;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
 import org.hl7.fhir.r4.formats.JsonParser;
@@ -320,6 +321,10 @@ public class ClientUtils {
         request.setEntity(new ByteArrayEntity(payload));
         log(request);
         response = httpclient.execute(request);
+
+        //Releasing the connection before allocating another one
+        EntityUtils.consumeQuietly(response.getEntity());
+        
         ok = true;
       } catch(IOException ioe) {
         System.out.println(ioe.getMessage()+" ("+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+" for "+message+")");
