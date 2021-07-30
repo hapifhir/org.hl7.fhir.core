@@ -1,14 +1,14 @@
 package org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40;
 
-import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Element14_40;
+import org.hl7.fhir.convertors.context.ConversionContext14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.String14_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException;  import org.hl7.fhir.convertors.context.ConversionContext14_40;
 
 public class Address14_40 {
     public static org.hl7.fhir.r4.model.Address convertAddress(org.hl7.fhir.dstu2016may.model.Address src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r4.model.Address tgt = new org.hl7.fhir.r4.model.Address();
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.hasUse()) tgt.setUseElement(convertAddressUse(src.getUseElement()));
       if (src.hasType()) tgt.setTypeElement(convertAddressType(src.getTypeElement()));
       if (src.hasText()) tgt.setTextElement(String14_40.convertString(src.getTextElement()));
@@ -25,7 +25,7 @@ public class Address14_40 {
     public static org.hl7.fhir.dstu2016may.model.Address convertAddress(org.hl7.fhir.r4.model.Address src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu2016may.model.Address tgt = new org.hl7.fhir.dstu2016may.model.Address();
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.hasUse()) tgt.setUseElement(convertAddressUse(src.getUseElement()));
       if (src.hasType()) tgt.setTypeElement(convertAddressType(src.getTypeElement()));
       if (src.hasText()) tgt.setTextElement(String14_40.convertString(src.getTextElement()));
@@ -42,7 +42,7 @@ public class Address14_40 {
     static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Address.AddressUse> convertAddressUse(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Address.AddressUse> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Address.AddressUse> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Address.AddressUseEnumFactory());
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.r4.model.Address.AddressUse.NULL);
       } else {
@@ -70,7 +70,7 @@ public class Address14_40 {
     static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Address.AddressUse> convertAddressUse(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Address.AddressUse> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Address.AddressUse> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Address.AddressUseEnumFactory());
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.dstu2016may.model.Address.AddressUse.NULL);
       } else {
@@ -98,7 +98,7 @@ public class Address14_40 {
     static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Address.AddressType> convertAddressType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Address.AddressType> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Address.AddressType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Address.AddressTypeEnumFactory());
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.r4.model.Address.AddressType.NULL);
       } else {
@@ -123,7 +123,7 @@ public class Address14_40 {
     static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Address.AddressType> convertAddressType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Address.AddressType> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Address.AddressType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Address.AddressTypeEnumFactory());
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.dstu2016may.model.Address.AddressType.NULL);
       } else {

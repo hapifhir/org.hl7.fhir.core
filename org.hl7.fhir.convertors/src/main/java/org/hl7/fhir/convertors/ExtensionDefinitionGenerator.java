@@ -37,6 +37,7 @@ import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
 import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.loaders.R2016MayToR4Loader;
 import org.hl7.fhir.convertors.loaders.R2ToR4Loader;
@@ -409,7 +410,7 @@ public class ExtensionDefinitionGenerator {
       org.hl7.fhir.dstu3.model.Resource res = VersionConvertorFactory_30_40.convertResource(resource, new BaseAdvisor_30_40(false));
       return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._1_4_0) {
-      org.hl7.fhir.dstu2016may.model.Resource res = VersionConvertor_14_40.convertResource(resource);
+      org.hl7.fhir.dstu2016may.model.Resource res = VersionConvertorFactory_14_40.convertResource(resource);
       return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._1_0_2) {
       BaseAdvisor_10_40 advisor = new IGR2ConvertorAdvisor();
@@ -427,7 +428,7 @@ public class ExtensionDefinitionGenerator {
       return VersionConvertorFactory_30_40.convertResource(res, new BaseAdvisor_30_40(false));
     } else if (v == FHIRVersion._1_4_0) {
       org.hl7.fhir.dstu2016may.model.Resource res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream);
-      return VersionConvertor_14_40.convertResource(res);
+      return VersionConvertorFactory_14_40.convertResource(res);
     } else if (v == FHIRVersion._1_0_2) {
       org.hl7.fhir.dstu2.model.Resource res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream);
       BaseAdvisor_10_40 advisor = new IGR2ConvertorAdvisor();

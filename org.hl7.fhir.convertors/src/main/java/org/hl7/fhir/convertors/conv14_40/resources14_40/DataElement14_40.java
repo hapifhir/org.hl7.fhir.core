@@ -7,7 +7,7 @@ import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Contac
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Identifier14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.*;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.ElementDefinition14_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException;  import org.hl7.fhir.convertors.context.ConversionContext14_40;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 
 public class DataElement14_40 {
@@ -16,7 +16,7 @@ public class DataElement14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.StructureDefinition tgt = new org.hl7.fhir.r4.model.StructureDefinition();
-        VersionConvertor_14_40.copyDomainResource(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(Uri14_40.convertUri(src.getUrlElement()));
         for (org.hl7.fhir.dstu2016may.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier14_40.convertIdentifier(t));
@@ -53,7 +53,7 @@ public class DataElement14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.DataElement.DataElementContactComponent tgt = new org.hl7.fhir.dstu2016may.model.DataElement.DataElementContactComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasName())
             tgt.setNameElement(String14_40.convertString(src.getNameElement()));
         for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint14_40.convertContactPoint(t));
@@ -64,7 +64,7 @@ public class DataElement14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.ContactDetail tgt = new org.hl7.fhir.r4.model.ContactDetail();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasName())
             tgt.setNameElement(String14_40.convertString(src.getNameElement()));
         for (org.hl7.fhir.dstu2016may.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint14_40.convertContactPoint(t));
@@ -75,7 +75,7 @@ public class DataElement14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionMappingComponent tgt = new org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionMappingComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasIdentityElement())
             tgt.setIdentityElement(Id14_40.convertId(src.getIdentityElement()));
         if (src.hasUri())

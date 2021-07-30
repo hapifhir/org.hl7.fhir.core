@@ -38,6 +38,7 @@ import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.conv14_30.VersionConvertor_14_30;
 import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
 import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
@@ -214,7 +215,7 @@ public class VersionConversionService {
     case DSTU2016May: return saveResource14(src, dstFormat, style);
     case R4:
       if (useJava && VersionConvertor_14_40.convertsResource(src.fhirType()))
-        return saveResource40(VersionConvertor_14_40.convertResource(src), dstFormat, style); 
+        return saveResource40(VersionConvertorFactory_14_40.convertResource(src), dstFormat, style);
       else
         throw new FHIRException("Conversion from 2016May version to R4 is not supported for resources of type "+src.fhirType());
     case STU3:
@@ -259,7 +260,7 @@ public class VersionConversionService {
         throw new FHIRException("Conversion from R4 to DSTU2 version is not supported for resources of type "+src.fhirType());
     case DSTU2016May: 
     if (useJava && VersionConvertor_14_40.convertsResource(src.fhirType()))
-      return saveResource14(VersionConvertor_14_40.convertResource(src), dstFormat, style); 
+      return saveResource14(VersionConvertorFactory_14_40.convertResource(src), dstFormat, style);
     else
       throw new FHIRException("Conversion from DSTU2 to 2016May version is not supported for resources of type "+src.fhirType());
     case R4: return saveResource40(src, dstFormat, style);

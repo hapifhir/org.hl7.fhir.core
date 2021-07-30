@@ -7,7 +7,7 @@ import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Identi
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.DateTime14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.String14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Reference14_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException;  import org.hl7.fhir.convertors.context.ConversionContext14_40;
 
 public class QuestionnaireResponse14_40 {
 
@@ -15,7 +15,7 @@ public class QuestionnaireResponse14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.QuestionnaireResponse tgt = new org.hl7.fhir.r4.model.QuestionnaireResponse();
-        VersionConvertor_14_40.copyDomainResource(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyDomainResource(src, tgt);
         if (src.hasIdentifier())
             tgt.setIdentifier(Identifier14_40.convertIdentifier(src.getIdentifier()));
         if (src.hasQuestionnaire())
@@ -40,7 +40,7 @@ public class QuestionnaireResponse14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.QuestionnaireResponse tgt = new org.hl7.fhir.dstu2016may.model.QuestionnaireResponse();
-        VersionConvertor_14_40.copyDomainResource(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyDomainResource(src, tgt);
         if (src.hasIdentifier())
             tgt.setIdentifier(Identifier14_40.convertIdentifier(src.getIdentifier()));
         if (src.hasQuestionnaireElement())
@@ -65,9 +65,9 @@ public class QuestionnaireResponse14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasValue())
-            tgt.setValue(Type14_40.convertType(src.getValue()));
+            tgt.setValue(ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().convertType(src.getValue()));
         for (org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
         return tgt;
     }
@@ -76,9 +76,9 @@ public class QuestionnaireResponse14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasValue())
-            tgt.setValue(Type14_40.convertType(src.getValue()));
+            tgt.setValue(ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().convertType(src.getValue()));
         for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
         return tgt;
     }
@@ -87,7 +87,7 @@ public class QuestionnaireResponse14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasLinkId())
             tgt.setLinkIdElement(String14_40.convertString(src.getLinkIdElement()));
         if (src.hasText())
@@ -101,7 +101,7 @@ public class QuestionnaireResponse14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasLinkId())
             tgt.setLinkIdElement(String14_40.convertString(src.getLinkIdElement()));
         if (src.hasText())
@@ -115,7 +115,7 @@ public class QuestionnaireResponse14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatusEnumFactory());
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case INPROGRESS:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS);
@@ -137,7 +137,7 @@ public class QuestionnaireResponse14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatusEnumFactory());
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case INPROGRESS:
                 tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS);

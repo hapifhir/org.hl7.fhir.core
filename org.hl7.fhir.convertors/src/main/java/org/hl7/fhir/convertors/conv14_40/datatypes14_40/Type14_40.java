@@ -1,11 +1,20 @@
 package org.hl7.fhir.convertors.conv14_40.datatypes14_40;
 
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_40;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_50;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.*;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.*;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException;  import org.hl7.fhir.convertors.context.ConversionContext14_40;
 
 public class Type14_40 {
-    public static org.hl7.fhir.r4.model.Type convertType(org.hl7.fhir.dstu2016may.model.Type src) throws FHIRException {
+
+  private final BaseAdvisor_14_40 advisor;
+
+  public Type14_40(BaseAdvisor_14_40 advisor) {
+    this.advisor = advisor;
+  }
+
+    public org.hl7.fhir.r4.model.Type convertType(org.hl7.fhir.dstu2016may.model.Type src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       if (src instanceof org.hl7.fhir.dstu2016may.model.Base64BinaryType)
         return Base64Binary14_40.convertBase64Binary((org.hl7.fhir.dstu2016may.model.Base64BinaryType) src);
@@ -89,10 +98,14 @@ public class Type14_40 {
         return Meta14_40.convertMeta((org.hl7.fhir.dstu2016may.model.Meta) src);
       if (src instanceof org.hl7.fhir.dstu2016may.model.Timing)
         return Timing14_40.convertTiming((org.hl7.fhir.dstu2016may.model.Timing) src);
-      throw new FHIRException("Unknown type " + src.fhirType());
-    }
+      if (advisor.failFastOnNullOrUnknownEntry()) {
+        throw new FHIRException("Unknown type " + src.fhirType());
+      } else {
+        return null;
+      }
+  }
 
-    public static org.hl7.fhir.dstu2016may.model.Type convertType(org.hl7.fhir.r4.model.Type src) throws FHIRException {
+    public org.hl7.fhir.dstu2016may.model.Type convertType(org.hl7.fhir.r4.model.Type src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       if (src instanceof org.hl7.fhir.r4.model.Base64BinaryType)
         return Base64Binary14_40.convertBase64Binary((org.hl7.fhir.r4.model.Base64BinaryType) src);
@@ -156,6 +169,10 @@ public class Type14_40 {
         return HumanName14_40.convertHumanName((org.hl7.fhir.r4.model.HumanName) src);
       if (src instanceof org.hl7.fhir.r4.model.Meta) return Meta14_40.convertMeta((org.hl7.fhir.r4.model.Meta) src);
       if (src instanceof org.hl7.fhir.r4.model.Timing) return Timing14_40.convertTiming((org.hl7.fhir.r4.model.Timing) src);
-      throw new FHIRException("Unknown type " + src.fhirType());
-    }
+      if (advisor.failFastOnNullOrUnknownEntry()) {
+        throw new FHIRException("Unknown type " + src.fhirType());
+      } else {
+        return null;
+      }
+  }
 }

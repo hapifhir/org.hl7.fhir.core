@@ -39,6 +39,7 @@ import java.util.UUID;
 
 import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
 import org.hl7.fhir.dstu2016may.formats.JsonParser;
 import org.hl7.fhir.dstu2016may.formats.XmlParser;
 import org.hl7.fhir.dstu2016may.model.Resource;
@@ -69,7 +70,7 @@ public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResource
       r2016may = new JsonParser().parse(stream);
     else
       r2016may = new XmlParser().parse(stream);
-    org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_14_40.convertResource(r2016may, advisor);
+    org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_14_40.convertResource(r2016may, advisor);
     
     Bundle b;
     if (r4 instanceof Bundle)

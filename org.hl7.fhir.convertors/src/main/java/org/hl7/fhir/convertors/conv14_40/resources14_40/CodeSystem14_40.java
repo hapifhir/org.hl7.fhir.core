@@ -9,7 +9,7 @@ import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Contac
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40.Identifier14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.*;
 import org.hl7.fhir.dstu2016may.model.CodeSystem.ConceptDefinitionPropertyComponent;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException;  import org.hl7.fhir.convertors.context.ConversionContext14_40;
 import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.CodeSystem.FilterOperator;
 import org.hl7.fhir.r4.model.Enumeration;
@@ -20,7 +20,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.CodeSystem tgt = new org.hl7.fhir.r4.model.CodeSystem();
-        VersionConvertor_14_40.copyDomainResource(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(Uri14_40.convertUri(src.getUrlElement()));
         if (src.hasIdentifier())
@@ -70,7 +70,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.CodeSystem tgt = new org.hl7.fhir.dstu2016may.model.CodeSystem();
-        VersionConvertor_14_40.copyDomainResource(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyDomainResource(src, tgt);
         if (src.hasUrl())
             tgt.setUrlElement(Uri14_40.convertUri(src.getUrlElement()));
         if (src.hasIdentifier())
@@ -119,7 +119,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.ContactDetail tgt = new org.hl7.fhir.r4.model.ContactDetail();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasName())
             tgt.setNameElement(String14_40.convertString(src.getNameElement()));
         for (org.hl7.fhir.dstu2016may.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint14_40.convertContactPoint(t));
@@ -130,7 +130,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.CodeSystem.CodeSystemContactComponent tgt = new org.hl7.fhir.dstu2016may.model.CodeSystem.CodeSystemContactComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasName())
             tgt.setNameElement(String14_40.convertString(src.getNameElement()));
         for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint14_40.convertContactPoint(t));
@@ -141,7 +141,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.CodeSystem.CodeSystemContentMode> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.CodeSystem.CodeSystemContentModeEnumFactory());
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case NOTPRESENT:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.CodeSystem.CodeSystemContentMode.NOTPRESENT);
@@ -166,7 +166,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentModeEnumFactory());
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case NOTPRESENT:
                 tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.CodeSystemContentMode.NOTPRESENT);
@@ -191,7 +191,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.CodeSystem.CodeSystemFilterComponent tgt = new org.hl7.fhir.r4.model.CodeSystem.CodeSystemFilterComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasCodeElement())
             tgt.setCodeElement(Code14_40.convertCode(src.getCodeElement()));
         if (src.hasDescription())
@@ -210,7 +210,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.CodeSystem.CodeSystemFilterComponent tgt = new org.hl7.fhir.dstu2016may.model.CodeSystem.CodeSystemFilterComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasCodeElement())
             tgt.setCodeElement(Code14_40.convertCode(src.getCodeElement()));
         if (src.hasDescription())
@@ -225,7 +225,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent tgt = new org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasCodeElement())
             tgt.setCodeElement(Code14_40.convertCode(src.getCodeElement()));
         if (src.hasDisplay())
@@ -242,7 +242,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.CodeSystem.ConceptDefinitionComponent tgt = new org.hl7.fhir.dstu2016may.model.CodeSystem.ConceptDefinitionComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasCodeElement())
             tgt.setCodeElement(Code14_40.convertCode(src.getCodeElement()));
         if (src.hasDisplay())
@@ -259,7 +259,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionDesignationComponent tgt = new org.hl7.fhir.r4.model.CodeSystem.ConceptDefinitionDesignationComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasLanguage())
             tgt.setLanguageElement(Code14_40.convertCode(src.getLanguageElement()));
         if (src.hasUse())
@@ -273,7 +273,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.CodeSystem.ConceptDefinitionDesignationComponent tgt = new org.hl7.fhir.dstu2016may.model.CodeSystem.ConceptDefinitionDesignationComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasLanguage())
             tgt.setLanguageElement(Code14_40.convertCode(src.getLanguageElement()));
         if (src.hasUse())
@@ -287,11 +287,11 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.CodeSystem.ConceptDefinitionPropertyComponent tgt = new org.hl7.fhir.dstu2016may.model.CodeSystem.ConceptDefinitionPropertyComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasCodeElement())
             tgt.setCodeElement(Code14_40.convertCode(src.getCodeElement()));
         if (src.hasValue())
-            tgt.setValue(Type14_40.convertType(src.getValue()));
+            tgt.setValue(ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().convertType(src.getValue()));
         return tgt;
     }
 
@@ -299,11 +299,11 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.CodeSystem.ConceptPropertyComponent tgt = new org.hl7.fhir.r4.model.CodeSystem.ConceptPropertyComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasCodeElement())
             tgt.setCodeElement(Code14_40.convertCode(src.getCodeElement()));
         if (src.hasValue())
-            tgt.setValue(Type14_40.convertType(src.getValue()));
+            tgt.setValue(ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().convertType(src.getValue()));
         return tgt;
     }
 
@@ -311,7 +311,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.CodeSystem.CodeSystemPropertyComponent tgt = new org.hl7.fhir.dstu2016may.model.CodeSystem.CodeSystemPropertyComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasCodeElement())
             tgt.setCodeElement(Code14_40.convertCode(src.getCodeElement()));
         if (src.hasDescription())
@@ -325,7 +325,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.CodeSystem.PropertyComponent tgt = new org.hl7.fhir.r4.model.CodeSystem.PropertyComponent();
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         if (src.hasCodeElement())
             tgt.setCodeElement(Code14_40.convertCode(src.getCodeElement()));
         if (src.hasDescription())
@@ -339,7 +339,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CodeSystem.PropertyType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CodeSystem.PropertyTypeEnumFactory());
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case CODE:
                 tgt.setValue(org.hl7.fhir.r4.model.CodeSystem.PropertyType.CODE);
@@ -370,7 +370,7 @@ public class CodeSystem14_40 {
         if (src == null || src.isEmpty())
             return null;
         org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.CodeSystem.PropertyType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.CodeSystem.PropertyTypeEnumFactory());
-        Element14_40.copyElement(src, tgt);
+        ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
         switch(src.getValue()) {
             case CODE:
                 tgt.setValue(org.hl7.fhir.dstu2016may.model.CodeSystem.PropertyType.CODE);

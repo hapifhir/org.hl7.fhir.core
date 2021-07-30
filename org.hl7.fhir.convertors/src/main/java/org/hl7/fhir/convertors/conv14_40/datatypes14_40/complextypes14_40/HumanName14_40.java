@@ -1,14 +1,14 @@
 package org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40;
 
-import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Element14_40;
+import org.hl7.fhir.convertors.context.ConversionContext14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.String14_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException;  import org.hl7.fhir.convertors.context.ConversionContext14_40;
 
 public class HumanName14_40 {
     public static org.hl7.fhir.r4.model.HumanName convertHumanName(org.hl7.fhir.dstu2016may.model.HumanName src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r4.model.HumanName tgt = new org.hl7.fhir.r4.model.HumanName();
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.hasUse()) tgt.setUseElement(convertNameUse(src.getUseElement()));
       if (src.hasText()) tgt.setTextElement(String14_40.convertString(src.getTextElement()));
       for (org.hl7.fhir.dstu2016may.model.StringType t : src.getFamily()) tgt.setFamily(t.getValue());
@@ -22,7 +22,7 @@ public class HumanName14_40 {
     public static org.hl7.fhir.dstu2016may.model.HumanName convertHumanName(org.hl7.fhir.r4.model.HumanName src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu2016may.model.HumanName tgt = new org.hl7.fhir.dstu2016may.model.HumanName();
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.hasUse()) tgt.setUseElement(convertNameUse(src.getUseElement()));
       if (src.hasText()) tgt.setTextElement(String14_40.convertString(src.getTextElement()));
       if (src.hasFamily()) tgt.addFamily(src.getFamily());
@@ -36,7 +36,7 @@ public class HumanName14_40 {
     static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.HumanName.NameUse> convertNameUse(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.HumanName.NameUse> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.HumanName.NameUse> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.HumanName.NameUseEnumFactory());
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.r4.model.HumanName.NameUse.NULL);
       } else {
@@ -73,7 +73,7 @@ public class HumanName14_40 {
     static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.HumanName.NameUse> convertNameUse(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.HumanName.NameUse> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.HumanName.NameUse> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.HumanName.NameUseEnumFactory());
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.dstu2016may.model.HumanName.NameUse.NULL);
       } else {

@@ -1,17 +1,17 @@
 package org.hl7.fhir.convertors.conv14_40.datatypes14_40.complextypes14_40;
 
-import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Element14_40;
+import org.hl7.fhir.convertors.context.ConversionContext14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Code14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Decimal14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.String14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.primitivetypes14_40.Uri14_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException;  import org.hl7.fhir.convertors.context.ConversionContext14_40;
 
 public class Quantity14_40 {
     public static org.hl7.fhir.r4.model.Quantity convertQuantity(org.hl7.fhir.dstu2016may.model.Quantity src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r4.model.Quantity tgt = new org.hl7.fhir.r4.model.Quantity();
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.hasValue()) tgt.setValueElement(Decimal14_40.convertDecimal(src.getValueElement()));
       if (src.hasComparator()) tgt.setComparatorElement(convertQuantityComparator(src.getComparatorElement()));
       if (src.hasUnit()) tgt.setUnitElement(String14_40.convertString(src.getUnitElement()));
@@ -23,7 +23,7 @@ public class Quantity14_40 {
     public static org.hl7.fhir.dstu2016may.model.Quantity convertQuantity(org.hl7.fhir.r4.model.Quantity src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu2016may.model.Quantity tgt = new org.hl7.fhir.dstu2016may.model.Quantity();
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.hasValue()) tgt.setValueElement(Decimal14_40.convertDecimal(src.getValueElement()));
       if (src.hasComparator()) tgt.setComparatorElement(convertQuantityComparator(src.getComparatorElement()));
       if (src.hasUnit()) tgt.setUnitElement(String14_40.convertString(src.getUnitElement()));
@@ -35,7 +35,7 @@ public class Quantity14_40 {
     static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Quantity.QuantityComparator> convertQuantityComparator(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Quantity.QuantityComparator> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Quantity.QuantityComparatorEnumFactory());
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.r4.model.Quantity.QuantityComparator.NULL);
       } else {
@@ -63,7 +63,7 @@ public class Quantity14_40 {
     static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator> convertQuantityComparator(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Quantity.QuantityComparator> src) throws FHIRException {
       if (src == null || src.isEmpty()) return null;
       org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparatorEnumFactory());
-      Element14_40.copyElement(src, tgt);
+      ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
       if (src.getValue() == null) {
         tgt.setValue(org.hl7.fhir.dstu2016may.model.Quantity.QuantityComparator.NULL);
       } else {

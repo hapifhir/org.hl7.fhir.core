@@ -1,13 +1,13 @@
 package org.hl7.fhir.convertors.conv14_40.resources14_40;
 
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Element14_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException;  import org.hl7.fhir.convertors.context.ConversionContext14_40;
 
 public class Enumerations14_40 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.BindingStrength> convertBindingStrength(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Enumerations.BindingStrength> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.BindingStrength> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.BindingStrengthEnumFactory());
-    Element14_40.copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r4.model.Enumerations.BindingStrength.NULL);
     } else {
@@ -35,7 +35,7 @@ public class Enumerations14_40 {
   static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Enumerations.BindingStrength> convertBindingStrength(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.BindingStrength> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Enumerations.BindingStrength> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Enumerations.BindingStrengthEnumFactory());
-    Element14_40.copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.dstu2016may.model.Enumerations.BindingStrength.NULL);
     } else {
@@ -63,7 +63,7 @@ public class Enumerations14_40 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.PublicationStatus> convertConformanceResourceStatus(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Enumerations.ConformanceResourceStatus> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.PublicationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.PublicationStatusEnumFactory());
-    Element14_40.copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r4.model.Enumerations.PublicationStatus.NULL);
     } else {
@@ -88,7 +88,7 @@ public class Enumerations14_40 {
   static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Enumerations.ConformanceResourceStatus> convertConformanceResourceStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.PublicationStatus> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Enumerations.ConformanceResourceStatus> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Enumerations.ConformanceResourceStatusEnumFactory());
-    Element14_40.copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.dstu2016may.model.Enumerations.ConformanceResourceStatus.NULL);
     } else {
@@ -113,7 +113,7 @@ public class Enumerations14_40 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.SearchParamType> convertSearchParamType(org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Enumerations.SearchParamType> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.SearchParamType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Enumerations.SearchParamTypeEnumFactory());
-    Element14_40.copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r4.model.Enumerations.SearchParamType.NULL);
     } else {
@@ -153,7 +153,7 @@ public class Enumerations14_40 {
   static public org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Enumerations.SearchParamType> convertSearchParamType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.SearchParamType> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.dstu2016may.model.Enumeration<org.hl7.fhir.dstu2016may.model.Enumerations.SearchParamType> tgt = new org.hl7.fhir.dstu2016may.model.Enumeration<>(new org.hl7.fhir.dstu2016may.model.Enumerations.SearchParamTypeEnumFactory());
-    Element14_40.copyElement(src, tgt);
+    ConversionContext14_40.INSTANCE.getVersionConvertor_14_40().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.dstu2016may.model.Enumerations.SearchParamType.NULL);
     } else {

@@ -18,10 +18,7 @@ import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
+import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
@@ -217,7 +214,7 @@ public class NpmPackageVersionConverter {
         } else if (VersionUtilities.isR3Ver(version)) {
           return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertor_14_30.convertResource(res));
         } else if (VersionUtilities.isR4Ver(version)) {
-          return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(VersionConvertor_14_40.convertResource(res));
+          return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(VersionConvertorFactory_14_40.convertResource(res));
         } else if (VersionUtilities.isR5Ver(version)) {
           return new org.hl7.fhir.r5.formats.JsonParser().composeBytes(VersionConvertorFactory_14_50.convertResource(res));
         }
@@ -239,7 +236,7 @@ public class NpmPackageVersionConverter {
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertor_10_40.convertResource(res, new PR2Handler()));
         } else if (VersionUtilities.isR2BVer(version)) {
-          return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(VersionConvertor_14_40.convertResource(res));
+          return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(VersionConvertorFactory_14_40.convertResource(res));
         } else if (VersionUtilities.isR3Ver(version)) {
           return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertorFactory_30_40.convertResource(res, new BaseAdvisor_30_40(false)));
         } else if (VersionUtilities.isR4Ver(version)) {

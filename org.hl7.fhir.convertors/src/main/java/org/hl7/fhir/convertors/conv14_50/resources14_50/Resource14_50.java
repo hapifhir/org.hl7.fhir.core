@@ -6,8 +6,6 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Meta14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Narrative14_50;
 import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext14_50; 
 
-import java.util.Arrays;
-
 public class Resource14_50 {
 
   public final BaseAdvisor_14_50 advisor;
@@ -31,10 +29,6 @@ public class Resource14_50 {
   }
 
   public org.hl7.fhir.r5.model.Resource convertResource(org.hl7.fhir.dstu2016may.model.Resource src) throws FHIRException {
-    return convertResource(src, new BaseAdvisor_14_50());
-  }
-
-  public org.hl7.fhir.r5.model.Resource convertResource(org.hl7.fhir.dstu2016may.model.Resource src, BaseAdvisor_14_50 advisor) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.dstu2016may.model.Parameters)
       return Parameters14_50.convertParameters((org.hl7.fhir.dstu2016may.model.Parameters) src);
@@ -78,10 +72,6 @@ public class Resource14_50 {
   }
 
   public org.hl7.fhir.dstu2016may.model.Resource convertResource(org.hl7.fhir.r5.model.Resource src) throws FHIRException {
-    return convertResource(src, new BaseAdvisor_14_50());
-  }
-
-  public org.hl7.fhir.dstu2016may.model.Resource convertResource(org.hl7.fhir.r5.model.Resource src, BaseAdvisor_14_50 advisor) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.r5.model.Parameters)
       return Parameters14_50.convertParameters((org.hl7.fhir.r5.model.Parameters) src);
@@ -122,52 +112,46 @@ public class Resource14_50 {
     }
   }
 
-  public void copyDomainResource(org.hl7.fhir.dstu2016may.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt, String... extensionsToIgnore) throws FHIRException {
-    copyDomainResource(src, tgt, new BaseAdvisor_14_50(), extensionsToIgnore);
-  }
-
-  public void copyDomainResource(org.hl7.fhir.dstu2016may.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt, BaseAdvisor_14_50 advisor, String... extensionsToIgnore) throws FHIRException {
+  public void copyDomainResource(org.hl7.fhir.dstu2016may.model.DomainResource src,
+                                 org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative14_50.convertNarrative(src.getText()));
     src.getContained().stream()
-      .map(resource -> convertResource(resource, advisor))
+      .map(this::convertResource)
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
+      if (advisor.useAdvisorForExtension(ConversionContext14_50.INSTANCE.path(), extension)) {
         org.hl7.fhir.r5.model.Extension convertExtension = new org.hl7.fhir.r5.model.Extension();
-        advisor.handleExtension("", extension, convertExtension);//TODO add path
+        advisor.handleExtension(ConversionContext14_50.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension("", extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl())) {//TODO add path
+      } else if (!advisor.ignoreExtension(ConversionContext14_50.INSTANCE.path(), extension)) {
         tgt.addExtension(Extension14_50.convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension("", extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl()))//TODO add path
-      .map(extension -> Extension14_50.convertExtension(extension))
+      .filter(extension -> !advisor.ignoreExtension(ConversionContext14_50.INSTANCE.path(), extension))
+      .map(Extension14_50::convertExtension)
       .forEach(tgt::addModifierExtension);
   }
 
-  public void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.dstu2016may.model.DomainResource tgt, String... extensionsToIgnore) throws FHIRException {
-    copyDomainResource(src, tgt, new BaseAdvisor_14_50(), extensionsToIgnore);
-  }
-
-  public void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.dstu2016may.model.DomainResource tgt, BaseAdvisor_14_50 advisor, String... extensionsToIgnore) throws FHIRException {
+  public void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src,
+                                 org.hl7.fhir.dstu2016may.model.DomainResource tgt) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative14_50.convertNarrative(src.getText()));
     src.getContained().stream()
-      .map(resource -> convertResource(resource, advisor))
+      .map(this::convertResource)
       .forEach(tgt::addContained);
     src.getExtension().forEach(extension -> {
-      if (advisor.useAdvisorForExtension("", extension)) {//TODO add path
+      if (advisor.useAdvisorForExtension(ConversionContext14_50.INSTANCE.path(), extension)) {
         org.hl7.fhir.dstu2016may.model.Extension convertExtension = new org.hl7.fhir.dstu2016may.model.Extension();
-        advisor.handleExtension("", extension, convertExtension);//TODO add path
+        advisor.handleExtension(ConversionContext14_50.INSTANCE.path(), extension, convertExtension);
         tgt.addExtension(convertExtension);
-      } else if (!advisor.ignoreExtension("", extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl())) {//TODO add path
+      } else if (!advisor.ignoreExtension(ConversionContext14_50.INSTANCE.path(), extension)) {
         tgt.addExtension(Extension14_50.convertExtension(extension));
       }
     });
     src.getModifierExtension().stream()
-      .filter(extension -> !advisor.ignoreExtension("", extension) && !Arrays.asList(extensionsToIgnore).contains(extension.getUrl()))//TODO add path
+      .filter(extension -> !advisor.ignoreExtension(ConversionContext14_50.INSTANCE.path(), extension))
       .map(Extension14_50::convertExtension)
       .forEach(tgt::addModifierExtension);
   }
