@@ -321,12 +321,14 @@ public class ClientUtils {
         request.setEntity(new ByteArrayEntity(payload));
         log(request);
         response = httpclient.execute(request);
+        // Getting a "java.lang.IllegalStateException: Invalid use of BasicClientConnManager: 
+        // connection still allocated. Make sure to release the connection before allocating another one."
 
         //Releasing the connection before allocating another one
-        EntityUtils.consumeQuietly(response.getEntity());
+        //EntityUtils.consumeQuietly(response.getEntity());
         
         ok = true;
-      } catch(IOException ioe) {
+      } catch(IOException | IllegalStateException ioe) {
         System.out.println(ioe.getMessage()+" ("+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+" for "+message+")");
         if (tryCount <= retryCount || (tryCount < 3 && ioe instanceof org.apache.http.conn.ConnectTimeoutException)) {
           ok = false;
