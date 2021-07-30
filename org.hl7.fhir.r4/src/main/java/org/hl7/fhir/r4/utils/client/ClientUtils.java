@@ -325,10 +325,10 @@ public class ClientUtils {
         // connection still allocated. Make sure to release the connection before allocating another one."
 
         //Releasing the connection before allocating another one
-        //EntityUtils.consumeQuietly(response.getEntity());
+        EntityUtils.consumeQuietly(response.getEntity());
         
         ok = true;
-      } catch(IOException | IllegalStateException ioe) {
+      } catch(IOException ioe) {
         System.out.println(ioe.getMessage()+" ("+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+" for "+message+")");
         if (tryCount <= retryCount || (tryCount < 3 && ioe instanceof org.apache.http.conn.ConnectTimeoutException)) {
           ok = false;
@@ -372,6 +372,11 @@ public class ClientUtils {
         makeClient(proxy);
       }
       response = httpclient.execute(request);
+
+      //Releasing the connection before allocating another one
+      EntityUtils.consumeQuietly(response.getEntity());
+
+
     } catch(IOException ioe) {
       if (ClientUtils.debugging ) {
         ioe.printStackTrace();
@@ -620,6 +625,10 @@ public class ClientUtils {
       }
       request.setEntity(new ByteArrayEntity(payload));
       response = httpclient.execute(request);
+
+      //Releasing the connection before allocating another one
+      EntityUtils.consumeQuietly(response.getEntity());
+      
       log(response);
     } catch(IOException ioe) {
       throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);
