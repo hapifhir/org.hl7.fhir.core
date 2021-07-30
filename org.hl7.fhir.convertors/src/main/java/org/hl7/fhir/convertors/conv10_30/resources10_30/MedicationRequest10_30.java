@@ -1,9 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
 import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.*;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
 import org.hl7.fhir.dstu2.model.MedicationOrder;
 import org.hl7.fhir.dstu3.model.MedicationRequest;
 import org.hl7.fhir.dstu3.model.StringType;
@@ -16,7 +16,8 @@ public class MedicationRequest10_30 {
     org.hl7.fhir.dstu3.model.MedicationRequest tgt = new org.hl7.fhir.dstu3.model.MedicationRequest();
     VersionConvertor_10_30.copyDomainResource(src, tgt);
     tgt.setIntent(MedicationRequest.MedicationRequestIntent.ORDER);
-    for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
+    for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
     if (src.hasDateWritten())
       tgt.setAuthoredOn(src.getDateWritten());
     if (src.hasStatus())

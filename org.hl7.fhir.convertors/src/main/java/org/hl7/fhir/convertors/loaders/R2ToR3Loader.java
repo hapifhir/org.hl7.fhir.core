@@ -30,14 +30,8 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_30;
+import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
 import org.hl7.fhir.dstu2.formats.JsonParser;
 import org.hl7.fhir.dstu2.formats.XmlParser;
 import org.hl7.fhir.dstu2.model.Resource;
@@ -49,6 +43,12 @@ import org.hl7.fhir.dstu3.model.StructureDefinition;
 import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.exceptions.FHIRException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class R2ToR3Loader extends BaseLoaderR3 {
 
@@ -97,9 +97,9 @@ public class R2ToR3Loader extends BaseLoaderR3 {
         .filter(be -> be.hasResource() && be.getResource() instanceof StructureDefinition)
         .map(be -> (StructureDefinition) be.getResource())
         .forEach(sd -> {
-        sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
-        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-      });
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
+          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+        });
     }
     return b;
   }

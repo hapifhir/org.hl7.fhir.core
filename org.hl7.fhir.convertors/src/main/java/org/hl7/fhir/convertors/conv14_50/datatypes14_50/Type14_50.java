@@ -3,7 +3,7 @@ package org.hl7.fhir.convertors.conv14_50.datatypes14_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.complextypes14_50.*;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.primitivetypes14_50.*;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext14_50; 
+import org.hl7.fhir.exceptions.FHIRException;
 
 public class Type14_50 {
 

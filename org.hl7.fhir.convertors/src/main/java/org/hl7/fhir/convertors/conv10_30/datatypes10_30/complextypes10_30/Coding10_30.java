@@ -16,7 +16,8 @@ public class Coding10_30 {
     if (src.hasVersionElement()) tgt.setVersionElement(String10_30.convertString(src.getVersionElement()));
     if (src.hasCodeElement()) tgt.setCodeElement(Code10_30.convertCode(src.getCodeElement()));
     if (src.hasDisplayElement()) tgt.setDisplayElement(String10_30.convertString(src.getDisplayElement()));
-    if (src.hasUserSelectedElement()) tgt.setUserSelectedElement(Boolean10_30.convertBoolean(src.getUserSelectedElement()));
+    if (src.hasUserSelectedElement())
+      tgt.setUserSelectedElement(Boolean10_30.convertBoolean(src.getUserSelectedElement()));
     return tgt;
   }
 
@@ -28,7 +29,8 @@ public class Coding10_30 {
     if (src.hasVersionElement()) tgt.setVersionElement(String10_30.convertString(src.getVersionElement()));
     if (src.hasCodeElement()) tgt.setCodeElement(Code10_30.convertCode(src.getCodeElement()));
     if (src.hasDisplayElement()) tgt.setDisplayElement(String10_30.convertString(src.getDisplayElement()));
-    if (src.hasUserSelectedElement()) tgt.setUserSelectedElement(Boolean10_30.convertBoolean(src.getUserSelectedElement()));
+    if (src.hasUserSelectedElement())
+      tgt.setUserSelectedElement(Boolean10_30.convertBoolean(src.getUserSelectedElement()));
     return tgt;
   }
 }

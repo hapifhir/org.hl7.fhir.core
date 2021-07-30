@@ -1,8 +1,8 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
 
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40; import org.hl7.fhir.convertors.context.ConversionContext30_40; import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
+import org.hl7.fhir.convertors.context.ConversionContext30_40;
+import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.ContactPoint30_40;
@@ -11,9 +11,8 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Base
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Uri30_40;
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.dstu3.model.Device;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
+import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -54,7 +53,8 @@ public class Device30_40 {
       return null;
     org.hl7.fhir.r4.model.Device tgt = new org.hl7.fhir.r4.model.Device();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
-    for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
+    for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
     if (src.hasUdi()) {
       org.hl7.fhir.r4.model.Device.DeviceUdiCarrierComponent carrierComponent = tgt.getUdiCarrierFirstRep();
       carrierComponent.setDeviceIdentifierElement(String30_40.convertString(src.getUdi().getDeviceIdentifierElement()));
@@ -95,7 +95,8 @@ public class Device30_40 {
     if (src.hasUrl())
       tgt.setUrlElement(Uri30_40.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_40.convertAnnotation(t));
-    for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSafety()) tgt.addSafety(CodeableConcept30_40.convertCodeableConcept(t));
+    for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getSafety())
+      tgt.addSafety(CodeableConcept30_40.convertCodeableConcept(t));
     return tgt;
   }
 
@@ -104,7 +105,8 @@ public class Device30_40 {
       return null;
     org.hl7.fhir.dstu3.model.Device tgt = new org.hl7.fhir.dstu3.model.Device();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyDomainResource(src, tgt);
-    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier30_40.convertIdentifier(t));
     if (src.hasUdiCarrier()) {
       Device.DeviceUdiComponent udi = tgt.getUdi();
       udi.setDeviceIdentifierElement(String30_40.convertString(src.getUdiCarrierFirstRep().getDeviceIdentifierElement()));
@@ -141,13 +143,15 @@ public class Device30_40 {
       tgt.setContact(src.getContact().stream().map(ContactPoint30_40::convertContactPoint).collect(Collectors.toList()));
     if (src.hasLocation())
       tgt.setLocation(Reference30_40.convertReference(src.getLocation()));
-    for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact()) tgt.addContact(ContactPoint30_40.convertContactPoint(t));
+    for (org.hl7.fhir.r4.model.ContactPoint t : src.getContact())
+      tgt.addContact(ContactPoint30_40.convertContactPoint(t));
     if (src.hasLocation())
       tgt.setLocation(Reference30_40.convertReference(src.getLocation()));
     if (src.hasUrl())
       tgt.setUrlElement(Uri30_40.convertUri(src.getUrlElement()));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_40.convertAnnotation(t));
-    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSafety()) tgt.addSafety(CodeableConcept30_40.convertCodeableConcept(t));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSafety())
+      tgt.addSafety(CodeableConcept30_40.convertCodeableConcept(t));
     return tgt;
   }
 

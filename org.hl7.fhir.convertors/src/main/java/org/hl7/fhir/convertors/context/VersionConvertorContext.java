@@ -36,7 +36,6 @@ import java.util.Stack;
  */
 
 /**
- *
  * @param <T>
  */
 public class VersionConvertorContext<T> {
@@ -59,8 +58,9 @@ public class VersionConvertorContext<T> {
   /**
    * Initializes the conversion context. If a context already exists, this will just add the path to the current tracked
    * path for the conversion context.
+   *
    * @param versionConvertor Instance of the version convertor context to use.
-   * @param path Current path (i.e. String label) for the given conversion.
+   * @param path             Current path (i.e. String label) for the given conversion.
    */
   public void init(T versionConvertor, String path) {
     if (versionConvertor == null) {
@@ -87,6 +87,7 @@ public class VersionConvertorContext<T> {
    * Closes the current path. This removes the label from the current stored path.
    * If there is no remaining path set after this path is removed, the context convertor and path are cleared from
    * memory.
+   *
    * @param path {@link String} label path to add.
    */
   public void close(String path) {
@@ -99,7 +100,7 @@ public class VersionConvertorContext<T> {
     if (!path.equals(currentPath)) {
       throw new FHIRException("Reached unstable state, current path doesn't match expected path.");
     }
-    if(stack.isEmpty()) {
+    if (stack.isEmpty()) {
       threadLocalVersionConverter.remove();
       threadLocalPath.remove();
     } else {
@@ -110,6 +111,7 @@ public class VersionConvertorContext<T> {
   /**
    * Will return the {@link String} corresponding to the current conversion "path".
    * ex: "Bundle.Appointment"
+   *
    * @return {@link ArrayList<String>}
    */
   public String getPath() throws FHIRException {

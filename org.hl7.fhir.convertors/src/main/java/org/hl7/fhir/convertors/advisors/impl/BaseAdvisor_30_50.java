@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.advisors.impl;
 import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.Extension;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +19,8 @@ public class BaseAdvisor_30_50 extends BaseAdvisor50<org.hl7.fhir.dstu3.model.Ex
 
   private final List<CodeSystem> cslist = new ArrayList<>();
 
-  public BaseAdvisor_30_50() {}
+  public BaseAdvisor_30_50() {
+  }
 
   public BaseAdvisor_30_50(Boolean failFast) {
     this.failFast = failFast;
@@ -35,11 +35,7 @@ public class BaseAdvisor_30_50 extends BaseAdvisor50<org.hl7.fhir.dstu3.model.Ex
     List<String> paths = Arrays.asList(path.split(","));
     if ((paths.get(paths.size() - 1).equals("ValueSet")) && (valueSetIgnoredUrls.contains(url))) {
       return true;
-    } else if ((paths.get(paths.size() - 1).equals("CapabilityStatement")) && (capabilityStatementIgnoredUrls.contains(url))){
-      return true;
-    } else {
-      return false;
-    }
+    } else return (paths.get(paths.size() - 1).equals("CapabilityStatement")) && (capabilityStatementIgnoredUrls.contains(url));
   }
 
   public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet source) {

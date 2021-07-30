@@ -2,16 +2,14 @@ package org.hl7.fhir.convertors.conv14_40;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_40;
 import org.hl7.fhir.convertors.context.ConversionContext14_40;
-import org.hl7.fhir.convertors.conv14_40.resources14_40.*;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Element14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Type14_40;
 import org.hl7.fhir.convertors.conv14_40.resources14_40.Resource14_40;
 import org.hl7.fhir.dstu2016may.model.CodeableConcept;
-import org.hl7.fhir.exceptions.FHIRException;  import org.hl7.fhir.convertors.context.ConversionContext14_40;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -77,6 +75,14 @@ public class VersionConvertor_14_40 {
     this.typeConvertor = new Type14_40(advisor);
   }
 
+  static public boolean isJurisdiction(CodeableConcept t) {
+    return t.hasCoding() && ("http://unstats.un.org/unsd/methods/m49/m49.htm".equals(t.getCoding().get(0).getSystem()) || "urn:iso:std:iso:3166".equals(t.getCoding().get(0).getSystem()) || "https://www.usps.com/".equals(t.getCoding().get(0).getSystem()));
+  }
+
+  public static boolean convertsResource(String rt) {
+    return Utilities.existsInList(rt, "Parameters", "Bundle", "CodeSystem", "CompartmentDefinition", "ConceptMap", "CapabilityStatement", "ImplementationGuide", "NamingSystem", "OperationDefinition", "OperationOutcome", "Questionnaire", "QuestionnaireResponse", "SearchParameter", "StructureDefinition", "StructureMap", "ValueSet");
+  }
+
   public BaseAdvisor_14_40 advisor() {
     return advisor;
   }
@@ -139,13 +145,5 @@ public class VersionConvertor_14_40 {
 
   public void copyElement(org.hl7.fhir.r4.model.Element src, org.hl7.fhir.dstu2016may.model.Element tgt, String... var) throws FHIRException {
     elementConvertor.copyElement(src, tgt, ConversionContext14_40.INSTANCE.path(), var);
-  }
-  
-  static public boolean isJurisdiction(CodeableConcept t) {
-    return t.hasCoding() && ("http://unstats.un.org/unsd/methods/m49/m49.htm".equals(t.getCoding().get(0).getSystem()) || "urn:iso:std:iso:3166".equals(t.getCoding().get(0).getSystem()) || "https://www.usps.com/".equals(t.getCoding().get(0).getSystem()));
-  }
-  
-  public static boolean convertsResource(String rt) {
-    return Utilities.existsInList(rt, "Parameters", "Bundle", "CodeSystem", "CompartmentDefinition", "ConceptMap", "CapabilityStatement", "ImplementationGuide", "NamingSystem", "OperationDefinition", "OperationOutcome", "Questionnaire", "QuestionnaireResponse", "SearchParameter", "StructureDefinition", "StructureMap", "ValueSet");
   }
 }

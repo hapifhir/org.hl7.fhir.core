@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv30_40.resources30_40;
 
-import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Element30_40;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
+import org.hl7.fhir.convertors.context.ConversionContext30_40;
+import org.hl7.fhir.exceptions.FHIRException;
 
 public class Enumerations30_40 {
   static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Enumerations.BindingStrength> convertBindingStrength(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Enumerations.BindingStrength> src) throws FHIRException {

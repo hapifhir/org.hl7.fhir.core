@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.advisors.impl;
 
 import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor50;
-import org.hl7.fhir.dstu2.model.Extension;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Expression;
@@ -9,16 +8,18 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class BaseAdvisor_10_50 extends BaseAdvisor50<org.hl7.fhir.dstu2.model.Extension> {
-// TODO Collapse down all the advisor classes. There is code here that can be in the BaseAdvisor50
+  // TODO Collapse down all the advisor classes. There is code here that can be in the BaseAdvisor50
   private final List<CodeSystem> cslist = new ArrayList<>();
-  private final List<String> ignoredUrls = new ArrayList<>(Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown"));
   private final List<Class<?>> ignoredExtensionTypes = new ArrayList<>(Collections.singletonList(Expression.class));
+  final List<String> conformanceIgnoredUrls = Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
 
-  public BaseAdvisor_10_50() {}
+  public BaseAdvisor_10_50() {
+  }
 
   public BaseAdvisor_10_50(Boolean failFast) {
     this.failFast = failFast;
@@ -29,7 +30,8 @@ public class BaseAdvisor_10_50 extends BaseAdvisor50<org.hl7.fhir.dstu2.model.Ex
   }
 
   public boolean ignoreExtension(@NotNull String path, @NotNull String url) {
-    return this.ignoredUrls.contains(url);
+    List<String> paths = Arrays.asList(path.split(","));
+    return (paths.get(paths.size() - 1).equals("Conformance")) && (conformanceIgnoredUrls.contains(url));
   }
 
   public boolean ignoreType(@NotNull String path, @NotNull DataType type) {

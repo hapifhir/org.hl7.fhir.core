@@ -7,7 +7,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Narrative10_40;
 import org.hl7.fhir.convertors.conv10_40.resources10_40.*;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class VersionConvertor_10_40 {
     copyDomainResource(src, tgt, new BaseAdvisor_10_40(), extensionsToIgnore);
   }
 
-  public static void copyDomainResource(org.hl7.fhir.dstu2.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt,  BaseAdvisor_10_40 advisor, String... extensionsToIgnore) throws FHIRException {
+  public static void copyDomainResource(org.hl7.fhir.dstu2.model.DomainResource src, org.hl7.fhir.r4.model.DomainResource tgt, BaseAdvisor_10_40 advisor, String... extensionsToIgnore) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative10_40.convertNarrative(src.getText()));
     src.getContained().stream()

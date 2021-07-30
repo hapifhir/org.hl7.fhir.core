@@ -1,7 +1,9 @@
 package org.hl7.fhir.convertors.conv10_30;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.*;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Extension10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Meta10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Narrative10_30;
 import org.hl7.fhir.convertors.conv10_30.resources10_30.*;
 import org.hl7.fhir.dstu2.model.CodeableConcept;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -41,7 +43,8 @@ public class VersionConvertor_10_30 {
     copyResource(src, tgt);
     tgt.setText(Narrative10_30.convertNarrative(src.getText()));
     for (org.hl7.fhir.dstu2.model.Resource t : src.getContained()) tgt.addContained(convertResource(t));
-    for (org.hl7.fhir.dstu2.model.Extension t : src.getExtension()) tgt.addExtension(Extension10_30.convertExtension(t));
+    for (org.hl7.fhir.dstu2.model.Extension t : src.getExtension())
+      tgt.addExtension(Extension10_30.convertExtension(t));
     for (org.hl7.fhir.dstu2.model.Extension t : src.getModifierExtension())
       tgt.addModifierExtension(Extension10_30.convertExtension(t));
   }
@@ -50,7 +53,8 @@ public class VersionConvertor_10_30 {
     copyResource(src, tgt);
     tgt.setText(Narrative10_30.convertNarrative(src.getText()));
     for (org.hl7.fhir.dstu3.model.Resource t : src.getContained()) tgt.addContained(convertResource(t));
-    for (org.hl7.fhir.dstu3.model.Extension t : src.getExtension()) tgt.addExtension(Extension10_30.convertExtension(t));
+    for (org.hl7.fhir.dstu3.model.Extension t : src.getExtension())
+      tgt.addExtension(Extension10_30.convertExtension(t));
     for (org.hl7.fhir.dstu3.model.Extension t : src.getModifierExtension())
       tgt.addModifierExtension(Extension10_30.convertExtension(t));
   }

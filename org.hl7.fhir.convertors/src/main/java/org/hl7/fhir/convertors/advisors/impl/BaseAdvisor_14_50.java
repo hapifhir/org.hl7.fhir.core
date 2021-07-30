@@ -1,11 +1,8 @@
 package org.hl7.fhir.convertors.advisors.impl;
 
 import org.hl7.fhir.convertors.advisors.interfaces.BaseAdvisor50;
-import org.hl7.fhir.dstu2.model.Extension;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.DataType;
-import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +17,8 @@ public class BaseAdvisor_14_50 extends BaseAdvisor50<org.hl7.fhir.dstu2016may.mo
 
   private final List<CodeSystem> cslist = new ArrayList<>();
 
-  public BaseAdvisor_14_50() {}
+  public BaseAdvisor_14_50() {
+  }
 
   public BaseAdvisor_14_50(Boolean failFast) {
     this.failFast = failFast;
@@ -29,11 +27,7 @@ public class BaseAdvisor_14_50 extends BaseAdvisor50<org.hl7.fhir.dstu2016may.mo
   @Override
   public boolean ignoreExtension(@NotNull String path, @NotNull String url) throws FHIRException {
     List<String> paths = Arrays.asList(path.split(","));
-    if ((paths.get(paths.size() - 1).equals("CapabilityStatement")) && (capabilityStatementIgnoredUrls.contains(url))){
-      return true;
-    } else {
-      return false;
-    }
+    return (paths.get(paths.size() - 1).equals("CapabilityStatement")) && (capabilityStatementIgnoredUrls.contains(url));
   }
 
   public final List<CodeSystem> getCslist() {

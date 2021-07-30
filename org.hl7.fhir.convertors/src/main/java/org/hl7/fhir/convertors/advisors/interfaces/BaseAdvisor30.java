@@ -1,8 +1,8 @@
 package org.hl7.fhir.convertors.advisors.interfaces;
 
+import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseExtension;
-import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,7 +13,8 @@ public abstract class BaseAdvisor30<T extends IBaseExtension> extends BaseAdviso
     return false;
   }
 
-  public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet source) throws FHIRException { }
+  public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet source) throws FHIRException {
+  }
 
   public CodeSystem getCodeSystem(@NotNull ValueSet src) throws FHIRException {
     return null;
@@ -49,7 +50,9 @@ public abstract class BaseAdvisor30<T extends IBaseExtension> extends BaseAdviso
     return false;
   }
 
-  public void handleExtension(@NotNull String path, @NotNull Extension src, @NotNull T tgt) throws FHIRException { }
+  public void handleExtension(@NotNull String path, @NotNull Extension src, @NotNull T tgt) throws FHIRException {
+  }
 
-  public void handleExtension(@NotNull String path, @NotNull T src, @NotNull Extension tgt) throws FHIRException { }
+  public void handleExtension(@NotNull String path, @NotNull T src, @NotNull Extension tgt) throws FHIRException {
+  }
 }

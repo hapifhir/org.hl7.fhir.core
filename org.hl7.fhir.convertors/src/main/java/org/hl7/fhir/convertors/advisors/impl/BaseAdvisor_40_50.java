@@ -12,7 +12,8 @@ public class BaseAdvisor_40_50 extends BaseAdvisor50<org.hl7.fhir.r4.model.Exten
 
   private final List<CodeSystem> cslist = new ArrayList<>();
 
-  public BaseAdvisor_40_50() {}
+  public BaseAdvisor_40_50() {
+  }
 
   public BaseAdvisor_40_50(Boolean failFast) {
     this.failFast = failFast;

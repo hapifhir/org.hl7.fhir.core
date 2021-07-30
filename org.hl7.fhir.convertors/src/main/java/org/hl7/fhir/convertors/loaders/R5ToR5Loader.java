@@ -30,13 +30,6 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
@@ -46,14 +39,20 @@ import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class R5ToR5Loader extends BaseLoaderR5 {
+
+  // TODO Grahame, will this ever be populated? No conversion is being done?
+  private final List<CodeSystem> cslist = new ArrayList<>();
 
   public R5ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
     super(types, lkp);
   }
-
-  // TODO Grahame, will this ever be populated? No conversion is being done?
-  private List<CodeSystem> cslist = new ArrayList<>();
 
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
@@ -62,7 +61,7 @@ public class R5ToR5Loader extends BaseLoaderR5 {
       r5 = new JsonParser().parse(stream);
     else
       r5 = new XmlParser().parse(stream);
-    
+
     Bundle b;
     if (r5 instanceof Bundle)
       b = (Bundle) r5;
@@ -94,9 +93,9 @@ public class R5ToR5Loader extends BaseLoaderR5 {
           StructureDefinition sd = (StructureDefinition) be.getResource();
           sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
           sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-          for (ElementDefinition ed : sd.getSnapshot().getElement()) 
+          for (ElementDefinition ed : sd.getSnapshot().getElement())
             patchUrl(ed);
-          for (ElementDefinition ed : sd.getDifferential().getElement()) 
+          for (ElementDefinition ed : sd.getDifferential().getElement())
             patchUrl(ed);
         }
       }
@@ -117,16 +116,16 @@ public class R5ToR5Loader extends BaseLoaderR5 {
       throw new FHIRException("Error: Cannot have included code systems");
     }
     if (killPrimitives) {
-      throw new FHIRException("Cannot kill primitives when using deferred loading");      
+      throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
     if (patchUrls) {
       if (r5 instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) r5;
         sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
         sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-        for (ElementDefinition ed : sd.getSnapshot().getElement()) 
+        for (ElementDefinition ed : sd.getSnapshot().getElement())
           patchUrl(ed);
-        for (ElementDefinition ed : sd.getDifferential().getElement()) 
+        for (ElementDefinition ed : sd.getDifferential().getElement())
           patchUrl(ed);
       }
     }
@@ -141,6 +140,6 @@ public class R5ToR5Loader extends BaseLoaderR5 {
       for (CanonicalType s : tr.getProfile()) {
         s.setValue(s.getValue().replace(URL_BASE, URL_R4));
       }
-    }    
+    }
   }
 }

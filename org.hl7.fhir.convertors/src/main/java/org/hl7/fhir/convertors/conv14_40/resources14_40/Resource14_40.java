@@ -1,14 +1,11 @@
 package org.hl7.fhir.convertors.conv14_40.resources14_40;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_40;
-import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_50;
 import org.hl7.fhir.convertors.context.ConversionContext14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Extension14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Meta14_40;
 import org.hl7.fhir.convertors.conv14_40.datatypes14_40.Narrative14_40;
-import org.hl7.fhir.exceptions.FHIRException;  import org.hl7.fhir.convertors.context.ConversionContext14_40;
-
-import java.util.Arrays;
+import org.hl7.fhir.exceptions.FHIRException;
 
 public class Resource14_40 {
 
@@ -117,7 +114,7 @@ public class Resource14_40 {
   }
 
   public void copyDomainResource(org.hl7.fhir.dstu2016may.model.DomainResource src,
-                                        org.hl7.fhir.r4.model.DomainResource tgt) throws FHIRException {
+                                 org.hl7.fhir.r4.model.DomainResource tgt) throws FHIRException {
     copyResource(src, tgt);
     if (src.hasText()) tgt.setText(Narrative14_40.convertNarrative(src.getText()));
     src.getContained().stream()

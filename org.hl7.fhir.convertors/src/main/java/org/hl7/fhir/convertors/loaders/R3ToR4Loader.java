@@ -30,14 +30,6 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu3.formats.JsonParser;
@@ -50,6 +42,12 @@ import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader {
 
@@ -67,7 +65,7 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
     else
       r3 = new XmlParser().parse(stream);
     org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_30_40.convertResource(r3, advisor);
-    
+
     Bundle b;
     if (r4 instanceof Bundle)
       b = (Bundle) r4;
@@ -99,9 +97,9 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
           StructureDefinition sd = (StructureDefinition) be.getResource();
           sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU3));
           sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-          for (ElementDefinition ed : sd.getSnapshot().getElement()) 
+          for (ElementDefinition ed : sd.getSnapshot().getElement())
             patchUrl(ed);
-          for (ElementDefinition ed : sd.getDifferential().getElement()) 
+          for (ElementDefinition ed : sd.getDifferential().getElement())
             patchUrl(ed);
         }
       }
@@ -117,6 +115,6 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
       for (CanonicalType s : tr.getProfile()) {
         s.setValue(s.getValue().replace(URL_BASE, URL_DSTU3));
       }
-    }    
+    }
   }
 }

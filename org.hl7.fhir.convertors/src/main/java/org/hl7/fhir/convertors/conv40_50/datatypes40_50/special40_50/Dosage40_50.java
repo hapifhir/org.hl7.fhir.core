@@ -1,6 +1,5 @@
 package org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50;
 
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.BackboneElement40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
@@ -9,6 +8,7 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuant
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Timing40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Dosage40_50 {

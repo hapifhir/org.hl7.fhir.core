@@ -1,20 +1,14 @@
 package org.hl7.fhir.convertors.conv14_50;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_50;
-import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_50;
 import org.hl7.fhir.convertors.context.ConversionContext14_50;
-import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Extension14_50;
-import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Meta14_50;
-import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Narrative14_50;
-import org.hl7.fhir.convertors.conv14_50.resources14_50.*;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Element14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Type14_50;
 import org.hl7.fhir.convertors.conv14_50.resources14_50.Resource14_50;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext14_50; 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -80,6 +74,10 @@ public class VersionConvertor_14_50 {
     this.typeConvertor = new Type14_50(advisor);
   }
 
+  public static boolean convertsResource(String rt) {
+    return Utilities.existsInList(rt, "Parameters", "Bundle", "CodeSystem", "CompartmentDefinition", "ConceptMap", "CapabilityStatement", "ImplementationGuide", "NamingSystem", "OperationDefinition", "OperationOutcome", "Questionnaire", "QuestionnaireResponse", "SearchParameter", "StructureDefinition", "StructureMap", "ValueSet");
+  }
+
   public BaseAdvisor_14_50 advisor() {
     return advisor;
   }
@@ -142,9 +140,5 @@ public class VersionConvertor_14_50 {
 
   public void copyElement(org.hl7.fhir.r5.model.Element src, org.hl7.fhir.dstu2016may.model.Element tgt, String... var) throws FHIRException {
     elementConvertor.copyElement(src, tgt, ConversionContext14_50.INSTANCE.path(), var);
-  }
-
-  public static boolean convertsResource(String rt) {
-    return Utilities.existsInList(rt, "Parameters", "Bundle", "CodeSystem", "CompartmentDefinition", "ConceptMap", "CapabilityStatement", "ImplementationGuide", "NamingSystem", "OperationDefinition", "OperationOutcome", "Questionnaire", "QuestionnaireResponse", "SearchParameter", "StructureDefinition", "StructureMap", "ValueSet");
   }
 }

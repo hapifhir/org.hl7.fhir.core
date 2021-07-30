@@ -14,7 +14,8 @@ public class BaseAdvisor_10_30 extends BaseAdvisor30<org.hl7.fhir.dstu2.model.Ex
   private final List<CodeSystem> cslist = new ArrayList<>();
   private final List<String> ignoredUrls = new ArrayList<>(Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown"));
 
-  public BaseAdvisor_10_30() {}
+  public BaseAdvisor_10_30() {
+  }
 
   public BaseAdvisor_10_30(Boolean failFast) {
     this.failFast = failFast;

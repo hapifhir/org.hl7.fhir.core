@@ -30,14 +30,6 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
 import org.hl7.fhir.dstu2016may.formats.JsonParser;
@@ -46,14 +38,16 @@ import org.hl7.fhir.dstu2016may.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.context.SimpleWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
-import org.hl7.fhir.r4.model.CodeSystem;
-import org.hl7.fhir.r4.model.MetadataResource;
-import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r4.model.UriType;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResourceLoader {
 
@@ -71,7 +65,7 @@ public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResource
     else
       r2016may = new XmlParser().parse(stream);
     org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_14_40.convertResource(r2016may, advisor);
-    
+
     Bundle b;
     if (r4 instanceof Bundle)
       b = (Bundle) r4;
@@ -81,7 +75,7 @@ public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResource
       b.setType(BundleType.COLLECTION);
       b.addEntry().setResource(r4).setFullUrl(r4 instanceof MetadataResource ? ((MetadataResource) r4).getUrl() : null);
     }
-    
+
     for (CodeSystem cs : advisor.getCslist()) {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());

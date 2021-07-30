@@ -16,7 +16,8 @@ public class MedicationOrder10_30 {
     if (src.hasTextElement()) tgt.setTextElement(String10_30.convertString(src.getTextElement()));
     if (src.hasTiming()) tgt.setTiming(Timing10_30.convertTiming(src.getTiming()));
     if (src.hasAsNeeded()) tgt.setAsNeeded(Type10_30.convertType(src.getAsNeeded()));
-    if (src.hasSiteCodeableConcept()) tgt.setSite(CodeableConcept10_30.convertCodeableConcept(src.getSiteCodeableConcept()));
+    if (src.hasSiteCodeableConcept())
+      tgt.setSite(CodeableConcept10_30.convertCodeableConcept(src.getSiteCodeableConcept()));
     if (src.hasRoute()) tgt.setRoute(CodeableConcept10_30.convertCodeableConcept(src.getRoute()));
     if (src.hasMethod()) tgt.setMethod(CodeableConcept10_30.convertCodeableConcept(src.getMethod()));
     if (src.hasDose()) tgt.setDose(Type10_30.convertType(src.getDose()));

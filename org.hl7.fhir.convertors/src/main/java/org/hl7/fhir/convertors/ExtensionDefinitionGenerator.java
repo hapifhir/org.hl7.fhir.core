@@ -35,8 +35,6 @@ import com.google.gson.JsonObject;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
-import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.loaders.R2016MayToR4Loader;
@@ -74,15 +72,23 @@ import java.util.*;
 
 public class ExtensionDefinitionGenerator {
 
+  private FHIRVersion sourceVersion;
+  private FHIRVersion targetVersion;
+  private String filename;
+  private StructureDefinition extbase;
+  private ElementDefinition extv;
+  private ProfileUtilities pu;
+  private BaseWorkerContext context;
+
   public static void main(String[] args) throws IOException, FHIRException {
     if (args.length == 0) {
       System.out.println("Extension Generator");
       System.out.println("===================");
-      System.out.println("");
+      System.out.println();
       System.out.println("See http://hl7.org/fhir/versions.html#extensions. This generates the packages");
-      System.out.println("");
+      System.out.println();
       System.out.println("parameters: -srcver [version] -tgtver [version] -package [filename]");
-      System.out.println("");
+      System.out.println();
       System.out.println("srcver: the source version to load");
       System.out.println("tgtver: the version to generate extension definitions for");
       System.out.println("package: the package to produce");
@@ -95,7 +101,6 @@ public class ExtensionDefinitionGenerator {
     }
   }
 
-
   private static String getNamedParam(String[] args, String param) {
     boolean found = false;
     for (String a : args) {
@@ -107,14 +112,6 @@ public class ExtensionDefinitionGenerator {
     }
     throw new Error("Unable to find parameter " + param);
   }
-
-  private FHIRVersion sourceVersion;
-  private FHIRVersion targetVersion;
-  private String filename;
-  private StructureDefinition extbase;
-  private ElementDefinition extv;
-  private ProfileUtilities pu;
-  private BaseWorkerContext context;
 
   public FHIRVersion getSourceVersion() {
     return sourceVersion;
@@ -150,7 +147,7 @@ public class ExtensionDefinitionGenerator {
 
   }
 
-  private List<StructureDefinition> buildExtensions(List<StructureDefinition> definitions) throws DefinitionException, FHIRException {
+  private List<StructureDefinition> buildExtensions(List<StructureDefinition> definitions) throws FHIRException {
     Set<String> types = new HashSet<>();
     List<StructureDefinition> list = new ArrayList<>();
     for (StructureDefinition type : definitions)
@@ -162,7 +159,7 @@ public class ExtensionDefinitionGenerator {
   }
 
 
-  private void buildExtensions(StructureDefinition type, List<StructureDefinition> list) throws DefinitionException, FHIRException {
+  private void buildExtensions(StructureDefinition type, List<StructureDefinition> list) throws FHIRException {
     for (ElementDefinition ed : type.getDifferential().getElement()) {
       if (ed.getPath().contains(".")) {
         if (!ed.getPath().endsWith(".extension") && !ed.getPath().endsWith(".modifierExtension")) {
@@ -176,7 +173,7 @@ public class ExtensionDefinitionGenerator {
     }
   }
 
-  private StructureDefinition generateExtension(StructureDefinition type, ElementDefinition ed) throws DefinitionException, FHIRException {
+  private StructureDefinition generateExtension(StructureDefinition type, ElementDefinition ed) throws FHIRException {
     StructureDefinition ext = new StructureDefinition();
     ext.setId("extension-" + ed.getPath().replace("[x]", ""));
     ext.setUrl("http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/StructureDefinition/" + ext.getId());

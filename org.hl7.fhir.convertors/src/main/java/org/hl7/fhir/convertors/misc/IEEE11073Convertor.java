@@ -30,47 +30,27 @@ package org.hl7.fhir.convertors.misc;
  */
 
 
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.fhir.ucum.UcumEssenceService;
 import org.fhir.ucum.UcumService;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.formats.XmlParser;
-import org.hl7.fhir.dstu3.model.CodeSystem;
+import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.dstu3.model.CodeSystem.CodeSystemContentMode;
 import org.hl7.fhir.dstu3.model.CodeSystem.ConceptDefinitionComponent;
 import org.hl7.fhir.dstu3.model.CodeSystem.PropertyType;
-import org.hl7.fhir.dstu3.model.CodeType;
-import org.hl7.fhir.dstu3.model.Coding;
-import org.hl7.fhir.dstu3.model.ConceptMap;
 import org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent;
 import org.hl7.fhir.dstu3.model.ConceptMap.SourceElementComponent;
 import org.hl7.fhir.dstu3.model.ConceptMap.TargetElementComponent;
-import org.hl7.fhir.dstu3.model.ContactDetail;
-import org.hl7.fhir.dstu3.model.ContactPoint;
 import org.hl7.fhir.dstu3.model.ContactPoint.ContactPointSystem;
-import org.hl7.fhir.dstu3.model.DateTimeType;
 import org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
-import org.hl7.fhir.dstu3.model.Identifier;
-import org.hl7.fhir.dstu3.model.StringType;
-import org.hl7.fhir.dstu3.model.UriType;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.CSVReader;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.Utilities;
+
+import java.io.*;
+import java.util.*;
 
 public class IEEE11073Convertor {
 
@@ -80,7 +60,7 @@ public class IEEE11073Convertor {
   /**
    * argument 1: path to the rosetta csv file
    * argument 2: basePath to produce files to
-   *  
+   *
    * @param args
    * @throws Exception
    */
@@ -127,12 +107,12 @@ public class IEEE11073Convertor {
       t.setCode(csv.cell("LOINC_NUM"));
       t.setDisplay(csv.cell("LOINC_LONG_COMMON_NAME"));
     }
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dst, "conceptmap-"+cm.getId()+".xml")), cm);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dst, "conceptmap-" + cm.getId() + ".xml")), cm);
     System.out.println("Done");
     return cm;
   }
 
-  public static CodeSystem generateMDC(String src, String dst, UcumService ucum) throws UnsupportedEncodingException, FileNotFoundException, IOException, FHIRException {
+  public static CodeSystem generateMDC(String src, String dst, UcumService ucum) throws IOException, FHIRException {
     CSVReader csv = new CSVReader(new FileInputStream(src));
     csv.readHeaders();
     CodeSystem cs = new CodeSystem();
@@ -166,7 +146,7 @@ public class IEEE11073Convertor {
       if (csv.has("CF_CODE10")) {
         String code = csv.cell("CF_CODE10");
         if (codes.contains(code))
-          System.out.println("Duplicate Code "+code);
+          System.out.println("Duplicate Code " + code);
         else {
           codes.add(code);
           ConceptDefinitionComponent c = cs.addConcept();
@@ -195,7 +175,7 @@ public class IEEE11073Convertor {
           if (csv.has("UOM_UCUM")) {
             CommaSeparatedStringBuilder ul = new CommaSeparatedStringBuilder();
             for (String u : csv.cell("UOM_UCUM").split(" ")) {
-              String msg = ucum.validate(u); 
+              String msg = ucum.validate(u);
               if (msg != null) {
                 errorCount++;
                 ucumIssues.put(u, msg);
@@ -209,11 +189,11 @@ public class IEEE11073Convertor {
       }
     }
     csv.close();
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dst, "codesystem-"+cs.getId()+".xml")), cs);
-    System.out.println(Integer.toString(errorCount)+"UCUM errors");
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(Utilities.path(dst, "codesystem-" + cs.getId() + ".xml")), cs);
+    System.out.println(errorCount + "UCUM errors");
 
     for (String u : sorted(ucumIssues.keySet()))
-      System.out.println("Invalid UCUM code: "+u+" because "+ucumIssues.get(u));
+      System.out.println("Invalid UCUM code: " + u + " because " + ucumIssues.get(u));
 
     return cs;
   }
@@ -224,7 +204,6 @@ public class IEEE11073Convertor {
     Collections.sort(names);
     return names;
   }
-
 
 
 }

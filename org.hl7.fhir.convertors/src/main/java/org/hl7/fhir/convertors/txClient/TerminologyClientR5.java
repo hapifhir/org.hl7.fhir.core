@@ -30,28 +30,20 @@ package org.hl7.fhir.convertors.txClient;
  */
 
 
-
-import java.net.URISyntaxException;
-import java.util.Map;
-
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.CodeSystem;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.client.FHIRToolingClient;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
+import java.net.URISyntaxException;
+import java.util.Map;
+
 public class TerminologyClientR5 implements TerminologyClient {
 
-  private FHIRToolingClient client;
-  
+  private final FHIRToolingClient client;
+
   public TerminologyClientR5(String address) throws URISyntaxException {
     client = new FHIRToolingClient(address);
   }
@@ -83,7 +75,7 @@ public class TerminologyClientR5 implements TerminologyClient {
 
   @Override
   public TerminologyClient setTimeout(int i) {
-    client.setTimeout(i);    
+    client.setTimeout(i);
     return this;
   }
 
@@ -123,16 +115,16 @@ public class TerminologyClientR5 implements TerminologyClient {
   public CanonicalResource read(String type, String id) {
     Class<Resource> t;
     try {
-      t = (Class<Resource>) Class.forName("org.hl7.fhir.r5.model."+type);// todo: do we have to deal with any resource renaming? Use cases are limited...
+      t = (Class<Resource>) Class.forName("org.hl7.fhir.r5.model." + type);// todo: do we have to deal with any resource renaming? Use cases are limited...
     } catch (ClassNotFoundException e) {
-      throw new FHIRException("Unable to fetch resources of type "+type+" in R5");
-    } 
+      throw new FHIRException("Unable to fetch resources of type " + type + " in R5");
+    }
     org.hl7.fhir.r5.model.Resource r5 = client.read(t, id);
     if (r5 != null) {
-      throw new FHIRException("Unable to convert resource "+Utilities.pathURL(getAddress(), type, id)+" to R5 (internal representation)");
+      throw new FHIRException("Unable to convert resource " + Utilities.pathURL(getAddress(), type, id) + " to R5 (internal representation)");
     }
     if (!(r5 instanceof CanonicalResource)) {
-      throw new FHIRException("Unable to convert resource "+Utilities.pathURL(getAddress(), type, id)+" to R5 canonical resource (internal representation)");
+      throw new FHIRException("Unable to convert resource " + Utilities.pathURL(getAddress(), type, id) + " to R5 canonical resource (internal representation)");
     }
     return (CanonicalResource) r5;
   }

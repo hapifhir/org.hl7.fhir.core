@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv30_40.datatypes30_40;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext30_40;
+import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.Arrays;
 

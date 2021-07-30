@@ -1,10 +1,11 @@
 package org.hl7.fhir.convertors.conv14_50.resources14_50;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_50;
+import org.hl7.fhir.convertors.context.ConversionContext14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Extension14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Meta14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Narrative14_50;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext14_50; 
+import org.hl7.fhir.exceptions.FHIRException;
 
 public class Resource14_50 {
 

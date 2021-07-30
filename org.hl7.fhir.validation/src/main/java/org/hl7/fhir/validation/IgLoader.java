@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
@@ -683,7 +684,7 @@ public class IgLoader {
         res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(new ByteArrayInputStream(content));
       else
         throw new FHIRException("Unsupported format for " + fn);
-      r = VersionConvertor_10_50.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
+      r = VersionConvertorFactory_10_50.convertResource(res, new org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor5());
     } else if (fhirVersion.equals(Constants.VERSION) || "current".equals(fhirVersion)) {
       if (fn.endsWith(".xml") && !fn.endsWith("template.xml"))
         r = new XmlParser().parse(new ByteArrayInputStream(content));

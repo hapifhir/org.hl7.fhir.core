@@ -11,7 +11,8 @@ public abstract class BaseAdvisor50<T extends IBaseExtension> extends BaseAdviso
     return false;
   }
 
-  public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet source) throws FHIRException { }
+  public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet source) throws FHIRException {
+  }
 
   public CodeSystem getCodeSystem(@NotNull ValueSet src) throws FHIRException {
     return null;
@@ -47,7 +48,9 @@ public abstract class BaseAdvisor50<T extends IBaseExtension> extends BaseAdviso
     return false;
   }
 
-  public void handleExtension(@NotNull String path, @NotNull Extension src, @NotNull T tgt) throws FHIRException { }
+  public void handleExtension(@NotNull String path, @NotNull Extension src, @NotNull T tgt) throws FHIRException {
+  }
 
-  public void handleExtension(@NotNull String path, @NotNull T src, @NotNull Extension tgt) throws FHIRException { }
+  public void handleExtension(@NotNull String path, @NotNull T src, @NotNull Extension tgt) throws FHIRException {
+  }
 }

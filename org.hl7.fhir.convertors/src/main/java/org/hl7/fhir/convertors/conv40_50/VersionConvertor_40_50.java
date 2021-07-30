@@ -2,9 +2,9 @@ package org.hl7.fhir.convertors.conv40_50;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
-import org.hl7.fhir.convertors.conv40_50.resources40_50.Resource40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
+import org.hl7.fhir.convertors.conv40_50.resources40_50.Resource40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -56,11 +56,11 @@ public class VersionConvertor_40_50 {
   }
 
   public void copyResource(org.hl7.fhir.r4.model.Resource src, org.hl7.fhir.r5.model.Resource tgt) throws FHIRException {
-    resourceConvertor.copyResource(src,tgt);
+    resourceConvertor.copyResource(src, tgt);
   }
 
   public void copyResource(org.hl7.fhir.r5.model.Resource src, org.hl7.fhir.r4.model.Resource tgt) throws FHIRException {
-    resourceConvertor.copyResource(src,tgt);
+    resourceConvertor.copyResource(src, tgt);
   }
 
   public org.hl7.fhir.r5.model.Resource convertResource(org.hl7.fhir.r4.model.Resource src) throws FHIRException {

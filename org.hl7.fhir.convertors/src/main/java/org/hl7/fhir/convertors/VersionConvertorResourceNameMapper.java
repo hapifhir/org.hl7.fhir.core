@@ -5,759 +5,1484 @@ import org.hl7.fhir.utilities.Utilities;
 public class VersionConvertorResourceNameMapper {
 
   public static String mapName3to5(String name) {
-    if (Utilities.noString(name)) { return null; } 
+    if (Utilities.noString(name)) {
+      return null;
+    }
     switch (name) {
-    case "Account" : return org.hl7.fhir.r5.model.Account.class.getSimpleName(); 
-    case "ActivityDefinition" : return org.hl7.fhir.r5.model.ActivityDefinition.class.getSimpleName(); 
-    case "AdverseEvent" : return org.hl7.fhir.r5.model.AdverseEvent.class.getSimpleName(); 
-    case "AllergyIntolerance" : return org.hl7.fhir.r5.model.AllergyIntolerance.class.getSimpleName(); 
-    case "Appointment" : return org.hl7.fhir.r5.model.Appointment.class.getSimpleName(); 
-    case "AppointmentResponse" : return org.hl7.fhir.r5.model.AppointmentResponse.class.getSimpleName(); 
-    case "AuditEvent" : return org.hl7.fhir.r5.model.AuditEvent.class.getSimpleName(); 
-    case "Basic" : return org.hl7.fhir.r5.model.Basic.class.getSimpleName(); 
-    case "Binary" : return org.hl7.fhir.r5.model.Binary.class.getSimpleName(); 
-    case "BodySite" : return org.hl7.fhir.r5.model.BodyStructure.class.getSimpleName(); 
-    case "Bundle" : return org.hl7.fhir.r5.model.Bundle.class.getSimpleName(); 
-    case "CapabilityStatement" : return org.hl7.fhir.r5.model.CapabilityStatement.class.getSimpleName(); 
-    case "CarePlan" : return org.hl7.fhir.r5.model.CarePlan.class.getSimpleName(); 
-    case "CareTeam" : return org.hl7.fhir.r5.model.CareTeam.class.getSimpleName(); 
-    case "ChargeItem" : return org.hl7.fhir.r5.model.ChargeItem.class.getSimpleName(); 
-    case "Claim" : return org.hl7.fhir.r5.model.Claim.class.getSimpleName(); 
-    case "ClaimResponse" : return org.hl7.fhir.r5.model.ClaimResponse.class.getSimpleName(); 
-    case "ClinicalImpression" : return org.hl7.fhir.r5.model.ClinicalImpression.class.getSimpleName(); 
-    case "CodeSystem" : return org.hl7.fhir.r5.model.CodeSystem.class.getSimpleName(); 
-    case "Communication" : return org.hl7.fhir.r5.model.Communication.class.getSimpleName(); 
-    case "CommunicationRequest" : return org.hl7.fhir.r5.model.CommunicationRequest.class.getSimpleName(); 
-    case "CompartmentDefinition" : return org.hl7.fhir.r5.model.CompartmentDefinition.class.getSimpleName(); 
-    case "Composition" : return org.hl7.fhir.r5.model.Composition.class.getSimpleName(); 
-    case "ConceptMap" : return org.hl7.fhir.r5.model.ConceptMap.class.getSimpleName(); 
-    case "Condition" : return org.hl7.fhir.r5.model.Condition.class.getSimpleName(); 
-    case "Consent" : return org.hl7.fhir.r5.model.Consent.class.getSimpleName(); 
-    case "Contract" : return org.hl7.fhir.r5.model.Contract.class.getSimpleName(); 
-    case "Coverage" : return org.hl7.fhir.r5.model.Coverage.class.getSimpleName(); 
-    case "DataElement" : return org.hl7.fhir.r5.model. StructureDefinition.class.getSimpleName(); 
-    case "EligibilityRequest" : return org.hl7.fhir.r5.model.CoverageEligibilityRequest.class.getSimpleName(); 
-    case "EligibilityResponse" : return org.hl7.fhir.r5.model.CoverageEligibilityResponse.class.getSimpleName(); 
-    case "DetectedIssue" : return org.hl7.fhir.r5.model.DetectedIssue.class.getSimpleName(); 
-    case "Device" : return org.hl7.fhir.r5.model.Device.class.getSimpleName(); 
-    case "DeviceComponent" : return null; 
-    case "DeviceMetric" : return org.hl7.fhir.r5.model.DeviceMetric.class.getSimpleName(); 
-    case "DeviceRequest" : return org.hl7.fhir.r5.model.DeviceRequest.class.getSimpleName(); 
-    case "DeviceUseStatement" : return org.hl7.fhir.r5.model.DeviceUsage.class.getSimpleName(); 
-    case "DiagnosticReport" : return org.hl7.fhir.r5.model.DiagnosticReport.class.getSimpleName(); 
-    case "DocumentManifest" : return org.hl7.fhir.r5.model.DocumentManifest.class.getSimpleName(); 
-    case "DocumentReference" : return org.hl7.fhir.r5.model.DocumentReference.class.getSimpleName(); 
-    case "Encounter" : return org.hl7.fhir.r5.model.Encounter.class.getSimpleName(); 
-    case "Endpoint" : return org.hl7.fhir.r5.model.Endpoint.class.getSimpleName(); 
-    case "EnrollmentRequest" : return org.hl7.fhir.r5.model.EnrollmentRequest.class.getSimpleName(); 
-    case "EnrollmentResponse" : return org.hl7.fhir.r5.model.EnrollmentResponse.class.getSimpleName(); 
-    case "EpisodeOfCare" : return org.hl7.fhir.r5.model.EpisodeOfCare.class.getSimpleName(); 
-    case "ExpansionProfile" : return org.hl7.fhir.r5.model.Parameters.class.getSimpleName(); 
-    case "ExplanationOfBenefit" : return org.hl7.fhir.r5.model.ExplanationOfBenefit.class.getSimpleName(); 
-    case "FamilyMemberHistory" : return org.hl7.fhir.r5.model.FamilyMemberHistory.class.getSimpleName(); 
-    case "Flag" : return org.hl7.fhir.r5.model.Flag.class.getSimpleName(); 
-    case "Goal" : return org.hl7.fhir.r5.model.Goal.class.getSimpleName(); 
-    case "GraphDefinition" : return org.hl7.fhir.r5.model.GraphDefinition.class.getSimpleName(); 
-    case "Group" : return org.hl7.fhir.r5.model.Group.class.getSimpleName(); 
-    case "GuidanceResponse" : return org.hl7.fhir.r5.model.GuidanceResponse.class.getSimpleName(); 
-    case "HealthcareService" : return org.hl7.fhir.r5.model.HealthcareService.class.getSimpleName(); 
-    case "ImagingManifest" : return null; 
-    case "ImagingStudy" : return org.hl7.fhir.r5.model.ImagingStudy.class.getSimpleName(); 
-    case "Immunization" : return org.hl7.fhir.r5.model.Immunization.class.getSimpleName(); 
-    case "ImmunizationRecommendation" : return org.hl7.fhir.r5.model.ImmunizationRecommendation.class.getSimpleName(); 
-    case "ImplementationGuide" : return org.hl7.fhir.r5.model.ImplementationGuide.class.getSimpleName(); 
-    case "Library" : return org.hl7.fhir.r5.model.Library.class.getSimpleName(); 
-    case "Linkage" : return org.hl7.fhir.r5.model.Linkage.class.getSimpleName(); 
-    case "List" : return org.hl7.fhir.r5.model.ListResource.class.getSimpleName(); 
-    case "Location" : return org.hl7.fhir.r5.model.Location.class.getSimpleName(); 
-    case "Measure" : return org.hl7.fhir.r5.model.Measure.class.getSimpleName(); 
-    case "MeasureReport" : return org.hl7.fhir.r5.model.MeasureReport.class.getSimpleName(); 
-    case "Media" : return org.hl7.fhir.r5.model.DocumentReference.class.getSimpleName(); 
-    case "Medication" : return org.hl7.fhir.r5.model.Medication.class.getSimpleName(); 
-    case "MedicationAdministration" : return org.hl7.fhir.r5.model.MedicationAdministration.class.getSimpleName(); 
-    case "MedicationDispense" : return org.hl7.fhir.r5.model.MedicationDispense.class.getSimpleName(); 
-    case "MedicationRequest" : return org.hl7.fhir.r5.model.MedicationRequest.class.getSimpleName(); 
-    case "MedicationStatement" : return org.hl7.fhir.r5.model.MedicationUsage.class.getSimpleName(); 
-    case "MessageDefinition" : return org.hl7.fhir.r5.model.MessageDefinition.class.getSimpleName(); 
-    case "MessageHeader" : return org.hl7.fhir.r5.model.MessageHeader.class.getSimpleName(); 
-    case "Sequence" : return org.hl7.fhir.r5.model.MolecularSequence.class.getSimpleName(); 
-    case "NamingSystem" : return org.hl7.fhir.r5.model.NamingSystem.class.getSimpleName(); 
-    case "NutritionOrder" : return org.hl7.fhir.r5.model.NutritionOrder.class.getSimpleName(); 
-    case "Observation" : return org.hl7.fhir.r5.model.Observation.class.getSimpleName(); 
-    case "OperationDefinition" : return org.hl7.fhir.r5.model.OperationDefinition.class.getSimpleName(); 
-    case "OperationOutcome" : return org.hl7.fhir.r5.model.OperationOutcome.class.getSimpleName(); 
-    case "Organization" : return org.hl7.fhir.r5.model.Organization.class.getSimpleName(); 
-    case "Parameters" : return org.hl7.fhir.r5.model.Parameters.class.getSimpleName(); 
-    case "Patient" : return org.hl7.fhir.r5.model.Patient.class.getSimpleName(); 
-    case "PaymentNotice" : return org.hl7.fhir.r5.model.PaymentNotice.class.getSimpleName(); 
-    case "PaymentReconciliation" : return org.hl7.fhir.r5.model.PaymentReconciliation.class.getSimpleName(); 
-    case "Person" : return org.hl7.fhir.r5.model.Person.class.getSimpleName(); 
-    case "PlanDefinition" : return org.hl7.fhir.r5.model.PlanDefinition.class.getSimpleName(); 
-    case "Practitioner" : return org.hl7.fhir.r5.model.Practitioner.class.getSimpleName(); 
-    case "PractitionerRole" : return org.hl7.fhir.r5.model.PractitionerRole.class.getSimpleName(); 
-    case "Procedure" : return org.hl7.fhir.r5.model.Procedure.class.getSimpleName(); 
-    case "ProcessRequest" : return org.hl7.fhir.r5.model.Task.class.getSimpleName(); 
-    case "ProcessResponse" : return org.hl7.fhir.r5.model.Task.class.getSimpleName(); 
-    case "Provenance" : return org.hl7.fhir.r5.model.Provenance.class.getSimpleName(); 
-    case "Questionnaire" : return org.hl7.fhir.r5.model.Questionnaire.class.getSimpleName(); 
-    case "QuestionnaireResponse" : return org.hl7.fhir.r5.model.QuestionnaireResponse.class.getSimpleName(); 
-    case "ReferralRequest" : return org.hl7.fhir.r5.model.ServiceRequest.class.getSimpleName(); 
-    case "RelatedPerson" : return org.hl7.fhir.r5.model.RelatedPerson.class.getSimpleName(); 
-    case "RequestGroup" : return org.hl7.fhir.r5.model.RequestGroup.class.getSimpleName(); 
-    case "ResearchStudy" : return org.hl7.fhir.r5.model.ResearchStudy.class.getSimpleName(); 
-    case "ResearchSubject" : return org.hl7.fhir.r5.model.ResearchSubject.class.getSimpleName(); 
-    case "RiskAssessment" : return org.hl7.fhir.r5.model.RiskAssessment.class.getSimpleName(); 
-    case "Schedule" : return org.hl7.fhir.r5.model.Schedule.class.getSimpleName(); 
-    case "SearchParameter" : return org.hl7.fhir.r5.model.SearchParameter.class.getSimpleName(); 
-    case "ServiceDefinition" : return null; 
-    case "ProcedureRequest" : return org.hl7.fhir.r5.model.ServiceRequest.class.getSimpleName(); 
-    case "Slot" : return org.hl7.fhir.r5.model.Slot.class.getSimpleName(); 
-    case "Specimen" : return org.hl7.fhir.r5.model.Specimen.class.getSimpleName(); 
-    case "StructureDefinition" : return org.hl7.fhir.r5.model.StructureDefinition.class.getSimpleName(); 
-    case "StructureMap" : return org.hl7.fhir.r5.model.StructureMap.class.getSimpleName(); 
-    case "Subscription" : return org.hl7.fhir.r5.model.Subscription.class.getSimpleName(); 
-    case "Substance" : return org.hl7.fhir.r5.model.Substance.class.getSimpleName(); 
-    case "SupplyDelivery" : return org.hl7.fhir.r5.model.SupplyDelivery.class.getSimpleName(); 
-    case "SupplyRequest" : return org.hl7.fhir.r5.model.SupplyRequest.class.getSimpleName(); 
-    case "Task" : return org.hl7.fhir.r5.model.Task.class.getSimpleName(); 
-    case "TestReport" : return org.hl7.fhir.r5.model.TestReport.class.getSimpleName(); 
-    case "TestScript" : return org.hl7.fhir.r5.model.TestScript.class.getSimpleName(); 
-    case "ValueSet" : return org.hl7.fhir.r5.model.ValueSet.class.getSimpleName(); 
-    case "VisionPrescription" : return org.hl7.fhir.r5.model.VisionPrescription.class.getSimpleName(); 
-    default: return null;
+      case "Account":
+        return org.hl7.fhir.r5.model.Account.class.getSimpleName();
+      case "ActivityDefinition":
+        return org.hl7.fhir.r5.model.ActivityDefinition.class.getSimpleName();
+      case "AdverseEvent":
+        return org.hl7.fhir.r5.model.AdverseEvent.class.getSimpleName();
+      case "AllergyIntolerance":
+        return org.hl7.fhir.r5.model.AllergyIntolerance.class.getSimpleName();
+      case "Appointment":
+        return org.hl7.fhir.r5.model.Appointment.class.getSimpleName();
+      case "AppointmentResponse":
+        return org.hl7.fhir.r5.model.AppointmentResponse.class.getSimpleName();
+      case "AuditEvent":
+        return org.hl7.fhir.r5.model.AuditEvent.class.getSimpleName();
+      case "Basic":
+        return org.hl7.fhir.r5.model.Basic.class.getSimpleName();
+      case "Binary":
+        return org.hl7.fhir.r5.model.Binary.class.getSimpleName();
+      case "BodySite":
+        return org.hl7.fhir.r5.model.BodyStructure.class.getSimpleName();
+      case "Bundle":
+        return org.hl7.fhir.r5.model.Bundle.class.getSimpleName();
+      case "CapabilityStatement":
+        return org.hl7.fhir.r5.model.CapabilityStatement.class.getSimpleName();
+      case "CarePlan":
+        return org.hl7.fhir.r5.model.CarePlan.class.getSimpleName();
+      case "CareTeam":
+        return org.hl7.fhir.r5.model.CareTeam.class.getSimpleName();
+      case "ChargeItem":
+        return org.hl7.fhir.r5.model.ChargeItem.class.getSimpleName();
+      case "Claim":
+        return org.hl7.fhir.r5.model.Claim.class.getSimpleName();
+      case "ClaimResponse":
+        return org.hl7.fhir.r5.model.ClaimResponse.class.getSimpleName();
+      case "ClinicalImpression":
+        return org.hl7.fhir.r5.model.ClinicalImpression.class.getSimpleName();
+      case "CodeSystem":
+        return org.hl7.fhir.r5.model.CodeSystem.class.getSimpleName();
+      case "Communication":
+        return org.hl7.fhir.r5.model.Communication.class.getSimpleName();
+      case "CommunicationRequest":
+        return org.hl7.fhir.r5.model.CommunicationRequest.class.getSimpleName();
+      case "CompartmentDefinition":
+        return org.hl7.fhir.r5.model.CompartmentDefinition.class.getSimpleName();
+      case "Composition":
+        return org.hl7.fhir.r5.model.Composition.class.getSimpleName();
+      case "ConceptMap":
+        return org.hl7.fhir.r5.model.ConceptMap.class.getSimpleName();
+      case "Condition":
+        return org.hl7.fhir.r5.model.Condition.class.getSimpleName();
+      case "Consent":
+        return org.hl7.fhir.r5.model.Consent.class.getSimpleName();
+      case "Contract":
+        return org.hl7.fhir.r5.model.Contract.class.getSimpleName();
+      case "Coverage":
+        return org.hl7.fhir.r5.model.Coverage.class.getSimpleName();
+      case "DataElement":
+        return org.hl7.fhir.r5.model.StructureDefinition.class.getSimpleName();
+      case "EligibilityRequest":
+        return org.hl7.fhir.r5.model.CoverageEligibilityRequest.class.getSimpleName();
+      case "EligibilityResponse":
+        return org.hl7.fhir.r5.model.CoverageEligibilityResponse.class.getSimpleName();
+      case "DetectedIssue":
+        return org.hl7.fhir.r5.model.DetectedIssue.class.getSimpleName();
+      case "Device":
+        return org.hl7.fhir.r5.model.Device.class.getSimpleName();
+      case "DeviceComponent":
+        return null;
+      case "DeviceMetric":
+        return org.hl7.fhir.r5.model.DeviceMetric.class.getSimpleName();
+      case "DeviceRequest":
+        return org.hl7.fhir.r5.model.DeviceRequest.class.getSimpleName();
+      case "DeviceUseStatement":
+        return org.hl7.fhir.r5.model.DeviceUsage.class.getSimpleName();
+      case "DiagnosticReport":
+        return org.hl7.fhir.r5.model.DiagnosticReport.class.getSimpleName();
+      case "DocumentManifest":
+        return org.hl7.fhir.r5.model.DocumentManifest.class.getSimpleName();
+      case "DocumentReference":
+        return org.hl7.fhir.r5.model.DocumentReference.class.getSimpleName();
+      case "Encounter":
+        return org.hl7.fhir.r5.model.Encounter.class.getSimpleName();
+      case "Endpoint":
+        return org.hl7.fhir.r5.model.Endpoint.class.getSimpleName();
+      case "EnrollmentRequest":
+        return org.hl7.fhir.r5.model.EnrollmentRequest.class.getSimpleName();
+      case "EnrollmentResponse":
+        return org.hl7.fhir.r5.model.EnrollmentResponse.class.getSimpleName();
+      case "EpisodeOfCare":
+        return org.hl7.fhir.r5.model.EpisodeOfCare.class.getSimpleName();
+      case "ExpansionProfile":
+        return org.hl7.fhir.r5.model.Parameters.class.getSimpleName();
+      case "ExplanationOfBenefit":
+        return org.hl7.fhir.r5.model.ExplanationOfBenefit.class.getSimpleName();
+      case "FamilyMemberHistory":
+        return org.hl7.fhir.r5.model.FamilyMemberHistory.class.getSimpleName();
+      case "Flag":
+        return org.hl7.fhir.r5.model.Flag.class.getSimpleName();
+      case "Goal":
+        return org.hl7.fhir.r5.model.Goal.class.getSimpleName();
+      case "GraphDefinition":
+        return org.hl7.fhir.r5.model.GraphDefinition.class.getSimpleName();
+      case "Group":
+        return org.hl7.fhir.r5.model.Group.class.getSimpleName();
+      case "GuidanceResponse":
+        return org.hl7.fhir.r5.model.GuidanceResponse.class.getSimpleName();
+      case "HealthcareService":
+        return org.hl7.fhir.r5.model.HealthcareService.class.getSimpleName();
+      case "ImagingManifest":
+        return null;
+      case "ImagingStudy":
+        return org.hl7.fhir.r5.model.ImagingStudy.class.getSimpleName();
+      case "Immunization":
+        return org.hl7.fhir.r5.model.Immunization.class.getSimpleName();
+      case "ImmunizationRecommendation":
+        return org.hl7.fhir.r5.model.ImmunizationRecommendation.class.getSimpleName();
+      case "ImplementationGuide":
+        return org.hl7.fhir.r5.model.ImplementationGuide.class.getSimpleName();
+      case "Library":
+        return org.hl7.fhir.r5.model.Library.class.getSimpleName();
+      case "Linkage":
+        return org.hl7.fhir.r5.model.Linkage.class.getSimpleName();
+      case "List":
+        return org.hl7.fhir.r5.model.ListResource.class.getSimpleName();
+      case "Location":
+        return org.hl7.fhir.r5.model.Location.class.getSimpleName();
+      case "Measure":
+        return org.hl7.fhir.r5.model.Measure.class.getSimpleName();
+      case "MeasureReport":
+        return org.hl7.fhir.r5.model.MeasureReport.class.getSimpleName();
+      case "Media":
+        return org.hl7.fhir.r5.model.DocumentReference.class.getSimpleName();
+      case "Medication":
+        return org.hl7.fhir.r5.model.Medication.class.getSimpleName();
+      case "MedicationAdministration":
+        return org.hl7.fhir.r5.model.MedicationAdministration.class.getSimpleName();
+      case "MedicationDispense":
+        return org.hl7.fhir.r5.model.MedicationDispense.class.getSimpleName();
+      case "MedicationRequest":
+        return org.hl7.fhir.r5.model.MedicationRequest.class.getSimpleName();
+      case "MedicationStatement":
+        return org.hl7.fhir.r5.model.MedicationUsage.class.getSimpleName();
+      case "MessageDefinition":
+        return org.hl7.fhir.r5.model.MessageDefinition.class.getSimpleName();
+      case "MessageHeader":
+        return org.hl7.fhir.r5.model.MessageHeader.class.getSimpleName();
+      case "Sequence":
+        return org.hl7.fhir.r5.model.MolecularSequence.class.getSimpleName();
+      case "NamingSystem":
+        return org.hl7.fhir.r5.model.NamingSystem.class.getSimpleName();
+      case "NutritionOrder":
+        return org.hl7.fhir.r5.model.NutritionOrder.class.getSimpleName();
+      case "Observation":
+        return org.hl7.fhir.r5.model.Observation.class.getSimpleName();
+      case "OperationDefinition":
+        return org.hl7.fhir.r5.model.OperationDefinition.class.getSimpleName();
+      case "OperationOutcome":
+        return org.hl7.fhir.r5.model.OperationOutcome.class.getSimpleName();
+      case "Organization":
+        return org.hl7.fhir.r5.model.Organization.class.getSimpleName();
+      case "Parameters":
+        return org.hl7.fhir.r5.model.Parameters.class.getSimpleName();
+      case "Patient":
+        return org.hl7.fhir.r5.model.Patient.class.getSimpleName();
+      case "PaymentNotice":
+        return org.hl7.fhir.r5.model.PaymentNotice.class.getSimpleName();
+      case "PaymentReconciliation":
+        return org.hl7.fhir.r5.model.PaymentReconciliation.class.getSimpleName();
+      case "Person":
+        return org.hl7.fhir.r5.model.Person.class.getSimpleName();
+      case "PlanDefinition":
+        return org.hl7.fhir.r5.model.PlanDefinition.class.getSimpleName();
+      case "Practitioner":
+        return org.hl7.fhir.r5.model.Practitioner.class.getSimpleName();
+      case "PractitionerRole":
+        return org.hl7.fhir.r5.model.PractitionerRole.class.getSimpleName();
+      case "Procedure":
+        return org.hl7.fhir.r5.model.Procedure.class.getSimpleName();
+      case "ProcessRequest":
+        return org.hl7.fhir.r5.model.Task.class.getSimpleName();
+      case "ProcessResponse":
+        return org.hl7.fhir.r5.model.Task.class.getSimpleName();
+      case "Provenance":
+        return org.hl7.fhir.r5.model.Provenance.class.getSimpleName();
+      case "Questionnaire":
+        return org.hl7.fhir.r5.model.Questionnaire.class.getSimpleName();
+      case "QuestionnaireResponse":
+        return org.hl7.fhir.r5.model.QuestionnaireResponse.class.getSimpleName();
+      case "ReferralRequest":
+        return org.hl7.fhir.r5.model.ServiceRequest.class.getSimpleName();
+      case "RelatedPerson":
+        return org.hl7.fhir.r5.model.RelatedPerson.class.getSimpleName();
+      case "RequestGroup":
+        return org.hl7.fhir.r5.model.RequestGroup.class.getSimpleName();
+      case "ResearchStudy":
+        return org.hl7.fhir.r5.model.ResearchStudy.class.getSimpleName();
+      case "ResearchSubject":
+        return org.hl7.fhir.r5.model.ResearchSubject.class.getSimpleName();
+      case "RiskAssessment":
+        return org.hl7.fhir.r5.model.RiskAssessment.class.getSimpleName();
+      case "Schedule":
+        return org.hl7.fhir.r5.model.Schedule.class.getSimpleName();
+      case "SearchParameter":
+        return org.hl7.fhir.r5.model.SearchParameter.class.getSimpleName();
+      case "ServiceDefinition":
+        return null;
+      case "ProcedureRequest":
+        return org.hl7.fhir.r5.model.ServiceRequest.class.getSimpleName();
+      case "Slot":
+        return org.hl7.fhir.r5.model.Slot.class.getSimpleName();
+      case "Specimen":
+        return org.hl7.fhir.r5.model.Specimen.class.getSimpleName();
+      case "StructureDefinition":
+        return org.hl7.fhir.r5.model.StructureDefinition.class.getSimpleName();
+      case "StructureMap":
+        return org.hl7.fhir.r5.model.StructureMap.class.getSimpleName();
+      case "Subscription":
+        return org.hl7.fhir.r5.model.Subscription.class.getSimpleName();
+      case "Substance":
+        return org.hl7.fhir.r5.model.Substance.class.getSimpleName();
+      case "SupplyDelivery":
+        return org.hl7.fhir.r5.model.SupplyDelivery.class.getSimpleName();
+      case "SupplyRequest":
+        return org.hl7.fhir.r5.model.SupplyRequest.class.getSimpleName();
+      case "Task":
+        return org.hl7.fhir.r5.model.Task.class.getSimpleName();
+      case "TestReport":
+        return org.hl7.fhir.r5.model.TestReport.class.getSimpleName();
+      case "TestScript":
+        return org.hl7.fhir.r5.model.TestScript.class.getSimpleName();
+      case "ValueSet":
+        return org.hl7.fhir.r5.model.ValueSet.class.getSimpleName();
+      case "VisionPrescription":
+        return org.hl7.fhir.r5.model.VisionPrescription.class.getSimpleName();
+      default:
+        return null;
     }
   }
 
   public static String mapName5to3(String name) {
-    if (Utilities.noString(name)) { return null; } 
+    if (Utilities.noString(name)) {
+      return null;
+    }
     switch (name) {
-    case "Account" : return org.hl7.fhir.dstu3.model.Account.class.getSimpleName(); 
-    case "ActivityDefinition" : return org.hl7.fhir.dstu3.model.ActivityDefinition.class.getSimpleName(); 
-    case "AdverseEvent" : return org.hl7.fhir.dstu3.model.AdverseEvent.class.getSimpleName(); 
-    case "AllergyIntolerance" : return org.hl7.fhir.dstu3.model.AllergyIntolerance.class.getSimpleName(); 
-    case "Appointment" : return org.hl7.fhir.dstu3.model.Appointment.class.getSimpleName(); 
-    case "AppointmentResponse" : return org.hl7.fhir.dstu3.model.AppointmentResponse.class.getSimpleName(); 
-    case "AuditEvent" : return org.hl7.fhir.dstu3.model.AuditEvent.class.getSimpleName(); 
-    case "Basic" : return org.hl7.fhir.dstu3.model.Basic.class.getSimpleName(); 
-    case "Binary" : return org.hl7.fhir.dstu3.model.Binary.class.getSimpleName(); 
-    case "BiologicallyDerivedProduct" : return null; 
-    case "BodyStructure" : return org.hl7.fhir.dstu3.model.BodySite.class.getSimpleName(); 
-    case "Bundle" : return org.hl7.fhir.dstu3.model.Bundle.class.getSimpleName(); 
-    case "CapabilityStatement" : return org.hl7.fhir.dstu3.model.CapabilityStatement.class.getSimpleName(); 
-    case "CarePlan" : return org.hl7.fhir.dstu3.model.CarePlan.class.getSimpleName(); 
-    case "CareTeam" : return org.hl7.fhir.dstu3.model.CareTeam.class.getSimpleName(); 
-    case "CatalogEntry" : return null; 
-    case "ChargeItem" : return org.hl7.fhir.dstu3.model.ChargeItem.class.getSimpleName(); 
-    case "ChargeItemDefinition" : return null; 
-    case "Claim" : return org.hl7.fhir.dstu3.model.Claim.class.getSimpleName(); 
-    case "ClaimResponse" : return org.hl7.fhir.dstu3.model.ClaimResponse.class.getSimpleName(); 
-    case "ClinicalImpression" : return org.hl7.fhir.dstu3.model.ClinicalImpression.class.getSimpleName(); 
-    case "CodeSystem" : return org.hl7.fhir.dstu3.model.CodeSystem.class.getSimpleName(); 
-    case "Communication" : return org.hl7.fhir.dstu3.model.Communication.class.getSimpleName(); 
-    case "CommunicationRequest" : return org.hl7.fhir.dstu3.model.CommunicationRequest.class.getSimpleName(); 
-    case "CompartmentDefinition" : return org.hl7.fhir.dstu3.model.CompartmentDefinition.class.getSimpleName(); 
-    case "Composition" : return org.hl7.fhir.dstu3.model.Composition.class.getSimpleName(); 
-    case "ConceptMap" : return org.hl7.fhir.dstu3.model.ConceptMap.class.getSimpleName(); 
-    case "Condition" : return org.hl7.fhir.dstu3.model.Condition.class.getSimpleName(); 
-    case "Consent" : return org.hl7.fhir.dstu3.model.Consent.class.getSimpleName(); 
-    case "Contract" : return org.hl7.fhir.dstu3.model.Contract.class.getSimpleName(); 
-    case "Coverage" : return org.hl7.fhir.dstu3.model.Coverage.class.getSimpleName(); 
-    case "CoverageEligibilityRequest" : return org.hl7.fhir.dstu3.model.EligibilityRequest.class.getSimpleName(); 
-    case "CoverageEligibilityResponse" : return org.hl7.fhir.dstu3.model.EligibilityResponse.class.getSimpleName(); 
-    case "DetectedIssue" : return org.hl7.fhir.dstu3.model.DetectedIssue.class.getSimpleName(); 
-    case "Device" : return org.hl7.fhir.dstu3.model.Device.class.getSimpleName(); 
-    case "DeviceDefinition" : return null; 
-    case "DeviceMetric" : return org.hl7.fhir.dstu3.model.DeviceMetric.class.getSimpleName(); 
-    case "DeviceRequest" : return org.hl7.fhir.dstu3.model.DeviceRequest.class.getSimpleName(); 
-    case "DeviceUsage" : return org.hl7.fhir.dstu3.model.DeviceUseStatement.class.getSimpleName(); 
-    case "DiagnosticReport" : return org.hl7.fhir.dstu3.model.DiagnosticReport.class.getSimpleName(); 
-    case "DocumentManifest" : return org.hl7.fhir.dstu3.model.DocumentManifest.class.getSimpleName(); 
-    case "DocumentReference" : return org.hl7.fhir.dstu3.model.DocumentReference.class.getSimpleName(); 
-    case "Encounter" : return org.hl7.fhir.dstu3.model.Encounter.class.getSimpleName(); 
-    case "Endpoint" : return org.hl7.fhir.dstu3.model.Endpoint.class.getSimpleName(); 
-    case "EnrollmentRequest" : return org.hl7.fhir.dstu3.model.EnrollmentRequest.class.getSimpleName(); 
-    case "EnrollmentResponse" : return org.hl7.fhir.dstu3.model.EnrollmentResponse.class.getSimpleName(); 
-    case "EpisodeOfCare" : return org.hl7.fhir.dstu3.model.EpisodeOfCare.class.getSimpleName(); 
-    case "EventDefinition" : return null; 
-    case "ExampleScenario" : return null; 
-    case "ExplanationOfBenefit" : return org.hl7.fhir.dstu3.model.ExplanationOfBenefit.class.getSimpleName(); 
-    case "FamilyMemberHistory" : return org.hl7.fhir.dstu3.model.FamilyMemberHistory.class.getSimpleName(); 
-    case "Flag" : return org.hl7.fhir.dstu3.model.Flag.class.getSimpleName(); 
-    case "Goal" : return org.hl7.fhir.dstu3.model.Goal.class.getSimpleName(); 
-    case "GraphDefinition" : return org.hl7.fhir.dstu3.model.GraphDefinition.class.getSimpleName(); 
-    case "Group" : return org.hl7.fhir.dstu3.model.Group.class.getSimpleName(); 
-    case "GuidanceResponse" : return org.hl7.fhir.dstu3.model.GuidanceResponse.class.getSimpleName(); 
-    case "HealthcareService" : return org.hl7.fhir.dstu3.model.HealthcareService.class.getSimpleName(); 
-    case "ImagingStudy" : return org.hl7.fhir.dstu3.model.ImagingStudy.class.getSimpleName(); 
-    case "Immunization" : return org.hl7.fhir.dstu3.model.Immunization.class.getSimpleName(); 
-    case "ImmunizationEvaluation" : return null; 
-    case "ImmunizationRecommendation" : return org.hl7.fhir.dstu3.model.ImmunizationRecommendation.class.getSimpleName(); 
-    case "ImplementationGuide" : return org.hl7.fhir.dstu3.model.ImplementationGuide.class.getSimpleName(); 
-    case "InsurancePlan" : return null; 
-    case "Invoice" : return null; 
-    case "Library" : return org.hl7.fhir.dstu3.model.Library.class.getSimpleName(); 
-    case "Linkage" : return org.hl7.fhir.dstu3.model.Linkage.class.getSimpleName(); 
-    case "List" : return org.hl7.fhir.dstu3.model.ListResource.class.getSimpleName(); 
-    case "Location" : return org.hl7.fhir.dstu3.model.Location.class.getSimpleName(); 
-    case "Measure" : return org.hl7.fhir.dstu3.model.Measure.class.getSimpleName(); 
-    case "MeasureReport" : return org.hl7.fhir.dstu3.model.MeasureReport.class.getSimpleName(); 
-    case "Medication" : return org.hl7.fhir.dstu3.model.Medication.class.getSimpleName(); 
-    case "MedicationAdministration" : return org.hl7.fhir.dstu3.model.MedicationAdministration.class.getSimpleName(); 
-    case "MedicationDispense" : return org.hl7.fhir.dstu3.model.MedicationDispense.class.getSimpleName(); 
-    case "MedicationKnowledge" : return null; 
-    case "MedicationRequest" : return org.hl7.fhir.dstu3.model.MedicationRequest.class.getSimpleName(); 
-    case "MedicationUsage" : return org.hl7.fhir.dstu3.model.MedicationStatement.class.getSimpleName(); 
-    case "MessageDefinition" : return org.hl7.fhir.dstu3.model.MessageDefinition.class.getSimpleName(); 
-    case "MessageHeader" : return org.hl7.fhir.dstu3.model.MessageHeader.class.getSimpleName(); 
-    case "MolecularSequence" : return org.hl7.fhir.dstu3.model.Sequence.class.getSimpleName(); 
-    case "NamingSystem" : return org.hl7.fhir.dstu3.model.NamingSystem.class.getSimpleName(); 
-    case "NutritionOrder" : return org.hl7.fhir.dstu3.model.NutritionOrder.class.getSimpleName(); 
-    case "Observation" : return org.hl7.fhir.dstu3.model.Observation.class.getSimpleName(); 
-    case "ObservationDefinition" : return null; 
-    case "OperationDefinition" : return org.hl7.fhir.dstu3.model.OperationDefinition.class.getSimpleName(); 
-    case "OperationOutcome" : return org.hl7.fhir.dstu3.model.OperationOutcome.class.getSimpleName(); 
-    case "Organization" : return org.hl7.fhir.dstu3.model.Organization.class.getSimpleName(); 
-    case "OrganizationAffiliation" : return null; 
-    case "Parameters" : return org.hl7.fhir.dstu3.model.Parameters.class.getSimpleName(); 
-    case "Patient" : return org.hl7.fhir.dstu3.model.Patient.class.getSimpleName(); 
-    case "PaymentNotice" : return org.hl7.fhir.dstu3.model.PaymentNotice.class.getSimpleName(); 
-    case "PaymentReconciliation" : return org.hl7.fhir.dstu3.model.PaymentReconciliation.class.getSimpleName(); 
-    case "Person" : return org.hl7.fhir.dstu3.model.Person.class.getSimpleName(); 
-    case "PlanDefinition" : return org.hl7.fhir.dstu3.model.PlanDefinition.class.getSimpleName(); 
-    case "Practitioner" : return org.hl7.fhir.dstu3.model.Practitioner.class.getSimpleName(); 
-    case "PractitionerRole" : return org.hl7.fhir.dstu3.model.PractitionerRole.class.getSimpleName(); 
-    case "Procedure" : return org.hl7.fhir.dstu3.model.Procedure.class.getSimpleName(); 
-    case "Provenance" : return org.hl7.fhir.dstu3.model.Provenance.class.getSimpleName(); 
-    case "Questionnaire" : return org.hl7.fhir.dstu3.model.Questionnaire.class.getSimpleName(); 
-    case "QuestionnaireResponse" : return org.hl7.fhir.dstu3.model.QuestionnaireResponse.class.getSimpleName(); 
-    case "RelatedPerson" : return org.hl7.fhir.dstu3.model.RelatedPerson.class.getSimpleName(); 
-    case "RequestGroup" : return org.hl7.fhir.dstu3.model.RequestGroup.class.getSimpleName(); 
-    case "ResearchStudy" : return org.hl7.fhir.dstu3.model.ResearchStudy.class.getSimpleName(); 
-    case "ResearchSubject" : return org.hl7.fhir.dstu3.model.ResearchSubject.class.getSimpleName(); 
-    case "RiskAssessment" : return org.hl7.fhir.dstu3.model.RiskAssessment.class.getSimpleName(); 
-    case "Schedule" : return org.hl7.fhir.dstu3.model.Schedule.class.getSimpleName(); 
-    case "SearchParameter" : return org.hl7.fhir.dstu3.model.SearchParameter.class.getSimpleName(); 
-    case "ServiceRequest" : return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getSimpleName(); 
-    // case "ServiceRequest" : return org.hl7.fhir.dstu3.model.ReferralRequest.class.getSimpleName(); 
-    case "Slot" : return org.hl7.fhir.dstu3.model.Slot.class.getSimpleName(); 
-    case "Specimen" : return org.hl7.fhir.dstu3.model.Specimen.class.getSimpleName(); 
-    case "SpecimenDefinition" : return null; 
-    case "StructureDefinition" : return org.hl7.fhir.dstu3.model.StructureDefinition.class.getSimpleName(); 
-    // case "StructureDefinition" : return org.hl7.fhir.dstu3.model.DataElement.class.getSimpleName(); 
-    case "StructureMap" : return org.hl7.fhir.dstu3.model.StructureMap.class.getSimpleName(); 
-    case "Subscription" : return org.hl7.fhir.dstu3.model.Subscription.class.getSimpleName(); 
-    case "Substance" : return org.hl7.fhir.dstu3.model.Substance.class.getSimpleName(); 
-    case "SubstancePolymer" : return null; 
-    case "SubstanceReferenceInformation" : return null; 
-    case "SupplyDelivery" : return org.hl7.fhir.dstu3.model.SupplyDelivery.class.getSimpleName(); 
-    case "SupplyRequest" : return org.hl7.fhir.dstu3.model.SupplyRequest.class.getSimpleName(); 
-    case "Task" : return org.hl7.fhir.dstu3.model.Task.class.getSimpleName(); 
-    case "TerminologyCapabilities" : return null; 
-    case "TestReport" : return org.hl7.fhir.dstu3.model.TestReport.class.getSimpleName(); 
-    case "TestScript" : return org.hl7.fhir.dstu3.model.TestScript.class.getSimpleName(); 
-    case "ValueSet" : return org.hl7.fhir.dstu3.model.ValueSet.class.getSimpleName(); 
-    case "VerificationResult" : return null; 
-    case "VisionPrescription" : return org.hl7.fhir.dstu3.model.VisionPrescription.class.getSimpleName(); 
-    default: return null;
+      case "Account":
+        return org.hl7.fhir.dstu3.model.Account.class.getSimpleName();
+      case "ActivityDefinition":
+        return org.hl7.fhir.dstu3.model.ActivityDefinition.class.getSimpleName();
+      case "AdverseEvent":
+        return org.hl7.fhir.dstu3.model.AdverseEvent.class.getSimpleName();
+      case "AllergyIntolerance":
+        return org.hl7.fhir.dstu3.model.AllergyIntolerance.class.getSimpleName();
+      case "Appointment":
+        return org.hl7.fhir.dstu3.model.Appointment.class.getSimpleName();
+      case "AppointmentResponse":
+        return org.hl7.fhir.dstu3.model.AppointmentResponse.class.getSimpleName();
+      case "AuditEvent":
+        return org.hl7.fhir.dstu3.model.AuditEvent.class.getSimpleName();
+      case "Basic":
+        return org.hl7.fhir.dstu3.model.Basic.class.getSimpleName();
+      case "Binary":
+        return org.hl7.fhir.dstu3.model.Binary.class.getSimpleName();
+      case "BiologicallyDerivedProduct":
+        return null;
+      case "BodyStructure":
+        return org.hl7.fhir.dstu3.model.BodySite.class.getSimpleName();
+      case "Bundle":
+        return org.hl7.fhir.dstu3.model.Bundle.class.getSimpleName();
+      case "CapabilityStatement":
+        return org.hl7.fhir.dstu3.model.CapabilityStatement.class.getSimpleName();
+      case "CarePlan":
+        return org.hl7.fhir.dstu3.model.CarePlan.class.getSimpleName();
+      case "CareTeam":
+        return org.hl7.fhir.dstu3.model.CareTeam.class.getSimpleName();
+      case "CatalogEntry":
+        return null;
+      case "ChargeItem":
+        return org.hl7.fhir.dstu3.model.ChargeItem.class.getSimpleName();
+      case "ChargeItemDefinition":
+        return null;
+      case "Claim":
+        return org.hl7.fhir.dstu3.model.Claim.class.getSimpleName();
+      case "ClaimResponse":
+        return org.hl7.fhir.dstu3.model.ClaimResponse.class.getSimpleName();
+      case "ClinicalImpression":
+        return org.hl7.fhir.dstu3.model.ClinicalImpression.class.getSimpleName();
+      case "CodeSystem":
+        return org.hl7.fhir.dstu3.model.CodeSystem.class.getSimpleName();
+      case "Communication":
+        return org.hl7.fhir.dstu3.model.Communication.class.getSimpleName();
+      case "CommunicationRequest":
+        return org.hl7.fhir.dstu3.model.CommunicationRequest.class.getSimpleName();
+      case "CompartmentDefinition":
+        return org.hl7.fhir.dstu3.model.CompartmentDefinition.class.getSimpleName();
+      case "Composition":
+        return org.hl7.fhir.dstu3.model.Composition.class.getSimpleName();
+      case "ConceptMap":
+        return org.hl7.fhir.dstu3.model.ConceptMap.class.getSimpleName();
+      case "Condition":
+        return org.hl7.fhir.dstu3.model.Condition.class.getSimpleName();
+      case "Consent":
+        return org.hl7.fhir.dstu3.model.Consent.class.getSimpleName();
+      case "Contract":
+        return org.hl7.fhir.dstu3.model.Contract.class.getSimpleName();
+      case "Coverage":
+        return org.hl7.fhir.dstu3.model.Coverage.class.getSimpleName();
+      case "CoverageEligibilityRequest":
+        return org.hl7.fhir.dstu3.model.EligibilityRequest.class.getSimpleName();
+      case "CoverageEligibilityResponse":
+        return org.hl7.fhir.dstu3.model.EligibilityResponse.class.getSimpleName();
+      case "DetectedIssue":
+        return org.hl7.fhir.dstu3.model.DetectedIssue.class.getSimpleName();
+      case "Device":
+        return org.hl7.fhir.dstu3.model.Device.class.getSimpleName();
+      case "DeviceDefinition":
+        return null;
+      case "DeviceMetric":
+        return org.hl7.fhir.dstu3.model.DeviceMetric.class.getSimpleName();
+      case "DeviceRequest":
+        return org.hl7.fhir.dstu3.model.DeviceRequest.class.getSimpleName();
+      case "DeviceUsage":
+        return org.hl7.fhir.dstu3.model.DeviceUseStatement.class.getSimpleName();
+      case "DiagnosticReport":
+        return org.hl7.fhir.dstu3.model.DiagnosticReport.class.getSimpleName();
+      case "DocumentManifest":
+        return org.hl7.fhir.dstu3.model.DocumentManifest.class.getSimpleName();
+      case "DocumentReference":
+        return org.hl7.fhir.dstu3.model.DocumentReference.class.getSimpleName();
+      case "Encounter":
+        return org.hl7.fhir.dstu3.model.Encounter.class.getSimpleName();
+      case "Endpoint":
+        return org.hl7.fhir.dstu3.model.Endpoint.class.getSimpleName();
+      case "EnrollmentRequest":
+        return org.hl7.fhir.dstu3.model.EnrollmentRequest.class.getSimpleName();
+      case "EnrollmentResponse":
+        return org.hl7.fhir.dstu3.model.EnrollmentResponse.class.getSimpleName();
+      case "EpisodeOfCare":
+        return org.hl7.fhir.dstu3.model.EpisodeOfCare.class.getSimpleName();
+      case "EventDefinition":
+        return null;
+      case "ExampleScenario":
+        return null;
+      case "ExplanationOfBenefit":
+        return org.hl7.fhir.dstu3.model.ExplanationOfBenefit.class.getSimpleName();
+      case "FamilyMemberHistory":
+        return org.hl7.fhir.dstu3.model.FamilyMemberHistory.class.getSimpleName();
+      case "Flag":
+        return org.hl7.fhir.dstu3.model.Flag.class.getSimpleName();
+      case "Goal":
+        return org.hl7.fhir.dstu3.model.Goal.class.getSimpleName();
+      case "GraphDefinition":
+        return org.hl7.fhir.dstu3.model.GraphDefinition.class.getSimpleName();
+      case "Group":
+        return org.hl7.fhir.dstu3.model.Group.class.getSimpleName();
+      case "GuidanceResponse":
+        return org.hl7.fhir.dstu3.model.GuidanceResponse.class.getSimpleName();
+      case "HealthcareService":
+        return org.hl7.fhir.dstu3.model.HealthcareService.class.getSimpleName();
+      case "ImagingStudy":
+        return org.hl7.fhir.dstu3.model.ImagingStudy.class.getSimpleName();
+      case "Immunization":
+        return org.hl7.fhir.dstu3.model.Immunization.class.getSimpleName();
+      case "ImmunizationEvaluation":
+        return null;
+      case "ImmunizationRecommendation":
+        return org.hl7.fhir.dstu3.model.ImmunizationRecommendation.class.getSimpleName();
+      case "ImplementationGuide":
+        return org.hl7.fhir.dstu3.model.ImplementationGuide.class.getSimpleName();
+      case "InsurancePlan":
+        return null;
+      case "Invoice":
+        return null;
+      case "Library":
+        return org.hl7.fhir.dstu3.model.Library.class.getSimpleName();
+      case "Linkage":
+        return org.hl7.fhir.dstu3.model.Linkage.class.getSimpleName();
+      case "List":
+        return org.hl7.fhir.dstu3.model.ListResource.class.getSimpleName();
+      case "Location":
+        return org.hl7.fhir.dstu3.model.Location.class.getSimpleName();
+      case "Measure":
+        return org.hl7.fhir.dstu3.model.Measure.class.getSimpleName();
+      case "MeasureReport":
+        return org.hl7.fhir.dstu3.model.MeasureReport.class.getSimpleName();
+      case "Medication":
+        return org.hl7.fhir.dstu3.model.Medication.class.getSimpleName();
+      case "MedicationAdministration":
+        return org.hl7.fhir.dstu3.model.MedicationAdministration.class.getSimpleName();
+      case "MedicationDispense":
+        return org.hl7.fhir.dstu3.model.MedicationDispense.class.getSimpleName();
+      case "MedicationKnowledge":
+        return null;
+      case "MedicationRequest":
+        return org.hl7.fhir.dstu3.model.MedicationRequest.class.getSimpleName();
+      case "MedicationUsage":
+        return org.hl7.fhir.dstu3.model.MedicationStatement.class.getSimpleName();
+      case "MessageDefinition":
+        return org.hl7.fhir.dstu3.model.MessageDefinition.class.getSimpleName();
+      case "MessageHeader":
+        return org.hl7.fhir.dstu3.model.MessageHeader.class.getSimpleName();
+      case "MolecularSequence":
+        return org.hl7.fhir.dstu3.model.Sequence.class.getSimpleName();
+      case "NamingSystem":
+        return org.hl7.fhir.dstu3.model.NamingSystem.class.getSimpleName();
+      case "NutritionOrder":
+        return org.hl7.fhir.dstu3.model.NutritionOrder.class.getSimpleName();
+      case "Observation":
+        return org.hl7.fhir.dstu3.model.Observation.class.getSimpleName();
+      case "ObservationDefinition":
+        return null;
+      case "OperationDefinition":
+        return org.hl7.fhir.dstu3.model.OperationDefinition.class.getSimpleName();
+      case "OperationOutcome":
+        return org.hl7.fhir.dstu3.model.OperationOutcome.class.getSimpleName();
+      case "Organization":
+        return org.hl7.fhir.dstu3.model.Organization.class.getSimpleName();
+      case "OrganizationAffiliation":
+        return null;
+      case "Parameters":
+        return org.hl7.fhir.dstu3.model.Parameters.class.getSimpleName();
+      case "Patient":
+        return org.hl7.fhir.dstu3.model.Patient.class.getSimpleName();
+      case "PaymentNotice":
+        return org.hl7.fhir.dstu3.model.PaymentNotice.class.getSimpleName();
+      case "PaymentReconciliation":
+        return org.hl7.fhir.dstu3.model.PaymentReconciliation.class.getSimpleName();
+      case "Person":
+        return org.hl7.fhir.dstu3.model.Person.class.getSimpleName();
+      case "PlanDefinition":
+        return org.hl7.fhir.dstu3.model.PlanDefinition.class.getSimpleName();
+      case "Practitioner":
+        return org.hl7.fhir.dstu3.model.Practitioner.class.getSimpleName();
+      case "PractitionerRole":
+        return org.hl7.fhir.dstu3.model.PractitionerRole.class.getSimpleName();
+      case "Procedure":
+        return org.hl7.fhir.dstu3.model.Procedure.class.getSimpleName();
+      case "Provenance":
+        return org.hl7.fhir.dstu3.model.Provenance.class.getSimpleName();
+      case "Questionnaire":
+        return org.hl7.fhir.dstu3.model.Questionnaire.class.getSimpleName();
+      case "QuestionnaireResponse":
+        return org.hl7.fhir.dstu3.model.QuestionnaireResponse.class.getSimpleName();
+      case "RelatedPerson":
+        return org.hl7.fhir.dstu3.model.RelatedPerson.class.getSimpleName();
+      case "RequestGroup":
+        return org.hl7.fhir.dstu3.model.RequestGroup.class.getSimpleName();
+      case "ResearchStudy":
+        return org.hl7.fhir.dstu3.model.ResearchStudy.class.getSimpleName();
+      case "ResearchSubject":
+        return org.hl7.fhir.dstu3.model.ResearchSubject.class.getSimpleName();
+      case "RiskAssessment":
+        return org.hl7.fhir.dstu3.model.RiskAssessment.class.getSimpleName();
+      case "Schedule":
+        return org.hl7.fhir.dstu3.model.Schedule.class.getSimpleName();
+      case "SearchParameter":
+        return org.hl7.fhir.dstu3.model.SearchParameter.class.getSimpleName();
+      case "ServiceRequest":
+        return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getSimpleName();
+      // case "ServiceRequest" : return org.hl7.fhir.dstu3.model.ReferralRequest.class.getSimpleName();
+      case "Slot":
+        return org.hl7.fhir.dstu3.model.Slot.class.getSimpleName();
+      case "Specimen":
+        return org.hl7.fhir.dstu3.model.Specimen.class.getSimpleName();
+      case "SpecimenDefinition":
+        return null;
+      case "StructureDefinition":
+        return org.hl7.fhir.dstu3.model.StructureDefinition.class.getSimpleName();
+      // case "StructureDefinition" : return org.hl7.fhir.dstu3.model.DataElement.class.getSimpleName();
+      case "StructureMap":
+        return org.hl7.fhir.dstu3.model.StructureMap.class.getSimpleName();
+      case "Subscription":
+        return org.hl7.fhir.dstu3.model.Subscription.class.getSimpleName();
+      case "Substance":
+        return org.hl7.fhir.dstu3.model.Substance.class.getSimpleName();
+      case "SubstancePolymer":
+        return null;
+      case "SubstanceReferenceInformation":
+        return null;
+      case "SupplyDelivery":
+        return org.hl7.fhir.dstu3.model.SupplyDelivery.class.getSimpleName();
+      case "SupplyRequest":
+        return org.hl7.fhir.dstu3.model.SupplyRequest.class.getSimpleName();
+      case "Task":
+        return org.hl7.fhir.dstu3.model.Task.class.getSimpleName();
+      case "TerminologyCapabilities":
+        return null;
+      case "TestReport":
+        return org.hl7.fhir.dstu3.model.TestReport.class.getSimpleName();
+      case "TestScript":
+        return org.hl7.fhir.dstu3.model.TestScript.class.getSimpleName();
+      case "ValueSet":
+        return org.hl7.fhir.dstu3.model.ValueSet.class.getSimpleName();
+      case "VerificationResult":
+        return null;
+      case "VisionPrescription":
+        return org.hl7.fhir.dstu3.model.VisionPrescription.class.getSimpleName();
+      default:
+        return null;
     }
   }
 
 
   public static String mapName3to4(String name) {
-    if (Utilities.noString(name)) { return null; } 
+    if (Utilities.noString(name)) {
+      return null;
+    }
     switch (name) {
-    case "Account" : return org.hl7.fhir.r4.model.Account.class.getSimpleName(); 
-    case "ActivityDefinition" : return org.hl7.fhir.r4.model.ActivityDefinition.class.getSimpleName(); 
-    case "AdverseEvent" : return org.hl7.fhir.r4.model.AdverseEvent.class.getSimpleName(); 
-    case "AllergyIntolerance" : return org.hl7.fhir.r4.model.AllergyIntolerance.class.getSimpleName(); 
-    case "Appointment" : return org.hl7.fhir.r4.model.Appointment.class.getSimpleName(); 
-    case "AppointmentResponse" : return org.hl7.fhir.r4.model.AppointmentResponse.class.getSimpleName(); 
-    case "AuditEvent" : return org.hl7.fhir.r4.model.AuditEvent.class.getSimpleName(); 
-    case "Basic" : return org.hl7.fhir.r4.model.Basic.class.getSimpleName(); 
-    case "Binary" : return org.hl7.fhir.r4.model.Binary.class.getSimpleName(); 
-    case "BodySite" : return org.hl7.fhir.r4.model.BodyStructure.class.getSimpleName(); 
-    case "Bundle" : return org.hl7.fhir.r4.model.Bundle.class.getSimpleName(); 
-    case "CapabilityStatement" : return org.hl7.fhir.r4.model.CapabilityStatement.class.getSimpleName(); 
-    case "CarePlan" : return org.hl7.fhir.r4.model.CarePlan.class.getSimpleName(); 
-    case "CareTeam" : return org.hl7.fhir.r4.model.CareTeam.class.getSimpleName(); 
-    case "ChargeItem" : return org.hl7.fhir.r4.model.ChargeItem.class.getSimpleName(); 
-    case "Claim" : return org.hl7.fhir.r4.model.Claim.class.getSimpleName(); 
-    case "ClaimResponse" : return org.hl7.fhir.r4.model.ClaimResponse.class.getSimpleName(); 
-    case "ClinicalImpression" : return org.hl7.fhir.r4.model.ClinicalImpression.class.getSimpleName(); 
-    case "CodeSystem" : return org.hl7.fhir.r4.model.CodeSystem.class.getSimpleName(); 
-    case "Communication" : return org.hl7.fhir.r4.model.Communication.class.getSimpleName(); 
-    case "CommunicationRequest" : return org.hl7.fhir.r4.model.CommunicationRequest.class.getSimpleName(); 
-    case "CompartmentDefinition" : return org.hl7.fhir.r4.model.CompartmentDefinition.class.getSimpleName(); 
-    case "Composition" : return org.hl7.fhir.r4.model.Composition.class.getSimpleName(); 
-    case "ConceptMap" : return org.hl7.fhir.r4.model.ConceptMap.class.getSimpleName(); 
-    case "Condition" : return org.hl7.fhir.r4.model.Condition.class.getSimpleName(); 
-    case "Consent" : return org.hl7.fhir.r4.model.Consent.class.getSimpleName(); 
-    case "Contract" : return org.hl7.fhir.r4.model.Contract.class.getSimpleName(); 
-    case "Coverage" : return org.hl7.fhir.r4.model.Coverage.class.getSimpleName(); 
-    case "DataElement" : return org.hl7.fhir.r4.model. StructureDefinition.class.getSimpleName(); 
-    case "EligibilityRequest" : return org.hl7.fhir.r4.model.CoverageEligibilityRequest.class.getSimpleName(); 
-    case "EligibilityResponse" : return org.hl7.fhir.r4.model.CoverageEligibilityResponse.class.getSimpleName(); 
-    case "DetectedIssue" : return org.hl7.fhir.r4.model.DetectedIssue.class.getSimpleName(); 
-    case "Device" : return org.hl7.fhir.r4.model.Device.class.getSimpleName(); 
-    case "DeviceComponent" : return null; 
-    case "DeviceMetric" : return null; 
-    case "DeviceRequest" : return org.hl7.fhir.r4.model.DeviceRequest.class.getSimpleName(); 
-    case "DeviceUseStatement" : return org.hl7.fhir.r4.model.DeviceUseStatement.class.getSimpleName(); 
-    case "DiagnosticReport" : return org.hl7.fhir.r4.model.DiagnosticReport.class.getSimpleName(); 
-    case "DocumentManifest" : return org.hl7.fhir.r4.model.DocumentManifest.class.getSimpleName(); 
-    case "DocumentReference" : return org.hl7.fhir.r4.model.DocumentReference.class.getSimpleName(); 
-    case "Encounter" : return org.hl7.fhir.r4.model.Encounter.class.getSimpleName(); 
-    case "Endpoint" : return org.hl7.fhir.r4.model.Endpoint.class.getSimpleName(); 
-    case "EnrollmentRequest" : return org.hl7.fhir.r4.model.EnrollmentRequest.class.getSimpleName(); 
-    case "EnrollmentResponse" : return org.hl7.fhir.r4.model.EnrollmentResponse.class.getSimpleName(); 
-    case "EpisodeOfCare" : return org.hl7.fhir.r4.model.EpisodeOfCare.class.getSimpleName(); 
-    case "ExpansionProfile" : return org.hl7.fhir.r4.model.Parameters.class.getSimpleName(); 
-    case "ExplanationOfBenefit" : return org.hl7.fhir.r4.model.ExplanationOfBenefit.class.getSimpleName(); 
-    case "FamilyMemberHistory" : return org.hl7.fhir.r4.model.FamilyMemberHistory.class.getSimpleName(); 
-    case "Flag" : return org.hl7.fhir.r4.model.Flag.class.getSimpleName(); 
-    case "Goal" : return org.hl7.fhir.r4.model.Goal.class.getSimpleName(); 
-    case "GraphDefinition" : return org.hl7.fhir.r4.model.GraphDefinition.class.getSimpleName(); 
-    case "Group" : return org.hl7.fhir.r4.model.Group.class.getSimpleName(); 
-    case "GuidanceResponse" : return org.hl7.fhir.r4.model.GuidanceResponse.class.getSimpleName(); 
-    case "HealthcareService" : return org.hl7.fhir.r4.model.HealthcareService.class.getSimpleName(); 
-    case "ImagingManifest" : return null; 
-    case "ImagingStudy" : return org.hl7.fhir.r4.model.ImagingStudy.class.getSimpleName(); 
-    case "Immunization" : return org.hl7.fhir.r4.model.Immunization.class.getSimpleName(); 
-    case "ImmunizationRecommendation" : return org.hl7.fhir.r4.model.ImmunizationRecommendation.class.getSimpleName(); 
-    case "ImplementationGuide" : return org.hl7.fhir.r4.model.ImplementationGuide.class.getSimpleName(); 
-    case "Library" : return org.hl7.fhir.r4.model.Library.class.getSimpleName(); 
-    case "Linkage" : return org.hl7.fhir.r4.model.Linkage.class.getSimpleName(); 
-    case "List" : return org.hl7.fhir.r4.model.ListResource.class.getSimpleName(); 
-    case "Location" : return org.hl7.fhir.r4.model.Location.class.getSimpleName(); 
-    case "Measure" : return org.hl7.fhir.r4.model.Measure.class.getSimpleName(); 
-    case "MeasureReport" : return org.hl7.fhir.r4.model.MeasureReport.class.getSimpleName(); 
-    case "Media" : return org.hl7.fhir.r4.model.Media.class.getSimpleName(); 
-    case "Medication" : return org.hl7.fhir.r4.model.Medication.class.getSimpleName(); 
-    case "MedicationAdministration" : return org.hl7.fhir.r4.model.MedicationAdministration.class.getSimpleName(); 
-    case "MedicationDispense" : return org.hl7.fhir.r4.model.MedicationDispense.class.getSimpleName(); 
-    case "MedicationRequest" : return org.hl7.fhir.r4.model.MedicationRequest.class.getSimpleName(); 
-    case "MedicationStatement" : return org.hl7.fhir.r4.model.MedicationStatement.class.getSimpleName(); 
-    case "MessageDefinition" : return org.hl7.fhir.r4.model.MessageDefinition.class.getSimpleName(); 
-    case "MessageHeader" : return org.hl7.fhir.r4.model.MessageHeader.class.getSimpleName(); 
-    case "Sequence" : return org.hl7.fhir.r4.model.MolecularSequence.class.getSimpleName(); 
-    case "NamingSystem" : return org.hl7.fhir.r4.model.NamingSystem.class.getSimpleName(); 
-    case "NutritionOrder" : return org.hl7.fhir.r4.model.NutritionOrder.class.getSimpleName(); 
-    case "Observation" : return org.hl7.fhir.r4.model.Observation.class.getSimpleName(); 
-    case "OperationDefinition" : return org.hl7.fhir.r4.model.OperationDefinition.class.getSimpleName(); 
-    case "OperationOutcome" : return org.hl7.fhir.r4.model.OperationOutcome.class.getSimpleName(); 
-    case "Organization" : return org.hl7.fhir.r4.model.Organization.class.getSimpleName(); 
-    case "Parameters" : return org.hl7.fhir.r4.model.Parameters.class.getSimpleName(); 
-    case "Patient" : return org.hl7.fhir.r4.model.Patient.class.getSimpleName(); 
-    case "PaymentNotice" : return org.hl7.fhir.r4.model.PaymentNotice.class.getSimpleName(); 
-    case "PaymentReconciliation" : return org.hl7.fhir.r4.model.PaymentReconciliation.class.getSimpleName(); 
-    case "Person" : return org.hl7.fhir.r4.model.Person.class.getSimpleName(); 
-    case "PlanDefinition" : return org.hl7.fhir.r4.model.PlanDefinition.class.getSimpleName(); 
-    case "Practitioner" : return org.hl7.fhir.r4.model.Practitioner.class.getSimpleName(); 
-    case "PractitionerRole" : return org.hl7.fhir.r4.model.PractitionerRole.class.getSimpleName(); 
-    case "Procedure" : return org.hl7.fhir.r4.model.Procedure.class.getSimpleName(); 
-    case "ProcessRequest" : return org.hl7.fhir.r4.model.Task.class.getSimpleName(); 
-    case "ProcessResponse" : return org.hl7.fhir.r4.model.Task.class.getSimpleName(); 
-    case "Provenance" : return org.hl7.fhir.r4.model.Provenance.class.getSimpleName(); 
-    case "Questionnaire" : return org.hl7.fhir.r4.model.Questionnaire.class.getSimpleName(); 
-    case "QuestionnaireResponse" : return org.hl7.fhir.r4.model.QuestionnaireResponse.class.getSimpleName(); 
-    case "ReferralRequest" : return org.hl7.fhir.r4.model.ServiceRequest.class.getSimpleName(); 
-    case "RelatedPerson" : return org.hl7.fhir.r4.model.RelatedPerson.class.getSimpleName(); 
-    case "RequestGroup" : return org.hl7.fhir.r4.model.RequestGroup.class.getSimpleName(); 
-    case "ResearchStudy" : return org.hl7.fhir.r4.model.ResearchStudy.class.getSimpleName(); 
-    case "ResearchSubject" : return org.hl7.fhir.r4.model.ResearchSubject.class.getSimpleName(); 
-    case "RiskAssessment" : return org.hl7.fhir.r4.model.RiskAssessment.class.getSimpleName(); 
-    case "Schedule" : return org.hl7.fhir.r4.model.Schedule.class.getSimpleName(); 
-    case "SearchParameter" : return org.hl7.fhir.r4.model.SearchParameter.class.getSimpleName(); 
-    case "ServiceDefinition" : return null; 
-    case "ProcedureRequest" : return org.hl7.fhir.r4.model.ServiceRequest.class.getSimpleName(); 
-    case "Slot" : return org.hl7.fhir.r4.model.Slot.class.getSimpleName(); 
-    case "Specimen" : return org.hl7.fhir.r4.model.Specimen.class.getSimpleName(); 
-    case "StructureDefinition" : return org.hl7.fhir.r4.model.StructureDefinition.class.getSimpleName(); 
-    case "StructureMap" : return org.hl7.fhir.r4.model.StructureMap.class.getSimpleName(); 
-    case "Subscription" : return org.hl7.fhir.r4.model.Subscription.class.getSimpleName(); 
-    case "Substance" : return org.hl7.fhir.r4.model.Substance.class.getSimpleName(); 
-    case "SupplyDelivery" : return org.hl7.fhir.r4.model.SupplyDelivery.class.getSimpleName(); 
-    case "SupplyRequest" : return org.hl7.fhir.r4.model.SupplyRequest.class.getSimpleName(); 
-    case "Task" : return org.hl7.fhir.r4.model.Task.class.getSimpleName(); 
-    case "TestReport" : return org.hl7.fhir.r4.model.TestReport.class.getSimpleName(); 
-    case "TestScript" : return org.hl7.fhir.r4.model.TestScript.class.getSimpleName(); 
-    case "ValueSet" : return org.hl7.fhir.r4.model.ValueSet.class.getSimpleName(); 
-    case "VisionPrescription" : return org.hl7.fhir.r4.model.VisionPrescription.class.getSimpleName(); 
-    default: return null;
+      case "Account":
+        return org.hl7.fhir.r4.model.Account.class.getSimpleName();
+      case "ActivityDefinition":
+        return org.hl7.fhir.r4.model.ActivityDefinition.class.getSimpleName();
+      case "AdverseEvent":
+        return org.hl7.fhir.r4.model.AdverseEvent.class.getSimpleName();
+      case "AllergyIntolerance":
+        return org.hl7.fhir.r4.model.AllergyIntolerance.class.getSimpleName();
+      case "Appointment":
+        return org.hl7.fhir.r4.model.Appointment.class.getSimpleName();
+      case "AppointmentResponse":
+        return org.hl7.fhir.r4.model.AppointmentResponse.class.getSimpleName();
+      case "AuditEvent":
+        return org.hl7.fhir.r4.model.AuditEvent.class.getSimpleName();
+      case "Basic":
+        return org.hl7.fhir.r4.model.Basic.class.getSimpleName();
+      case "Binary":
+        return org.hl7.fhir.r4.model.Binary.class.getSimpleName();
+      case "BodySite":
+        return org.hl7.fhir.r4.model.BodyStructure.class.getSimpleName();
+      case "Bundle":
+        return org.hl7.fhir.r4.model.Bundle.class.getSimpleName();
+      case "CapabilityStatement":
+        return org.hl7.fhir.r4.model.CapabilityStatement.class.getSimpleName();
+      case "CarePlan":
+        return org.hl7.fhir.r4.model.CarePlan.class.getSimpleName();
+      case "CareTeam":
+        return org.hl7.fhir.r4.model.CareTeam.class.getSimpleName();
+      case "ChargeItem":
+        return org.hl7.fhir.r4.model.ChargeItem.class.getSimpleName();
+      case "Claim":
+        return org.hl7.fhir.r4.model.Claim.class.getSimpleName();
+      case "ClaimResponse":
+        return org.hl7.fhir.r4.model.ClaimResponse.class.getSimpleName();
+      case "ClinicalImpression":
+        return org.hl7.fhir.r4.model.ClinicalImpression.class.getSimpleName();
+      case "CodeSystem":
+        return org.hl7.fhir.r4.model.CodeSystem.class.getSimpleName();
+      case "Communication":
+        return org.hl7.fhir.r4.model.Communication.class.getSimpleName();
+      case "CommunicationRequest":
+        return org.hl7.fhir.r4.model.CommunicationRequest.class.getSimpleName();
+      case "CompartmentDefinition":
+        return org.hl7.fhir.r4.model.CompartmentDefinition.class.getSimpleName();
+      case "Composition":
+        return org.hl7.fhir.r4.model.Composition.class.getSimpleName();
+      case "ConceptMap":
+        return org.hl7.fhir.r4.model.ConceptMap.class.getSimpleName();
+      case "Condition":
+        return org.hl7.fhir.r4.model.Condition.class.getSimpleName();
+      case "Consent":
+        return org.hl7.fhir.r4.model.Consent.class.getSimpleName();
+      case "Contract":
+        return org.hl7.fhir.r4.model.Contract.class.getSimpleName();
+      case "Coverage":
+        return org.hl7.fhir.r4.model.Coverage.class.getSimpleName();
+      case "DataElement":
+        return org.hl7.fhir.r4.model.StructureDefinition.class.getSimpleName();
+      case "EligibilityRequest":
+        return org.hl7.fhir.r4.model.CoverageEligibilityRequest.class.getSimpleName();
+      case "EligibilityResponse":
+        return org.hl7.fhir.r4.model.CoverageEligibilityResponse.class.getSimpleName();
+      case "DetectedIssue":
+        return org.hl7.fhir.r4.model.DetectedIssue.class.getSimpleName();
+      case "Device":
+        return org.hl7.fhir.r4.model.Device.class.getSimpleName();
+      case "DeviceComponent":
+        return null;
+      case "DeviceMetric":
+        return null;
+      case "DeviceRequest":
+        return org.hl7.fhir.r4.model.DeviceRequest.class.getSimpleName();
+      case "DeviceUseStatement":
+        return org.hl7.fhir.r4.model.DeviceUseStatement.class.getSimpleName();
+      case "DiagnosticReport":
+        return org.hl7.fhir.r4.model.DiagnosticReport.class.getSimpleName();
+      case "DocumentManifest":
+        return org.hl7.fhir.r4.model.DocumentManifest.class.getSimpleName();
+      case "DocumentReference":
+        return org.hl7.fhir.r4.model.DocumentReference.class.getSimpleName();
+      case "Encounter":
+        return org.hl7.fhir.r4.model.Encounter.class.getSimpleName();
+      case "Endpoint":
+        return org.hl7.fhir.r4.model.Endpoint.class.getSimpleName();
+      case "EnrollmentRequest":
+        return org.hl7.fhir.r4.model.EnrollmentRequest.class.getSimpleName();
+      case "EnrollmentResponse":
+        return org.hl7.fhir.r4.model.EnrollmentResponse.class.getSimpleName();
+      case "EpisodeOfCare":
+        return org.hl7.fhir.r4.model.EpisodeOfCare.class.getSimpleName();
+      case "ExpansionProfile":
+        return org.hl7.fhir.r4.model.Parameters.class.getSimpleName();
+      case "ExplanationOfBenefit":
+        return org.hl7.fhir.r4.model.ExplanationOfBenefit.class.getSimpleName();
+      case "FamilyMemberHistory":
+        return org.hl7.fhir.r4.model.FamilyMemberHistory.class.getSimpleName();
+      case "Flag":
+        return org.hl7.fhir.r4.model.Flag.class.getSimpleName();
+      case "Goal":
+        return org.hl7.fhir.r4.model.Goal.class.getSimpleName();
+      case "GraphDefinition":
+        return org.hl7.fhir.r4.model.GraphDefinition.class.getSimpleName();
+      case "Group":
+        return org.hl7.fhir.r4.model.Group.class.getSimpleName();
+      case "GuidanceResponse":
+        return org.hl7.fhir.r4.model.GuidanceResponse.class.getSimpleName();
+      case "HealthcareService":
+        return org.hl7.fhir.r4.model.HealthcareService.class.getSimpleName();
+      case "ImagingManifest":
+        return null;
+      case "ImagingStudy":
+        return org.hl7.fhir.r4.model.ImagingStudy.class.getSimpleName();
+      case "Immunization":
+        return org.hl7.fhir.r4.model.Immunization.class.getSimpleName();
+      case "ImmunizationRecommendation":
+        return org.hl7.fhir.r4.model.ImmunizationRecommendation.class.getSimpleName();
+      case "ImplementationGuide":
+        return org.hl7.fhir.r4.model.ImplementationGuide.class.getSimpleName();
+      case "Library":
+        return org.hl7.fhir.r4.model.Library.class.getSimpleName();
+      case "Linkage":
+        return org.hl7.fhir.r4.model.Linkage.class.getSimpleName();
+      case "List":
+        return org.hl7.fhir.r4.model.ListResource.class.getSimpleName();
+      case "Location":
+        return org.hl7.fhir.r4.model.Location.class.getSimpleName();
+      case "Measure":
+        return org.hl7.fhir.r4.model.Measure.class.getSimpleName();
+      case "MeasureReport":
+        return org.hl7.fhir.r4.model.MeasureReport.class.getSimpleName();
+      case "Media":
+        return org.hl7.fhir.r4.model.Media.class.getSimpleName();
+      case "Medication":
+        return org.hl7.fhir.r4.model.Medication.class.getSimpleName();
+      case "MedicationAdministration":
+        return org.hl7.fhir.r4.model.MedicationAdministration.class.getSimpleName();
+      case "MedicationDispense":
+        return org.hl7.fhir.r4.model.MedicationDispense.class.getSimpleName();
+      case "MedicationRequest":
+        return org.hl7.fhir.r4.model.MedicationRequest.class.getSimpleName();
+      case "MedicationStatement":
+        return org.hl7.fhir.r4.model.MedicationStatement.class.getSimpleName();
+      case "MessageDefinition":
+        return org.hl7.fhir.r4.model.MessageDefinition.class.getSimpleName();
+      case "MessageHeader":
+        return org.hl7.fhir.r4.model.MessageHeader.class.getSimpleName();
+      case "Sequence":
+        return org.hl7.fhir.r4.model.MolecularSequence.class.getSimpleName();
+      case "NamingSystem":
+        return org.hl7.fhir.r4.model.NamingSystem.class.getSimpleName();
+      case "NutritionOrder":
+        return org.hl7.fhir.r4.model.NutritionOrder.class.getSimpleName();
+      case "Observation":
+        return org.hl7.fhir.r4.model.Observation.class.getSimpleName();
+      case "OperationDefinition":
+        return org.hl7.fhir.r4.model.OperationDefinition.class.getSimpleName();
+      case "OperationOutcome":
+        return org.hl7.fhir.r4.model.OperationOutcome.class.getSimpleName();
+      case "Organization":
+        return org.hl7.fhir.r4.model.Organization.class.getSimpleName();
+      case "Parameters":
+        return org.hl7.fhir.r4.model.Parameters.class.getSimpleName();
+      case "Patient":
+        return org.hl7.fhir.r4.model.Patient.class.getSimpleName();
+      case "PaymentNotice":
+        return org.hl7.fhir.r4.model.PaymentNotice.class.getSimpleName();
+      case "PaymentReconciliation":
+        return org.hl7.fhir.r4.model.PaymentReconciliation.class.getSimpleName();
+      case "Person":
+        return org.hl7.fhir.r4.model.Person.class.getSimpleName();
+      case "PlanDefinition":
+        return org.hl7.fhir.r4.model.PlanDefinition.class.getSimpleName();
+      case "Practitioner":
+        return org.hl7.fhir.r4.model.Practitioner.class.getSimpleName();
+      case "PractitionerRole":
+        return org.hl7.fhir.r4.model.PractitionerRole.class.getSimpleName();
+      case "Procedure":
+        return org.hl7.fhir.r4.model.Procedure.class.getSimpleName();
+      case "ProcessRequest":
+        return org.hl7.fhir.r4.model.Task.class.getSimpleName();
+      case "ProcessResponse":
+        return org.hl7.fhir.r4.model.Task.class.getSimpleName();
+      case "Provenance":
+        return org.hl7.fhir.r4.model.Provenance.class.getSimpleName();
+      case "Questionnaire":
+        return org.hl7.fhir.r4.model.Questionnaire.class.getSimpleName();
+      case "QuestionnaireResponse":
+        return org.hl7.fhir.r4.model.QuestionnaireResponse.class.getSimpleName();
+      case "ReferralRequest":
+        return org.hl7.fhir.r4.model.ServiceRequest.class.getSimpleName();
+      case "RelatedPerson":
+        return org.hl7.fhir.r4.model.RelatedPerson.class.getSimpleName();
+      case "RequestGroup":
+        return org.hl7.fhir.r4.model.RequestGroup.class.getSimpleName();
+      case "ResearchStudy":
+        return org.hl7.fhir.r4.model.ResearchStudy.class.getSimpleName();
+      case "ResearchSubject":
+        return org.hl7.fhir.r4.model.ResearchSubject.class.getSimpleName();
+      case "RiskAssessment":
+        return org.hl7.fhir.r4.model.RiskAssessment.class.getSimpleName();
+      case "Schedule":
+        return org.hl7.fhir.r4.model.Schedule.class.getSimpleName();
+      case "SearchParameter":
+        return org.hl7.fhir.r4.model.SearchParameter.class.getSimpleName();
+      case "ServiceDefinition":
+        return null;
+      case "ProcedureRequest":
+        return org.hl7.fhir.r4.model.ServiceRequest.class.getSimpleName();
+      case "Slot":
+        return org.hl7.fhir.r4.model.Slot.class.getSimpleName();
+      case "Specimen":
+        return org.hl7.fhir.r4.model.Specimen.class.getSimpleName();
+      case "StructureDefinition":
+        return org.hl7.fhir.r4.model.StructureDefinition.class.getSimpleName();
+      case "StructureMap":
+        return org.hl7.fhir.r4.model.StructureMap.class.getSimpleName();
+      case "Subscription":
+        return org.hl7.fhir.r4.model.Subscription.class.getSimpleName();
+      case "Substance":
+        return org.hl7.fhir.r4.model.Substance.class.getSimpleName();
+      case "SupplyDelivery":
+        return org.hl7.fhir.r4.model.SupplyDelivery.class.getSimpleName();
+      case "SupplyRequest":
+        return org.hl7.fhir.r4.model.SupplyRequest.class.getSimpleName();
+      case "Task":
+        return org.hl7.fhir.r4.model.Task.class.getSimpleName();
+      case "TestReport":
+        return org.hl7.fhir.r4.model.TestReport.class.getSimpleName();
+      case "TestScript":
+        return org.hl7.fhir.r4.model.TestScript.class.getSimpleName();
+      case "ValueSet":
+        return org.hl7.fhir.r4.model.ValueSet.class.getSimpleName();
+      case "VisionPrescription":
+        return org.hl7.fhir.r4.model.VisionPrescription.class.getSimpleName();
+      default:
+        return null;
     }
   }
 
   public static String mapName4to3(String name) {
-    if (Utilities.noString(name)) { return null; } 
+    if (Utilities.noString(name)) {
+      return null;
+    }
     switch (name) {
-    case "Account" : return org.hl7.fhir.dstu3.model.Account.class.getSimpleName(); 
-    case "ActivityDefinition" : return org.hl7.fhir.dstu3.model.ActivityDefinition.class.getSimpleName(); 
-    case "AdverseEvent" : return org.hl7.fhir.dstu3.model.AdverseEvent.class.getSimpleName(); 
-    case "AllergyIntolerance" : return org.hl7.fhir.dstu3.model.AllergyIntolerance.class.getSimpleName(); 
-    case "Appointment" : return org.hl7.fhir.dstu3.model.Appointment.class.getSimpleName(); 
-    case "AppointmentResponse" : return org.hl7.fhir.dstu3.model.AppointmentResponse.class.getSimpleName(); 
-    case "AuditEvent" : return org.hl7.fhir.dstu3.model.AuditEvent.class.getSimpleName(); 
-    case "Basic" : return org.hl7.fhir.dstu3.model.Basic.class.getSimpleName(); 
-    case "Binary" : return org.hl7.fhir.dstu3.model.Binary.class.getSimpleName(); 
-    case "BiologicallyDerivedProduct" : return null; 
-    case "BodyStructure" : return org.hl7.fhir.dstu3.model.BodySite.class.getSimpleName(); 
-    case "Bundle" : return org.hl7.fhir.dstu3.model.Bundle.class.getSimpleName(); 
-    case "CapabilityStatement" : return org.hl7.fhir.dstu3.model.CapabilityStatement.class.getSimpleName(); 
-    case "CarePlan" : return org.hl7.fhir.dstu3.model.CarePlan.class.getSimpleName(); 
-    case "CareTeam" : return org.hl7.fhir.dstu3.model.CareTeam.class.getSimpleName(); 
-    case "CatalogEntry" : return null; 
-    case "ChargeItem" : return org.hl7.fhir.dstu3.model.ChargeItem.class.getSimpleName(); 
-    case "ChargeItemDefinition" : return null; 
-    case "Claim" : return org.hl7.fhir.dstu3.model.Claim.class.getSimpleName(); 
-    case "ClaimResponse" : return org.hl7.fhir.dstu3.model.ClaimResponse.class.getSimpleName(); 
-    case "ClinicalImpression" : return org.hl7.fhir.dstu3.model.ClinicalImpression.class.getSimpleName(); 
-    case "CodeSystem" : return org.hl7.fhir.dstu3.model.CodeSystem.class.getSimpleName(); 
-    case "Communication" : return org.hl7.fhir.dstu3.model.Communication.class.getSimpleName(); 
-    case "CommunicationRequest" : return org.hl7.fhir.dstu3.model.CommunicationRequest.class.getSimpleName(); 
-    case "CompartmentDefinition" : return org.hl7.fhir.dstu3.model.CompartmentDefinition.class.getSimpleName(); 
-    case "Composition" : return org.hl7.fhir.dstu3.model.Composition.class.getSimpleName(); 
-    case "ConceptMap" : return org.hl7.fhir.dstu3.model.ConceptMap.class.getSimpleName(); 
-    case "Condition" : return org.hl7.fhir.dstu3.model.Condition.class.getSimpleName(); 
-    case "Consent" : return org.hl7.fhir.dstu3.model.Consent.class.getSimpleName(); 
-    case "Contract" : return org.hl7.fhir.dstu3.model.Contract.class.getSimpleName(); 
-    case "Coverage" : return org.hl7.fhir.dstu3.model.Coverage.class.getSimpleName(); 
-    case "CoverageEligibilityRequest" : return org.hl7.fhir.dstu3.model.EligibilityRequest.class.getSimpleName(); 
-    case "CoverageEligibilityResponse" : return org.hl7.fhir.dstu3.model.EligibilityResponse.class.getSimpleName(); 
-    case "DetectedIssue" : return org.hl7.fhir.dstu3.model.DetectedIssue.class.getSimpleName(); 
-    case "Device" : return org.hl7.fhir.dstu3.model.Device.class.getSimpleName(); 
-    case "DeviceDefinition" : return null; 
-    case "DeviceMetric" : return org.hl7.fhir.dstu3.model.DeviceMetric.class.getSimpleName(); 
-    case "DeviceRequest" : return org.hl7.fhir.dstu3.model.DeviceRequest.class.getSimpleName(); 
-    case "DeviceUseStatement" : return org.hl7.fhir.dstu3.model.DeviceUseStatement.class.getSimpleName(); 
-    case "DiagnosticReport" : return org.hl7.fhir.dstu3.model.DiagnosticReport.class.getSimpleName(); 
-    case "DocumentManifest" : return org.hl7.fhir.dstu3.model.DocumentManifest.class.getSimpleName(); 
-    case "DocumentReference" : return org.hl7.fhir.dstu3.model.DocumentReference.class.getSimpleName(); 
-    case "EffectEvidenceSynthesis" : return null; 
-    case "Encounter" : return org.hl7.fhir.dstu3.model.Encounter.class.getSimpleName(); 
-    case "Endpoint" : return org.hl7.fhir.dstu3.model.Endpoint.class.getSimpleName(); 
-    case "EnrollmentRequest" : return org.hl7.fhir.dstu3.model.EnrollmentRequest.class.getSimpleName(); 
-    case "EnrollmentResponse" : return org.hl7.fhir.dstu3.model.EnrollmentResponse.class.getSimpleName(); 
-    case "EpisodeOfCare" : return org.hl7.fhir.dstu3.model.EpisodeOfCare.class.getSimpleName(); 
-    case "EventDefinition" : return null; 
-    case "ExampleScenario" : return null; 
-    case "ExplanationOfBenefit" : return org.hl7.fhir.dstu3.model.ExplanationOfBenefit.class.getSimpleName(); 
-    case "FamilyMemberHistory" : return org.hl7.fhir.dstu3.model.FamilyMemberHistory.class.getSimpleName(); 
-    case "Flag" : return org.hl7.fhir.dstu3.model.Flag.class.getSimpleName(); 
-    case "Goal" : return org.hl7.fhir.dstu3.model.Goal.class.getSimpleName(); 
-    case "GraphDefinition" : return org.hl7.fhir.dstu3.model.GraphDefinition.class.getSimpleName(); 
-    case "Group" : return org.hl7.fhir.dstu3.model.Group.class.getSimpleName(); 
-    case "GuidanceResponse" : return org.hl7.fhir.dstu3.model.GuidanceResponse.class.getSimpleName(); 
-    case "HealthcareService" : return org.hl7.fhir.dstu3.model.HealthcareService.class.getSimpleName(); 
-    case "ImagingStudy" : return org.hl7.fhir.dstu3.model.ImagingStudy.class.getSimpleName(); 
-    case "Immunization" : return org.hl7.fhir.dstu3.model.Immunization.class.getSimpleName(); 
-    case "ImmunizationEvaluation" : return null; 
-    case "ImmunizationRecommendation" : return org.hl7.fhir.dstu3.model.ImmunizationRecommendation.class.getSimpleName(); 
-    case "ImplementationGuide" : return org.hl7.fhir.dstu3.model.ImplementationGuide.class.getSimpleName(); 
-    case "InsurancePlan" : return null; 
-    case "Invoice" : return null; 
-    case "Library" : return org.hl7.fhir.dstu3.model.Library.class.getSimpleName(); 
-    case "Linkage" : return org.hl7.fhir.dstu3.model.Linkage.class.getSimpleName(); 
-    case "List" : return org.hl7.fhir.dstu3.model.ListResource.class.getSimpleName(); 
-    case "Location" : return org.hl7.fhir.dstu3.model.Location.class.getSimpleName(); 
-    case "Measure" : return org.hl7.fhir.dstu3.model.Measure.class.getSimpleName(); 
-    case "MeasureReport" : return org.hl7.fhir.dstu3.model.MeasureReport.class.getSimpleName(); 
-    case "Media" : return org.hl7.fhir.dstu3.model.Media.class.getSimpleName(); 
-    case "Medication" : return org.hl7.fhir.dstu3.model.Medication.class.getSimpleName(); 
-    case "MedicationAdministration" : return org.hl7.fhir.dstu3.model.MedicationAdministration.class.getSimpleName(); 
-    case "MedicationDispense" : return org.hl7.fhir.dstu3.model.MedicationDispense.class.getSimpleName(); 
-    case "MedicationKnowledge" : return null; 
-    case "MedicationRequest" : return org.hl7.fhir.dstu3.model.MedicationRequest.class.getSimpleName(); 
-    case "MedicationStatement" : return org.hl7.fhir.dstu3.model.MedicationStatement.class.getSimpleName(); 
-    case "MedicinalProduct" : return null; 
-    case "MedicinalProductAuthorization" : return null; 
-    case "MedicinalProductContraindication" : return null; 
-    case "MedicinalProductIndication" : return null; 
-    case "MedicinalProductIngredient" : return null; 
-    case "MedicinalProductInteraction" : return null; 
-    case "MedicinalProductManufactured" : return null; 
-    case "MedicinalProductPackaged" : return null; 
-    case "MedicinalProductPharmaceutical" : return null; 
-    case "MedicinalProductUndesirableEffect" : return null; 
-    case "MessageDefinition" : return org.hl7.fhir.dstu3.model.MessageDefinition.class.getSimpleName(); 
-    case "MessageHeader" : return org.hl7.fhir.dstu3.model.MessageHeader.class.getSimpleName(); 
-    case "MolecularSequence" : return org.hl7.fhir.dstu3.model.Sequence.class.getSimpleName(); 
-    case "NamingSystem" : return org.hl7.fhir.dstu3.model.NamingSystem.class.getSimpleName(); 
-    case "NutritionOrder" : return org.hl7.fhir.dstu3.model.NutritionOrder.class.getSimpleName(); 
-    case "Observation" : return org.hl7.fhir.dstu3.model.Observation.class.getSimpleName(); 
-    case "ObservationDefinition" : return null; 
-    case "OperationDefinition" : return org.hl7.fhir.dstu3.model.OperationDefinition.class.getSimpleName(); 
-    case "OperationOutcome" : return org.hl7.fhir.dstu3.model.OperationOutcome.class.getSimpleName(); 
-    case "Organization" : return org.hl7.fhir.dstu3.model.Organization.class.getSimpleName(); 
-    case "OrganizationAffiliation" : return null; 
-    case "Parameters" : return org.hl7.fhir.dstu3.model.Parameters.class.getSimpleName(); 
-    case "Patient" : return org.hl7.fhir.dstu3.model.Patient.class.getSimpleName(); 
-    case "PaymentNotice" : return org.hl7.fhir.dstu3.model.PaymentNotice.class.getSimpleName(); 
-    case "PaymentReconciliation" : return org.hl7.fhir.dstu3.model.PaymentReconciliation.class.getSimpleName(); 
-    case "Person" : return org.hl7.fhir.dstu3.model.Person.class.getSimpleName(); 
-    case "PlanDefinition" : return org.hl7.fhir.dstu3.model.PlanDefinition.class.getSimpleName(); 
-    case "Practitioner" : return org.hl7.fhir.dstu3.model.Practitioner.class.getSimpleName(); 
-    case "PractitionerRole" : return org.hl7.fhir.dstu3.model.PractitionerRole.class.getSimpleName(); 
-    case "Procedure" : return org.hl7.fhir.dstu3.model.Procedure.class.getSimpleName(); 
-    case "Provenance" : return org.hl7.fhir.dstu3.model.Provenance.class.getSimpleName(); 
-    case "Questionnaire" : return org.hl7.fhir.dstu3.model.Questionnaire.class.getSimpleName(); 
-    case "QuestionnaireResponse" : return org.hl7.fhir.dstu3.model.QuestionnaireResponse.class.getSimpleName(); 
-    case "RelatedPerson" : return org.hl7.fhir.dstu3.model.RelatedPerson.class.getSimpleName(); 
-    case "RequestGroup" : return org.hl7.fhir.dstu3.model.RequestGroup.class.getSimpleName(); 
-    case "ResearchStudy" : return org.hl7.fhir.dstu3.model.ResearchStudy.class.getSimpleName(); 
-    case "ResearchSubject" : return org.hl7.fhir.dstu3.model.ResearchSubject.class.getSimpleName(); 
-    case "RiskAssessment" : return org.hl7.fhir.dstu3.model.RiskAssessment.class.getSimpleName(); 
-    case "Schedule" : return org.hl7.fhir.dstu3.model.Schedule.class.getSimpleName(); 
-    case "SearchParameter" : return org.hl7.fhir.dstu3.model.SearchParameter.class.getSimpleName(); 
-    case "ServiceRequest" : return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getSimpleName(); 
+      case "Account":
+        return org.hl7.fhir.dstu3.model.Account.class.getSimpleName();
+      case "ActivityDefinition":
+        return org.hl7.fhir.dstu3.model.ActivityDefinition.class.getSimpleName();
+      case "AdverseEvent":
+        return org.hl7.fhir.dstu3.model.AdverseEvent.class.getSimpleName();
+      case "AllergyIntolerance":
+        return org.hl7.fhir.dstu3.model.AllergyIntolerance.class.getSimpleName();
+      case "Appointment":
+        return org.hl7.fhir.dstu3.model.Appointment.class.getSimpleName();
+      case "AppointmentResponse":
+        return org.hl7.fhir.dstu3.model.AppointmentResponse.class.getSimpleName();
+      case "AuditEvent":
+        return org.hl7.fhir.dstu3.model.AuditEvent.class.getSimpleName();
+      case "Basic":
+        return org.hl7.fhir.dstu3.model.Basic.class.getSimpleName();
+      case "Binary":
+        return org.hl7.fhir.dstu3.model.Binary.class.getSimpleName();
+      case "BiologicallyDerivedProduct":
+        return null;
+      case "BodyStructure":
+        return org.hl7.fhir.dstu3.model.BodySite.class.getSimpleName();
+      case "Bundle":
+        return org.hl7.fhir.dstu3.model.Bundle.class.getSimpleName();
+      case "CapabilityStatement":
+        return org.hl7.fhir.dstu3.model.CapabilityStatement.class.getSimpleName();
+      case "CarePlan":
+        return org.hl7.fhir.dstu3.model.CarePlan.class.getSimpleName();
+      case "CareTeam":
+        return org.hl7.fhir.dstu3.model.CareTeam.class.getSimpleName();
+      case "CatalogEntry":
+        return null;
+      case "ChargeItem":
+        return org.hl7.fhir.dstu3.model.ChargeItem.class.getSimpleName();
+      case "ChargeItemDefinition":
+        return null;
+      case "Claim":
+        return org.hl7.fhir.dstu3.model.Claim.class.getSimpleName();
+      case "ClaimResponse":
+        return org.hl7.fhir.dstu3.model.ClaimResponse.class.getSimpleName();
+      case "ClinicalImpression":
+        return org.hl7.fhir.dstu3.model.ClinicalImpression.class.getSimpleName();
+      case "CodeSystem":
+        return org.hl7.fhir.dstu3.model.CodeSystem.class.getSimpleName();
+      case "Communication":
+        return org.hl7.fhir.dstu3.model.Communication.class.getSimpleName();
+      case "CommunicationRequest":
+        return org.hl7.fhir.dstu3.model.CommunicationRequest.class.getSimpleName();
+      case "CompartmentDefinition":
+        return org.hl7.fhir.dstu3.model.CompartmentDefinition.class.getSimpleName();
+      case "Composition":
+        return org.hl7.fhir.dstu3.model.Composition.class.getSimpleName();
+      case "ConceptMap":
+        return org.hl7.fhir.dstu3.model.ConceptMap.class.getSimpleName();
+      case "Condition":
+        return org.hl7.fhir.dstu3.model.Condition.class.getSimpleName();
+      case "Consent":
+        return org.hl7.fhir.dstu3.model.Consent.class.getSimpleName();
+      case "Contract":
+        return org.hl7.fhir.dstu3.model.Contract.class.getSimpleName();
+      case "Coverage":
+        return org.hl7.fhir.dstu3.model.Coverage.class.getSimpleName();
+      case "CoverageEligibilityRequest":
+        return org.hl7.fhir.dstu3.model.EligibilityRequest.class.getSimpleName();
+      case "CoverageEligibilityResponse":
+        return org.hl7.fhir.dstu3.model.EligibilityResponse.class.getSimpleName();
+      case "DetectedIssue":
+        return org.hl7.fhir.dstu3.model.DetectedIssue.class.getSimpleName();
+      case "Device":
+        return org.hl7.fhir.dstu3.model.Device.class.getSimpleName();
+      case "DeviceDefinition":
+        return null;
+      case "DeviceMetric":
+        return org.hl7.fhir.dstu3.model.DeviceMetric.class.getSimpleName();
+      case "DeviceRequest":
+        return org.hl7.fhir.dstu3.model.DeviceRequest.class.getSimpleName();
+      case "DeviceUseStatement":
+        return org.hl7.fhir.dstu3.model.DeviceUseStatement.class.getSimpleName();
+      case "DiagnosticReport":
+        return org.hl7.fhir.dstu3.model.DiagnosticReport.class.getSimpleName();
+      case "DocumentManifest":
+        return org.hl7.fhir.dstu3.model.DocumentManifest.class.getSimpleName();
+      case "DocumentReference":
+        return org.hl7.fhir.dstu3.model.DocumentReference.class.getSimpleName();
+      case "EffectEvidenceSynthesis":
+        return null;
+      case "Encounter":
+        return org.hl7.fhir.dstu3.model.Encounter.class.getSimpleName();
+      case "Endpoint":
+        return org.hl7.fhir.dstu3.model.Endpoint.class.getSimpleName();
+      case "EnrollmentRequest":
+        return org.hl7.fhir.dstu3.model.EnrollmentRequest.class.getSimpleName();
+      case "EnrollmentResponse":
+        return org.hl7.fhir.dstu3.model.EnrollmentResponse.class.getSimpleName();
+      case "EpisodeOfCare":
+        return org.hl7.fhir.dstu3.model.EpisodeOfCare.class.getSimpleName();
+      case "EventDefinition":
+        return null;
+      case "ExampleScenario":
+        return null;
+      case "ExplanationOfBenefit":
+        return org.hl7.fhir.dstu3.model.ExplanationOfBenefit.class.getSimpleName();
+      case "FamilyMemberHistory":
+        return org.hl7.fhir.dstu3.model.FamilyMemberHistory.class.getSimpleName();
+      case "Flag":
+        return org.hl7.fhir.dstu3.model.Flag.class.getSimpleName();
+      case "Goal":
+        return org.hl7.fhir.dstu3.model.Goal.class.getSimpleName();
+      case "GraphDefinition":
+        return org.hl7.fhir.dstu3.model.GraphDefinition.class.getSimpleName();
+      case "Group":
+        return org.hl7.fhir.dstu3.model.Group.class.getSimpleName();
+      case "GuidanceResponse":
+        return org.hl7.fhir.dstu3.model.GuidanceResponse.class.getSimpleName();
+      case "HealthcareService":
+        return org.hl7.fhir.dstu3.model.HealthcareService.class.getSimpleName();
+      case "ImagingStudy":
+        return org.hl7.fhir.dstu3.model.ImagingStudy.class.getSimpleName();
+      case "Immunization":
+        return org.hl7.fhir.dstu3.model.Immunization.class.getSimpleName();
+      case "ImmunizationEvaluation":
+        return null;
+      case "ImmunizationRecommendation":
+        return org.hl7.fhir.dstu3.model.ImmunizationRecommendation.class.getSimpleName();
+      case "ImplementationGuide":
+        return org.hl7.fhir.dstu3.model.ImplementationGuide.class.getSimpleName();
+      case "InsurancePlan":
+        return null;
+      case "Invoice":
+        return null;
+      case "Library":
+        return org.hl7.fhir.dstu3.model.Library.class.getSimpleName();
+      case "Linkage":
+        return org.hl7.fhir.dstu3.model.Linkage.class.getSimpleName();
+      case "List":
+        return org.hl7.fhir.dstu3.model.ListResource.class.getSimpleName();
+      case "Location":
+        return org.hl7.fhir.dstu3.model.Location.class.getSimpleName();
+      case "Measure":
+        return org.hl7.fhir.dstu3.model.Measure.class.getSimpleName();
+      case "MeasureReport":
+        return org.hl7.fhir.dstu3.model.MeasureReport.class.getSimpleName();
+      case "Media":
+        return org.hl7.fhir.dstu3.model.Media.class.getSimpleName();
+      case "Medication":
+        return org.hl7.fhir.dstu3.model.Medication.class.getSimpleName();
+      case "MedicationAdministration":
+        return org.hl7.fhir.dstu3.model.MedicationAdministration.class.getSimpleName();
+      case "MedicationDispense":
+        return org.hl7.fhir.dstu3.model.MedicationDispense.class.getSimpleName();
+      case "MedicationKnowledge":
+        return null;
+      case "MedicationRequest":
+        return org.hl7.fhir.dstu3.model.MedicationRequest.class.getSimpleName();
+      case "MedicationStatement":
+        return org.hl7.fhir.dstu3.model.MedicationStatement.class.getSimpleName();
+      case "MedicinalProduct":
+        return null;
+      case "MedicinalProductAuthorization":
+        return null;
+      case "MedicinalProductContraindication":
+        return null;
+      case "MedicinalProductIndication":
+        return null;
+      case "MedicinalProductIngredient":
+        return null;
+      case "MedicinalProductInteraction":
+        return null;
+      case "MedicinalProductManufactured":
+        return null;
+      case "MedicinalProductPackaged":
+        return null;
+      case "MedicinalProductPharmaceutical":
+        return null;
+      case "MedicinalProductUndesirableEffect":
+        return null;
+      case "MessageDefinition":
+        return org.hl7.fhir.dstu3.model.MessageDefinition.class.getSimpleName();
+      case "MessageHeader":
+        return org.hl7.fhir.dstu3.model.MessageHeader.class.getSimpleName();
+      case "MolecularSequence":
+        return org.hl7.fhir.dstu3.model.Sequence.class.getSimpleName();
+      case "NamingSystem":
+        return org.hl7.fhir.dstu3.model.NamingSystem.class.getSimpleName();
+      case "NutritionOrder":
+        return org.hl7.fhir.dstu3.model.NutritionOrder.class.getSimpleName();
+      case "Observation":
+        return org.hl7.fhir.dstu3.model.Observation.class.getSimpleName();
+      case "ObservationDefinition":
+        return null;
+      case "OperationDefinition":
+        return org.hl7.fhir.dstu3.model.OperationDefinition.class.getSimpleName();
+      case "OperationOutcome":
+        return org.hl7.fhir.dstu3.model.OperationOutcome.class.getSimpleName();
+      case "Organization":
+        return org.hl7.fhir.dstu3.model.Organization.class.getSimpleName();
+      case "OrganizationAffiliation":
+        return null;
+      case "Parameters":
+        return org.hl7.fhir.dstu3.model.Parameters.class.getSimpleName();
+      case "Patient":
+        return org.hl7.fhir.dstu3.model.Patient.class.getSimpleName();
+      case "PaymentNotice":
+        return org.hl7.fhir.dstu3.model.PaymentNotice.class.getSimpleName();
+      case "PaymentReconciliation":
+        return org.hl7.fhir.dstu3.model.PaymentReconciliation.class.getSimpleName();
+      case "Person":
+        return org.hl7.fhir.dstu3.model.Person.class.getSimpleName();
+      case "PlanDefinition":
+        return org.hl7.fhir.dstu3.model.PlanDefinition.class.getSimpleName();
+      case "Practitioner":
+        return org.hl7.fhir.dstu3.model.Practitioner.class.getSimpleName();
+      case "PractitionerRole":
+        return org.hl7.fhir.dstu3.model.PractitionerRole.class.getSimpleName();
+      case "Procedure":
+        return org.hl7.fhir.dstu3.model.Procedure.class.getSimpleName();
+      case "Provenance":
+        return org.hl7.fhir.dstu3.model.Provenance.class.getSimpleName();
+      case "Questionnaire":
+        return org.hl7.fhir.dstu3.model.Questionnaire.class.getSimpleName();
+      case "QuestionnaireResponse":
+        return org.hl7.fhir.dstu3.model.QuestionnaireResponse.class.getSimpleName();
+      case "RelatedPerson":
+        return org.hl7.fhir.dstu3.model.RelatedPerson.class.getSimpleName();
+      case "RequestGroup":
+        return org.hl7.fhir.dstu3.model.RequestGroup.class.getSimpleName();
+      case "ResearchStudy":
+        return org.hl7.fhir.dstu3.model.ResearchStudy.class.getSimpleName();
+      case "ResearchSubject":
+        return org.hl7.fhir.dstu3.model.ResearchSubject.class.getSimpleName();
+      case "RiskAssessment":
+        return org.hl7.fhir.dstu3.model.RiskAssessment.class.getSimpleName();
+      case "Schedule":
+        return org.hl7.fhir.dstu3.model.Schedule.class.getSimpleName();
+      case "SearchParameter":
+        return org.hl7.fhir.dstu3.model.SearchParameter.class.getSimpleName();
+      case "ServiceRequest":
+        return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getSimpleName();
 //    case "ServiceRequest" : return org.hl7.fhir.dstu3.model.ReferralRequest.class.getSimpleName(); 
-    case "Slot" : return org.hl7.fhir.dstu3.model.Slot.class.getSimpleName(); 
-    case "Specimen" : return org.hl7.fhir.dstu3.model.Specimen.class.getSimpleName(); 
-    case "SpecimenDefinition" : return null; 
-    case "StructureDefinition" : return org.hl7.fhir.dstu3.model.StructureDefinition.class.getSimpleName(); 
+      case "Slot":
+        return org.hl7.fhir.dstu3.model.Slot.class.getSimpleName();
+      case "Specimen":
+        return org.hl7.fhir.dstu3.model.Specimen.class.getSimpleName();
+      case "SpecimenDefinition":
+        return null;
+      case "StructureDefinition":
+        return org.hl7.fhir.dstu3.model.StructureDefinition.class.getSimpleName();
 //    case "StructureDefinition" : return org.hl7.fhir.dstu3.model.DataElement.class.getSimpleName(); 
-    case "StructureMap" : return org.hl7.fhir.dstu3.model.StructureMap.class.getSimpleName(); 
-    case "Subscription" : return org.hl7.fhir.dstu3.model.Subscription.class.getSimpleName(); 
-    case "Substance" : return org.hl7.fhir.dstu3.model.Substance.class.getSimpleName(); 
-    case "SubstancePolymer" : return null; 
-    case "SubstanceReferenceInformation" : return null; 
-    case "SubstanceSpecification" : return null; 
-    case "SupplyDelivery" : return org.hl7.fhir.dstu3.model.SupplyDelivery.class.getSimpleName(); 
-    case "SupplyRequest" : return org.hl7.fhir.dstu3.model.SupplyRequest.class.getSimpleName(); 
-    case "Task" : return org.hl7.fhir.dstu3.model.Task.class.getSimpleName(); 
-    case "TerminologyCapabilities" : return null; 
-    case "TestReport" : return org.hl7.fhir.dstu3.model.TestReport.class.getSimpleName(); 
-    case "TestScript" : return org.hl7.fhir.dstu3.model.TestScript.class.getSimpleName(); 
-    case "ValueSet" : return org.hl7.fhir.dstu3.model.ValueSet.class.getSimpleName(); 
-    case "VerificationResult" : return null; 
-    case "VisionPrescription" : return org.hl7.fhir.dstu3.model.VisionPrescription.class.getSimpleName(); 
-    default: return null;
+      case "StructureMap":
+        return org.hl7.fhir.dstu3.model.StructureMap.class.getSimpleName();
+      case "Subscription":
+        return org.hl7.fhir.dstu3.model.Subscription.class.getSimpleName();
+      case "Substance":
+        return org.hl7.fhir.dstu3.model.Substance.class.getSimpleName();
+      case "SubstancePolymer":
+        return null;
+      case "SubstanceReferenceInformation":
+        return null;
+      case "SubstanceSpecification":
+        return null;
+      case "SupplyDelivery":
+        return org.hl7.fhir.dstu3.model.SupplyDelivery.class.getSimpleName();
+      case "SupplyRequest":
+        return org.hl7.fhir.dstu3.model.SupplyRequest.class.getSimpleName();
+      case "Task":
+        return org.hl7.fhir.dstu3.model.Task.class.getSimpleName();
+      case "TerminologyCapabilities":
+        return null;
+      case "TestReport":
+        return org.hl7.fhir.dstu3.model.TestReport.class.getSimpleName();
+      case "TestScript":
+        return org.hl7.fhir.dstu3.model.TestScript.class.getSimpleName();
+      case "ValueSet":
+        return org.hl7.fhir.dstu3.model.ValueSet.class.getSimpleName();
+      case "VerificationResult":
+        return null;
+      case "VisionPrescription":
+        return org.hl7.fhir.dstu3.model.VisionPrescription.class.getSimpleName();
+      default:
+        return null;
     }
   }
 
   public static String mapName2to3(String name) {
-    if (Utilities.noString(name)) { return null; } 
+    if (Utilities.noString(name)) {
+      return null;
+    }
     switch (name) {
-    case "AllergyIntolerance" : return org.hl7.fhir.dstu3.model.AllergyIntolerance.class.getSimpleName(); 
-    case "Appointment" : return org.hl7.fhir.dstu3.model.Appointment.class.getSimpleName(); 
-    case "AppointmentResponse" : return org.hl7.fhir.dstu3.model.AppointmentResponse.class.getSimpleName(); 
-    case "AuditEvent" : return org.hl7.fhir.dstu3.model.AuditEvent.class.getSimpleName(); 
-    case "Basic" : return org.hl7.fhir.dstu3.model.Basic.class.getSimpleName(); 
-    case "Binary" : return org.hl7.fhir.dstu3.model.Binary.class.getSimpleName(); 
-    case "BodySite" : return org.hl7.fhir.dstu3.model.BodySite.class.getSimpleName(); 
-    case "Bundle" : return org.hl7.fhir.dstu3.model.Bundle.class.getSimpleName(); 
-    case "Conformance" : return org.hl7.fhir.dstu3.model.CapabilityStatement.class.getSimpleName(); 
-    case "CarePlan" : return org.hl7.fhir.dstu3.model.CarePlan.class.getSimpleName(); 
-    case "Claim" : return org.hl7.fhir.dstu3.model.Claim.class.getSimpleName(); 
-    case "ClaimResponse" : return org.hl7.fhir.dstu3.model.ClaimResponse.class.getSimpleName(); 
-    case "ClinicalImpression" : return org.hl7.fhir.dstu3.model.ClinicalImpression.class.getSimpleName(); 
-    case "Communication" : return org.hl7.fhir.dstu3.model.Communication.class.getSimpleName(); 
-    case "CommunicationRequest" : return org.hl7.fhir.dstu3.model.CommunicationRequest.class.getSimpleName(); 
-    case "Composition" : return org.hl7.fhir.dstu3.model.Composition.class.getSimpleName(); 
-    case "ConceptMap" : return org.hl7.fhir.dstu3.model.ConceptMap.class.getSimpleName(); 
-    case "Condition" : return org.hl7.fhir.dstu3.model.Condition.class.getSimpleName(); 
-    case "Contract" : return org.hl7.fhir.dstu3.model.Contract.class.getSimpleName(); 
-    case "Coverage" : return org.hl7.fhir.dstu3.model.Coverage.class.getSimpleName(); 
-    case "DataElement" : return org.hl7.fhir.dstu3.model.DataElement.class.getSimpleName(); 
-    case "EligibilityRequest" : return org.hl7.fhir.dstu3.model.EligibilityRequest.class.getSimpleName(); 
-    case "EligibilityResponse" : return org.hl7.fhir.dstu3.model.EligibilityResponse.class.getSimpleName(); 
-    case "DetectedIssue" : return org.hl7.fhir.dstu3.model.DetectedIssue.class.getSimpleName(); 
-    case "Device" : return org.hl7.fhir.dstu3.model.Device.class.getSimpleName(); 
-    case "DeviceComponent" : return org.hl7.fhir.dstu3.model.DeviceComponent.class.getSimpleName(); 
-    case "DeviceMetric" : return org.hl7.fhir.dstu3.model.DeviceMetric.class.getSimpleName(); 
-    case "DeviceUseRequest" : return org.hl7.fhir.dstu3.model.DeviceRequest.class.getSimpleName(); 
-    case "DeviceUseStatement" : return org.hl7.fhir.dstu3.model.DeviceUseStatement.class.getSimpleName(); 
-    case "DiagnosticOrder" : return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getSimpleName(); 
-    case "DiagnosticReport" : return org.hl7.fhir.dstu3.model.DiagnosticReport.class.getSimpleName(); 
-    case "DocumentManifest" : return org.hl7.fhir.dstu3.model.DocumentManifest.class.getSimpleName(); 
-    case "DocumentReference" : return org.hl7.fhir.dstu3.model.DocumentReference.class.getSimpleName(); 
-    case "Encounter" : return org.hl7.fhir.dstu3.model.Encounter.class.getSimpleName(); 
-    case "EnrollmentRequest" : return org.hl7.fhir.dstu3.model.EnrollmentRequest.class.getSimpleName(); 
-    case "EnrollmentResponse" : return org.hl7.fhir.dstu3.model.EnrollmentResponse.class.getSimpleName(); 
-    case "EpisodeOfCare" : return org.hl7.fhir.dstu3.model.EpisodeOfCare.class.getSimpleName(); 
-    case "ExplanationOfBenefit" : return org.hl7.fhir.dstu3.model.ExplanationOfBenefit.class.getSimpleName(); 
-    case "FamilyMemberHistory" : return org.hl7.fhir.dstu3.model.FamilyMemberHistory.class.getSimpleName(); 
-    case "Flag" : return org.hl7.fhir.dstu3.model.Flag.class.getSimpleName(); 
-    case "Goal" : return org.hl7.fhir.dstu3.model.Goal.class.getSimpleName(); 
-    case "Group" : return org.hl7.fhir.dstu3.model.Group.class.getSimpleName(); 
-    case "HealthcareService" : return org.hl7.fhir.dstu3.model.HealthcareService.class.getSimpleName(); 
-    case "ImagingObjectSelection": return null;  // != ImagingManifest
-    case "ImagingStudy" : return org.hl7.fhir.dstu3.model.ImagingStudy.class.getSimpleName(); 
-    case "Immunization" : return org.hl7.fhir.dstu3.model.Immunization.class.getSimpleName(); 
-    case "ImmunizationRecommendation" : return org.hl7.fhir.dstu3.model.ImmunizationRecommendation.class.getSimpleName(); 
-    case "ImplementationGuide" : return org.hl7.fhir.dstu3.model.ImplementationGuide.class.getSimpleName(); 
-    case "List" : return org.hl7.fhir.dstu3.model.ListResource.class.getSimpleName(); 
-    case "Location" : return org.hl7.fhir.dstu3.model.Location.class.getSimpleName(); 
-    case "Media" : return org.hl7.fhir.dstu3.model.Media.class.getSimpleName(); 
-    case "Medication" : return org.hl7.fhir.dstu3.model.Medication.class.getSimpleName(); 
-    case "MedicationAdministration" : return org.hl7.fhir.dstu3.model.MedicationAdministration.class.getSimpleName(); 
-    case "MedicationDispense" : return org.hl7.fhir.dstu3.model.MedicationDispense.class.getSimpleName(); 
-    case "MedicationOrder" : return org.hl7.fhir.dstu3.model.MedicationRequest.class.getSimpleName(); 
-    case "MedicationStatement" : return org.hl7.fhir.dstu3.model.MedicationStatement.class.getSimpleName(); 
-    case "MessageHeader" : return org.hl7.fhir.dstu3.model.MessageHeader.class.getSimpleName(); 
-    case "NamingSystem" : return org.hl7.fhir.dstu3.model.NamingSystem.class.getSimpleName(); 
-    case "NutritionOrder" : return org.hl7.fhir.dstu3.model.NutritionOrder.class.getSimpleName(); 
-    case "Observation" : return org.hl7.fhir.dstu3.model.Observation.class.getSimpleName(); 
-    case "OperationDefinition" : return org.hl7.fhir.dstu3.model.OperationDefinition.class.getSimpleName(); 
-    case "OperationOutcome" : return org.hl7.fhir.dstu3.model.OperationOutcome.class.getSimpleName(); 
-    case "Order" : return org.hl7.fhir.dstu3.model.Task.class.getSimpleName(); 
-    case "OrderResponse" : return org.hl7.fhir.dstu3.model.Task.class.getSimpleName(); 
-    case "Organization" : return org.hl7.fhir.dstu3.model.Organization.class.getSimpleName(); 
-    case "Parameters" : return org.hl7.fhir.dstu3.model.Parameters.class.getSimpleName(); 
-    case "Patient" : return org.hl7.fhir.dstu3.model.Patient.class.getSimpleName(); 
-    case "PaymentNotice" : return org.hl7.fhir.dstu3.model.PaymentNotice.class.getSimpleName(); 
-    case "PaymentReconciliation" : return org.hl7.fhir.dstu3.model.PaymentReconciliation.class.getSimpleName(); 
-    case "Person" : return org.hl7.fhir.dstu3.model.Person.class.getSimpleName(); 
-    case "Practitioner" : return org.hl7.fhir.dstu3.model.Practitioner.class.getSimpleName(); 
-    case "Procedure" : return org.hl7.fhir.dstu3.model.Procedure.class.getSimpleName(); 
-    case "ProcessRequest" : return org.hl7.fhir.dstu3.model.ProcessRequest.class.getSimpleName(); 
-    case "ProcessResponse" : return org.hl7.fhir.dstu3.model.ProcessResponse.class.getSimpleName(); 
-    case "Provenance" : return org.hl7.fhir.dstu3.model.Provenance.class.getSimpleName(); 
-    case "Questionnaire" : return org.hl7.fhir.dstu3.model.Questionnaire.class.getSimpleName(); 
-    case "QuestionnaireResponse" : return org.hl7.fhir.dstu3.model.QuestionnaireResponse.class.getSimpleName(); 
-    case "ReferralRequest" : return org.hl7.fhir.dstu3.model.ReferralRequest.class.getSimpleName(); 
-    case "RelatedPerson" : return org.hl7.fhir.dstu3.model.RelatedPerson.class.getSimpleName(); 
-    case "RiskAssessment" : return org.hl7.fhir.dstu3.model.RiskAssessment.class.getSimpleName(); 
-    case "Schedule" : return org.hl7.fhir.dstu3.model.Schedule.class.getSimpleName(); 
-    case "SearchParameter" : return org.hl7.fhir.dstu3.model.SearchParameter.class.getSimpleName(); 
-    case "ProcedureRequest" : return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getSimpleName(); 
-    case "Slot" : return org.hl7.fhir.dstu3.model.Slot.class.getSimpleName(); 
-    case "Specimen" : return org.hl7.fhir.dstu3.model.Specimen.class.getSimpleName(); 
-    case "StructureDefinition" : return org.hl7.fhir.dstu3.model.StructureDefinition.class.getSimpleName(); 
-    case "Subscription" : return org.hl7.fhir.dstu3.model.Subscription.class.getSimpleName(); 
-    case "Substance" : return org.hl7.fhir.dstu3.model.Substance.class.getSimpleName(); 
-    case "SupplyDelivery" : return org.hl7.fhir.dstu3.model.SupplyDelivery.class.getSimpleName(); 
-    case "SupplyRequest" : return org.hl7.fhir.dstu3.model.SupplyRequest.class.getSimpleName(); 
-    case "TestScript" : return org.hl7.fhir.dstu3.model.TestScript.class.getSimpleName(); 
-    case "ValueSet" : return org.hl7.fhir.dstu3.model.ValueSet.class.getSimpleName(); 
+      case "AllergyIntolerance":
+        return org.hl7.fhir.dstu3.model.AllergyIntolerance.class.getSimpleName();
+      case "Appointment":
+        return org.hl7.fhir.dstu3.model.Appointment.class.getSimpleName();
+      case "AppointmentResponse":
+        return org.hl7.fhir.dstu3.model.AppointmentResponse.class.getSimpleName();
+      case "AuditEvent":
+        return org.hl7.fhir.dstu3.model.AuditEvent.class.getSimpleName();
+      case "Basic":
+        return org.hl7.fhir.dstu3.model.Basic.class.getSimpleName();
+      case "Binary":
+        return org.hl7.fhir.dstu3.model.Binary.class.getSimpleName();
+      case "BodySite":
+        return org.hl7.fhir.dstu3.model.BodySite.class.getSimpleName();
+      case "Bundle":
+        return org.hl7.fhir.dstu3.model.Bundle.class.getSimpleName();
+      case "Conformance":
+        return org.hl7.fhir.dstu3.model.CapabilityStatement.class.getSimpleName();
+      case "CarePlan":
+        return org.hl7.fhir.dstu3.model.CarePlan.class.getSimpleName();
+      case "Claim":
+        return org.hl7.fhir.dstu3.model.Claim.class.getSimpleName();
+      case "ClaimResponse":
+        return org.hl7.fhir.dstu3.model.ClaimResponse.class.getSimpleName();
+      case "ClinicalImpression":
+        return org.hl7.fhir.dstu3.model.ClinicalImpression.class.getSimpleName();
+      case "Communication":
+        return org.hl7.fhir.dstu3.model.Communication.class.getSimpleName();
+      case "CommunicationRequest":
+        return org.hl7.fhir.dstu3.model.CommunicationRequest.class.getSimpleName();
+      case "Composition":
+        return org.hl7.fhir.dstu3.model.Composition.class.getSimpleName();
+      case "ConceptMap":
+        return org.hl7.fhir.dstu3.model.ConceptMap.class.getSimpleName();
+      case "Condition":
+        return org.hl7.fhir.dstu3.model.Condition.class.getSimpleName();
+      case "Contract":
+        return org.hl7.fhir.dstu3.model.Contract.class.getSimpleName();
+      case "Coverage":
+        return org.hl7.fhir.dstu3.model.Coverage.class.getSimpleName();
+      case "DataElement":
+        return org.hl7.fhir.dstu3.model.DataElement.class.getSimpleName();
+      case "EligibilityRequest":
+        return org.hl7.fhir.dstu3.model.EligibilityRequest.class.getSimpleName();
+      case "EligibilityResponse":
+        return org.hl7.fhir.dstu3.model.EligibilityResponse.class.getSimpleName();
+      case "DetectedIssue":
+        return org.hl7.fhir.dstu3.model.DetectedIssue.class.getSimpleName();
+      case "Device":
+        return org.hl7.fhir.dstu3.model.Device.class.getSimpleName();
+      case "DeviceComponent":
+        return org.hl7.fhir.dstu3.model.DeviceComponent.class.getSimpleName();
+      case "DeviceMetric":
+        return org.hl7.fhir.dstu3.model.DeviceMetric.class.getSimpleName();
+      case "DeviceUseRequest":
+        return org.hl7.fhir.dstu3.model.DeviceRequest.class.getSimpleName();
+      case "DeviceUseStatement":
+        return org.hl7.fhir.dstu3.model.DeviceUseStatement.class.getSimpleName();
+      case "DiagnosticOrder":
+        return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getSimpleName();
+      case "DiagnosticReport":
+        return org.hl7.fhir.dstu3.model.DiagnosticReport.class.getSimpleName();
+      case "DocumentManifest":
+        return org.hl7.fhir.dstu3.model.DocumentManifest.class.getSimpleName();
+      case "DocumentReference":
+        return org.hl7.fhir.dstu3.model.DocumentReference.class.getSimpleName();
+      case "Encounter":
+        return org.hl7.fhir.dstu3.model.Encounter.class.getSimpleName();
+      case "EnrollmentRequest":
+        return org.hl7.fhir.dstu3.model.EnrollmentRequest.class.getSimpleName();
+      case "EnrollmentResponse":
+        return org.hl7.fhir.dstu3.model.EnrollmentResponse.class.getSimpleName();
+      case "EpisodeOfCare":
+        return org.hl7.fhir.dstu3.model.EpisodeOfCare.class.getSimpleName();
+      case "ExplanationOfBenefit":
+        return org.hl7.fhir.dstu3.model.ExplanationOfBenefit.class.getSimpleName();
+      case "FamilyMemberHistory":
+        return org.hl7.fhir.dstu3.model.FamilyMemberHistory.class.getSimpleName();
+      case "Flag":
+        return org.hl7.fhir.dstu3.model.Flag.class.getSimpleName();
+      case "Goal":
+        return org.hl7.fhir.dstu3.model.Goal.class.getSimpleName();
+      case "Group":
+        return org.hl7.fhir.dstu3.model.Group.class.getSimpleName();
+      case "HealthcareService":
+        return org.hl7.fhir.dstu3.model.HealthcareService.class.getSimpleName();
+      case "ImagingObjectSelection":
+        return null;  // != ImagingManifest
+      case "ImagingStudy":
+        return org.hl7.fhir.dstu3.model.ImagingStudy.class.getSimpleName();
+      case "Immunization":
+        return org.hl7.fhir.dstu3.model.Immunization.class.getSimpleName();
+      case "ImmunizationRecommendation":
+        return org.hl7.fhir.dstu3.model.ImmunizationRecommendation.class.getSimpleName();
+      case "ImplementationGuide":
+        return org.hl7.fhir.dstu3.model.ImplementationGuide.class.getSimpleName();
+      case "List":
+        return org.hl7.fhir.dstu3.model.ListResource.class.getSimpleName();
+      case "Location":
+        return org.hl7.fhir.dstu3.model.Location.class.getSimpleName();
+      case "Media":
+        return org.hl7.fhir.dstu3.model.Media.class.getSimpleName();
+      case "Medication":
+        return org.hl7.fhir.dstu3.model.Medication.class.getSimpleName();
+      case "MedicationAdministration":
+        return org.hl7.fhir.dstu3.model.MedicationAdministration.class.getSimpleName();
+      case "MedicationDispense":
+        return org.hl7.fhir.dstu3.model.MedicationDispense.class.getSimpleName();
+      case "MedicationOrder":
+        return org.hl7.fhir.dstu3.model.MedicationRequest.class.getSimpleName();
+      case "MedicationStatement":
+        return org.hl7.fhir.dstu3.model.MedicationStatement.class.getSimpleName();
+      case "MessageHeader":
+        return org.hl7.fhir.dstu3.model.MessageHeader.class.getSimpleName();
+      case "NamingSystem":
+        return org.hl7.fhir.dstu3.model.NamingSystem.class.getSimpleName();
+      case "NutritionOrder":
+        return org.hl7.fhir.dstu3.model.NutritionOrder.class.getSimpleName();
+      case "Observation":
+        return org.hl7.fhir.dstu3.model.Observation.class.getSimpleName();
+      case "OperationDefinition":
+        return org.hl7.fhir.dstu3.model.OperationDefinition.class.getSimpleName();
+      case "OperationOutcome":
+        return org.hl7.fhir.dstu3.model.OperationOutcome.class.getSimpleName();
+      case "Order":
+        return org.hl7.fhir.dstu3.model.Task.class.getSimpleName();
+      case "OrderResponse":
+        return org.hl7.fhir.dstu3.model.Task.class.getSimpleName();
+      case "Organization":
+        return org.hl7.fhir.dstu3.model.Organization.class.getSimpleName();
+      case "Parameters":
+        return org.hl7.fhir.dstu3.model.Parameters.class.getSimpleName();
+      case "Patient":
+        return org.hl7.fhir.dstu3.model.Patient.class.getSimpleName();
+      case "PaymentNotice":
+        return org.hl7.fhir.dstu3.model.PaymentNotice.class.getSimpleName();
+      case "PaymentReconciliation":
+        return org.hl7.fhir.dstu3.model.PaymentReconciliation.class.getSimpleName();
+      case "Person":
+        return org.hl7.fhir.dstu3.model.Person.class.getSimpleName();
+      case "Practitioner":
+        return org.hl7.fhir.dstu3.model.Practitioner.class.getSimpleName();
+      case "Procedure":
+        return org.hl7.fhir.dstu3.model.Procedure.class.getSimpleName();
+      case "ProcessRequest":
+        return org.hl7.fhir.dstu3.model.ProcessRequest.class.getSimpleName();
+      case "ProcessResponse":
+        return org.hl7.fhir.dstu3.model.ProcessResponse.class.getSimpleName();
+      case "Provenance":
+        return org.hl7.fhir.dstu3.model.Provenance.class.getSimpleName();
+      case "Questionnaire":
+        return org.hl7.fhir.dstu3.model.Questionnaire.class.getSimpleName();
+      case "QuestionnaireResponse":
+        return org.hl7.fhir.dstu3.model.QuestionnaireResponse.class.getSimpleName();
+      case "ReferralRequest":
+        return org.hl7.fhir.dstu3.model.ReferralRequest.class.getSimpleName();
+      case "RelatedPerson":
+        return org.hl7.fhir.dstu3.model.RelatedPerson.class.getSimpleName();
+      case "RiskAssessment":
+        return org.hl7.fhir.dstu3.model.RiskAssessment.class.getSimpleName();
+      case "Schedule":
+        return org.hl7.fhir.dstu3.model.Schedule.class.getSimpleName();
+      case "SearchParameter":
+        return org.hl7.fhir.dstu3.model.SearchParameter.class.getSimpleName();
+      case "ProcedureRequest":
+        return org.hl7.fhir.dstu3.model.ProcedureRequest.class.getSimpleName();
+      case "Slot":
+        return org.hl7.fhir.dstu3.model.Slot.class.getSimpleName();
+      case "Specimen":
+        return org.hl7.fhir.dstu3.model.Specimen.class.getSimpleName();
+      case "StructureDefinition":
+        return org.hl7.fhir.dstu3.model.StructureDefinition.class.getSimpleName();
+      case "Subscription":
+        return org.hl7.fhir.dstu3.model.Subscription.class.getSimpleName();
+      case "Substance":
+        return org.hl7.fhir.dstu3.model.Substance.class.getSimpleName();
+      case "SupplyDelivery":
+        return org.hl7.fhir.dstu3.model.SupplyDelivery.class.getSimpleName();
+      case "SupplyRequest":
+        return org.hl7.fhir.dstu3.model.SupplyRequest.class.getSimpleName();
+      case "TestScript":
+        return org.hl7.fhir.dstu3.model.TestScript.class.getSimpleName();
+      case "ValueSet":
+        return org.hl7.fhir.dstu3.model.ValueSet.class.getSimpleName();
 //    case "ValueSet" : return org.hl7.fhir.dstu3.model.CodeSystem.class.getSimpleName(); 
-    case "VisionPrescription" : return org.hl7.fhir.dstu3.model.VisionPrescription.class.getSimpleName(); 
-    default: return null;
+      case "VisionPrescription":
+        return org.hl7.fhir.dstu3.model.VisionPrescription.class.getSimpleName();
+      default:
+        return null;
     }
   }
 
   public static String mapName3to2(String name) {
-    if (Utilities.noString(name)) { return null; } 
+    if (Utilities.noString(name)) {
+      return null;
+    }
     switch (name) {
-    case "Account" : return null; 
-    case "ActivityDefinition" : return null; 
-    case "AllergyIntolerance" : return org.hl7.fhir.dstu2.model.AllergyIntolerance.class.getSimpleName(); 
-    case "AdverseEvent" : return null; 
-    case "Appointment" : return org.hl7.fhir.dstu2.model.Appointment.class.getSimpleName(); 
-    case "AppointmentResponse" : return org.hl7.fhir.dstu2.model.AppointmentResponse.class.getSimpleName(); 
-    case "AuditEvent" : return org.hl7.fhir.dstu2.model.AuditEvent.class.getSimpleName(); 
-    case "Basic" : return org.hl7.fhir.dstu2.model.Basic.class.getSimpleName(); 
-    case "Binary" : return org.hl7.fhir.dstu2.model.Binary.class.getSimpleName(); 
-    case "BodySite" : return org.hl7.fhir.dstu2.model.BodySite.class.getSimpleName(); 
-    case "Bundle" : return org.hl7.fhir.dstu2.model.Bundle.class.getSimpleName(); 
-    case "CapabilityStatement" : return org.hl7.fhir.dstu2.model.Conformance.class.getSimpleName(); 
-    case "CarePlan" : return org.hl7.fhir.dstu2.model.CarePlan.class.getSimpleName(); 
-    case "CareTeam" : return null; 
-    case "ChargeItem" : return null; 
-    case "Claim" : return org.hl7.fhir.dstu2.model.Claim.class.getSimpleName(); 
-    case "ClaimResponse" : return org.hl7.fhir.dstu2.model.ClaimResponse.class.getSimpleName(); 
-    case "ClinicalImpression" : return org.hl7.fhir.dstu2.model.ClinicalImpression.class.getSimpleName(); 
-    case "CodeSystem" : return org.hl7.fhir.dstu2.model.ValueSet.class.getSimpleName(); 
-    case "Communication" : return org.hl7.fhir.dstu2.model.Communication.class.getSimpleName(); 
-    case "CommunicationRequest" : return org.hl7.fhir.dstu2.model.CommunicationRequest.class.getSimpleName(); 
-    case "CompartmentDefinition" : return null; 
-    case "Composition" : return org.hl7.fhir.dstu2.model.Composition.class.getSimpleName(); 
-    case "ConceptMap" : return org.hl7.fhir.dstu2.model.ConceptMap.class.getSimpleName(); 
-    case "Condition" : return org.hl7.fhir.dstu2.model.Condition.class.getSimpleName(); 
-    case "Consent" : return null; 
-    case "Contract" : return org.hl7.fhir.dstu2.model.Contract.class.getSimpleName(); 
-    case "Coverage" : return org.hl7.fhir.dstu2.model.Coverage.class.getSimpleName(); 
-    case "DataElement" : return org.hl7.fhir.dstu2.model.DataElement.class.getSimpleName(); 
-    case "EligibilityRequest" : return org.hl7.fhir.dstu2.model.EligibilityRequest.class.getSimpleName(); 
-    case "EligibilityResponse" : return org.hl7.fhir.dstu2.model.EligibilityResponse.class.getSimpleName(); 
-    case "DetectedIssue" : return org.hl7.fhir.dstu2.model.DetectedIssue.class.getSimpleName(); 
-    case "Device" : return org.hl7.fhir.dstu2.model.Device.class.getSimpleName(); 
-    case "DeviceComponent" : return org.hl7.fhir.dstu2.model.DeviceComponent.class.getSimpleName(); 
-    case "DeviceMetric" : return org.hl7.fhir.dstu2.model.DeviceMetric.class.getSimpleName(); 
-    case "DeviceRequest" : return org.hl7.fhir.dstu2.model.DeviceUseRequest.class.getSimpleName(); 
-    case "DeviceUseStatement" : return org.hl7.fhir.dstu2.model.DeviceUseStatement.class.getSimpleName(); 
+      case "Account":
+        return null;
+      case "ActivityDefinition":
+        return null;
+      case "AllergyIntolerance":
+        return org.hl7.fhir.dstu2.model.AllergyIntolerance.class.getSimpleName();
+      case "AdverseEvent":
+        return null;
+      case "Appointment":
+        return org.hl7.fhir.dstu2.model.Appointment.class.getSimpleName();
+      case "AppointmentResponse":
+        return org.hl7.fhir.dstu2.model.AppointmentResponse.class.getSimpleName();
+      case "AuditEvent":
+        return org.hl7.fhir.dstu2.model.AuditEvent.class.getSimpleName();
+      case "Basic":
+        return org.hl7.fhir.dstu2.model.Basic.class.getSimpleName();
+      case "Binary":
+        return org.hl7.fhir.dstu2.model.Binary.class.getSimpleName();
+      case "BodySite":
+        return org.hl7.fhir.dstu2.model.BodySite.class.getSimpleName();
+      case "Bundle":
+        return org.hl7.fhir.dstu2.model.Bundle.class.getSimpleName();
+      case "CapabilityStatement":
+        return org.hl7.fhir.dstu2.model.Conformance.class.getSimpleName();
+      case "CarePlan":
+        return org.hl7.fhir.dstu2.model.CarePlan.class.getSimpleName();
+      case "CareTeam":
+        return null;
+      case "ChargeItem":
+        return null;
+      case "Claim":
+        return org.hl7.fhir.dstu2.model.Claim.class.getSimpleName();
+      case "ClaimResponse":
+        return org.hl7.fhir.dstu2.model.ClaimResponse.class.getSimpleName();
+      case "ClinicalImpression":
+        return org.hl7.fhir.dstu2.model.ClinicalImpression.class.getSimpleName();
+      case "CodeSystem":
+        return org.hl7.fhir.dstu2.model.ValueSet.class.getSimpleName();
+      case "Communication":
+        return org.hl7.fhir.dstu2.model.Communication.class.getSimpleName();
+      case "CommunicationRequest":
+        return org.hl7.fhir.dstu2.model.CommunicationRequest.class.getSimpleName();
+      case "CompartmentDefinition":
+        return null;
+      case "Composition":
+        return org.hl7.fhir.dstu2.model.Composition.class.getSimpleName();
+      case "ConceptMap":
+        return org.hl7.fhir.dstu2.model.ConceptMap.class.getSimpleName();
+      case "Condition":
+        return org.hl7.fhir.dstu2.model.Condition.class.getSimpleName();
+      case "Consent":
+        return null;
+      case "Contract":
+        return org.hl7.fhir.dstu2.model.Contract.class.getSimpleName();
+      case "Coverage":
+        return org.hl7.fhir.dstu2.model.Coverage.class.getSimpleName();
+      case "DataElement":
+        return org.hl7.fhir.dstu2.model.DataElement.class.getSimpleName();
+      case "EligibilityRequest":
+        return org.hl7.fhir.dstu2.model.EligibilityRequest.class.getSimpleName();
+      case "EligibilityResponse":
+        return org.hl7.fhir.dstu2.model.EligibilityResponse.class.getSimpleName();
+      case "DetectedIssue":
+        return org.hl7.fhir.dstu2.model.DetectedIssue.class.getSimpleName();
+      case "Device":
+        return org.hl7.fhir.dstu2.model.Device.class.getSimpleName();
+      case "DeviceComponent":
+        return org.hl7.fhir.dstu2.model.DeviceComponent.class.getSimpleName();
+      case "DeviceMetric":
+        return org.hl7.fhir.dstu2.model.DeviceMetric.class.getSimpleName();
+      case "DeviceRequest":
+        return org.hl7.fhir.dstu2.model.DeviceUseRequest.class.getSimpleName();
+      case "DeviceUseStatement":
+        return org.hl7.fhir.dstu2.model.DeviceUseStatement.class.getSimpleName();
 //    case "ProcedureRequest" : return org.hl7.fhir.dstu2.model.DiagnosticOrder.class.getSimpleName(); 
-    case "DiagnosticReport" : return org.hl7.fhir.dstu2.model.DiagnosticReport.class.getSimpleName(); 
-    case "DocumentManifest" : return org.hl7.fhir.dstu2.model.DocumentManifest.class.getSimpleName(); 
-    case "DocumentReference" : return org.hl7.fhir.dstu2.model.DocumentReference.class.getSimpleName(); 
-    case "Encounter" : return org.hl7.fhir.dstu2.model.Encounter.class.getSimpleName(); 
-    case "Endpoint" : return null; 
-    case "EnrollmentRequest" : return org.hl7.fhir.dstu2.model.EnrollmentRequest.class.getSimpleName(); 
-    case "EnrollmentResponse" : return org.hl7.fhir.dstu2.model.EnrollmentResponse.class.getSimpleName(); 
-    case "EpisodeOfCare" : return org.hl7.fhir.dstu2.model.EpisodeOfCare.class.getSimpleName(); 
-    case "ExpansionProfile" : return null; 
-    case "ExplanationOfBenefit" : return org.hl7.fhir.dstu2.model.ExplanationOfBenefit.class.getSimpleName(); 
-    case "FamilyMemberHistory" : return org.hl7.fhir.dstu2.model.FamilyMemberHistory.class.getSimpleName(); 
-    case "Flag" : return org.hl7.fhir.dstu2.model.Flag.class.getSimpleName(); 
-    case "Goal" : return org.hl7.fhir.dstu2.model.Goal.class.getSimpleName(); 
-    case "GraphDefinition" : return null; 
-    case "Group" : return org.hl7.fhir.dstu2.model.Group.class.getSimpleName(); 
-    case "GuidanceResponse" : return null; 
-    case "HealthcareService" : return org.hl7.fhir.dstu2.model.HealthcareService.class.getSimpleName(); 
-    case "ImagingManifest" : return null;  // != ImagingObjectSelection
-    case "ImagingStudy" : return org.hl7.fhir.dstu2.model.ImagingStudy.class.getSimpleName(); 
-    case "Immunization" : return org.hl7.fhir.dstu2.model.Immunization.class.getSimpleName(); 
-    case "ImmunizationRecommendation" : return org.hl7.fhir.dstu2.model.ImmunizationRecommendation.class.getSimpleName(); 
-    case "ImplementationGuide" : return org.hl7.fhir.dstu2.model.ImplementationGuide.class.getSimpleName(); 
-    case "Library" : return null; 
-    case "Linkage" : return null; 
-    case "List" : return org.hl7.fhir.dstu2.model.List_.class.getSimpleName(); 
-    case "Location" : return org.hl7.fhir.dstu2.model.Location.class.getSimpleName(); 
-    case "Measure" : return null; 
-    case "MeasureReport" : return null; 
-    case "Media" : return org.hl7.fhir.dstu2.model.Media.class.getSimpleName(); 
-    case "Medication" : return org.hl7.fhir.dstu2.model.Medication.class.getSimpleName(); 
-    case "MedicationAdministration" : return org.hl7.fhir.dstu2.model.MedicationAdministration.class.getSimpleName(); 
-    case "MedicationDispense" : return org.hl7.fhir.dstu2.model.MedicationDispense.class.getSimpleName(); 
-    case "MedicationRequest" : return org.hl7.fhir.dstu2.model.MedicationOrder.class.getSimpleName(); 
-    case "MedicationStatement" : return org.hl7.fhir.dstu2.model.MedicationStatement.class.getSimpleName(); 
-    case "MessageDefinition" : return null; 
-    case "MessageHeader" : return org.hl7.fhir.dstu2.model.MessageHeader.class.getSimpleName(); 
-    case "Sequence" : return null; 
-    case "NamingSystem" : return org.hl7.fhir.dstu2.model.NamingSystem.class.getSimpleName(); 
-    case "NutritionOrder" : return org.hl7.fhir.dstu2.model.NutritionOrder.class.getSimpleName(); 
-    case "Observation" : return org.hl7.fhir.dstu2.model.Observation.class.getSimpleName(); 
-    case "OperationDefinition" : return org.hl7.fhir.dstu2.model.OperationDefinition.class.getSimpleName(); 
-    case "OperationOutcome" : return org.hl7.fhir.dstu2.model.OperationOutcome.class.getSimpleName(); 
-    case "Task" : return org.hl7.fhir.dstu2.model.Order.class.getSimpleName(); 
+      case "DiagnosticReport":
+        return org.hl7.fhir.dstu2.model.DiagnosticReport.class.getSimpleName();
+      case "DocumentManifest":
+        return org.hl7.fhir.dstu2.model.DocumentManifest.class.getSimpleName();
+      case "DocumentReference":
+        return org.hl7.fhir.dstu2.model.DocumentReference.class.getSimpleName();
+      case "Encounter":
+        return org.hl7.fhir.dstu2.model.Encounter.class.getSimpleName();
+      case "Endpoint":
+        return null;
+      case "EnrollmentRequest":
+        return org.hl7.fhir.dstu2.model.EnrollmentRequest.class.getSimpleName();
+      case "EnrollmentResponse":
+        return org.hl7.fhir.dstu2.model.EnrollmentResponse.class.getSimpleName();
+      case "EpisodeOfCare":
+        return org.hl7.fhir.dstu2.model.EpisodeOfCare.class.getSimpleName();
+      case "ExpansionProfile":
+        return null;
+      case "ExplanationOfBenefit":
+        return org.hl7.fhir.dstu2.model.ExplanationOfBenefit.class.getSimpleName();
+      case "FamilyMemberHistory":
+        return org.hl7.fhir.dstu2.model.FamilyMemberHistory.class.getSimpleName();
+      case "Flag":
+        return org.hl7.fhir.dstu2.model.Flag.class.getSimpleName();
+      case "Goal":
+        return org.hl7.fhir.dstu2.model.Goal.class.getSimpleName();
+      case "GraphDefinition":
+        return null;
+      case "Group":
+        return org.hl7.fhir.dstu2.model.Group.class.getSimpleName();
+      case "GuidanceResponse":
+        return null;
+      case "HealthcareService":
+        return org.hl7.fhir.dstu2.model.HealthcareService.class.getSimpleName();
+      case "ImagingManifest":
+        return null;  // != ImagingObjectSelection
+      case "ImagingStudy":
+        return org.hl7.fhir.dstu2.model.ImagingStudy.class.getSimpleName();
+      case "Immunization":
+        return org.hl7.fhir.dstu2.model.Immunization.class.getSimpleName();
+      case "ImmunizationRecommendation":
+        return org.hl7.fhir.dstu2.model.ImmunizationRecommendation.class.getSimpleName();
+      case "ImplementationGuide":
+        return org.hl7.fhir.dstu2.model.ImplementationGuide.class.getSimpleName();
+      case "Library":
+        return null;
+      case "Linkage":
+        return null;
+      case "List":
+        return org.hl7.fhir.dstu2.model.List_.class.getSimpleName();
+      case "Location":
+        return org.hl7.fhir.dstu2.model.Location.class.getSimpleName();
+      case "Measure":
+        return null;
+      case "MeasureReport":
+        return null;
+      case "Media":
+        return org.hl7.fhir.dstu2.model.Media.class.getSimpleName();
+      case "Medication":
+        return org.hl7.fhir.dstu2.model.Medication.class.getSimpleName();
+      case "MedicationAdministration":
+        return org.hl7.fhir.dstu2.model.MedicationAdministration.class.getSimpleName();
+      case "MedicationDispense":
+        return org.hl7.fhir.dstu2.model.MedicationDispense.class.getSimpleName();
+      case "MedicationRequest":
+        return org.hl7.fhir.dstu2.model.MedicationOrder.class.getSimpleName();
+      case "MedicationStatement":
+        return org.hl7.fhir.dstu2.model.MedicationStatement.class.getSimpleName();
+      case "MessageDefinition":
+        return null;
+      case "MessageHeader":
+        return org.hl7.fhir.dstu2.model.MessageHeader.class.getSimpleName();
+      case "Sequence":
+        return null;
+      case "NamingSystem":
+        return org.hl7.fhir.dstu2.model.NamingSystem.class.getSimpleName();
+      case "NutritionOrder":
+        return org.hl7.fhir.dstu2.model.NutritionOrder.class.getSimpleName();
+      case "Observation":
+        return org.hl7.fhir.dstu2.model.Observation.class.getSimpleName();
+      case "OperationDefinition":
+        return org.hl7.fhir.dstu2.model.OperationDefinition.class.getSimpleName();
+      case "OperationOutcome":
+        return org.hl7.fhir.dstu2.model.OperationOutcome.class.getSimpleName();
+      case "Task":
+        return org.hl7.fhir.dstu2.model.Order.class.getSimpleName();
 //    case "Task" : return org.hl7.fhir.dstu2.model.OrderResponse.class.getSimpleName(); 
-    case "Organization" : return org.hl7.fhir.dstu2.model.Organization.class.getSimpleName(); 
-    case "Parameters" : return org.hl7.fhir.dstu2.model.Parameters.class.getSimpleName(); 
-    case "Patient" : return org.hl7.fhir.dstu2.model.Patient.class.getSimpleName(); 
-    case "PaymentNotice" : return org.hl7.fhir.dstu2.model.PaymentNotice.class.getSimpleName(); 
-    case "PaymentReconciliation" : return org.hl7.fhir.dstu2.model.PaymentReconciliation.class.getSimpleName(); 
-    case "Person" : return org.hl7.fhir.dstu2.model.Person.class.getSimpleName(); 
-    case "PlanDefinition" : return null; 
-    case "Practitioner" : return org.hl7.fhir.dstu2.model.Practitioner.class.getSimpleName(); 
-    case "PractitionerRole" : return null; 
-    case "Procedure" : return org.hl7.fhir.dstu2.model.Procedure.class.getSimpleName(); 
-    case "ProcessRequest" : return org.hl7.fhir.dstu2.model.ProcessRequest.class.getSimpleName(); 
-    case "ProcessResponse" : return org.hl7.fhir.dstu2.model.ProcessResponse.class.getSimpleName(); 
-    case "Provenance" : return org.hl7.fhir.dstu2.model.Provenance.class.getSimpleName(); 
-    case "Questionnaire" : return org.hl7.fhir.dstu2.model.Questionnaire.class.getSimpleName(); 
-    case "QuestionnaireResponse" : return org.hl7.fhir.dstu2.model.QuestionnaireResponse.class.getSimpleName(); 
-    case "ReferralRequest" : return org.hl7.fhir.dstu2.model.ReferralRequest.class.getSimpleName(); 
-    case "RelatedPerson" : return org.hl7.fhir.dstu2.model.RelatedPerson.class.getSimpleName(); 
-    case "RequestGroup" : return null; 
-    case "ResearchStudy" : return null; 
-    case "ResearchSubject" : return null; 
-    case "RiskAssessment" : return org.hl7.fhir.dstu2.model.RiskAssessment.class.getSimpleName(); 
-    case "Schedule" : return org.hl7.fhir.dstu2.model.Schedule.class.getSimpleName(); 
-    case "SearchParameter" : return org.hl7.fhir.dstu2.model.SearchParameter.class.getSimpleName(); 
-    case "ServiceDefinition" : return null; 
-    case "ProcedureRequest" : return org.hl7.fhir.dstu2.model.ProcedureRequest.class.getSimpleName(); 
-    case "Slot" : return org.hl7.fhir.dstu2.model.Slot.class.getSimpleName(); 
-    case "Specimen" : return org.hl7.fhir.dstu2.model.Specimen.class.getSimpleName(); 
-    case "StructureDefinition" : return org.hl7.fhir.dstu2.model.StructureDefinition.class.getSimpleName(); 
-    case "StructureMap" : return null; 
-    case "Subscription" : return org.hl7.fhir.dstu2.model.Subscription.class.getSimpleName(); 
-    case "Substance" : return org.hl7.fhir.dstu2.model.Substance.class.getSimpleName(); 
-    case "SupplyDelivery" : return org.hl7.fhir.dstu2.model.SupplyDelivery.class.getSimpleName(); 
-    case "SupplyRequest" : return org.hl7.fhir.dstu2.model.SupplyRequest.class.getSimpleName(); 
-    case "TestReport" : return null; 
-    case "TestScript" : return org.hl7.fhir.dstu2.model.TestScript.class.getSimpleName(); 
-    case "ValueSet" : return org.hl7.fhir.dstu2.model.ValueSet.class.getSimpleName(); 
-    case "VisionPrescription" : return org.hl7.fhir.dstu2.model.VisionPrescription.class.getSimpleName(); 
-    default: return null;
+      case "Organization":
+        return org.hl7.fhir.dstu2.model.Organization.class.getSimpleName();
+      case "Parameters":
+        return org.hl7.fhir.dstu2.model.Parameters.class.getSimpleName();
+      case "Patient":
+        return org.hl7.fhir.dstu2.model.Patient.class.getSimpleName();
+      case "PaymentNotice":
+        return org.hl7.fhir.dstu2.model.PaymentNotice.class.getSimpleName();
+      case "PaymentReconciliation":
+        return org.hl7.fhir.dstu2.model.PaymentReconciliation.class.getSimpleName();
+      case "Person":
+        return org.hl7.fhir.dstu2.model.Person.class.getSimpleName();
+      case "PlanDefinition":
+        return null;
+      case "Practitioner":
+        return org.hl7.fhir.dstu2.model.Practitioner.class.getSimpleName();
+      case "PractitionerRole":
+        return null;
+      case "Procedure":
+        return org.hl7.fhir.dstu2.model.Procedure.class.getSimpleName();
+      case "ProcessRequest":
+        return org.hl7.fhir.dstu2.model.ProcessRequest.class.getSimpleName();
+      case "ProcessResponse":
+        return org.hl7.fhir.dstu2.model.ProcessResponse.class.getSimpleName();
+      case "Provenance":
+        return org.hl7.fhir.dstu2.model.Provenance.class.getSimpleName();
+      case "Questionnaire":
+        return org.hl7.fhir.dstu2.model.Questionnaire.class.getSimpleName();
+      case "QuestionnaireResponse":
+        return org.hl7.fhir.dstu2.model.QuestionnaireResponse.class.getSimpleName();
+      case "ReferralRequest":
+        return org.hl7.fhir.dstu2.model.ReferralRequest.class.getSimpleName();
+      case "RelatedPerson":
+        return org.hl7.fhir.dstu2.model.RelatedPerson.class.getSimpleName();
+      case "RequestGroup":
+        return null;
+      case "ResearchStudy":
+        return null;
+      case "ResearchSubject":
+        return null;
+      case "RiskAssessment":
+        return org.hl7.fhir.dstu2.model.RiskAssessment.class.getSimpleName();
+      case "Schedule":
+        return org.hl7.fhir.dstu2.model.Schedule.class.getSimpleName();
+      case "SearchParameter":
+        return org.hl7.fhir.dstu2.model.SearchParameter.class.getSimpleName();
+      case "ServiceDefinition":
+        return null;
+      case "ProcedureRequest":
+        return org.hl7.fhir.dstu2.model.ProcedureRequest.class.getSimpleName();
+      case "Slot":
+        return org.hl7.fhir.dstu2.model.Slot.class.getSimpleName();
+      case "Specimen":
+        return org.hl7.fhir.dstu2.model.Specimen.class.getSimpleName();
+      case "StructureDefinition":
+        return org.hl7.fhir.dstu2.model.StructureDefinition.class.getSimpleName();
+      case "StructureMap":
+        return null;
+      case "Subscription":
+        return org.hl7.fhir.dstu2.model.Subscription.class.getSimpleName();
+      case "Substance":
+        return org.hl7.fhir.dstu2.model.Substance.class.getSimpleName();
+      case "SupplyDelivery":
+        return org.hl7.fhir.dstu2.model.SupplyDelivery.class.getSimpleName();
+      case "SupplyRequest":
+        return org.hl7.fhir.dstu2.model.SupplyRequest.class.getSimpleName();
+      case "TestReport":
+        return null;
+      case "TestScript":
+        return org.hl7.fhir.dstu2.model.TestScript.class.getSimpleName();
+      case "ValueSet":
+        return org.hl7.fhir.dstu2.model.ValueSet.class.getSimpleName();
+      case "VisionPrescription":
+        return org.hl7.fhir.dstu2.model.VisionPrescription.class.getSimpleName();
+      default:
+        return null;
     }
   }
 

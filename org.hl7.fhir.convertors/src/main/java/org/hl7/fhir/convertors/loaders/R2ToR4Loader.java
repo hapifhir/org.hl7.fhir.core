@@ -30,15 +30,8 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
+import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
 import org.hl7.fhir.dstu2.formats.JsonParser;
 import org.hl7.fhir.dstu2.formats.XmlParser;
 import org.hl7.fhir.dstu2.model.Resource;
@@ -51,6 +44,12 @@ import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r4.model.UriType;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class R2ToR4Loader extends BaseLoaderR4 {
 
   private final BaseAdvisor_10_40 advisor = new BaseAdvisor_10_40();
@@ -58,7 +57,7 @@ public class R2ToR4Loader extends BaseLoaderR4 {
   public R2ToR4Loader() {
     super(new String[0], new NullLoaderKnowledgeProvider());
   }
-  
+
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
     Resource r2 = null;
@@ -100,9 +99,9 @@ public class R2ToR4Loader extends BaseLoaderR4 {
         .filter(be -> be.hasResource() && be.getResource() instanceof StructureDefinition)
         .map(be -> (StructureDefinition) be.getResource())
         .forEach(sd -> {
-        sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
-        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-      });
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
+          sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+        });
     }
     return b;
   }

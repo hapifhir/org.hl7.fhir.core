@@ -5,35 +5,16 @@ import org.hl7.fhir.r4.model.Resource;
 
 public abstract class BaseLoaderR4 implements IContextResourceLoader {
 
-  public interface ILoaderKnowledgeProvider {
-    /**
-     * get the path for references to this resource.
-     *
-     * @param resource
-     * @return null if not tracking paths
-     */
-    String getResourcePath(Resource resource);
-  }
-
-  public static class NullLoaderKnowledgeProvider implements ILoaderKnowledgeProvider {
-    @Override
-    public String getResourcePath(Resource resource) {
-      return null;
-    }
-  }
-
   protected final String URL_BASE = "http://hl7.org/fhir/";
   protected final String URL_DSTU2 = "http://hl7.org/fhir/1.0/";
   protected final String URL_DSTU2016MAY = "http://hl7.org/fhir/1.4/";
   protected final String URL_DSTU3 = "http://hl7.org/fhir/3.0/";
   protected final String URL_R4 = "http://hl7.org/fhir/4.0/";
   protected final String URL_ELEMENT_DEF_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
-
   protected boolean patchUrls;
   protected boolean killPrimitives;
-  private String[] types;
-  private ILoaderKnowledgeProvider lkp;
-
+  private final String[] types;
+  private final ILoaderKnowledgeProvider lkp;
   public BaseLoaderR4(String[] types, ILoaderKnowledgeProvider lkp) {
     super();
     this.types = types;
@@ -70,6 +51,23 @@ public abstract class BaseLoaderR4 implements IContextResourceLoader {
     String path = lkp.getResourcePath(r);
     if (path != null) {
       r.setUserData("path", path);
+    }
+  }
+
+  public interface ILoaderKnowledgeProvider {
+    /**
+     * get the path for references to this resource.
+     *
+     * @param resource
+     * @return null if not tracking paths
+     */
+    String getResourcePath(Resource resource);
+  }
+
+  public static class NullLoaderKnowledgeProvider implements ILoaderKnowledgeProvider {
+    @Override
+    public String getResourcePath(Resource resource) {
+      return null;
     }
   }
 }
