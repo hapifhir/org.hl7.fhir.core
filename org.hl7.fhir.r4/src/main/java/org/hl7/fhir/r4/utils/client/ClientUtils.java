@@ -323,10 +323,6 @@ public class ClientUtils {
         response = httpclient.execute(request);
         // Getting a "java.lang.IllegalStateException: Invalid use of BasicClientConnManager: 
         // connection still allocated. Make sure to release the connection before allocating another one."
-
-        //Releasing the connection before allocating another one
-        EntityUtils.consumeQuietly(response.getEntity());
-        
         ok = true;
       } catch(IOException ioe) {
         System.out.println(ioe.getMessage()+" ("+(System.currentTimeMillis()-t)+"ms / "+Utilities.describeSize(payload.length)+" for "+message+")");
@@ -372,11 +368,6 @@ public class ClientUtils {
         makeClient(proxy);
       }
       response = httpclient.execute(request);
-
-      //Releasing the connection before allocating another one
-      EntityUtils.consumeQuietly(response.getEntity());
-
-
     } catch(IOException ioe) {
       if (ClientUtils.debugging ) {
         ioe.printStackTrace();
@@ -625,10 +616,6 @@ public class ClientUtils {
       }
       request.setEntity(new ByteArrayEntity(payload));
       response = httpclient.execute(request);
-
-      //Releasing the connection before allocating another one
-      EntityUtils.consumeQuietly(response.getEntity());
-      
       log(response);
     } catch(IOException ioe) {
       throw new EFhirClientException("Error sending HTTP Post/Put Payload: "+ioe.getMessage(), ioe);
