@@ -1,14 +1,12 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
-import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
+import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.ElementDefinition10_40;
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.ContactPoint10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.*;
 import org.hl7.fhir.dstu2.model.Reference;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Enumerations.SearchParamType;
 import org.hl7.fhir.r4.model.Type;
 import org.hl7.fhir.utilities.Utilities;

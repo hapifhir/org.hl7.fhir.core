@@ -1,8 +1,9 @@
 package org.hl7.fhir.convertors.conv10_40.datatypes10_40;
 
+import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Immunization;
 
 import java.util.List;

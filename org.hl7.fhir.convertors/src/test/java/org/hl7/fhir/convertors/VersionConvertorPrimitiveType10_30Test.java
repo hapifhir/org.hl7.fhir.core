@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors;
 
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
 import org.hl7.fhir.dstu2.model.BooleanType;
 import org.hl7.fhir.dstu2.model.CodeType;
 import org.hl7.fhir.dstu2.model.DateType;
@@ -32,14 +33,14 @@ public class VersionConvertorPrimitiveType10_30Test {
   @MethodSource("dstu2PrimitiveTypes")
   public <T extends PrimitiveType> void testNullValueDstu2Primitive(String classname, T obj) {
     obj.addExtension().setUrl("http://example.com/AnyValue").setValue(new StringType("A value"));
-    Assertions.assertNull(((org.hl7.fhir.dstu3.model.PrimitiveType) Type10_30.convertType(obj)).getValue());
+    Assertions.assertNull(((org.hl7.fhir.dstu3.model.PrimitiveType) VersionConvertorFactory_10_30.convertType(obj)).getValue());
   }
 
   @ParameterizedTest(name = "Testing dstu3 -> dstu2 conversion of null value {0}.")
   @MethodSource("Dstu3PrimitiveTypes")
   public <T extends org.hl7.fhir.dstu3.model.PrimitiveType> void testNullValueDstu3Primitive(String classname, T obj) {
     obj.addExtension().setUrl("http://example.com/AnyValue").setValue(new org.hl7.fhir.dstu3.model.StringType("A value"));
-    Assertions.assertNull(((org.hl7.fhir.dstu2.model.PrimitiveType) Type10_30.convertType(obj)).getValue());
+    Assertions.assertNull(((org.hl7.fhir.dstu2.model.PrimitiveType) VersionConvertorFactory_10_30.convertType(obj)).getValue());
   }
 
   public static Stream<Arguments> dstu2PrimitiveTypes() {

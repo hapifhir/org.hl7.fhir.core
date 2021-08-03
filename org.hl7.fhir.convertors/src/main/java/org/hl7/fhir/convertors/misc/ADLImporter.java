@@ -37,7 +37,6 @@ import org.hl7.fhir.dstu3.model.ElementDefinition;
 import org.hl7.fhir.dstu3.model.Enumerations.PublicationStatus;
 import org.hl7.fhir.dstu3.model.StructureDefinition;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -51,12 +50,12 @@ import java.util.Map;
 
 public class ADLImporter {
 
+  private final Map<String, TextSet> texts = new HashMap<String, TextSet>();
   private String source;
   private String dest;
   private String config;
   private String info;
   private Element adl;
-  private final Map<String, TextSet> texts = new HashMap<String, TextSet>();
   private Element adlConfig;
 
   public static void main(String[] args) throws Exception {
@@ -333,11 +332,11 @@ public class ADLImporter {
   }
 
   public class NodeTreeEntry {
+    private final List<NodeTreeEntry> children = new ArrayList<NodeTreeEntry>();
     private String name;
     private String atCode;
     private String typeName;
     private Cardinality cardinality;
-    private final List<NodeTreeEntry> children = new ArrayList<NodeTreeEntry>();
   }
 
 }

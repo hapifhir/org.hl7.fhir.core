@@ -1,6 +1,6 @@
 package org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30;
 
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Element10_30;
+import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.*;
 import org.hl7.fhir.exceptions.FHIRException;
 
@@ -8,7 +8,7 @@ public class Attachment10_30 {
   public static org.hl7.fhir.dstu3.model.Attachment convertAttachment(org.hl7.fhir.dstu2.model.Attachment src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.dstu3.model.Attachment tgt = new org.hl7.fhir.dstu3.model.Attachment();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasContentTypeElement()) tgt.setContentTypeElement(Code10_30.convertCode(src.getContentTypeElement()));
     if (src.hasLanguageElement()) tgt.setLanguageElement(Code10_30.convertCode(src.getLanguageElement()));
     if (src.hasDataElement()) tgt.setDataElement(Base64Binary10_30.convertBase64Binary(src.getDataElement()));
@@ -23,7 +23,7 @@ public class Attachment10_30 {
   public static org.hl7.fhir.dstu2.model.Attachment convertAttachment(org.hl7.fhir.dstu3.model.Attachment src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.dstu2.model.Attachment tgt = new org.hl7.fhir.dstu2.model.Attachment();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasContentTypeElement()) tgt.setContentTypeElement(Code10_30.convertCode(src.getContentTypeElement()));
     if (src.hasLanguageElement()) tgt.setLanguageElement(Code10_30.convertCode(src.getLanguageElement()));
     if (src.hasDataElement()) tgt.setDataElement(Base64Binary10_30.convertBase64Binary(src.getDataElement()));

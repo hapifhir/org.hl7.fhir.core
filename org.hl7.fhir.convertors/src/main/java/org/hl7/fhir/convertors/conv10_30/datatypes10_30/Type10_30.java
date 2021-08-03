@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv10_30.datatypes10_30;
 
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.*;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.*;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -7,7 +8,14 @@ import org.hl7.fhir.exceptions.FHIRException;
 import java.util.ArrayList;
 
 public class Type10_30 {
-  public static org.hl7.fhir.dstu3.model.Type convertType(org.hl7.fhir.dstu2.model.Type src) throws FHIRException {
+
+  private final BaseAdvisor_10_30 advisor;
+
+  public Type10_30(BaseAdvisor_10_30 advisor) {
+    this.advisor = advisor;
+  }
+
+  public org.hl7.fhir.dstu3.model.Type convertType(org.hl7.fhir.dstu2.model.Type src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.dstu2.model.Base64BinaryType)
       return Base64Binary10_30.convertBase64Binary((org.hl7.fhir.dstu2.model.Base64BinaryType) src);
@@ -92,10 +100,14 @@ public class Type10_30 {
     if (src instanceof org.hl7.fhir.dstu2.model.Meta) return Meta10_30.convertMeta((org.hl7.fhir.dstu2.model.Meta) src);
     if (src instanceof org.hl7.fhir.dstu2.model.Timing)
       return Timing10_30.convertTiming((org.hl7.fhir.dstu2.model.Timing) src);
-    throw new FHIRException("Unknown type " + src.fhirType());
+    if (advisor.failFastOnNullOrUnknownEntry()) {
+      throw new FHIRException("Unknown type " + src.fhirType());
+    } else {
+      return null;
+    }
   }
 
-  public static org.hl7.fhir.dstu2.model.Type convertType(org.hl7.fhir.dstu3.model.Type src) throws FHIRException {
+  public org.hl7.fhir.dstu2.model.Type convertType(org.hl7.fhir.dstu3.model.Type src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.dstu3.model.Base64BinaryType)
       return Base64Binary10_30.convertBase64Binary((org.hl7.fhir.dstu3.model.Base64BinaryType) src);
@@ -180,6 +192,10 @@ public class Type10_30 {
     if (src instanceof org.hl7.fhir.dstu3.model.Meta) return Meta10_30.convertMeta((org.hl7.fhir.dstu3.model.Meta) src);
     if (src instanceof org.hl7.fhir.dstu3.model.Timing)
       return Timing10_30.convertTiming((org.hl7.fhir.dstu3.model.Timing) src);
-    throw new FHIRException("Unknown type " + src.fhirType());
+    if (advisor.failFastOnNullOrUnknownEntry()) {
+      throw new FHIRException("Unknown type " + src.fhirType());
+    } else {
+      return null;
+    }
   }
 }

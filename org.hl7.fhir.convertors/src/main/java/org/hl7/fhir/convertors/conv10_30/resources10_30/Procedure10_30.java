@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
-import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Element10_30;
+import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Annotation10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.CodeableConcept10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identifier10_30;
@@ -16,7 +14,7 @@ public class Procedure10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Procedure tgt = new org.hl7.fhir.dstu2.model.Procedure();
-    VersionConvertor_10_30.copyDomainResource(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
     if (src.hasSubject())
@@ -34,11 +32,11 @@ public class Procedure10_30 {
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getBodySite())
       tgt.addBodySite(CodeableConcept10_30.convertCodeableConcept(t));
     if (src.hasReasonCode())
-      tgt.setReason(Type10_30.convertType(src.getReasonCodeFirstRep()));
+      tgt.setReason(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getReasonCodeFirstRep()));
     for (org.hl7.fhir.dstu3.model.Procedure.ProcedurePerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertProcedurePerformerComponent(t));
     if (src.hasPerformed())
-      tgt.setPerformed(Type10_30.convertType(src.getPerformed()));
+      tgt.setPerformed(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getPerformed()));
     if (src.hasContext())
       tgt.setEncounter(Reference10_30.convertReference(src.getContext()));
     if (src.hasLocation())
@@ -64,7 +62,7 @@ public class Procedure10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Procedure tgt = new org.hl7.fhir.dstu3.model.Procedure();
-    VersionConvertor_10_30.copyDomainResource(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
     if (src.hasSubject())
@@ -86,7 +84,7 @@ public class Procedure10_30 {
     for (org.hl7.fhir.dstu2.model.Procedure.ProcedurePerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertProcedurePerformerComponent(t));
     if (src.hasPerformed())
-      tgt.setPerformed(Type10_30.convertType(src.getPerformed()));
+      tgt.setPerformed(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getPerformed()));
     if (src.hasEncounter())
       tgt.setContext(Reference10_30.convertReference(src.getEncounter()));
     if (src.hasLocation())
@@ -112,7 +110,7 @@ public class Procedure10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Procedure.ProcedureFocalDeviceComponent tgt = new org.hl7.fhir.dstu3.model.Procedure.ProcedureFocalDeviceComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasAction())
       tgt.setAction(CodeableConcept10_30.convertCodeableConcept(src.getAction()));
     if (src.hasManipulated())
@@ -124,7 +122,7 @@ public class Procedure10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Procedure.ProcedureFocalDeviceComponent tgt = new org.hl7.fhir.dstu2.model.Procedure.ProcedureFocalDeviceComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasAction())
       tgt.setAction(CodeableConcept10_30.convertCodeableConcept(src.getAction()));
     if (src.hasManipulated())
@@ -136,7 +134,7 @@ public class Procedure10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Procedure.ProcedurePerformerComponent tgt = new org.hl7.fhir.dstu2.model.Procedure.ProcedurePerformerComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasActor())
       tgt.setActor(Reference10_30.convertReference(src.getActor()));
     if (src.hasRole())
@@ -148,7 +146,7 @@ public class Procedure10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Procedure.ProcedurePerformerComponent tgt = new org.hl7.fhir.dstu3.model.Procedure.ProcedurePerformerComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasActor())
       tgt.setActor(Reference10_30.convertReference(src.getActor()));
     if (src.hasRole())
@@ -160,7 +158,7 @@ public class Procedure10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Procedure.ProcedureStatusEnumFactory());
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     switch (src.getValue()) {
       case INPROGRESS:
         tgt.setValue(org.hl7.fhir.dstu3.model.Procedure.ProcedureStatus.INPROGRESS);
@@ -185,7 +183,7 @@ public class Procedure10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Procedure.ProcedureStatusEnumFactory());
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     switch (src.getValue()) {
       case INPROGRESS:
         tgt.setValue(org.hl7.fhir.dstu2.model.Procedure.ProcedureStatus.INPROGRESS);

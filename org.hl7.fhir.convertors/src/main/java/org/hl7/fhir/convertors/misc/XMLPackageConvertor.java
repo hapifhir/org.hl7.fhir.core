@@ -6,7 +6,6 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map.Entry;
 

@@ -40,9 +40,7 @@ import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.dstu3.utils.StructureMapUtilities;
 import org.hl7.fhir.dstu3.utils.StructureMapUtilities.ITransformerServices;
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.utilities.TextFile;
 
 import java.io.*;
@@ -65,11 +63,11 @@ import java.util.zip.ZipInputStream;
  */
 public class R2R3ConversionManager implements ITransformerServices {
 
+  private final Map<String, StructureMap> library = new HashMap<String, StructureMap>();
+  private final List<Resource> extras = new ArrayList<Resource>();
   private SimpleWorkerContext contextR2;
   private SimpleWorkerContext contextR3;
-  private final Map<String, StructureMap> library = new HashMap<String, StructureMap>();
   private boolean needPrepare = false;
-  private final List<Resource> extras = new ArrayList<Resource>();
   private StructureMapUtilities smu3;
   private StructureMapUtilities smu2;
   private OutputStyle style = OutputStyle.PRETTY;

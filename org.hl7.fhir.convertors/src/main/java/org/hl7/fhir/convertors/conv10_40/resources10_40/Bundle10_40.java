@@ -1,11 +1,10 @@
 package org.hl7.fhir.convertors.conv10_40.resources10_40;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
-import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
+import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Signature10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.*;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.FhirPublication;
 
 public class Bundle10_40 {

@@ -31,7 +31,7 @@ package org.hl7.fhir.convertors.misc;
 
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_30;
-import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.model.Bundle;
 import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
@@ -43,7 +43,10 @@ import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
 public class IGPackConverter102 extends BaseAdvisor_10_30 {
@@ -61,7 +64,7 @@ public class IGPackConverter102 extends BaseAdvisor_10_30 {
         System.out.println("process " + s);
         org.hl7.fhir.dstu2.formats.XmlParser xp = new org.hl7.fhir.dstu2.formats.XmlParser();
         org.hl7.fhir.dstu2.model.Resource r10 = xp.parse(new FileInputStream("C:\\temp\\igpack2\\" + s));
-        org.hl7.fhir.dstu3.model.Resource r17 = VersionConvertor_10_30.convertResource(r10, this);
+        org.hl7.fhir.dstu3.model.Resource r17 = VersionConvertorFactory_10_30.convertResource(r10, this);
         org.hl7.fhir.dstu3.formats.XmlParser xc = new org.hl7.fhir.dstu3.formats.XmlParser();
         xc.setOutputStyle(OutputStyle.PRETTY);
         xc.compose(new FileOutputStream("C:\\temp\\igpack2\\" + s), r17);

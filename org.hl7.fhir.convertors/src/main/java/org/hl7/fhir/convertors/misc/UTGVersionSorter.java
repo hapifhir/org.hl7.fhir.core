@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.misc;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
@@ -18,15 +17,18 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformation;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.*;
 
 public class UTGVersionSorter {
 
-  private FilesystemPackageCacheManager pcm;
   private final Date runTime = new Date();
+  private FilesystemPackageCacheManager pcm;
 
   public static void main(String[] args) throws FHIRException, IOException, ParseException, URISyntaxException {
     new UTGVersionSorter().execute("C:\\work\\org.hl7.fhir.igs\\UTG\\input\\sourceOfTruth");
@@ -141,13 +143,13 @@ public class UTGVersionSorter {
   public class CanonicalResourceAnalysis {
 
     private final CanonicalResource resource;
+    private final String filename;
     private CanonicalResource r2;
     private CanonicalResource r3;
     private CanonicalResource r4;
     private String fmm;
     private boolean normative;
     private String recommendation;
-    private final String filename;
 
     public CanonicalResourceAnalysis(CanonicalResource cr, String filename) {
       this.resource = cr;

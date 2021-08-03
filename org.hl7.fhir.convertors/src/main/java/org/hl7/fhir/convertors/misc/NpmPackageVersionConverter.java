@@ -10,9 +10,6 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_50;
-import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
-import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -24,7 +21,6 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,9 +35,9 @@ public class NpmPackageVersionConverter {
   private final String source;
   private final String dest;
   private final String version;
-  private String currentVersion;
   private final String vCode;
   private final List<String> errors = new ArrayList<>();
+  private String currentVersion;
 
   public NpmPackageVersionConverter(String source, String dest, String version) {
     super();
@@ -192,9 +188,9 @@ public class NpmPackageVersionConverter {
         if (VersionUtilities.isR2Ver(version)) {
           return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(res);
         } else if (VersionUtilities.isR2BVer(version)) {
-          return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(VersionConvertorFactory_14_30.convertResource(VersionConvertor_10_30.convertResource(res)));
+          return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(VersionConvertorFactory_14_30.convertResource(VersionConvertorFactory_10_30.convertResource(res)));
         } else if (VersionUtilities.isR3Ver(version)) {
-          return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertor_10_30.convertResource(res));
+          return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(VersionConvertorFactory_10_30.convertResource(res));
         } else if (VersionUtilities.isR4Ver(version)) {
           return new org.hl7.fhir.r4.formats.JsonParser().composeBytes(VersionConvertorFactory_10_40.convertResource(res));
         } else if (VersionUtilities.isR5Ver(version)) {
@@ -203,7 +199,7 @@ public class NpmPackageVersionConverter {
       } else if (VersionUtilities.isR2BVer(currentVersion)) {
         org.hl7.fhir.dstu2016may.model.Resource res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(cnt);
         if (VersionUtilities.isR2Ver(version)) {
-          return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertor_10_30.convertResource(VersionConvertorFactory_14_30.convertResource(res)));
+          return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_30.convertResource(VersionConvertorFactory_14_30.convertResource(res)));
         } else if (VersionUtilities.isR2BVer(version)) {
           return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(res);
         } else if (VersionUtilities.isR3Ver(version)) {
@@ -216,7 +212,7 @@ public class NpmPackageVersionConverter {
       } else if (VersionUtilities.isR3Ver(currentVersion)) {
         org.hl7.fhir.dstu3.model.Resource res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(cnt);
         if (VersionUtilities.isR2Ver(version)) {
-          return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertor_10_30.convertResource(res));
+          return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(VersionConvertorFactory_10_30.convertResource(res));
         } else if (VersionUtilities.isR2BVer(version)) {
           return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(VersionConvertorFactory_14_30.convertResource(res));
         } else if (VersionUtilities.isR3Ver(version)) {

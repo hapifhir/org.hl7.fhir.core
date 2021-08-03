@@ -64,7 +64,6 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xml.XMLUtil;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 
 import java.io.ByteArrayOutputStream;
@@ -82,13 +81,6 @@ public class ArgonautConverter extends ConverterBase {
 
   private static final boolean WANT_SAVE = true;
   private static final boolean WANT_VALIDATE = false;
-  public int perfCount;
-  int errors = 0;
-  int warnings = 0;
-  Map<String, Integer> procCodes = new HashMap<String, Integer>();
-  Map<String, Integer> condCodes = new HashMap<String, Integer>();
-  Map<String, Integer> allergyCodes = new HashMap<String, Integer>();
-  private String destFolder;
   private final UcumService ucumSvc;
   //	private ValidationEngine validator;
   private final SimpleWorkerContext context;
@@ -98,6 +90,13 @@ public class ArgonautConverter extends ConverterBase {
   private final Map<String, ZipGenerator> zipsX = new HashMap<String, ZipGenerator>();
   private final Map<String, ZipGenerator> zipsJ = new HashMap<String, ZipGenerator>();
   private final Map<String, Stats> stats = new HashMap<String, Stats>();
+  public int perfCount;
+  int errors = 0;
+  int warnings = 0;
+  Map<String, Integer> procCodes = new HashMap<String, Integer>();
+  Map<String, Integer> condCodes = new HashMap<String, Integer>();
+  Map<String, Integer> allergyCodes = new HashMap<String, Integer>();
+  private String destFolder;
   private ZipGenerator zipJ;
   private ZipGenerator zipX;
 

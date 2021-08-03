@@ -114,6 +114,4 @@ public class VersionConvertor_40_50 {
   public void copyElement(org.hl7.fhir.r5.model.Element src, org.hl7.fhir.r4.model.Element tgt, String... var) throws FHIRException {
     elementConvertor.copyElement(src, tgt, ConversionContext40_50.INSTANCE.path(), var);
   }
-
-
 }

@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
-import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Element10_30;
+import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Attachment10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.CodeableConcept10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identifier10_30;
@@ -17,7 +15,7 @@ public class DiagnosticReport10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.DiagnosticReport tgt = new org.hl7.fhir.dstu2.model.DiagnosticReport();
-    VersionConvertor_10_30.copyDomainResource(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
     if (src.hasStatus())
@@ -31,7 +29,7 @@ public class DiagnosticReport10_30 {
     if (src.hasContext())
       tgt.setEncounter(Reference10_30.convertReference(src.getContext()));
     if (src.hasEffective())
-      tgt.setEffective(Type10_30.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getEffective()));
     if (src.hasIssuedElement())
       tgt.setIssuedElement(Instant10_30.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getBasedOn()) tgt.addRequest(Reference10_30.convertReference(t));
@@ -54,7 +52,7 @@ public class DiagnosticReport10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.DiagnosticReport tgt = new org.hl7.fhir.dstu3.model.DiagnosticReport();
-    VersionConvertor_10_30.copyDomainResource(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
     if (src.hasStatus())
@@ -68,7 +66,7 @@ public class DiagnosticReport10_30 {
     if (src.hasEncounter())
       tgt.setContext(Reference10_30.convertReference(src.getEncounter()));
     if (src.hasEffective())
-      tgt.setEffective(Type10_30.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getEffective()));
     if (src.hasIssuedElement())
       tgt.setIssuedElement(Instant10_30.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getRequest()) tgt.addBasedOn(Reference10_30.convertReference(t));
@@ -91,7 +89,7 @@ public class DiagnosticReport10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent tgt = new org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportImageComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasCommentElement())
       tgt.setCommentElement(String10_30.convertString(src.getCommentElement()));
     if (src.hasLink())
@@ -103,7 +101,7 @@ public class DiagnosticReport10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.DiagnosticReport.DiagnosticReportImageComponent tgt = new org.hl7.fhir.dstu2.model.DiagnosticReport.DiagnosticReportImageComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasCommentElement())
       tgt.setCommentElement(String10_30.convertString(src.getCommentElement()));
     if (src.hasLink())
@@ -115,7 +113,7 @@ public class DiagnosticReport10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportStatusEnumFactory());
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     switch (src.getValue()) {
       case REGISTERED:
         tgt.setValue(org.hl7.fhir.dstu3.model.DiagnosticReport.DiagnosticReportStatus.REGISTERED);
@@ -149,7 +147,7 @@ public class DiagnosticReport10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.DiagnosticReport.DiagnosticReportStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.DiagnosticReport.DiagnosticReportStatusEnumFactory());
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     switch (src.getValue()) {
       case REGISTERED:
         tgt.setValue(org.hl7.fhir.dstu2.model.DiagnosticReport.DiagnosticReportStatus.REGISTERED);

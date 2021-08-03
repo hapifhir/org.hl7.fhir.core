@@ -56,17 +56,16 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
 public class ISO21090Importer {
 
-  private IWorkerContext ctxt;
-  private Element schema;
   private final Map<String, EnumValueSet> bindings = new HashMap<String, EnumValueSet>();
   private final Map<String, DataType> types = new HashMap<String, DataType>();
+  private IWorkerContext ctxt;
+  private Element schema;
 
   public static void main(String[] args) throws Exception {
     new ISO21090Importer().process();
@@ -331,19 +330,19 @@ public class ISO21090Importer {
   }
 
   private class DataType {
+    private final List<Property> properties = new ArrayList<Property>();
     private boolean isAbstract;
     private String name;
     private String doco;
     private String parent;
-    private final List<Property> properties = new ArrayList<Property>();
 
   }
 
   public class EnumValueSet {
+    private final List<String> codes = new ArrayList<String>();
+    private final Map<String, String> members = new HashMap<String, String>();
     private String name;
     private String template;
     private String system;
-    private final List<String> codes = new ArrayList<String>();
-    private final Map<String, String> members = new HashMap<String, String>();
   }
 }

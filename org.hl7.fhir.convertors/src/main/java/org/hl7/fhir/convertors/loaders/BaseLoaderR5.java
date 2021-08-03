@@ -21,6 +21,7 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
   protected boolean killPrimitives;
   protected String[] types;
   protected ILoaderKnowledgeProvider lkp;
+
   public BaseLoaderR5(String[] types, ILoaderKnowledgeProvider lkp) {
     super();
     this.types = types;

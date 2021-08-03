@@ -31,7 +31,7 @@ package org.hl7.fhir.convertors.loaders;
 
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_30;
-import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
 import org.hl7.fhir.dstu2.formats.JsonParser;
 import org.hl7.fhir.dstu2.formats.XmlParser;
 import org.hl7.fhir.dstu2.model.Resource;
@@ -65,7 +65,7 @@ public class R2ToR3Loader extends BaseLoaderR3 {
       r2 = new JsonParser().parse(stream);
     else
       r2 = new XmlParser().parse(stream);
-    org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertor_10_30.convertResource(r2, advisor_10_30);
+    org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertorFactory_10_30.convertResource(r2, advisor_10_30);
     Bundle b;
     if (r3 instanceof Bundle) {
       b = (Bundle) r3;

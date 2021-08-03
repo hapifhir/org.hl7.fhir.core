@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors;
 
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,7 @@ public class VersionConvertor_10_30Test {
   @DisplayName("Test 10_30 UnsignedIntType preserves value on conversion.")
   public void testConvertUnsignedInt() {
     org.hl7.fhir.dstu3.model.UnsignedIntType output;
-    output = (org.hl7.fhir.dstu3.model.UnsignedIntType) Type10_30.convertType(new org.hl7.fhir.dstu2.model.UnsignedIntType(33));
+    output = (org.hl7.fhir.dstu3.model.UnsignedIntType) VersionConvertorFactory_10_30.convertType(new org.hl7.fhir.dstu2.model.UnsignedIntType(33));
     Assertions.assertEquals(33, output.getValue().intValue());
   }
 

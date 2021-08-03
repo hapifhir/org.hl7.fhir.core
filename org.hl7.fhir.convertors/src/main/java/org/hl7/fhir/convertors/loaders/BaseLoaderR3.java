@@ -11,10 +11,11 @@ public abstract class BaseLoaderR3 implements IContextResourceLoader {
   protected final String URL_DSTU3 = "http://hl7.org/fhir/3.0/";
   protected final String URL_R4 = "http://hl7.org/fhir/4.0/";
   protected final String URL_ELEMENT_DEF_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
-  protected boolean patchUrls;
-  protected boolean killPrimitives;
   private final String[] types;
   private final ILoaderKnowledgeProvider lkp;
+  protected boolean patchUrls;
+  protected boolean killPrimitives;
+
   public BaseLoaderR3(String[] types, ILoaderKnowledgeProvider lkp) {
     super();
     this.types = types;

@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
-import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Element10_30;
+import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.*;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Boolean10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.primitivetypes10_30.Date10_30;
@@ -15,7 +13,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Patient.AnimalComponent tgt = new org.hl7.fhir.dstu3.model.Patient.AnimalComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasSpecies())
       tgt.setSpecies(CodeableConcept10_30.convertCodeableConcept(src.getSpecies()));
     if (src.hasBreed())
@@ -29,7 +27,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Patient.AnimalComponent tgt = new org.hl7.fhir.dstu2.model.Patient.AnimalComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasSpecies())
       tgt.setSpecies(CodeableConcept10_30.convertCodeableConcept(src.getSpecies()));
     if (src.hasBreed())
@@ -43,7 +41,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Patient.ContactComponent tgt = new org.hl7.fhir.dstu3.model.Patient.ContactComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getRelationship())
       tgt.addRelationship(CodeableConcept10_30.convertCodeableConcept(t));
     if (src.hasName())
@@ -65,7 +63,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Patient.ContactComponent tgt = new org.hl7.fhir.dstu2.model.Patient.ContactComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getRelationship())
       tgt.addRelationship(CodeableConcept10_30.convertCodeableConcept(t));
     if (src.hasName())
@@ -87,7 +85,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Patient.LinkType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Patient.LinkTypeEnumFactory());
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     switch (src.getValue()) {
       case REPLACEDBY:
         tgt.setValue(org.hl7.fhir.dstu2.model.Patient.LinkType.REPLACE);
@@ -112,7 +110,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Patient.LinkType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Patient.LinkTypeEnumFactory());
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     switch (src.getValue()) {
       case REPLACE:
         tgt.setValue(org.hl7.fhir.dstu3.model.Patient.LinkType.REPLACEDBY);
@@ -134,7 +132,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Patient tgt = new org.hl7.fhir.dstu3.model.Patient();
-    VersionConvertor_10_30.copyDomainResource(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
     if (src.hasActiveElement())
@@ -147,12 +145,12 @@ public class Patient10_30 {
     if (src.hasBirthDateElement())
       tgt.setBirthDateElement(Date10_30.convertDate(src.getBirthDateElement()));
     if (src.hasDeceased())
-      tgt.setDeceased(Type10_30.convertType(src.getDeceased()));
+      tgt.setDeceased(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getDeceased()));
     for (org.hl7.fhir.dstu2.model.Address t : src.getAddress()) tgt.addAddress(Address10_30.convertAddress(t));
     if (src.hasMaritalStatus())
       tgt.setMaritalStatus(CodeableConcept10_30.convertCodeableConcept(src.getMaritalStatus()));
     if (src.hasMultipleBirth())
-      tgt.setMultipleBirth(Type10_30.convertType(src.getMultipleBirth()));
+      tgt.setMultipleBirth(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getMultipleBirth()));
     for (org.hl7.fhir.dstu2.model.Attachment t : src.getPhoto()) tgt.addPhoto(Attachment10_30.convertAttachment(t));
     for (org.hl7.fhir.dstu2.model.Patient.ContactComponent t : src.getContact())
       tgt.addContact(convertContactComponent(t));
@@ -173,7 +171,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Patient tgt = new org.hl7.fhir.dstu2.model.Patient();
-    VersionConvertor_10_30.copyDomainResource(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
     if (src.hasActiveElement())
@@ -186,12 +184,12 @@ public class Patient10_30 {
     if (src.hasBirthDateElement())
       tgt.setBirthDateElement(Date10_30.convertDate(src.getBirthDateElement()));
     if (src.hasDeceased())
-      tgt.setDeceased(Type10_30.convertType(src.getDeceased()));
+      tgt.setDeceased(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getDeceased()));
     for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) tgt.addAddress(Address10_30.convertAddress(t));
     if (src.hasMaritalStatus())
       tgt.setMaritalStatus(CodeableConcept10_30.convertCodeableConcept(src.getMaritalStatus()));
     if (src.hasMultipleBirth())
-      tgt.setMultipleBirth(Type10_30.convertType(src.getMultipleBirth()));
+      tgt.setMultipleBirth(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getMultipleBirth()));
     for (org.hl7.fhir.dstu3.model.Attachment t : src.getPhoto()) tgt.addPhoto(Attachment10_30.convertAttachment(t));
     for (org.hl7.fhir.dstu3.model.Patient.ContactComponent t : src.getContact())
       tgt.addContact(convertContactComponent(t));
@@ -212,7 +210,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Patient.PatientCommunicationComponent tgt = new org.hl7.fhir.dstu3.model.Patient.PatientCommunicationComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasLanguage())
       tgt.setLanguage(CodeableConcept10_30.convertCodeableConcept(src.getLanguage()));
     if (src.hasPreferredElement())
@@ -224,7 +222,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Patient.PatientCommunicationComponent tgt = new org.hl7.fhir.dstu2.model.Patient.PatientCommunicationComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasLanguage())
       tgt.setLanguage(CodeableConcept10_30.convertCodeableConcept(src.getLanguage()));
     if (src.hasPreferredElement())
@@ -236,7 +234,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Patient.PatientLinkComponent tgt = new org.hl7.fhir.dstu2.model.Patient.PatientLinkComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasOther())
       tgt.setOther(Reference10_30.convertReference(src.getOther()));
     if (src.hasType())
@@ -248,7 +246,7 @@ public class Patient10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Patient.PatientLinkComponent tgt = new org.hl7.fhir.dstu3.model.Patient.PatientLinkComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasOther())
       tgt.setOther(Reference10_30.convertReference(src.getOther()));
     if (src.hasType())

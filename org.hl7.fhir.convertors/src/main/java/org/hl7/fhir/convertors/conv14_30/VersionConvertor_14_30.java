@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv14_30.datatypes14_30.Type14_30;
 import org.hl7.fhir.convertors.conv14_30.resources14_30.Resource14_30;
 import org.hl7.fhir.dstu2016may.model.CodeableConcept;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -53,10 +52,6 @@ public class VersionConvertor_14_30 {
 
   static public boolean isJurisdiction(CodeableConcept t) {
     return t.hasCoding() && ("http://unstats.un.org/unsd/methods/m49/m49.htm".equals(t.getCoding().get(0).getSystem()) || "urn:iso:std:iso:3166".equals(t.getCoding().get(0).getSystem()) || "https://www.usps.com/".equals(t.getCoding().get(0).getSystem()));
-  }
-
-  public static boolean convertsResource(String rt) {
-    return Utilities.existsInList(rt, "Parameters", "Bundle", "CodeSystem", "CompartmentDefinition", "ConceptMap", "CapabilityStatement", "DataElement", "ImplementationGuide", "NamingSystem", "OperationDefinition", "OperationOutcome", "Questionnaire", "QuestionnaireResponse", "SearchParameter", "StructureDefinition", "TestScript", "ValueSet");
   }
 
   public BaseAdvisor_14_30 advisor() {

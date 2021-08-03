@@ -51,7 +51,6 @@ import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
 import org.hl7.fhir.dstu3.model.Procedure.ProcedurePerformerComponent;
 import org.hl7.fhir.dstu3.utils.NarrativeGenerator;
 import org.hl7.fhir.dstu3.utils.ToolingExtensions;
-import org.hl7.fhir.exceptions.FHIRException;
 import org.w3c.dom.Element;
 
 import java.io.InputStream;
@@ -150,6 +149,7 @@ public class CCDAConverter {
   protected Integer refCounter = 0;
   protected UcumService ucumSvc;
   protected IWorkerContext context;
+
   public CCDAConverter(UcumService ucumSvc, IWorkerContext context) {
     super();
     this.ucumSvc = ucumSvc;

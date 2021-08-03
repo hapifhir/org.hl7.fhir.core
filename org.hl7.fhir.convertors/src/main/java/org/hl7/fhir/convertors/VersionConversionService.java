@@ -30,15 +30,7 @@ package org.hl7.fhir.convertors;
  */
 
 
-import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
-import org.hl7.fhir.convertors.conv14_30.VersionConvertor_14_30;
-import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_30;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
+import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
@@ -253,13 +245,13 @@ public class VersionConversionService {
       case DSTU2016May:
         throw new FHIRException("Conversion from DSTU2 to 2016May version is not supported");
       case R4:
-        if (useJava && VersionConvertor_10_40.convertsResource(src.fhirType()))
+        if (useJava && VersionConvertorFactory_10_40.convertsResource(src.fhirType()))
           return saveResource40(VersionConvertorFactory_10_40.convertResource(src), dstFormat, style); // todo: handle code system?
         else
           throw new FHIRException("Conversion from R4 to 2016May version is not supported for resources of type " + src.fhirType());
       case STU3:
-        if (useJava && VersionConvertor_10_30.convertsResource(src.fhirType()))
-          return saveResource30(VersionConvertor_10_30.convertResource(src), dstFormat, style); // todo: handle code system?
+        if (useJava && VersionConvertorFactory_10_30.convertsResource(src.fhirType()))
+          return saveResource30(VersionConvertorFactory_10_30.convertResource(src), dstFormat, style); // todo: handle code system?
         else
           throw new FHIRException("todo: use script based conversion....");
       default:
@@ -276,12 +268,12 @@ public class VersionConversionService {
       case DSTU2016May:
         return saveResource14(src, dstFormat, style);
       case R4:
-        if (useJava && VersionConvertor_14_40.convertsResource(src.fhirType()))
+        if (useJava && VersionConvertorFactory_14_40.convertsResource(src.fhirType()))
           return saveResource40(VersionConvertorFactory_14_40.convertResource(src), dstFormat, style);
         else
           throw new FHIRException("Conversion from 2016May version to R4 is not supported for resources of type " + src.fhirType());
       case STU3:
-        if (useJava && VersionConvertor_14_30.convertsResource(src.fhirType()))
+        if (useJava && VersionConvertorFactory_14_30.convertsResource(src.fhirType()))
           return saveResource30(VersionConvertorFactory_14_30.convertResource(src), dstFormat, style);
         else
           throw new FHIRException("Conversion from 2016May version to STU3 is not supported for resources of type " + src.fhirType());
@@ -295,17 +287,17 @@ public class VersionConversionService {
       case DSTU1:
         throw new FHIRException("FHIR Version #1 is not supported by the inter-version convertor");
       case DSTU2:
-        if (useJava && VersionConvertor_10_30.convertsResource(src.fhirType()))
-          return saveResource10(VersionConvertor_10_30.convertResource(src), dstFormat, style); // todo: handle code system?
+        if (useJava && VersionConvertorFactory_10_30.convertsResource(src.fhirType()))
+          return saveResource10(VersionConvertorFactory_10_30.convertResource(src), dstFormat, style); // todo: handle code system?
         else
           throw new FHIRException("todo: use script based conversion....");
       case DSTU2016May:
-        if (useJava && VersionConvertor_14_30.convertsResource(src.fhirType()))
+        if (useJava && VersionConvertorFactory_14_30.convertsResource(src.fhirType()))
           return saveResource14(VersionConvertorFactory_14_30.convertResource(src), dstFormat, style);
         else
           throw new FHIRException("Conversion from R3 to 2016May version is not supported for resources of type " + src.fhirType());
       case R4:
-        if (useJava && VersionConvertor_30_40.convertsResource(src.fhirType()))
+        if (useJava && VersionConvertorFactory_30_40.convertsResource(src.fhirType()))
           return saveResource40(VersionConvertorFactory_30_40.convertResource(src), dstFormat, style);
         else
           throw new FHIRException("todo: use script based conversion....");
@@ -321,19 +313,19 @@ public class VersionConversionService {
       case DSTU1:
         throw new FHIRException("FHIR Version #1 is not supported by the inter-version convertor");
       case DSTU2:
-        if (useJava && VersionConvertor_10_40.convertsResource(src.fhirType()))
+        if (useJava && VersionConvertorFactory_10_40.convertsResource(src.fhirType()))
           return saveResource10(VersionConvertorFactory_10_40.convertResource(src), dstFormat, style); // todo: handle code system?
         else
           throw new FHIRException("Conversion from R4 to DSTU2 version is not supported for resources of type " + src.fhirType());
       case DSTU2016May:
-        if (useJava && VersionConvertor_14_40.convertsResource(src.fhirType()))
+        if (useJava && VersionConvertorFactory_14_40.convertsResource(src.fhirType()))
           return saveResource14(VersionConvertorFactory_14_40.convertResource(src), dstFormat, style);
         else
           throw new FHIRException("Conversion from DSTU2 to 2016May version is not supported for resources of type " + src.fhirType());
       case R4:
         return saveResource40(src, dstFormat, style);
       case STU3:
-        if (useJava && VersionConvertor_30_40.convertsResource(src.fhirType()))
+        if (useJava && VersionConvertorFactory_30_40.convertsResource(src.fhirType()))
           return saveResource30(VersionConvertorFactory_30_40.convertResource(src), dstFormat, style);
         else
           throw new FHIRException("todo: use script based conversion....");

@@ -1,9 +1,8 @@
 package org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40;
 
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
+import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Decimal10_40;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
+import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.Collections;
 
@@ -32,7 +31,8 @@ public class Timing10_40 {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r4.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.r4.model.Timing.TimingRepeatComponent();
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
-    if (src.hasBounds()) tgt.setBounds(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getBounds()));
+    if (src.hasBounds())
+      tgt.setBounds(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getBounds()));
     if (src.hasCount()) tgt.setCount(src.getCount());
     if (src.hasDurationElement()) tgt.setDurationElement(Decimal10_40.convertDecimal(src.getDurationElement()));
     if (src.hasDurationMaxElement())
@@ -51,7 +51,8 @@ public class Timing10_40 {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.dstu2.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.dstu2.model.Timing.TimingRepeatComponent();
     ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
-    if (src.hasBounds()) tgt.setBounds(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getBounds()));
+    if (src.hasBounds())
+      tgt.setBounds(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getBounds()));
     if (src.hasCount()) tgt.setCount(src.getCount());
     if (src.hasDurationElement()) tgt.setDurationElement(Decimal10_40.convertDecimal(src.getDurationElement()));
     if (src.hasDurationMaxElement())

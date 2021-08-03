@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Element14_50;
 import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Type14_50;
 import org.hl7.fhir.convertors.conv14_50.resources14_50.Resource14_50;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.utilities.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,10 +71,6 @@ public class VersionConvertor_14_50 {
     this.elementConvertor = new Element14_50(advisor);
     this.resourceConvertor = new Resource14_50(advisor);
     this.typeConvertor = new Type14_50(advisor);
-  }
-
-  public static boolean convertsResource(String rt) {
-    return Utilities.existsInList(rt, "Parameters", "Bundle", "CodeSystem", "CompartmentDefinition", "ConceptMap", "CapabilityStatement", "ImplementationGuide", "NamingSystem", "OperationDefinition", "OperationOutcome", "Questionnaire", "QuestionnaireResponse", "SearchParameter", "StructureDefinition", "StructureMap", "ValueSet");
   }
 
   public BaseAdvisor_14_50 advisor() {

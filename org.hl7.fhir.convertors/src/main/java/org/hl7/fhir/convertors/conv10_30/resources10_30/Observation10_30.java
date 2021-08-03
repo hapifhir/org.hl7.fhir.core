@@ -1,9 +1,7 @@
 package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
-import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Element10_30;
+import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.CodeableConcept10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Identifier10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.Range10_30;
@@ -18,7 +16,7 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Observation tgt = new org.hl7.fhir.dstu3.model.Observation();
-    VersionConvertor_10_30.copyDomainResource(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
     if (src.hasStatus())
@@ -32,13 +30,13 @@ public class Observation10_30 {
     if (src.hasEncounter())
       tgt.setContext(Reference10_30.convertReference(src.getEncounter()));
     if (src.hasEffective())
-      tgt.setEffective(Type10_30.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getEffective()));
     if (src.hasIssuedElement())
       tgt.setIssuedElement(Instant10_30.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getPerformer())
       tgt.addPerformer(Reference10_30.convertReference(t));
     if (src.hasValue())
-      tgt.setValue(Type10_30.convertType(src.getValue()));
+      tgt.setValue(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getValue()));
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept10_30.convertCodeableConcept(src.getDataAbsentReason()));
     if (src.hasInterpretation())
@@ -66,7 +64,7 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Observation tgt = new org.hl7.fhir.dstu2.model.Observation();
-    VersionConvertor_10_30.copyDomainResource(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
     if (src.hasStatus())
@@ -80,13 +78,13 @@ public class Observation10_30 {
     if (src.hasContext())
       tgt.setEncounter(Reference10_30.convertReference(src.getContext()));
     if (src.hasEffective())
-      tgt.setEffective(Type10_30.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getEffective()));
     if (src.hasIssuedElement())
       tgt.setIssuedElement(Instant10_30.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getPerformer())
       tgt.addPerformer(Reference10_30.convertReference(t));
     if (src.hasValue())
-      tgt.setValue(Type10_30.convertType(src.getValue()));
+      tgt.setValue(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getValue()));
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept10_30.convertCodeableConcept(src.getDataAbsentReason()));
     if (src.hasInterpretation())
@@ -114,11 +112,11 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Observation.ObservationComponentComponent tgt = new org.hl7.fhir.dstu2.model.Observation.ObservationComponentComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_30.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(Type10_30.convertType(src.getValue()));
+      tgt.setValue(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getValue()));
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept10_30.convertCodeableConcept(src.getDataAbsentReason()));
     for (org.hl7.fhir.dstu3.model.Observation.ObservationReferenceRangeComponent t : src.getReferenceRange())
@@ -130,11 +128,11 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Observation.ObservationComponentComponent tgt = new org.hl7.fhir.dstu3.model.Observation.ObservationComponentComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_30.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(Type10_30.convertType(src.getValue()));
+      tgt.setValue(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getValue()));
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept10_30.convertCodeableConcept(src.getDataAbsentReason()));
     for (org.hl7.fhir.dstu2.model.Observation.ObservationReferenceRangeComponent t : src.getReferenceRange())
@@ -146,7 +144,7 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Observation.ObservationReferenceRangeComponent tgt = new org.hl7.fhir.dstu3.model.Observation.ObservationReferenceRangeComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasLow())
       tgt.setLow(SimpleQuantity10_30.convertSimpleQuantity(src.getLow()));
     if (src.hasHigh())
@@ -164,7 +162,7 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Observation.ObservationReferenceRangeComponent tgt = new org.hl7.fhir.dstu2.model.Observation.ObservationReferenceRangeComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasLow())
       tgt.setLow(SimpleQuantity10_30.convertSimpleQuantity(src.getLow()));
     if (src.hasHigh())
@@ -182,7 +180,7 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Observation.ObservationRelatedComponent tgt = new org.hl7.fhir.dstu2.model.Observation.ObservationRelatedComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasType())
       tgt.setTypeElement(convertObservationRelationshipType(src.getTypeElement()));
     if (src.hasTarget())
@@ -194,7 +192,7 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Observation.ObservationRelatedComponent tgt = new org.hl7.fhir.dstu3.model.Observation.ObservationRelatedComponent();
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     if (src.hasType())
       tgt.setTypeElement(convertObservationRelationshipType(src.getTypeElement()));
     if (src.hasTarget())
@@ -206,7 +204,7 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Observation.ObservationRelationshipType> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Observation.ObservationRelationshipTypeEnumFactory());
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     switch (src.getValue()) {
       case HASMEMBER:
         tgt.setValue(org.hl7.fhir.dstu3.model.Observation.ObservationRelationshipType.HASMEMBER);
@@ -237,7 +235,7 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Observation.ObservationRelationshipType> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Observation.ObservationRelationshipTypeEnumFactory());
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     switch (src.getValue()) {
       case HASMEMBER:
         tgt.setValue(org.hl7.fhir.dstu2.model.Observation.ObservationRelationshipType.HASMEMBER);
@@ -268,7 +266,7 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Observation.ObservationStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Observation.ObservationStatusEnumFactory());
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     switch (src.getValue()) {
       case REGISTERED:
         tgt.setValue(org.hl7.fhir.dstu2.model.Observation.ObservationStatus.REGISTERED);
@@ -302,7 +300,7 @@ public class Observation10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.Observation.ObservationStatus> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.Observation.ObservationStatusEnumFactory());
-    Element10_30.copyElement(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyElement(src, tgt);
     switch (src.getValue()) {
       case REGISTERED:
         tgt.setValue(org.hl7.fhir.dstu3.model.Observation.ObservationStatus.REGISTERED);

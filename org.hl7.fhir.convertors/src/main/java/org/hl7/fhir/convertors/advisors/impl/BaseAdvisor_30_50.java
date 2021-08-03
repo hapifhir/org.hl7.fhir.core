@@ -35,7 +35,8 @@ public class BaseAdvisor_30_50 extends BaseAdvisor50<org.hl7.fhir.dstu3.model.Ex
     List<String> paths = Arrays.asList(path.split(","));
     if ((paths.get(paths.size() - 1).equals("ValueSet")) && (valueSetIgnoredUrls.contains(url))) {
       return true;
-    } else return (paths.get(paths.size() - 1).equals("CapabilityStatement")) && (capabilityStatementIgnoredUrls.contains(url));
+    } else
+      return (paths.get(paths.size() - 1).equals("CapabilityStatement")) && (capabilityStatementIgnoredUrls.contains(url));
   }
 
   public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet source) {

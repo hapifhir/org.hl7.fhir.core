@@ -1,10 +1,11 @@
 package org.hl7.fhir.convertors.conv10_40.datatypes10_40;
 
 import org.hl7.fhir.convertors.VersionConvertorConstants;
+import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Coding10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.*;
 import org.hl7.fhir.dstu2.utils.ToolingExtensions;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.model.ElementDefinition;
 import org.hl7.fhir.utilities.Utilities;
@@ -37,14 +38,20 @@ public class ElementDefinition10_40 {
     if (src.hasNameReference()) tgt.setContentReference("#" + src.getNameReference());
     for (org.hl7.fhir.dstu2.model.ElementDefinition.TypeRefComponent t : src.getType())
       convertElementDefinitionTypeComponent(t, tgt.getType());
-    if (src.hasDefaultValue()) tgt.setDefaultValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getDefaultValue()));
+    if (src.hasDefaultValue())
+      tgt.setDefaultValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getDefaultValue()));
     if (src.hasMeaningWhenMissing())
       tgt.setMeaningWhenMissingElement(MarkDown10_40.convertMarkdown(src.getMeaningWhenMissingElement()));
-    if (src.hasFixed()) tgt.setFixed(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getFixed()));
-    if (src.hasPattern()) tgt.setPattern(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getPattern()));
-    if (src.hasExample()) tgt.addExample().setLabel("General").setValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getExample()));
-    if (src.hasMinValue()) tgt.setMinValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getMinValue()));
-    if (src.hasMaxValue()) tgt.setMaxValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getMaxValue()));
+    if (src.hasFixed())
+      tgt.setFixed(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getFixed()));
+    if (src.hasPattern())
+      tgt.setPattern(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getPattern()));
+    if (src.hasExample())
+      tgt.addExample().setLabel("General").setValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getExample()));
+    if (src.hasMinValue())
+      tgt.setMinValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getMinValue()));
+    if (src.hasMaxValue())
+      tgt.setMaxValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getMaxValue()));
     if (src.hasMaxLength()) tgt.setMaxLengthElement(Integer10_40.convertInteger(src.getMaxLengthElement()));
     for (org.hl7.fhir.dstu2.model.IdType t : src.getCondition()) tgt.addCondition(t.getValue());
     for (org.hl7.fhir.dstu2.model.ElementDefinition.ElementDefinitionConstraintComponent t : src.getConstraint())
@@ -87,14 +94,20 @@ public class ElementDefinition10_40 {
     if (src.hasContentReference()) tgt.setNameReference(src.getContentReference().substring(1));
     for (org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent t : src.getType())
       convertElementDefinitionTypeComponent(t, tgt.getType());
-    if (src.hasDefaultValue()) tgt.setDefaultValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getDefaultValue()));
+    if (src.hasDefaultValue())
+      tgt.setDefaultValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getDefaultValue()));
     if (src.hasMeaningWhenMissingElement())
       tgt.setMeaningWhenMissingElement(MarkDown10_40.convertMarkdown(src.getMeaningWhenMissingElement()));
-    if (src.hasFixed()) tgt.setFixed(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getFixed()));
-    if (src.hasPattern()) tgt.setPattern(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getPattern()));
-    if (src.hasExample()) tgt.setExample(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getExampleFirstRep().getValue()));
-    if (src.hasMinValue()) tgt.setMinValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getMinValue()));
-    if (src.hasMaxValue()) tgt.setMaxValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getMaxValue()));
+    if (src.hasFixed())
+      tgt.setFixed(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getFixed()));
+    if (src.hasPattern())
+      tgt.setPattern(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getPattern()));
+    if (src.hasExample())
+      tgt.setExample(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getExampleFirstRep().getValue()));
+    if (src.hasMinValue())
+      tgt.setMinValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getMinValue()));
+    if (src.hasMaxValue())
+      tgt.setMaxValue(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getMaxValue()));
     if (src.hasMaxLengthElement()) tgt.setMaxLengthElement(Integer10_40.convertInteger(src.getMaxLengthElement()));
     for (org.hl7.fhir.r4.model.IdType t : src.getCondition()) tgt.addCondition(t.getValue());
     for (org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent t : src.getConstraint())

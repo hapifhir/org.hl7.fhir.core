@@ -1,12 +1,11 @@
 package org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40;
 
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
+import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
-import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Base64Binary10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Code10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Instant10_40;
-import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
+import org.hl7.fhir.exceptions.FHIRException;
 
 public class Signature10_40 {
   public static org.hl7.fhir.r4.model.Signature convertSignature(org.hl7.fhir.dstu2.model.Signature src) throws FHIRException {

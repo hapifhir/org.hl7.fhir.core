@@ -63,6 +63,7 @@ public class ICPC2Importer {
   private String sourceFileName; // the ICPC2 ClaML file
   private String targetFileNameVS; // the value set to produce
   private String targetFileNameCS; // the value set to produce
+
   public ICPC2Importer() {
     super();
   }

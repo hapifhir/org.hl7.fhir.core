@@ -13,10 +13,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class BaseAdvisor_10_50 extends BaseAdvisor50<org.hl7.fhir.dstu2.model.Extension> {
+  final List<String> conformanceIgnoredUrls = Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
   // TODO Collapse down all the advisor classes. There is code here that can be in the BaseAdvisor50
   private final List<CodeSystem> cslist = new ArrayList<>();
   private final List<Class<?>> ignoredExtensionTypes = new ArrayList<>(Collections.singletonList(Expression.class));
-  final List<String> conformanceIgnoredUrls = Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
 
   public BaseAdvisor_10_50() {
   }
