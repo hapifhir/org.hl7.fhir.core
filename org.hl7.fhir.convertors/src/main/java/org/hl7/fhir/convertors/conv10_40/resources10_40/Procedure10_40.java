@@ -7,7 +7,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Annotation10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.r4.model.Procedure;
 
 public class Procedure10_40 {
@@ -16,7 +16,7 @@ public class Procedure10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Procedure tgt = new org.hl7.fhir.r4.model.Procedure();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasSubject())
@@ -41,7 +41,7 @@ public class Procedure10_40 {
     if (src.hasReasonReference())
       tgt.addReasonReference(Reference10_40.convertReference(src.getReasonReference()));
     if (src.hasPerformed())
-      tgt.setPerformed(Type10_40.convertType(src.getPerformed()));
+      tgt.setPerformed(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getPerformed()));
     for (org.hl7.fhir.dstu2.model.Procedure.ProcedurePerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertProcedurePerformerComponent(t));
     if (src.hasEncounter())
@@ -84,7 +84,7 @@ public class Procedure10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent tgt = new org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasActor())
       tgt.setActor(Reference10_40.convertReference(src.getActor()));
     if (src.hasRole())
@@ -96,7 +96,7 @@ public class Procedure10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Procedure.ProcedureFocalDeviceComponent tgt = new org.hl7.fhir.r4.model.Procedure.ProcedureFocalDeviceComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasAction())
       tgt.setAction(CodeableConcept10_40.convertCodeableConcept(src.getAction()));
     if (src.hasManipulated())

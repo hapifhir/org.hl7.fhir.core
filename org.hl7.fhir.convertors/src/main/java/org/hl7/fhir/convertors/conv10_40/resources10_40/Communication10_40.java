@@ -7,7 +7,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.DateTime10_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
 
 public class Communication10_40 {
 
@@ -15,7 +15,7 @@ public class Communication10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Communication tgt = new org.hl7.fhir.r4.model.Communication();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasCategory())
@@ -47,7 +47,7 @@ public class Communication10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Communication tgt = new org.hl7.fhir.dstu2.model.Communication();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasCategory())
@@ -78,9 +78,9 @@ public class Communication10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.dstu2.model.Communication.CommunicationPayloadComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasContent())
-      tgt.setContent(Type10_40.convertType(src.getContent()));
+      tgt.setContent(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getContent()));
     return tgt;
   }
 
@@ -88,9 +88,9 @@ public class Communication10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.r4.model.Communication.CommunicationPayloadComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasContent())
-      tgt.setContent(Type10_40.convertType(src.getContent()));
+      tgt.setContent(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getContent()));
     return tgt;
   }
 
@@ -98,7 +98,7 @@ public class Communication10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.Communication.CommunicationStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.Communication.CommunicationStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case INPROGRESS:
         tgt.setValue(org.hl7.fhir.dstu2.model.Communication.CommunicationStatus.INPROGRESS);
@@ -126,7 +126,7 @@ public class Communication10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Communication.CommunicationStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Communication.CommunicationStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case INPROGRESS:
         tgt.setValue(org.hl7.fhir.r4.model.Communication.CommunicationStatus.INPROGRESS);

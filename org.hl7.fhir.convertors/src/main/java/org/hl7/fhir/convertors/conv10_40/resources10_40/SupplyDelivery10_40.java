@@ -5,7 +5,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Element10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
 
 public class SupplyDelivery10_40 {
 
@@ -13,7 +13,7 @@ public class SupplyDelivery10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.SupplyDelivery tgt = new org.hl7.fhir.dstu2.model.SupplyDelivery();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier10_40.convertIdentifier(src.getIdentifierFirstRep()));
     if (src.hasStatus())
@@ -34,7 +34,7 @@ public class SupplyDelivery10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.SupplyDelivery tgt = new org.hl7.fhir.r4.model.SupplyDelivery();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(src.getIdentifier()));
     if (src.hasStatus())
@@ -55,7 +55,7 @@ public class SupplyDelivery10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.SupplyDelivery.SupplyDeliveryStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.SupplyDelivery.SupplyDeliveryStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case INPROGRESS:
         tgt.setValue(org.hl7.fhir.dstu2.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS);
@@ -77,7 +77,7 @@ public class SupplyDelivery10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case INPROGRESS:
         tgt.setValue(org.hl7.fhir.r4.model.SupplyDelivery.SupplyDeliveryStatus.INPROGRESS);

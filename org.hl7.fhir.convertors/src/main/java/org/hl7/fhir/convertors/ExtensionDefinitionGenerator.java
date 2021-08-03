@@ -35,6 +35,7 @@ import com.google.gson.JsonObject;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
 import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.loaders.R2016MayToR4Loader;
@@ -411,7 +412,7 @@ public class ExtensionDefinitionGenerator {
       return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._1_0_2) {
       BaseAdvisor_10_40 advisor = new IGR2ConvertorAdvisor();
-      org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_40.convertResource(resource, advisor);
+      org.hl7.fhir.dstu2.model.Resource res = VersionConvertorFactory_10_40.convertResource(resource, advisor);
       return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._4_0_0) {
       return new JsonParser().composeBytes(resource);
@@ -429,7 +430,7 @@ public class ExtensionDefinitionGenerator {
     } else if (v == FHIRVersion._1_0_2) {
       org.hl7.fhir.dstu2.model.Resource res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream);
       BaseAdvisor_10_40 advisor = new IGR2ConvertorAdvisor();
-      return VersionConvertor_10_40.convertResource(res, advisor);
+      return VersionConvertorFactory_10_40.convertResource(res, advisor);
     } else if (v == FHIRVersion._4_0_0) {
       return new JsonParser().parse(inputStream);
     } else

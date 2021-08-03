@@ -11,18 +11,18 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identi
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.DateTime10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
 import org.hl7.fhir.dstu2.model.AllergyIntolerance;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
 
 public class AllergyIntolerance10_40 {
   public static org.hl7.fhir.r4.model.AllergyIntolerance convertAllergyIntolerance(org.hl7.fhir.dstu2.model.AllergyIntolerance src) throws FHIRException {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.AllergyIntolerance tgt = new org.hl7.fhir.r4.model.AllergyIntolerance();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasOnset())
-      tgt.setOnset(Type10_40.convertType(src.getOnsetElement()));
+      tgt.setOnset(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getOnsetElement()));
     if (src.hasRecordedDate())
       tgt.setRecordedDateElement(DateTime10_40.convertDateTime(src.getRecordedDateElement()));
     if (src.hasRecorder())
@@ -68,7 +68,7 @@ public class AllergyIntolerance10_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceReactionComponent tgt = new org.hl7.fhir.r4.model.AllergyIntolerance.AllergyIntoleranceReactionComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     for (org.hl7.fhir.dstu2.model.Extension extension : src.getModifierExtension())
       tgt.addExtension(Extension10_40.convertExtension(extension));
     if (src.hasSubstance())

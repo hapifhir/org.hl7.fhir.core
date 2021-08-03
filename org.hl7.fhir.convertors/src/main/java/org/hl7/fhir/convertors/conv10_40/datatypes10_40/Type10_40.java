@@ -1,11 +1,20 @@
 package org.hl7.fhir.convertors.conv10_40.datatypes10_40;
 
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_50;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.*;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.*;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
 
 public class Type10_40 {
-  public static org.hl7.fhir.r4.model.Type convertType(org.hl7.fhir.dstu2.model.Type src) throws FHIRException {
+
+  private final BaseAdvisor_10_40 advisor;
+
+  public Type10_40(BaseAdvisor_10_40 advisor) {
+    this.advisor = advisor;
+  }
+
+  public org.hl7.fhir.r4.model.Type convertType(org.hl7.fhir.dstu2.model.Type src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.dstu2.model.Base64BinaryType)
       return Base64Binary10_40.convertBase64Binary((org.hl7.fhir.dstu2.model.Base64BinaryType) src);
@@ -88,10 +97,14 @@ public class Type10_40 {
       return Money10_40.convertMoney((org.hl7.fhir.dstu2.model.Money) src);
     if (src instanceof org.hl7.fhir.dstu2.model.SimpleQuantity)
       return SimpleQuantity10_40.convertSimpleQuantity((org.hl7.fhir.dstu2.model.SimpleQuantity) src);
-    throw new FHIRException("Unknown type " + src.fhirType());
+    if (advisor.failFastOnNullOrUnknownEntry()) {
+      throw new FHIRException("Unknown type " + src.fhirType());
+    } else {
+      return null;
+    }
   }
 
-  public static org.hl7.fhir.dstu2.model.Type convertType(org.hl7.fhir.r4.model.Type src) throws FHIRException {
+  public org.hl7.fhir.dstu2.model.Type convertType(org.hl7.fhir.r4.model.Type src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     if (src instanceof org.hl7.fhir.r4.model.Base64BinaryType)
       return Base64Binary10_40.convertBase64Binary((org.hl7.fhir.r4.model.Base64BinaryType) src);
@@ -168,6 +181,10 @@ public class Type10_40 {
     if (src instanceof org.hl7.fhir.r4.model.Money) return Money10_40.convertMoney((org.hl7.fhir.r4.model.Money) src);
     if (src instanceof org.hl7.fhir.r4.model.SimpleQuantity)
       return SimpleQuantity10_40.convertSimpleQuantity((org.hl7.fhir.r4.model.SimpleQuantity) src);
-    throw new FHIRException("Unknown type " + src.fhirType());
+    if (advisor.failFastOnNullOrUnknownEntry()) {
+      throw new FHIRException("Unknown type " + src.fhirType());
+    } else {
+      return null;
+    }
   }
 }

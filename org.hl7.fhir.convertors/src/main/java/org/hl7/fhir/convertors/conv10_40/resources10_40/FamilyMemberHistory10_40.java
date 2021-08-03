@@ -8,7 +8,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Codeab
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.DateTime10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
 
 public class FamilyMemberHistory10_40 {
 
@@ -16,7 +16,7 @@ public class FamilyMemberHistory10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case PARTIAL:
         tgt.setValue(org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL);
@@ -41,7 +41,7 @@ public class FamilyMemberHistory10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.FamilyMemberHistory.FamilyHistoryStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.FamilyMemberHistory.FamilyHistoryStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case PARTIAL:
         tgt.setValue(org.hl7.fhir.dstu2.model.FamilyMemberHistory.FamilyHistoryStatus.PARTIAL);
@@ -66,7 +66,7 @@ public class FamilyMemberHistory10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.FamilyMemberHistory tgt = new org.hl7.fhir.r4.model.FamilyMemberHistory();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasPatient())
@@ -80,11 +80,11 @@ public class FamilyMemberHistory10_40 {
     if (src.hasRelationship())
       tgt.setRelationship(CodeableConcept10_40.convertCodeableConcept(src.getRelationship()));
     if (src.hasBorn())
-      tgt.setBorn(Type10_40.convertType(src.getBorn()));
+      tgt.setBorn(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getBorn()));
     if (src.hasAge())
-      tgt.setAge(Type10_40.convertType(src.getAge()));
+      tgt.setAge(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getAge()));
     if (src.hasDeceased())
-      tgt.setDeceased(Type10_40.convertType(src.getDeceased()));
+      tgt.setDeceased(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getDeceased()));
     for (org.hl7.fhir.dstu2.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition())
       tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
     return tgt;
@@ -94,7 +94,7 @@ public class FamilyMemberHistory10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.FamilyMemberHistory tgt = new org.hl7.fhir.dstu2.model.FamilyMemberHistory();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasPatient())
@@ -108,11 +108,11 @@ public class FamilyMemberHistory10_40 {
     if (src.hasRelationship())
       tgt.setRelationship(CodeableConcept10_40.convertCodeableConcept(src.getRelationship()));
     if (src.hasBorn())
-      tgt.setBorn(Type10_40.convertType(src.getBorn()));
+      tgt.setBorn(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getBorn()));
     if (src.hasAge())
-      tgt.setAge(Type10_40.convertType(src.getAge()));
+      tgt.setAge(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getAge()));
     if (src.hasDeceased())
-      tgt.setDeceased(Type10_40.convertType(src.getDeceased()));
+      tgt.setDeceased(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getDeceased()));
     for (org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent t : src.getCondition())
       tgt.addCondition(convertFamilyMemberHistoryConditionComponent(t));
     return tgt;
@@ -122,13 +122,13 @@ public class FamilyMemberHistory10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.dstu2.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_40.convertCodeableConcept(src.getCode()));
     if (src.hasOutcome())
       tgt.setOutcome(CodeableConcept10_40.convertCodeableConcept(src.getOutcome()));
     if (src.hasOnset())
-      tgt.setOnset(Type10_40.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getOnset()));
     return tgt;
   }
 
@@ -136,13 +136,13 @@ public class FamilyMemberHistory10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent tgt = new org.hl7.fhir.r4.model.FamilyMemberHistory.FamilyMemberHistoryConditionComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_40.convertCodeableConcept(src.getCode()));
     if (src.hasOutcome())
       tgt.setOutcome(CodeableConcept10_40.convertCodeableConcept(src.getOutcome()));
     if (src.hasOnset())
-      tgt.setOnset(Type10_40.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getOnset()));
     return tgt;
   }
 }

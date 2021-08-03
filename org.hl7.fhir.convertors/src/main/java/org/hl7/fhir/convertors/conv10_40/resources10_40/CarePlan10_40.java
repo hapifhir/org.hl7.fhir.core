@@ -7,7 +7,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.*;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Boolean10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
 
 public class CarePlan10_40 {
 
@@ -15,7 +15,7 @@ public class CarePlan10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.CarePlan tgt = new org.hl7.fhir.r4.model.CarePlan();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasSubject())
@@ -47,7 +47,7 @@ public class CarePlan10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.CarePlan tgt = new org.hl7.fhir.dstu2.model.CarePlan();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasSubject())
@@ -76,7 +76,7 @@ public class CarePlan10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     for (org.hl7.fhir.dstu2.model.Annotation t : src.getProgress())
       tgt.addProgress(Annotation10_40.convertAnnotation(t));
     if (src.hasReference())
@@ -90,7 +90,7 @@ public class CarePlan10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityComponent tgt = new org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     for (org.hl7.fhir.r4.model.Annotation t : src.getProgress()) tgt.addProgress(Annotation10_40.convertAnnotation(t));
     if (src.hasReference())
       tgt.setReference(Reference10_40.convertReference(src.getReference()));
@@ -103,7 +103,7 @@ public class CarePlan10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityDetailComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_40.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
@@ -116,12 +116,12 @@ public class CarePlan10_40 {
     if (src.hasDoNotPerformElement())
       tgt.setProhibitedElement(Boolean10_40.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasScheduled())
-      tgt.setScheduled(Type10_40.convertType(src.getScheduled()));
+      tgt.setScheduled(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getScheduled()));
     if (src.hasLocation())
       tgt.setLocation(Reference10_40.convertReference(src.getLocation()));
     for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference10_40.convertReference(t));
     if (src.hasProduct())
-      tgt.setProduct(Type10_40.convertType(src.getProduct()));
+      tgt.setProduct(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getProduct()));
     if (src.hasDailyAmount())
       tgt.setDailyAmount(SimpleQuantity10_40.convertSimpleQuantity(src.getDailyAmount()));
     if (src.hasQuantity())
@@ -135,7 +135,7 @@ public class CarePlan10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent tgt = new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityDetailComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasCode())
       tgt.setCode(CodeableConcept10_40.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReasonCode())
@@ -148,13 +148,13 @@ public class CarePlan10_40 {
     if (src.hasProhibitedElement())
       tgt.setDoNotPerformElement(Boolean10_40.convertBoolean(src.getProhibitedElement()));
     if (src.hasScheduled())
-      tgt.setScheduled(Type10_40.convertType(src.getScheduled()));
+      tgt.setScheduled(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getScheduled()));
     if (src.hasLocation())
       tgt.setLocation(Reference10_40.convertReference(src.getLocation()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getPerformer())
       tgt.addPerformer(Reference10_40.convertReference(t));
     if (src.hasProduct())
-      tgt.setProduct(Type10_40.convertType(src.getProduct()));
+      tgt.setProduct(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getProduct()));
     if (src.hasDailyAmount())
       tgt.setDailyAmount(SimpleQuantity10_40.convertSimpleQuantity(src.getDailyAmount()));
     if (src.hasQuantity())
@@ -168,7 +168,7 @@ public class CarePlan10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case NOTSTARTED:
         tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanActivityStatus.NOTSTARTED);
@@ -199,7 +199,7 @@ public class CarePlan10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case NOTSTARTED:
         tgt.setValue(org.hl7.fhir.dstu2.model.CarePlan.CarePlanActivityStatus.NOTSTARTED);
@@ -230,7 +230,7 @@ public class CarePlan10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CarePlan.CarePlanStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CarePlan.CarePlanStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case PROPOSED:
         tgt.setValue(org.hl7.fhir.r4.model.CarePlan.CarePlanStatus.DRAFT);
@@ -258,7 +258,7 @@ public class CarePlan10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.CarePlan.CarePlanStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.CarePlan.CarePlanStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case DRAFT:
         tgt.setValue(org.hl7.fhir.dstu2.model.CarePlan.CarePlanStatus.DRAFT);

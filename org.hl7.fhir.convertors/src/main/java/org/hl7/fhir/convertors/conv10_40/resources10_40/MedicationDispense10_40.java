@@ -7,7 +7,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.*;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.DateTime10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.r4.model.Dosage;
 import org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent;
 
@@ -17,13 +17,13 @@ public class MedicationDispense10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.MedicationDispense tgt = new org.hl7.fhir.r4.model.MedicationDispense();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(src.getIdentifier()));
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationDispenseStatus(src.getStatusElement()));
     if (src.hasMedication())
-      tgt.setMedication(Type10_40.convertType(src.getMedication()));
+      tgt.setMedication(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getMedication()));
     if (src.hasPatient())
       tgt.setSubject(Reference10_40.convertReference(src.getPatient()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getAuthorizingPrescription())
@@ -54,13 +54,13 @@ public class MedicationDispense10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.MedicationDispense tgt = new org.hl7.fhir.dstu2.model.MedicationDispense();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     if (src.hasIdentifier())
       tgt.setIdentifier(Identifier10_40.convertIdentifier(src.getIdentifierFirstRep()));
     if (src.hasStatus())
       tgt.setStatusElement(convertMedicationDispenseStatus(src.getStatusElement()));
     if (src.hasMedication())
-      tgt.setMedication(Type10_40.convertType(src.getMedication()));
+      tgt.setMedication(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getMedication()));
     if (src.hasSubject())
       tgt.setPatient(Reference10_40.convertReference(src.getSubject()));
     for (org.hl7.fhir.r4.model.Reference t : src.getAuthorizingPrescription())
@@ -90,13 +90,13 @@ public class MedicationDispense10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Dosage tgt = new org.hl7.fhir.r4.model.Dosage();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasTextElement())
       tgt.setTextElement(String10_40.convertString(src.getTextElement()));
     if (src.hasTiming())
       tgt.setTiming(Timing10_40.convertTiming(src.getTiming()));
     if (src.hasAsNeeded())
-      tgt.setAsNeeded(Type10_40.convertType(src.getAsNeeded()));
+      tgt.setAsNeeded(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getAsNeeded()));
     if (src.hasSiteCodeableConcept())
       tgt.setSite(CodeableConcept10_40.convertCodeableConcept(src.getSiteCodeableConcept()));
     if (src.hasRoute())
@@ -106,9 +106,9 @@ public class MedicationDispense10_40 {
     if (src.hasDose() || src.hasRate()) {
       DosageDoseAndRateComponent dr = tgt.addDoseAndRate();
       if (src.hasDose())
-        dr.setDose(Type10_40.convertType(src.getDose()));
+        dr.setDose(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getDose()));
       if (src.hasRate())
-        dr.setRate(Type10_40.convertType(src.getRate()));
+        dr.setRate(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getRate()));
     }
     if (src.hasMaxDosePerPeriod())
       tgt.setMaxDosePerPeriod(Ratio10_40.convertRatio(src.getMaxDosePerPeriod()));
@@ -119,18 +119,18 @@ public class MedicationDispense10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.MedicationDispense.MedicationDispenseDosageInstructionComponent tgt = new org.hl7.fhir.dstu2.model.MedicationDispense.MedicationDispenseDosageInstructionComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     tgt.setText(src.getText());
     tgt.setTiming(Timing10_40.convertTiming(src.getTiming()));
-    tgt.setAsNeeded(Type10_40.convertType(src.getAsNeeded()));
-    tgt.setSite(Type10_40.convertType(src.getSite()));
+    tgt.setAsNeeded(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getAsNeeded()));
+    tgt.setSite(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getSite()));
     tgt.setRoute(CodeableConcept10_40.convertCodeableConcept(src.getRoute()));
     tgt.setMethod(CodeableConcept10_40.convertCodeableConcept(src.getMethod()));
     if (src.hasDoseAndRate() && src.getDoseAndRate().get(0).hasDose())
-      tgt.setDose(Type10_40.convertType(src.getDoseAndRate().get(0).getDose()));
+      tgt.setDose(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getDoseAndRate().get(0).getDose()));
     tgt.setMaxDosePerPeriod(Ratio10_40.convertRatio(src.getMaxDosePerPeriod()));
     if (src.hasDoseAndRate() && src.getDoseAndRate().get(0).hasRate())
-      tgt.setRate(Type10_40.convertType(src.getDoseAndRate().get(0).getRate()));
+      tgt.setRate(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getDoseAndRate().get(0).getRate()));
     return tgt;
   }
 
@@ -138,7 +138,7 @@ public class MedicationDispense10_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case COMPLETED:
         tgt.setValue(org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseStatus.COMPLETED);
@@ -166,7 +166,7 @@ public class MedicationDispense10_40 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu2.model.Enumeration<org.hl7.fhir.dstu2.model.MedicationDispense.MedicationDispenseStatus> tgt = new org.hl7.fhir.dstu2.model.Enumeration<>(new org.hl7.fhir.dstu2.model.MedicationDispense.MedicationDispenseStatusEnumFactory());
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     switch (src.getValue()) {
       case CANCELLED:
         tgt.setValue(org.hl7.fhir.dstu2.model.MedicationDispense.MedicationDispenseStatus.STOPPED);
@@ -206,7 +206,7 @@ public class MedicationDispense10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.MedicationDispense.MedicationDispenseSubstitutionComponent tgt = new org.hl7.fhir.dstu2.model.MedicationDispense.MedicationDispenseSubstitutionComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept10_40.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReason())
@@ -220,7 +220,7 @@ public class MedicationDispense10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseSubstitutionComponent tgt = new org.hl7.fhir.r4.model.MedicationDispense.MedicationDispenseSubstitutionComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasType())
       tgt.setType(CodeableConcept10_40.convertCodeableConcept(src.getType()));
     for (org.hl7.fhir.dstu2.model.CodeableConcept t : src.getReason())

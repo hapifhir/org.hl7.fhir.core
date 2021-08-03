@@ -8,7 +8,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.Date
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.String10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.primitivetypes10_40.UnsignedInt10_40;
 import org.hl7.fhir.dstu2.model.MedicationOrder;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
 import org.hl7.fhir.r4.model.Dosage;
 
 public class MedicationRequest10_40 {
@@ -16,7 +16,7 @@ public class MedicationRequest10_40 {
     if (src == null)
       return null;
     org.hl7.fhir.r4.model.MedicationRequest tgt = new org.hl7.fhir.r4.model.MedicationRequest();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     tgt.setIntent(org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestIntent.ORDER);
     for (org.hl7.fhir.dstu2.model.Identifier identifier : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(identifier));
@@ -62,7 +62,7 @@ public class MedicationRequest10_40 {
     if (src.hasTiming())
       tgt.setTiming(Timing10_40.convertTiming(src.getTiming()));
     if (src.hasAsNeeded())
-      tgt.setAsNeeded(Type10_40.convertType(src.getAsNeeded()));
+      tgt.setAsNeeded(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getAsNeeded()));
     if (src.hasSiteCodeableConcept())
       tgt.setSite(CodeableConcept10_40.convertCodeableConcept(src.getSiteCodeableConcept()));
     if (src.hasRoute())
@@ -71,9 +71,9 @@ public class MedicationRequest10_40 {
       tgt.setMethod(CodeableConcept10_40.convertCodeableConcept(src.getMethod()));
     Dosage.DosageDoseAndRateComponent dose_and_rate = new Dosage.DosageDoseAndRateComponent();
     if (src.hasDose())
-      dose_and_rate.setDose(Type10_40.convertType(src.getDose()));
+      dose_and_rate.setDose(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getDose()));
     if (src.hasRate())
-      dose_and_rate.setDose(Type10_40.convertType(src.getRate()));
+      dose_and_rate.setDose(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getRate()));
     tgt.addDoseAndRate(dose_and_rate);
     if (src.hasMaxDosePerPeriod())
       tgt.setMaxDosePerPeriod(Ratio10_40.convertRatio(src.getMaxDosePerPeriod()));

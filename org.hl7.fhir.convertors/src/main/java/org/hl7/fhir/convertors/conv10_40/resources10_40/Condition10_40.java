@@ -6,7 +6,7 @@ import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Reference10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.Type10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.CodeableConcept10_40;
 import org.hl7.fhir.convertors.conv10_40.datatypes10_40.complextypes10_40.Identifier10_40;
-import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRException; import org.hl7.fhir.convertors.context.ConversionContext10_40;
 
 public class Condition10_40 {
 
@@ -14,7 +14,7 @@ public class Condition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Condition tgt = new org.hl7.fhir.dstu2.model.Condition();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasSubject())
@@ -36,9 +36,9 @@ public class Condition10_40 {
     if (src.hasSeverity())
       tgt.setSeverity(CodeableConcept10_40.convertCodeableConcept(src.getSeverity()));
     if (src.hasOnset())
-      tgt.setOnset(Type10_40.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getOnset()));
     if (src.hasAbatement() && !(src.getAbatement() instanceof org.hl7.fhir.r4.model.BooleanType))
-      tgt.setAbatement(Type10_40.convertType(src.getAbatement()));
+      tgt.setAbatement(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getAbatement()));
     if (src.hasStage())
       tgt.setStage(convertConditionStageComponent(src.getStageFirstRep()));
     for (org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent t : src.getEvidence())
@@ -52,7 +52,7 @@ public class Condition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Condition tgt = new org.hl7.fhir.r4.model.Condition();
-    VersionConvertor_10_40.copyDomainResource(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier10_40.convertIdentifier(t));
     if (src.hasPatient())
@@ -74,9 +74,9 @@ public class Condition10_40 {
     if (src.hasSeverity())
       tgt.setSeverity(CodeableConcept10_40.convertCodeableConcept(src.getSeverity()));
     if (src.hasOnset())
-      tgt.setOnset(Type10_40.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getOnset()));
     if (src.hasAbatement() && !(src.getAbatement() instanceof org.hl7.fhir.dstu2.model.BooleanType))
-      tgt.setAbatement(Type10_40.convertType(src.getAbatement()));
+      tgt.setAbatement(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getAbatement()));
     if (src.hasStage())
       tgt.addStage(convertConditionStageComponent(src.getStage()));
     for (org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent t : src.getEvidence())
@@ -108,7 +108,7 @@ public class Condition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.r4.model.Condition.ConditionEvidenceComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasCode())
       tgt.addCode(CodeableConcept10_40.convertCodeableConcept(src.getCode()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getDetail()) tgt.addDetail(Reference10_40.convertReference(t));
@@ -119,7 +119,7 @@ public class Condition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent tgt = new org.hl7.fhir.dstu2.model.Condition.ConditionEvidenceComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     for (org.hl7.fhir.r4.model.CodeableConcept cc : src.getCode())
       tgt.setCode(CodeableConcept10_40.convertCodeableConcept(cc));
     for (org.hl7.fhir.r4.model.Reference t : src.getDetail()) tgt.addDetail(Reference10_40.convertReference(t));
@@ -130,7 +130,7 @@ public class Condition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu2.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.dstu2.model.Condition.ConditionStageComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasSummary())
       tgt.setSummary(CodeableConcept10_40.convertCodeableConcept(src.getSummary()));
     for (org.hl7.fhir.r4.model.Reference t : src.getAssessment()) tgt.addAssessment(Reference10_40.convertReference(t));
@@ -141,7 +141,7 @@ public class Condition10_40 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.r4.model.Condition.ConditionStageComponent tgt = new org.hl7.fhir.r4.model.Condition.ConditionStageComponent();
-    Element10_40.copyElement(src, tgt);
+    ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().copyElement(src, tgt);
     if (src.hasSummary())
       tgt.setSummary(CodeableConcept10_40.convertCodeableConcept(src.getSummary()));
     for (org.hl7.fhir.dstu2.model.Reference t : src.getAssessment())

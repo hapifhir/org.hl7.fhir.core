@@ -8,14 +8,15 @@ import org.hl7.fhir.r4.model.ValueSet;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class BaseAdvisor_10_40 extends BaseAdvisor40<org.hl7.fhir.dstu2.model.Extension> {
 
   private final List<CodeSystem> cslist = new ArrayList<>();
-  private final List<String> ignoredUrls = new ArrayList<>(Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown"));
   private final List<Class<?>> ignoredExtensionTypes = new ArrayList<>(Collections.singletonList(Expression.class));
+  final List<String> conformanceIgnoredUrls = Collections.singletonList("http://hl7.org/fhir/3.0/StructureDefinition/extension-CapabilityStatement.acceptUnknown");
 
   public BaseAdvisor_10_40() {
   }
@@ -29,7 +30,8 @@ public class BaseAdvisor_10_40 extends BaseAdvisor40<org.hl7.fhir.dstu2.model.Ex
   }
 
   public boolean ignoreExtension(@NotNull String path, @NotNull String url) {
-    return this.ignoredUrls.contains(url);
+    List<String> paths = Arrays.asList(path.split(","));
+    return (paths.get(paths.size() - 1).equals("Conformance")) && (conformanceIgnoredUrls.contains(url));
   }
 
   public boolean ignoreType(@NotNull String path, @NotNull Type type) {
