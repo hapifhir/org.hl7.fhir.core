@@ -4,6 +4,8 @@
 
 ### A note regarding syntax
 
+-----
+
 Within the code, we use a set naming convention to organize the classes used for conversion between the various versions
 of FHIR.
 
@@ -31,17 +33,20 @@ you use the provided conversion factory classes as your entry point.
 
 ### Using the conversion library
 
+-----
 The mojority of use cases for conversion will involve using the provided VersionConvertorFactory_V1_V2 classes to convert
 to and from the various versions of FHIR. 
 
 They provide two statically accessed base methods for converting resources:
 
 `public static (V1 Resource) convertResource((V2 Resource) src)`
+
 `public static (V2 Resource) convertResource((V1 Resource) src)`
 
 ...and two statically accessed base methods for converting types:
 
 `public static (V1 Type) convertType((V2 Type) src)`
+
 `public static (V2 Type) convertType((V1 Type) src)`
 
 It's important to note that these methods convert from the base `Resource` of one version to the base `Resource` of 
@@ -59,6 +64,8 @@ Example:
 
 ### It gets complicated...
 
+-----
+
 As the specification has evolved over time, the versions of FHIR have built on top of one another, adding new fields
 within existing resources, changing the name of existing resources, or adding entirely new resources altogether. As a 
 result of this conversions are inherently lossy operations. 
@@ -73,6 +80,7 @@ This is where advisors come in...
 
 ### Using conversion advisors
 
+-----
 When you call the base conversion factory methods `convertType(...)` or `convertResource(...)`, the library does a
 predefined conversion, using the standard conversion (which could be a lossy one, or one that makes assumptions). 
 
@@ -183,6 +191,7 @@ behavior for our particular usecase.
 Once you've created your new advisor, they can be provided as an argument when calling the conversion factory classes.
 
 `public static (V1 Resource) convertResource((V2 Resource) src, <T extends BaseAdvisor> advisor)`
+
 `public static (V2 Resource) convertResource((V1 Resource) src, <T extends BaseAdvisor> advisor)`
 
 
