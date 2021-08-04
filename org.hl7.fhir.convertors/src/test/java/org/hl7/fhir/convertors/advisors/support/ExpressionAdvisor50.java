@@ -14,7 +14,9 @@ public class ExpressionAdvisor50 extends BaseAdvisor_10_50 {
     return ext.hasValue() && ext.getValue() instanceof org.hl7.fhir.r5.model.Expression;
   }
 
-  public void handleExtension(@Nonnull String path, @Nonnull org.hl7.fhir.r5.model.Extension src, @Nonnull org.hl7.fhir.dstu2.model.Extension tgt) {
+  public void handleExtension(@Nonnull String path,
+                              @Nonnull org.hl7.fhir.r5.model.Extension src,
+                              @Nonnull org.hl7.fhir.dstu2.model.Extension tgt) {
     if (src.getValue() instanceof org.hl7.fhir.r5.model.Expression) {
       StringType type = new StringType();
       if (src.getValue() == null) {
