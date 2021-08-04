@@ -590,9 +590,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (derived == null) {
       throw new DefinitionException(context.formatMessage(I18nConstants.NO_DERIVED_STRUCTURE_PROVIDED));
     }
-    checkNotGenerating(base, "Base for generating a snapshot for the profile "+derived.getUrl());
-    checkNotGenerating(derived, "Focus for generating a snapshot");
-
+    if (isGenerating(base) || isGenerating(derived)) {
+      // cancel snapshot generation early when we already process 'base' or 'derived'
+      return;
+    }
+  
     if (!base.hasType()) {
       throw new DefinitionException(context.formatMessage(I18nConstants.BASE_PROFILE__HAS_NO_TYPE, base.getUrl()));
     }
@@ -1151,8 +1153,10 @@ public class ProfileUtilities extends TranslatingUtilities {
                 StructureDefinition sdb = context.fetchResource(StructureDefinition.class, sd.getBaseDefinition());
                 if (sdb == null)
                   throw new DefinitionException(context.formatMessage(I18nConstants.UNABLE_TO_FIND_BASE__FOR_, sd.getBaseDefinition(), sd.getUrl()));
-                checkNotGenerating(sdb, "an extension base");
-                generateSnapshot(sdb, sd, sd.getUrl(), (sdb.hasUserData("path")) ? Utilities.extractBaseUrl(sdb.getUserString("path")) : webUrl, sd.getName());
+                if (!isGenerating(sdb)) {
+                  // only generate a snapshot for 'sdb' if we are not processing it already
+                  generateSnapshot(sdb, sd, sd.getUrl(), (sdb.hasUserData("path")) ? Utilities.extractBaseUrl(sdb.getUserString("path")) : webUrl, sd.getName());
+                }
               }
               ElementDefinition src;
               if (p.hasExtension(ToolingExtensions.EXT_PROFILE_ELEMENT)) {
@@ -1948,13 +1952,6 @@ public class ProfileUtilities extends TranslatingUtilities {
 
   private boolean isGenerating(StructureDefinition sd) {
     return sd.hasUserData("profileutils.snapshot.generating");
-  }
-
-
-  private void checkNotGenerating(StructureDefinition sd, String role) {
-    if (sd.hasUserData("profileutils.snapshot.generating")) {
-      throw new FHIRException(context.formatMessage(I18nConstants.ATTEMPT_TO_USE_A_SNAPSHOT_ON_PROFILE__AS__BEFORE_IT_IS_GENERATED, sd.getUrl(), role));
-    }
   }
 
   private boolean isBaseResource(List<TypeRefComponent> types) {
