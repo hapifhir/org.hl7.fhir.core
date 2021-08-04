@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annota
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class MedicationStatement30_40 {
@@ -28,9 +27,9 @@ public class MedicationStatement30_40 {
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept30_40.convertCodeableConcept(src.getCategory()));
     if (src.hasMedication())
-      tgt.setMedication(VersionConvertorFactory_30_40.convertType(src.getMedication()));
+      tgt.setMedication(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getMedication()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_30_40.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getEffective()));
     if (src.hasDateAsserted())
       tgt.setDateAssertedElement(DateTime30_40.convertDateTime(src.getDateAssertedElement()));
     if (src.hasInformationSource())
@@ -64,9 +63,9 @@ public class MedicationStatement30_40 {
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept30_40.convertCodeableConcept(src.getCategory()));
     if (src.hasMedication())
-      tgt.setMedication(VersionConvertorFactory_30_40.convertType(src.getMedication()));
+      tgt.setMedication(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getMedication()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_30_40.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getEffective()));
     if (src.hasDateAsserted())
       tgt.setDateAssertedElement(DateTime30_40.convertDateTime(src.getDateAssertedElement()));
     if (src.hasInformationSource())

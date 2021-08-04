@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.VersionConvertorResourceNameMapper;
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumerations;
@@ -65,7 +64,7 @@ public class DataRequirement30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String30_50.convertString(src.getPathElement()));
     if (src.hasValueSet()) {
-      DataType t = VersionConvertorFactory_30_50.convertType(src.getValueSet());
+      DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r5.model.Reference)
         tgt.setValueSet(((org.hl7.fhir.r5.model.Reference) t).getReference());
       else tgt.setValueSet(t.primitiveValue());
@@ -99,7 +98,8 @@ public class DataRequirement30_50 {
     org.hl7.fhir.r5.model.DataRequirement.DataRequirementDateFilterComponent tgt = new org.hl7.fhir.r5.model.DataRequirement.DataRequirementDateFilterComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String30_50.convertString(src.getPathElement()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
   }
 
@@ -108,7 +108,8 @@ public class DataRequirement30_50 {
     org.hl7.fhir.dstu3.model.DataRequirement.DataRequirementDateFilterComponent tgt = new org.hl7.fhir.dstu3.model.DataRequirement.DataRequirementDateFilterComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String30_50.convertString(src.getPathElement()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
   }
 }

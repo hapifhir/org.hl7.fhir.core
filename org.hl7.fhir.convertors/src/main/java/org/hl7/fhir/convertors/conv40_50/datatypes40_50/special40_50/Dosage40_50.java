@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuant
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Timing40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Dosage40_50 {
@@ -23,7 +22,8 @@ public class Dosage40_50 {
     if (src.hasPatientInstruction())
       tgt.setPatientInstructionElement(String40_50.convertString(src.getPatientInstructionElement()));
     if (src.hasTiming()) tgt.setTiming(Timing40_50.convertTiming(src.getTiming()));
-    if (src.hasAsNeeded()) tgt.setAsNeeded(VersionConvertorFactory_40_50.convertType(src.getAsNeeded()));
+    if (src.hasAsNeeded())
+      tgt.setAsNeeded(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAsNeeded()));
     if (src.hasSite()) tgt.setSite(CodeableConcept40_50.convertCodeableConcept(src.getSite()));
     if (src.hasRoute()) tgt.setRoute(CodeableConcept40_50.convertCodeableConcept(src.getRoute()));
     if (src.hasMethod()) tgt.setMethod(CodeableConcept40_50.convertCodeableConcept(src.getMethod()));
@@ -48,7 +48,8 @@ public class Dosage40_50 {
     if (src.hasPatientInstruction())
       tgt.setPatientInstructionElement(String40_50.convertString(src.getPatientInstructionElement()));
     if (src.hasTiming()) tgt.setTiming(Timing40_50.convertTiming(src.getTiming()));
-    if (src.hasAsNeeded()) tgt.setAsNeeded(VersionConvertorFactory_40_50.convertType(src.getAsNeeded()));
+    if (src.hasAsNeeded())
+      tgt.setAsNeeded(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAsNeeded()));
     if (src.hasSite()) tgt.setSite(CodeableConcept40_50.convertCodeableConcept(src.getSite()));
     if (src.hasRoute()) tgt.setRoute(CodeableConcept40_50.convertCodeableConcept(src.getRoute()));
     if (src.hasMethod()) tgt.setMethod(CodeableConcept40_50.convertCodeableConcept(src.getMethod()));
@@ -67,8 +68,10 @@ public class Dosage40_50 {
     org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent tgt = new org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType()) tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-    if (src.hasDose()) tgt.setDose(VersionConvertorFactory_40_50.convertType(src.getDose()));
-    if (src.hasRate()) tgt.setRate(VersionConvertorFactory_40_50.convertType(src.getRate()));
+    if (src.hasDose())
+      tgt.setDose(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDose()));
+    if (src.hasRate())
+      tgt.setRate(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getRate()));
     return tgt;
   }
 
@@ -77,8 +80,10 @@ public class Dosage40_50 {
     org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent tgt = new org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType()) tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-    if (src.hasDose()) tgt.setDose(VersionConvertorFactory_40_50.convertType(src.getDose()));
-    if (src.hasRate()) tgt.setRate(VersionConvertorFactory_40_50.convertType(src.getRate()));
+    if (src.hasDose())
+      tgt.setDose(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDose()));
+    if (src.hasRate())
+      tgt.setRate(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getRate()));
     return tgt;
   }
 }

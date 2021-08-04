@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Decimal40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Integer40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -202,7 +201,7 @@ public class BiologicallyDerivedProduct40_50 {
     if (src.hasSource())
       tgt.setSource(Reference40_50.convertReference(src.getSource()));
     if (src.hasCollected())
-      tgt.setCollected(VersionConvertorFactory_40_50.convertType(src.getCollected()));
+      tgt.setCollected(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getCollected()));
     return tgt;
   }
 
@@ -216,7 +215,7 @@ public class BiologicallyDerivedProduct40_50 {
     if (src.hasSource())
       tgt.setSource(Reference40_50.convertReference(src.getSource()));
     if (src.hasCollected())
-      tgt.setCollected(VersionConvertorFactory_40_50.convertType(src.getCollected()));
+      tgt.setCollected(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getCollected()));
     return tgt;
   }
 
@@ -232,7 +231,7 @@ public class BiologicallyDerivedProduct40_50 {
     if (src.hasAdditive())
       tgt.setAdditive(Reference40_50.convertReference(src.getAdditive()));
     if (src.hasTime())
-      tgt.setTime(VersionConvertorFactory_40_50.convertType(src.getTime()));
+      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
     return tgt;
   }
 
@@ -248,7 +247,7 @@ public class BiologicallyDerivedProduct40_50 {
     if (src.hasAdditive())
       tgt.setAdditive(Reference40_50.convertReference(src.getAdditive()));
     if (src.hasTime())
-      tgt.setTime(VersionConvertorFactory_40_50.convertType(src.getTime()));
+      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
     return tgt;
   }
 
@@ -260,7 +259,7 @@ public class BiologicallyDerivedProduct40_50 {
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasTime())
-      tgt.setTime(VersionConvertorFactory_40_50.convertType(src.getTime()));
+      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
     return tgt;
   }
 
@@ -272,7 +271,7 @@ public class BiologicallyDerivedProduct40_50 {
     if (src.hasDescription())
       tgt.setDescriptionElement(String40_50.convertString(src.getDescriptionElement()));
     if (src.hasTime())
-      tgt.setTime(VersionConvertorFactory_40_50.convertType(src.getTime()));
+      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
     return tgt;
   }
 

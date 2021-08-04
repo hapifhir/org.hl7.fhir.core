@@ -4,7 +4,6 @@ import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -315,12 +314,12 @@ public class CarePlan40_50 {
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_50.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasScheduled())
-      tgt.setScheduled(VersionConvertorFactory_40_50.convertType(src.getScheduled()));
+      tgt.setScheduled(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getScheduled()));
     if (src.hasLocation())
       tgt.getLocation().setReference(Reference40_50.convertReference(src.getLocation()));
     for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference40_50.convertReference(t));
     if (src.hasProduct())
-      tgt.setProduct(VersionConvertorFactory_40_50.convertType(src.getProduct()));
+      tgt.setProduct(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProduct()));
     if (src.hasDailyAmount())
       tgt.setDailyAmount(SimpleQuantity40_50.convertSimpleQuantity(src.getDailyAmount()));
     if (src.hasQuantity())
@@ -357,12 +356,12 @@ public class CarePlan40_50 {
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_50.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasScheduled())
-      tgt.setScheduled(VersionConvertorFactory_40_50.convertType(src.getScheduled()));
+      tgt.setScheduled(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getScheduled()));
     if (src.getLocation().hasReference())
       tgt.setLocation(Reference40_50.convertReference(src.getLocation().getReference()));
     for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference40_50.convertReference(t));
     if (src.hasProduct())
-      tgt.setProduct(VersionConvertorFactory_40_50.convertType(src.getProduct()));
+      tgt.setProduct(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProduct()));
     if (src.hasDailyAmount())
       tgt.setDailyAmount(SimpleQuantity40_50.convertSimpleQuantity(src.getDailyAmount()));
     if (src.hasQuantity())

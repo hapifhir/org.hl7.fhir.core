@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Dosage40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -136,9 +135,9 @@ public class MedicationRequest40_50 {
     if (src.hasInformationSource())
       tgt.setReported(Reference40_50.convertReference(src.getInformationSource()));
     if (src.getMedication().hasReference())
-      tgt.setMedication(VersionConvertorFactory_40_50.convertType(src.getMedication().getReference()));
+      tgt.setMedication(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMedication().getReference()));
     if (src.getMedication().hasConcept())
-      tgt.setMedication(VersionConvertorFactory_40_50.convertType(src.getMedication().getConcept()));
+      tgt.setMedication(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMedication().getConcept()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
@@ -459,7 +458,7 @@ public class MedicationRequest40_50 {
     org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.r5.model.MedicationRequest.MedicationRequestSubstitutionComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasAllowed())
-      tgt.setAllowed(VersionConvertorFactory_40_50.convertType(src.getAllowed()));
+      tgt.setAllowed(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAllowed()));
     if (src.hasReason())
       tgt.setReason(CodeableConcept40_50.convertCodeableConcept(src.getReason()));
     return tgt;
@@ -471,7 +470,7 @@ public class MedicationRequest40_50 {
     org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent tgt = new org.hl7.fhir.r4.model.MedicationRequest.MedicationRequestSubstitutionComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasAllowed())
-      tgt.setAllowed(VersionConvertorFactory_40_50.convertType(src.getAllowed()));
+      tgt.setAllowed(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAllowed()));
     if (src.hasReason())
       tgt.setReason(CodeableConcept40_50.convertCodeableConcept(src.getReason()));
     return tgt;

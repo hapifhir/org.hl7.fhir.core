@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu3.model.Reference;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Coding;
@@ -220,7 +219,7 @@ public class CarePlan30_40 {
     if (src.hasCategory()) {
       org.hl7.fhir.r4.model.Extension t = new org.hl7.fhir.r4.model.Extension();
       t.setUrl(CarePlanActivityDetailComponentExtension);
-      t.setValue(VersionConvertorFactory_30_40.convertType(src.getCategory()));
+      t.setValue(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getCategory()));
       tgt.addExtension(t);
     }
     if (src.hasCode()) {
@@ -252,7 +251,7 @@ public class CarePlan30_40 {
     }
     if (src.hasScheduled()) {
       if (src.hasScheduled())
-        tgt.setScheduled(VersionConvertorFactory_30_40.convertType(src.getScheduled()));
+        tgt.setScheduled(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getScheduled()));
     }
     if (src.hasLocation()) {
       if (src.hasLocation())
@@ -263,7 +262,7 @@ public class CarePlan30_40 {
     }
     if (src.hasProduct()) {
       if (src.hasProduct())
-        tgt.setProduct(VersionConvertorFactory_30_40.convertType(src.getProduct()));
+        tgt.setProduct(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getProduct()));
     }
     if (src.hasDailyAmount()) {
       if (src.hasDailyAmount())
@@ -323,7 +322,7 @@ public class CarePlan30_40 {
     }
     if (src.hasScheduled()) {
       if (src.hasScheduled())
-        tgt.setScheduled(VersionConvertorFactory_30_40.convertType(src.getScheduled()));
+        tgt.setScheduled(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getScheduled()));
     }
     if (src.hasLocation()) {
       if (src.hasLocation())
@@ -334,7 +333,7 @@ public class CarePlan30_40 {
     }
     if (src.hasProduct()) {
       if (src.hasProduct())
-        tgt.setProduct(VersionConvertorFactory_30_40.convertType(src.getProduct()));
+        tgt.setProduct(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getProduct()));
     }
     if (src.hasDailyAmount()) {
       if (src.hasDailyAmount())

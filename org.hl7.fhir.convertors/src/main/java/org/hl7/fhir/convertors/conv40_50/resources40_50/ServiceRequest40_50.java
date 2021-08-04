@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableCon
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -71,15 +70,15 @@ public class ServiceRequest40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getOrderDetail())
       tgt.addOrderDetail(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasQuantity())
-      tgt.setQuantity(VersionConvertorFactory_40_50.convertType(src.getQuantity()));
+      tgt.setQuantity(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getQuantity()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
     if (src.hasAsNeeded())
-      tgt.setAsNeeded(VersionConvertorFactory_40_50.convertType(src.getAsNeeded()));
+      tgt.setAsNeeded(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAsNeeded()));
     if (src.hasAuthoredOn())
       tgt.setAuthoredOnElement(DateTime40_50.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())
@@ -139,15 +138,15 @@ public class ServiceRequest40_50 {
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getOrderDetail())
       tgt.addOrderDetail(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasQuantity())
-      tgt.setQuantity(VersionConvertorFactory_40_50.convertType(src.getQuantity()));
+      tgt.setQuantity(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getQuantity()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
     if (src.hasAsNeeded())
-      tgt.setAsNeeded(VersionConvertorFactory_40_50.convertType(src.getAsNeeded()));
+      tgt.setAsNeeded(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAsNeeded()));
     if (src.hasAuthoredOn())
       tgt.setAuthoredOnElement(DateTime40_50.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())

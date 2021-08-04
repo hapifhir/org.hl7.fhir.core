@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identi
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class QuestionnaireResponse30_50 {
@@ -73,7 +72,7 @@ public class QuestionnaireResponse30_50 {
     org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     for (org.hl7.fhir.dstu3.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem())
       tgt.addItem(convertQuestionnaireResponseItemComponent(t));
     return tgt;
@@ -85,7 +84,7 @@ public class QuestionnaireResponse30_50 {
     org.hl7.fhir.dstu3.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.dstu3.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem())
       tgt.addItem(convertQuestionnaireResponseItemComponent(t));
     return tgt;

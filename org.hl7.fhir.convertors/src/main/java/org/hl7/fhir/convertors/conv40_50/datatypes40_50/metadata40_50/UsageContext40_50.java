@@ -2,7 +2,6 @@ package org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50;
 
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class UsageContext40_50 {
@@ -11,7 +10,8 @@ public class UsageContext40_50 {
     org.hl7.fhir.r5.model.UsageContext tgt = new org.hl7.fhir.r5.model.UsageContext();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasCode()) tgt.setCode(Coding40_50.convertCoding(src.getCode()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 
@@ -20,7 +20,8 @@ public class UsageContext40_50 {
     org.hl7.fhir.r4.model.UsageContext tgt = new org.hl7.fhir.r4.model.UsageContext();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasCode()) tgt.setCode(Coding40_50.convertCoding(src.getCode()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 }

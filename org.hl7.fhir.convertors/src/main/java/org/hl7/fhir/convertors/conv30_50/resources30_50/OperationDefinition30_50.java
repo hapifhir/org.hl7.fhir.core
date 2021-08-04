@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.DataType;
 import org.hl7.fhir.r5.model.Enumerations;
@@ -150,7 +149,7 @@ public class OperationDefinition30_50 {
     if (src.hasStrength())
       tgt.setStrengthElement(Enumerations30_50.convertBindingStrength(src.getStrengthElement()));
     if (src.hasValueSet()) {
-      DataType t = VersionConvertorFactory_30_50.convertType(src.getValueSet());
+      DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r5.model.Reference)
         tgt.setValueSet(((org.hl7.fhir.r5.model.Reference) t).getReference());
       else

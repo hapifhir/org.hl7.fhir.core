@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Codeab
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.stream.Collectors;
@@ -37,7 +36,7 @@ public class AllergyIntolerance30_40 {
     if (src.hasPatient())
       tgt.setPatient(Reference30_40.convertReference(src.getPatient()));
     if (src.hasOnset())
-      tgt.setOnset(VersionConvertorFactory_30_40.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getOnset()));
     if (src.hasRecordedDate())
       tgt.setAssertedDateElement(DateTime30_40.convertDateTime(src.getRecordedDateElement()));
     if (src.hasRecorder())
@@ -75,7 +74,7 @@ public class AllergyIntolerance30_40 {
     if (src.hasPatient())
       tgt.setPatient(Reference30_40.convertReference(src.getPatient()));
     if (src.hasOnset())
-      tgt.setOnset(VersionConvertorFactory_30_40.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getOnset()));
     if (src.hasAssertedDate())
       tgt.setRecordedDateElement(DateTime30_40.convertDateTime(src.getAssertedDateElement()));
     if (src.hasRecorder())

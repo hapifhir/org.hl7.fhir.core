@@ -9,7 +9,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identi
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Uri30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Identifier;
@@ -38,7 +37,7 @@ public class Consent30_40 {
     for (org.hl7.fhir.dstu3.model.Reference t : src.getOrganization())
       tgt.addOrganization(Reference30_40.convertReference(t));
     if (src.hasSource())
-      tgt.setSource(VersionConvertorFactory_30_40.convertType(src.getSource()));
+      tgt.setSource(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getSource()));
     for (org.hl7.fhir.dstu3.model.Consent.ConsentPolicyComponent t : src.getPolicy())
       tgt.addPolicy(convertConsentPolicyComponent(t));
     if (src.hasPolicyRule()) {
@@ -93,7 +92,7 @@ public class Consent30_40 {
     for (org.hl7.fhir.r4.model.Reference t : src.getOrganization())
       tgt.addOrganization(Reference30_40.convertReference(t));
     if (src.hasSource())
-      tgt.setSource(VersionConvertorFactory_30_40.convertType(src.getSource()));
+      tgt.setSource(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getSource()));
     for (org.hl7.fhir.r4.model.Consent.ConsentPolicyComponent t : src.getPolicy())
       tgt.addPolicy(convertConsentPolicyComponent(t));
     if (src.hasPolicyRule()) {

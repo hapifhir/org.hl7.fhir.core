@@ -9,7 +9,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identi
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.SimpleQuantity30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class MedicationDispense30_50 {
@@ -27,9 +26,9 @@ public class MedicationDispense30_50 {
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept30_50.convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.getMedication().hasConcept())
-      tgt.setMedication(VersionConvertorFactory_30_50.convertType(src.getMedication().getConcept()));
+      tgt.setMedication(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getMedication().getConcept()));
     if (src.getMedication().hasReference())
-      tgt.setMedication(VersionConvertorFactory_30_50.convertType(src.getMedication().getReference()));
+      tgt.setMedication(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getMedication().getReference()));
     if (src.hasSubject())
       tgt.setSubject(Reference30_50.convertReference(src.getSubject()));
     if (src.hasEncounter())

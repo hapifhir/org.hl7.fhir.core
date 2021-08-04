@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Dosage40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -68,7 +67,7 @@ public class MedicationStatement40_50 {
     if (src.hasContext())
       tgt.setEncounter(Reference40_50.convertReference(src.getContext()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_40_50.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEffective()));
     if (src.hasDateAsserted())
       tgt.setDateAssertedElement(DateTime40_50.convertDateTime(src.getDateAssertedElement()));
     if (src.hasInformationSource())
@@ -100,17 +99,17 @@ public class MedicationStatement40_50 {
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.getMedication().hasConcept()) {
-      tgt.setMedication(VersionConvertorFactory_40_50.convertType(src.getMedication().getConcept()));
+      tgt.setMedication(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMedication().getConcept()));
     }
     if (src.getMedication().hasReference()) {
-      tgt.setMedication(VersionConvertorFactory_40_50.convertType(src.getMedication().getReference()));
+      tgt.setMedication(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMedication().getReference()));
     }
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
       tgt.setContext(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_40_50.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEffective()));
     if (src.hasDateAsserted())
       tgt.setDateAssertedElement(DateTime40_50.convertDateTime(src.getDateAssertedElement()));
     if (src.hasInformationSource())

@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Instant40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -60,7 +59,7 @@ public class DiagnosticReport40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_40_50.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEffective()));
     if (src.hasIssued())
       tgt.setIssuedElement(Instant40_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r4.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference40_50.convertReference(t));
@@ -100,7 +99,7 @@ public class DiagnosticReport40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_40_50.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEffective()));
     if (src.hasIssued())
       tgt.setIssuedElement(Instant40_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference40_50.convertReference(t));

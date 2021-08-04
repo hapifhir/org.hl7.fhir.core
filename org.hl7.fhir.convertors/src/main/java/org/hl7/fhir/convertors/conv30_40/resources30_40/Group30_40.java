@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.UnsignedInt30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Group30_40 {
@@ -73,7 +72,7 @@ public class Group30_40 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_40.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getValue()));
     if (src.hasExclude())
       tgt.setExcludeElement(Boolean30_40.convertBoolean(src.getExcludeElement()));
     if (src.hasPeriod())
@@ -89,7 +88,7 @@ public class Group30_40 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_40.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getValue()));
     if (src.hasExclude())
       tgt.setExcludeElement(Boolean30_40.convertBoolean(src.getExcludeElement()));
     if (src.hasPeriod())

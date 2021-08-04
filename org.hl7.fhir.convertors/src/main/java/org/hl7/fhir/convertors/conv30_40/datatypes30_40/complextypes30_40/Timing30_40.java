@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40;
 import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Decimal30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.UnsignedInt30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.stream.Collectors;
@@ -35,7 +34,8 @@ public class Timing30_40 {
     if (src == null) return null;
     org.hl7.fhir.r4.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.r4.model.Timing.TimingRepeatComponent();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    if (src.hasBounds()) tgt.setBounds(VersionConvertorFactory_30_40.convertType(src.getBounds()));
+    if (src.hasBounds())
+      tgt.setBounds(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getBounds()));
     if (src.hasCount()) tgt.setCount(src.getCount());
     if (src.hasCountMax()) tgt.setCountMax(src.getCountMax());
     if (src.hasDuration()) tgt.setDurationElement(Decimal30_40.convertDecimal(src.getDurationElement()));
@@ -58,7 +58,8 @@ public class Timing30_40 {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.dstu3.model.Timing.TimingRepeatComponent();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
-    if (src.hasBounds()) tgt.setBounds(VersionConvertorFactory_30_40.convertType(src.getBounds()));
+    if (src.hasBounds())
+      tgt.setBounds(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getBounds()));
     if (src.hasCount()) tgt.setCount(src.getCount());
     if (src.hasCountMax()) tgt.setCountMax(src.getCountMax());
     if (src.hasDuration()) tgt.setDurationElement(Decimal30_40.convertDecimal(src.getDurationElement()));
@@ -228,7 +229,8 @@ public class Timing30_40 {
     org.hl7.fhir.r4.model.UsageContext tgt = new org.hl7.fhir.r4.model.UsageContext();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasCode()) tgt.setCode(Coding30_40.convertCoding(src.getCode()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_30_40.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getValue()));
     return tgt;
   }
 
@@ -237,7 +239,8 @@ public class Timing30_40 {
     org.hl7.fhir.dstu3.model.UsageContext tgt = new org.hl7.fhir.dstu3.model.UsageContext();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasCode()) tgt.setCode(Coding30_40.convertCoding(src.getCode()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_30_40.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getValue()));
     return tgt;
   }
 

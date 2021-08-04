@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.RelatedArtifact30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu3.model.ContactDetail;
 import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -92,13 +91,13 @@ public class ActivityDefinition30_40 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
     if (src.hasTiming())
-      tgt.setTiming(VersionConvertorFactory_30_40.convertType(src.getTiming()));
+      tgt.setTiming(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getTiming()));
     if (src.hasLocation())
       tgt.setLocation(Reference30_40.convertReference(src.getLocation()));
     for (org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
     if (src.hasProduct())
-      tgt.setProduct(VersionConvertorFactory_30_40.convertType(src.getProduct()));
+      tgt.setProduct(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getProduct()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getQuantity()));
     for (org.hl7.fhir.r4.model.Dosage t : src.getDosage()) tgt.addDosage(Dosage30_40.convertDosage(t));
@@ -175,13 +174,13 @@ public class ActivityDefinition30_40 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_40.convertCodeableConcept(src.getCode()));
     if (src.hasTiming())
-      tgt.setTiming(VersionConvertorFactory_30_40.convertType(src.getTiming()));
+      tgt.setTiming(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getTiming()));
     if (src.hasLocation())
       tgt.setLocation(Reference30_40.convertReference(src.getLocation()));
     for (org.hl7.fhir.dstu3.model.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
     if (src.hasProduct())
-      tgt.setProduct(VersionConvertorFactory_30_40.convertType(src.getProduct()));
+      tgt.setProduct(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getProduct()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getQuantity()));
     for (org.hl7.fhir.dstu3.model.Dosage t : src.getDosage()) tgt.addDosage(Dosage30_40.convertDosage(t));

@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.MarkDown40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableConcept;
 import org.hl7.fhir.r5.model.Coding;
@@ -259,9 +258,9 @@ public class MedicationKnowledge40_50 {
     org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeIngredientComponent tgt = new org.hl7.fhir.r4.model.MedicationKnowledge.MedicationKnowledgeIngredientComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.getItem().hasConcept())
-      tgt.setItem(VersionConvertorFactory_40_50.convertType(src.getItem().getConcept()));
+      tgt.setItem(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getItem().getConcept()));
     if (src.getItem().hasReference())
-      tgt.setItem(VersionConvertorFactory_40_50.convertType(src.getItem().getReference()));
+      tgt.setItem(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getItem().getReference()));
     if (src.hasIsActive())
       tgt.setIsActive(src.getIsActive().hasCoding("http://terminology.hl7.org/CodeSystem/v3-RoleClass", "ACTI"));
     if (src.hasStrengthRatio())
@@ -452,7 +451,7 @@ public class MedicationKnowledge40_50 {
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 
@@ -464,7 +463,7 @@ public class MedicationKnowledge40_50 {
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 

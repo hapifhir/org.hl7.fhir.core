@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.PositiveInt40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class DataRequirement40_50 {
@@ -17,7 +16,8 @@ public class DataRequirement40_50 {
       tgt.setType(org.hl7.fhir.r5.model.Enumerations.FHIRAllTypes.fromCode(convertResourceName4to5(src.getType())));
     for (org.hl7.fhir.r4.model.CanonicalType t : src.getProfile())
       tgt.getProfile().add(Canonical40_50.convertCanonical(t));
-    if (src.hasSubject()) tgt.setSubject(VersionConvertorFactory_40_50.convertType(src.getSubject()));
+    if (src.hasSubject())
+      tgt.setSubject(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSubject()));
     for (org.hl7.fhir.r4.model.StringType t : src.getMustSupport())
       tgt.getMustSupport().add(String40_50.convertString(t));
     for (org.hl7.fhir.r4.model.DataRequirement.DataRequirementCodeFilterComponent t : src.getCodeFilter())
@@ -37,7 +37,8 @@ public class DataRequirement40_50 {
     if (src.hasType()) tgt.setType(convertResourceName5to4(src.getType().toCode()));
     for (org.hl7.fhir.r5.model.CanonicalType t : src.getProfile())
       tgt.getProfile().add(Canonical40_50.convertCanonical(t));
-    if (src.hasSubject()) tgt.setSubject(VersionConvertorFactory_40_50.convertType(src.getSubject()));
+    if (src.hasSubject())
+      tgt.setSubject(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSubject()));
     for (org.hl7.fhir.r5.model.StringType t : src.getMustSupport())
       tgt.getMustSupport().add(String40_50.convertString(t));
     for (org.hl7.fhir.r5.model.DataRequirement.DataRequirementCodeFilterComponent t : src.getCodeFilter())
@@ -94,7 +95,8 @@ public class DataRequirement40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String40_50.convertString(src.getPathElement()));
     if (src.hasSearchParam()) tgt.setSearchParamElement(String40_50.convertString(src.getSearchParamElement()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 
@@ -104,7 +106,8 @@ public class DataRequirement40_50 {
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String40_50.convertString(src.getPathElement()));
     if (src.hasSearchParam()) tgt.setSearchParamElement(String40_50.convertString(src.getSearchParamElement()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 

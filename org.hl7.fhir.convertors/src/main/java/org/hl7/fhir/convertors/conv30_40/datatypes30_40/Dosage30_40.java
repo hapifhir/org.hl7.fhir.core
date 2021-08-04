@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Simple
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Timing30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Integer30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Dosage30_40 {
@@ -22,14 +21,17 @@ public class Dosage30_40 {
     if (src.hasPatientInstruction())
       tgt.setPatientInstructionElement(String30_40.convertString(src.getPatientInstructionElement()));
     if (src.hasTiming()) tgt.setTiming(Timing30_40.convertTiming(src.getTiming()));
-    if (src.hasAsNeeded()) tgt.setAsNeeded(VersionConvertorFactory_30_40.convertType(src.getAsNeeded()));
+    if (src.hasAsNeeded())
+      tgt.setAsNeeded(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getAsNeeded()));
     if (src.hasSite()) tgt.setSite(CodeableConcept30_40.convertCodeableConcept(src.getSite()));
     if (src.hasRoute()) tgt.setRoute(CodeableConcept30_40.convertCodeableConcept(src.getRoute()));
     if (src.hasMethod()) tgt.setMethod(CodeableConcept30_40.convertCodeableConcept(src.getMethod()));
     if (src.hasDose() || src.hasRate()) {
       org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent dr = tgt.addDoseAndRate();
-      if (src.hasDose()) dr.setDose(VersionConvertorFactory_30_40.convertType(src.getDose()));
-      if (src.hasRate()) dr.setRate(VersionConvertorFactory_30_40.convertType(src.getRate()));
+      if (src.hasDose())
+        dr.setDose(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getDose()));
+      if (src.hasRate())
+        dr.setRate(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getRate()));
     }
     if (src.hasMaxDosePerPeriod()) tgt.setMaxDosePerPeriod(Ratio30_40.convertRatio(src.getMaxDosePerPeriod()));
     if (src.hasMaxDosePerAdministration())
@@ -50,7 +52,8 @@ public class Dosage30_40 {
     if (src.hasPatientInstruction())
       tgt.setPatientInstructionElement(String30_40.convertString(src.getPatientInstructionElement()));
     if (src.hasTiming()) tgt.setTiming(Timing30_40.convertTiming(src.getTiming()));
-    if (src.hasAsNeeded()) tgt.setAsNeeded(VersionConvertorFactory_30_40.convertType(src.getAsNeeded()));
+    if (src.hasAsNeeded())
+      tgt.setAsNeeded(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getAsNeeded()));
     if (src.hasSite()) tgt.setSite(CodeableConcept30_40.convertCodeableConcept(src.getSite()));
     if (src.hasRoute()) tgt.setRoute(CodeableConcept30_40.convertCodeableConcept(src.getRoute()));
     if (src.hasMethod()) tgt.setMethod(CodeableConcept30_40.convertCodeableConcept(src.getMethod()));
@@ -58,7 +61,7 @@ public class Dosage30_40 {
       if (src.getDoseAndRate().get(0).getDose() instanceof org.hl7.fhir.r4.model.Quantity) {
         tgt.setDose(SimpleQuantity30_40.convertSimpleQuantity((org.hl7.fhir.r4.model.Quantity) src.getDoseAndRate().get(0).getDose()));
       } else {
-        tgt.setDose(VersionConvertorFactory_30_40.convertType(src.getDoseAndRate().get(0).getDose()));
+        tgt.setDose(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getDoseAndRate().get(0).getDose()));
       }
     }
     if (src.hasMaxDosePerPeriod()) tgt.setMaxDosePerPeriod(Ratio30_40.convertRatio(src.getMaxDosePerPeriod()));
@@ -70,7 +73,7 @@ public class Dosage30_40 {
       if (src.getDoseAndRate().get(0).getRate() instanceof org.hl7.fhir.r4.model.Quantity) {
         tgt.setRate(SimpleQuantity30_40.convertSimpleQuantity((org.hl7.fhir.r4.model.Quantity) src.getDoseAndRate().get(0).getRate()));
       } else {
-        tgt.setRate(VersionConvertorFactory_30_40.convertType(src.getDoseAndRate().get(0).getRate()));
+        tgt.setRate(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getDoseAndRate().get(0).getRate()));
       }
     }
     return tgt;

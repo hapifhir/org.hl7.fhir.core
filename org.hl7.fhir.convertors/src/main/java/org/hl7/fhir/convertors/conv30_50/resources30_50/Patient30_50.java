@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.*;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Date30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Patient30_50 {
@@ -150,12 +149,12 @@ public class Patient30_50 {
     if (src.hasBirthDate())
       tgt.setBirthDateElement(Date30_50.convertDate(src.getBirthDateElement()));
     if (src.hasDeceased())
-      tgt.setDeceased(VersionConvertorFactory_30_50.convertType(src.getDeceased()));
+      tgt.setDeceased(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getDeceased()));
     for (org.hl7.fhir.dstu3.model.Address t : src.getAddress()) tgt.addAddress(Address30_50.convertAddress(t));
     if (src.hasMaritalStatus())
       tgt.setMaritalStatus(CodeableConcept30_50.convertCodeableConcept(src.getMaritalStatus()));
     if (src.hasMultipleBirth())
-      tgt.setMultipleBirth(VersionConvertorFactory_30_50.convertType(src.getMultipleBirth()));
+      tgt.setMultipleBirth(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getMultipleBirth()));
     for (org.hl7.fhir.dstu3.model.Attachment t : src.getPhoto()) tgt.addPhoto(Attachment30_50.convertAttachment(t));
     for (org.hl7.fhir.dstu3.model.Patient.ContactComponent t : src.getContact())
       tgt.addContact(convertContactComponent(t));
@@ -189,12 +188,12 @@ public class Patient30_50 {
     if (src.hasBirthDate())
       tgt.setBirthDateElement(Date30_50.convertDate(src.getBirthDateElement()));
     if (src.hasDeceased())
-      tgt.setDeceased(VersionConvertorFactory_30_50.convertType(src.getDeceased()));
+      tgt.setDeceased(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getDeceased()));
     for (org.hl7.fhir.r5.model.Address t : src.getAddress()) tgt.addAddress(Address30_50.convertAddress(t));
     if (src.hasMaritalStatus())
       tgt.setMaritalStatus(CodeableConcept30_50.convertCodeableConcept(src.getMaritalStatus()));
     if (src.hasMultipleBirth())
-      tgt.setMultipleBirth(VersionConvertorFactory_30_50.convertType(src.getMultipleBirth()));
+      tgt.setMultipleBirth(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getMultipleBirth()));
     for (org.hl7.fhir.r5.model.Attachment t : src.getPhoto()) tgt.addPhoto(Attachment30_50.convertAttachment(t));
     for (org.hl7.fhir.r5.model.Patient.ContactComponent t : src.getContact())
       tgt.addContact(convertContactComponent(t));

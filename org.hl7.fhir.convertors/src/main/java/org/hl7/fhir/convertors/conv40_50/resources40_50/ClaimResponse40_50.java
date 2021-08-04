@@ -4,7 +4,6 @@ import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -443,9 +442,9 @@ public class ClaimResponse40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode())
       tgt.addProgramCode(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasServiced())
-      tgt.setServiced(VersionConvertorFactory_40_50.convertType(src.getServiced()));
+      tgt.setServiced(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getServiced()));
     if (src.hasLocation())
-      tgt.setLocation(VersionConvertorFactory_40_50.convertType(src.getLocation()));
+      tgt.setLocation(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getLocation()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasUnitPrice())
@@ -486,9 +485,9 @@ public class ClaimResponse40_50 {
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode())
       tgt.addProgramCode(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasServiced())
-      tgt.setServiced(VersionConvertorFactory_40_50.convertType(src.getServiced()));
+      tgt.setServiced(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getServiced()));
     if (src.hasLocation())
-      tgt.setLocation(VersionConvertorFactory_40_50.convertType(src.getLocation()));
+      tgt.setLocation(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getLocation()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasUnitPrice())

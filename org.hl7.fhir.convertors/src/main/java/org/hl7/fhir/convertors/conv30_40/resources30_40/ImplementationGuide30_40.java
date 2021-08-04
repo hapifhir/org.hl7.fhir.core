@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Timing30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu3.model.ImplementationGuide;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Enumeration;
@@ -187,7 +186,7 @@ public class ImplementationGuide30_40 {
     org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent tgt = new org.hl7.fhir.r4.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasExampleFor()) {
-      org.hl7.fhir.r4.model.Type t = VersionConvertorFactory_30_40.convertType(src.getExampleFor());
+      org.hl7.fhir.r4.model.Type t = ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getExampleFor());
       tgt.setExample(t instanceof org.hl7.fhir.r4.model.Reference ? new org.hl7.fhir.r4.model.CanonicalType(((org.hl7.fhir.r4.model.Reference) t).getReference()) : t);
     } else if (src.hasExample())
       tgt.setExample(new org.hl7.fhir.r4.model.BooleanType(src.getExample()));

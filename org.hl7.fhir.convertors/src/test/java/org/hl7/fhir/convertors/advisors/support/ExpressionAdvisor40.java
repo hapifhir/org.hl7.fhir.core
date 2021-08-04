@@ -6,14 +6,15 @@ import org.hl7.fhir.dstu2.model.StringType;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Expression;
 import org.hl7.fhir.r4.model.Extension;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 public final class ExpressionAdvisor40 extends BaseAdvisor_10_40 {
-  public boolean useAdvisorForExtension(@NotNull String path, @NotNull Extension ext) throws FHIRException {
+  public boolean useAdvisorForExtension(@Nonnull String path, @Nonnull Extension ext) throws FHIRException {
     return ext.hasValue() && ext.getValue() instanceof Expression;
   }
 
-  public void handleExtension(@NotNull String path, @NotNull Extension src, @NotNull org.hl7.fhir.dstu2.model.Extension tgt) throws FHIRException {
+  public void handleExtension(@Nonnull String path, @Nonnull Extension src, @Nonnull org.hl7.fhir.dstu2.model.Extension tgt) throws FHIRException {
     if (src.getValue() instanceof Expression) {
       StringType type = new StringType();
       if (src.getValue() == null) {

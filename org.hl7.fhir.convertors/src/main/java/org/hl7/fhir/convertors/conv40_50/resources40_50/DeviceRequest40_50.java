@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -77,7 +76,7 @@ public class DeviceRequest40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
     if (src.hasAuthoredOn())
       tgt.setAuthoredOnElement(DateTime40_50.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())
@@ -122,9 +121,9 @@ public class DeviceRequest40_50 {
     if (src.hasPriority())
       tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
     if (src.getCode().hasConcept())
-      tgt.setCode(VersionConvertorFactory_40_50.convertType(src.getCode().getConcept()));
+      tgt.setCode(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getCode().getConcept()));
     if (src.getCode().hasReference())
-      tgt.setCode(VersionConvertorFactory_40_50.convertType(src.getCode().getReference()));
+      tgt.setCode(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getCode().getReference()));
     for (org.hl7.fhir.r5.model.DeviceRequest.DeviceRequestParameterComponent t : src.getParameter())
       tgt.addParameter(convertDeviceRequestParameterComponent(t));
     if (src.hasSubject())
@@ -132,7 +131,7 @@ public class DeviceRequest40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
     if (src.hasAuthoredOn())
       tgt.setAuthoredOnElement(DateTime40_50.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())
@@ -362,7 +361,7 @@ public class DeviceRequest40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 
@@ -374,7 +373,7 @@ public class DeviceRequest40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 }

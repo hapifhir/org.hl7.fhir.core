@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Ratio3
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.SimpleQuantity30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Identifier;
 
@@ -110,7 +109,7 @@ public class Substance30_50 {
     if (src.hasQuantity())
       tgt.setQuantity(Ratio30_50.convertRatio(src.getQuantity()));
     if (src.hasSubstance())
-      tgt.setSubstance(VersionConvertorFactory_30_50.convertType(src.getSubstance()));
+      tgt.setSubstance(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getSubstance()));
     return tgt;
   }
 
@@ -122,7 +121,7 @@ public class Substance30_50 {
     if (src.hasQuantity())
       tgt.setQuantity(Ratio30_50.convertRatio(src.getQuantity()));
     if (src.hasSubstance())
-      tgt.setSubstance(VersionConvertorFactory_30_50.convertType(src.getSubstance()));
+      tgt.setSubstance(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getSubstance()));
     return tgt;
   }
 

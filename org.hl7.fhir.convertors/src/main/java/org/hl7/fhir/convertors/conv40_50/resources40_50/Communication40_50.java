@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.StringType;
 import org.hl7.fhir.r5.model.CodeableConcept;
@@ -282,7 +281,7 @@ public class Communication40_50 {
         tgt.setContent(tgtc);
       } else {
         if (src.hasContent())
-          tgt.setContent(VersionConvertorFactory_40_50.convertType(src.getContent()));
+          tgt.setContent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getContent()));
       }
     }
     return tgt;
@@ -301,7 +300,7 @@ public class Communication40_50 {
         tgt.setContent(tgts);
       } else {
         if (src.hasContent())
-          tgt.setContent(VersionConvertorFactory_40_50.convertType(src.getContent()));
+          tgt.setContent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getContent()));
       }
     }
     return tgt;

@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Codeab
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.stream.Collectors;
@@ -340,7 +339,7 @@ public class CodeSystem30_50 {
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
   }
 
@@ -352,7 +351,7 @@ public class CodeSystem30_50 {
     if (src.hasCode())
       tgt.setCodeElement(Code30_50.convertCode(src.getCodeElement()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
   }
 

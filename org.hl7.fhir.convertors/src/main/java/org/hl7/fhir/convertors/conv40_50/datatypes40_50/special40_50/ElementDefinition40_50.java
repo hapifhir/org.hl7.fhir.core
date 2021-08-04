@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.BackboneElement40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Coding40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.convertors.conv40_50.resources40_50.Enumerations40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.stream.Collectors;
@@ -35,16 +34,21 @@ public class ElementDefinition40_50 {
       tgt.setContentReferenceElement(Uri40_50.convertUri(src.getContentReferenceElement()));
     for (org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent t : src.getType())
       tgt.addType(convertTypeRefComponent(t));
-    if (src.hasDefaultValue()) tgt.setDefaultValue(VersionConvertorFactory_40_50.convertType(src.getDefaultValue()));
+    if (src.hasDefaultValue())
+      tgt.setDefaultValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDefaultValue()));
     if (src.hasMeaningWhenMissing())
       tgt.setMeaningWhenMissingElement(MarkDown40_50.convertMarkdown(src.getMeaningWhenMissingElement()));
     if (src.hasOrderMeaning()) tgt.setOrderMeaningElement(String40_50.convertString(src.getOrderMeaningElement()));
-    if (src.hasFixed()) tgt.setFixed(VersionConvertorFactory_40_50.convertType(src.getFixed()));
-    if (src.hasPattern()) tgt.setPattern(VersionConvertorFactory_40_50.convertType(src.getPattern()));
+    if (src.hasFixed())
+      tgt.setFixed(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getFixed()));
+    if (src.hasPattern())
+      tgt.setPattern(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getPattern()));
     for (org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionExampleComponent t : src.getExample())
       tgt.addExample(convertElementDefinitionExampleComponent(t));
-    if (src.hasMinValue()) tgt.setMinValue(VersionConvertorFactory_40_50.convertType(src.getMinValue()));
-    if (src.hasMaxValue()) tgt.setMaxValue(VersionConvertorFactory_40_50.convertType(src.getMaxValue()));
+    if (src.hasMinValue())
+      tgt.setMinValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMinValue()));
+    if (src.hasMaxValue())
+      tgt.setMaxValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMaxValue()));
     if (src.hasMaxLength()) tgt.setMaxLengthElement(Integer40_50.convertInteger(src.getMaxLengthElement()));
     for (org.hl7.fhir.r4.model.IdType t : src.getCondition()) tgt.getCondition().add(Id40_50.convertId(t));
     for (org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionConstraintComponent t : src.getConstraint())
@@ -84,16 +88,21 @@ public class ElementDefinition40_50 {
       tgt.setContentReferenceElement(Uri40_50.convertUri(src.getContentReferenceElement()));
     for (org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent t : src.getType())
       tgt.addType(convertTypeRefComponent(t));
-    if (src.hasDefaultValue()) tgt.setDefaultValue(VersionConvertorFactory_40_50.convertType(src.getDefaultValue()));
+    if (src.hasDefaultValue())
+      tgt.setDefaultValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDefaultValue()));
     if (src.hasMeaningWhenMissing())
       tgt.setMeaningWhenMissingElement(MarkDown40_50.convertMarkdown(src.getMeaningWhenMissingElement()));
     if (src.hasOrderMeaning()) tgt.setOrderMeaningElement(String40_50.convertString(src.getOrderMeaningElement()));
-    if (src.hasFixed()) tgt.setFixed(VersionConvertorFactory_40_50.convertType(src.getFixed()));
-    if (src.hasPattern()) tgt.setPattern(VersionConvertorFactory_40_50.convertType(src.getPattern()));
+    if (src.hasFixed())
+      tgt.setFixed(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getFixed()));
+    if (src.hasPattern())
+      tgt.setPattern(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getPattern()));
     for (org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent t : src.getExample())
       tgt.addExample(convertElementDefinitionExampleComponent(t));
-    if (src.hasMinValue()) tgt.setMinValue(VersionConvertorFactory_40_50.convertType(src.getMinValue()));
-    if (src.hasMaxValue()) tgt.setMaxValue(VersionConvertorFactory_40_50.convertType(src.getMaxValue()));
+    if (src.hasMinValue())
+      tgt.setMinValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMinValue()));
+    if (src.hasMaxValue())
+      tgt.setMaxValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMaxValue()));
     if (src.hasMaxLength()) tgt.setMaxLengthElement(Integer40_50.convertInteger(src.getMaxLengthElement()));
     for (org.hl7.fhir.r5.model.IdType t : src.getCondition()) tgt.getCondition().add(Id40_50.convertId(t));
     for (org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent t : src.getConstraint())
@@ -478,7 +487,8 @@ public class ElementDefinition40_50 {
     org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent tgt = new org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionExampleComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasLabel()) tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 
@@ -487,7 +497,8 @@ public class ElementDefinition40_50 {
     org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionExampleComponent tgt = new org.hl7.fhir.r4.model.ElementDefinition.ElementDefinitionExampleComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasLabel()) tgt.setLabelElement(String40_50.convertString(src.getLabelElement()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 

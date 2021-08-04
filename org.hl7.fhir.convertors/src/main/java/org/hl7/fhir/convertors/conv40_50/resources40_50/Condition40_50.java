@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableCon
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -64,9 +63,9 @@ public class Condition40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOnset())
-      tgt.setOnset(VersionConvertorFactory_40_50.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOnset()));
     if (src.hasAbatement())
-      tgt.setAbatement(VersionConvertorFactory_40_50.convertType(src.getAbatement()));
+      tgt.setAbatement(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAbatement()));
     if (src.hasRecordedDate())
       tgt.setRecordedDateElement(DateTime40_50.convertDateTime(src.getRecordedDateElement()));
     if (src.hasRecorder())
@@ -105,9 +104,9 @@ public class Condition40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOnset())
-      tgt.setOnset(VersionConvertorFactory_40_50.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOnset()));
     if (src.hasAbatement())
-      tgt.setAbatement(VersionConvertorFactory_40_50.convertType(src.getAbatement()));
+      tgt.setAbatement(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAbatement()));
     if (src.hasRecordedDate())
       tgt.setRecordedDateElement(DateTime40_50.convertDateTime(src.getRecordedDateElement()));
     if (src.hasRecorder())

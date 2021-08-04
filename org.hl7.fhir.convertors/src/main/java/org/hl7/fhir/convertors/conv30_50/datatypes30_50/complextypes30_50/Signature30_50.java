@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Base64Binary30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Code30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Instant30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Reference;
 
@@ -35,8 +34,9 @@ public class Signature30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     for (org.hl7.fhir.r5.model.Coding t : src.getType()) tgt.addType(Coding30_50.convertCoding(t));
     if (src.hasWhen()) tgt.setWhenElement(Instant30_50.convertInstant(src.getWhenElement()));
-    if (src.hasWho()) tgt.setWho(VersionConvertorFactory_30_50.convertType(src.getWho()));
-    if (src.hasOnBehalfOf()) tgt.setOnBehalfOf(VersionConvertorFactory_30_50.convertType(src.getOnBehalfOf()));
+    if (src.hasWho()) tgt.setWho(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getWho()));
+    if (src.hasOnBehalfOf())
+      tgt.setOnBehalfOf(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getOnBehalfOf()));
     if (src.hasSigFormat()) tgt.setContentTypeElement(Code30_50.convertCode(src.getSigFormatElement()));
     if (src.hasData()) tgt.setBlobElement(Base64Binary30_50.convertBase64Binary(src.getDataElement()));
     return tgt;

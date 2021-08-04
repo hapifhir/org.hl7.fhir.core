@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -65,7 +64,7 @@ public class Library40_50 {
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasSubject())
-      tgt.setSubject(VersionConvertorFactory_40_50.convertType(src.getSubject()));
+      tgt.setSubject(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSubject()));
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -134,7 +133,7 @@ public class Library40_50 {
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasSubject())
-      tgt.setSubject(VersionConvertorFactory_40_50.convertType(src.getSubject()));
+      tgt.setSubject(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSubject()));
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())

@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Codeab
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.SimpleQuantity30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 import org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationStatusCodesEnumFactory;
@@ -28,9 +27,9 @@ public class MedicationAdministration30_50 {
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept30_50.convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.getMedication().hasConcept())
-      tgt.setMedication(VersionConvertorFactory_30_50.convertType(src.getMedication().getConcept()));
+      tgt.setMedication(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getMedication().getConcept()));
     if (src.getMedication().hasReference())
-      tgt.setMedication(VersionConvertorFactory_30_50.convertType(src.getMedication().getReference()));
+      tgt.setMedication(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getMedication().getReference()));
     if (src.hasSubject())
       tgt.setSubject(Reference30_50.convertReference(src.getSubject()));
     if (src.hasEncounter())
@@ -38,7 +37,7 @@ public class MedicationAdministration30_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(Reference30_50.convertReference(t));
     if (src.hasOccurence())
-      tgt.setEffective(VersionConvertorFactory_30_50.convertType(src.getOccurence()));
+      tgt.setEffective(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getOccurence()));
     for (org.hl7.fhir.r5.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
     for (CodeableReference t : src.getReason())
@@ -82,7 +81,7 @@ public class MedicationAdministration30_50 {
     for (org.hl7.fhir.dstu3.model.Reference t : src.getSupportingInformation())
       tgt.addSupportingInformation(Reference30_50.convertReference(t));
     if (src.hasEffective())
-      tgt.setOccurence(VersionConvertorFactory_30_50.convertType(src.getEffective()));
+      tgt.setOccurence(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getEffective()));
     for (org.hl7.fhir.dstu3.model.MedicationAdministration.MedicationAdministrationPerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertMedicationAdministrationPerformerComponent(t));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode())
@@ -116,7 +115,7 @@ public class MedicationAdministration30_50 {
     if (src.hasDose())
       tgt.setDose(SimpleQuantity30_50.convertSimpleQuantity(src.getDose()));
     if (src.hasRate())
-      tgt.setRate(VersionConvertorFactory_30_50.convertType(src.getRate()));
+      tgt.setRate(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getRate()));
     return tgt;
   }
 
@@ -136,7 +135,7 @@ public class MedicationAdministration30_50 {
     if (src.hasDose())
       tgt.setDose(SimpleQuantity30_50.convertSimpleQuantity(src.getDose()));
     if (src.hasRate())
-      tgt.setRate(VersionConvertorFactory_30_50.convertType(src.getRate()));
+      tgt.setRate(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getRate()));
     return tgt;
   }
 

@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Annota
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -35,7 +34,7 @@ public class MedicationStatement30_50 {
       tgt.getMedication().setReference(Reference30_50.convertReference(src.getMedicationReference()));
     }
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_30_50.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getEffective()));
     if (src.hasDateAsserted())
       tgt.setDateAssertedElement(DateTime30_50.convertDateTime(src.getDateAssertedElement()));
     if (src.hasInformationSource())
@@ -69,13 +68,13 @@ public class MedicationStatement30_50 {
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept30_50.convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.getMedication().hasConcept()) {
-      tgt.setMedication(VersionConvertorFactory_30_50.convertType(src.getMedication().getConcept()));
+      tgt.setMedication(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getMedication().getConcept()));
     }
     if (src.getMedication().hasReference()) {
-      tgt.setMedication(VersionConvertorFactory_30_50.convertType(src.getMedication().getReference()));
+      tgt.setMedication(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getMedication().getReference()));
     }
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_30_50.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getEffective()));
     if (src.hasDateAsserted())
       tgt.setDateAssertedElement(DateTime30_50.convertDateTime(src.getDateAssertedElement()));
     if (src.hasInformationSource())

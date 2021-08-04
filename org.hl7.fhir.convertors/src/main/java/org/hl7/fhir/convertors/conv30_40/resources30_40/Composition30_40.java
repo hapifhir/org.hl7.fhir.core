@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identi
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Period30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.Collections;
@@ -205,7 +204,7 @@ public class Composition30_40 {
     if (src.hasCode())
       tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
     if (src.hasTarget())
-      tgt.setTarget(VersionConvertorFactory_30_40.convertType(src.getTarget()));
+      tgt.setTarget(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getTarget()));
     return tgt;
   }
 
@@ -217,7 +216,7 @@ public class Composition30_40 {
     if (src.hasCode())
       tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
     if (src.hasTarget())
-      tgt.setTarget(VersionConvertorFactory_30_40.convertType(src.getTarget()));
+      tgt.setTarget(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getTarget()));
     return tgt;
   }
 

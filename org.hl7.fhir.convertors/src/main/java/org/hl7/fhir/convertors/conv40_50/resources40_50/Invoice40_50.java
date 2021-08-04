@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Money40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -207,7 +206,7 @@ public class Invoice40_50 {
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasChargeItem())
-      tgt.setChargeItem(VersionConvertorFactory_40_50.convertType(src.getChargeItem()));
+      tgt.setChargeItem(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getChargeItem()));
     for (org.hl7.fhir.r4.model.Invoice.InvoiceLineItemPriceComponentComponent t : src.getPriceComponent())
       tgt.addPriceComponent(convertInvoiceLineItemPriceComponentComponent(t));
     return tgt;
@@ -221,7 +220,7 @@ public class Invoice40_50 {
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasChargeItem())
-      tgt.setChargeItem(VersionConvertorFactory_40_50.convertType(src.getChargeItem()));
+      tgt.setChargeItem(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getChargeItem()));
     for (org.hl7.fhir.r5.model.Invoice.InvoiceLineItemPriceComponentComponent t : src.getPriceComponent())
       tgt.addPriceComponent(convertInvoiceLineItemPriceComponentComponent(t));
     return tgt;

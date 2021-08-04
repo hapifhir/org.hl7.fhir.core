@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.UnsignedInt40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -168,7 +167,7 @@ public class Group40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     if (src.hasExclude())
       tgt.setExcludeElement(Boolean40_50.convertBoolean(src.getExcludeElement()));
     if (src.hasPeriod())
@@ -184,7 +183,7 @@ public class Group40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     if (src.hasExclude())
       tgt.setExcludeElement(Boolean40_50.convertBoolean(src.getExcludeElement()));
     if (src.hasPeriod())

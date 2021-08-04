@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Annota
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Condition30_50 {
@@ -43,9 +42,9 @@ public class Condition30_50 {
     if (src.hasContext())
       tgt.setEncounter(Reference30_50.convertReference(src.getContext()));
     if (src.hasOnset())
-      tgt.setOnset(VersionConvertorFactory_30_50.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getOnset()));
     if (src.hasAbatement())
-      tgt.setAbatement(VersionConvertorFactory_30_50.convertType(src.getAbatement()));
+      tgt.setAbatement(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getAbatement()));
     if (src.hasAssertedDate())
       tgt.setRecordedDateElement(DateTime30_50.convertDateTime(src.getAssertedDateElement()));
     if (src.hasAsserter())
@@ -82,9 +81,9 @@ public class Condition30_50 {
     if (src.hasEncounter())
       tgt.setContext(Reference30_50.convertReference(src.getEncounter()));
     if (src.hasOnset())
-      tgt.setOnset(VersionConvertorFactory_30_50.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getOnset()));
     if (src.hasAbatement())
-      tgt.setAbatement(VersionConvertorFactory_30_50.convertType(src.getAbatement()));
+      tgt.setAbatement(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getAbatement()));
     if (src.hasRecordedDate())
       tgt.setAssertedDateElement(DateTime30_50.convertDateTime(src.getRecordedDateElement()));
     if (src.hasAsserter())

@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Narrative40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -292,7 +291,7 @@ public class Composition40_50 {
     if (src.hasCode())
       tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
     if (src.hasTarget())
-      tgt.setTarget(VersionConvertorFactory_40_50.convertType(src.getTarget()));
+      tgt.setTarget(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTarget()));
     return tgt;
   }
 
@@ -304,7 +303,7 @@ public class Composition40_50 {
     if (src.hasCode())
       tgt.setCodeElement(convertDocumentRelationshipType(src.getCodeElement()));
     if (src.hasTarget())
-      tgt.setTarget(VersionConvertorFactory_40_50.convertType(src.getTarget()));
+      tgt.setTarget(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTarget()));
     return tgt;
   }
 

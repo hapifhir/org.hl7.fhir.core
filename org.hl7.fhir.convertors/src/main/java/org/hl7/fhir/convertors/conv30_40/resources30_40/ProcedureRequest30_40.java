@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Codeab
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Reference;
 
@@ -66,11 +65,11 @@ public class ProcedureRequest30_40 {
     }
     if (src.hasOccurrence()) {
       if (src.hasOccurrence())
-        tgt.setOccurrence(VersionConvertorFactory_30_40.convertType(src.getOccurrence()));
+        tgt.setOccurrence(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getOccurrence()));
     }
     if (src.hasAsNeeded()) {
       if (src.hasAsNeeded())
-        tgt.setAsNeeded(VersionConvertorFactory_30_40.convertType(src.getAsNeeded()));
+        tgt.setAsNeeded(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getAsNeeded()));
     }
     if (src.hasAuthoredOn()) {
       if (src.hasAuthoredOnElement())
@@ -165,11 +164,11 @@ public class ProcedureRequest30_40 {
     }
     if (src.hasOccurrence()) {
       if (src.hasOccurrence())
-        tgt.setOccurrence(VersionConvertorFactory_30_40.convertType(src.getOccurrence()));
+        tgt.setOccurrence(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getOccurrence()));
     }
     if (src.hasAsNeeded()) {
       if (src.hasAsNeeded())
-        tgt.setAsNeeded(VersionConvertorFactory_30_40.convertType(src.getAsNeeded()));
+        tgt.setAsNeeded(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getAsNeeded()));
     }
     if (src.hasAuthoredOn()) {
       if (src.hasAuthoredOnElement())

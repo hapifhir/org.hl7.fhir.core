@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50;
 import org.hl7.fhir.convertors.context.ConversionContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Decimal30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.UnsignedInt30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.stream.Collectors;
@@ -33,7 +32,8 @@ public class Timing30_50 {
     if (src == null) return null;
     org.hl7.fhir.r5.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.r5.model.Timing.TimingRepeatComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    if (src.hasBounds()) tgt.setBounds(VersionConvertorFactory_30_50.convertType(src.getBounds()));
+    if (src.hasBounds())
+      tgt.setBounds(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getBounds()));
     if (src.hasCount()) tgt.setCount(src.getCount());
     if (src.hasCountMax()) tgt.setCountMax(src.getCountMax());
     if (src.hasDuration()) tgt.setDurationElement(Decimal30_50.convertDecimal(src.getDurationElement()));
@@ -56,7 +56,8 @@ public class Timing30_50 {
     if (src == null) return null;
     org.hl7.fhir.dstu3.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.dstu3.model.Timing.TimingRepeatComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
-    if (src.hasBounds()) tgt.setBounds(VersionConvertorFactory_30_50.convertType(src.getBounds()));
+    if (src.hasBounds())
+      tgt.setBounds(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getBounds()));
     if (src.hasCount()) tgt.setCount(src.getCount());
     if (src.hasCountMax()) tgt.setCountMax(src.getCountMax());
     if (src.hasDuration()) tgt.setDurationElement(Decimal30_50.convertDecimal(src.getDurationElement()));

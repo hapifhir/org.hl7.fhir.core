@@ -4,7 +4,6 @@ import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -180,7 +179,7 @@ public class SpecimenDefinition40_50 {
     if (src.hasCapacity())
       tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
     if (src.hasMinimumVolume())
-      tgt.setMinimumVolume(VersionConvertorFactory_40_50.convertType(src.getMinimumVolume()));
+      tgt.setMinimumVolume(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMinimumVolume()));
     for (org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent t : src.getAdditive())
       tgt.addAdditive(convertSpecimenDefinitionTypeTestedContainerAdditiveComponent(t));
     if (src.hasPreparation())
@@ -204,7 +203,7 @@ public class SpecimenDefinition40_50 {
     if (src.hasCapacity())
       tgt.setCapacity(SimpleQuantity40_50.convertSimpleQuantity(src.getCapacity()));
     if (src.hasMinimumVolume())
-      tgt.setMinimumVolume(VersionConvertorFactory_40_50.convertType(src.getMinimumVolume()));
+      tgt.setMinimumVolume(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMinimumVolume()));
     for (org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent t : src.getAdditive())
       tgt.addAdditive(convertSpecimenDefinitionTypeTestedContainerAdditiveComponent(t));
     if (src.hasPreparation())
@@ -218,7 +217,7 @@ public class SpecimenDefinition40_50 {
     org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent tgt = new org.hl7.fhir.r5.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasAdditive())
-      tgt.setAdditive(VersionConvertorFactory_40_50.convertType(src.getAdditive()));
+      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
     return tgt;
   }
 
@@ -228,7 +227,7 @@ public class SpecimenDefinition40_50 {
     org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent tgt = new org.hl7.fhir.r4.model.SpecimenDefinition.SpecimenDefinitionTypeTestedContainerAdditiveComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasAdditive())
-      tgt.setAdditive(VersionConvertorFactory_40_50.convertType(src.getAdditive()));
+      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
     return tgt;
   }
 

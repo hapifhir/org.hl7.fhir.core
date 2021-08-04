@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identi
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -86,13 +85,13 @@ public class FamilyMemberHistory30_50 {
     if (src.hasRelationship())
       tgt.setRelationship(CodeableConcept30_50.convertCodeableConcept(src.getRelationship()));
     if (src.hasBorn())
-      tgt.setBorn(VersionConvertorFactory_30_50.convertType(src.getBorn()));
+      tgt.setBorn(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getBorn()));
     if (src.hasAge())
-      tgt.setAge(VersionConvertorFactory_30_50.convertType(src.getAge()));
+      tgt.setAge(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getAge()));
     if (src.hasEstimatedAge())
       tgt.setEstimatedAgeElement(Boolean30_50.convertBoolean(src.getEstimatedAgeElement()));
     if (src.hasDeceased())
-      tgt.setDeceased(VersionConvertorFactory_30_50.convertType(src.getDeceased()));
+      tgt.setDeceased(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getDeceased()));
     for (CodeableReference t : src.getReason())
       if (t.hasConcept())
         tgt.addReasonCode(CodeableConcept30_50.convertCodeableConcept(t.getConcept()));
@@ -126,13 +125,13 @@ public class FamilyMemberHistory30_50 {
     if (src.hasRelationship())
       tgt.setRelationship(CodeableConcept30_50.convertCodeableConcept(src.getRelationship()));
     if (src.hasBorn())
-      tgt.setBorn(VersionConvertorFactory_30_50.convertType(src.getBorn()));
+      tgt.setBorn(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getBorn()));
     if (src.hasAge())
-      tgt.setAge(VersionConvertorFactory_30_50.convertType(src.getAge()));
+      tgt.setAge(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getAge()));
     if (src.hasEstimatedAge())
       tgt.setEstimatedAgeElement(Boolean30_50.convertBoolean(src.getEstimatedAgeElement()));
     if (src.hasDeceased())
-      tgt.setDeceased(VersionConvertorFactory_30_50.convertType(src.getDeceased()));
+      tgt.setDeceased(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getDeceased()));
     for (org.hl7.fhir.dstu3.model.CodeableConcept t : src.getReasonCode())
       tgt.addReason(Reference30_50.convertCodeableConceptToCodableReference(t));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getReasonReference())
@@ -153,7 +152,7 @@ public class FamilyMemberHistory30_50 {
     if (src.hasOutcome())
       tgt.setOutcome(CodeableConcept30_50.convertCodeableConcept(src.getOutcome()));
     if (src.hasOnset())
-      tgt.setOnset(VersionConvertorFactory_30_50.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getOnset()));
     for (org.hl7.fhir.dstu3.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_50.convertAnnotation(t));
     return tgt;
   }
@@ -168,7 +167,7 @@ public class FamilyMemberHistory30_50 {
     if (src.hasOutcome())
       tgt.setOutcome(CodeableConcept30_50.convertCodeableConcept(src.getOutcome()));
     if (src.hasOnset())
-      tgt.setOnset(VersionConvertorFactory_30_50.convertType(src.getOnset()));
+      tgt.setOnset(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getOnset()));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation30_50.convertAnnotation(t));
     return tgt;
   }

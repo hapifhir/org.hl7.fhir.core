@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -57,7 +56,7 @@ public class DetectedIssue40_50 {
     if (src.hasPatient())
       tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
     if (src.hasIdentified())
-      tgt.setIdentified(VersionConvertorFactory_40_50.convertType(src.getIdentified()));
+      tgt.setIdentified(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getIdentified()));
     if (src.hasAuthor())
       tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
     for (org.hl7.fhir.r4.model.Reference t : src.getImplicated()) tgt.addImplicated(Reference40_50.convertReference(t));
@@ -88,7 +87,7 @@ public class DetectedIssue40_50 {
     if (src.hasPatient())
       tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
     if (src.hasIdentified())
-      tgt.setIdentified(VersionConvertorFactory_40_50.convertType(src.getIdentified()));
+      tgt.setIdentified(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getIdentified()));
     if (src.hasAuthor())
       tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
     for (org.hl7.fhir.r5.model.Reference t : src.getImplicated()) tgt.addImplicated(Reference40_50.convertReference(t));

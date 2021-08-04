@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Ratio3
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Boolean30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Medication30_40 {
@@ -58,7 +57,7 @@ public class Medication30_40 {
     org.hl7.fhir.dstu3.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.dstu3.model.Medication.MedicationIngredientComponent();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasItem())
-      tgt.setItem(VersionConvertorFactory_30_40.convertType(src.getItem()));
+      tgt.setItem(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getItem()));
     if (src.hasIsActive())
       tgt.setIsActiveElement(Boolean30_40.convertBoolean(src.getIsActiveElement()));
     if (src.hasStrength())
@@ -72,7 +71,7 @@ public class Medication30_40 {
     org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent tgt = new org.hl7.fhir.r4.model.Medication.MedicationIngredientComponent();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasItem())
-      tgt.setItem(VersionConvertorFactory_30_40.convertType(src.getItem()));
+      tgt.setItem(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getItem()));
     if (src.hasIsActive())
       tgt.setIsActiveElement(Boolean30_40.convertBoolean(src.getIsActiveElement()));
     if (src.hasAmount())

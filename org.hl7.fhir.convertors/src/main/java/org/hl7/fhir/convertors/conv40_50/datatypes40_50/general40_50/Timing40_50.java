@@ -3,7 +3,6 @@ package org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50;
 import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.BackboneElement40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.stream.Collectors;
@@ -33,7 +32,8 @@ public class Timing40_50 {
     if (src == null) return null;
     org.hl7.fhir.r5.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.r5.model.Timing.TimingRepeatComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    if (src.hasBounds()) tgt.setBounds(VersionConvertorFactory_40_50.convertType(src.getBounds()));
+    if (src.hasBounds())
+      tgt.setBounds(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getBounds()));
     if (src.hasCount()) tgt.setCountElement(PositiveInt40_50.convertPositiveInt(src.getCountElement()));
     if (src.hasCountMax()) tgt.setCountMaxElement(PositiveInt40_50.convertPositiveInt(src.getCountMaxElement()));
     if (src.hasDuration()) tgt.setDurationElement(Decimal40_50.convertDecimal(src.getDurationElement()));
@@ -57,7 +57,8 @@ public class Timing40_50 {
     if (src == null) return null;
     org.hl7.fhir.r4.model.Timing.TimingRepeatComponent tgt = new org.hl7.fhir.r4.model.Timing.TimingRepeatComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
-    if (src.hasBounds()) tgt.setBounds(VersionConvertorFactory_40_50.convertType(src.getBounds()));
+    if (src.hasBounds())
+      tgt.setBounds(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getBounds()));
     if (src.hasCount()) tgt.setCountElement(PositiveInt40_50.convertPositiveInt(src.getCountElement()));
     if (src.hasCountMax()) tgt.setCountMaxElement(PositiveInt40_50.convertPositiveInt(src.getCountMaxElement()));
     if (src.hasDuration()) tgt.setDurationElement(Decimal40_50.convertDecimal(src.getDurationElement()));

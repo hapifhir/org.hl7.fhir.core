@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableCon
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -169,7 +168,7 @@ public class SubstanceReferenceInformation40_50 {
     if (src.hasOrganismType())
       tgt.setOrganismType(CodeableConcept40_50.convertCodeableConcept(src.getOrganismType()));
     if (src.hasAmount())
-      tgt.setAmount(VersionConvertorFactory_40_50.convertType(src.getAmount()));
+      tgt.setAmount(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAmount()));
     if (src.hasAmountType())
       tgt.setAmountType(CodeableConcept40_50.convertCodeableConcept(src.getAmountType()));
     for (org.hl7.fhir.r4.model.Reference t : src.getSource()) tgt.addSource(Reference40_50.convertReference(t));
@@ -192,7 +191,7 @@ public class SubstanceReferenceInformation40_50 {
     if (src.hasOrganismType())
       tgt.setOrganismType(CodeableConcept40_50.convertCodeableConcept(src.getOrganismType()));
     if (src.hasAmount())
-      tgt.setAmount(VersionConvertorFactory_40_50.convertType(src.getAmount()));
+      tgt.setAmount(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAmount()));
     if (src.hasAmountType())
       tgt.setAmountType(CodeableConcept40_50.convertCodeableConcept(src.getAmountType()));
     for (org.hl7.fhir.r5.model.Reference t : src.getSource()) tgt.addSource(Reference40_50.convertReference(t));

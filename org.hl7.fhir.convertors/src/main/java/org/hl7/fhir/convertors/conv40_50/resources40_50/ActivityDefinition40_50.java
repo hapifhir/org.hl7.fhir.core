@@ -12,7 +12,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageConte
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Dosage40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -69,7 +68,7 @@ public class ActivityDefinition40_50 {
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_50.convertBoolean(src.getExperimentalElement()));
     if (src.hasSubject())
-      tgt.setSubject(VersionConvertorFactory_40_50.convertType(src.getSubject()));
+      tgt.setSubject(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSubject()));
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -121,13 +120,13 @@ public class ActivityDefinition40_50 {
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_50.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasTiming())
-      tgt.setTiming(VersionConvertorFactory_40_50.convertType(src.getTiming()));
+      tgt.setTiming(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTiming()));
     if (src.hasLocation())
       tgt.setLocation(new CodeableReference(Reference40_50.convertReference(src.getLocation())));
     for (org.hl7.fhir.r4.model.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
     if (src.hasProduct())
-      tgt.setProduct(VersionConvertorFactory_40_50.convertType(src.getProduct()));
+      tgt.setProduct(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProduct()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
     for (org.hl7.fhir.r4.model.Dosage t : src.getDosage()) tgt.addDosage(Dosage40_50.convertDosage(t));
@@ -168,7 +167,7 @@ public class ActivityDefinition40_50 {
     if (src.hasExperimental())
       tgt.setExperimentalElement(Boolean40_50.convertBoolean(src.getExperimentalElement()));
     if (src.hasSubject())
-      tgt.setSubject(VersionConvertorFactory_40_50.convertType(src.getSubject()));
+      tgt.setSubject(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSubject()));
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
     if (src.hasPublisher())
@@ -220,13 +219,13 @@ public class ActivityDefinition40_50 {
     if (src.hasDoNotPerform())
       tgt.setDoNotPerformElement(Boolean40_50.convertBoolean(src.getDoNotPerformElement()));
     if (src.hasTiming())
-      tgt.setTiming(VersionConvertorFactory_40_50.convertType(src.getTiming()));
+      tgt.setTiming(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTiming()));
     if (src.getLocation().hasReference())
       tgt.setLocation(Reference40_50.convertReference(src.getLocation().getReference()));
     for (org.hl7.fhir.r5.model.ActivityDefinition.ActivityDefinitionParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertActivityDefinitionParticipantComponent(t));
     if (src.hasProduct())
-      tgt.setProduct(VersionConvertorFactory_40_50.convertType(src.getProduct()));
+      tgt.setProduct(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProduct()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
     for (org.hl7.fhir.r5.model.Dosage t : src.getDosage()) tgt.addDosage(Dosage40_50.convertDosage(t));

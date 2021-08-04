@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Date40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -62,7 +61,7 @@ public class Goal40_50 {
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasStart())
-      tgt.setStart(VersionConvertorFactory_40_50.convertType(src.getStart()));
+      tgt.setStart(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getStart()));
     for (org.hl7.fhir.r4.model.Goal.GoalTargetComponent t : src.getTarget())
       tgt.addTarget(convertGoalTargetComponent(t));
     if (src.hasStatusDate())
@@ -98,7 +97,7 @@ public class Goal40_50 {
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasStart())
-      tgt.setStart(VersionConvertorFactory_40_50.convertType(src.getStart()));
+      tgt.setStart(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getStart()));
     for (org.hl7.fhir.r5.model.Goal.GoalTargetComponent t : src.getTarget())
       tgt.addTarget(convertGoalTargetComponent(t));
     if (src.hasStatusDate())
@@ -204,9 +203,9 @@ public class Goal40_50 {
     if (src.hasMeasure())
       tgt.setMeasure(CodeableConcept40_50.convertCodeableConcept(src.getMeasure()));
     if (src.hasDetail())
-      tgt.setDetail(VersionConvertorFactory_40_50.convertType(src.getDetail()));
+      tgt.setDetail(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDetail()));
     if (src.hasDue())
-      tgt.setDue(VersionConvertorFactory_40_50.convertType(src.getDue()));
+      tgt.setDue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDue()));
     return tgt;
   }
 
@@ -218,9 +217,9 @@ public class Goal40_50 {
     if (src.hasMeasure())
       tgt.setMeasure(CodeableConcept40_50.convertCodeableConcept(src.getMeasure()));
     if (src.hasDetail())
-      tgt.setDetail(VersionConvertorFactory_40_50.convertType(src.getDetail()));
+      tgt.setDetail(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDetail()));
     if (src.hasDue())
-      tgt.setDue(VersionConvertorFactory_40_50.convertType(src.getDue()));
+      tgt.setDue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDue()));
     return tgt;
   }
 }

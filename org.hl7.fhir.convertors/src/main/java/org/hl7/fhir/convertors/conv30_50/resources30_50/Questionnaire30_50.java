@@ -11,7 +11,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemType;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeType;
@@ -147,7 +146,7 @@ public class Questionnaire30_50 {
     for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemAnswerOptionComponent t : src.getAnswerOption())
       tgt.addOption(convertQuestionnaireItemOptionComponent(t));
     if (src.hasInitial())
-      tgt.setInitial(VersionConvertorFactory_30_50.convertType(src.getInitialFirstRep().getValue()));
+      tgt.setInitial(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getInitialFirstRep().getValue()));
     for (org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemComponent t : src.getItem())
       tgt.addItem(convertQuestionnaireItemComponent(t));
     return tgt;
@@ -191,7 +190,7 @@ public class Questionnaire30_50 {
     for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemOptionComponent t : src.getOption())
       tgt.addAnswerOption(convertQuestionnaireItemOptionComponent(t));
     if (src.hasInitial())
-      tgt.addInitial().setValue(VersionConvertorFactory_30_50.convertType(src.getInitial()));
+      tgt.addInitial().setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getInitial()));
     for (org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemComponent t : src.getItem())
       tgt.addItem(convertQuestionnaireItemComponent(t));
     for (org.hl7.fhir.dstu3.model.Extension t : src.getModifierExtension()) {
@@ -210,7 +209,7 @@ public class Questionnaire30_50 {
     if (src.hasOperator() && src.getOperator() == org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemOperator.EXISTS)
       tgt.setHasAnswer(src.getAnswerBooleanType().getValue());
     else if (src.hasAnswer())
-      tgt.setAnswer(VersionConvertorFactory_30_50.convertType(src.getAnswer()));
+      tgt.setAnswer(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getAnswer()));
     return tgt;
   }
 
@@ -224,11 +223,11 @@ public class Questionnaire30_50 {
     if (src.hasHasAnswer()) {
       tgt.setOperator(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemOperator.EXISTS);
       if (src.hasHasAnswerElement())
-        tgt.setAnswer(VersionConvertorFactory_30_50.convertType(src.getHasAnswerElement()));
+        tgt.setAnswer(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getHasAnswerElement()));
     } else if (src.hasAnswer()) {
       tgt.setOperator(org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemOperator.EQUAL);
       if (src.hasAnswer())
-        tgt.setAnswer(VersionConvertorFactory_30_50.convertType(src.getAnswer()));
+        tgt.setAnswer(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getAnswer()));
     }
     return tgt;
   }
@@ -239,7 +238,7 @@ public class Questionnaire30_50 {
     org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemAnswerOptionComponent tgt = new org.hl7.fhir.r5.model.Questionnaire.QuestionnaireItemAnswerOptionComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
   }
 
@@ -249,7 +248,7 @@ public class Questionnaire30_50 {
     org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemOptionComponent tgt = new org.hl7.fhir.dstu3.model.Questionnaire.QuestionnaireItemOptionComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
   }
 

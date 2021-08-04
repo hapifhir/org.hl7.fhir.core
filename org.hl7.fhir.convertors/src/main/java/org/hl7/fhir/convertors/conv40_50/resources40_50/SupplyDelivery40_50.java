@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableCon
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuantity40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -57,7 +56,7 @@ public class SupplyDelivery40_50 {
     if (src.hasSuppliedItem())
       tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
     if (src.hasSupplier())
       tgt.setSupplier(Reference40_50.convertReference(src.getSupplier()));
     if (src.hasDestination())
@@ -84,7 +83,7 @@ public class SupplyDelivery40_50 {
     if (src.hasSuppliedItem())
       tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
     if (src.hasSupplier())
       tgt.setSupplier(Reference40_50.convertReference(src.getSupplier()));
     if (src.hasDestination())
@@ -151,7 +150,7 @@ public class SupplyDelivery40_50 {
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasItem())
-      tgt.setItem(VersionConvertorFactory_40_50.convertType(src.getItem()));
+      tgt.setItem(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getItem()));
     return tgt;
   }
 
@@ -163,7 +162,7 @@ public class SupplyDelivery40_50 {
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasItem())
-      tgt.setItem(VersionConvertorFactory_40_50.convertType(src.getItem()));
+      tgt.setItem(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getItem()));
     return tgt;
   }
 }

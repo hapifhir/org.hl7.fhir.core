@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Quantity40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -66,7 +65,7 @@ public class SupplyRequest40_50 {
     for (org.hl7.fhir.r4.model.SupplyRequest.SupplyRequestParameterComponent t : src.getParameter())
       tgt.addParameter(convertSupplyRequestParameterComponent(t));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
     if (src.hasAuthoredOn())
       tgt.setAuthoredOnElement(DateTime40_50.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())
@@ -98,9 +97,9 @@ public class SupplyRequest40_50 {
       tgt.setPriorityElement(convertRequestPriority(src.getPriorityElement()));
     if (src.hasItem()) {
       if (src.getItem().hasReference()) {
-        tgt.setItem(VersionConvertorFactory_40_50.convertType(src.getItem().getReference()));
+        tgt.setItem(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getItem().getReference()));
       } else {
-        tgt.setItem(VersionConvertorFactory_40_50.convertType(src.getItem().getConcept()));
+        tgt.setItem(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getItem().getConcept()));
       }
     }
     if (src.hasQuantity())
@@ -108,7 +107,7 @@ public class SupplyRequest40_50 {
     for (org.hl7.fhir.r5.model.SupplyRequest.SupplyRequestParameterComponent t : src.getParameter())
       tgt.addParameter(convertSupplyRequestParameterComponent(t));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
     if (src.hasAuthoredOn())
       tgt.setAuthoredOnElement(DateTime40_50.convertDateTime(src.getAuthoredOnElement()));
     if (src.hasRequester())
@@ -253,7 +252,7 @@ public class SupplyRequest40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 
@@ -265,7 +264,7 @@ public class SupplyRequest40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     return tgt;
   }
 }

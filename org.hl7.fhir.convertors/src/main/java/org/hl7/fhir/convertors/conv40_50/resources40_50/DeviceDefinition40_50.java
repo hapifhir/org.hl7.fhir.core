@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionVersionComponent;
 
@@ -51,7 +50,7 @@ public class DeviceDefinition40_50 {
     for (org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionUdiDeviceIdentifierComponent t : src.getUdiDeviceIdentifier())
       tgt.addUdiDeviceIdentifier(convertDeviceDefinitionUdiDeviceIdentifierComponent(t));
     if (src.hasManufacturer())
-      tgt.setManufacturer(VersionConvertorFactory_40_50.convertType(src.getManufacturer()));
+      tgt.setManufacturer(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getManufacturer()));
     for (org.hl7.fhir.r4.model.DeviceDefinition.DeviceDefinitionDeviceNameComponent t : src.getDeviceName())
       tgt.addDeviceName(convertDeviceDefinitionDeviceNameComponent(t));
     if (src.hasModelNumber())
@@ -98,7 +97,7 @@ public class DeviceDefinition40_50 {
     for (org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionUdiDeviceIdentifierComponent t : src.getUdiDeviceIdentifier())
       tgt.addUdiDeviceIdentifier(convertDeviceDefinitionUdiDeviceIdentifierComponent(t));
     if (src.hasManufacturer())
-      tgt.setManufacturer(VersionConvertorFactory_40_50.convertType(src.getManufacturer()));
+      tgt.setManufacturer(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getManufacturer()));
     for (org.hl7.fhir.r5.model.DeviceDefinition.DeviceDefinitionDeviceNameComponent t : src.getDeviceName())
       tgt.addDeviceName(convertDeviceDefinitionDeviceNameComponent(t));
     if (src.hasModelNumber())

@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -62,7 +61,7 @@ public class ClinicalImpression40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_40_50.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEffective()));
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
     if (src.hasAssessor())
@@ -105,7 +104,7 @@ public class ClinicalImpression40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_40_50.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEffective()));
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
     if (src.hasPerformer())

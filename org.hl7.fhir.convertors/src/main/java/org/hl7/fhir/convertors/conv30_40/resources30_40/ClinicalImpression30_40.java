@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Codeab
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class ClinicalImpression30_40 {
@@ -30,7 +29,7 @@ public class ClinicalImpression30_40 {
     if (src.hasEncounter())
       tgt.setContext(Reference30_40.convertReference(src.getEncounter()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_30_40.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getEffective()));
     if (src.hasDateElement())
       tgt.setDateElement(DateTime30_40.convertDateTime(src.getDateElement()));
     if (src.hasAssessor())
@@ -71,7 +70,7 @@ public class ClinicalImpression30_40 {
     if (src.hasContext())
       tgt.setEncounter(Reference30_40.convertReference(src.getContext()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_30_40.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getEffective()));
     if (src.hasDateElement())
       tgt.setDateElement(DateTime30_40.convertDateTime(src.getDateElement()));
     if (src.hasAssessor())
@@ -114,9 +113,9 @@ public class ClinicalImpression30_40 {
     org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent tgt = new org.hl7.fhir.dstu3.model.ClinicalImpression.ClinicalImpressionFindingComponent();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasItemCodeableConcept())
-      tgt.setItem(VersionConvertorFactory_30_40.convertType(src.getItemCodeableConcept()));
+      tgt.setItem(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getItemCodeableConcept()));
     else if (src.hasItemReference())
-      tgt.setItem(VersionConvertorFactory_30_40.convertType(src.getItemReference()));
+      tgt.setItem(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getItemReference()));
     if (src.hasBasis())
       tgt.setBasisElement(String30_40.convertString(src.getBasisElement()));
     return tgt;

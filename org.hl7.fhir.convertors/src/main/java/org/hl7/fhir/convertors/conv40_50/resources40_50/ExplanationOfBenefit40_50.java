@@ -4,7 +4,6 @@ import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -470,9 +469,9 @@ public class ExplanationOfBenefit40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasTiming())
-      tgt.setTiming(VersionConvertorFactory_40_50.convertType(src.getTiming()));
+      tgt.setTiming(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTiming()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     if (src.hasReason())
       tgt.setReason(Coding40_50.convertCoding(src.getReason()));
     return tgt;
@@ -490,9 +489,9 @@ public class ExplanationOfBenefit40_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
     if (src.hasTiming())
-      tgt.setTiming(VersionConvertorFactory_40_50.convertType(src.getTiming()));
+      tgt.setTiming(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTiming()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_40_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
     if (src.hasReason())
       tgt.setReason(Coding40_50.convertCoding(src.getReason()));
     return tgt;
@@ -506,7 +505,7 @@ public class ExplanationOfBenefit40_50 {
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasDiagnosis())
-      tgt.setDiagnosis(VersionConvertorFactory_40_50.convertType(src.getDiagnosis()));
+      tgt.setDiagnosis(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDiagnosis()));
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasOnAdmission())
@@ -524,7 +523,7 @@ public class ExplanationOfBenefit40_50 {
     if (src.hasSequence())
       tgt.setSequenceElement(PositiveInt40_50.convertPositiveInt(src.getSequenceElement()));
     if (src.hasDiagnosis())
-      tgt.setDiagnosis(VersionConvertorFactory_40_50.convertType(src.getDiagnosis()));
+      tgt.setDiagnosis(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDiagnosis()));
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getType())
       tgt.addType(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasOnAdmission())
@@ -546,7 +545,7 @@ public class ExplanationOfBenefit40_50 {
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
     if (src.hasProcedure())
-      tgt.setProcedure(VersionConvertorFactory_40_50.convertType(src.getProcedure()));
+      tgt.setProcedure(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProcedure()));
     for (org.hl7.fhir.r4.model.Reference t : src.getUdi()) tgt.addUdi(Reference40_50.convertReference(t));
     return tgt;
   }
@@ -563,7 +562,7 @@ public class ExplanationOfBenefit40_50 {
     if (src.hasDate())
       tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
     if (src.hasProcedure())
-      tgt.setProcedure(VersionConvertorFactory_40_50.convertType(src.getProcedure()));
+      tgt.setProcedure(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProcedure()));
     for (org.hl7.fhir.r5.model.Reference t : src.getUdi()) tgt.addUdi(Reference40_50.convertReference(t));
     return tgt;
   }
@@ -606,7 +605,7 @@ public class ExplanationOfBenefit40_50 {
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasLocation())
-      tgt.setLocation(VersionConvertorFactory_40_50.convertType(src.getLocation()));
+      tgt.setLocation(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getLocation()));
     return tgt;
   }
 
@@ -620,7 +619,7 @@ public class ExplanationOfBenefit40_50 {
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasLocation())
-      tgt.setLocation(VersionConvertorFactory_40_50.convertType(src.getLocation()));
+      tgt.setLocation(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getLocation()));
     return tgt;
   }
 
@@ -650,9 +649,9 @@ public class ExplanationOfBenefit40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode())
       tgt.addProgramCode(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasServiced())
-      tgt.setServiced(VersionConvertorFactory_40_50.convertType(src.getServiced()));
+      tgt.setServiced(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getServiced()));
     if (src.hasLocation())
-      tgt.setLocation(VersionConvertorFactory_40_50.convertType(src.getLocation()));
+      tgt.setLocation(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getLocation()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasUnitPrice())
@@ -702,9 +701,9 @@ public class ExplanationOfBenefit40_50 {
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode())
       tgt.addProgramCode(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasServiced())
-      tgt.setServiced(VersionConvertorFactory_40_50.convertType(src.getServiced()));
+      tgt.setServiced(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getServiced()));
     if (src.hasLocation())
-      tgt.setLocation(VersionConvertorFactory_40_50.convertType(src.getLocation()));
+      tgt.setLocation(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getLocation()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasUnitPrice())
@@ -915,9 +914,9 @@ public class ExplanationOfBenefit40_50 {
     for (org.hl7.fhir.r4.model.CodeableConcept t : src.getProgramCode())
       tgt.addProgramCode(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasServiced())
-      tgt.setServiced(VersionConvertorFactory_40_50.convertType(src.getServiced()));
+      tgt.setServiced(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getServiced()));
     if (src.hasLocation())
-      tgt.setLocation(VersionConvertorFactory_40_50.convertType(src.getLocation()));
+      tgt.setLocation(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getLocation()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasUnitPrice())
@@ -958,9 +957,9 @@ public class ExplanationOfBenefit40_50 {
     for (org.hl7.fhir.r5.model.CodeableConcept t : src.getProgramCode())
       tgt.addProgramCode(CodeableConcept40_50.convertCodeableConcept(t));
     if (src.hasServiced())
-      tgt.setServiced(VersionConvertorFactory_40_50.convertType(src.getServiced()));
+      tgt.setServiced(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getServiced()));
     if (src.hasLocation())
-      tgt.setLocation(VersionConvertorFactory_40_50.convertType(src.getLocation()));
+      tgt.setLocation(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getLocation()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasUnitPrice())
@@ -1234,9 +1233,9 @@ public class ExplanationOfBenefit40_50 {
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasAllowed())
-      tgt.setAllowed(VersionConvertorFactory_40_50.convertType(src.getAllowed()));
+      tgt.setAllowed(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAllowed()));
     if (src.hasUsed())
-      tgt.setUsed(VersionConvertorFactory_40_50.convertType(src.getUsed()));
+      tgt.setUsed(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getUsed()));
     return tgt;
   }
 
@@ -1248,9 +1247,9 @@ public class ExplanationOfBenefit40_50 {
     if (src.hasType())
       tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
     if (src.hasAllowed())
-      tgt.setAllowed(VersionConvertorFactory_40_50.convertType(src.getAllowed()));
+      tgt.setAllowed(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAllowed()));
     if (src.hasUsed())
-      tgt.setUsed(VersionConvertorFactory_40_50.convertType(src.getUsed()));
+      tgt.setUsed(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getUsed()));
     return tgt;
   }
 }

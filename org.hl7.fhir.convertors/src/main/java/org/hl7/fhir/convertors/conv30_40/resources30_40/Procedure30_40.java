@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.Reference30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annotation30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Procedure30_40 {
@@ -52,7 +51,7 @@ public class Procedure30_40 {
     }
     if (src.hasPerformed()) {
       if (src.hasPerformed())
-        tgt.setPerformed(VersionConvertorFactory_30_40.convertType(src.getPerformed()));
+        tgt.setPerformed(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getPerformed()));
     }
     for (org.hl7.fhir.dstu3.model.Procedure.ProcedurePerformerComponent t : src.getPerformer()) {
       tgt.addPerformer(convertProcedurePerformerComponent(t));
@@ -146,7 +145,7 @@ public class Procedure30_40 {
     }
     if (src.hasPerformed()) {
       if (src.hasPerformed())
-        tgt.setPerformed(VersionConvertorFactory_30_40.convertType(src.getPerformed()));
+        tgt.setPerformed(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getPerformed()));
     }
     for (org.hl7.fhir.r4.model.Procedure.ProcedurePerformerComponent t : src.getPerformer()) {
       tgt.addPerformer(convertProcedurePerformerComponent(t));

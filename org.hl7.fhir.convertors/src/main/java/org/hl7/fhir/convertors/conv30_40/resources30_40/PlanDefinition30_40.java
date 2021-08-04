@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.RelatedArtifact30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.TriggerDefinition30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.*;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.dstu3.model.ContactDetail;
 import org.hl7.fhir.dstu3.model.Contributor.ContributorType;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -589,7 +588,7 @@ public class PlanDefinition30_40 {
     for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedAction())
       tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
     if (src.hasTiming())
-      tgt.setTiming(VersionConvertorFactory_30_40.convertType(src.getTiming()));
+      tgt.setTiming(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getTiming()));
     for (org.hl7.fhir.dstu3.model.PlanDefinition.PlanDefinitionActionParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertPlanDefinitionActionParticipantComponent(t));
     if (src.hasType())
@@ -646,7 +645,7 @@ public class PlanDefinition30_40 {
     for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionRelatedActionComponent t : src.getRelatedAction())
       tgt.addRelatedAction(convertPlanDefinitionActionRelatedActionComponent(t));
     if (src.hasTiming())
-      tgt.setTiming(VersionConvertorFactory_30_40.convertType(src.getTiming()));
+      tgt.setTiming(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getTiming()));
     for (org.hl7.fhir.r4.model.PlanDefinition.PlanDefinitionActionParticipantComponent t : src.getParticipant())
       tgt.addParticipant(convertPlanDefinitionActionParticipantComponent(t));
     if (src.hasType())
@@ -770,7 +769,7 @@ public class PlanDefinition30_40 {
     if (src.hasRelationship())
       tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
     if (src.hasOffset())
-      tgt.setOffset(VersionConvertorFactory_30_40.convertType(src.getOffset()));
+      tgt.setOffset(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getOffset()));
     return tgt;
   }
 
@@ -784,7 +783,7 @@ public class PlanDefinition30_40 {
     if (src.hasRelationship())
       tgt.setRelationshipElement(convertActionRelationshipType(src.getRelationshipElement()));
     if (src.hasOffset())
-      tgt.setOffset(VersionConvertorFactory_30_40.convertType(src.getOffset()));
+      tgt.setOffset(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getOffset()));
     return tgt;
   }
 
@@ -840,7 +839,7 @@ public class PlanDefinition30_40 {
     if (src.hasMeasure())
       tgt.setMeasure(CodeableConcept30_40.convertCodeableConcept(src.getMeasure()));
     if (src.hasDetail())
-      tgt.setDetail(VersionConvertorFactory_30_40.convertType(src.getDetail()));
+      tgt.setDetail(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getDetail()));
     if (src.hasDue())
       tgt.setDue(Duration30_40.convertDuration(src.getDue()));
     return tgt;
@@ -854,7 +853,7 @@ public class PlanDefinition30_40 {
     if (src.hasMeasure())
       tgt.setMeasure(CodeableConcept30_40.convertCodeableConcept(src.getMeasure()));
     if (src.hasDetail())
-      tgt.setDetail(VersionConvertorFactory_30_40.convertType(src.getDetail()));
+      tgt.setDetail(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getDetail()));
     if (src.hasDue())
       tgt.setDue(Duration30_40.convertDuration(src.getDue()));
     return tgt;

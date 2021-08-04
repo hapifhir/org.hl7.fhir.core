@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Codeab
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Coding30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.BooleanType;
 
@@ -391,7 +390,7 @@ public class ValueSet30_50 {
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
   }
 
@@ -403,7 +402,7 @@ public class ValueSet30_50 {
     if (src.hasName())
       tgt.setNameElement(String30_50.convertString(src.getNameElement()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
   }
 }

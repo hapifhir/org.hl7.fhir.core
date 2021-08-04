@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -96,9 +95,9 @@ public class Consent40_50 {
     for (org.hl7.fhir.r5.model.Reference t : src.getController())
       tgt.addOrganization(Reference40_50.convertReference(t));
     if (src.hasSourceAttachment())
-      tgt.setSource(VersionConvertorFactory_40_50.convertType(src.getSourceAttachmentFirstRep()));
+      tgt.setSource(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSourceAttachmentFirstRep()));
     if (src.hasSourceReference())
-      tgt.setSource(VersionConvertorFactory_40_50.convertType(src.getSourceReferenceFirstRep()));
+      tgt.setSource(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSourceReferenceFirstRep()));
     for (org.hl7.fhir.r5.model.Consent.ConsentPolicyComponent t : src.getPolicy())
       tgt.addPolicy(convertConsentPolicyComponent(t));
     if (src.hasPolicyRule())

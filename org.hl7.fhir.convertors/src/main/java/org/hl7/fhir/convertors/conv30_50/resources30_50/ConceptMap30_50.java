@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.dstu3.model.Enumerations.ConceptMapEquivalence;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -55,9 +54,9 @@ public class ConceptMap30_50 {
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasSource())
-      tgt.setSource(VersionConvertorFactory_30_50.convertType(src.getSource()));
+      tgt.setSource(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getSource()));
     if (src.hasTarget())
-      tgt.setTarget(VersionConvertorFactory_30_50.convertType(src.getTarget()));
+      tgt.setTarget(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getTarget()));
     for (org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup())
       tgt.addGroup(convertConceptMapGroupComponent(t));
     return tgt;
@@ -99,11 +98,11 @@ public class ConceptMap30_50 {
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown30_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasSource()) {
-      org.hl7.fhir.r5.model.DataType t = VersionConvertorFactory_30_50.convertType(src.getSource());
+      org.hl7.fhir.r5.model.DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getSource());
       tgt.setSource(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
     }
     if (src.hasTarget()) {
-      org.hl7.fhir.r5.model.DataType t = VersionConvertorFactory_30_50.convertType(src.getTarget());
+      org.hl7.fhir.r5.model.DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getTarget());
       tgt.setTarget(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
     }
     for (org.hl7.fhir.dstu3.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup())

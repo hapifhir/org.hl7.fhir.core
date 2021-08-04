@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.context.ConversionContext30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Coding30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.Code30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Type;
 
@@ -16,7 +15,8 @@ public class TriggerDefinition30_40 {
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasType()) tgt.setTypeElement(convertTriggerType(src.getTypeElement()));
     if (src.hasEventName()) tgt.setNameElement(String30_40.convertString(src.getEventNameElement()));
-    if (src.hasEventTiming()) tgt.setTiming(VersionConvertorFactory_30_40.convertType(src.getEventTiming()));
+    if (src.hasEventTiming())
+      tgt.setTiming(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getEventTiming()));
     if (src.hasEventData()) tgt.addData(convertDataRequirement(src.getEventData()));
     return tgt;
   }
@@ -27,7 +27,8 @@ public class TriggerDefinition30_40 {
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasType()) tgt.setTypeElement(convertTriggerType(src.getTypeElement()));
     if (src.hasName()) tgt.setEventNameElement(String30_40.convertString(src.getNameElement()));
-    if (src.hasTiming()) tgt.setEventTiming(VersionConvertorFactory_30_40.convertType(src.getTiming()));
+    if (src.hasTiming())
+      tgt.setEventTiming(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getTiming()));
     if (src.hasData()) tgt.setEventData(convertDataRequirement(src.getDataFirstRep()));
     return tgt;
   }
@@ -66,7 +67,7 @@ public class TriggerDefinition30_40 {
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String30_40.convertString(src.getPathElement()));
     if (src.hasValueSet()) {
-      Type t = VersionConvertorFactory_30_40.convertType(src.getValueSet());
+      Type t = ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getValueSet());
       if (t instanceof org.hl7.fhir.r4.model.Reference)
         tgt.setValueSet(((org.hl7.fhir.r4.model.Reference) t).getReference());
       else tgt.setValueSet(t.primitiveValue());
@@ -100,7 +101,8 @@ public class TriggerDefinition30_40 {
     org.hl7.fhir.r4.model.DataRequirement.DataRequirementDateFilterComponent tgt = new org.hl7.fhir.r4.model.DataRequirement.DataRequirementDateFilterComponent();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String30_40.convertString(src.getPathElement()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_30_40.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getValue()));
     return tgt;
   }
 
@@ -109,7 +111,8 @@ public class TriggerDefinition30_40 {
     org.hl7.fhir.dstu3.model.DataRequirement.DataRequirementDateFilterComponent tgt = new org.hl7.fhir.dstu3.model.DataRequirement.DataRequirementDateFilterComponent();
     ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().copyElement(src, tgt);
     if (src.hasPath()) tgt.setPathElement(String30_40.convertString(src.getPathElement()));
-    if (src.hasValue()) tgt.setValue(VersionConvertorFactory_30_40.convertType(src.getValue()));
+    if (src.hasValue())
+      tgt.setValue(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getValue()));
     return tgt;
   }
 

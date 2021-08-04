@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.dstu3.model.ImplementationGuide;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.Enumeration;
@@ -220,7 +219,7 @@ public class ImplementationGuide30_50 {
     org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.ImplementationGuide.ImplementationGuideDefinitionResourceComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasExampleFor()) {
-      org.hl7.fhir.r5.model.DataType t = VersionConvertorFactory_30_50.convertType(src.getExampleFor());
+      org.hl7.fhir.r5.model.DataType t = ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getExampleFor());
       tgt.setExample(t instanceof org.hl7.fhir.r5.model.Reference ? new org.hl7.fhir.r5.model.CanonicalType(((org.hl7.fhir.r5.model.Reference) t).getReference()) : t);
     } else if (src.hasExample())
       tgt.setExample(new org.hl7.fhir.r5.model.BooleanType(src.getExample()));

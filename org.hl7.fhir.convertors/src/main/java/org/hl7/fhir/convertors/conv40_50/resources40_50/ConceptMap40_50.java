@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ContactDetail40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.Enumerations.ConceptMapEquivalence;
 import org.hl7.fhir.r5.model.CanonicalType;
@@ -84,9 +83,9 @@ public class ConceptMap40_50 {
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown40_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasSource())
-      tgt.setSource(VersionConvertorFactory_40_50.convertType(src.getSource()));
+      tgt.setSource(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSource()));
     if (src.hasTarget())
-      tgt.setTarget(VersionConvertorFactory_40_50.convertType(src.getTarget()));
+      tgt.setTarget(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTarget()));
     for (org.hl7.fhir.r4.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup())
       tgt.addGroup(convertConceptMapGroupComponent(t));
     return tgt;
@@ -128,9 +127,9 @@ public class ConceptMap40_50 {
     if (src.hasCopyright())
       tgt.setCopyrightElement(MarkDown40_50.convertMarkdown(src.getCopyrightElement()));
     if (src.hasSource())
-      tgt.setSource(VersionConvertorFactory_40_50.convertType(src.getSource()));
+      tgt.setSource(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSource()));
     if (src.hasTarget())
-      tgt.setTarget(VersionConvertorFactory_40_50.convertType(src.getTarget()));
+      tgt.setTarget(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTarget()));
     for (org.hl7.fhir.r5.model.ConceptMap.ConceptMapGroupComponent t : src.getGroup())
       tgt.addGroup(convertConceptMapGroupComponent(t));
     return tgt;

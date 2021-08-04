@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Attach
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.PositiveInt30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.model.CodeableConcept;
 
@@ -53,7 +52,7 @@ public class Media30_40 {
     }
     if (src.hasCreated()) {
       if (src.hasCreated())
-        tgt.setOccurrence(VersionConvertorFactory_30_40.convertType(src.getCreated()));
+        tgt.setOccurrence(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getCreated()));
     }
     if (src.hasOperator()) {
       if (src.hasOperator())
@@ -131,7 +130,7 @@ public class Media30_40 {
     }
     if (src.hasOccurrence()) {
       if (src.hasOccurrence())
-        tgt.setCreated(VersionConvertorFactory_30_40.convertType(src.getOccurrence()));
+        tgt.setCreated(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getOccurrence()));
     }
     if (src.hasOperator()) {
       if (src.hasOperator())

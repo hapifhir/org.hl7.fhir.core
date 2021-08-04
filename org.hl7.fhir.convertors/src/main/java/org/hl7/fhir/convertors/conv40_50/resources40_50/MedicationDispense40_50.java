@@ -9,7 +9,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Boolean40
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Dosage40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.MedicationDispense.MedicationDispenseStatusCodesEnumFactory;
 
@@ -112,15 +111,15 @@ public class MedicationDispense40_50 {
     if (src.hasStatus())
       tgt.setStatusElement(convertStatus(src.getStatusElement()));
     if (src.getStatusReason().hasConcept())
-      tgt.setStatusReason(VersionConvertorFactory_40_50.convertType(src.getStatusReason().getConcept()));
+      tgt.setStatusReason(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getStatusReason().getConcept()));
     if (src.getStatusReason().hasReference())
-      tgt.setStatusReason(VersionConvertorFactory_40_50.convertType(src.getStatusReason().getReference()));
+      tgt.setStatusReason(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getStatusReason().getReference()));
     if (src.hasCategory())
       tgt.setCategory(CodeableConcept40_50.convertCodeableConcept(src.getCategoryFirstRep()));
     if (src.getMedication().hasConcept())
-      tgt.setMedication(VersionConvertorFactory_40_50.convertType(src.getMedication().getConcept()));
+      tgt.setMedication(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMedication().getConcept()));
     if (src.getMedication().hasReference())
-      tgt.setMedication(VersionConvertorFactory_40_50.convertType(src.getMedication().getReference()));
+      tgt.setMedication(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getMedication().getReference()));
     if (src.hasSubject())
       tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
     if (src.hasEncounter())

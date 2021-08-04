@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -159,7 +158,7 @@ public class Specimen40_50 {
     if (src.hasCollector())
       tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
     if (src.hasCollected())
-      tgt.setCollected(VersionConvertorFactory_40_50.convertType(src.getCollected()));
+      tgt.setCollected(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getCollected()));
     if (src.hasDuration())
       tgt.setDuration(Duration40_50.convertDuration(src.getDuration()));
     if (src.hasQuantity())
@@ -169,7 +168,7 @@ public class Specimen40_50 {
     if (src.hasBodySite())
       tgt.setBodySite(CodeableConcept40_50.convertCodeableConcept(src.getBodySite()));
     if (src.hasFastingStatus())
-      tgt.setFastingStatus(VersionConvertorFactory_40_50.convertType(src.getFastingStatus()));
+      tgt.setFastingStatus(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getFastingStatus()));
     return tgt;
   }
 
@@ -181,7 +180,7 @@ public class Specimen40_50 {
     if (src.hasCollector())
       tgt.setCollector(Reference40_50.convertReference(src.getCollector()));
     if (src.hasCollected())
-      tgt.setCollected(VersionConvertorFactory_40_50.convertType(src.getCollected()));
+      tgt.setCollected(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getCollected()));
     if (src.hasDuration())
       tgt.setDuration(Duration40_50.convertDuration(src.getDuration()));
     if (src.hasQuantity())
@@ -191,7 +190,7 @@ public class Specimen40_50 {
     if (src.hasBodySite())
       tgt.setBodySite(CodeableConcept40_50.convertCodeableConcept(src.getBodySite()));
     if (src.hasFastingStatus())
-      tgt.setFastingStatus(VersionConvertorFactory_40_50.convertType(src.getFastingStatus()));
+      tgt.setFastingStatus(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getFastingStatus()));
     return tgt;
   }
 
@@ -206,7 +205,7 @@ public class Specimen40_50 {
       tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
     for (org.hl7.fhir.r4.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference40_50.convertReference(t));
     if (src.hasTime())
-      tgt.setTime(VersionConvertorFactory_40_50.convertType(src.getTime()));
+      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
     return tgt;
   }
 
@@ -221,7 +220,7 @@ public class Specimen40_50 {
       tgt.setProcedure(CodeableConcept40_50.convertCodeableConcept(src.getProcedure()));
     for (org.hl7.fhir.r5.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference40_50.convertReference(t));
     if (src.hasTime())
-      tgt.setTime(VersionConvertorFactory_40_50.convertType(src.getTime()));
+      tgt.setTime(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTime()));
     return tgt;
   }
 
@@ -241,7 +240,7 @@ public class Specimen40_50 {
     if (src.hasSpecimenQuantity())
       tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
     if (src.hasAdditive())
-      tgt.setAdditive(VersionConvertorFactory_40_50.convertType(src.getAdditive()));
+      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
     return tgt;
   }
 
@@ -261,7 +260,7 @@ public class Specimen40_50 {
     if (src.hasSpecimenQuantity())
       tgt.setSpecimenQuantity(SimpleQuantity40_50.convertSimpleQuantity(src.getSpecimenQuantity()));
     if (src.hasAdditive())
-      tgt.setAdditive(VersionConvertorFactory_40_50.convertType(src.getAdditive()));
+      tgt.setAdditive(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAdditive()));
     return tgt;
   }
 }

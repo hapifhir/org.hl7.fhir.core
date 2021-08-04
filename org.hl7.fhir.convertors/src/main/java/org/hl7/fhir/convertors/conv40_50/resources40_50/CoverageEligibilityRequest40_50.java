@@ -10,7 +10,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.PositiveInt40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.stream.Collectors;
@@ -63,7 +62,7 @@ public class CoverageEligibilityRequest40_50 {
     if (src.hasPatient())
       tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
     if (src.hasServiced())
-      tgt.setServiced(VersionConvertorFactory_40_50.convertType(src.getServiced()));
+      tgt.setServiced(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getServiced()));
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
     if (src.hasEnterer())
@@ -100,7 +99,7 @@ public class CoverageEligibilityRequest40_50 {
     if (src.hasPatient())
       tgt.setPatient(Reference40_50.convertReference(src.getPatient()));
     if (src.hasServiced())
-      tgt.setServiced(VersionConvertorFactory_40_50.convertType(src.getServiced()));
+      tgt.setServiced(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getServiced()));
     if (src.hasCreated())
       tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
     if (src.hasEnterer())
@@ -336,7 +335,7 @@ public class CoverageEligibilityRequest40_50 {
     org.hl7.fhir.r5.model.CoverageEligibilityRequest.DiagnosisComponent tgt = new org.hl7.fhir.r5.model.CoverageEligibilityRequest.DiagnosisComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasDiagnosis())
-      tgt.setDiagnosis(VersionConvertorFactory_40_50.convertType(src.getDiagnosis()));
+      tgt.setDiagnosis(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDiagnosis()));
     return tgt;
   }
 
@@ -346,7 +345,7 @@ public class CoverageEligibilityRequest40_50 {
     org.hl7.fhir.r4.model.CoverageEligibilityRequest.DiagnosisComponent tgt = new org.hl7.fhir.r4.model.CoverageEligibilityRequest.DiagnosisComponent();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasDiagnosis())
-      tgt.setDiagnosis(VersionConvertorFactory_40_50.convertType(src.getDiagnosis()));
+      tgt.setDiagnosis(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDiagnosis()));
     return tgt;
   }
 }

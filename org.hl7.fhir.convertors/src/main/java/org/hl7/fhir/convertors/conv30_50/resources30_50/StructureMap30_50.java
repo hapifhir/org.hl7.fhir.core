@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.UsageContext30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.*;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.stream.Collectors;
@@ -248,7 +247,7 @@ public class StructureMap30_50 {
     if (src.hasType())
       tgt.setTypeElement(String30_50.convertString(src.getTypeElement()));
     if (src.hasDefaultValue())
-      tgt.setDefaultValue(VersionConvertorFactory_30_50.convertType(src.getDefaultValue()));
+      tgt.setDefaultValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getDefaultValue()));
     if (src.hasElement())
       tgt.setElementElement(String30_50.convertString(src.getElementElement()));
     if (src.hasListMode())
@@ -276,7 +275,7 @@ public class StructureMap30_50 {
     if (src.hasType())
       tgt.setTypeElement(String30_50.convertString(src.getTypeElement()));
     if (src.hasDefaultValue())
-      tgt.setDefaultValue(VersionConvertorFactory_30_50.convertType(src.getDefaultValue()));
+      tgt.setDefaultValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getDefaultValue()));
     if (src.hasElement())
       tgt.setElementElement(String30_50.convertString(src.getElementElement()));
     if (src.hasListMode())
@@ -345,7 +344,7 @@ public class StructureMap30_50 {
     org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleTargetParameterComponent tgt = new org.hl7.fhir.dstu3.model.StructureMap.StructureMapGroupRuleTargetParameterComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
   }
 
@@ -355,7 +354,7 @@ public class StructureMap30_50 {
     org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent tgt = new org.hl7.fhir.r5.model.StructureMap.StructureMapGroupRuleTargetParameterComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     return tgt;
   }
 

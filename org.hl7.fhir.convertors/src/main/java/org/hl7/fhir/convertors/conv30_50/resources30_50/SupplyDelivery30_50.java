@@ -5,7 +5,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.SimpleQuantity30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class SupplyDelivery30_50 {
@@ -28,7 +27,7 @@ public class SupplyDelivery30_50 {
     if (src.hasSuppliedItem())
       tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_30_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getOccurrence()));
     if (src.hasSupplier())
       tgt.setSupplier(Reference30_50.convertReference(src.getSupplier()));
     if (src.hasDestination())
@@ -55,7 +54,7 @@ public class SupplyDelivery30_50 {
     if (src.hasSuppliedItem())
       tgt.setSuppliedItem(convertSupplyDeliverySuppliedItemComponent(src.getSuppliedItem()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_30_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getOccurrence()));
     if (src.hasSupplier())
       tgt.setSupplier(Reference30_50.convertReference(src.getSupplier()));
     if (src.hasDestination())
@@ -122,7 +121,7 @@ public class SupplyDelivery30_50 {
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity30_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasItem())
-      tgt.setItem(VersionConvertorFactory_30_50.convertType(src.getItem()));
+      tgt.setItem(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getItem()));
     return tgt;
   }
 
@@ -134,7 +133,7 @@ public class SupplyDelivery30_50 {
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity30_50.convertSimpleQuantity(src.getQuantity()));
     if (src.hasItem())
-      tgt.setItem(VersionConvertorFactory_30_50.convertType(src.getItem()));
+      tgt.setItem(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getItem()));
     return tgt;
   }
 }

@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Id40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Url40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -48,7 +47,7 @@ public class MessageHeader40_50 {
     org.hl7.fhir.r5.model.MessageHeader tgt = new org.hl7.fhir.r5.model.MessageHeader();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasEvent())
-      tgt.setEvent(VersionConvertorFactory_40_50.convertType(src.getEvent()));
+      tgt.setEvent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEvent()));
     for (org.hl7.fhir.r4.model.MessageHeader.MessageDestinationComponent t : src.getDestination())
       tgt.addDestination(convertMessageDestinationComponent(t));
     if (src.hasSender())
@@ -77,7 +76,7 @@ public class MessageHeader40_50 {
     org.hl7.fhir.r4.model.MessageHeader tgt = new org.hl7.fhir.r4.model.MessageHeader();
     ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
     if (src.hasEvent())
-      tgt.setEvent(VersionConvertorFactory_40_50.convertType(src.getEvent()));
+      tgt.setEvent(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getEvent()));
     for (org.hl7.fhir.r5.model.MessageHeader.MessageDestinationComponent t : src.getDestination())
       tgt.addDestination(convertMessageDestinationComponent(t));
     if (src.hasSender())

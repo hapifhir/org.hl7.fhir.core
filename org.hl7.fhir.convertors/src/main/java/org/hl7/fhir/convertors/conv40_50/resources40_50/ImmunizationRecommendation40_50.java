@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -130,9 +129,9 @@ public class ImmunizationRecommendation40_50 {
     if (src.hasSeries())
       tgt.setSeriesElement(String40_50.convertString(src.getSeriesElement()));
     if (src.hasDoseNumber())
-      tgt.setDoseNumber(VersionConvertorFactory_40_50.convertType(src.getDoseNumberElement()));
+      tgt.setDoseNumber(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDoseNumberElement()));
     if (src.hasSeriesDoses())
-      tgt.setSeriesDoses(VersionConvertorFactory_40_50.convertType(src.getSeriesDosesElement()));
+      tgt.setSeriesDoses(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getSeriesDosesElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingImmunization())
       tgt.addSupportingImmunization(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingPatientInformation())

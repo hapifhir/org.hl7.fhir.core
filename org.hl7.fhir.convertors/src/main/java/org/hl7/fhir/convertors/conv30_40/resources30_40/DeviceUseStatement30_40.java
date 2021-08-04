@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Annota
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.CodeableConcept30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identifier30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class DeviceUseStatement30_40 {
@@ -23,7 +22,7 @@ public class DeviceUseStatement30_40 {
     if (src.hasSubject())
       tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
     if (src.hasTiming())
-      tgt.setTiming(VersionConvertorFactory_30_40.convertType(src.getTiming()));
+      tgt.setTiming(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getTiming()));
     if (src.hasRecordedOn())
       tgt.setRecordedOnElement(DateTime30_40.convertDateTime(src.getRecordedOnElement()));
     if (src.hasSource())
@@ -50,7 +49,7 @@ public class DeviceUseStatement30_40 {
     if (src.hasSubject())
       tgt.setSubject(Reference30_40.convertReference(src.getSubject()));
     if (src.hasTiming())
-      tgt.setTiming(VersionConvertorFactory_30_40.convertType(src.getTiming()));
+      tgt.setTiming(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getTiming()));
     if (src.hasRecordedOn())
       tgt.setRecordedOnElement(DateTime30_40.convertDateTime(src.getRecordedOnElement()));
     if (src.hasSource())

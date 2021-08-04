@@ -9,7 +9,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Signature30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Instant30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Uri30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -50,7 +49,7 @@ public class Provenance30_50 {
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu3.model.Reference t : src.getTarget()) tgt.addTarget(Reference30_50.convertReference(t));
     if (src.hasPeriod())
-      tgt.setOccurred(VersionConvertorFactory_30_50.convertType(src.getPeriod()));
+      tgt.setOccurred(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getPeriod()));
     if (src.hasRecorded())
       tgt.setRecordedElement(Instant30_50.convertInstant(src.getRecordedElement()));
     for (org.hl7.fhir.dstu3.model.UriType t : src.getPolicy()) tgt.getPolicy().add(Uri30_50.convertUri(t));

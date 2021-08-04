@@ -7,7 +7,6 @@ import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier4
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Uri40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -68,7 +67,7 @@ public class Procedure40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasPerformed())
-      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getPerformed()));
+      tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getPerformed()));
     if (src.hasRecorder())
       tgt.setRecorder(Reference40_50.convertReference(src.getRecorder()));
     if (src.hasAsserter())
@@ -128,7 +127,7 @@ public class Procedure40_50 {
     if (src.hasEncounter())
       tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
     if (src.hasOccurrence())
-      tgt.setPerformed(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
+      tgt.setPerformed(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
     if (src.hasRecorder())
       tgt.setRecorder(Reference40_50.convertReference(src.getRecorder()));
     if (src.hasReportedReference())

@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Range3
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.SimpleQuantity30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Instant30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Observation30_50 {
@@ -32,12 +31,12 @@ public class Observation30_50 {
     if (src.hasEncounter())
       tgt.setContext(Reference30_50.convertReference(src.getEncounter()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_30_50.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getEffective()));
     if (src.hasIssued())
       tgt.setIssuedElement(Instant30_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.r5.model.Reference t : src.getPerformer()) tgt.addPerformer(Reference30_50.convertReference(t));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept30_50.convertCodeableConcept(src.getDataAbsentReason()));
     if (src.hasInterpretation())
@@ -82,13 +81,13 @@ public class Observation30_50 {
     if (src.hasContext())
       tgt.setEncounter(Reference30_50.convertReference(src.getContext()));
     if (src.hasEffective())
-      tgt.setEffective(VersionConvertorFactory_30_50.convertType(src.getEffective()));
+      tgt.setEffective(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getEffective()));
     if (src.hasIssued())
       tgt.setIssuedElement(Instant30_50.convertInstant(src.getIssuedElement()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getPerformer())
       tgt.addPerformer(Reference30_50.convertReference(t));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept30_50.convertCodeableConcept(src.getDataAbsentReason()));
     if (src.hasInterpretation())
@@ -123,7 +122,7 @@ public class Observation30_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept30_50.convertCodeableConcept(src.getDataAbsentReason()));
     if (src.hasInterpretation())
@@ -141,7 +140,7 @@ public class Observation30_50 {
     if (src.hasCode())
       tgt.setCode(CodeableConcept30_50.convertCodeableConcept(src.getCode()));
     if (src.hasValue())
-      tgt.setValue(VersionConvertorFactory_30_50.convertType(src.getValue()));
+      tgt.setValue(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getValue()));
     if (src.hasDataAbsentReason())
       tgt.setDataAbsentReason(CodeableConcept30_50.convertCodeableConcept(src.getDataAbsentReason()));
     if (src.hasInterpretation())

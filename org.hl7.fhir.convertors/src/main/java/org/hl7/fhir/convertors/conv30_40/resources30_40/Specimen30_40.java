@@ -8,7 +8,6 @@ import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.Identi
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.complextypes30_40.SimpleQuantity30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.DateTime30_40;
 import org.hl7.fhir.convertors.conv30_40.datatypes30_40.primitivetypes30_40.String30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 
 public class Specimen30_40 {
@@ -79,7 +78,7 @@ public class Specimen30_40 {
     if (src.hasCollector())
       tgt.setCollector(Reference30_40.convertReference(src.getCollector()));
     if (src.hasCollected())
-      tgt.setCollected(VersionConvertorFactory_30_40.convertType(src.getCollected()));
+      tgt.setCollected(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getCollected()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getQuantity()));
     if (src.hasMethod())
@@ -97,7 +96,7 @@ public class Specimen30_40 {
     if (src.hasCollector())
       tgt.setCollector(Reference30_40.convertReference(src.getCollector()));
     if (src.hasCollected())
-      tgt.setCollected(VersionConvertorFactory_30_40.convertType(src.getCollected()));
+      tgt.setCollected(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getCollected()));
     if (src.hasQuantity())
       tgt.setQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getQuantity()));
     if (src.hasMethod())
@@ -123,7 +122,7 @@ public class Specimen30_40 {
     if (src.hasSpecimenQuantity())
       tgt.setSpecimenQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getSpecimenQuantity()));
     if (src.hasAdditive())
-      tgt.setAdditive(VersionConvertorFactory_30_40.convertType(src.getAdditive()));
+      tgt.setAdditive(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getAdditive()));
     return tgt;
   }
 
@@ -143,7 +142,7 @@ public class Specimen30_40 {
     if (src.hasSpecimenQuantity())
       tgt.setSpecimenQuantity(SimpleQuantity30_40.convertSimpleQuantity(src.getSpecimenQuantity()));
     if (src.hasAdditive())
-      tgt.setAdditive(VersionConvertorFactory_30_40.convertType(src.getAdditive()));
+      tgt.setAdditive(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getAdditive()));
     return tgt;
   }
 
@@ -158,7 +157,7 @@ public class Specimen30_40 {
       tgt.setProcedure(CodeableConcept30_40.convertCodeableConcept(src.getProcedure()));
     for (org.hl7.fhir.dstu3.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference30_40.convertReference(t));
     if (src.hasTime())
-      tgt.setTime(VersionConvertorFactory_30_40.convertType(src.getTime()));
+      tgt.setTime(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getTime()));
     return tgt;
   }
 
@@ -173,7 +172,7 @@ public class Specimen30_40 {
       tgt.setProcedure(CodeableConcept30_40.convertCodeableConcept(src.getProcedure()));
     for (org.hl7.fhir.r4.model.Reference t : src.getAdditive()) tgt.addAdditive(Reference30_40.convertReference(t));
     if (src.hasTime())
-      tgt.setTime(VersionConvertorFactory_30_40.convertType(src.getTime()));
+      tgt.setTime(ConversionContext30_40.INSTANCE.getVersionConvertor_30_40().convertType(src.getTime()));
     return tgt;
   }
 

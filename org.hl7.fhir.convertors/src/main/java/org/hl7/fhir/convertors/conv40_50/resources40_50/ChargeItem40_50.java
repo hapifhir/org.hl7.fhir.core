@@ -4,7 +4,6 @@ import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50.Reference40_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 /*
@@ -58,7 +57,7 @@ public class ChargeItem40_50 {
     if (src.hasContext())
       tgt.setContext(Reference40_50.convertReference(src.getContext()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
     for (org.hl7.fhir.r4.model.ChargeItem.ChargeItemPerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertChargeItemPerformerComponent(t));
     if (src.hasPerformingOrganization())
@@ -85,7 +84,7 @@ public class ChargeItem40_50 {
       tgt.addReason(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getService()) tgt.addService(Reference40_50.convertReference(t));
     if (src.hasProduct())
-      tgt.setProduct(VersionConvertorFactory_40_50.convertType(src.getProduct()));
+      tgt.setProduct(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProduct()));
     for (org.hl7.fhir.r4.model.Reference t : src.getAccount()) tgt.addAccount(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
     for (org.hl7.fhir.r4.model.Reference t : src.getSupportingInformation())
@@ -113,7 +112,7 @@ public class ChargeItem40_50 {
     if (src.hasContext())
       tgt.setContext(Reference40_50.convertReference(src.getContext()));
     if (src.hasOccurrence())
-      tgt.setOccurrence(VersionConvertorFactory_40_50.convertType(src.getOccurrence()));
+      tgt.setOccurrence(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getOccurrence()));
     for (org.hl7.fhir.r5.model.ChargeItem.ChargeItemPerformerComponent t : src.getPerformer())
       tgt.addPerformer(convertChargeItemPerformerComponent(t));
     if (src.hasPerformingOrganization())
@@ -140,7 +139,7 @@ public class ChargeItem40_50 {
       tgt.addReason(CodeableConcept40_50.convertCodeableConcept(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getService()) tgt.addService(Reference40_50.convertReference(t));
     if (src.hasProduct())
-      tgt.setProduct(VersionConvertorFactory_40_50.convertType(src.getProduct()));
+      tgt.setProduct(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getProduct()));
     for (org.hl7.fhir.r5.model.Reference t : src.getAccount()) tgt.addAccount(Reference40_50.convertReference(t));
     for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
     for (org.hl7.fhir.r5.model.Reference t : src.getSupportingInformation())

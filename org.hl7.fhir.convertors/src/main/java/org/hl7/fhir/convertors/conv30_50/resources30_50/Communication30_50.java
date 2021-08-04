@@ -6,7 +6,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Annota
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.DateTime30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.CodeableReference;
 
@@ -105,7 +104,7 @@ public class Communication30_50 {
     org.hl7.fhir.dstu3.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.dstu3.model.Communication.CommunicationPayloadComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasContent())
-      tgt.setContent(VersionConvertorFactory_30_50.convertType(src.getContent()));
+      tgt.setContent(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getContent()));
     return tgt;
   }
 
@@ -115,7 +114,7 @@ public class Communication30_50 {
     org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent tgt = new org.hl7.fhir.r5.model.Communication.CommunicationPayloadComponent();
     ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasContent())
-      tgt.setContent(VersionConvertorFactory_30_50.convertType(src.getContent()));
+      tgt.setContent(ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().convertType(src.getContent()));
     return tgt;
   }
 
