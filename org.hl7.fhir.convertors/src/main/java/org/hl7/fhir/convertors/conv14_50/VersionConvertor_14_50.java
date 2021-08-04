@@ -7,6 +7,7 @@ import org.hl7.fhir.convertors.conv14_50.datatypes14_50.Type14_50;
 import org.hl7.fhir.convertors.conv14_50.resources14_50.Resource14_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class VersionConvertor_14_50 {
   private final Resource14_50 resourceConvertor;
   private final Type14_50 typeConvertor;
 
-  public VersionConvertor_14_50(BaseAdvisor_14_50 advisor) {
+  public VersionConvertor_14_50(@Nonnull BaseAdvisor_14_50 advisor) {
     this.advisor = advisor;
     this.elementConvertor = new Element14_50(advisor);
     this.resourceConvertor = new Resource14_50(advisor);
@@ -77,15 +78,17 @@ public class VersionConvertor_14_50 {
     return advisor;
   }
 
-  public void copyResource(org.hl7.fhir.dstu2016may.model.Resource src, org.hl7.fhir.r5.model.Resource tgt) throws FHIRException {
+  public void copyResource(@Nonnull org.hl7.fhir.dstu2016may.model.Resource src,
+                           @Nonnull org.hl7.fhir.r5.model.Resource tgt) throws FHIRException {
     resourceConvertor.copyResource(src, tgt);
   }
 
-  public void copyResource(org.hl7.fhir.r5.model.Resource src, org.hl7.fhir.dstu2016may.model.Resource tgt) throws FHIRException {
+  public void copyResource(@Nonnull org.hl7.fhir.r5.model.Resource src,
+                           @Nonnull org.hl7.fhir.dstu2016may.model.Resource tgt) throws FHIRException {
     resourceConvertor.copyResource(src, tgt);
   }
 
-  public org.hl7.fhir.r5.model.Resource convertResource(org.hl7.fhir.dstu2016may.model.Resource src) throws FHIRException {
+  public org.hl7.fhir.r5.model.Resource convertResource(@Nonnull org.hl7.fhir.dstu2016may.model.Resource src) throws FHIRException {
     ConversionContext14_50.INSTANCE.init(this, src.fhirType());
     try {
       return resourceConvertor.convertResource(src);
@@ -94,7 +97,7 @@ public class VersionConvertor_14_50 {
     }
   }
 
-  public org.hl7.fhir.dstu2016may.model.Resource convertResource(org.hl7.fhir.r5.model.Resource src) throws FHIRException {
+  public org.hl7.fhir.dstu2016may.model.Resource convertResource(@Nonnull org.hl7.fhir.r5.model.Resource src) throws FHIRException {
     ConversionContext14_50.INSTANCE.init(this, src.fhirType());
     try {
       return resourceConvertor.convertResource(src);
@@ -103,7 +106,7 @@ public class VersionConvertor_14_50 {
     }
   }
 
-  public org.hl7.fhir.r5.model.DataType convertType(org.hl7.fhir.dstu2016may.model.Type src) throws FHIRException {
+  public org.hl7.fhir.r5.model.DataType convertType(@Nonnull org.hl7.fhir.dstu2016may.model.Type src) throws FHIRException {
     ConversionContext14_50.INSTANCE.init(this, src.fhirType());
     try {
       return typeConvertor.convertType(src);
@@ -112,7 +115,7 @@ public class VersionConvertor_14_50 {
     }
   }
 
-  public org.hl7.fhir.dstu2016may.model.Type convertType(org.hl7.fhir.r5.model.DataType src) throws FHIRException {
+  public org.hl7.fhir.dstu2016may.model.Type convertType(@Nonnull org.hl7.fhir.r5.model.DataType src) throws FHIRException {
     ConversionContext14_50.INSTANCE.init(this, src.fhirType());
     try {
       return typeConvertor.convertType(src);
@@ -121,19 +124,25 @@ public class VersionConvertor_14_50 {
     }
   }
 
-  public void copyDomainResource(org.hl7.fhir.dstu2016may.model.DomainResource src, org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
+  public void copyDomainResource(@Nonnull org.hl7.fhir.dstu2016may.model.DomainResource src,
+                                 @Nonnull org.hl7.fhir.r5.model.DomainResource tgt) throws FHIRException {
     resourceConvertor.copyDomainResource(src, tgt);
   }
 
-  public void copyDomainResource(org.hl7.fhir.r5.model.DomainResource src, org.hl7.fhir.dstu2016may.model.DomainResource tgt) throws FHIRException {
+  public void copyDomainResource(@Nonnull org.hl7.fhir.r5.model.DomainResource src,
+                                 @Nonnull org.hl7.fhir.dstu2016may.model.DomainResource tgt) throws FHIRException {
     resourceConvertor.copyDomainResource(src, tgt);
   }
 
-  public void copyElement(org.hl7.fhir.dstu2016may.model.Element src, org.hl7.fhir.r5.model.Element tgt, String... var) throws FHIRException {
+  public void copyElement(@Nonnull org.hl7.fhir.dstu2016may.model.Element src,
+                          @Nonnull org.hl7.fhir.r5.model.Element tgt,
+                          String... var) throws FHIRException {
     elementConvertor.copyElement(src, tgt, ConversionContext14_50.INSTANCE.path(), var);
   }
 
-  public void copyElement(org.hl7.fhir.r5.model.Element src, org.hl7.fhir.dstu2016may.model.Element tgt, String... var) throws FHIRException {
+  public void copyElement(@Nonnull org.hl7.fhir.r5.model.Element src,
+                          @Nonnull org.hl7.fhir.dstu2016may.model.Element tgt,
+                          String... var) throws FHIRException {
     elementConvertor.copyElement(src, tgt, ConversionContext14_50.INSTANCE.path(), var);
   }
 }
