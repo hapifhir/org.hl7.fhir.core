@@ -30,21 +30,20 @@ package org.hl7.fhir.convertors.misc;
  */
 
 
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
+import org.hl7.fhir.dstu3.model.Bundle;
+import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.utilities.Utilities;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
-import org.hl7.fhir.dstu3.model.Bundle;
-import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.utilities.Utilities;
-
 /*
  * load reosurces in xml format, and sve them in package format (json, with correct name
- * 
+ *
  * C:\work\fhirserver\resources\resources\dicom
- * 
+ *
  */
 public class PackagePreparer {
 
@@ -57,23 +56,23 @@ public class PackagePreparer {
           Bundle b = (Bundle) r;
           for (BundleEntryComponent be : b.getEntry()) {
             try {
-              org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_30_40.convertResource(be.getResource());
-              if (r4.getId().startsWith(r4.fhirType()+"-"))
-                be.getResource().setId(r4.getId().substring(r4.fhirType().length()+1));
+              org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_30_40.convertResource(be.getResource());
+              if (r4.getId().startsWith(r4.fhirType() + "-"))
+                be.getResource().setId(r4.getId().substring(r4.fhirType().length() + 1));
               if (be.getResource().hasId())
-                new org.hl7.fhir.r4.formats.JsonParser().compose(new FileOutputStream(Utilities.path("C:\\work\\fhirserver\\resources\\fhir.test.data\\3.5.0\\package", be.getResource().fhirType()+"-"+be.getResource().getId()+".json")), r4);
+                new org.hl7.fhir.r4.formats.JsonParser().compose(new FileOutputStream(Utilities.path("C:\\work\\fhirserver\\resources\\fhir.test.data\\3.5.0\\package", be.getResource().fhirType() + "-" + be.getResource().getId() + ".json")), r4);
               else
-                System.out.println(f.getName()+" bundle entry has no id");
+                System.out.println(f.getName() + " bundle entry has no id");
             } catch (Exception e) {
-              System.out.println(f.getName()+": "+e.getMessage()); 
+              System.out.println(f.getName() + ": " + e.getMessage());
             }
           }
         } else if (r.hasId())
-          new org.hl7.fhir.r4.formats.JsonParser().compose(new FileOutputStream(Utilities.path(Utilities.getDirectoryForFile(f.getAbsolutePath()), r.fhirType()+"-"+r.getId()+".json")), VersionConvertor_30_40.convertResource(r));
+          new org.hl7.fhir.r4.formats.JsonParser().compose(new FileOutputStream(Utilities.path(Utilities.getDirectoryForFile(f.getAbsolutePath()), r.fhirType() + "-" + r.getId() + ".json")), VersionConvertorFactory_30_40.convertResource(r));
         else
-          System.out.println(f.getName()+" has no id");
+          System.out.println(f.getName() + " has no id");
       } catch (Exception e) {
-        System.out.println(f.getName()+": "+e.getMessage()); 
+        System.out.println(f.getName() + ": " + e.getMessage());
         e.printStackTrace();
       }
     }

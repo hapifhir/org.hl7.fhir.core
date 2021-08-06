@@ -1,9 +1,8 @@
 package org.hl7.fhir.convertors.conv10_30.resources10_30;
 
-import org.hl7.fhir.convertors.conv10_30.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Type10_30;
-import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.*;
+import org.hl7.fhir.convertors.context.ConversionContext10_30;
 import org.hl7.fhir.convertors.conv10_30.datatypes10_30.Reference10_30;
+import org.hl7.fhir.convertors.conv10_30.datatypes10_30.complextypes10_30.*;
 import org.hl7.fhir.dstu2.model.MedicationOrder;
 import org.hl7.fhir.dstu3.model.MedicationRequest;
 import org.hl7.fhir.dstu3.model.StringType;
@@ -14,9 +13,10 @@ public class MedicationRequest10_30 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.MedicationRequest tgt = new org.hl7.fhir.dstu3.model.MedicationRequest();
-    VersionConvertor_10_30.copyDomainResource(src, tgt);
+    ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().copyDomainResource(src, tgt);
     tgt.setIntent(MedicationRequest.MedicationRequestIntent.ORDER);
-    for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
+    for (org.hl7.fhir.dstu2.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier10_30.convertIdentifier(t));
     if (src.hasDateWritten())
       tgt.setAuthoredOn(src.getDateWritten());
     if (src.hasStatus())
@@ -34,7 +34,7 @@ public class MedicationRequest10_30 {
     if (src.hasNote())
       tgt.addNote(new org.hl7.fhir.dstu3.model.Annotation(new StringType(src.getNote())));
     if (src.hasMedication())
-      tgt.setMedication(Type10_30.convertType(src.getMedication()));
+      tgt.setMedication(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getMedication()));
     for (MedicationOrder.MedicationOrderDosageInstructionComponent dosage : src.getDosageInstruction())
       tgt.addDosageInstruction(medDosageInstruction(dosage));
     if (src.hasDispenseRequest())
@@ -57,7 +57,7 @@ public class MedicationRequest10_30 {
     if (src.hasTiming())
       tgt.setTiming(Timing10_30.convertTiming(src.getTiming()));
     if (src.hasAsNeeded())
-      tgt.setAsNeeded(Type10_30.convertType(src.getAsNeeded()));
+      tgt.setAsNeeded(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getAsNeeded()));
     if (src.hasSiteCodeableConcept())
       tgt.setSite(CodeableConcept10_30.convertCodeableConcept(src.getSiteCodeableConcept()));
     if (src.hasRoute())
@@ -65,9 +65,9 @@ public class MedicationRequest10_30 {
     if (src.hasMethod())
       tgt.setMethod(CodeableConcept10_30.convertCodeableConcept(src.getMethod()));
     if (src.hasDose())
-      tgt.setDose(Type10_30.convertType(src.getDose()));
+      tgt.setDose(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getDose()));
     if (src.hasRate())
-      tgt.setRate(Type10_30.convertType(src.getRate()));
+      tgt.setRate(ConversionContext10_30.INSTANCE.getVersionConvertor_10_30().convertType(src.getRate()));
     if (src.hasMaxDosePerPeriod())
       tgt.setMaxDosePerPeriod(Ratio10_30.convertRatio(src.getMaxDosePerPeriod()));
     return tgt;

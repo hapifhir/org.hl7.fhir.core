@@ -30,15 +30,8 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.hl7.fhir.r4.formats.XmlParser;
@@ -50,13 +43,19 @@ import org.hl7.fhir.r5.model.Bundle.BundleType;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
+
+  private final BaseAdvisor_40_50 advisor = new BaseAdvisor_40_50();
 
   public R4ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
     super(types, lkp);
   }
-
-  private final BaseAdvisor_40_50 advisor = new BaseAdvisor_40_50();
 
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
@@ -65,8 +64,8 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       r4 = new JsonParser().parse(stream);
     else
       r4 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_40_50.convertResource(r4, advisor);
-    
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_40_50.convertResource(r4, advisor);
+
     Bundle b;
     if (r5 instanceof Bundle)
       b = (Bundle) r5;
@@ -98,9 +97,9 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
           StructureDefinition sd = (StructureDefinition) be.getResource();
           sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
           sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-          for (ElementDefinition ed : sd.getSnapshot().getElement()) 
+          for (ElementDefinition ed : sd.getSnapshot().getElement())
             patchUrl(ed);
-          for (ElementDefinition ed : sd.getDifferential().getElement()) 
+          for (ElementDefinition ed : sd.getDifferential().getElement())
             patchUrl(ed);
         }
       }
@@ -115,23 +114,23 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       r4 = new JsonParser().parse(stream);
     else
       r4 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_40_50.convertResource(r4);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_40_50.convertResource(r4);
     setPath(r5);
 
     if (!advisor.getCslist().isEmpty()) {
       throw new FHIRException("Error: Cannot have included code systems");
     }
     if (killPrimitives) {
-      throw new FHIRException("Cannot kill primitives when using deferred loading");      
+      throw new FHIRException("Cannot kill primitives when using deferred loading");
     }
     if (patchUrls) {
       if (r5 instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) r5;
         sd.setUrl(sd.getUrl().replace(URL_BASE, "http://hl7.org/fhir/4.0/"));
         sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType("http://hl7.org/fhir"));
-        for (ElementDefinition ed : sd.getSnapshot().getElement()) 
+        for (ElementDefinition ed : sd.getSnapshot().getElement())
           patchUrl(ed);
-        for (ElementDefinition ed : sd.getDifferential().getElement()) 
+        for (ElementDefinition ed : sd.getDifferential().getElement())
           patchUrl(ed);
       }
     }
@@ -146,6 +145,6 @@ public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       for (CanonicalType s : tr.getProfile()) {
         s.setValue(s.getValue().replace(URL_BASE, "http://hl7.org/fhir/4.0/"));
       }
-    }    
+    }
   }
 }

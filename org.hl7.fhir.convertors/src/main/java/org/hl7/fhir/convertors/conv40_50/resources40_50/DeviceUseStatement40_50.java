@@ -1,9 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Annotation40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -41,125 +38,133 @@ import org.hl7.fhir.r5.model.CodeableReference;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class DeviceUseStatement40_50 extends VersionConvertor_40_50 {
+public class DeviceUseStatement40_50 {
 
-    public static org.hl7.fhir.r5.model.DeviceUsage convertDeviceUseStatement(org.hl7.fhir.r4.model.DeviceUseStatement src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.DeviceUsage tgt = new org.hl7.fhir.r5.model.DeviceUsage();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertDeviceUseStatementStatus(src.getStatusElement()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getDerivedFrom()) tgt.addDerivedFrom(Reference40_50.convertReference(t));
-        if (src.hasTiming())
-            tgt.setTiming(Type40_50.convertType(src.getTiming()));
-        if (src.hasRecordedOn())
-            tgt.setDateAssertedElement(DateTime40_50.convertDateTime(src.getRecordedOnElement()));
-        if (src.hasSource())
-            tgt.setInformationSource(Reference40_50.convertReference(src.getSource()));
-        if (src.hasDevice())
-            tgt.getDevice().setReference(Reference40_50.convertReference(src.getDevice()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode()) tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference()) tgt.addReason(Reference40_50.convertReferenceToCodeableReference(t));
-        if (src.hasBodySite())
-            tgt.getBodySite().setConcept(CodeableConcept40_50.convertCodeableConcept(src.getBodySite()));
-        for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.DeviceUsage convertDeviceUseStatement(org.hl7.fhir.r4.model.DeviceUseStatement src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.DeviceUsage tgt = new org.hl7.fhir.r5.model.DeviceUsage();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertDeviceUseStatementStatus(src.getStatusElement()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    for (org.hl7.fhir.r4.model.Reference t : src.getDerivedFrom())
+      tgt.addDerivedFrom(Reference40_50.convertReference(t));
+    if (src.hasTiming())
+      tgt.setTiming(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTiming()));
+    if (src.hasRecordedOn())
+      tgt.setDateAssertedElement(DateTime40_50.convertDateTime(src.getRecordedOnElement()));
+    if (src.hasSource())
+      tgt.setInformationSource(Reference40_50.convertReference(src.getSource()));
+    if (src.hasDevice())
+      tgt.getDevice().setReference(Reference40_50.convertReference(src.getDevice()));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getReasonCode())
+      tgt.addReason(CodeableConcept40_50.convertCodeableConceptToCodeableReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getReasonReference())
+      tgt.addReason(Reference40_50.convertReferenceToCodeableReference(t));
+    if (src.hasBodySite())
+      tgt.getBodySite().setConcept(CodeableConcept40_50.convertCodeableConcept(src.getBodySite()));
+    for (org.hl7.fhir.r4.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.DeviceUseStatement convertDeviceUseStatement(org.hl7.fhir.r5.model.DeviceUsage src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.DeviceUseStatement tgt = new org.hl7.fhir.r4.model.DeviceUseStatement();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertDeviceUseStatementStatus(src.getStatusElement()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom()) tgt.addDerivedFrom(Reference40_50.convertReference(t));
-        if (src.hasTiming())
-            tgt.setTiming(Type40_50.convertType(src.getTiming()));
-        if (src.hasDateAsserted())
-            tgt.setRecordedOnElement(DateTime40_50.convertDateTime(src.getDateAssertedElement()));
-        if (src.hasInformationSource())
-            tgt.setSource(Reference40_50.convertReference(src.getInformationSource()));
-        if (src.getDevice().hasReference())
-            tgt.setDevice(Reference40_50.convertReference(src.getDevice().getReference()));
-        for (CodeableReference t : src.getReason()) if (t.hasConcept())
-            tgt.addReasonCode(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));
-        for (CodeableReference t : src.getReason()) if (t.hasReference())
-            tgt.addReasonReference(Reference40_50.convertReference(t.getReference()));
-        if (src.getBodySite().hasConcept())
-            tgt.setBodySite(CodeableConcept40_50.convertCodeableConcept(src.getBodySite().getConcept()));
-        for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.DeviceUseStatement convertDeviceUseStatement(org.hl7.fhir.r5.model.DeviceUsage src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.DeviceUseStatement tgt = new org.hl7.fhir.r4.model.DeviceUseStatement();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertDeviceUseStatementStatus(src.getStatusElement()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    for (org.hl7.fhir.r5.model.Reference t : src.getDerivedFrom())
+      tgt.addDerivedFrom(Reference40_50.convertReference(t));
+    if (src.hasTiming())
+      tgt.setTiming(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getTiming()));
+    if (src.hasDateAsserted())
+      tgt.setRecordedOnElement(DateTime40_50.convertDateTime(src.getDateAssertedElement()));
+    if (src.hasInformationSource())
+      tgt.setSource(Reference40_50.convertReference(src.getInformationSource()));
+    if (src.getDevice().hasReference())
+      tgt.setDevice(Reference40_50.convertReference(src.getDevice().getReference()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasConcept())
+        tgt.addReasonCode(CodeableConcept40_50.convertCodeableConcept(t.getConcept()));
+    for (CodeableReference t : src.getReason())
+      if (t.hasReference())
+        tgt.addReasonReference(Reference40_50.convertReference(t.getReference()));
+    if (src.getBodySite().hasConcept())
+      tgt.setBodySite(CodeableConcept40_50.convertCodeableConcept(src.getBodySite().getConcept()));
+    for (org.hl7.fhir.r5.model.Annotation t : src.getNote()) tgt.addNote(Annotation40_50.convertAnnotation(t));
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus> convertDeviceUseStatementStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case ACTIVE:
-                tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.ACTIVE);
-                break;
-            case COMPLETED:
-                tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.COMPLETED);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.ENTEREDINERROR);
-                break;
-            case INTENDED:
-                tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.INTENDED);
-                break;
-            case STOPPED:
-                tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.STOPPED);
-                break;
-            case ONHOLD:
-                tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.ONHOLD);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus> convertDeviceUseStatementStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatusEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case ACTIVE:
+        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.ACTIVE);
+        break;
+      case COMPLETED:
+        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.COMPLETED);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.ENTEREDINERROR);
+        break;
+      case INTENDED:
+        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.INTENDED);
+        break;
+      case STOPPED:
+        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.STOPPED);
+        break;
+      case ONHOLD:
+        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.ONHOLD);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus> convertDeviceUseStatementStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case ACTIVE:
-                tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.ACTIVE);
-                break;
-            case COMPLETED:
-                tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.COMPLETED);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.ENTEREDINERROR);
-                break;
-            case INTENDED:
-                tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.INTENDED);
-                break;
-            case STOPPED:
-                tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.STOPPED);
-                break;
-            case ONHOLD:
-                tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.ONHOLD);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus> convertDeviceUseStatementStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.DeviceUsage.DeviceUsageStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatusEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case ACTIVE:
+        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.ACTIVE);
+        break;
+      case COMPLETED:
+        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.COMPLETED);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.ENTEREDINERROR);
+        break;
+      case INTENDED:
+        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.INTENDED);
+        break;
+      case STOPPED:
+        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.STOPPED);
+        break;
+      case ONHOLD:
+        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.ONHOLD);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r4.model.DeviceUseStatement.DeviceUseStatementStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 }

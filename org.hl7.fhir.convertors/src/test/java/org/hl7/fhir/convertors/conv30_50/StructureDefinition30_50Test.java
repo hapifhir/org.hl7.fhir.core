@@ -1,5 +1,6 @@
 package org.hl7.fhir.convertors.conv30_50;
 
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ public class StructureDefinition30_50Test {
     InputStream dstu3_expected_output = this.getClass().getResourceAsStream("/0_structuredefinition_30.json");
 
     org.hl7.fhir.r5.model.StructureDefinition r5_actual = (org.hl7.fhir.r5.model.StructureDefinition) new org.hl7.fhir.r5.formats.JsonParser().parse(r5_input);
-    org.hl7.fhir.dstu3.model.Resource dstu3_conv = VersionConvertor_30_50.convertResource(r5_actual);
+    org.hl7.fhir.dstu3.model.Resource dstu3_conv = VersionConvertorFactory_30_50.convertResource(r5_actual);
 
     org.hl7.fhir.dstu3.formats.JsonParser dstu3_parser = new org.hl7.fhir.dstu3.formats.JsonParser();
     org.hl7.fhir.dstu3.model.Resource dstu3_expected = dstu3_parser.parse(dstu3_expected_output);

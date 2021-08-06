@@ -1,9 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Canonical40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.DateTime40_50;
@@ -41,169 +38,177 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class QuestionnaireResponse40_50 extends VersionConvertor_40_50 {
+public class QuestionnaireResponse40_50 {
 
-    public static org.hl7.fhir.r5.model.QuestionnaireResponse convertQuestionnaireResponse(org.hl7.fhir.r4.model.QuestionnaireResponse src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.QuestionnaireResponse tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse();
-        copyDomainResource(src, tgt);
-        if (src.hasIdentifier())
-            tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
-        if (src.hasQuestionnaire())
-            tgt.setQuestionnaireElement(Canonical40_50.convertCanonical(src.getQuestionnaireElement()));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertQuestionnaireResponseStatus(src.getStatusElement()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasEncounter())
-            tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
-        if (src.hasAuthored())
-            tgt.setAuthoredElement(DateTime40_50.convertDateTime(src.getAuthoredElement()));
-        if (src.hasAuthor())
-            tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
-        if (src.hasSource())
-            tgt.setSource(Reference40_50.convertReference(src.getSource()));
-        for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.QuestionnaireResponse convertQuestionnaireResponse(org.hl7.fhir.r4.model.QuestionnaireResponse src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.QuestionnaireResponse tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    if (src.hasIdentifier())
+      tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
+    for (org.hl7.fhir.r4.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
+    if (src.hasQuestionnaire())
+      tgt.setQuestionnaireElement(Canonical40_50.convertCanonical(src.getQuestionnaireElement()));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertQuestionnaireResponseStatus(src.getStatusElement()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasEncounter())
+      tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
+    if (src.hasAuthored())
+      tgt.setAuthoredElement(DateTime40_50.convertDateTime(src.getAuthoredElement()));
+    if (src.hasAuthor())
+      tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
+    if (src.hasSource())
+      tgt.setSource(Reference40_50.convertReference(src.getSource()));
+    for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem())
+      tgt.addItem(convertQuestionnaireResponseItemComponent(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.QuestionnaireResponse convertQuestionnaireResponse(org.hl7.fhir.r5.model.QuestionnaireResponse src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.QuestionnaireResponse tgt = new org.hl7.fhir.r4.model.QuestionnaireResponse();
-        copyDomainResource(src, tgt);
-        if (src.hasIdentifier())
-            tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
-        if (src.hasQuestionnaire())
-            tgt.setQuestionnaireElement(Canonical40_50.convertCanonical(src.getQuestionnaireElement()));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertQuestionnaireResponseStatus(src.getStatusElement()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasEncounter())
-            tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
-        if (src.hasAuthored())
-            tgt.setAuthoredElement(DateTime40_50.convertDateTime(src.getAuthoredElement()));
-        if (src.hasAuthor())
-            tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
-        if (src.hasSource())
-            tgt.setSource(Reference40_50.convertReference(src.getSource()));
-        for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.QuestionnaireResponse convertQuestionnaireResponse(org.hl7.fhir.r5.model.QuestionnaireResponse src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.QuestionnaireResponse tgt = new org.hl7.fhir.r4.model.QuestionnaireResponse();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    if (src.hasIdentifier())
+      tgt.setIdentifier(Identifier40_50.convertIdentifier(src.getIdentifier()));
+    for (org.hl7.fhir.r5.model.Reference t : src.getBasedOn()) tgt.addBasedOn(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getPartOf()) tgt.addPartOf(Reference40_50.convertReference(t));
+    if (src.hasQuestionnaire())
+      tgt.setQuestionnaireElement(Canonical40_50.convertCanonical(src.getQuestionnaireElement()));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertQuestionnaireResponseStatus(src.getStatusElement()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasEncounter())
+      tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
+    if (src.hasAuthored())
+      tgt.setAuthoredElement(DateTime40_50.convertDateTime(src.getAuthoredElement()));
+    if (src.hasAuthor())
+      tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
+    if (src.hasSource())
+      tgt.setSource(Reference40_50.convertReference(src.getSource()));
+    for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem())
+      tgt.addItem(convertQuestionnaireResponseItemComponent(t));
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus> convertQuestionnaireResponseStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case INPROGRESS:
-                tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS);
-                break;
-            case COMPLETED:
-                tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.COMPLETED);
-                break;
-            case AMENDED:
-                tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.AMENDED);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.ENTEREDINERROR);
-                break;
-            case STOPPED:
-                tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.STOPPED);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus> convertQuestionnaireResponseStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatusEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case INPROGRESS:
+        tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS);
+        break;
+      case COMPLETED:
+        tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.COMPLETED);
+        break;
+      case AMENDED:
+        tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.AMENDED);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.ENTEREDINERROR);
+        break;
+      case STOPPED:
+        tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.STOPPED);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus> convertQuestionnaireResponseStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case INPROGRESS:
-                tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS);
-                break;
-            case COMPLETED:
-                tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.COMPLETED);
-                break;
-            case AMENDED:
-                tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.AMENDED);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.ENTEREDINERROR);
-                break;
-            case STOPPED:
-                tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.STOPPED);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus> convertQuestionnaireResponseStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatusEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case INPROGRESS:
+        tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.INPROGRESS);
+        break;
+      case COMPLETED:
+        tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.COMPLETED);
+        break;
+      case AMENDED:
+        tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.AMENDED);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.ENTEREDINERROR);
+        break;
+      case STOPPED:
+        tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.STOPPED);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent convertQuestionnaireResponseItemComponent(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasLinkId())
-            tgt.setLinkIdElement(String40_50.convertString(src.getLinkIdElement()));
-        if (src.hasDefinition())
-            tgt.setDefinitionElement(Uri40_50.convertUri(src.getDefinitionElement()));
-        if (src.hasText())
-            tgt.setTextElement(String40_50.convertString(src.getTextElement()));
-        for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswer()) tgt.addAnswer(convertQuestionnaireResponseItemAnswerComponent(t));
-        for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent convertQuestionnaireResponseItemComponent(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    if (src.hasLinkId())
+      tgt.setLinkIdElement(String40_50.convertString(src.getLinkIdElement()));
+    if (src.hasDefinition())
+      tgt.setDefinitionElement(Uri40_50.convertUri(src.getDefinitionElement()));
+    if (src.hasText())
+      tgt.setTextElement(String40_50.convertString(src.getTextElement()));
+    for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswer())
+      tgt.addAnswer(convertQuestionnaireResponseItemAnswerComponent(t));
+    for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem())
+      tgt.addItem(convertQuestionnaireResponseItemComponent(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent convertQuestionnaireResponseItemComponent(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasLinkId())
-            tgt.setLinkIdElement(String40_50.convertString(src.getLinkIdElement()));
-        if (src.hasDefinition())
-            tgt.setDefinitionElement(Uri40_50.convertUri(src.getDefinitionElement()));
-        if (src.hasText())
-            tgt.setTextElement(String40_50.convertString(src.getTextElement()));
-        for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswer()) tgt.addAnswer(convertQuestionnaireResponseItemAnswerComponent(t));
-        for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent convertQuestionnaireResponseItemComponent(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent tgt = new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    if (src.hasLinkId())
+      tgt.setLinkIdElement(String40_50.convertString(src.getLinkIdElement()));
+    if (src.hasDefinition())
+      tgt.setDefinitionElement(Uri40_50.convertUri(src.getDefinitionElement()));
+    if (src.hasText())
+      tgt.setTextElement(String40_50.convertString(src.getTextElement()));
+    for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent t : src.getAnswer())
+      tgt.addAnswer(convertQuestionnaireResponseItemAnswerComponent(t));
+    for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem())
+      tgt.addItem(convertQuestionnaireResponseItemComponent(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent convertQuestionnaireResponseItemAnswerComponent(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasValue())
-            tgt.setValue(Type40_50.convertType(src.getValue()));
-        for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent convertQuestionnaireResponseItemAnswerComponent(org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    if (src.hasValue())
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
+    for (org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem())
+      tgt.addItem(convertQuestionnaireResponseItemComponent(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent convertQuestionnaireResponseItemAnswerComponent(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasValue())
-            tgt.setValue(Type40_50.convertType(src.getValue()));
-        for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem()) tgt.addItem(convertQuestionnaireResponseItemComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent convertQuestionnaireResponseItemAnswerComponent(org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent tgt = new org.hl7.fhir.r4.model.QuestionnaireResponse.QuestionnaireResponseItemAnswerComponent();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    if (src.hasValue())
+      tgt.setValue(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getValue()));
+    for (org.hl7.fhir.r5.model.QuestionnaireResponse.QuestionnaireResponseItemComponent t : src.getItem())
+      tgt.addItem(convertQuestionnaireResponseItemComponent(t));
+    return tgt;
+  }
 }

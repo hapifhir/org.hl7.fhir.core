@@ -3,51 +3,79 @@ package org.hl7.fhir.convertors.advisors.interfaces;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.instance.model.api.IBaseExtension;
 import org.hl7.fhir.r4.model.*;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseAdvisor40<T extends IBaseExtension> extends BaseAdvisor {
 
-  public boolean ignoreEntry(@NotNull Bundle.BundleEntryComponent src, @NotNull org.hl7.fhir.r5.model.FhirPublication targetVersion) {
+  private final List<CodeSystem> cslist = new ArrayList<>();
+
+  public final List<CodeSystem> getCslist() {
+    return this.cslist;
+  }
+
+  public void handleCodeSystem(@Nonnull CodeSystem tgtcs,
+                               @Nonnull ValueSet source) {
+    tgtcs.setId(source.getId());
+    tgtcs.setValueSet(source.getUrl());
+    this.cslist.add(tgtcs);
+  }
+
+  public boolean ignoreEntry(@Nonnull Bundle.BundleEntryComponent src,
+                             @Nonnull org.hl7.fhir.r5.model.FhirPublication targetVersion) {
     return false;
   }
 
-  public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet source) throws FHIRException { }
-
-  public CodeSystem getCodeSystem(@NotNull ValueSet src) throws FHIRException {
+  public CodeSystem getCodeSystem(@Nonnull ValueSet src) throws FHIRException {
     return null;
   }
 
-  public boolean ignoreExtension(@NotNull String path, @NotNull Extension ext) throws FHIRException {
+  public boolean ignoreExtension(@Nonnull String path,
+                                 @Nonnull Extension ext) throws FHIRException {
     return ((ext.getUrl() != null) && (this.ignoreExtension(path, ext.getUrl()))
       || (this.ignoreType(path, ext.getValue())));
   }
 
-  public boolean ignoreExtension(@NotNull String path, @NotNull T ext) throws FHIRException {
+  public boolean ignoreExtension(@Nonnull String path,
+                                 @Nonnull T ext) throws FHIRException {
     return ((ext.getUrl() != null) && this.ignoreExtension(path, ext.getUrl()))
       || (this.ignoreType(path, ext.getValue()));
   }
 
-  public boolean ignoreExtension(@NotNull String path, @NotNull String url) throws FHIRException {
+  public boolean ignoreExtension(@Nonnull String path,
+                                 @Nonnull String url) throws FHIRException {
     return false;
   }
 
-  public boolean ignoreType(@NotNull String path, @NotNull Type type) throws FHIRException {
+  public boolean ignoreType(@Nonnull String path,
+                            @Nonnull Type type) throws FHIRException {
     return false;
   }
 
-  public boolean ignoreType(@NotNull String path, @NotNull Object type) throws FHIRException {
+  public boolean ignoreType(@Nonnull String path,
+                            @Nonnull Object type) throws FHIRException {
     return false;
   }
 
-  public boolean useAdvisorForExtension(@NotNull String path, @NotNull Extension ext) throws FHIRException {
+  public boolean useAdvisorForExtension(@Nonnull String path,
+                                        @Nonnull Extension ext) throws FHIRException {
     return false;
   }
 
-  public boolean useAdvisorForExtension(@NotNull String path, @NotNull T ext) throws FHIRException {
+  public boolean useAdvisorForExtension(@Nonnull String path,
+                                        @Nonnull T ext) throws FHIRException {
     return false;
   }
 
-  public void handleExtension(@NotNull String path, @NotNull Extension src, @NotNull T tgt) throws FHIRException { }
+  public void handleExtension(@Nonnull String path,
+                              @Nonnull Extension src,
+                              @Nonnull T tgt) throws FHIRException {
+  }
 
-  public void handleExtension(@NotNull String path, @NotNull T src, @NotNull Extension tgt) throws FHIRException { }
+  public void handleExtension(@Nonnull String path,
+                              @Nonnull T src,
+                              @Nonnull Extension tgt) throws FHIRException {
+  }
 }

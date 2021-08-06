@@ -6,22 +6,23 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.hl7.fhir.r5.model.FhirPublication;
-import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
 
 class PR2Handler extends BaseAdvisor_10_40 {
 
   @Override
-  public boolean ignoreEntry(Bundle.BundleEntryComponent src, FhirPublication publication) {
+  public boolean ignoreEntry(@Nonnull Bundle.BundleEntryComponent src, @Nonnull FhirPublication publication) {
     return false;
   }
 
   @Override
-  public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet source) throws FHIRException {
+  public void handleCodeSystem(@Nonnull CodeSystem tgtcs, @Nonnull ValueSet source) throws FHIRException {
     throw new Error("Not done yet");
   }
 
   @Override
-  public CodeSystem getCodeSystem(@NotNull ValueSet src) throws FHIRException {
+  public CodeSystem getCodeSystem(@Nonnull ValueSet src) throws FHIRException {
     throw new Error("Not done yet");
   }
 

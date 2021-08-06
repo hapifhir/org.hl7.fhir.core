@@ -32,7 +32,6 @@ import org.hl7.fhir.r5.renderers.QuestionnaireRenderer;
  */
 
 
-
 public class VersionConvertorConstants {
 
   public final static String IG_DEPENDSON_PACKAGE_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ImplementationGuide.dependsOn.packageId";
@@ -42,7 +41,10 @@ public class VersionConvertorConstants {
   public final static String MODIFIER_REASON_LEGACY = "No Modifier Reason provideed in previous versions of FHIR";
   public final static String PROFILE_EXTENSION = "http://hl7.org/fhir/4.0/StructureDefinition/extension-ElementDefinition.type.profile";
   public final static String IG_CONFORMANCE_MESSAGE_EVENT = "http://hl7.org/fhir/1.0/StructureDefinition/extension-Conformance.messaging.event";
-  
+  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
+  public static final String EXT_ACTUAL_RESOURCE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/original-resource-name";
+  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = QuestionnaireRenderer.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL;
+
   public static String refToVS(String url) {
     if (url == null)
       return null;
@@ -71,7 +73,7 @@ public class VersionConvertorConstants {
     else
       return url;
   }
-    
+
   public static String vsToRef(String url) {
     if (url == null)
       return null;
@@ -100,8 +102,4 @@ public class VersionConvertorConstants {
     else
       return null;
   }
-
-  public static final String EXT_OLD_CONCEPTMAP_EQUIVALENCE = "http://hl7.org/fhir/1.0/StructureDefinition/extension-ConceptMap.element.target.equivalence";
-  public static final String EXT_ACTUAL_RESOURCE_NAME = "http://hl7.org/fhir/tools/StructureDefinition/original-resource-name";
-  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = QuestionnaireRenderer.EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL;
 }

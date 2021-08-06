@@ -1,12 +1,5 @@
 package org.hl7.fhir.convertors.misc;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
@@ -15,13 +8,14 @@ import org.hl7.fhir.r5.model.ValueSet.ConceptSetComponent;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
-import org.w3c.dom.Document;
+
+import java.io.IOException;
 
 public class OIDBasedValueSetImporter {
 
   protected IWorkerContext context;
-  
-  protected void init() throws FileNotFoundException, FHIRException, IOException {
+
+  protected void init() throws FHIRException, IOException {
     FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     NpmPackage npm = pcm.loadPackage("hl7.fhir.r5.core", "current");
     SimpleWorkerContext ctxt = SimpleWorkerContext.fromPackage(npm);
@@ -32,18 +26,18 @@ public class OIDBasedValueSetImporter {
 
   protected String fixVersionforSystem(String url, String csver) {
     if ("http://snomed.info/sct".equals(url)) {
-      return "http://snomed.info/sct/731000124108/version/"+csver;
+      return "http://snomed.info/sct/731000124108/version/" + csver;
     }
     if ("http://loinc.org".equals(url)) {
       return csver;
     }
     if ("http://www.nlm.nih.gov/research/umls/rxnorm".equals(url)) {
       if (csver.length() == 8) {
-        return csver.substring(4,6)+csver.substring(6,8)+csver.substring(0,4);
+        return csver.substring(4, 6) + csver.substring(6, 8) + csver.substring(0, 4);
       } else {
-        return csver;        
+        return csver;
       }
-      
+
     }
     return csver;
   }
@@ -53,7 +47,7 @@ public class OIDBasedValueSetImporter {
       if (csver == null) {
         if (t.getSystem().equals(url) && !t.hasVersion()) {
           return t;
-        }        
+        }
       } else {
         if (t.getSystem().equals(url) && t.hasVersion() && t.getVersion().equals(csver)) {
           return t;

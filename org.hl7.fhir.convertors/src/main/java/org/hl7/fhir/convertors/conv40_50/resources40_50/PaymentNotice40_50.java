@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Money40_50;
@@ -40,117 +38,119 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class PaymentNotice40_50 extends VersionConvertor_40_50 {
+public class PaymentNotice40_50 {
 
-    public static org.hl7.fhir.r5.model.PaymentNotice convertPaymentNotice(org.hl7.fhir.r4.model.PaymentNotice src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.PaymentNotice tgt = new org.hl7.fhir.r5.model.PaymentNotice();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertPaymentNoticeStatus(src.getStatusElement()));
-        if (src.hasRequest())
-            tgt.setRequest(Reference40_50.convertReference(src.getRequest()));
-        if (src.hasResponse())
-            tgt.setResponse(Reference40_50.convertReference(src.getResponse()));
-        if (src.hasCreated())
-            tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
-        if (src.hasProvider())
-            tgt.setProvider(Reference40_50.convertReference(src.getProvider()));
-        if (src.hasPayment())
-            tgt.setPayment(Reference40_50.convertReference(src.getPayment()));
-        if (src.hasPaymentDate())
-            tgt.setPaymentDateElement(Date40_50.convertDate(src.getPaymentDateElement()));
-        if (src.hasPayee())
-            tgt.setPayee(Reference40_50.convertReference(src.getPayee()));
-        if (src.hasRecipient())
-            tgt.setRecipient(Reference40_50.convertReference(src.getRecipient()));
-        if (src.hasAmount())
-            tgt.setAmount(Money40_50.convertMoney(src.getAmount()));
-        if (src.hasPaymentStatus())
-            tgt.setPaymentStatus(CodeableConcept40_50.convertCodeableConcept(src.getPaymentStatus()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.PaymentNotice convertPaymentNotice(org.hl7.fhir.r4.model.PaymentNotice src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.PaymentNotice tgt = new org.hl7.fhir.r5.model.PaymentNotice();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertPaymentNoticeStatus(src.getStatusElement()));
+    if (src.hasRequest())
+      tgt.setRequest(Reference40_50.convertReference(src.getRequest()));
+    if (src.hasResponse())
+      tgt.setResponse(Reference40_50.convertReference(src.getResponse()));
+    if (src.hasCreated())
+      tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
+    if (src.hasProvider())
+      tgt.setProvider(Reference40_50.convertReference(src.getProvider()));
+    if (src.hasPayment())
+      tgt.setPayment(Reference40_50.convertReference(src.getPayment()));
+    if (src.hasPaymentDate())
+      tgt.setPaymentDateElement(Date40_50.convertDate(src.getPaymentDateElement()));
+    if (src.hasPayee())
+      tgt.setPayee(Reference40_50.convertReference(src.getPayee()));
+    if (src.hasRecipient())
+      tgt.setRecipient(Reference40_50.convertReference(src.getRecipient()));
+    if (src.hasAmount())
+      tgt.setAmount(Money40_50.convertMoney(src.getAmount()));
+    if (src.hasPaymentStatus())
+      tgt.setPaymentStatus(CodeableConcept40_50.convertCodeableConcept(src.getPaymentStatus()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.PaymentNotice convertPaymentNotice(org.hl7.fhir.r5.model.PaymentNotice src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.PaymentNotice tgt = new org.hl7.fhir.r4.model.PaymentNotice();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertPaymentNoticeStatus(src.getStatusElement()));
-        if (src.hasRequest())
-            tgt.setRequest(Reference40_50.convertReference(src.getRequest()));
-        if (src.hasResponse())
-            tgt.setResponse(Reference40_50.convertReference(src.getResponse()));
-        if (src.hasCreated())
-            tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
-        if (src.hasProvider())
-            tgt.setProvider(Reference40_50.convertReference(src.getProvider()));
-        if (src.hasPayment())
-            tgt.setPayment(Reference40_50.convertReference(src.getPayment()));
-        if (src.hasPaymentDate())
-            tgt.setPaymentDateElement(Date40_50.convertDate(src.getPaymentDateElement()));
-        if (src.hasPayee())
-            tgt.setPayee(Reference40_50.convertReference(src.getPayee()));
-        if (src.hasRecipient())
-            tgt.setRecipient(Reference40_50.convertReference(src.getRecipient()));
-        if (src.hasAmount())
-            tgt.setAmount(Money40_50.convertMoney(src.getAmount()));
-        if (src.hasPaymentStatus())
-            tgt.setPaymentStatus(CodeableConcept40_50.convertCodeableConcept(src.getPaymentStatus()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.PaymentNotice convertPaymentNotice(org.hl7.fhir.r5.model.PaymentNotice src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.PaymentNotice tgt = new org.hl7.fhir.r4.model.PaymentNotice();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertPaymentNoticeStatus(src.getStatusElement()));
+    if (src.hasRequest())
+      tgt.setRequest(Reference40_50.convertReference(src.getRequest()));
+    if (src.hasResponse())
+      tgt.setResponse(Reference40_50.convertReference(src.getResponse()));
+    if (src.hasCreated())
+      tgt.setCreatedElement(DateTime40_50.convertDateTime(src.getCreatedElement()));
+    if (src.hasProvider())
+      tgt.setProvider(Reference40_50.convertReference(src.getProvider()));
+    if (src.hasPayment())
+      tgt.setPayment(Reference40_50.convertReference(src.getPayment()));
+    if (src.hasPaymentDate())
+      tgt.setPaymentDateElement(Date40_50.convertDate(src.getPaymentDateElement()));
+    if (src.hasPayee())
+      tgt.setPayee(Reference40_50.convertReference(src.getPayee()));
+    if (src.hasRecipient())
+      tgt.setRecipient(Reference40_50.convertReference(src.getRecipient()));
+    if (src.hasAmount())
+      tgt.setAmount(Money40_50.convertMoney(src.getAmount()));
+    if (src.hasPaymentStatus())
+      tgt.setPaymentStatus(CodeableConcept40_50.convertCodeableConcept(src.getPaymentStatus()));
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> convertPaymentNoticeStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodesEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case ACTIVE:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE);
-                break;
-            case CANCELLED:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED);
-                break;
-            case DRAFT:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> convertPaymentNoticeStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodesEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case ACTIVE:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ACTIVE);
+        break;
+      case CANCELLED:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.CANCELLED);
+        break;
+      case DRAFT:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.DRAFT);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.ENTEREDINERROR);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus> convertPaymentNoticeStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case ACTIVE:
-                tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.ACTIVE);
-                break;
-            case CANCELLED:
-                tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.CANCELLED);
-                break;
-            case DRAFT:
-                tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.DRAFT);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.ENTEREDINERROR);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus> convertPaymentNoticeStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.FinancialResourceStatusCodes> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatusEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case ACTIVE:
+        tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.ACTIVE);
+        break;
+      case CANCELLED:
+        tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.CANCELLED);
+        break;
+      case DRAFT:
+        tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.DRAFT);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.ENTEREDINERROR);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r4.model.PaymentNotice.PaymentNoticeStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 }
