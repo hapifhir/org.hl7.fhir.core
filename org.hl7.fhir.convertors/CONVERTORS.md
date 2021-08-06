@@ -76,7 +76,7 @@ extension type. This exists in the r4 version of the specification, but no such 
 If we were to convert a R4 resource, such as a questionnaire, that contained an extension of this type from r4 -> dstu2,
 without any special intervention, the extension would be ignored, and the data would be lost in the conversion process.
 
-This is where advisors come in...
+This is where advisors come in.
 
 ### Using conversion advisors
 
