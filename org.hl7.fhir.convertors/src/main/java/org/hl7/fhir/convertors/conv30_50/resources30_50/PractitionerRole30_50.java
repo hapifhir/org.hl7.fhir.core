@@ -1,7 +1,7 @@
 package org.hl7.fhir.convertors.conv30_50.resources30_50;
 
-import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Element30_50;
+import org.hl7.fhir.convertors.context.ConversionContext30_50;
+import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.CodeableConcept30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.ContactPoint30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Identifier30_50;
@@ -9,7 +9,6 @@ import org.hl7.fhir.convertors.conv30_50.datatypes30_50.complextypes30_50.Period
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Boolean30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.String30_50;
 import org.hl7.fhir.convertors.conv30_50.datatypes30_50.primitivetypes30_50.Time30_50;
-import org.hl7.fhir.convertors.conv30_50.datatypes30_50.Reference30_50;
 import org.hl7.fhir.exceptions.FHIRException;
 
 import java.util.stream.Collectors;
@@ -20,7 +19,7 @@ public class PractitionerRole30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.PractitionerRole tgt = new org.hl7.fhir.dstu3.model.PractitionerRole();
-    VersionConvertor_30_50.copyDomainResource(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
     if (src.hasActive())
@@ -54,7 +53,7 @@ public class PractitionerRole30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.PractitionerRole tgt = new org.hl7.fhir.r5.model.PractitionerRole();
-    VersionConvertor_30_50.copyDomainResource(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyDomainResource(src, tgt);
     for (org.hl7.fhir.dstu3.model.Identifier t : src.getIdentifier())
       tgt.addIdentifier(Identifier30_50.convertIdentifier(t));
     if (src.hasActive())
@@ -88,7 +87,7 @@ public class PractitionerRole30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
-    Element30_50.copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
       .map(PractitionerRole30_50::convertDaysOfWeek)
       .collect(Collectors.toList()));
@@ -105,7 +104,7 @@ public class PractitionerRole30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent tgt = new org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleAvailableTimeComponent();
-    Element30_50.copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     tgt.setDaysOfWeek(src.getDaysOfWeek().stream()
       .map(PractitionerRole30_50::convertDaysOfWeek)
       .collect(Collectors.toList()));
@@ -122,7 +121,7 @@ public class PractitionerRole30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleNotAvailableComponent tgt = new org.hl7.fhir.dstu3.model.PractitionerRole.PractitionerRoleNotAvailableComponent();
-    Element30_50.copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
     if (src.hasDuring())
@@ -134,7 +133,7 @@ public class PractitionerRole30_50 {
     if (src == null)
       return null;
     org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent tgt = new org.hl7.fhir.r5.model.PractitionerRole.PractitionerRoleNotAvailableComponent();
-    Element30_50.copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.hasDescription())
       tgt.setDescriptionElement(String30_50.convertString(src.getDescriptionElement()));
     if (src.hasDuring())
@@ -146,7 +145,7 @@ public class PractitionerRole30_50 {
     if (src == null || src.isEmpty())
       return null;
     org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek> tgt = new org.hl7.fhir.dstu3.model.Enumeration<>(new org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeekEnumFactory());
-    Element30_50.copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     switch (src.getValue()) {
       case MON:
         tgt.setValue(org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek.MON);
@@ -179,7 +178,7 @@ public class PractitionerRole30_50 {
   static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> convertDaysOfWeek(org.hl7.fhir.dstu3.model.Enumeration<org.hl7.fhir.dstu3.model.PractitionerRole.DaysOfWeek> src) throws FHIRException {
     if (src == null || src.isEmpty()) return null;
     org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.DaysOfWeek> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.DaysOfWeekEnumFactory());
-    Element30_50.copyElement(src, tgt);
+    ConversionContext30_50.INSTANCE.getVersionConvertor_30_50().copyElement(src, tgt);
     if (src.getValue() == null) {
       tgt.setValue(org.hl7.fhir.r5.model.Enumerations.DaysOfWeek.NULL);
     } else {

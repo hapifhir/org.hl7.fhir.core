@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Instant40_50;
@@ -39,99 +37,103 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class AppointmentResponse40_50 extends VersionConvertor_40_50 {
+public class AppointmentResponse40_50 {
 
-    public static org.hl7.fhir.r5.model.AppointmentResponse convertAppointmentResponse(org.hl7.fhir.r4.model.AppointmentResponse src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.AppointmentResponse tgt = new org.hl7.fhir.r5.model.AppointmentResponse();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasAppointment())
-            tgt.setAppointment(Reference40_50.convertReference(src.getAppointment()));
-        if (src.hasStart())
-            tgt.setStartElement(Instant40_50.convertInstant(src.getStartElement()));
-        if (src.hasEnd())
-            tgt.setEndElement(Instant40_50.convertInstant(src.getEndElement()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasActor())
-            tgt.setActor(Reference40_50.convertReference(src.getActor()));
-        if (src.hasParticipantStatus())
-            tgt.setParticipantStatusElement(convertParticipantStatus(src.getParticipantStatusElement()));
-        if (src.hasComment())
-            tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.AppointmentResponse convertAppointmentResponse(org.hl7.fhir.r4.model.AppointmentResponse src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.AppointmentResponse tgt = new org.hl7.fhir.r5.model.AppointmentResponse();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasAppointment())
+      tgt.setAppointment(Reference40_50.convertReference(src.getAppointment()));
+    if (src.hasStart())
+      tgt.setStartElement(Instant40_50.convertInstant(src.getStartElement()));
+    if (src.hasEnd())
+      tgt.setEndElement(Instant40_50.convertInstant(src.getEndElement()));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getParticipantType())
+      tgt.addParticipantType(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasActor())
+      tgt.setActor(Reference40_50.convertReference(src.getActor()));
+    if (src.hasParticipantStatus())
+      tgt.setParticipantStatusElement(convertParticipantStatus(src.getParticipantStatusElement()));
+    if (src.hasComment())
+      tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.AppointmentResponse convertAppointmentResponse(org.hl7.fhir.r5.model.AppointmentResponse src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.AppointmentResponse tgt = new org.hl7.fhir.r4.model.AppointmentResponse();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasAppointment())
-            tgt.setAppointment(Reference40_50.convertReference(src.getAppointment()));
-        if (src.hasStart())
-            tgt.setStartElement(Instant40_50.convertInstant(src.getStartElement()));
-        if (src.hasEnd())
-            tgt.setEndElement(Instant40_50.convertInstant(src.getEndElement()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getParticipantType()) tgt.addParticipantType(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasActor())
-            tgt.setActor(Reference40_50.convertReference(src.getActor()));
-        if (src.hasParticipantStatus())
-            tgt.setParticipantStatusElement(convertParticipantStatus(src.getParticipantStatusElement()));
-        if (src.hasComment())
-            tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.AppointmentResponse convertAppointmentResponse(org.hl7.fhir.r5.model.AppointmentResponse src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.AppointmentResponse tgt = new org.hl7.fhir.r4.model.AppointmentResponse();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasAppointment())
+      tgt.setAppointment(Reference40_50.convertReference(src.getAppointment()));
+    if (src.hasStart())
+      tgt.setStartElement(Instant40_50.convertInstant(src.getStartElement()));
+    if (src.hasEnd())
+      tgt.setEndElement(Instant40_50.convertInstant(src.getEndElement()));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getParticipantType())
+      tgt.addParticipantType(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasActor())
+      tgt.setActor(Reference40_50.convertReference(src.getActor()));
+    if (src.hasParticipantStatus())
+      tgt.setParticipantStatusElement(convertParticipantStatus(src.getParticipantStatusElement()));
+    if (src.hasComment())
+      tgt.setCommentElement(String40_50.convertString(src.getCommentElement()));
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ParticipationStatus> convertParticipantStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ParticipationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ParticipationStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case ACCEPTED:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.ACCEPTED);
-                break;
-            case DECLINED:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.DECLINED);
-                break;
-            case TENTATIVE:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.TENTATIVE);
-                break;
-            case NEEDSACTION:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.NEEDSACTION);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ParticipationStatus> convertParticipantStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ParticipationStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.ParticipationStatusEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case ACCEPTED:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.ACCEPTED);
+        break;
+      case DECLINED:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.DECLINED);
+        break;
+      case TENTATIVE:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.TENTATIVE);
+        break;
+      case NEEDSACTION:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.NEEDSACTION);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.ParticipationStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus> convertParticipantStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ParticipationStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case ACCEPTED:
-                tgt.setValue(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.ACCEPTED);
-                break;
-            case DECLINED:
-                tgt.setValue(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.DECLINED);
-                break;
-            case TENTATIVE:
-                tgt.setValue(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.TENTATIVE);
-                break;
-            case NEEDSACTION:
-                tgt.setValue(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.NEEDSACTION);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus> convertParticipantStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.ParticipationStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatusEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case ACCEPTED:
+        tgt.setValue(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.ACCEPTED);
+        break;
+      case DECLINED:
+        tgt.setValue(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.DECLINED);
+        break;
+      case TENTATIVE:
+        tgt.setValue(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.TENTATIVE);
+        break;
+      case NEEDSACTION:
+        tgt.setValue(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.NEEDSACTION);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r4.model.AppointmentResponse.ParticipantStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 }

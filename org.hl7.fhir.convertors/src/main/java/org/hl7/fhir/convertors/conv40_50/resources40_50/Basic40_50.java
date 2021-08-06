@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.Date40_50;
@@ -37,39 +36,41 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Basic40_50 extends VersionConvertor_40_50 {
+public class Basic40_50 {
 
-    public static org.hl7.fhir.r5.model.Basic convertBasic(org.hl7.fhir.r4.model.Basic src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Basic tgt = new org.hl7.fhir.r5.model.Basic();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasCode())
-            tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasCreated())
-            tgt.setCreatedElement(Date40_50.convertDate(src.getCreatedElement()));
-        if (src.hasAuthor())
-            tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Basic convertBasic(org.hl7.fhir.r4.model.Basic src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Basic tgt = new org.hl7.fhir.r5.model.Basic();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasCode())
+      tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasCreated())
+      tgt.setCreatedElement(Date40_50.convertDate(src.getCreatedElement()));
+    if (src.hasAuthor())
+      tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Basic convertBasic(org.hl7.fhir.r5.model.Basic src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Basic tgt = new org.hl7.fhir.r4.model.Basic();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasCode())
-            tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasCreated())
-            tgt.setCreatedElement(Date40_50.convertDate(src.getCreatedElement()));
-        if (src.hasAuthor())
-            tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Basic convertBasic(org.hl7.fhir.r5.model.Basic src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Basic tgt = new org.hl7.fhir.r4.model.Basic();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasCode())
+      tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasCreated())
+      tgt.setCreatedElement(Date40_50.convertDate(src.getCreatedElement()));
+    if (src.hasAuthor())
+      tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
+    return tgt;
+  }
 }

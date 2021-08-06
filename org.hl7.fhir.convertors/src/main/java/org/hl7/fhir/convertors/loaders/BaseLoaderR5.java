@@ -11,37 +11,12 @@ import java.io.IOException;
 
 public abstract class BaseLoaderR5 implements IContextResourceLoader {
 
-  public interface ILoaderKnowledgeProvider {
-    /**
-     * get the path for references to this resource.
-     *
-     * @param resource
-     * @return null if not tracking paths
-     */
-    String getResourcePath(Resource resource);
-
-    ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) throws JsonSyntaxException, IOException;
-  }
-
-  public static class NullLoaderKnowledgeProvider implements ILoaderKnowledgeProvider {
-    @Override
-    public String getResourcePath(Resource resource) {
-      return null;
-    }
-
-    @Override
-    public ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) {
-      return this;
-    }
-  }
-
   protected final String URL_BASE = "http://hl7.org/fhir/";
   protected final String URL_DSTU2 = "http://hl7.org/fhir/1.0/";
   protected final String URL_DSTU2016MAY = "http://hl7.org/fhir/1.4/";
   protected final String URL_DSTU3 = "http://hl7.org/fhir/3.0/";
   protected final String URL_R4 = "http://hl7.org/fhir/4.0/";
   protected final String URL_ELEMENT_DEF_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
-
   protected boolean patchUrls;
   protected boolean killPrimitives;
   protected String[] types;
@@ -106,6 +81,30 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
       return new R2016MayToR5Loader(types, lkp.forNewPackage(npm));
     } else {
       throw new FHIRException("Unsupported FHIR Version " + npm.fhirVersion());
+    }
+  }
+
+  public interface ILoaderKnowledgeProvider {
+    /**
+     * get the path for references to this resource.
+     *
+     * @param resource
+     * @return null if not tracking paths
+     */
+    String getResourcePath(Resource resource);
+
+    ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) throws JsonSyntaxException, IOException;
+  }
+
+  public static class NullLoaderKnowledgeProvider implements ILoaderKnowledgeProvider {
+    @Override
+    public String getResourcePath(Resource resource) {
+      return null;
+    }
+
+    @Override
+    public ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) {
+      return this;
     }
   }
 }

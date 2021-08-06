@@ -59,34 +59,17 @@ import org.w3c.dom.Node;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
 public class SpecDifferenceEvaluator {
 
-  private SpecPackage original = new SpecPackage();
-  private SpecPackage revision = new SpecPackage();
-  private Map<String, String> renames = new HashMap<String, String>();
-  private List<String> moves = new ArrayList<String>();
+  private final SpecPackage original = new SpecPackage();
+  private final SpecPackage revision = new SpecPackage();
+  private final Map<String, String> renames = new HashMap<String, String>();
+  private final List<String> moves = new ArrayList<String>();
   private XhtmlNode tbl;
   private TypeLinkProvider linker;
-
-  public void loadFromIni(IniFile ini) {
-    String[] names = ini.getPropertyNames("r5-renames");
-    if (names != null)
-      for (String n : names)
-        // note reverse of order
-        renames.put(ini.getStringProperty("r5-renames", n), n);
-  }
-
-  public SpecPackage getOriginal() {
-    return original;
-  }
-
-  public SpecPackage getRevision() {
-    return revision;
-  }
 
   public static void main(String[] args) throws Exception {
     System.out.println("gen diff");
@@ -116,7 +99,7 @@ public class SpecDifferenceEvaluator {
     System.out.println("done");
   }
 
-  private static void loadSD4(Map<String, StructureDefinition> map, String fn) throws FHIRException, FileNotFoundException, IOException {
+  private static void loadSD4(Map<String, StructureDefinition> map, String fn) throws FHIRException, IOException {
     org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parse(new FileInputStream(fn));
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof org.hl7.fhir.r4.model.StructureDefinition) {
@@ -127,7 +110,7 @@ public class SpecDifferenceEvaluator {
 
   }
 
-  private static void loadSD(Map<String, StructureDefinition> map, String fn) throws FHIRFormatError, FileNotFoundException, IOException {
+  private static void loadSD(Map<String, StructureDefinition> map, String fn) throws FHIRFormatError, IOException {
     Bundle bundle = (Bundle) new XmlParser().parse(new FileInputStream(fn));
     for (BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof StructureDefinition) {
@@ -137,7 +120,7 @@ public class SpecDifferenceEvaluator {
     }
   }
 
-  private static void loadVS4(Map<String, ValueSet> map, String fn) throws FHIRException, FileNotFoundException, IOException {
+  private static void loadVS4(Map<String, ValueSet> map, String fn) throws FHIRException, IOException {
     org.hl7.fhir.r4.model.Bundle bundle = (org.hl7.fhir.r4.model.Bundle) new org.hl7.fhir.r4.formats.XmlParser().parse(new FileInputStream(fn));
     for (org.hl7.fhir.r4.model.Bundle.BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof org.hl7.fhir.r4.model.ValueSet) {
@@ -147,7 +130,7 @@ public class SpecDifferenceEvaluator {
     }
   }
 
-  private static void loadVS(Map<String, ValueSet> map, String fn) throws FHIRFormatError, FileNotFoundException, IOException {
+  private static void loadVS(Map<String, ValueSet> map, String fn) throws FHIRFormatError, IOException {
     Bundle bundle = (Bundle) new XmlParser().parse(new FileInputStream(fn));
     for (BundleEntryComponent be : bundle.getEntry()) {
       if (be.getResource() instanceof ValueSet) {
@@ -155,6 +138,22 @@ public class SpecDifferenceEvaluator {
         map.put(sd.getName(), sd);
       }
     }
+  }
+
+  public void loadFromIni(IniFile ini) {
+    String[] names = ini.getPropertyNames("r5-renames");
+    if (names != null)
+      for (String n : names)
+        // note reverse of order
+        renames.put(ini.getStringProperty("r5-renames", n), n);
+  }
+
+  public SpecPackage getOriginal() {
+    return original;
+  }
+
+  public SpecPackage getRevision() {
+    return revision;
   }
 
   public void getDiffAsJson(JsonObject json, StructureDefinition rev) throws IOException {
@@ -549,7 +548,7 @@ public class SpecDifferenceEvaluator {
     }
 
     if (rev.getMin() != orig.getMin())
-      b.append("Min Cardinality changed from " + Integer.toString(orig.getMin()) + " to " + Integer.toString(rev.getMin()));
+      b.append("Min Cardinality changed from " + orig.getMin() + " to " + rev.getMin());
 
     if (!rev.getMax().equals(orig.getMax()))
       b.append("Max Cardinality changed from " + orig.getMax() + " to " + rev.getMax());
@@ -814,9 +813,9 @@ public class SpecDifferenceEvaluator {
         }
       }
       if (added.length() > 0)
-        bp.append("Add " + Utilities.pluralize("Type", added.count()) + " " + added.toString());
+        bp.append("Add " + Utilities.pluralize("Type", added.count()) + " " + added);
       if (removed.length() > 0)
-        bp.append("Remove " + Utilities.pluralize("Type", removed.count()) + " " + removed.toString());
+        bp.append("Remove " + Utilities.pluralize("Type", removed.count()) + " " + removed);
       if (retargetted.length() > 0)
         bp.append(retargetted.toString());
     }

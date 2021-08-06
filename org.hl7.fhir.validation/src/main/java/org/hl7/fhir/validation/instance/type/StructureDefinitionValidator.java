@@ -11,7 +11,7 @@ import java.util.Set;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.factory.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
@@ -383,19 +383,19 @@ public class StructureDefinitionValidator extends BaseValidator {
     Manager.compose(context, src, bs, FhirFormat.JSON, OutputStyle.NORMAL, null);
     if (VersionUtilities.isR2Ver(context.getVersion())) {
       org.hl7.fhir.dstu2.model.Resource r2 = new org.hl7.fhir.dstu2.formats.JsonParser().parse(bs.toByteArray());
-      return (StructureDefinition) VersionConvertor_10_50.convertResource(r2);
+      return (StructureDefinition) VersionConvertorFactory_10_50.convertResource(r2);
     }
     if (VersionUtilities.isR2BVer(context.getVersion())) {
       org.hl7.fhir.dstu2016may.model.Resource r2b = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(bs.toByteArray());
-      return (StructureDefinition) VersionConvertor_14_50.convertResource(r2b);
+      return (StructureDefinition) VersionConvertorFactory_14_50.convertResource(r2b);
     }
     if (VersionUtilities.isR3Ver(context.getVersion())) {
       org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(bs.toByteArray());
-      return (StructureDefinition) VersionConvertor_30_50.convertResource(r3);
+      return (StructureDefinition) VersionConvertorFactory_30_50.convertResource(r3);
     }
     if (VersionUtilities.isR4Ver(context.getVersion())) {
       org.hl7.fhir.r4.model.Resource r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(bs.toByteArray());
-      return (StructureDefinition) VersionConvertor_40_50.convertResource(r4);
+      return (StructureDefinition) VersionConvertorFactory_40_50.convertResource(r4);
     }
     return (StructureDefinition) new org.hl7.fhir.r5.formats.JsonParser().parse(bs.toByteArray());
   }

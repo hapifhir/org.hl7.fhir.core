@@ -1,7 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.ContactPoint40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
@@ -39,53 +38,63 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class OrganizationAffiliation40_50 extends VersionConvertor_40_50 {
+public class OrganizationAffiliation40_50 {
 
-    public static org.hl7.fhir.r5.model.OrganizationAffiliation convertOrganizationAffiliation(org.hl7.fhir.r4.model.OrganizationAffiliation src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.OrganizationAffiliation tgt = new org.hl7.fhir.r5.model.OrganizationAffiliation();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasActive())
-            tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
-        if (src.hasPeriod())
-            tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
-        if (src.hasOrganization())
-            tgt.setOrganization(Reference40_50.convertReference(src.getOrganization()));
-        if (src.hasParticipatingOrganization())
-            tgt.setParticipatingOrganization(Reference40_50.convertReference(src.getParticipatingOrganization()));
-        for (org.hl7.fhir.r4.model.Reference t : src.getNetwork()) tgt.addNetwork(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode()) tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getLocation()) tgt.addLocation(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
-        for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.OrganizationAffiliation convertOrganizationAffiliation(org.hl7.fhir.r4.model.OrganizationAffiliation src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.OrganizationAffiliation tgt = new org.hl7.fhir.r5.model.OrganizationAffiliation();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasActive())
+      tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
+    if (src.hasPeriod())
+      tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
+    if (src.hasOrganization())
+      tgt.setOrganization(Reference40_50.convertReference(src.getOrganization()));
+    if (src.hasParticipatingOrganization())
+      tgt.setParticipatingOrganization(Reference40_50.convertReference(src.getParticipatingOrganization()));
+    for (org.hl7.fhir.r4.model.Reference t : src.getNetwork()) tgt.addNetwork(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCode())
+      tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getSpecialty())
+      tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getLocation()) tgt.addLocation(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getHealthcareService())
+      tgt.addHealthcareService(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r4.model.ContactPoint t : src.getTelecom())
+      tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
+    for (org.hl7.fhir.r4.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.OrganizationAffiliation convertOrganizationAffiliation(org.hl7.fhir.r5.model.OrganizationAffiliation src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.OrganizationAffiliation tgt = new org.hl7.fhir.r4.model.OrganizationAffiliation();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasActive())
-            tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
-        if (src.hasPeriod())
-            tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
-        if (src.hasOrganization())
-            tgt.setOrganization(Reference40_50.convertReference(src.getOrganization()));
-        if (src.hasParticipatingOrganization())
-            tgt.setParticipatingOrganization(Reference40_50.convertReference(src.getParticipatingOrganization()));
-        for (org.hl7.fhir.r5.model.Reference t : src.getNetwork()) tgt.addNetwork(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode()) tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty()) tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getLocation()) tgt.addLocation(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getHealthcareService()) tgt.addHealthcareService(Reference40_50.convertReference(t));
-        for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom()) tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
-        for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.OrganizationAffiliation convertOrganizationAffiliation(org.hl7.fhir.r5.model.OrganizationAffiliation src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.OrganizationAffiliation tgt = new org.hl7.fhir.r4.model.OrganizationAffiliation();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasActive())
+      tgt.setActiveElement(Boolean40_50.convertBoolean(src.getActiveElement()));
+    if (src.hasPeriod())
+      tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
+    if (src.hasOrganization())
+      tgt.setOrganization(Reference40_50.convertReference(src.getOrganization()));
+    if (src.hasParticipatingOrganization())
+      tgt.setParticipatingOrganization(Reference40_50.convertReference(src.getParticipatingOrganization()));
+    for (org.hl7.fhir.r5.model.Reference t : src.getNetwork()) tgt.addNetwork(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCode())
+      tgt.addCode(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getSpecialty())
+      tgt.addSpecialty(CodeableConcept40_50.convertCodeableConcept(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getLocation()) tgt.addLocation(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getHealthcareService())
+      tgt.addHealthcareService(Reference40_50.convertReference(t));
+    for (org.hl7.fhir.r5.model.ContactPoint t : src.getTelecom())
+      tgt.addTelecom(ContactPoint40_50.convertContactPoint(t));
+    for (org.hl7.fhir.r5.model.Reference t : src.getEndpoint()) tgt.addEndpoint(Reference40_50.convertReference(t));
+    return tgt;
+  }
 }

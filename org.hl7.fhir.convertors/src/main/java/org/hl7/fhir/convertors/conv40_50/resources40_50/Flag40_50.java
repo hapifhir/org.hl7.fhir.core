@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Identifier40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Period40_50;
@@ -38,93 +36,97 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class Flag40_50 extends VersionConvertor_40_50 {
+public class Flag40_50 {
 
-    public static org.hl7.fhir.r5.model.Flag convertFlag(org.hl7.fhir.r4.model.Flag src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.Flag tgt = new org.hl7.fhir.r5.model.Flag();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertFlagStatus(src.getStatusElement()));
-        for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory()) tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasCode())
-            tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasPeriod())
-            tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
-        if (src.hasEncounter())
-            tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
-        if (src.hasAuthor())
-            tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.Flag convertFlag(org.hl7.fhir.r4.model.Flag src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.Flag tgt = new org.hl7.fhir.r5.model.Flag();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertFlagStatus(src.getStatusElement()));
+    for (org.hl7.fhir.r4.model.CodeableConcept t : src.getCategory())
+      tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasCode())
+      tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasPeriod())
+      tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
+    if (src.hasEncounter())
+      tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
+    if (src.hasAuthor())
+      tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.Flag convertFlag(org.hl7.fhir.r5.model.Flag src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.Flag tgt = new org.hl7.fhir.r4.model.Flag();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier()) tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
-        if (src.hasStatus())
-            tgt.setStatusElement(convertFlagStatus(src.getStatusElement()));
-        for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory()) tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
-        if (src.hasCode())
-            tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
-        if (src.hasSubject())
-            tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
-        if (src.hasPeriod())
-            tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
-        if (src.hasEncounter())
-            tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
-        if (src.hasAuthor())
-            tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.Flag convertFlag(org.hl7.fhir.r5.model.Flag src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.Flag tgt = new org.hl7.fhir.r4.model.Flag();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.Identifier t : src.getIdentifier())
+      tgt.addIdentifier(Identifier40_50.convertIdentifier(t));
+    if (src.hasStatus())
+      tgt.setStatusElement(convertFlagStatus(src.getStatusElement()));
+    for (org.hl7.fhir.r5.model.CodeableConcept t : src.getCategory())
+      tgt.addCategory(CodeableConcept40_50.convertCodeableConcept(t));
+    if (src.hasCode())
+      tgt.setCode(CodeableConcept40_50.convertCodeableConcept(src.getCode()));
+    if (src.hasSubject())
+      tgt.setSubject(Reference40_50.convertReference(src.getSubject()));
+    if (src.hasPeriod())
+      tgt.setPeriod(Period40_50.convertPeriod(src.getPeriod()));
+    if (src.hasEncounter())
+      tgt.setEncounter(Reference40_50.convertReference(src.getEncounter()));
+    if (src.hasAuthor())
+      tgt.setAuthor(Reference40_50.convertReference(src.getAuthor()));
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Flag.FlagStatus> convertFlagStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Flag.FlagStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Flag.FlagStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Flag.FlagStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case ACTIVE:
-                tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.ACTIVE);
-                break;
-            case INACTIVE:
-                tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.INACTIVE);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.ENTEREDINERROR);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Flag.FlagStatus> convertFlagStatus(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Flag.FlagStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Flag.FlagStatus> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Flag.FlagStatusEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case ACTIVE:
+        tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.ACTIVE);
+        break;
+      case INACTIVE:
+        tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.INACTIVE);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.ENTEREDINERROR);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r5.model.Flag.FlagStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Flag.FlagStatus> convertFlagStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Flag.FlagStatus> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Flag.FlagStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Flag.FlagStatusEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case ACTIVE:
-                tgt.setValue(org.hl7.fhir.r4.model.Flag.FlagStatus.ACTIVE);
-                break;
-            case INACTIVE:
-                tgt.setValue(org.hl7.fhir.r4.model.Flag.FlagStatus.INACTIVE);
-                break;
-            case ENTEREDINERROR:
-                tgt.setValue(org.hl7.fhir.r4.model.Flag.FlagStatus.ENTEREDINERROR);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.Flag.FlagStatus.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Flag.FlagStatus> convertFlagStatus(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Flag.FlagStatus> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.Flag.FlagStatus> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.Flag.FlagStatusEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case ACTIVE:
+        tgt.setValue(org.hl7.fhir.r4.model.Flag.FlagStatus.ACTIVE);
+        break;
+      case INACTIVE:
+        tgt.setValue(org.hl7.fhir.r4.model.Flag.FlagStatus.INACTIVE);
+        break;
+      case ENTEREDINERROR:
+        tgt.setValue(org.hl7.fhir.r4.model.Flag.FlagStatus.ENTEREDINERROR);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r4.model.Flag.FlagStatus.NULL);
+        break;
     }
+    return tgt;
+  }
 }

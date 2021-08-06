@@ -30,21 +30,6 @@ package org.hl7.fhir.convertors.misc;
  */
 
 
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.hl7.fhir.dstu3.context.IWorkerContext;
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
@@ -67,43 +52,24 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
+
 public class ISO21090Importer {
-  
-  private class Property {
-    private boolean isattr;
-    private String name;
-    private int min;
-    private int max;
-    private String type;
-    private String doco;
-    private String binding;
-  }
-  
-  private class DataType {
-    private boolean isAbstract;
-    private String name;
-    private String doco;
-    private String parent;
-    private List<Property> properties = new ArrayList<Property>();
-    
-  }
-  
-  public class EnumValueSet {
-    private String name;
-    private String template;
-    private String system;
-    private List<String> codes = new ArrayList<String>();
-    private Map<String, String> members = new HashMap<String, String>();
-  }
-  
+
+  private final Map<String, EnumValueSet> bindings = new HashMap<String, EnumValueSet>();
+  private final Map<String, DataType> types = new HashMap<String, DataType>();
+  private IWorkerContext ctxt;
+  private Element schema;
+
   public static void main(String[] args) throws Exception {
     new ISO21090Importer().process();
   }
-
-  private IWorkerContext ctxt;
-  private Element schema;
-  private Map<String, EnumValueSet> bindings = new HashMap<String, EnumValueSet>();
-  private Map<String, DataType> types = new HashMap<String, DataType>();
 
   private void process() throws Exception {
     ctxt = SimpleWorkerContext.fromPack("C:\\work\\org.hl7.fhir\\build\\publish\\igpack.zip");
@@ -111,7 +77,7 @@ public class ISO21090Importer {
     processEnums();
     processDataTypes();
     generate();
-    
+
     System.out.print("done");
   }
 
@@ -127,8 +93,8 @@ public class ISO21090Importer {
   private void generateType(DataType dt) throws Exception {
     StructureDefinition sd = new StructureDefinition();
     sd.setId(dt.name);
-    sd.setUrl("http://hl7.org/fhir/iso21090/StructureDefinition/"+sd.getId());
-    sd.setName(dt.name+" data type");
+    sd.setUrl("http://hl7.org/fhir/iso21090/StructureDefinition/" + sd.getId());
+    sd.setName(dt.name + " data type");
     sd.setStatus(PublicationStatus.ACTIVE);
     sd.setExperimental(false);
     sd.setPublisher("HL7 / ISO");
@@ -140,7 +106,7 @@ public class ISO21090Importer {
     if (dt.parent == null)
       sd.setBaseDefinition("http://hl7.org/fhir/StructureDefinition/Element");
     else
-      sd.setBaseDefinition("http://hl7.org/fhir/iso21090/StructureDefinition/"+dt.parent);
+      sd.setBaseDefinition("http://hl7.org/fhir/iso21090/StructureDefinition/" + dt.parent);
     sd.setDerivation(TypeDerivationRule.SPECIALIZATION);
     ElementDefinition ed = sd.getDifferential().addElement();
     ed.setPath(dt.name);
@@ -155,13 +121,13 @@ public class ISO21090Importer {
       addParentProperties(sd.getSnapshot().getElement(), dt.name, dt.parent, false, true);
     produceProperties(sd.getSnapshot().getElement(), dt.name, dt.properties, false, true);
     ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\iso21090\\StructureDefinition-"+dt.name+".xml"), sd);    
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\iso21090\\StructureDefinition-" + dt.name + ".xml"), sd);
   }
-  
+
   private void addParentProperties(List<ElementDefinition> elements, String name, String parent, boolean attrMode, boolean snapshot) throws FHIRFormatError {
     DataType dt = types.get(parent);
     if (dt == null)
-      throw new Error("No find "+parent);
+      throw new Error("No find " + parent);
     if (dt.parent != null)
       addParentProperties(elements, name, dt.parent, attrMode, snapshot);
     produceProperties(elements, name, dt.properties, attrMode, snapshot);
@@ -172,7 +138,7 @@ public class ISO21090Importer {
       if (p.isattr == attrMode) {
         ElementDefinition ed = new ElementDefinition();
         elements.add(ed);
-        ed.setPath(name+"."+p.name);
+        ed.setPath(name + "." + p.name);
         if (p.type.startsWith("xsd:"))
           ToolingExtensions.addStringExtension(ed.addType(), ToolingExtensions.EXT_XML_TYPE, p.type);
         else
@@ -183,7 +149,7 @@ public class ISO21090Importer {
         if (p.isattr)
           ed.addRepresentation(PropertyRepresentation.XMLATTR);
         if (p.binding != null)
-          ed.getBinding().setStrength(BindingStrength.REQUIRED).setValueSet(new UriType("http://hl7.org/fhir/iso21090/ValueSet/"+p.binding));
+          ed.getBinding().setStrength(BindingStrength.REQUIRED).setValueSet(new UriType("http://hl7.org/fhir/iso21090/ValueSet/" + p.binding));
         if (snapshot)
           ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
       }
@@ -193,20 +159,20 @@ public class ISO21090Importer {
   private void generateValueSet(EnumValueSet evs) throws Exception {
     ValueSet bvs = ctxt.fetchResource(ValueSet.class, evs.template);
     if (bvs == null)
-      throw new Exception("Did not find template value set "+evs.template);
+      throw new Exception("Did not find template value set " + evs.template);
     ValueSet vs = bvs.copy();
     vs.getCompose().getInclude().clear();
     vs.getIdentifier().clear();
-    vs.setName("ISO 20190 "+evs.name+" Enumeration");
+    vs.setName("ISO 20190 " + evs.name + " Enumeration");
     vs.setId(evs.name);
-    vs.setUrl("http://hl7.org/fhir/iso21090/ValueSet/"+vs.getId());
+    vs.setUrl("http://hl7.org/fhir/iso21090/ValueSet/" + vs.getId());
     vs.setDate(new Date());
     vs.setExperimental(false);
     ConceptSetComponent inc = vs.getCompose().addInclude().setSystem(evs.system);
     for (String code : evs.codes) {
       inc.addConcept().setCode(code);
     }
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\iso21090\\ValueSet-"+evs.name+".xml"), vs);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\iso21090\\ValueSet-" + evs.name + ".xml"), vs);
   }
 
   private void processDataTypes() {
@@ -215,7 +181,7 @@ public class ISO21090Importer {
       if (type.getTagName().equals("xsd:complexType")) {
         String n = type.getAttribute("name");
         if (!(n.contains(".") || n.contains("_") || n.equals("XReference")))
-            processDataType(n, type);
+          processDataType(n, type);
       }
       type = XMLUtil.getNextSibling(type);
     }
@@ -236,7 +202,7 @@ public class ISO21090Importer {
     }
     if (cnt.getTagName().equals("xsd:annotation"))
       cnt = XMLUtil.getNextSibling(cnt);
-    System.out.println(n+" ("+dt.parent+")");
+    System.out.println(n + " (" + dt.parent + ")");
     while (cnt != null) {
       if (cnt.getTagName().equals("xsd:attribute")) {
         processAttribute(dt, cnt);
@@ -246,12 +212,12 @@ public class ISO21090Importer {
           if (e.getTagName().equals("xsd:element")) {
             processElement(dt, e);
           } else
-            System.out.println("2. ignore "+e.getTagName());
-          
+            System.out.println("2. ignore " + e.getTagName());
+
           e = XMLUtil.getNextSibling(e);
         }
       } else
-        System.out.println("ignore "+cnt.getTagName());
+        System.out.println("ignore " + cnt.getTagName());
       cnt = XMLUtil.getNextSibling(cnt);
     }
   }
@@ -264,7 +230,7 @@ public class ISO21090Importer {
     prop.type = elem.getAttribute("type");
     prop.doco = getDoco(elem);
     dt.properties.add(prop);
-    System.out.println("  "+prop.name+" : "+prop.type+" ["+Integer.toString(prop.min)+".."+Integer.toString(prop.max)+"]");
+    System.out.println("  " + prop.name + " : " + prop.type + " [" + prop.min + ".." + prop.max + "]");
   }
 
   private void processAttribute(DataType dt, Element attr) {
@@ -274,10 +240,10 @@ public class ISO21090Importer {
     if (!prop.type.startsWith("xsd:")) {
       if (Utilities.noString(prop.type))
         prop.type = "xsd:string";
-      else if (bindings.containsKey(prop.type)) { 
+      else if (bindings.containsKey(prop.type)) {
         prop.binding = prop.type;
         prop.type = "xsd:string";
-      } else if (prop.type.startsWith("set_") && bindings.containsKey(prop.type.substring(4))) { 
+      } else if (prop.type.startsWith("set_") && bindings.containsKey(prop.type.substring(4))) {
         prop.binding = prop.type.substring(4);
         prop.type = "xsd:string";
         prop.max = Integer.MAX_VALUE;
@@ -288,14 +254,14 @@ public class ISO21090Importer {
       else if ("Decimal".equals(prop.type))
         prop.type = "xsd:decimal";
       else
-        throw new Error("Unknown type "+prop.type+" on "+dt.name+"."+prop.name);
-    }     
+        throw new Error("Unknown type " + prop.type + " on " + dt.name + "." + prop.name);
+    }
     prop.min = "optional".equals(attr.getAttribute("use")) ? 0 : 1;
     prop.max = 1;
     prop.doco = getDoco(attr);
     prop.isattr = true;
     dt.properties.add(prop);
-    System.out.println("  "+prop.name+" : "+prop.type+" ["+Integer.toString(prop.min)+".."+Integer.toString(prop.max)+"]");
+    System.out.println("  " + prop.name + " : " + prop.type + " [" + prop.min + ".." + prop.max + "]");
   }
 
   private void processEnums() {
@@ -317,7 +283,7 @@ public class ISO21090Importer {
     vs.name = n;
     String v3n;
     if (n.contains("EntityName"))
-      v3n = n+"R2";
+      v3n = n + "R2";
     else if (n.equals("Compression"))
       v3n = "CompressionAlgorithm";
     else if (n.equals("UpdateMode"))
@@ -325,32 +291,58 @@ public class ISO21090Importer {
     else if (n.equals("UncertaintyType"))
       v3n = "ProbabilityDistributionType";
     else if (n.equals("TelecommunicationAddressUse") || n.equals("PostalAddressUse"))
-      v3n = "AddressUse"; 
+      v3n = "AddressUse";
     else if (n.equals("TelecommunicationCapability"))
-      v3n = "TelecommunicationCapabilities"; 
+      v3n = "TelecommunicationCapabilities";
     else
       v3n = n;
-    vs.system = "http://hl7.org/fhir/v3-"+v3n;
-    vs.template = "http://hl7.org/fhir/ValueSet/v3-"+v3n;
-    System.out.println("Enum: "+n+" == "+vs.system);
+    vs.system = "http://hl7.org/fhir/v3-" + v3n;
+    vs.template = "http://hl7.org/fhir/ValueSet/v3-" + v3n;
+    System.out.println("Enum: " + n + " == " + vs.system);
     while (en != null) {
       vs.codes.add(en.getAttribute("value"));
       vs.members.put(en.getAttribute("value"), getDoco(en));
-      en = XMLUtil.getNextSibling(en);       
+      en = XMLUtil.getNextSibling(en);
     }
   }
-
 
   private String getDoco(Element en) {
     Element doco = XMLUtil.getNamedChild(XMLUtil.getNamedChild(en, "xsd:annotation"), "xsd:documentation");
     return doco == null ? null : doco.getTextContent();
   }
 
-  private void load() throws ParserConfigurationException, FileNotFoundException, SAXException, IOException {
+  private void load() throws ParserConfigurationException, SAXException, IOException {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(false);
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.parse(new FileInputStream("C:\\work\\projects\\org.hl7.v3.dt\\iso\\iso-21090-datatypes.xsd"));
     schema = doc.getDocumentElement();
+  }
+
+  private class Property {
+    private boolean isattr;
+    private String name;
+    private int min;
+    private int max;
+    private String type;
+    private String doco;
+    private String binding;
+  }
+
+  private class DataType {
+    private final List<Property> properties = new ArrayList<Property>();
+    private boolean isAbstract;
+    private String name;
+    private String doco;
+    private String parent;
+
+  }
+
+  public class EnumValueSet {
+    private final List<String> codes = new ArrayList<String>();
+    private final Map<String, String> members = new HashMap<String, String>();
+    private String name;
+    private String template;
+    private String system;
   }
 }

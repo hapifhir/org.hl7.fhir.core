@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.ContactDetail40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.metadata40_50.UsageContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.*;
@@ -37,153 +35,159 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class CompartmentDefinition40_50 extends VersionConvertor_40_50 {
+public class CompartmentDefinition40_50 {
 
-    public static org.hl7.fhir.r5.model.CompartmentDefinition convertCompartmentDefinition(org.hl7.fhir.r4.model.CompartmentDefinition src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.CompartmentDefinition tgt = new org.hl7.fhir.r5.model.CompartmentDefinition();
-        copyDomainResource(src, tgt);
-        if (src.hasUrl())
-            tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
-        if (src.hasVersion())
-            tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
-        if (src.hasName())
-            tgt.setNameElement(String40_50.convertString(src.getNameElement()));
-        if (src.hasStatus())
-            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
-        if (src.hasExperimental())
-            tgt.setExperimentalElement(Boolean40_50.convertBoolean(src.getExperimentalElement()));
-        if (src.hasDate())
-            tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
-        if (src.hasPublisher())
-            tgt.setPublisherElement(String40_50.convertString(src.getPublisherElement()));
-        for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact()) tgt.addContact(ContactDetail40_50.convertContactDetail(t));
-        if (src.hasDescription())
-            tgt.setDescriptionElement(MarkDown40_50.convertMarkdown(src.getDescriptionElement()));
-        for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext()) tgt.addUseContext(UsageContext40_50.convertUsageContext(t));
-        if (src.hasPurpose())
-            tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
-        if (src.hasCode())
-            tgt.setCodeElement(convertCompartmentType(src.getCodeElement()));
-        if (src.hasSearch())
-            tgt.setSearchElement(Boolean40_50.convertBoolean(src.getSearchElement()));
-        for (org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.CompartmentDefinition convertCompartmentDefinition(org.hl7.fhir.r4.model.CompartmentDefinition src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.CompartmentDefinition tgt = new org.hl7.fhir.r5.model.CompartmentDefinition();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    if (src.hasUrl())
+      tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
+    if (src.hasVersion())
+      tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
+    if (src.hasName())
+      tgt.setNameElement(String40_50.convertString(src.getNameElement()));
+    if (src.hasStatus())
+      tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
+    if (src.hasExperimental())
+      tgt.setExperimentalElement(Boolean40_50.convertBoolean(src.getExperimentalElement()));
+    if (src.hasDate())
+      tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
+    if (src.hasPublisher())
+      tgt.setPublisherElement(String40_50.convertString(src.getPublisherElement()));
+    for (org.hl7.fhir.r4.model.ContactDetail t : src.getContact())
+      tgt.addContact(ContactDetail40_50.convertContactDetail(t));
+    if (src.hasDescription())
+      tgt.setDescriptionElement(MarkDown40_50.convertMarkdown(src.getDescriptionElement()));
+    for (org.hl7.fhir.r4.model.UsageContext t : src.getUseContext())
+      tgt.addUseContext(UsageContext40_50.convertUsageContext(t));
+    if (src.hasPurpose())
+      tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
+    if (src.hasCode())
+      tgt.setCodeElement(convertCompartmentType(src.getCodeElement()));
+    if (src.hasSearch())
+      tgt.setSearchElement(Boolean40_50.convertBoolean(src.getSearchElement()));
+    for (org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource())
+      tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.CompartmentDefinition convertCompartmentDefinition(org.hl7.fhir.r5.model.CompartmentDefinition src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.CompartmentDefinition tgt = new org.hl7.fhir.r4.model.CompartmentDefinition();
-        copyDomainResource(src, tgt);
-        if (src.hasUrl())
-            tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
-        if (src.hasVersion())
-            tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
-        if (src.hasName())
-            tgt.setNameElement(String40_50.convertString(src.getNameElement()));
-        if (src.hasStatus())
-            tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
-        if (src.hasExperimental())
-            tgt.setExperimentalElement(Boolean40_50.convertBoolean(src.getExperimentalElement()));
-        if (src.hasDate())
-            tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
-        if (src.hasPublisher())
-            tgt.setPublisherElement(String40_50.convertString(src.getPublisherElement()));
-        for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact()) tgt.addContact(ContactDetail40_50.convertContactDetail(t));
-        if (src.hasDescription())
-            tgt.setDescriptionElement(MarkDown40_50.convertMarkdown(src.getDescriptionElement()));
-        for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext()) tgt.addUseContext(UsageContext40_50.convertUsageContext(t));
-        if (src.hasPurpose())
-            tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
-        if (src.hasCode())
-            tgt.setCodeElement(convertCompartmentType(src.getCodeElement()));
-        if (src.hasSearch())
-            tgt.setSearchElement(Boolean40_50.convertBoolean(src.getSearchElement()));
-        for (org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource()) tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.CompartmentDefinition convertCompartmentDefinition(org.hl7.fhir.r5.model.CompartmentDefinition src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.CompartmentDefinition tgt = new org.hl7.fhir.r4.model.CompartmentDefinition();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    if (src.hasUrl())
+      tgt.setUrlElement(Uri40_50.convertUri(src.getUrlElement()));
+    if (src.hasVersion())
+      tgt.setVersionElement(String40_50.convertString(src.getVersionElement()));
+    if (src.hasName())
+      tgt.setNameElement(String40_50.convertString(src.getNameElement()));
+    if (src.hasStatus())
+      tgt.setStatusElement(Enumerations40_50.convertPublicationStatus(src.getStatusElement()));
+    if (src.hasExperimental())
+      tgt.setExperimentalElement(Boolean40_50.convertBoolean(src.getExperimentalElement()));
+    if (src.hasDate())
+      tgt.setDateElement(DateTime40_50.convertDateTime(src.getDateElement()));
+    if (src.hasPublisher())
+      tgt.setPublisherElement(String40_50.convertString(src.getPublisherElement()));
+    for (org.hl7.fhir.r5.model.ContactDetail t : src.getContact())
+      tgt.addContact(ContactDetail40_50.convertContactDetail(t));
+    if (src.hasDescription())
+      tgt.setDescriptionElement(MarkDown40_50.convertMarkdown(src.getDescriptionElement()));
+    for (org.hl7.fhir.r5.model.UsageContext t : src.getUseContext())
+      tgt.addUseContext(UsageContext40_50.convertUsageContext(t));
+    if (src.hasPurpose())
+      tgt.setPurposeElement(MarkDown40_50.convertMarkdown(src.getPurposeElement()));
+    if (src.hasCode())
+      tgt.setCodeElement(convertCompartmentType(src.getCodeElement()));
+    if (src.hasSearch())
+      tgt.setSearchElement(Boolean40_50.convertBoolean(src.getSearchElement()));
+    for (org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent t : src.getResource())
+      tgt.addResource(convertCompartmentDefinitionResourceComponent(t));
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> convertCompartmentType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.CompartmentTypeEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case PATIENT:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.PATIENT);
-                break;
-            case ENCOUNTER:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.ENCOUNTER);
-                break;
-            case RELATEDPERSON:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.RELATEDPERSON);
-                break;
-            case PRACTITIONER:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.PRACTITIONER);
-                break;
-            case DEVICE:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.DEVICE);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> convertCompartmentType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.Enumerations.CompartmentTypeEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case PATIENT:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.PATIENT);
+        break;
+      case ENCOUNTER:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.ENCOUNTER);
+        break;
+      case RELATEDPERSON:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.RELATEDPERSON);
+        break;
+      case PRACTITIONER:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.PRACTITIONER);
+        break;
+      case DEVICE:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.DEVICE);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r5.model.Enumerations.CompartmentType.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType> convertCompartmentType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentTypeEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case PATIENT:
-                tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.PATIENT);
-                break;
-            case ENCOUNTER:
-                tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.ENCOUNTER);
-                break;
-            case RELATEDPERSON:
-                tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.RELATEDPERSON);
-                break;
-            case PRACTITIONER:
-                tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.PRACTITIONER);
-                break;
-            case DEVICE:
-                tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.DEVICE);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType> convertCompartmentType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.Enumerations.CompartmentType> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentTypeEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case PATIENT:
+        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.PATIENT);
+        break;
+      case ENCOUNTER:
+        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.ENCOUNTER);
+        break;
+      case RELATEDPERSON:
+        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.RELATEDPERSON);
+        break;
+      case PRACTITIONER:
+        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.PRACTITIONER);
+        break;
+      case DEVICE:
+        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.DEVICE);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentType.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent convertCompartmentDefinitionResourceComponent(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasCode())
-            tgt.setCodeElement(Code40_50.convertResourceEnum(src.getCodeElement()));
-        for (org.hl7.fhir.r4.model.StringType t : src.getParam()) tgt.getParam().add(String40_50.convertString(t));
-        if (src.hasDocumentation())
-            tgt.setDocumentationElement(String40_50.convertString(src.getDocumentationElement()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent convertCompartmentDefinitionResourceComponent(org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    if (src.hasCode())
+      tgt.setCodeElement(Code40_50.convertResourceEnum(src.getCodeElement()));
+    for (org.hl7.fhir.r4.model.StringType t : src.getParam()) tgt.getParam().add(String40_50.convertString(t));
+    if (src.hasDocumentation())
+      tgt.setDocumentationElement(String40_50.convertString(src.getDocumentationElement()));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent convertCompartmentDefinitionResourceComponent(org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasCode())
-            tgt.setCodeElement(Code40_50.convertResourceEnum(src.getCodeElement()));
-        for (org.hl7.fhir.r5.model.StringType t : src.getParam()) tgt.getParam().add(String40_50.convertString(t));
-        if (src.hasDocumentation())
-            tgt.setDocumentationElement(String40_50.convertString(src.getDocumentationElement()));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent convertCompartmentDefinitionResourceComponent(org.hl7.fhir.r5.model.CompartmentDefinition.CompartmentDefinitionResourceComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent tgt = new org.hl7.fhir.r4.model.CompartmentDefinition.CompartmentDefinitionResourceComponent();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    if (src.hasCode())
+      tgt.setCodeElement(Code40_50.convertResourceEnum(src.getCodeElement()));
+    for (org.hl7.fhir.r5.model.StringType t : src.getParam()) tgt.getParam().add(String40_50.convertString(t));
+    if (src.hasDocumentation())
+      tgt.setDocumentationElement(String40_50.convertString(src.getDocumentationElement()));
+    return tgt;
+  }
 }

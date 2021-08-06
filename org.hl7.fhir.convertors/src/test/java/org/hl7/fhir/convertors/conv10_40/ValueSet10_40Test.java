@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv10_40;
 
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
 import org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor;
 import org.hl7.fhir.r4.formats.JsonParser;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +20,7 @@ public class ValueSet10_40Test {
 
     org.hl7.fhir.dstu2.model.ValueSet dstu2 = (org.hl7.fhir.dstu2.model.ValueSet) new org.hl7.fhir.dstu2.formats.JsonParser().parse(dstu2_input);
     BaseAdvisor_10_40 advisor = new IGR2ConvertorAdvisor();
-    org.hl7.fhir.r4.model.Resource r4_actual = VersionConvertor_10_40.convertResource(dstu2, advisor);
+    org.hl7.fhir.r4.model.Resource r4_actual = VersionConvertorFactory_10_40.convertResource(dstu2, advisor);
 
     org.hl7.fhir.r4.formats.JsonParser r4_parser = new org.hl7.fhir.r4.formats.JsonParser();
     JsonParser parser = new JsonParser();

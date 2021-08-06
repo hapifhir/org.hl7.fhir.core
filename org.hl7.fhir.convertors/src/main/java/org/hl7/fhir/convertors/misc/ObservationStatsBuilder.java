@@ -30,6 +30,14 @@ package org.hl7.fhir.convertors.misc;
  */
 
 
+import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
+import org.hl7.fhir.dstu3.formats.XmlParser;
+import org.hl7.fhir.dstu3.model.*;
+import org.hl7.fhir.dstu3.model.Bundle.BundleType;
+import org.hl7.fhir.dstu3.model.Observation.ObservationComponentComponent;
+import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.exceptions.FHIRFormatError;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,35 +46,21 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.UUID;
 
-import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
-import org.hl7.fhir.dstu3.formats.XmlParser;
-import org.hl7.fhir.dstu3.model.Bundle;
-import org.hl7.fhir.dstu3.model.Bundle.BundleType;
-import org.hl7.fhir.dstu3.model.DateTimeType;
-import org.hl7.fhir.dstu3.model.Observation;
-import org.hl7.fhir.dstu3.model.Observation.ObservationComponentComponent;
-import org.hl7.fhir.dstu3.model.Observation.ObservationStatus;
-import org.hl7.fhir.dstu3.model.Quantity;
-import org.hl7.fhir.dstu3.model.Reference;
-import org.hl7.fhir.dstu3.model.Type;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.exceptions.FHIRFormatError;
-
 public class ObservationStatsBuilder {
 
-  public static void main(String[] args) throws FileNotFoundException, IOException, FHIRException {
+  public static void main(String[] args) throws IOException, FHIRException {
     buildVitalSignsSet();
     buildStatsSeries();
-  
+
   }
 
-  private static void buildVitalSignsSet() throws FileNotFoundException, IOException, FHIRFormatError {
+  private static void buildVitalSignsSet() throws IOException, FHIRFormatError {
     Calendar base = Calendar.getInstance();
     base.add(Calendar.DAY_OF_MONTH, -1);
     Bundle b = new Bundle();
     b.setType(BundleType.COLLECTION);
     b.setId(UUID.randomUUID().toString().toLowerCase());
-    
+
     vitals(b, base, 0, 80, 120, 95, 37.1);
     vitals(b, base, 35, 85, 140, 98, 36.9);
     vitals(b, base, 53, 75, 110, 96, 36.2);
@@ -77,14 +71,14 @@ public class ObservationStatsBuilder {
     vitals(b, base, 120, 90, 150, 97, 37.3);
     vitals(b, base, 130, 95, 133, 97, 37.2);
     vitals(b, base, 150, 85, 125, 98, 37.1);
-    
+
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\vitals.xml"), b);
   }
 
-  private static void vitals(Bundle b,  Calendar base, int minutes, int diastolic, int systolic, int sat, double temp) throws FHIRFormatError {
+  private static void vitals(Bundle b, Calendar base, int minutes, int diastolic, int systolic, int sat, double temp) throws FHIRFormatError {
     Calendar when = (Calendar) base.clone();
     when.add(Calendar.MINUTE, minutes);
-    
+
     baseVitals(b, when, minutes, "sat", "59408-5", "O2 Saturation").setValue(makeQty(sat, "%", "%"));
     baseVitals(b, when, minutes, "temp", "8310-5", "Body temperature").setValue(makeQty(temp, "\u00b0C", "Cel"));
     Observation obs = baseVitals(b, when, minutes, "bp", "85354-9", "Blood pressure");
@@ -93,11 +87,11 @@ public class ObservationStatsBuilder {
 
   }
 
-    private static ObservationComponentComponent component(Observation obs, String lCode, String text) {
-      ObservationComponentComponent comp = obs.addComponent();
-      comp.getCode().setText(text).addCoding().setCode(lCode).setSystem("http://loinc.org");
-      return comp;
-    }
+  private static ObservationComponentComponent component(Observation obs, String lCode, String text) {
+    ObservationComponentComponent comp = obs.addComponent();
+    comp.getCode().setText(text).addCoding().setCode(lCode).setSystem("http://loinc.org");
+    return comp;
+  }
 
   private static Type makeQty(int sat, String human, String ucum) {
     Quantity q = new Quantity();
@@ -117,25 +111,24 @@ public class ObservationStatsBuilder {
     q.setValue(new BigDecimal(val));
     return q;
   }
-  
+
   private static Observation baseVitals(Bundle b, Calendar when, int min, String name, String lCode, String text) throws FHIRFormatError {
     Observation obs = new Observation();
-    obs.setId("obs-vitals-"+name+"-"+Integer.toString(min));
+    obs.setId("obs-vitals-" + name + "-" + min);
     obs.setSubject(new Reference().setReference("Patient/123"));
     obs.setStatus(ObservationStatus.FINAL);
     obs.setEffective(new DateTimeType(when));
     obs.addCategory().setText("Vital Signs").addCoding().setSystem("http://hl7.org/fhir/observation-category").setCode("vital-signs").setDisplay("Vital Signs");
     obs.getCode().setText(text).addCoding().setCode(lCode).setSystem("http://loinc.org");
-    b.addEntry().setFullUrl("http://hl7.org/fhir/Observation/"+obs.getId()).setResource(obs);
+    b.addEntry().setFullUrl("http://hl7.org/fhir/Observation/" + obs.getId()).setResource(obs);
     return obs;
   }
-/**
- *     
 
- * @throws FHIRException
- * @throws IOException
- * @throws FileNotFoundException
- */
+  /**
+   * @throws FHIRException
+   * @throws IOException
+   * @throws FileNotFoundException
+   */
   public static void buildStatsSeries() throws FHIRException, IOException, FileNotFoundException {
     Bundle b = new Bundle();
     b.setType(BundleType.COLLECTION);
@@ -150,8 +143,8 @@ public class ObservationStatsBuilder {
     addAge(b, 5, 7, "19.3");
     addAge(b, 5, 8, "19.5");
     addAge(b, 5, 9, "19.6");
-    addAge(b, 5,10, "19.8");
-    addAge(b, 5,11, "20.0");
+    addAge(b, 5, 10, "19.8");
+    addAge(b, 5, 11, "20.0");
     addAge(b, 6, 0, "20.2");
     addAge(b, 6, 1, "20.3");
     addAge(b, 6, 2, "20.5");
@@ -162,8 +155,8 @@ public class ObservationStatsBuilder {
     addAge(b, 6, 7, "21.4");
     addAge(b, 6, 8, "21.6");
     addAge(b, 6, 9, "21.8");
-    addAge(b, 6,10, "22.0");
-    addAge(b, 6,11, "22.2");
+    addAge(b, 6, 10, "22.0");
+    addAge(b, 6, 11, "22.2");
     addAge(b, 7, 0, "22.4");
     addAge(b, 7, 1, "22.6");
     addAge(b, 7, 2, "22.8");
@@ -174,8 +167,8 @@ public class ObservationStatsBuilder {
     addAge(b, 7, 7, "23.9");
     addAge(b, 7, 8, "24.1");
     addAge(b, 7, 9, "24.3");
-    addAge(b, 7,10, "24.5");
-    addAge(b, 7,11, "24.8");
+    addAge(b, 7, 10, "24.5");
+    addAge(b, 7, 11, "24.8");
     addAge(b, 8, 0, "25.0");
     addAge(b, 8, 1, "25.3");
     addAge(b, 8, 2, "25.5");
@@ -186,8 +179,8 @@ public class ObservationStatsBuilder {
     addAge(b, 8, 7, "26.8");
     addAge(b, 8, 8, "27.1");
     addAge(b, 8, 9, "27.4");
-    addAge(b, 8,10, "27.6");
-    addAge(b, 8,11, "27.9");
+    addAge(b, 8, 10, "27.6");
+    addAge(b, 8, 11, "27.9");
     addAge(b, 9, 0, "28.2");
     addAge(b, 9, 1, "28.5");
     addAge(b, 9, 2, "28.8");
@@ -202,13 +195,13 @@ public class ObservationStatsBuilder {
     addAge(b, 9, 11, "31.5");
     addAge(b, 10, 0, "31.9");
 
-  
+
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\obs.xml"), b);
   }
 
   private static void addAge(Bundle b, int y, int m, String v) throws FHIRException {
     Observation obs = new Observation();
-    obs.setId("obs-example-age-weight-"+Integer.toString(y)+"-"+Integer.toString(m));
+    obs.setId("obs-example-age-weight-" + y + "-" + m);
     obs.setSubject(new Reference().setReference("Patient/123"));
     obs.setStatus(ObservationStatus.FINAL);
     Calendar when = Calendar.getInstance();
@@ -221,7 +214,7 @@ public class ObservationStatsBuilder {
     obs.getValueQuantity().setSystem("http://unitsofmeasure.org");
     obs.getValueQuantity().setUnit("kg");
     obs.getValueQuantity().setValue(new BigDecimal(v));
-    b.addEntry().setFullUrl("http://hl7.org/fhir/Observation/"+obs.getId()).setResource(obs);
+    b.addEntry().setFullUrl("http://hl7.org/fhir/Observation/" + obs.getId()).setResource(obs);
   }
 
 }

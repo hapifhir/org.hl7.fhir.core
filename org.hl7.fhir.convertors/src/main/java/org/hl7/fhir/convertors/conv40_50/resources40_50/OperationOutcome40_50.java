@@ -1,8 +1,6 @@
 package org.hl7.fhir.convertors.conv40_50.resources40_50;
 
-
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.primitive40_50.String40_50;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -36,321 +34,325 @@ import org.hl7.fhir.exceptions.FHIRException;
   
 */
 // Generated on Sun, Feb 24, 2019 11:37+1100 for FHIR v4.0.0
-public class OperationOutcome40_50 extends VersionConvertor_40_50 {
+public class OperationOutcome40_50 {
 
-    public static org.hl7.fhir.r5.model.OperationOutcome convertOperationOutcome(org.hl7.fhir.r4.model.OperationOutcome src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.OperationOutcome tgt = new org.hl7.fhir.r5.model.OperationOutcome();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.OperationOutcome convertOperationOutcome(org.hl7.fhir.r4.model.OperationOutcome src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.OperationOutcome tgt = new org.hl7.fhir.r5.model.OperationOutcome();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue())
+      tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.OperationOutcome convertOperationOutcome(org.hl7.fhir.r5.model.OperationOutcome src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.OperationOutcome tgt = new org.hl7.fhir.r4.model.OperationOutcome();
-        copyDomainResource(src, tgt);
-        for (org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue()) tgt.addIssue(convertOperationOutcomeIssueComponent(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.OperationOutcome convertOperationOutcome(org.hl7.fhir.r5.model.OperationOutcome src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.OperationOutcome tgt = new org.hl7.fhir.r4.model.OperationOutcome();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyDomainResource(src, tgt);
+    for (org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent t : src.getIssue())
+      tgt.addIssue(convertOperationOutcomeIssueComponent(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent convertOperationOutcomeIssueComponent(org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasSeverity())
-            tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
-        if (src.hasCode())
-            tgt.setCodeElement(convertIssueType(src.getCodeElement()));
-        if (src.hasDetails())
-            tgt.setDetails(CodeableConcept40_50.convertCodeableConcept(src.getDetails()));
-        if (src.hasDiagnostics())
-            tgt.setDiagnosticsElement(String40_50.convertString(src.getDiagnosticsElement()));
-        for (org.hl7.fhir.r4.model.StringType t : src.getLocation()) tgt.getLocation().add(String40_50.convertString(t));
-        for (org.hl7.fhir.r4.model.StringType t : src.getExpression()) tgt.getExpression().add(String40_50.convertString(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent convertOperationOutcomeIssueComponent(org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    if (src.hasSeverity())
+      tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
+    if (src.hasCode())
+      tgt.setCodeElement(convertIssueType(src.getCodeElement()));
+    if (src.hasDetails())
+      tgt.setDetails(CodeableConcept40_50.convertCodeableConcept(src.getDetails()));
+    if (src.hasDiagnostics())
+      tgt.setDiagnosticsElement(String40_50.convertString(src.getDiagnosticsElement()));
+    for (org.hl7.fhir.r4.model.StringType t : src.getLocation()) tgt.getLocation().add(String40_50.convertString(t));
+    for (org.hl7.fhir.r4.model.StringType t : src.getExpression())
+      tgt.getExpression().add(String40_50.convertString(t));
+    return tgt;
+  }
 
-    public static org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent convertOperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent src) throws FHIRException {
-        if (src == null)
-            return null;
-        org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent();
-        Element40_50.copyElement(src, tgt);
-        if (src.hasSeverity())
-            tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
-        if (src.hasCode())
-            tgt.setCodeElement(convertIssueType(src.getCodeElement()));
-        if (src.hasDetails())
-            tgt.setDetails(CodeableConcept40_50.convertCodeableConcept(src.getDetails()));
-        if (src.hasDiagnostics())
-            tgt.setDiagnosticsElement(String40_50.convertString(src.getDiagnosticsElement()));
-        for (org.hl7.fhir.r5.model.StringType t : src.getLocation()) tgt.getLocation().add(String40_50.convertString(t));
-        for (org.hl7.fhir.r5.model.StringType t : src.getExpression()) tgt.getExpression().add(String40_50.convertString(t));
-        return tgt;
-    }
+  public static org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent convertOperationOutcomeIssueComponent(org.hl7.fhir.r5.model.OperationOutcome.OperationOutcomeIssueComponent src) throws FHIRException {
+    if (src == null)
+      return null;
+    org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent tgt = new org.hl7.fhir.r4.model.OperationOutcome.OperationOutcomeIssueComponent();
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    if (src.hasSeverity())
+      tgt.setSeverityElement(convertIssueSeverity(src.getSeverityElement()));
+    if (src.hasCode())
+      tgt.setCodeElement(convertIssueType(src.getCodeElement()));
+    if (src.hasDetails())
+      tgt.setDetails(CodeableConcept40_50.convertCodeableConcept(src.getDetails()));
+    if (src.hasDiagnostics())
+      tgt.setDiagnosticsElement(String40_50.convertString(src.getDiagnosticsElement()));
+    for (org.hl7.fhir.r5.model.StringType t : src.getLocation()) tgt.getLocation().add(String40_50.convertString(t));
+    for (org.hl7.fhir.r5.model.StringType t : src.getExpression())
+      tgt.getExpression().add(String40_50.convertString(t));
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity> convertIssueSeverity(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.OperationOutcome.IssueSeverityEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case FATAL:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.FATAL);
-                break;
-            case ERROR:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR);
-                break;
-            case WARNING:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
-                break;
-            case INFORMATION:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity> convertIssueSeverity(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.OperationOutcome.IssueSeverityEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case FATAL:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.FATAL);
+        break;
+      case ERROR:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.ERROR);
+        break;
+      case WARNING:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.WARNING);
+        break;
+      case INFORMATION:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.INFORMATION);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity> convertIssueSeverity(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.OperationOutcome.IssueSeverityEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case FATAL:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.FATAL);
-                break;
-            case ERROR:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.ERROR);
-                break;
-            case WARNING:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.WARNING);
-                break;
-            case INFORMATION:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.INFORMATION);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity> convertIssueSeverity(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.OperationOutcome.IssueSeverityEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case FATAL:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.FATAL);
+        break;
+      case ERROR:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.ERROR);
+        break;
+      case WARNING:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.WARNING);
+        break;
+      case INFORMATION:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.INFORMATION);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueSeverity.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueType> convertIssueType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueType> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.OperationOutcome.IssueTypeEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case INVALID:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.INVALID);
-                break;
-            case STRUCTURE:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.STRUCTURE);
-                break;
-            case REQUIRED:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.REQUIRED);
-                break;
-            case VALUE:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.VALUE);
-                break;
-            case INVARIANT:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.INVARIANT);
-                break;
-            case SECURITY:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.SECURITY);
-                break;
-            case LOGIN:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.LOGIN);
-                break;
-            case UNKNOWN:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.UNKNOWN);
-                break;
-            case EXPIRED:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
-                break;
-            case FORBIDDEN:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.FORBIDDEN);
-                break;
-            case SUPPRESSED:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.SUPPRESSED);
-                break;
-            case PROCESSING:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.PROCESSING);
-                break;
-            case NOTSUPPORTED:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.NOTSUPPORTED);
-                break;
-            case DUPLICATE:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.DUPLICATE);
-                break;
-            case MULTIPLEMATCHES:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.MULTIPLEMATCHES);
-                break;
-            case NOTFOUND:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.NOTFOUND);
-                break;
-            case DELETED:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.DELETED);
-                break;
-            case TOOLONG:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.TOOLONG);
-                break;
-            case CODEINVALID:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.CODEINVALID);
-                break;
-            case EXTENSION:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXTENSION);
-                break;
-            case TOOCOSTLY:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.TOOCOSTLY);
-                break;
-            case BUSINESSRULE:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
-                break;
-            case CONFLICT:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.CONFLICT);
-                break;
-            case TRANSIENT:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.TRANSIENT);
-                break;
-            case LOCKERROR:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.LOCKERROR);
-                break;
-            case NOSTORE:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.NOSTORE);
-                break;
-            case EXCEPTION:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXCEPTION);
-                break;
-            case TIMEOUT:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.TIMEOUT);
-                break;
-            case INCOMPLETE:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.INCOMPLETE);
-                break;
-            case THROTTLED:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.THROTTLED);
-                break;
-            case INFORMATIONAL:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.INFORMATIONAL);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueType> convertIssueType(org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueType> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueType> tgt = new org.hl7.fhir.r5.model.Enumeration<>(new org.hl7.fhir.r5.model.OperationOutcome.IssueTypeEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case INVALID:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.INVALID);
+        break;
+      case STRUCTURE:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.STRUCTURE);
+        break;
+      case REQUIRED:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.REQUIRED);
+        break;
+      case VALUE:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.VALUE);
+        break;
+      case INVARIANT:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.INVARIANT);
+        break;
+      case SECURITY:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.SECURITY);
+        break;
+      case LOGIN:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.LOGIN);
+        break;
+      case UNKNOWN:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.UNKNOWN);
+        break;
+      case EXPIRED:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXPIRED);
+        break;
+      case FORBIDDEN:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.FORBIDDEN);
+        break;
+      case SUPPRESSED:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.SUPPRESSED);
+        break;
+      case PROCESSING:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.PROCESSING);
+        break;
+      case NOTSUPPORTED:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.NOTSUPPORTED);
+        break;
+      case DUPLICATE:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.DUPLICATE);
+        break;
+      case MULTIPLEMATCHES:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.MULTIPLEMATCHES);
+        break;
+      case NOTFOUND:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.NOTFOUND);
+        break;
+      case DELETED:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.DELETED);
+        break;
+      case TOOLONG:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.TOOLONG);
+        break;
+      case CODEINVALID:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.CODEINVALID);
+        break;
+      case EXTENSION:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXTENSION);
+        break;
+      case TOOCOSTLY:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.TOOCOSTLY);
+        break;
+      case BUSINESSRULE:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.BUSINESSRULE);
+        break;
+      case CONFLICT:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.CONFLICT);
+        break;
+      case TRANSIENT:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.TRANSIENT);
+        break;
+      case LOCKERROR:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.LOCKERROR);
+        break;
+      case NOSTORE:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.NOSTORE);
+        break;
+      case EXCEPTION:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.EXCEPTION);
+        break;
+      case TIMEOUT:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.TIMEOUT);
+        break;
+      case INCOMPLETE:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.INCOMPLETE);
+        break;
+      case THROTTLED:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.THROTTLED);
+        break;
+      case INFORMATIONAL:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.INFORMATIONAL);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r5.model.OperationOutcome.IssueType.NULL);
+        break;
     }
+    return tgt;
+  }
 
-    static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueType> convertIssueType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueType> src) throws FHIRException {
-        if (src == null || src.isEmpty())
-            return null;
-        org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.OperationOutcome.IssueTypeEnumFactory());
-        Element40_50.copyElement(src, tgt);
-        switch(src.getValue()) {
-            case INVALID:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.INVALID);
-                break;
-            case STRUCTURE:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.STRUCTURE);
-                break;
-            case REQUIRED:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.REQUIRED);
-                break;
-            case VALUE:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.VALUE);
-                break;
-            case INVARIANT:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.INVARIANT);
-                break;
-            case SECURITY:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.SECURITY);
-                break;
-            case LOGIN:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.LOGIN);
-                break;
-            case UNKNOWN:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.UNKNOWN);
-                break;
-            case EXPIRED:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.EXPIRED);
-                break;
-            case FORBIDDEN:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.FORBIDDEN);
-                break;
-            case SUPPRESSED:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.SUPPRESSED);
-                break;
-            case PROCESSING:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.PROCESSING);
-                break;
-            case NOTSUPPORTED:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.NOTSUPPORTED);
-                break;
-            case DUPLICATE:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.DUPLICATE);
-                break;
-            case MULTIPLEMATCHES:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.MULTIPLEMATCHES);
-                break;
-            case NOTFOUND:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.NOTFOUND);
-                break;
-            case DELETED:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.DELETED);
-                break;
-            case TOOLONG:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.TOOLONG);
-                break;
-            case CODEINVALID:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.CODEINVALID);
-                break;
-            case EXTENSION:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.EXTENSION);
-                break;
-            case TOOCOSTLY:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.TOOCOSTLY);
-                break;
-            case BUSINESSRULE:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.BUSINESSRULE);
-                break;
-            case CONFLICT:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.CONFLICT);
-                break;
-            case TRANSIENT:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.TRANSIENT);
-                break;
-            case LOCKERROR:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.LOCKERROR);
-                break;
-            case NOSTORE:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.NOSTORE);
-                break;
-            case EXCEPTION:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.EXCEPTION);
-                break;
-            case TIMEOUT:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.TIMEOUT);
-                break;
-            case INCOMPLETE:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.INCOMPLETE);
-                break;
-            case THROTTLED:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.THROTTLED);
-                break;
-            case INFORMATIONAL:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.INFORMATIONAL);
-                break;
-            default:
-                tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.NULL);
-                break;
-        }
-        return tgt;
+  static public org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueType> convertIssueType(org.hl7.fhir.r5.model.Enumeration<org.hl7.fhir.r5.model.OperationOutcome.IssueType> src) throws FHIRException {
+    if (src == null || src.isEmpty())
+      return null;
+    org.hl7.fhir.r4.model.Enumeration<org.hl7.fhir.r4.model.OperationOutcome.IssueType> tgt = new org.hl7.fhir.r4.model.Enumeration<>(new org.hl7.fhir.r4.model.OperationOutcome.IssueTypeEnumFactory());
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
+    switch (src.getValue()) {
+      case INVALID:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.INVALID);
+        break;
+      case STRUCTURE:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.STRUCTURE);
+        break;
+      case REQUIRED:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.REQUIRED);
+        break;
+      case VALUE:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.VALUE);
+        break;
+      case INVARIANT:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.INVARIANT);
+        break;
+      case SECURITY:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.SECURITY);
+        break;
+      case LOGIN:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.LOGIN);
+        break;
+      case UNKNOWN:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.UNKNOWN);
+        break;
+      case EXPIRED:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.EXPIRED);
+        break;
+      case FORBIDDEN:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.FORBIDDEN);
+        break;
+      case SUPPRESSED:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.SUPPRESSED);
+        break;
+      case PROCESSING:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.PROCESSING);
+        break;
+      case NOTSUPPORTED:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.NOTSUPPORTED);
+        break;
+      case DUPLICATE:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.DUPLICATE);
+        break;
+      case MULTIPLEMATCHES:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.MULTIPLEMATCHES);
+        break;
+      case NOTFOUND:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.NOTFOUND);
+        break;
+      case DELETED:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.DELETED);
+        break;
+      case TOOLONG:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.TOOLONG);
+        break;
+      case CODEINVALID:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.CODEINVALID);
+        break;
+      case EXTENSION:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.EXTENSION);
+        break;
+      case TOOCOSTLY:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.TOOCOSTLY);
+        break;
+      case BUSINESSRULE:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.BUSINESSRULE);
+        break;
+      case CONFLICT:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.CONFLICT);
+        break;
+      case TRANSIENT:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.TRANSIENT);
+        break;
+      case LOCKERROR:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.LOCKERROR);
+        break;
+      case NOSTORE:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.NOSTORE);
+        break;
+      case EXCEPTION:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.EXCEPTION);
+        break;
+      case TIMEOUT:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.TIMEOUT);
+        break;
+      case INCOMPLETE:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.INCOMPLETE);
+        break;
+      case THROTTLED:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.THROTTLED);
+        break;
+      case INFORMATIONAL:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.INFORMATIONAL);
+        break;
+      default:
+        tgt.setValue(org.hl7.fhir.r4.model.OperationOutcome.IssueType.NULL);
+        break;
     }
+    return tgt;
+  }
 }

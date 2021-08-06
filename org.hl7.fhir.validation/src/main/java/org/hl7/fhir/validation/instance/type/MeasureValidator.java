@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
-import org.hl7.fhir.convertors.VersionConvertor_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element;
@@ -215,14 +216,14 @@ public class MeasureValidator extends BaseValidator {
               throw new FHIRException(context.formatMessage(I18nConstants.UNSUPPORTED_VERSION_R2B));
             case STU3:
               org.hl7.fhir.dstu3.model.Resource r3 = new org.hl7.fhir.dstu3.formats.JsonParser().parse(json);
-              Resource r5 = VersionConvertor_30_50.convertResource(r3);
+              Resource r5 = VersionConvertorFactory_30_50.convertResource(r3);
               if (r5 instanceof Measure)
                 return (Measure) r5;
               else
                 return null;
             case R4:
               org.hl7.fhir.r4.model.Resource r4 = new org.hl7.fhir.r4.formats.JsonParser().parse(json);
-              r5 = VersionConvertor_40_50.convertResource(r4);
+              r5 = VersionConvertorFactory_40_50.convertResource(r4);
               if (r5 instanceof Measure)
                 return (Measure) r5;
               else

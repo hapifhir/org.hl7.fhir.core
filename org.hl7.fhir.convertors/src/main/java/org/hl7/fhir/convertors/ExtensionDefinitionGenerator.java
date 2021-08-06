@@ -34,14 +34,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
-import org.hl7.fhir.convertors.conv10_40.VersionConvertor_10_40;
-import org.hl7.fhir.convertors.conv14_40.VersionConvertor_14_40;
-import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.hl7.fhir.convertors.loaders.R2016MayToR4Loader;
 import org.hl7.fhir.convertors.loaders.R2ToR4Loader;
 import org.hl7.fhir.convertors.loaders.R3ToR4Loader;
 import org.hl7.fhir.convertors.misc.IGR2ConvertorAdvisor;
-import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.conformance.ProfileUtilities;
 import org.hl7.fhir.r4.context.BaseWorkerContext;
@@ -72,15 +71,23 @@ import java.util.*;
 
 public class ExtensionDefinitionGenerator {
 
+  private FHIRVersion sourceVersion;
+  private FHIRVersion targetVersion;
+  private String filename;
+  private StructureDefinition extbase;
+  private ElementDefinition extv;
+  private ProfileUtilities pu;
+  private BaseWorkerContext context;
+
   public static void main(String[] args) throws IOException, FHIRException {
     if (args.length == 0) {
       System.out.println("Extension Generator");
       System.out.println("===================");
-      System.out.println("");
+      System.out.println();
       System.out.println("See http://hl7.org/fhir/versions.html#extensions. This generates the packages");
-      System.out.println("");
+      System.out.println();
       System.out.println("parameters: -srcver [version] -tgtver [version] -package [filename]");
-      System.out.println("");
+      System.out.println();
       System.out.println("srcver: the source version to load");
       System.out.println("tgtver: the version to generate extension definitions for");
       System.out.println("package: the package to produce");
@@ -93,7 +100,6 @@ public class ExtensionDefinitionGenerator {
     }
   }
 
-
   private static String getNamedParam(String[] args, String param) {
     boolean found = false;
     for (String a : args) {
@@ -105,14 +111,6 @@ public class ExtensionDefinitionGenerator {
     }
     throw new Error("Unable to find parameter " + param);
   }
-
-  private FHIRVersion sourceVersion;
-  private FHIRVersion targetVersion;
-  private String filename;
-  private StructureDefinition extbase;
-  private ElementDefinition extv;
-  private ProfileUtilities pu;
-  private BaseWorkerContext context;
 
   public FHIRVersion getSourceVersion() {
     return sourceVersion;
@@ -148,7 +146,7 @@ public class ExtensionDefinitionGenerator {
 
   }
 
-  private List<StructureDefinition> buildExtensions(List<StructureDefinition> definitions) throws DefinitionException, FHIRException {
+  private List<StructureDefinition> buildExtensions(List<StructureDefinition> definitions) throws FHIRException {
     Set<String> types = new HashSet<>();
     List<StructureDefinition> list = new ArrayList<>();
     for (StructureDefinition type : definitions)
@@ -160,7 +158,7 @@ public class ExtensionDefinitionGenerator {
   }
 
 
-  private void buildExtensions(StructureDefinition type, List<StructureDefinition> list) throws DefinitionException, FHIRException {
+  private void buildExtensions(StructureDefinition type, List<StructureDefinition> list) throws FHIRException {
     for (ElementDefinition ed : type.getDifferential().getElement()) {
       if (ed.getPath().contains(".")) {
         if (!ed.getPath().endsWith(".extension") && !ed.getPath().endsWith(".modifierExtension")) {
@@ -174,7 +172,7 @@ public class ExtensionDefinitionGenerator {
     }
   }
 
-  private StructureDefinition generateExtension(StructureDefinition type, ElementDefinition ed) throws DefinitionException, FHIRException {
+  private StructureDefinition generateExtension(StructureDefinition type, ElementDefinition ed) throws FHIRException {
     StructureDefinition ext = new StructureDefinition();
     ext.setId("extension-" + ed.getPath().replace("[x]", ""));
     ext.setUrl("http://hl7.org/fhir/" + sourceVersion.toCode(3) + "/StructureDefinition/" + ext.getId());
@@ -405,14 +403,14 @@ public class ExtensionDefinitionGenerator {
 
   private byte[] saveResource(Resource resource, FHIRVersion v) throws IOException, FHIRException {
     if (v == FHIRVersion._3_0_1) {
-      org.hl7.fhir.dstu3.model.Resource res = VersionConvertor_30_40.convertResource(resource, new BaseAdvisor_30_40(false));
+      org.hl7.fhir.dstu3.model.Resource res = VersionConvertorFactory_30_40.convertResource(resource, new BaseAdvisor_30_40(false));
       return new org.hl7.fhir.dstu3.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._1_4_0) {
-      org.hl7.fhir.dstu2016may.model.Resource res = VersionConvertor_14_40.convertResource(resource);
+      org.hl7.fhir.dstu2016may.model.Resource res = VersionConvertorFactory_14_40.convertResource(resource);
       return new org.hl7.fhir.dstu2016may.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._1_0_2) {
       BaseAdvisor_10_40 advisor = new IGR2ConvertorAdvisor();
-      org.hl7.fhir.dstu2.model.Resource res = VersionConvertor_10_40.convertResource(resource, advisor);
+      org.hl7.fhir.dstu2.model.Resource res = VersionConvertorFactory_10_40.convertResource(resource, advisor);
       return new org.hl7.fhir.dstu2.formats.JsonParser().composeBytes(res);
     } else if (v == FHIRVersion._4_0_0) {
       return new JsonParser().composeBytes(resource);
@@ -423,14 +421,14 @@ public class ExtensionDefinitionGenerator {
   private Resource loadResource(InputStream inputStream, FHIRVersion v) throws IOException, FHIRException {
     if (v == FHIRVersion._3_0_1) {
       org.hl7.fhir.dstu3.model.Resource res = new org.hl7.fhir.dstu3.formats.JsonParser().parse(inputStream);
-      return VersionConvertor_30_40.convertResource(res, new BaseAdvisor_30_40(false));
+      return VersionConvertorFactory_30_40.convertResource(res, new BaseAdvisor_30_40(false));
     } else if (v == FHIRVersion._1_4_0) {
       org.hl7.fhir.dstu2016may.model.Resource res = new org.hl7.fhir.dstu2016may.formats.JsonParser().parse(inputStream);
-      return VersionConvertor_14_40.convertResource(res);
+      return VersionConvertorFactory_14_40.convertResource(res);
     } else if (v == FHIRVersion._1_0_2) {
       org.hl7.fhir.dstu2.model.Resource res = new org.hl7.fhir.dstu2.formats.JsonParser().parse(inputStream);
       BaseAdvisor_10_40 advisor = new IGR2ConvertorAdvisor();
-      return VersionConvertor_10_40.convertResource(res, advisor);
+      return VersionConvertorFactory_10_40.convertResource(res, advisor);
     } else if (v == FHIRVersion._4_0_0) {
       return new JsonParser().parse(inputStream);
     } else

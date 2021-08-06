@@ -30,28 +30,22 @@ package org.hl7.fhir.convertors.txClient;
  */
 
 
-
-import java.net.URISyntaxException;
-import java.util.Map;
-
-import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.conv10_50.resources10_50.TerminologyCapabilities10_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.dstu2.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
+import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
+import java.net.URISyntaxException;
+import java.util.Map;
+
 public class TerminologyClientR2 implements TerminologyClient {
 
-  private FHIRToolingClient client; // todo: use the R2 client
+  private final FHIRToolingClient client; // todo: use the R2 client
 
   public TerminologyClientR2(String address) throws URISyntaxException {
     client = new FHIRToolingClient(address);
@@ -69,24 +63,24 @@ public class TerminologyClientR2 implements TerminologyClient {
 
   @Override
   public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException {
-    org.hl7.fhir.dstu2.model.ValueSet vs2 = (org.hl7.fhir.dstu2.model.ValueSet) VersionConvertor_10_50.convertResource(vs);
-    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) VersionConvertor_10_50.convertResource(p);
+    org.hl7.fhir.dstu2.model.ValueSet vs2 = (org.hl7.fhir.dstu2.model.ValueSet) VersionConvertorFactory_10_50.convertResource(vs);
+    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) VersionConvertorFactory_10_50.convertResource(p);
     vs2 = client.expandValueset(vs2, p2, params);
-    return (ValueSet) VersionConvertor_10_50.convertResource(vs2);
+    return (ValueSet) VersionConvertorFactory_10_50.convertResource(vs2);
   }
 
   @Override
   public Parameters validateCS(Parameters pin) throws FHIRException {
-    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) VersionConvertor_10_50.convertResource(pin);
+    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) VersionConvertorFactory_10_50.convertResource(pin);
     p2 = client.operateType(org.hl7.fhir.dstu2.model.ValueSet.class, "validate-code", p2);
-    return (Parameters) VersionConvertor_10_50.convertResource(p2);
+    return (Parameters) VersionConvertorFactory_10_50.convertResource(p2);
   }
 
   @Override
   public Parameters validateVS(Parameters pin) throws FHIRException {
-    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) VersionConvertor_10_50.convertResource(pin);
+    org.hl7.fhir.dstu2.model.Parameters p2 = (org.hl7.fhir.dstu2.model.Parameters) VersionConvertorFactory_10_50.convertResource(pin);
     p2 = client.operateType(org.hl7.fhir.dstu2.model.ValueSet.class, "validate-code", p2);
-    return (Parameters) VersionConvertor_10_50.convertResource(p2);
+    return (Parameters) VersionConvertorFactory_10_50.convertResource(p2);
   }
 
   @Override
@@ -109,42 +103,42 @@ public class TerminologyClientR2 implements TerminologyClient {
 
   @Override
   public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException {
-    return (CapabilityStatement) VersionConvertor_10_50.convertResource(client.getConformanceStatementQuick());
+    return (CapabilityStatement) VersionConvertorFactory_10_50.convertResource(client.getConformanceStatementQuick());
   }
 
   @Override
   public Parameters lookupCode(Map<String, String> params) throws FHIRException {
-    return (Parameters) VersionConvertor_10_50.convertResource(client.lookupCode(params));
+    return (Parameters) VersionConvertorFactory_10_50.convertResource(client.lookupCode(params));
   }
 
   @Override
   public int getRetryCount() throws FHIRException {
     return client.getRetryCount();
   }
-   
+
   @Override
   public Bundle validateBatch(Bundle batch) {
-    return (Bundle) VersionConvertor_10_50.convertResource(client.transaction((org.hl7.fhir.dstu2.model.Bundle) VersionConvertor_10_50.convertResource(batch)));
+    return (Bundle) VersionConvertorFactory_10_50.convertResource(client.transaction((org.hl7.fhir.dstu2.model.Bundle) VersionConvertorFactory_10_50.convertResource(batch)));
   }
 
   @Override
   public CanonicalResource read(String type, String id) {
     Class<Resource> t;
     try {
-      t = (Class<Resource>) Class.forName("org.hl7.fhir.dstu2.model."+type);// todo: do we have to deal with any resource renaming? Use cases are limited...
+      t = (Class<Resource>) Class.forName("org.hl7.fhir.dstu2.model." + type);// todo: do we have to deal with any resource renaming? Use cases are limited...
     } catch (ClassNotFoundException e) {
-      throw new FHIRException("Unable to fetch resources of type "+type+" in R2");
-    } 
+      throw new FHIRException("Unable to fetch resources of type " + type + " in R2");
+    }
     org.hl7.fhir.dstu2.model.Resource r2 = client.read(t, id);
     if (r2 == null) {
-      throw new FHIRException("Unable to fetch resource "+Utilities.pathURL(getAddress(), type, id));
+      throw new FHIRException("Unable to fetch resource " + Utilities.pathURL(getAddress(), type, id));
     }
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertor_10_50.convertResource(r2);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_10_50.convertResource(r2);
     if (r5 != null) {
-      throw new FHIRException("Unable to convert resource "+Utilities.pathURL(getAddress(), type, id)+" to R5 (internal representation)");
+      throw new FHIRException("Unable to convert resource " + Utilities.pathURL(getAddress(), type, id) + " to R5 (internal representation)");
     }
     if (!(r5 instanceof CanonicalResource)) {
-      throw new FHIRException("Unable to convert resource "+Utilities.pathURL(getAddress(), type, id)+" to R5 canonical resource (internal representation)");
+      throw new FHIRException("Unable to convert resource " + Utilities.pathURL(getAddress(), type, id) + " to R5 canonical resource (internal representation)");
     }
     return (CanonicalResource) r5;
   }

@@ -1,8 +1,7 @@
 package org.hl7.fhir.convertors.conv40_50.datatypes40_50.special40_50;
 
+import org.hl7.fhir.convertors.context.ConversionContext40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.BackboneElement40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Element40_50;
-import org.hl7.fhir.convertors.conv40_50.datatypes40_50.Type40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.CodeableConcept40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.Ratio40_50;
 import org.hl7.fhir.convertors.conv40_50.datatypes40_50.general40_50.SimpleQuantity40_50;
@@ -23,7 +22,8 @@ public class Dosage40_50 {
     if (src.hasPatientInstruction())
       tgt.setPatientInstructionElement(String40_50.convertString(src.getPatientInstructionElement()));
     if (src.hasTiming()) tgt.setTiming(Timing40_50.convertTiming(src.getTiming()));
-    if (src.hasAsNeeded()) tgt.setAsNeeded(Type40_50.convertType(src.getAsNeeded()));
+    if (src.hasAsNeeded())
+      tgt.setAsNeeded(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAsNeeded()));
     if (src.hasSite()) tgt.setSite(CodeableConcept40_50.convertCodeableConcept(src.getSite()));
     if (src.hasRoute()) tgt.setRoute(CodeableConcept40_50.convertCodeableConcept(src.getRoute()));
     if (src.hasMethod()) tgt.setMethod(CodeableConcept40_50.convertCodeableConcept(src.getMethod()));
@@ -32,7 +32,8 @@ public class Dosage40_50 {
     if (src.hasMaxDosePerPeriod()) tgt.setMaxDosePerPeriod(Ratio40_50.convertRatio(src.getMaxDosePerPeriod()));
     if (src.hasMaxDosePerAdministration())
       tgt.setMaxDosePerAdministration(SimpleQuantity40_50.convertSimpleQuantity(src.getMaxDosePerAdministration()));
-    if (src.hasMaxDosePerLifetime()) tgt.setMaxDosePerLifetime(SimpleQuantity40_50.convertSimpleQuantity(src.getMaxDosePerLifetime()));
+    if (src.hasMaxDosePerLifetime())
+      tgt.setMaxDosePerLifetime(SimpleQuantity40_50.convertSimpleQuantity(src.getMaxDosePerLifetime()));
     return tgt;
   }
 
@@ -47,7 +48,8 @@ public class Dosage40_50 {
     if (src.hasPatientInstruction())
       tgt.setPatientInstructionElement(String40_50.convertString(src.getPatientInstructionElement()));
     if (src.hasTiming()) tgt.setTiming(Timing40_50.convertTiming(src.getTiming()));
-    if (src.hasAsNeeded()) tgt.setAsNeeded(Type40_50.convertType(src.getAsNeeded()));
+    if (src.hasAsNeeded())
+      tgt.setAsNeeded(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getAsNeeded()));
     if (src.hasSite()) tgt.setSite(CodeableConcept40_50.convertCodeableConcept(src.getSite()));
     if (src.hasRoute()) tgt.setRoute(CodeableConcept40_50.convertCodeableConcept(src.getRoute()));
     if (src.hasMethod()) tgt.setMethod(CodeableConcept40_50.convertCodeableConcept(src.getMethod()));
@@ -56,27 +58,32 @@ public class Dosage40_50 {
     if (src.hasMaxDosePerPeriod()) tgt.setMaxDosePerPeriod(Ratio40_50.convertRatio(src.getMaxDosePerPeriod()));
     if (src.hasMaxDosePerAdministration())
       tgt.setMaxDosePerAdministration(SimpleQuantity40_50.convertSimpleQuantity(src.getMaxDosePerAdministration()));
-    if (src.hasMaxDosePerLifetime()) tgt.setMaxDosePerLifetime(SimpleQuantity40_50.convertSimpleQuantity(src.getMaxDosePerLifetime()));
+    if (src.hasMaxDosePerLifetime())
+      tgt.setMaxDosePerLifetime(SimpleQuantity40_50.convertSimpleQuantity(src.getMaxDosePerLifetime()));
     return tgt;
   }
 
   public static org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent convertDosageDoseAndRateComponent(org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent tgt = new org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent();
-    Element40_50.copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType()) tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-    if (src.hasDose()) tgt.setDose(Type40_50.convertType(src.getDose()));
-    if (src.hasRate()) tgt.setRate(Type40_50.convertType(src.getRate()));
+    if (src.hasDose())
+      tgt.setDose(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDose()));
+    if (src.hasRate())
+      tgt.setRate(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getRate()));
     return tgt;
   }
 
   public static org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent convertDosageDoseAndRateComponent(org.hl7.fhir.r5.model.Dosage.DosageDoseAndRateComponent src) throws FHIRException {
     if (src == null) return null;
     org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent tgt = new org.hl7.fhir.r4.model.Dosage.DosageDoseAndRateComponent();
-    Element40_50.copyElement(src, tgt);
+    ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().copyElement(src, tgt);
     if (src.hasType()) tgt.setType(CodeableConcept40_50.convertCodeableConcept(src.getType()));
-    if (src.hasDose()) tgt.setDose(Type40_50.convertType(src.getDose()));
-    if (src.hasRate()) tgt.setRate(Type40_50.convertType(src.getRate()));
+    if (src.hasDose())
+      tgt.setDose(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getDose()));
+    if (src.hasRate())
+      tgt.setRate(ConversionContext40_50.INSTANCE.getVersionConvertor_40_50().convertType(src.getRate()));
     return tgt;
   }
 }

@@ -3,6 +3,7 @@ package org.hl7.fhir.convertors.advisors;
 import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.convertors.advisors.support.ExpressionAdvisor50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +24,7 @@ public class Expression50Test {
     InputStream r2_stream = this.getClass().getResourceAsStream("/questionnaire_with_omitted_expression_40_10.json");
     org.hl7.fhir.dstu2.model.Questionnaire r2_expected_output = (org.hl7.fhir.dstu2.model.Questionnaire) new org.hl7.fhir.dstu2.formats.JsonParser().parse(r2_stream);
 
-    org.hl7.fhir.dstu2.model.Questionnaire convertedDstu2Questionnaire = (org.hl7.fhir.dstu2.model.Questionnaire) VersionConvertor_10_50.convertResource(r5_input);
+    org.hl7.fhir.dstu2.model.Questionnaire convertedDstu2Questionnaire = (org.hl7.fhir.dstu2.model.Questionnaire) VersionConvertorFactory_10_50.convertResource(r5_input);
 
     org.hl7.fhir.dstu2.formats.JsonParser dstu2_parser = new org.hl7.fhir.dstu2.formats.JsonParser();
     String composeString1 = dstu2_parser.composeString(convertedDstu2Questionnaire);
@@ -53,7 +54,7 @@ public class Expression50Test {
     InputStream r2_stream = this.getClass().getResourceAsStream("/questionnaire_with_converted_expression_40_10.json");
     org.hl7.fhir.dstu2.model.Questionnaire r2_expected_output = (org.hl7.fhir.dstu2.model.Questionnaire) new org.hl7.fhir.dstu2.formats.JsonParser().parse(r2_stream);
 
-    org.hl7.fhir.dstu2.model.Questionnaire convertedDstu2Questionnaire = (org.hl7.fhir.dstu2.model.Questionnaire) VersionConvertor_10_50.convertResource(r5_input, new ExpressionAdvisor50());
+    org.hl7.fhir.dstu2.model.Questionnaire convertedDstu2Questionnaire = (org.hl7.fhir.dstu2.model.Questionnaire) VersionConvertorFactory_10_50.convertResource(r5_input, new ExpressionAdvisor50());
 
     org.hl7.fhir.dstu2.formats.JsonParser dstu2_parser = new org.hl7.fhir.dstu2.formats.JsonParser();
     String composeString1 = dstu2_parser.composeString(convertedDstu2Questionnaire);
