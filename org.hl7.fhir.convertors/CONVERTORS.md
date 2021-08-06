@@ -34,7 +34,7 @@ you use the provided conversion factory classes as your entry point.
 ### Using the conversion library
 
 -----
-The mojority of use cases for conversion will involve using the provided VersionConvertorFactory_V1_V2 classes to convert
+The majority of use cases for conversion will involve using the provided VersionConvertorFactory_V1_V2 classes to convert
 to and from the various versions of FHIR. 
 
 They provide two statically accessed base methods for converting resources:
@@ -193,5 +193,4 @@ Once you've created your new advisor, they can be provided as an argument when c
 `public static (V1 Resource) convertResource((V2 Resource) src, <T extends BaseAdvisor> advisor)`
 
 `public static (V2 Resource) convertResource((V1 Resource) src, <T extends BaseAdvisor> advisor)`
-
 
