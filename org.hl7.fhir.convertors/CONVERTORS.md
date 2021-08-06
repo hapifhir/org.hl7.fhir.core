@@ -43,7 +43,7 @@ They provide two statically accessed base methods for converting resources:
 
 `public static (V2 Resource) convertResource((V1 Resource) src)`
 
-...and two statically accessed base methods for converting types:
+as well as two statically accessed base methods for converting types:
 
 `public static (V1 Type) convertType((V2 Type) src)`
 
@@ -193,4 +193,3 @@ Once you've created your new advisor, they can be provided as an argument when c
 `public static (V1 Resource) convertResource((V2 Resource) src, <T extends BaseAdvisor> advisor)`
 
 `public static (V2 Resource) convertResource((V1 Resource) src, <T extends BaseAdvisor> advisor)`
-
