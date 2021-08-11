@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r4.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r4.formats.IParser.OutputStyle;
@@ -59,12 +60,12 @@ import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
+import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 /**
  * This implements a two level cache. 
@@ -393,7 +394,10 @@ public class TerminologyCache {
   }
 
   private String hashNWS(String s) {
-    return String.valueOf(s.replace("\r", "").replace("\n", "").replace(" ", "").hashCode());
+    s = StringUtils.remove(s, ' ');
+    s = StringUtils.remove(s, '\n');
+    s = StringUtils.remove(s, '\r');
+    return String.valueOf(s.hashCode());
   }
 
   // management
