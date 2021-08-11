@@ -1840,6 +1840,24 @@ public class ProfileUtilities extends TranslatingUtilities {
         else
           derived.getMaxLengthElement().setUserData(DERIVATION_EQUALS, true);
       }
+  
+      if (derived.hasMaxValue()) {
+        if (!Base.compareDeep(derived.getMaxValue(), base.getMaxValue(), false))
+          base.setMaxValue(derived.getMaxValue().copy());
+        else if (trimDifferential)
+          derived.setMaxValue(null);
+        else
+          derived.getMaxValue().setUserData(DERIVATION_EQUALS, true);
+      }
+  
+      if (derived.hasMinValue()) {
+        if (!Base.compareDeep(derived.getMinValue(), base.getMinValue(), false))
+          base.setMinValue(derived.getMinValue().copy());
+        else if (trimDifferential)
+          derived.setMinValue(null);
+        else
+          derived.getMinValue().setUserData(DERIVATION_EQUALS, true);
+      }
 
       // todo: what to do about conditions?
       // condition : id 0..*
