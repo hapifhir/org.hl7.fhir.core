@@ -378,7 +378,7 @@ public class TerminologyCache {
               } else {
                 IssueSeverity severity = o.get("severity") instanceof JsonNull ? null :  IssueSeverity.fromCode(o.get("severity").getAsString());
                 String display = loadJS(o.get("display"));
-                ce.v = new ValidationResult(severity, error, new ConceptDefinitionComponent().setDisplay(display));
+                ce.v = new ValidationResult(severity, error, new ConceptDefinitionComponent().setDisplay(display), null);
               }
               nc.map.put(String.valueOf(hashNWS(ce.request)), ce);
               nc.list.add(ce);

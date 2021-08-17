@@ -84,6 +84,7 @@ import org.hl7.fhir.r5.model.OperationOutcome;
 import org.hl7.fhir.r5.model.Parameters;
 import org.hl7.fhir.r5.model.Parameters.ParametersParameterComponent;
 import org.hl7.fhir.r5.model.PlanDefinition;
+import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.Reference;
 import org.hl7.fhir.r5.model.Resource;
@@ -864,6 +865,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       res = txCache.getValidation(cacheToken);
     }
     if (res != null) {
+      if (res.asConceptDefinition()!=null && res.asConceptDefinition().getCode()==null)
+        res.asConceptDefinition().setCode(code.getCode());
       return res;
     }
 
@@ -927,6 +930,57 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
   }
 
+  @Override
+  public String humanReadable(CodeableConcept cc) {
+    if (cc == null)
+      return null;
+    if (cc.hasText() && !cc.getText().isEmpty())
+      return cc.getText();
+
+    // Return display from first coding that has one
+    for (Coding coding: cc.getCoding()) {
+      String display = humanReadable(coding, false);
+      if (display != null)
+        return display;
+    }
+    // No displays, so return first non-numeric code
+    for (Coding coding: cc.getCoding()) {
+      String display = humanReadable(coding, true);
+      if (display != null)
+        return display;
+    }
+    
+    return null;
+  }
+  
+  @Override
+  public String humanReadable(Quantity q) {
+    if (q == null || !q.hasValue())
+      return null;
+    if (q.hasUnit())
+      return q.getValue() + "\u00A0" + q.getUnit();
+    else if (q.hasCode()) {
+      String unit = humanReadable(new Coding(q.getSystem(),q.getCode(), null), true);
+      return q.getValue() + "\u00A0" + unit;
+    } else
+      return q.getValue().toString();
+  }
+
+  @Override
+  public String humanReadable(Coding coding, boolean defaultToCode) {
+    if (coding == null)
+      return null;
+    
+    if (coding.hasDisplay() && !coding.getDisplay().isEmpty()) {
+      return coding.getDisplay();
+    }
+    // TODO: Look up the code in the system and grab the display
+    // (this will involve caching the results of code lookups, which it looks like we don't yet support.
+    if (defaultToCode && coding.hasCode() && !coding.getCode().isEmpty() && !StringUtils.isNumeric(coding.getCode()))
+      return coding.getCode();
+    return null;
+  }
+  
   @Override
   public ValidationResult validateCode(ValidationOptions options, CodeableConcept code, ValueSet vs) {
     CacheToken cacheToken = txCache.generateValidationToken(options, code, vs);
@@ -1089,11 +1143,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!ok) {
       return new ValidationResult(IssueSeverity.ERROR, message+" (from "+txClient.getAddress()+")", err).setTxLink(txLog.getLastId());
     } else if (message != null && !message.equals("No Message returned")) { 
-      return new ValidationResult(IssueSeverity.WARNING, message+" (from "+txClient.getAddress()+")", new ConceptDefinitionComponent().setDisplay(display)).setTxLink(txLog.getLastId());
+      return new ValidationResult(IssueSeverity.WARNING, message+" (from "+txClient.getAddress()+")", new ConceptDefinitionComponent().setDisplay(display), null).setTxLink(txLog.getLastId());
     } else if (display != null) {
-      return new ValidationResult(new ConceptDefinitionComponent().setDisplay(display)).setTxLink(txLog.getLastId());
+      return new ValidationResult(new ConceptDefinitionComponent().setDisplay(display), null).setTxLink(txLog.getLastId());
     } else {
-      return new ValidationResult(new ConceptDefinitionComponent()).setTxLink(txLog.getLastId());
+      return new ValidationResult(new ConceptDefinitionComponent(), null).setTxLink(txLog.getLastId());
     }
   }
 

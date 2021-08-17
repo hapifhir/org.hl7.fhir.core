@@ -99,6 +99,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         }
       }
     }
+    Coding foundCoding = null;
     if (valueset != null && options.getValueSetMode() != ValueSetMode.NO_MEMBERSHIP_CHECK) {
       Boolean result = false;
       for (Coding c : code.getCoding()) {
@@ -107,6 +108,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
           result = null;
         } else if (ok) {
           result = true;
+          foundCoding = c;
         }
       }
       if (result == null) {
@@ -120,7 +122,9 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
     } else if (warnings.size() > 0) {
       return new ValidationResult(IssueSeverity.WARNING, warnings.toString());
     } else { 
-      return new ValidationResult(IssueSeverity.INFORMATION, null);
+      ConceptDefinitionComponent cd = new ConceptDefinitionComponent(foundCoding.getCode());
+      cd.setDisplay(foundCoding.getDisplay());
+      return new ValidationResult(cd, foundCoding.getSystem());
     }
   }
 
@@ -176,7 +180,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         res = validateCode(code, cs);
       } else if (cs == null && valueset.hasExpansion() && inExpansion) {
         // we just take the value set as face value then
-        res = new ValidationResult(new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()));
+        res = new ValidationResult(new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()), code.getSystem());
       } else {
         // well, we didn't find a code system - try the expansion? 
         // disabled waiting for discussion
@@ -193,7 +197,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         Boolean ok = codeInValueSet(system, code.getCode());
         if (ok == null || !ok) {
           if (res == null) {
-            res = new ValidationResult(null, null);
+            res = new ValidationResult(null);
           }
           if (!inExpansion && !inInclude) {
             res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
@@ -258,7 +262,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         ConceptDefinitionComponent ccd = new ConceptDefinitionComponent();
         ccd.setCode(containsComponent.getCode());
         ccd.setDisplay(containsComponent.getDisplay());
-        ValidationResult res = new ValidationResult(ccd);
+        ValidationResult res = new ValidationResult(ccd, code.getSystem());
         return res;
       }
       if (containsComponent.hasContains()) {
@@ -300,19 +304,19 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       }
     }
     if (code.getDisplay() == null) {
-      return new ValidationResult(cc);
+      return new ValidationResult(cc, cs.getUrl());
     }
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (cc.hasDisplay()) {
       b.append(cc.getDisplay());
       if (code.getDisplay().equalsIgnoreCase(cc.getDisplay())) {
-        return new ValidationResult(cc);
+        return new ValidationResult(cc, cs.getUrl());
       }
     }
     for (ConceptDefinitionDesignationComponent ds : cc.getDesignation()) {
       b.append(ds.getValue());
       if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
-        return new ValidationResult(cc);
+        return new ValidationResult(cc, cs.getUrl());
       }
     }
     // also check to see if the value set has another display
@@ -321,17 +325,17 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       if (vs.hasDisplay()) {
         b.append(vs.getDisplay());
         if (code.getDisplay().equalsIgnoreCase(vs.getDisplay())) {
-          return new ValidationResult(cc);
+          return new ValidationResult(cc, cs.getUrl());
         }
       }
       for (ConceptReferenceDesignationComponent ds : vs.getDesignation()) {
         b.append(ds.getValue());
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
-          return new ValidationResult(cc);
+          return new ValidationResult(cc, cs.getUrl());
         }
       }
     }
-    return new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF_, code.getSystem(), code.getCode(), b.toString(), code.getDisplay()), cc);
+    return new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF_, code.getSystem(), code.getCode(), b.toString(), code.getDisplay()), cc, cs.getUrl());
   }
 
   private ConceptReferenceComponent findValueSetRef(String system, String code) {

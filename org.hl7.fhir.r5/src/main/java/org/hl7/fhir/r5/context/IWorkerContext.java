@@ -57,6 +57,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.ConceptMap;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.Parameters;
+import org.hl7.fhir.r5.model.Quantity;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureMap;
@@ -538,6 +539,7 @@ public interface IWorkerContext {
 
   class ValidationResult {
     private ConceptDefinitionComponent definition;
+    private String system;
     private IssueSeverity severity;
     private String message;
     private TerminologyServiceErrorClass errorClass;
@@ -547,15 +549,21 @@ public interface IWorkerContext {
       this.severity = severity;
       this.message = message;
     }
-    
+
     public ValidationResult(ConceptDefinitionComponent definition) {
       this.definition = definition;
     }
 
-    public ValidationResult(IssueSeverity severity, String message, ConceptDefinitionComponent definition) {
+    public ValidationResult(ConceptDefinitionComponent definition, String system) {
+      this.definition = definition;
+      this.system = system;
+    }
+
+    public ValidationResult(IssueSeverity severity, String message, ConceptDefinitionComponent definition, String system) {
       this.severity = severity;
       this.message = message;
       this.definition = definition;
+      this.system = system;
     }
     
     public ValidationResult(IssueSeverity severity, String message, TerminologyServiceErrorClass errorClass) {
@@ -576,6 +584,12 @@ public interface IWorkerContext {
 
     public ConceptDefinitionComponent asConceptDefinition() {
       return definition;
+    }
+
+    public Coding asCoding() {
+      if (isOk() && definition!=null && definition.getCode()!=null)
+        return new Coding(system,definition.getCode(), definition.getDisplay());
+      return null;
     }
 
     public IssueSeverity getSeverity() {
@@ -669,6 +683,38 @@ public interface IWorkerContext {
    * @return
    */
   public ValidationResult validateCode(ValidationOptions options, String system, String code, String display, ValueSet vs);
+
+  /**
+   * Retrieves the 'display' text for a given CodeableConcept.  This will be the CodeableConcept.text if it
+   * exists, the display value for the first coding for which one can be resolved.  If no 'display' can
+   * be found, will return the first non-numeric code, or 'null' if there isn't one.
+   * 
+   * @param cc - The CodeableConcept to find a display for (if null, will return null)
+   * @return - Human readable string for the CodeableConcept
+   */
+  public String humanReadable(CodeableConcept cc);
+  
+  /**
+   * Retrieves the 'display' text for a given Coding.  This will be the display value 
+   * for the coding if one is specified or one can be resolved by the terminology server.
+   * If not, and the 'defaultToCode' is set, it'll return the code if it is non-numeric.
+   * If there is no display or non-numeric code, returns null.
+   * 
+   * @param coding - The coding to find a display for (if null, will return null)
+   * @param defaultToCode - Whether to return the non-numeric code if no display
+   * @return - Human readable string for the Coding
+   */
+  public String humanReadable(Coding coding, boolean defaultToCode);
+  
+  /**
+   * Displays a quantity with value and unit, looking up the display for the unit if
+   * no code is provided and falling back to the 'code' if no display is possible.
+   * Will return null if the Quantity is null or has no value.
+   * 
+   * @param q - The Quantity to render
+   * @return - Human readable string for the Coding
+   */
+  public String humanReadable(Quantity q);
 
   /**
    * Validation of a code - consult the terminology infrstructure and/or service 
