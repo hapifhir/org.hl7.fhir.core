@@ -88,7 +88,7 @@ import java.util.Map.Entry;
 public class FilesystemPackageCacheManager extends BasePackageCacheManager implements IPackageCacheManager {
 
   public static final String PRIMARY_SERVER = "http://packages.fhir.org";
-  public static final String SECONDARY_SERVER = "http://packages2.fhir.org/packages";
+  public static final String SECONDARY_SERVER = "https://packages2.fhir.org/packages";
   //  private static final String SECONDARY_SERVER = "http://local.fhir.org:960/packages";
   public static final String PACKAGE_REGEX = "^[a-zA-Z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+$";
   public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*$";
