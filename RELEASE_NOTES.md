@@ -1,3 +1,4 @@
+* Differential element fields minValue/maxValue are now correctly treated in the snapshot generation process
 * Conversion context added to conversions process
 * Users can now define custom behavior for CodeSystems, Extensions, BundleEntries, and Types by extending BaseAdvisor.
 * Resource Conversions are now thread-safe, each using their own instance of the conversion context that is unique
