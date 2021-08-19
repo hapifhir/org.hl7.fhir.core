@@ -522,8 +522,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private InputStreamWithSrc loadFromCIBuild(String id) throws IOException {
     checkBuildLoaded();
     if (packageRepos.containsKey(id)) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL((String)packageRepos.get(id), "package.tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL((String)packageRepos.get(id), "package.tgz"), "current");
+      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(packageRepos.get(id), "package.tgz"), false);
+      return new InputStreamWithSrc(stream, Utilities.pathURL(packageRepos.get(id), "package.tgz"), "current");
     } else if (id.startsWith("hl7.fhir.r5")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id + ".tgz"), "current");
@@ -606,7 +606,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     checkBuildLoaded();
     // special case: current versions roll over, and we have to check their currency
     try {
-      String url = (String)packageRepos.get(id);
+      String url = packageRepos.get(id);
       JsonObject json = fetchJson(Utilities.pathURL(url, "package.manifest.json"));
       String currDate = JSONUtil.str(json, "date");
       String packDate = p.date();
