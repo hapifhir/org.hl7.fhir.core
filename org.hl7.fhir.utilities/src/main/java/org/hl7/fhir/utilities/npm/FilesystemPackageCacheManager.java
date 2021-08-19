@@ -99,8 +99,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private boolean progress = true;
   private List<NpmPackage> temporaryPackages = new ArrayList<>();
   private boolean buildLoaded = false;
+  private Map<String, String> ciList = new HashMap<String, String>();
   private JsonArray buildInfo;
-  private HashMap<String,String> packageRepos;
 
   /**
    * Constructor
@@ -521,20 +521,26 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private InputStreamWithSrc loadFromCIBuild(String id) throws IOException {
     checkBuildLoaded();
-    if (packageRepos.containsKey(id)) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(packageRepos.get(id), "package.tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL(packageRepos.get(id), "package.tgz"), "current");
+    if (ciList.containsKey(id)) {
+      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
+      return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"), "current");
     } else if (id.startsWith("hl7.fhir.r5")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id + ".tgz"), "current");
     } else {
-      throw new FHIRException("The package '" + id + "' has no entry on https://github.com/hl7/package-info and an entry is required to use #current.  Please submit a pull request against the package-info.json file.");
+      throw new FHIRException("The package '" + id + "' has no entry on the current build server");
     }
   }
 
   private String getPackageUrlFromBuildList(String packageId) throws IOException {
     checkBuildLoaded();
-    return (String)packageRepos.get(packageId);
+    for (JsonElement n : buildInfo) {
+      JsonObject o = (JsonObject) n;
+      if (packageId.equals(JSONUtil.str(o, "package-id"))) {
+        return JSONUtil.str(o, "url");
+      }
+    }
+    return null;
   }
 
   private void addCIBuildSpecs(Map<String, String> specList) throws IOException {
@@ -606,7 +612,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     checkBuildLoaded();
     // special case: current versions roll over, and we have to check their currency
     try {
-      String url = packageRepos.get(id);
+      String url = ciList.get(id);
       JsonObject json = fetchJson(Utilities.pathURL(url, "package.manifest.json"));
       String currDate = JSONUtil.str(json, "date");
       String packDate = p.date();
@@ -631,7 +637,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private void loadFromBuildServer() throws IOException {
-    URL url = new URL("https://raw.githubusercontent.com/HL7/package-info/main/package-info.json?nocache=" + System.currentTimeMillis());
+    URL url = new URL("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
     SSLCertTruster.trustAllHosts();
     HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
     connection.setHostnameVerifier(SSLCertTruster.DO_NOT_VERIFY);
@@ -639,23 +645,27 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     InputStream json = connection.getInputStream();
     buildInfo = (JsonArray) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
 
-    packageRepos = new HashMap<String,String>();
-
+    List<BuildRecord> builds = new ArrayList<>();
+    
     for (JsonElement n : buildInfo) {
       JsonObject o = (JsonObject) n;
-      String packageId = o.get("package-id").getAsString();
-      String repo = o.get("repo").getAsString();
-      packageRepos.put(packageId, repo);
+      if (o.has("url") && o.has("package-id") && o.get("package-id").getAsString().contains(".")) {
+        String u = o.get("url").getAsString();
+        if (u.contains("/ImplementationGuide/"))
+          u = u.substring(0, u.indexOf("/ImplementationGuide/"));
+        builds.add(new BuildRecord(u, o.get("package-id").getAsString(), getRepo(o.get("repo").getAsString()), readDate(o.get("date").getAsString())));
+      }
     }
-/*    for (BuildRecord bld : builds) {
+    Collections.sort(builds, new BuildRecordSorter());
+    for (BuildRecord bld : builds) {
       if (!ciList.containsKey(bld.getPackageId())) {
         ciList.put(bld.getPackageId(), "https://build.fhir.org/ig/" + bld.getRepo());
       }
-    }*/
+    }
     buildLoaded = true; // whether it succeeds or not
   }
 
-/*  private String getRepo(String path) {
+  private String getRepo(String path) {
     String[] p = path.split("\\/");
     return p[0] + "/" + p[1];
   }
@@ -668,7 +678,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       e.printStackTrace();
       return new Date();
     }
-  }*/
+  }
 
   // ----- the old way, from before package server, while everything gets onto the package server
   private InputStreamWithSrc fetchTheOldWay(String id, String v) {
@@ -777,10 +787,32 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     T get() throws IOException;
   }
 
+  public class BuildRecordSorter implements Comparator<BuildRecord> {
+
+    @Override
+    public int compare(BuildRecord arg0, BuildRecord arg1) {
+      return arg1.date.compareTo(arg0.date);
+    }
+  }
+
   public class BuildRecord {
 
+    private String url;
     private String packageId;
     private String repo;
+    private Date date;
+
+    public BuildRecord(String url, String packageId, String repo, Date date) {
+      super();
+      this.url = url;
+      this.packageId = packageId;
+      this.repo = repo;
+      this.date = date;
+    }
+
+    public String getUrl() {
+      return url;
+    }
 
     public String getPackageId() {
       return packageId;
@@ -789,8 +821,16 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     public String getRepo() {
       return repo;
     }
+
+    public Date getDate() {
+      return date;
+    }
+
+
   }
 
+  
+  
   public class VersionHistory {
     private String id;
     private String canonical;
