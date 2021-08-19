@@ -522,8 +522,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   private InputStreamWithSrc loadFromCIBuild(String id) throws IOException {
     checkBuildLoaded();
     if (packageRepos.containsKey(id)) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL((String)packageRepos.get(id), "package.tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL((String)packageRepos.get(id), "package.tgz"), "current");
+      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(packageRepos.get(id), "package.tgz"), false);
+      return new InputStreamWithSrc(stream, Utilities.pathURL(packageRepos.get(id), "package.tgz"), "current");
     } else if (id.startsWith("hl7.fhir.r5")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id + ".tgz"), "current");
@@ -534,7 +534,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private String getPackageUrlFromBuildList(String packageId) throws IOException {
     checkBuildLoaded();
-    return (String)packageRepos.get(packageId);
+    return packageRepos.get(packageId);
   }
 
   private void addCIBuildSpecs(Map<String, String> specList) throws IOException {
@@ -606,7 +606,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     checkBuildLoaded();
     // special case: current versions roll over, and we have to check their currency
     try {
-      String url = (String)packageRepos.get(id);
+      String url = packageRepos.get(id);
       JsonObject json = fetchJson(Utilities.pathURL(url, "package.manifest.json"));
       String currDate = JSONUtil.str(json, "date");
       String packDate = p.date();
@@ -647,28 +647,8 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       String repo = o.get("repo").getAsString();
       packageRepos.put(packageId, repo);
     }
-/*    for (BuildRecord bld : builds) {
-      if (!ciList.containsKey(bld.getPackageId())) {
-        ciList.put(bld.getPackageId(), "https://build.fhir.org/ig/" + bld.getRepo());
-      }
-    }*/
     buildLoaded = true; // whether it succeeds or not
   }
-
-/*  private String getRepo(String path) {
-    String[] p = path.split("\\/");
-    return p[0] + "/" + p[1];
-  }
-
-  private Date readDate(String s) {
-    SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM, yyyy HH:mm:ss Z", new Locale("en", "US"));
-    try {
-      return sdf.parse(s);
-    } catch (ParseException e) {
-      e.printStackTrace();
-      return new Date();
-    }
-  }*/
 
   // ----- the old way, from before package server, while everything gets onto the package server
   private InputStreamWithSrc fetchTheOldWay(String id, String v) {
