@@ -63,7 +63,7 @@ public class QuestionnaireValidator extends BaseValidator {
   private QuestionnaireMode questionnaireMode;
 
   public QuestionnaireValidator(IWorkerContext context, EnableWhenEvaluator myEnableWhenEvaluator, FHIRPathEngine fpe, TimeTracker timeTracker, QuestionnaireMode questionnaireMode, XVerExtensionManager xverManager) {
-git     super(context, xverManager);
+    super(context, xverManager);
     source = Source.InstanceValidator;
     this.myEnableWhenEvaluator = myEnableWhenEvaluator;
     this.fpe = fpe;
