@@ -26,6 +26,8 @@ public class CliContext {
   private boolean hintAboutNonMustSupport = false;
   @JsonProperty("recursive")
   private boolean recursive = false;
+  @JsonProperty("showMessagesFromReferences")
+  private boolean showMessagesFromReferences = false;
   @JsonProperty("doDebug")
   private boolean doDebug = false;
   @JsonProperty("assumeValidRestReferences")
@@ -197,6 +199,17 @@ public class CliContext {
   @JsonProperty("recursive")
   public CliContext setRecursive(boolean recursive) {
     this.recursive = recursive;
+    return this;
+  }
+
+  @JsonProperty("showMessagesFromReferences")
+  public boolean isShowMessagesFromReferences() {
+    return showMessagesFromReferences;
+  }
+
+  @JsonProperty("showMessagesFromReferences")
+  public CliContext setShowMessagesFromReferences(boolean showMessagesFromReferences) {
+    this.showMessagesFromReferences = showMessagesFromReferences;
     return this;
   }
 

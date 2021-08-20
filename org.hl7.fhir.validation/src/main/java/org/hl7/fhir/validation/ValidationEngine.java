@@ -149,6 +149,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   @Getter @Setter private boolean securityChecks;
   @Getter @Setter private boolean crumbTrails;
   @Getter @Setter private boolean allowExampleUrls;
+  @Getter @Setter private boolean showMessagesFromReferences;
   @Getter @Setter private Locale locale;
   @Getter @Setter private List<ImplementationGuide> igs = new ArrayList<>();
   @Getter @Setter private boolean showTimes;
@@ -495,6 +496,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.setSecurityChecks(securityChecks);
     validator.setCrumbTrails(crumbTrails);
     validator.setAllowExamples(allowExampleUrls);
+    validator.setShowMessagesFromReferences(showMessagesFromReferences);
     validator.getContext().setLocale(locale);
     validator.setFetcher(this);
     validator.getImplementationGuides().addAll(igs);
