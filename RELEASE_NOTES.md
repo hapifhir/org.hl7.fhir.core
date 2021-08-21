@@ -1,0 +1,1 @@
+Exposed showMessagesFromReferences on the command line interface to support reporting validation errors on referenced types (particularly useful when validating messages & documents)
