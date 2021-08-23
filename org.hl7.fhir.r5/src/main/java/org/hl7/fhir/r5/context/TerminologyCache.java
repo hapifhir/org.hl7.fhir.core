@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -403,7 +404,10 @@ public class TerminologyCache {
   }
 
   private String hashNWS(String s) {
-    return String.valueOf(s.replace("\r", "").replace("\n", "").replace(" ", "").hashCode());
+    s = StringUtils.remove(s, ' ');
+    s = StringUtils.remove(s, '\n');
+    s = StringUtils.remove(s, '\r');
+    return String.valueOf(s.hashCode());
   }
 
   // management

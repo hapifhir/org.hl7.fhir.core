@@ -24,6 +24,7 @@ public class Params {
   public static final String DEBUG = "-debug";
   public static final String SCT = "-sct";
   public static final String RECURSE = "-recurse";
+  public static final String SHOW_MESSAGES_FROM_REFERENCES = "-showReferenceMessages";
   public static final String LOCALE = "-locale";
   public static final String STRICT_EXTENSIONS = "-strictExtensions";
   public static final String HINT_ABOUT_NON_MUST_SUPPORT = "-hintAboutNonMustSupport";
@@ -148,6 +149,8 @@ public class Params {
         cliContext.setSnomedCT(args[++i]);
       } else if (args[i].equals(RECURSE)) {
         cliContext.setRecursive(true);
+      } else if (args[i].equals(SHOW_MESSAGES_FROM_REFERENCES)) {
+        cliContext.setShowMessagesFromReferences(true);
       } else if (args[i].equals(LOCALE)) {
         if (i + 1 == args.length) {
           throw new Error("Specified -locale without indicating locale");

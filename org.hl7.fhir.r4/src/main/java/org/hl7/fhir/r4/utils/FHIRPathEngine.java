@@ -4291,11 +4291,11 @@ public class FHIRPathEngine {
         focus = sd.getSnapshot().getElementFirstRep();
       } else if ("extension".equals(expr.getName())) {
         String targetUrl = expr.getParameters().get(0).getConstant().primitiveValue();
-//        targetUrl = targetUrl.substring(1,targetUrl.length()-1);
         List<ElementDefinition> childDefinitions = ProfileUtilities.getChildMap(sd, element);
         for (ElementDefinition t : childDefinitions) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
-           StructureDefinition exsd = worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
+            StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty()) ?
+              null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
            while (exsd!=null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension"))
              exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition());
            if (exsd.getUrl().equals(targetUrl)) {
