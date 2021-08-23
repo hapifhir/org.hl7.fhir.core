@@ -78,7 +78,7 @@ import org.hl7.fhir.utilities.VersionUtilities;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 /**
  * This class allows you to host the java validator in another service, and use the services it has in a wider context. The way it works is 

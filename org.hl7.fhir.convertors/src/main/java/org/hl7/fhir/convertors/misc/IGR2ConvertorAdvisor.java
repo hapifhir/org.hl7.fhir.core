@@ -32,7 +32,7 @@ package org.hl7.fhir.convertors.misc;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
 import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.ValueSet;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public class IGR2ConvertorAdvisor extends BaseAdvisor_10_40 {
   @Override
