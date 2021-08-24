@@ -1062,6 +1062,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     boolean ok = false;
     String message = "No Message returned";
     String display = null;
+    String system = null;
+    String code = null;
     TerminologyServiceErrorClass err = TerminologyServiceErrorClass.UNKNOWN;
     for (ParametersParameterComponent p : pOut.getParameter()) {
       if (p.hasValue()) {
@@ -1071,6 +1073,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
           message = ((StringType) p.getValue()).getValue();
         } else if (p.getName().equals("display")) {
           display = ((StringType) p.getValue()).getValue();
+        } else if (p.getName().equals("system")) {
+          system = ((StringType) p.getValue()).getValue();
+        } else if (p.getName().equals("code")) {
+          code = ((StringType) p.getValue()).getValue();
         } else if (p.getName().equals("cause")) {
           try {
             IssueType it = IssueType.fromCode(((StringType) p.getValue()).getValue());
@@ -1089,11 +1095,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (!ok) {
       return new ValidationResult(IssueSeverity.ERROR, message+" (from "+txClient.getAddress()+")", err).setTxLink(txLog.getLastId());
     } else if (message != null && !message.equals("No Message returned")) { 
-      return new ValidationResult(IssueSeverity.WARNING, message+" (from "+txClient.getAddress()+")", new ConceptDefinitionComponent().setDisplay(display)).setTxLink(txLog.getLastId());
+      return new ValidationResult(IssueSeverity.WARNING, message+" (from "+txClient.getAddress()+")", system, new ConceptDefinitionComponent().setDisplay(display).setCode(code)).setTxLink(txLog.getLastId());
     } else if (display != null) {
-      return new ValidationResult(new ConceptDefinitionComponent().setDisplay(display)).setTxLink(txLog.getLastId());
+      return new ValidationResult(system, new ConceptDefinitionComponent().setDisplay(display).setCode(code)).setTxLink(txLog.getLastId());
     } else {
-      return new ValidationResult(new ConceptDefinitionComponent()).setTxLink(txLog.getLastId());
+      return new ValidationResult(system, new ConceptDefinitionComponent().setCode(code)).setTxLink(txLog.getLastId());
     }
   }
 
