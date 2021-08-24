@@ -195,9 +195,13 @@ public class PatientRenderer extends ResourceRenderer {
   }
   
   public void describe(XhtmlNode x, HumanName name, String gender, DateType dob, Identifier id) throws UnsupportedEncodingException, IOException {
-    render(x.b(), name);
+    if (name == null) {
+      x.b().tx("Unnamed Patient"); // todo: is this appropriate?  
+    } else {
+      render(x.b(), name);
+    }
     x.tx(" ");
-    if (dob == null) {
+    if (gender == null) {
       x.tx("??");
     } else {
       x.tx(gender);
