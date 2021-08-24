@@ -86,6 +86,9 @@ steps:
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
       goals: deploy
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      jdkArchitectureOption: 'x64'
       options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -DdeployToSonatype'
       publishJUnitResults: false
 
@@ -96,5 +99,8 @@ steps:
     inputs:
       mavenPomFile: '$(System.DefaultWorkingDirectory)/pom.xml'
       goals: deploy
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      jdkArchitectureOption: 'x64'
       options: '--settings $(System.DefaultWorkingDirectory)/settings.xml -pl "!org.hl7.fhir.report, !org.hl7.fhir.validation.cli" -Dmaven.test.skip -DdeployToGitHub'
       publishJUnitResults: false

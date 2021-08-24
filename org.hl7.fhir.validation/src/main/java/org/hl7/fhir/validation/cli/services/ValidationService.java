@@ -242,6 +242,7 @@ public class ValidationService {
       validator.setLocale(cliContext.getLocale());
       validator.setSnomedExtension(cliContext.getSnomedCTCode());
       validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
+      validator.setShowMessagesFromReferences(cliContext.isShowMessagesFromReferences());
       validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
       validator.setNoInvariantChecks(cliContext.isNoInvariants());
       validator.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
