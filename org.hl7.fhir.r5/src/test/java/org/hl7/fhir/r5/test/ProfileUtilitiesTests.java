@@ -1,26 +1,20 @@
 package org.hl7.fhir.r5.test;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.fhir.ucum.UcumException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
-import org.hl7.fhir.r5.formats.IParser.OutputStyle;
-import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.IntegerType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.model.StructureDefinition.TypeDerivationRule;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
-import org.hl7.fhir.r5.utils.EOperationOutcome;
-import org.hl7.fhir.utilities.CSFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileUtilitiesTests {
 
@@ -32,7 +26,7 @@ public class ProfileUtilitiesTests {
 //   * @throws EOperationOutcome 
 //   */
   @Test
-  public void testSimple() throws FHIRException, FileNotFoundException, IOException, UcumException {
+  public void testSimple() throws FHIRException {
 
     StructureDefinition focus = new StructureDefinition();
     StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
@@ -40,7 +34,7 @@ public class ProfileUtilitiesTests {
     focus.setBaseDefinition(base.getUrl());
     focus.setType("Patient");
     focus.setDerivation(TypeDerivationRule.CONSTRAINT);
-    List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
+    List<ValidationMessage> messages = new ArrayList<>();
     new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org/test", "Simple Test");
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
@@ -62,11 +56,7 @@ public class ProfileUtilitiesTests {
       }
     }
 
-    if (!ok) {
-      compareXml(base, focus);
-      throw new FHIRException("Snap shot generation simple test failed");
-    } else
-      System.out.println("Snap shot generation simple test passed");
+    Assertions.assertTrue(ok);
   }
 
 
@@ -79,13 +69,13 @@ public class ProfileUtilitiesTests {
 //   * @throws EOperationOutcome 
 //   */
   @Test
-  public void testSimple2() throws EOperationOutcome, Exception {
+  public void testSimple2() {
     StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/ValueSet").copy();
     StructureDefinition focus = base.copy();
     focus.setUrl(Utilities.makeUuidUrn());
     focus.setSnapshot(null);
     focus.setDifferential(null);
-    List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
+    List<ValidationMessage> messages = new ArrayList<>();
     new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
 
     boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
@@ -111,59 +101,147 @@ public class ProfileUtilitiesTests {
       }
     }
 
-    if (!ok) {
-      compareXml(base, focus);
-      System.out.println("Snap shot generation simple test failed");
-      throw new FHIRException("Snap shot generation simple test failed");
-    } else
-      System.out.println("Snap shot generation simple test passed");
+    Assertions.assertTrue(ok);
   }
 
-//  /**
-//   * Change one cardinality.
-//   * 
-//   * @param context2
-//   * @
-//   * @throws EOperationOutcome 
-//   */
-//  private void testCardinalityChange() throws EOperationOutcome, Exception {
-//    StructureDefinition focus = new StructureDefinition();
-//    StructureDefinition base = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
-//    focus.setUrl(Utilities.makeUuidUrn());
-//    focus.setBaseDefinition(base.getUrl());
-//    focus.setType(base.getType());
-//    focus.setDerivation(TypeDerivationRule.CONSTRAINT);
-//    ElementDefinition id = focus.getDifferential().addElement();
-//    id.setPath("Patient.identifier");
-//    id.setMin(1);
-//    List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-//    new ProfileUtilities(context, messages, null).generateSnapshot(base, focus, focus.getUrl(), "Simple Test" );
-//
-//    boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
-//    for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
-//      if (ok) {
-//        ElementDefinition b = base.getSnapshot().getElement().get(i);
-//        ElementDefinition f = focus.getSnapshot().getElement().get(i);
-//        if (!f.hasBase() || !b.getPath().equals(f.getBase().getPath())) 
-//          ok = false;
-//        else {
-//          f.setBase(null);
-//          if (f.getPath().equals("Patient.identifier")) {
-//            ok = f.getMin() == 1;
-//            if (ok)
-//              f.setMin(0);
-//          }
-//          ok = ok && Base.compareDeep(b, f, true);
-//        }
-//      }
-//    }
-//    
-//    if (!ok) {
-//      compareXml(base, focus);
-//      throw new FHIRException("Snap shot generation chenge cardinality test failed");
-//    } else 
-//      System.out.println("Snap shot generation chenge cardinality test passed");
-//  }
+  /**
+   * Change one cardinality.
+   */
+  @Test
+  void testCardinalityChange() {
+    StructureDefinition focus = new StructureDefinition();
+    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Patient").copy();
+    focus.setUrl(Utilities.makeUuidUrn());
+    focus.setBaseDefinition(base.getUrl());
+    focus.setType(base.getType());
+    focus.setDerivation(TypeDerivationRule.CONSTRAINT);
+    ElementDefinition id = focus.getDifferential().addElement();
+    id.setPath("Patient.identifier");
+    id.setMin(1);
+    List<ValidationMessage> messages = new ArrayList<>();
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
+
+    boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
+    for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
+      if (ok) {
+        ElementDefinition b = base.getSnapshot().getElement().get(i);
+        ElementDefinition f = focus.getSnapshot().getElement().get(i);
+        b.setRequirements(null);
+        f.setRequirements(null);
+        if (!f.hasBase() || !b.getPath().equals(f.getPath())) {
+          ok = false;
+        }
+        else {
+          if (f.getPath().equals("Patient.identifier")) {
+            ok = f.getMin() == 1;
+            if (ok) {
+              f.setMin(0);
+            }
+          }
+          if (!Base.compareDeep(b, f, true)) {
+            ok = Base.compareDeep(b, f, true);
+          }
+        }
+      }
+    }
+
+    Assertions.assertTrue(ok);
+  }
+
+  /**
+   * Change min value
+   */
+  @Test
+  void testMinValueChange() {
+    // Given
+    StructureDefinition focus = new StructureDefinition();
+    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Appointment").copy();
+    focus.setUrl(Utilities.makeUuidUrn());
+    focus.setBaseDefinition(base.getUrl());
+    focus.setType(base.getType());
+    focus.setDerivation(TypeDerivationRule.CONSTRAINT);
+    ElementDefinition id = focus.getDifferential().addElement();
+    id.setPath("Appointment.minutesDuration");
+    id.setMinValue(new IntegerType(1));
+    List<ValidationMessage> messages = new ArrayList<>();
+    // When
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
+    // Then
+    boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
+    for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
+      if (ok) {
+        ElementDefinition b = base.getSnapshot().getElement().get(i);
+        ElementDefinition f = focus.getSnapshot().getElement().get(i);
+        b.setRequirements(null);
+        f.setRequirements(null);
+        if (!f.hasBase() || !b.getPath().equals(f.getPath())) {
+          ok = false;
+        }
+        else {
+          if (f.getPath().equals("Appointment.minutesDuration")) {
+            ok = f.getMinValue() instanceof IntegerType && ((IntegerType) f.getMinValue()).getValue() == 1;
+            if (ok) {
+              // Can't set minValue to null so change base minValue to IntegerType(1)
+              b.setMinValue(new IntegerType(1));
+            }
+          }
+          if (!Base.compareDeep(b, f, true)) {
+            ok = false;
+          }
+        }
+      }
+    }
+
+    Assertions.assertTrue(ok);
+  }
+
+  /**
+   * Change max value
+   */
+  @Test
+  void testMaxValueChange() {
+    // Given
+    StructureDefinition focus = new StructureDefinition();
+    StructureDefinition base = TestingUtilities.context().fetchResource(StructureDefinition.class, "http://hl7.org/fhir/StructureDefinition/Appointment").copy();
+    focus.setUrl(Utilities.makeUuidUrn());
+    focus.setBaseDefinition(base.getUrl());
+    focus.setType(base.getType());
+    focus.setDerivation(TypeDerivationRule.CONSTRAINT);
+    ElementDefinition id = focus.getDifferential().addElement();
+    id.setPath("Appointment.minutesDuration");
+    id.setMaxValue(new IntegerType(1));
+    List<ValidationMessage> messages = new ArrayList<>();
+    // When
+    new ProfileUtilities(TestingUtilities.context(), messages, null).generateSnapshot(base, focus, focus.getUrl(), "http://test.org", "Simple Test");
+    // Then
+    boolean ok = base.getSnapshot().getElement().size() == focus.getSnapshot().getElement().size();
+    for (int i = 0; i < base.getSnapshot().getElement().size(); i++) {
+      if (ok) {
+        ElementDefinition b = base.getSnapshot().getElement().get(i);
+        ElementDefinition f = focus.getSnapshot().getElement().get(i);
+        b.setRequirements(null);
+        f.setRequirements(null);
+        if (!f.hasBase() || !b.getPath().equals(f.getPath())) {
+          ok = false;
+        }
+        else {
+          if (f.getPath().equals("Appointment.minutesDuration")) {
+            ok = f.getMaxValue() instanceof IntegerType && ((IntegerType) f.getMaxValue()).getValue() == 1;
+            if (ok) {
+              // Can't set maxValue to null so change base maxValue to IntegerType(1)
+              b.setMaxValue(new IntegerType(1));
+            }
+          }
+          if (!Base.compareDeep(b, f, true)) {
+            ok = false;
+          }
+        }
+      }
+    }
+
+    Assertions.assertTrue(ok);
+  }
+
 //
 //  /**
 //   * check that documentation appending is working
@@ -794,23 +872,4 @@ public class ProfileUtilitiesTests {
 //  }
 //
 
-  private void compareXml(StructureDefinition base, StructureDefinition focus) throws FileNotFoundException, IOException {
-    base.setText(null);
-    focus.setText(null);
-    base.setDifferential(null);
-//    focus.setDifferential(null);
-    String f1 = Utilities.path("c:", "temp", "base.xml");
-    String f2 = Utilities.path("c:", "temp", "derived.xml");
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f1), base);
-    ;
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(f2), focus);
-    ;
-    String diff = Utilities.path(System.getenv("ProgramFiles(X86)"), "WinMerge", "WinMergeU.exe");
-    List<String> command = new ArrayList<String>();
-    command.add("\"" + diff + "\" \"" + f1 + "\" \"" + f2 + "\"");
-
-    ProcessBuilder builder = new ProcessBuilder(command);
-    builder.directory(new CSFile("c:\\temp"));
-    builder.start();
-  }
 }
