@@ -10,9 +10,13 @@ import java.util.List;
 
 public class CachingPackageClientTests {
 
+  private static final String SERVER1 = "http://packages.fhir.org";
+  private static final String SERVER2 = "https://packages2.fhir.org/packages";
+//  private static final String SERVER2 = "http://local.fhir.org:960/packages";
+
   @Test
   public void testExists() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("http://packages.fhir.org");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER1);
     Assertions.assertTrue(client.exists("hl7.fhir.r4.core", "4.0.1"));
     Assertions.assertTrue(!client.exists("hl7.fhir.r4.core", "1.0.2"));
     Assertions.assertTrue(client.exists("HL7.fhir.r4.core", "4.0.1"));
@@ -21,14 +25,14 @@ public class CachingPackageClientTests {
 
   @Test
   public void testCase() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("http://packages.fhir.org");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER1);
     Assertions.assertTrue(client.exists("kbv.basis", "1.1.3"));
     Assertions.assertTrue(client.exists("KBV.Basis", "1.1.3"));
   }
 
   @Test
   public void testSearch() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("http://packages.fhir.org");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER1);
     List<PackageInfo> matches = client.search("core", null, null, false);
     for (PackageInfo pi : matches) {
       System.out.println(pi.toString());
@@ -38,14 +42,14 @@ public class CachingPackageClientTests {
 
   @Test
   public void testSearchNoMatches() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("http://packages.fhir.org");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER1);
     List<PackageInfo> matches = client.search("corezxxx", null, null, false);
     Assertions.assertTrue(matches.size() == 0);
   }
 
   @Test
   public void testVersions() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("http://packages.fhir.org");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER1);
     List<PackageInfo> matches = client.getVersions("Simplifier.Core.STU3");
     for (PackageInfo pi : matches) {
       System.out.println(pi.toString());
@@ -55,14 +59,14 @@ public class CachingPackageClientTests {
 
   @Test
   public void testVersionsNone() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("http://packages.fhir.org");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER1);
     List<PackageInfo> matches = client.getVersions("Simplifier.Core.STU3X");
     Assertions.assertTrue(matches.size() == 0);
   }
 
   @Test
   public void testExists2() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("https://packages2.fhir.org/packages");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER2);
     Assertions.assertTrue(client.exists("hl7.fhir.r4.core", "4.0.1"));
     Assertions.assertTrue(!client.exists("hl7.fhir.r4.core", "1.0.2"));
     Assertions.assertTrue(!client.exists("hl7.fhir.nothing", "1.0.1"));
@@ -71,7 +75,7 @@ public class CachingPackageClientTests {
 
   @Test
   public void testSearch2() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("https://packages2.fhir.org/packages");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER2);
     List<PackageInfo> matches = client.search("core", null, null, false);
     for (PackageInfo pi : matches) {
       System.out.println(pi.toString());
@@ -81,14 +85,14 @@ public class CachingPackageClientTests {
 
   @Test
   public void testSearchNoMatches2() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("https://packages2.fhir.org/packages");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER2);
     List<PackageInfo> matches = client.search("corezxxx", null, null, false);
     Assertions.assertTrue(matches.size() == 0);
   }
 
   @Test
   public void testVersions2() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("https://packages2.fhir.org/packages");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER2);
     List<PackageInfo> matches = client.getVersions("Simplifier.Core.STU3");
     for (PackageInfo pi : matches) {
       System.out.println(pi.toString());
@@ -98,7 +102,7 @@ public class CachingPackageClientTests {
 
   @Test
   public void testVersions2A() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("https://packages2.fhir.org/packages");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER2);
     List<PackageInfo> matches = client.getVersions("hl7.fhir.us.core");
     for (PackageInfo pi : matches) {
       System.out.println(pi.toString());
@@ -108,7 +112,7 @@ public class CachingPackageClientTests {
 
   @Test
   public void testVersionsNone2() throws IOException {
-    CachingPackageClient client = new CachingPackageClient("https://packages2.fhir.org/packages");
+    CachingPackageClient client = new CachingPackageClient(CachingPackageClientTests.SERVER2);
     List<PackageInfo> matches = client.getVersions("Simplifier.Core.STU3X");
     Assertions.assertTrue(matches.size() == 0);
   }
