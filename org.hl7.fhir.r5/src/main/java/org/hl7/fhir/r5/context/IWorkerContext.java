@@ -538,6 +538,7 @@ public interface IWorkerContext {
 
   class ValidationResult {
     private ConceptDefinitionComponent definition;
+    private String system;
     private IssueSeverity severity;
     private String message;
     private TerminologyServiceErrorClass errorClass;
@@ -548,13 +549,15 @@ public interface IWorkerContext {
       this.message = message;
     }
     
-    public ValidationResult(ConceptDefinitionComponent definition) {
+    public ValidationResult(String system, ConceptDefinitionComponent definition) {
+      this.system = system;
       this.definition = definition;
     }
 
-    public ValidationResult(IssueSeverity severity, String message, ConceptDefinitionComponent definition) {
+    public ValidationResult(IssueSeverity severity, String message, String system, ConceptDefinitionComponent definition) {
       this.severity = severity;
       this.message = message;
+      this.system = system;
       this.definition = definition;
     }
     
@@ -568,10 +571,16 @@ public interface IWorkerContext {
       return severity == null || severity == IssueSeverity.INFORMATION || severity == IssueSeverity.WARNING;
     }
 
+    public String getSystem() {
+      return system;
+    }
+
     public String getDisplay() {
-// We don't want to return question-marks because that prevents something more useful from being displayed (e.g. the code) if there's no display value
-//      return definition == null ? "??" : definition.getDisplay();
       return definition == null ? null : definition.getDisplay();
+    }
+
+    public String getCode() {
+      return definition == null ? null : definition.getCode();
     }
 
     public ConceptDefinitionComponent asConceptDefinition() {
