@@ -1095,7 +1095,9 @@ public class Utilities {
   public static boolean isAbsoluteUrl(String ref) {
     if (ref != null && ref.contains(":")) {
       String scheme = ref.substring(0, ref.indexOf(":"));
-      return existsInList(scheme, "http", "https", "urn") || isToken(scheme) || Utilities.startsWithInList(ref, "urn:iso:", "urn:iso-iec:", "urn:iso-cie:", "urn:iso-astm:", "urn:iso-ieee:", "urn:iec:"); // rfc5141
+      String details = ref.substring(ref.indexOf(":")+1);
+      return (existsInList(scheme, "http", "https", "urn") || isToken(scheme) || Utilities.startsWithInList(ref, "urn:iso:", "urn:iso-iec:", "urn:iso-cie:", "urn:iso-astm:", "urn:iso-ieee:", "urn:iec:"))
+          && details != null && details.length() > 0 && !details.contains(" "); // rfc5141
     }
     return false; 
   }
