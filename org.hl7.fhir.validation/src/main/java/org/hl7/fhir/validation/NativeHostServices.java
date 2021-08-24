@@ -106,10 +106,10 @@ public class NativeHostServices {
   
   private class NH_10_50_Advisor extends BaseAdvisor_10_50 {
     @Override
-    public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet source) throws FHIRException {}
+    public void handleCodeSystem(@Nonnull CodeSystem tgtcs, @Nonnull ValueSet source) throws FHIRException {}
 
     @Override
-    public CodeSystem getCodeSystem(@NotNull ValueSet src) throws FHIRException {
+    public CodeSystem getCodeSystem(@Nonnull ValueSet src) throws FHIRException {
       throw new FHIRException("Code systems cannot be handled at this time"); // what to do? need thread local storage? 
     }
   }

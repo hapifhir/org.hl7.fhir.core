@@ -27,7 +27,7 @@ public class RetryInterceptor implements Interceptor {
   }
 
   @Override
-  public @NotNull Response intercept(Interceptor.Chain chain) throws IOException {
+  public Response intercept(Interceptor.Chain chain) throws IOException {
     Request request = chain.request();
     Response response = null;
 
