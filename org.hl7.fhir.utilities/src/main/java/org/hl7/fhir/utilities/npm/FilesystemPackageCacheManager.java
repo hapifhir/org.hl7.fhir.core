@@ -61,14 +61,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 /**
@@ -141,6 +134,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       names.add(s);
     Collections.sort(names);
     return names;
+  }
+
+  private List<String> reverseSorted(String[] keys) {
+    Arrays.sort(keys, Collections.reverseOrder());
+    return Arrays.asList(keys);
   }
 
   private NpmPackage loadPackageInfo(String path) throws IOException {
@@ -316,7 +314,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     }
     String foundPackage = null;
     String foundVersion = null;
-    for (String f : sorted(new File(cacheFolder).list())) {
+    for (String f : reverseSorted(new File(cacheFolder).list())) {
       File cf = new File(Utilities.path(cacheFolder, f));
       if (cf.isDirectory()) {
         if (f.equals(id + "#" + version) || (Utilities.noString(version) && f.startsWith(id + "#"))) {
@@ -475,6 +473,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       version = id.substring(id.indexOf("#")+1);
       id = id.substring(0, id.indexOf("#"));
     }
+
     NpmPackage p = loadPackageFromCacheOnly(id, version);
     if (p != null) {
       if ("current".equals(version)) {
