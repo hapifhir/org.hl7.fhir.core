@@ -6,3 +6,5 @@
 * I need to add more tests, there were very few to begin with, and it's my next task
 * All conversion libraries and no play makes Mark a dull boy
 * Exposed showMessagesFromReferences on the command line interface to support reporting validation errors on referenced types (particularly useful when validating messages & documents)
+* https://github.com/hapifhir/org.hl7.fhir.core/issues/564
+* 
