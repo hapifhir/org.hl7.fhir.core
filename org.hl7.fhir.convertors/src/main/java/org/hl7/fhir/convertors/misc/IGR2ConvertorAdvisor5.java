@@ -33,12 +33,12 @@ package org.hl7.fhir.convertors.misc;
 import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
 import org.hl7.fhir.r5.model.CodeSystem;
 import org.hl7.fhir.r5.model.ValueSet;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 public class IGR2ConvertorAdvisor5 extends BaseAdvisor_10_50 {
 
   @Override
-  public void handleCodeSystem(@NotNull CodeSystem cs, @NotNull ValueSet vs) {
+  public void handleCodeSystem(@Nonnull CodeSystem cs, @Nonnull ValueSet vs) {
     cs.setId(vs.getId());
   }
 }

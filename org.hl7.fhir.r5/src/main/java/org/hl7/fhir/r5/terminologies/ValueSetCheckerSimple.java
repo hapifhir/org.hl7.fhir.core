@@ -176,7 +176,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         res = validateCode(code, cs);
       } else if (cs == null && valueset.hasExpansion() && inExpansion) {
         // we just take the value set as face value then
-        res = new ValidationResult(new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()));
+        res = new ValidationResult(system, new ConceptDefinitionComponent().setCode(code.getCode()).setDisplay(code.getDisplay()));
       } else {
         // well, we didn't find a code system - try the expansion? 
         // disabled waiting for discussion
@@ -193,7 +193,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         Boolean ok = codeInValueSet(system, code.getCode());
         if (ok == null || !ok) {
           if (res == null) {
-            res = new ValidationResult(null, null);
+            res = new ValidationResult((IssueSeverity) null, null);
           }
           if (!inExpansion && !inInclude) {
             res.setMessage("Not in value set "+valueset.getUrl()).setSeverity(IssueSeverity.ERROR);
@@ -258,7 +258,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
         ConceptDefinitionComponent ccd = new ConceptDefinitionComponent();
         ccd.setCode(containsComponent.getCode());
         ccd.setDisplay(containsComponent.getDisplay());
-        ValidationResult res = new ValidationResult(ccd);
+        ValidationResult res = new ValidationResult(code.getSystem(), ccd);
         return res;
       }
       if (containsComponent.hasContains()) {
@@ -300,19 +300,19 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       }
     }
     if (code.getDisplay() == null) {
-      return new ValidationResult(cc);
+      return new ValidationResult(code.getSystem(), cc);
     }
     CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
     if (cc.hasDisplay()) {
       b.append(cc.getDisplay());
       if (code.getDisplay().equalsIgnoreCase(cc.getDisplay())) {
-        return new ValidationResult(cc);
+        return new ValidationResult(code.getSystem(), cc);
       }
     }
     for (ConceptDefinitionDesignationComponent ds : cc.getDesignation()) {
       b.append(ds.getValue());
       if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
-        return new ValidationResult(cc);
+        return new ValidationResult(code.getSystem(), cc);
       }
     }
     // also check to see if the value set has another display
@@ -321,17 +321,17 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       if (vs.hasDisplay()) {
         b.append(vs.getDisplay());
         if (code.getDisplay().equalsIgnoreCase(vs.getDisplay())) {
-          return new ValidationResult(cc);
+          return new ValidationResult(code.getSystem(), cc);
         }
       }
       for (ConceptReferenceDesignationComponent ds : vs.getDesignation()) {
         b.append(ds.getValue());
         if (code.getDisplay().equalsIgnoreCase(ds.getValue())) {
-          return new ValidationResult(cc);
+          return new ValidationResult(code.getSystem(), cc);
         }
       }
     }
-    return new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF_, code.getSystem(), code.getCode(), b.toString(), code.getDisplay()), cc);
+    return new ValidationResult(IssueSeverity.WARNING, context.formatMessage(I18nConstants.DISPLAY_NAME_FOR__SHOULD_BE_ONE_OF__INSTEAD_OF_, code.getSystem(), code.getCode(), b.toString(), code.getDisplay()), code.getSystem(), cc);
   }
 
   private ConceptReferenceComponent findValueSetRef(String system, String code) {
