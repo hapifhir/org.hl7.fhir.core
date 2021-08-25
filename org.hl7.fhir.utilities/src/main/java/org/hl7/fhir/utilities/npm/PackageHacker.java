@@ -142,7 +142,7 @@ public class PackageHacker {
 
     // https://github.com/HL7/fhir-ig-publisher/issues/295
     if (webref.contains("hl7.org/fhir/us/core/STU4.0.0")) {
-      webref.replace("hl7.org/fhir/us/core/STU4.0.0", "hl7.org/fhir/us/core/STU4");
+      return webref.replace("hl7.org/fhir/us/core/STU4.0.0", "hl7.org/fhir/us/core/STU4");
     }
 
     if (isUseSecureReferences()) {

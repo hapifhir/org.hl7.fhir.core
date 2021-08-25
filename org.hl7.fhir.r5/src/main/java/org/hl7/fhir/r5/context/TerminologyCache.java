@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.ValidationResult;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
@@ -332,6 +333,8 @@ public class TerminologyCache {
         } else {
           sw.write("v: {\r\n");
           sw.write("  \"display\" : \""+Utilities.escapeJson(ce.v.getDisplay()).trim()+"\",\r\n");
+          sw.write("  \"code\" : \""+Utilities.escapeJson(ce.v.getCode()).trim()+"\",\r\n");
+          sw.write("  \"system\" : \""+Utilities.escapeJson(ce.v.getSystem()).trim()+"\",\r\n");
           sw.write("  \"severity\" : "+(ce.v.getSeverity() == null ? "null" : "\""+ce.v.getSeverity().toCode().trim()+"\"")+",\r\n");
           sw.write("  \"error\" : \""+Utilities.escapeJson(ce.v.getMessage()).trim()+"\"\r\n}\r\n");
         }
@@ -378,7 +381,9 @@ public class TerminologyCache {
               } else {
                 IssueSeverity severity = o.get("severity") instanceof JsonNull ? null :  IssueSeverity.fromCode(o.get("severity").getAsString());
                 String display = loadJS(o.get("display"));
-                ce.v = new ValidationResult(severity, error, new ConceptDefinitionComponent().setDisplay(display));
+                String code = loadJS(o.get("code"));
+                String system = loadJS(o.get("system"));
+                ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setCode(code));
               }
               nc.map.put(String.valueOf(hashNWS(ce.request)), ce);
               nc.list.add(ce);
@@ -403,7 +408,10 @@ public class TerminologyCache {
   }
 
   private String hashNWS(String s) {
-    return String.valueOf(s.replace("\r", "").replace("\n", "").replace(" ", "").hashCode());
+    s = StringUtils.remove(s, ' ');
+    s = StringUtils.remove(s, '\n');
+    s = StringUtils.remove(s, '\r');
+    return String.valueOf(s.hashCode());
   }
 
   // management

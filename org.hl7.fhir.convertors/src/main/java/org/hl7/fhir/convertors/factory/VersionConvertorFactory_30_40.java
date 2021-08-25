@@ -5,14 +5,15 @@ import org.hl7.fhir.convertors.conv30_40.VersionConvertor_30_40;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.utilities.Utilities;
 
-public final class VersionConvertorFactory_30_40 {
+public final class VersionConvertorFactory_30_40 extends VersionConvertorFactory {
 
   public static org.hl7.fhir.r4.model.Resource convertResource(org.hl7.fhir.dstu3.model.Resource src) throws FHIRException {
     return convertResource(src, new BaseAdvisor_30_40());
   }
 
   public static org.hl7.fhir.r4.model.Resource convertResource(org.hl7.fhir.dstu3.model.Resource src, BaseAdvisor_30_40 advisor) throws FHIRException {
-    return new VersionConvertor_30_40(advisor).convertResource(src);
+    cleanInputs(src, advisor);
+    return src != null ? new VersionConvertor_30_40(advisor).convertResource(src) : null;
   }
 
   public static org.hl7.fhir.dstu3.model.Resource convertResource(org.hl7.fhir.r4.model.Resource src) throws FHIRException {
@@ -20,7 +21,8 @@ public final class VersionConvertorFactory_30_40 {
   }
 
   public static org.hl7.fhir.dstu3.model.Resource convertResource(org.hl7.fhir.r4.model.Resource src, BaseAdvisor_30_40 advisor) throws FHIRException {
-    return new VersionConvertor_30_40(advisor).convertResource(src);
+    cleanInputs(src, advisor);
+    return src != null ? new VersionConvertor_30_40(advisor).convertResource(src) : null;
   }
 
   public static org.hl7.fhir.r4.model.Type convertType(org.hl7.fhir.dstu3.model.Type src) throws FHIRException {
@@ -28,7 +30,8 @@ public final class VersionConvertorFactory_30_40 {
   }
 
   public static org.hl7.fhir.r4.model.Type convertType(org.hl7.fhir.dstu3.model.Type src, BaseAdvisor_30_40 advisor) throws FHIRException {
-    return new VersionConvertor_30_40(advisor).convertType(src);
+    cleanInputs(src, advisor);
+    return src != null ? new VersionConvertor_30_40(advisor).convertType(src) : null;
   }
 
   public static org.hl7.fhir.dstu3.model.Type convertType(org.hl7.fhir.r4.model.Type src) throws FHIRException {
@@ -36,7 +39,8 @@ public final class VersionConvertorFactory_30_40 {
   }
 
   public static org.hl7.fhir.dstu3.model.Type convertType(org.hl7.fhir.r4.model.Type src, BaseAdvisor_30_40 advisor) throws FHIRException {
-    return new VersionConvertor_30_40(advisor).convertType(src);
+    cleanInputs(src, advisor);
+    return src != null ? new VersionConvertor_30_40(advisor).convertType(src) : null;
   }
 
   public static boolean convertsResource(String rt) {

@@ -45,6 +45,12 @@ The following parameters are supported:
      Note: the profile (and it's dependencies) have to be made available 
      through one of the -ig parameters. Note that package dependencies will 
      automatically be resolved
+-showReferenceMessages
+     Includes validation messages resulting from validating target resources 
+     against profiles defined on a reference.  This increases the volume of 
+     validationmessages, but may allow easier debugging.  If not specified, 
+     then only a high-level message indicating that the referenced item wasn't
+     valid against the listed profile(s) will be provided.
 -questionnaire mode: what to do with when validating QuestionnaireResponse resources
      none (default): just ignore the questionnaire reference
      required: check that the QuestionnaireResponse has a questionnaire and validate against it 

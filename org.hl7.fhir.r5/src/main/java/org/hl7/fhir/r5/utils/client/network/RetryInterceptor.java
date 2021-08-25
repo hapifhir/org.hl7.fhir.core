@@ -3,7 +3,7 @@ package org.hl7.fhir.r5.utils.client.network;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class RetryInterceptor implements Interceptor {
   }
 
   @Override
-  public @NotNull Response intercept(Interceptor.Chain chain) throws IOException {
+  public Response intercept(Interceptor.Chain chain) throws IOException {
     Request request = chain.request();
     Response response = null;
 

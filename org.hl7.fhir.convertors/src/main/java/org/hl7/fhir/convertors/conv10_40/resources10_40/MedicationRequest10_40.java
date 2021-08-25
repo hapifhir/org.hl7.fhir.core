@@ -72,7 +72,7 @@ public class MedicationRequest10_40 {
     if (src.hasDose())
       dose_and_rate.setDose(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getDose()));
     if (src.hasRate())
-      dose_and_rate.setDose(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getRate()));
+      dose_and_rate.setRate(ConversionContext10_40.INSTANCE.getVersionConvertor_10_40().convertType(src.getRate()));
     tgt.addDoseAndRate(dose_and_rate);
     if (src.hasMaxDosePerPeriod())
       tgt.setMaxDosePerPeriod(Ratio10_40.convertRatio(src.getMaxDosePerPeriod()));
