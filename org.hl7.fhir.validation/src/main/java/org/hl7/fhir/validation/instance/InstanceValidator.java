@@ -47,6 +47,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.codec.binary.Base64InputStream;
 import org.apache.commons.lang3.NotImplementedException;
@@ -167,6 +169,8 @@ import org.w3c.dom.Document;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import javax.annotation.Nonnull;
 
 
 /**
@@ -5165,13 +5169,36 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     ok = rule(errors, IssueType.INVALID, -1, -1, stack.getLiteralPath(), type.equals(resourceName), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE, type, resourceName);
 
     if (ok) {
-      if (idstatus == IdStatus.REQUIRED && (element.getNamedChild(ID) == null))
+      if (idstatus == IdStatus.REQUIRED && (element.getNamedChild(ID) == null)) {
         rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MISSING);
-      else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild(ID) != null))
+      } else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild(ID) != null)) {
         rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_PROHIBITED);
+      } else if ((idstatus == IdStatus.OPTIONAL || idstatus == IdStatus.REQUIRED)
+        && (element.getNamedChild(ID) != null)
+        && (!idFormattedCorrectly(element.getNamedChild(ID).getValue()))) {
+        rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MALFORMED);
+      }
       start(hostContext, errors, element, element, defn, stack); // root is both definition and type
     }
   }
+
+  /**
+   * FHIR IDs are constrained to any combination of upper- or lower-case ASCII letters ('A'..'Z', and 'a'..'z',
+   * numerals ('0'..'9'), '-' and '.', with a length limit of 64 characters. (This might be an integer, an un-prefixed
+   * OID, UUID or any other identifier pattern that meets these constraints.)
+   *
+   * As a heads up, a null String will pass this check.
+   *
+   * @param id The id to verify conformance to specification requirements.
+   * @return {@link Boolean#TRUE} if the passed in ID is a valid resource ID, {@link Boolean#FALSE} otherwise.
+   */
+  protected static boolean idFormattedCorrectly(@Nonnull String id) {
+    String idRegex = "[A-Za-z0-9\\-\\.]{1,64}";
+    Pattern pattern = Pattern.compile(idRegex);
+    Matcher matcher = pattern.matcher(id);
+    return matcher.matches();
+  }
+
 
   private NodeStack getFirstEntry(NodeStack bundle) {
     List<Element> list = new ArrayList<Element>();
