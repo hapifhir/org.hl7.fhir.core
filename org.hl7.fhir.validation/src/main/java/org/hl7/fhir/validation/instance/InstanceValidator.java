@@ -2056,7 +2056,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
-    if (type.equals(ID)) {
+    if (type.equals(ID) && !"Resource.id".equals(context.getBase().getPath())) {
       // work around an old issue with ElementDefinition.id
       if (!context.getPath().equals("ElementDefinition.id")) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.isValidId(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ID_VALID, e.primitiveValue());
@@ -5173,10 +5173,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MISSING);
       } else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild(ID) != null)) {
         rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_PROHIBITED);
-      } else if ((idstatus == IdStatus.OPTIONAL || idstatus == IdStatus.REQUIRED)
-        && (element.getNamedChild(ID) != null)
-        && (!idFormattedCorrectly(element.getNamedChild(ID).getValue()))) {
-        rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MALFORMED);
+      } 
+      if (element.getNamedChild(ID) != null) {
+        Element eid = element.getNamedChild(ID);
+        if (eid.getProperty() != null && eid.getProperty().getDefinition() != null && eid.getProperty().getDefinition().getBase().getPath().equals("Resource.id")) {
+          NodeStack ns = stack.push(eid, -1, eid.getProperty().getDefinition(), null);
+          rule(errors, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), idFormattedCorrectly(eid.getValue()), I18nConstants.RESOURCE_RES_ID_MALFORMED);
+        }
       }
       start(hostContext, errors, element, element, defn, stack); // root is both definition and type
     }
