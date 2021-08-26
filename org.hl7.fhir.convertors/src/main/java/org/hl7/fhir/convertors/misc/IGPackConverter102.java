@@ -41,7 +41,7 @@ import org.hl7.fhir.dstu3.model.ValueSet;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.FhirPublication;
 import org.hl7.fhir.utilities.Utilities;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -84,18 +84,18 @@ public class IGPackConverter102 extends BaseAdvisor_10_30 {
   }
 
   @Override
-  public boolean ignoreEntry(@NotNull BundleEntryComponent src, @NotNull FhirPublication publication) {
+  public boolean ignoreEntry(@Nonnull BundleEntryComponent src, @Nonnull FhirPublication publication) {
     return false;
   }
 
 
   @Override
-  public void handleCodeSystem(@NotNull CodeSystem tgtcs, @NotNull ValueSet vs) {
+  public void handleCodeSystem(@Nonnull CodeSystem tgtcs, @Nonnull ValueSet vs) {
     cslist.addEntry().setFullUrl(tgtcs.getUrl()).setResource(tgtcs);
   }
 
   @Override
-  public CodeSystem getCodeSystem(@NotNull ValueSet src) {
+  public CodeSystem getCodeSystem(@Nonnull ValueSet src) {
     return null;
   }
 
