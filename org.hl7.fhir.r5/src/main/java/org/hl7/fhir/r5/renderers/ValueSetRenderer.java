@@ -209,7 +209,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (doSystem && allFromOneSystem(vs)) {
       doSystem = false;
       XhtmlNode p = x.para();
-      p.tx("All codes from system ");
+      p.tx("All codes in this table are from the system ");
       allCS = getContext().getWorker().fetchCodeSystem(vs.getExpansion().getContains().get(0).getSystem());
       String ref = null;
       if (allCS != null)
