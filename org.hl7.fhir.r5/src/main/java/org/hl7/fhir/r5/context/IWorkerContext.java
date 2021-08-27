@@ -626,7 +626,13 @@ public interface IWorkerContext {
       return message != null;
     }
     
-    
+    public Coding asCoding() {
+      if (isOk() && definition != null && definition.getCode() != null) {
+        return new Coding(system, definition.getCode(), definition.getDisplay());
+      } else {
+        return null;
+      }
+    }
   }
 
   /**
