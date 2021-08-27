@@ -114,6 +114,7 @@ public abstract class ResourceRenderer extends DataRenderer {
       x.setAttribute("lang", r.getLanguage());
       x.setAttribute("xml:lang", r.getLanguage());
     }
+    r.getText().setUserData("renderer.generated", true);
     if (!r.hasText() || !r.getText().hasDiv() || r.getText().getDiv().getChildNodes().isEmpty()) {
       r.setText(new Narrative());
       r.getText().setDiv(x);
