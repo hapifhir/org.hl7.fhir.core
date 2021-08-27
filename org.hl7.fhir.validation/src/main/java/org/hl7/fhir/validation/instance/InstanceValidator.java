@@ -2056,7 +2056,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
     }
-    if (type.equals(ID)) {
+    if (type.equals(ID) && !"Resource.id".equals(context.getBase().getPath())) {
       // work around an old issue with ElementDefinition.id
       if (!context.getPath().equals("ElementDefinition.id")) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, FormatUtilities.isValidId(e.primitiveValue()), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ID_VALID, e.primitiveValue());
@@ -5173,32 +5173,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MISSING);
       } else if (idstatus == IdStatus.PROHIBITED && (element.getNamedChild(ID) != null)) {
         rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_PROHIBITED);
-      } else if ((idstatus == IdStatus.OPTIONAL || idstatus == IdStatus.REQUIRED)
-        && (element.getNamedChild(ID) != null)
-        && (!idFormattedCorrectly(element.getNamedChild(ID).getValue()))) {
-        rule(errors, IssueType.INVALID, element.line(), element.col(), stack.getLiteralPath(), false, I18nConstants.RESOURCE_RES_ID_MALFORMED);
+      } 
+      if (element.getNamedChild(ID) != null) {
+        Element eid = element.getNamedChild(ID);
+        if (eid.getProperty() != null && eid.getProperty().getDefinition() != null && eid.getProperty().getDefinition().getBase().getPath().equals("Resource.id")) {
+          NodeStack ns = stack.push(eid, -1, eid.getProperty().getDefinition(), null);
+          rule(errors, IssueType.INVALID, eid.line(), eid.col(), ns.getLiteralPath(), FormatUtilities.isValidId(eid.primitiveValue()), I18nConstants.RESOURCE_RES_ID_MALFORMED);
+        }
       }
       start(hostContext, errors, element, element, defn, stack); // root is both definition and type
     }
   }
-
-  /**
-   * FHIR IDs are constrained to any combination of upper- or lower-case ASCII letters ('A'..'Z', and 'a'..'z',
-   * numerals ('0'..'9'), '-' and '.', with a length limit of 64 characters. (This might be an integer, an un-prefixed
-   * OID, UUID or any other identifier pattern that meets these constraints.)
-   *
-   * As a heads up, a null String will pass this check.
-   *
-   * @param id The id to verify conformance to specification requirements.
-   * @return {@link Boolean#TRUE} if the passed in ID is a valid resource ID, {@link Boolean#FALSE} otherwise.
-   */
-  protected static boolean idFormattedCorrectly(@Nonnull String id) {
-    String idRegex = "[A-Za-z0-9\\-\\.]{1,64}";
-    Pattern pattern = Pattern.compile(idRegex);
-    Matcher matcher = pattern.matcher(id);
-    return matcher.matches();
-  }
-
 
   private NodeStack getFirstEntry(NodeStack bundle) {
     List<Element> list = new ArrayList<Element>();
