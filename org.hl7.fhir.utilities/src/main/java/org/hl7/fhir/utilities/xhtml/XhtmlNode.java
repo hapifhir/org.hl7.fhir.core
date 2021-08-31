@@ -606,6 +606,10 @@ public class XhtmlNode implements IBaseXhtml {
     return addTag("pre");
   }
 
+  public XhtmlNode pre(String clss) {
+    return addTag("pre").setAttribute("class", clss);
+  }
+
   public void br() {
     addTag("br");
   }

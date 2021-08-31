@@ -148,6 +148,37 @@ public class DataRenderer extends Renderer {
     return system;
   }
 
+  public String displaySystem(String system) {
+    if (system == null)
+      return "[not stated]";
+    if (system.equals("http://loinc.org"))
+      return "LOINC";
+    if (system.startsWith("http://snomed.info"))
+      return "SNOMED CT";
+    if (system.equals("http://www.nlm.nih.gov/research/umls/rxnorm"))
+      return "RxNorm";
+    if (system.equals("http://hl7.org/fhir/sid/icd-9"))
+      return "ICD-9";
+    if (system.equals("http://dicom.nema.org/resources/ontology/DCM"))
+      return "DICOM";
+    if (system.equals("http://unitsofmeasure.org"))
+      return "UCUM";
+
+    CodeSystem cs = context.getContext().fetchCodeSystem(system);
+    if (cs != null) {
+      return cs.present();
+    }
+    return tails(system);
+  }
+
+  private String tails(String system) {
+    if (system.contains("/")) {
+      return system.substring(system.lastIndexOf("/")+1);
+    } else {
+      return "unknown";
+    }
+  }
+
   protected String makeAnchor(String codeSystem, String code) {
     String s = codeSystem+'-'+code;
     StringBuilder b = new StringBuilder();
