@@ -285,6 +285,9 @@ public class TerminologyCache {
   }
 
   public ValidationResult getValidation(CacheToken cacheToken) {
+    if (cacheToken.key == null) {
+      return null;
+    }
     synchronized (lock) {
       NamedCache nc = getNamedCache(cacheToken);
       CacheEntry e = nc.map.get(cacheToken.key);
@@ -296,14 +299,16 @@ public class TerminologyCache {
   }
 
   public void cacheValidation(CacheToken cacheToken, ValidationResult res, boolean persistent) {
-    synchronized (lock) {      
-      NamedCache nc = getNamedCache(cacheToken);
-      CacheEntry e = new CacheEntry();
-      e.request = cacheToken.request;
-      e.persistent = persistent;
-      e.v = res;
-      store(cacheToken, persistent, nc, e);
-    }    
+    if (cacheToken.key != null) {
+      synchronized (lock) {      
+        NamedCache nc = getNamedCache(cacheToken);
+        CacheEntry e = new CacheEntry();
+        e.request = cacheToken.request;
+        e.persistent = persistent;
+        e.v = res;
+        store(cacheToken, persistent, nc, e);
+      }    
+    }
   }
 
   

@@ -734,7 +734,7 @@ public class BaseValidator {
           fr = ValueSetUtilities.generateImplicitValueSet(reference);
         } 
        
-        timeTracker.tx(t);
+        timeTracker.tx(t, "vs "+uri);
         return fr;
       }
     } else
