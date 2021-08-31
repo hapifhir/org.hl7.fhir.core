@@ -82,7 +82,7 @@ public class RenderingContext {
   private boolean pretty;
   private boolean header;
 
-  private ValidationOptions terminologyServiceOptions;
+  private ValidationOptions terminologyServiceOptions = new ValidationOptions();
   private boolean noSlowLookup;
   private String tooCostlyNoteEmpty;
   private String tooCostlyNoteNotEmpty;
@@ -115,7 +115,9 @@ public class RenderingContext {
     this.specificationLink = specLink;
     this.localPrefix = localPrefix;
     this.mode = mode;
-    this.terminologyServiceOptions = terminologyServiceOptions;
+    if (terminologyServiceOptions != null) {
+      this.terminologyServiceOptions = terminologyServiceOptions;
+    }
     profileUtilities = new ProfileUtilities(worker, null, null);
   }
 

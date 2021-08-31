@@ -191,6 +191,7 @@ public class ToolingExtensions {
   public static final String EXT_XML_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
   public static final String EXT_XML_NAME = "http://hl7.org/fhir/StructureDefinition/elementdefinition-xml-name";
   public static final String EXT_BINDING_STYLE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-binding-style";
+  public static final String EXT_BINARY_FORMAT = "http://hl7.org/fhir/StructureDefinition/implementationguide-resource-format";
   
   // specific extension helpers
 
