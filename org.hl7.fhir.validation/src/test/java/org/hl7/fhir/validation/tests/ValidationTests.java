@@ -430,8 +430,8 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   }
 
   @Override
-  public Base resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
-    return null;
+  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+    return new ArrayList<Base>();
   }
 
   @Override
