@@ -7,6 +7,7 @@ public enum EngineMode {
   SNAPSHOT,
   SCAN,
   CONVERT,
+  SPREADSHEET,
   FHIRPATH,
   VERSION
 }

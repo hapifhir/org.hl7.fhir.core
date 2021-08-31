@@ -48,6 +48,7 @@ public class Params {
   public static final String TEST = "-tests";
   public static final String HELP = "help";
   public static final String COMPARE = "-compare";
+  public static final String SPREADSHEET = "-spreadsheet";
   public static final String DESTINATION = "-dest";
   public static final String LEFT = "-left";
   public static final String RIGHT = "-right";
@@ -181,6 +182,8 @@ public class Params {
         cliContext.setMode(EngineMode.TRANSFORM);
       } else if (args[i].equals(NARRATIVE)) {
         cliContext.setMode(EngineMode.NARRATIVE);
+      } else if (args[i].equals(SPREADSHEET)) {
+        cliContext.setMode(EngineMode.SPREADSHEET);
       } else if (args[i].equals(SNAPSHOT)) {
         cliContext.setMode(EngineMode.SNAPSHOT);
       } else if (args[i].equals(SECURITY_CHECKS)) {
