@@ -1,5 +1,6 @@
 package org.hl7.fhir.validation.cli.services;
 
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;
 import org.hl7.fhir.r5.context.TerminologyCache;
 import org.hl7.fhir.r5.elementmodel.Manager;
@@ -8,6 +9,10 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
+import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
+import org.hl7.fhir.r5.renderers.spreadsheets.StructureDefinitionSpreadsheetGenerator;
+import org.hl7.fhir.r5.renderers.spreadsheets.ValueSetSpreadsheetGenerator;
 import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.TimeTracker;
@@ -24,6 +29,7 @@ import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.util.ArrayList;
@@ -348,5 +354,26 @@ public class ValidationService {
       return versions.version();
     }
     throw new Exception("-> Multiple versions found. Specify a particular version using the -version parameter");
+  }
+
+  public void generateSpreadsheet(CliContext cliContext, ValidationEngine validator) throws Exception {
+    CanonicalResource cr = validator.loadCanonicalResource(cliContext.getSources().get(0), cliContext.getSv());
+    boolean ok = true;
+    if (cr instanceof StructureDefinition) {
+      new StructureDefinitionSpreadsheetGenerator(validator.getContext(), false, false).renderStructureDefinition((StructureDefinition) cr).finish(new FileOutputStream(cliContext.getOutput()));
+    } else if (cr instanceof CodeSystem) {
+      new CodeSystemSpreadsheetGenerator(validator.getContext()).renderCodeSystem((CodeSystem) cr).finish(new FileOutputStream(cliContext.getOutput()));
+    } else if (cr instanceof ValueSet) {
+      new ValueSetSpreadsheetGenerator(validator.getContext()).renderValueSet((ValueSet) cr).finish(new FileOutputStream(cliContext.getOutput()));
+    } else if (cr instanceof ConceptMap) {
+      new ConceptMapSpreadsheetGenerator(validator.getContext()).renderConceptMap((ConceptMap) cr).finish(new FileOutputStream(cliContext.getOutput()));
+    } else {
+      ok = false;
+      System.out.println(" ...Unable to generate spreadsheet for "+cliContext.getSources().get(0)+": no way to generate a spreadsheet for a "+cr.fhirType());
+    }
+    
+    if (ok) {
+      System.out.println(" ...generated spreadsheet successfully");
+    } 
   }
 }

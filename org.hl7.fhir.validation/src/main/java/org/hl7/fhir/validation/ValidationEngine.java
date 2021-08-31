@@ -473,6 +473,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     return sd;
   }
 
+  public CanonicalResource loadCanonicalResource(String source, String version) throws FHIRException, IOException {
+    Content cnt = igLoader.loadContent(source, "validate", false);
+    Resource res = igLoader.loadResourceByVersion(version, cnt.focus, Utilities.getFileNameForName(source));
+
+    if (!(res instanceof CanonicalResource))
+      throw new FHIRException("Require a CanonicalResource");
+    return (CanonicalResource) res;
+  }
+
   public void seeResource(Resource r) throws FHIRException {
     context.cacheResource(r);
   }
