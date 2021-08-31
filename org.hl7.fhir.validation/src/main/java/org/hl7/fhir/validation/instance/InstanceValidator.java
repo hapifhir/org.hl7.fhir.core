@@ -128,6 +128,7 @@ import org.hl7.fhir.r5.model.TypeDetails;
 import org.hl7.fhir.r5.model.UriType;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
+import org.hl7.fhir.r5.renderers.DataRenderer;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.TerminologyServiceErrorClass;
 import org.hl7.fhir.r5.utils.FHIRLexer.FHIRLexerException;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
@@ -192,16 +193,17 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private static final String EXECUTED_CONSTRAINT_LIST = "validator.executed.invariant.list";
   private static final String EXECUTION_ID = "validator.execution.id";
   private static final String HTML_FRAGMENT_REGEX = "[a-zA-Z]\\w*(((\\s+)(\\S)*)*)";
+  private static final boolean STACK_TRACE = false;
   
   private class ValidatorHostServices implements IEvaluationContext {
 
     @Override
-    public Base resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
       ValidatorHostContext c = (ValidatorHostContext) appContext;
       if (externalHostServices != null)
         return externalHostServices.resolveConstant(c.getAppContext(), name, beforeContext);
       else
-        return null;
+        return new ArrayList<Base>();
     }
 
     @Override
@@ -819,11 +821,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean checkCode(List<ValidationMessage> errors, Element element, String path, String code, String system, String display, boolean checkDisplay, NodeStack stack) throws TerminologyServiceException {
     long t = System.nanoTime();
     boolean ss = context.supportsSystem(system);
-    timeTracker.tx(t);
+    timeTracker.tx(t, "ss "+system);
     if (ss) {
       t = System.nanoTime();
       ValidationResult s = checkCodeOnServer(stack, code, system, display, checkDisplay);
-      timeTracker.tx(t);
+      timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
       if (s == null)
         return true;
       if (s.isOk()) {
@@ -1113,10 +1115,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       checkBindings(errors, path, element, stack, valueset, nextCoding);
                     }
                   }
-                  timeTracker.tx(t);
+                  timeTracker.tx(t, "vc "+DataRenderer.display(context, cc));
                 }
               }
             } catch (Exception e) {
+              if (STACK_TRACE) e.printStackTrace();
               warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getMessage());
             }
           }
@@ -1238,10 +1241,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       }
                     }
                   }
-                  timeTracker.tx(t);
+                  timeTracker.tx(t, DataRenderer.display(context, cc));
                 }
               }
             } catch (Exception e) {
+              if (STACK_TRACE) e.printStackTrace();
               warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT, e.getMessage());
             }
             // special case: if the logical model has both CodeableConcept and Coding mappings, we'll also check the first coding.
@@ -1286,7 +1290,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       removeTrackedMessagesForLocation(errors, element, path);
                     }
 
-                    timeTracker.tx(t);
+                    timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
                     if (vr != null && !vr.isOk()) {
                       if (vr.IsNoService())
                         txHint(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_BINDING_NOSERVER);
@@ -1317,6 +1321,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       }
                     }
                   } catch (Exception e) {
+                    if (STACK_TRACE) e.printStackTrace();
                     warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING1, e.getMessage());
                   }
                 }
@@ -1328,6 +1333,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
       } catch (Exception e) {
+        if (STACK_TRACE) e.printStackTrace();
         rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING2, e.getMessage(), e.toString());
       }
     }
@@ -1410,7 +1416,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, cc, false);
-        timeTracker.tx(t);
+        timeTracker.tx(t, "vc "+cc.toString());
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
             txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_7, describeReference(maxVSUrl), valueset.getUrl(), vr.getMessage());
@@ -1418,6 +1424,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_8, describeReference(maxVSUrl), valueset.getUrl(), ccSummary(cc));
         }
       } catch (Exception e) {
+        if (STACK_TRACE) e.printStackTrace();
         warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX, e.getMessage());
       }
     }
@@ -1429,7 +1436,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, c, true);
-        timeTracker.tx(t);
+        timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
             txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl), valueset.getUrl(), vr.getMessage());
@@ -1437,6 +1444,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_10, describeReference(maxVSUrl), valueset.getUrl(), c.getSystem(), c.getCode());
         }
       } catch (Exception e) {
+        if (STACK_TRACE) e.printStackTrace();
         warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX, e.getMessage());
       }
     }
@@ -1448,7 +1456,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         long t = System.nanoTime();
         ValidationResult vr = checkCodeOnServer(stack, valueset, value, new ValidationOptions(stack.getWorkingLang()));
-        timeTracker.tx(t);
+        timeTracker.tx(t, "vc "+value);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
             txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_9, describeReference(maxVSUrl), valueset.getUrl(), vr.getMessage());
@@ -1456,6 +1464,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             txRule(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_NOVALID_11, describeReference(maxVSUrl), valueset.getUrl(), "), and a code from this value set is required) (code = " + value + "), (error = " + vr.getMessage() + ")");
         }
       } catch (Exception e) {
+        if (STACK_TRACE) e.printStackTrace();
         warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODEABLECONCEPT_MAX, e.getMessage());
       }
     }
@@ -1505,7 +1514,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     if (binding.getStrength() != BindingStrength.EXAMPLE) {
                       vr = checkCodeOnServer(stack, valueset, c, true);
                     }
-                    timeTracker.tx(t);
+                    timeTracker.tx(t, "vc "+c.getSystem()+"#"+c.getCode()+" '"+c.getDisplay()+"'");
                     if (binding.getStrength() == BindingStrength.REQUIRED) {
                       removeTrackedMessagesForLocation(errors, element, path);
                     }
@@ -1541,6 +1550,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                       }
                     }
                   } catch (Exception e) {
+                    if (STACK_TRACE) e.printStackTrace();
                     warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING1, e.getMessage());
                   }
                 }
@@ -1552,6 +1562,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             }
           }
       } catch (Exception e) {
+        if (STACK_TRACE) e.printStackTrace();
         rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_ERROR_CODING2, e.getMessage(), e.toString());
       }
     }
@@ -2458,7 +2469,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           ValidationOptions options = new ValidationOptions(stack.getWorkingLang()).guessSystem();
           vr = checkCodeOnServer(stack, vs, value, options);
         }
-        timeTracker.tx(t);
+        timeTracker.tx(t, "vc "+value+"");
         if (binding.getStrength() == BindingStrength.REQUIRED) {
           removeTrackedMessagesForLocation(errors, element, path);
         }
@@ -2562,6 +2573,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           } else {
             fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_UNKNOWN_URL_SCHEME, url);          }
         } catch (Exception e) {
+          if (STACK_TRACE) e.printStackTrace();
           fetchError = context.formatMessage(I18nConstants.TYPE_SPECIFIC_CHECKS_DT_ATT_URL_ERROR, url, e.getMessage());
         }
       }
@@ -2632,6 +2644,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               try {
                 ext = fetcher.fetch(this, hostContext.getAppContext(), ref);
               } catch (IOException e) {
+                if (STACK_TRACE) e.printStackTrace();
                 throw new FHIRException(e);
               }
               if (ext != null) {
@@ -3058,6 +3071,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     try {
       expr = fpe.parse(fp);
     } catch (Exception e) {
+      if (STACK_TRACE) e.printStackTrace();
       throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR_BAD_PATH, e.getMessage(), fp), e);
     }
     long t2 = System.nanoTime();
@@ -3160,7 +3174,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     try {
       return context.fetchCodeSystem(system);
     } finally {
-      timeTracker.tx(t);
+      timeTracker.tx(t, "cs "+system);
     }
   }
 
@@ -3637,6 +3651,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       try {
         n = fpe.parse(fixExpr(expression.toString(), null));
       } catch (FHIRLexerException e) {
+        if (STACK_TRACE) e.printStackTrace();
         throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_PROCESSING_EXPRESSION__IN_PROFILE__PATH__, expression, profile.getUrl(), path, e.getMessage()));
       }
       timeTracker.fpe(t);
@@ -3667,7 +3682,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       timeTracker.fpe(t);
       msg = fpe.forLog();
     } catch (Exception ex) {
-      ex.printStackTrace();
+      if (STACK_TRACE) ex.printStackTrace();
       throw new FHIRException(context.formatMessage(I18nConstants.PROBLEM_EVALUATING_SLICING_EXPRESSION_FOR_ELEMENT_IN_PROFILE__PATH__FHIRPATH___, profile.getUrl(), path, n, ex.getMessage()));
     }
     return ok;
@@ -3997,6 +4012,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                 try {
                   sd = (StructureDefinition) fetcher.fetchCanonicalResource(this, profile.primitiveValue());
                 } catch (Exception e) {
+                  if (STACK_TRACE) e.printStackTrace();
                   warning(errors, IssueType.STRUCTURE, element.line(), element.col(), stack.getLiteralPath() + ".meta.profile[" + i + "]", false, I18nConstants.VALIDATION_VAL_PROFILE_UNKNOWN_ERROR, profile.primitiveValue(), e.getMessage());                
                 }
                 if (sd != null) {
@@ -5344,7 +5360,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       return "(reference = '#') or reference.startsWith('#').not() or (reference.substring(1).trace('url') in %rootResource.contained.id.trace('ids'))";
     }
     if ("reference.startsWith('#').not() or (reference.substring(1).trace('url') in %resource.contained.id.trace('ids'))".equals(expr)) {
-      return "(reference = '#') or reference.startsWith('#').not() or (reference.substring(1).trace('url') in %resource.contained.id.trace('ids'))";
+      return "(reference = '#') or reference.startsWith('#').not() or (reference.substring(1).trace('url') in %rootResource.contained.id.trace('ids'))";
     }
     if ("".equals(expr))
       return "";
