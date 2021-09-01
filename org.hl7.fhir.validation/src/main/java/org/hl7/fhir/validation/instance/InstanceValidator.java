@@ -5170,7 +5170,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ok = rule(errors, IssueType.INVALID, element.line(), element.col(), stack.addToLiteralPath(resourceName), defn != null, I18nConstants.VALIDATION_VAL_PROFILE_NODEFINITION, resourceName);
     }
 
-    String type = defn.getKind() == StructureDefinitionKind.LOGICAL ? defn.getId() : defn.getType();
+    String type = defn.getKind() == StructureDefinitionKind.LOGICAL ? defn.getName() : defn.getType();
     // special case: we have a bundle, and the profile is not for a bundle. We'll try the first entry instead
     if (!type.equals(resourceName) && resourceName.equals(BUNDLE)) {
       NodeStack first = getFirstEntry(stack);

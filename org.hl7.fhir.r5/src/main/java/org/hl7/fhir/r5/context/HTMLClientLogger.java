@@ -67,8 +67,11 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
     file.println("<p>#"+id+"</p>");
     file.println("<pre>");
     file.println(method+" "+url+" HTTP/1.0");
-    for (String s : headers)  
-      file.println(Utilities.escapeXml(s));
+    if (headers != null) {
+      for (String s : headers) {  
+        file.println(Utilities.escapeXml(s));
+      }
+    }
     if (body != null) {
       file.println("");
       try {
