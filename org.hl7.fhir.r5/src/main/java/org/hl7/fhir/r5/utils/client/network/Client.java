@@ -84,12 +84,13 @@ public class Client {
 
   public <T extends Resource> ResourceRequest<T> issueGetResourceRequest(URI resourceUri,
                                                                          String resourceFormat,
+                                                                         Headers headers,
                                                                          String message,
                                                                          long timeout) throws IOException {
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL());
 
-    return executeFhirRequest(request, resourceFormat, null, message, retryCount, timeout);
+    return executeFhirRequest(request, resourceFormat, headers, message, retryCount, timeout);
   }
 
   public <T extends Resource> ResourceRequest<T> issuePutRequest(URI resourceUri,
@@ -211,24 +212,5 @@ public class Client {
       .withHeaders(headers == null ? new Headers.Builder().build() : headers)
       .withTimeout(timeout, TimeUnit.MILLISECONDS)
       .execute();
-  }
-
-  /**
-   * @deprecated It does not appear as though this method is actually being used. Will be removed in a future release
-   * unless a case is made to keep it.
-   */
-  @Deprecated
-  public Calendar getLastModifiedResponseHeaderAsCalendarObject(URLConnection serverConnection) {
-    String dateTime = null;
-    try {
-      dateTime = serverConnection.getHeaderField("Last-Modified");
-      SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", new Locale("en", "US"));
-      Date lastModifiedTimestamp = format.parse(dateTime);
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTime(lastModifiedTimestamp);
-      return calendar;
-    } catch (ParseException pe) {
-      throw new EFhirClientException("Error parsing Last-Modified response header " + dateTime, pe);
-    }
   }
 }

@@ -37,6 +37,7 @@ import org.hl7.fhir.dstu3.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -141,6 +142,16 @@ public class TerminologyClientR3 implements TerminologyClient {
       throw new FHIRException("Unable to convert resource " + Utilities.pathURL(getAddress(), type, id) + " to R5 canonical resource (internal representation)");
     }
     return (CanonicalResource) r5;
+  }
+
+  @Override
+  public ClientHeaders getClientHeaders() {
+    return null;
+  }
+
+  @Override
+  public TerminologyClient setClientHeaders(ClientHeaders clientHeaders) {
+    return null;
   }
 
 
