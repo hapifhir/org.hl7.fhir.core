@@ -543,17 +543,19 @@ public class Element extends Base {
   }
 
   public Element getNamedChild(String name) {
-	  if (children == null)
-  		return null;
-	  Element result = null;
-	  for (Element child : children) {
-	  	if (child.getName().equals(name) || (child.getName().length() >  child.fhirType().length() && child.getName().substring(0, child.getName().length() - child.fhirType().length()).equals(name) && child.getProperty().getDefinition().isChoice())) {
-	  		if (result == null)
-	  			result = child;
-	  		else 
-	  			throw new Error("Attempt to read a single element when there is more than one present ("+name+")");
-	  	}
-	  }
+    if (children == null)
+      return null;
+    Element result = null;
+    for (Element child : children) {
+      if (child.getName() != null && name != null && child.getProperty() != null && child.getProperty().getDefinition() != null && child.fhirType() != null) {
+        if (child.getName().equals(name) || (child.getName().length() >  child.fhirType().length() && child.getName().substring(0, child.getName().length() - child.fhirType().length()).equals(name) && child.getProperty().getDefinition().isChoice())) {
+          if (result == null)
+            result = child;
+          else 
+            throw new Error("Attempt to read a single element when there is more than one present ("+name+")");
+        }
+      }
+    }
 	  return result;
 	}
 

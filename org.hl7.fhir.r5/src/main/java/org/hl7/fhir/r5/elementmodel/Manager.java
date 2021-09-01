@@ -79,6 +79,7 @@ public class Manager {
       return null;
     }
 
+    
   }
   
   public static Element parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
