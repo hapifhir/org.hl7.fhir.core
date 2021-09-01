@@ -5170,11 +5170,10 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ok = rule(errors, IssueType.INVALID, element.line(), element.col(), stack.addToLiteralPath(resourceName), defn != null, I18nConstants.VALIDATION_VAL_PROFILE_NODEFINITION, resourceName);
     }
 
-    String type = defn.getKind() == StructureDefinitionKind.LOGICAL ? defn.getName() : defn.getType();
     // special case: we have a bundle, and the profile is not for a bundle. We'll try the first entry instead
-    if (!type.equals(resourceName) && resourceName.equals(BUNDLE)) {
+    if (!typeMatchesDefn(resourceName, defn) && resourceName.equals(BUNDLE)) {
       NodeStack first = getFirstEntry(stack);
-      if (first != null && first.getElement().getType().equals(type)) {
+      if (first != null && typeMatchesDefn(first.getElement().getType(), defn)) {
         element = first.getElement();
         stack = first;
         resourceName = element.getType();
@@ -5182,7 +5181,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       // todo: validate everything in this bundle.
     }
-    ok = rule(errors, IssueType.INVALID, -1, -1, stack.getLiteralPath(), type.equals(resourceName), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE, type, resourceName);
+    ok = rule(errors, IssueType.INVALID, -1, -1, stack.getLiteralPath(), typeMatchesDefn(resourceName, defn), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE, defn.getName(), resourceName);
 
     if (ok) {
       if (idstatus == IdStatus.REQUIRED && (element.getNamedChild(ID) == null)) {
@@ -5198,6 +5197,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       }
       start(hostContext, errors, element, element, defn, stack); // root is both definition and type
+    }
+  }
+
+  private boolean typeMatchesDefn(String name, StructureDefinition defn) {
+    if (defn.getKind() == StructureDefinitionKind.LOGICAL) {
+      return name.equals(defn.getType()) || name.equals(defn.getName()) || name.equals(defn.getId());
+    } else {
+      return name.matches(defn.getType());
     }
   }
 
