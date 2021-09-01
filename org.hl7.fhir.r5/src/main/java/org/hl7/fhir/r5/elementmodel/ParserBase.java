@@ -114,7 +114,7 @@ public abstract class ParserBase {
 	      if(name.equals(sd.getType()) && (ns == null || ns.equals(FormatUtilities.FHIR_NS)) && !ToolingExtensions.hasExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace"))
 	        return sd;
 	      String sns = ToolingExtensions.readStringExtension(sd, "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace");
-	      if ((name.equals(sd.getType()) || name.equals(sd.getName())) ) && ns != null && ns.equals(sns))
+	      if ((name.equals(sd.getType()) || name.equals(sd.getName())) && ns != null && ns.equals(sns))
 	        return sd;
 	    }
 	  }
