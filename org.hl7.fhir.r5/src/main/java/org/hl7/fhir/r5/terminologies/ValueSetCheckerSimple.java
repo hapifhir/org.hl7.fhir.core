@@ -613,7 +613,7 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
       vs.getCompose().addInclude(vsi);
       ValidationResult res = context.validateCode(options.noClient(), new Coding(system, code, null), vs);
       if (res.getErrorClass() == TerminologyServiceErrorClass.UNKNOWN || res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED || res.getErrorClass() == TerminologyServiceErrorClass.VALUESET_UNSUPPORTED) {
-        if (warnings != null) {
+        if (warnings != null && res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
           warnings.add(context.formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, system));
         }
         return null;
