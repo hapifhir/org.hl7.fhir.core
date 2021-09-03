@@ -2,7 +2,9 @@ package org.hl7.fhir.r5.renderers.spreadsheets;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -58,6 +60,7 @@ public class SpreadsheetGenerator {
   protected Map<String, CellStyle> styles;
 
   protected DataRenderer dr;
+  private List<String> sheetNames = new ArrayList<>();
   
   public SpreadsheetGenerator(IWorkerContext context) {
     super();
@@ -72,6 +75,19 @@ public class SpreadsheetGenerator {
     outStream.close();
   }
   
+  protected Sheet makeSheet(String name) {
+    String s = name;
+    if (sheetNames.contains(s)) {
+      int i = 1;
+      do {
+        i++;
+        s = name+" "+Integer.toString(i);
+      } while (sheetNames.contains(s));
+    }
+    sheetNames.add(s);
+    return wb.createSheet(s);
+  }
+
   private static Map<String, CellStyle> createStyles(Workbook wb){
     Map<String, CellStyle> styles = new HashMap<>();
 

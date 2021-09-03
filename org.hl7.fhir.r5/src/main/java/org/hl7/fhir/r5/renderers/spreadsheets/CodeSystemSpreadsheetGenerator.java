@@ -68,7 +68,7 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
   }
   
   private void addFilters(List<CodeSystemFilterComponent> filters) {
-    Sheet sheet = wb.createSheet("Filters");
+    Sheet sheet = makeSheet("Filters");
     addHeaders(sheet, "Code", "Description", "Operators", "Value");
     for (CodeSystemFilterComponent f : filters) {
       CommaSeparatedStringBuilder cs = new CommaSeparatedStringBuilder();
@@ -80,7 +80,7 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
   }
 
   private void addProperties(List<PropertyComponent> properties) {
-    Sheet sheet = wb.createSheet("Properties");
+    Sheet sheet = makeSheet("Properties");
     addHeaders(sheet, "Code", "Uri", "Description", "Type");
     for (PropertyComponent p : properties) {
       addRow(sheet, p.getCode(), p.getUri(), p.getDescription(), p.getTypeElement().asStringValue());
@@ -88,7 +88,7 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
   }
 
   private void addConcepts(List<ConceptDefinitionComponent> concepts) {
-    Sheet sheet = wb.createSheet("Concepts");
+    Sheet sheet = makeSheet("Concepts");
     addHeaders(sheet, "Level", "Code", "Display", "Definition"); //todo: properties and designations
     addConcepts(sheet, 1, concepts);    
   }
@@ -103,7 +103,7 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
   }
 
   private void genExpansionParams(List<ValueSetExpansionParameterComponent> params) {
-    Sheet sheet = wb.createSheet("Expansion Parameters");
+    Sheet sheet = makeSheet("Expansion Parameters");
     addHeaders(sheet, "Parameter", "Value");
     for (ValueSetExpansionParameterComponent p : params) {
       addRow(sheet, p.getName(), dr.display(p.getValue()));          
@@ -111,7 +111,7 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
   }
 
   private void genExpansion(List<ValueSetExpansionContainsComponent> list) {
-    Sheet sheet = wb.createSheet("Expansion");
+    Sheet sheet = makeSheet("Expansion");
     addHeaders(sheet, "Level", "System", "version", "Code", "Display", "Abstract", "Inactive");
     genExpansionEntry(1, list, sheet);    
   }
@@ -129,12 +129,12 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
     return value ? "" : "false";
   }
 
-  private void genInclude(ValueSet vs, ConceptSetComponent inc, String mode) {
-    if (inc.hasSystem()) {
-      genIncludeSystem(vs, inc, mode);
-    } else {
-      genIncludeValueSets(vs, inc, mode);      
-    }
+//  private void genInclude(ValueSet vs, ConceptSetComponent inc, String mode) {
+//    if (inc.hasSystem()) {
+//      genIncludeSystem(vs, inc, mode);
+//    } else {
+//      genIncludeValueSets(vs, inc, mode);      
+//    }
 //    String subname = inc.hasSystem() ?  : "ValueSets";
 //    
 //
@@ -152,33 +152,33 @@ public class CodeSystemSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
 //    processElement(sheet, sd, child);
 //  }
 //  configureSheet(sheet, sd);
-  }
+//  }
 
-  private void genIncludeValueSets(ValueSet vs, ConceptSetComponent inc, String mode) {
-    Sheet sheet = wb.createSheet(mode+" ValueSets");
-    addValueSets(sheet, inc.getValueSet()); 
-    configureSheet(sheet);
-  }
-
-  private void genIncludeSystem(ValueSet vs, ConceptSetComponent inc, String mode) {
-    Sheet sheet = wb.createSheet(mode+" from "+dr.displaySystem(inc.getSystem()));
-    if (inc.hasValueSet()) {
-      addValueSets(sheet, inc.getValueSet());
-    }
-    if (inc.hasFilter()) {
-      addFilters(sheet, inc.getFilter());
-    }
-    if (inc.hasConcept()) {
-      addConcepts(sheet, inc.getConcept());
-    }
-    if (!inc.hasConcept() && !inc.hasFilter()) {
-      addAllCodes(sheet);
-    }
-    addRow(sheet, "", "");          
-    addRow(sheet, "System URI", inc.getSystem());          
-    
-    configureSheet(sheet);
-  }
+//  private void genIncludeValueSets(ValueSet vs, ConceptSetComponent inc, String mode) {
+//    Sheet sheet = makeSheet(mode+" ValueSets");
+//    addValueSets(sheet, inc.getValueSet()); 
+//    configureSheet(sheet);
+//  }
+//
+//  private void genIncludeSystem(ValueSet vs, ConceptSetComponent inc, String mode) {
+//    Sheet sheet = makeSheet(mode+" from "+dr.displaySystem(inc.getSystem()));
+//    if (inc.hasValueSet()) {
+//      addValueSets(sheet, inc.getValueSet());
+//    }
+//    if (inc.hasFilter()) {
+//      addFilters(sheet, inc.getFilter());
+//    }
+//    if (inc.hasConcept()) {
+//      addConcepts(sheet, inc.getConcept());
+//    }
+//    if (!inc.hasConcept() && !inc.hasFilter()) {
+//      addAllCodes(sheet);
+//    }
+//    addRow(sheet, "", "");          
+//    addRow(sheet, "System URI", inc.getSystem());          
+//    
+//    configureSheet(sheet);
+//  }
 
   private void addAllCodes(Sheet sheet) {
     addHeaders(sheet, "Codes");     
