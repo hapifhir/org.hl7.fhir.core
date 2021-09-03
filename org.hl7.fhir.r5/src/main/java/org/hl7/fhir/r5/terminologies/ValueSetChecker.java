@@ -1,5 +1,7 @@
 package org.hl7.fhir.r5.terminologies;
 
+import java.util.List;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -36,6 +38,6 @@ import org.hl7.fhir.r5.utils.EOperationOutcome;
 
 public interface ValueSetChecker {
 
-  Boolean codeInValueSet(String system, String code) throws ETooCostly, EOperationOutcome, Exception;
+  Boolean codeInValueSet(String system, String code, List<String> warnings) throws ETooCostly, EOperationOutcome, Exception;
 
 }
