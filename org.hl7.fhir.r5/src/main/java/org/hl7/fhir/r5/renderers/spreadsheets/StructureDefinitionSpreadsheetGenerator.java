@@ -96,7 +96,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
       throw new DefinitionException(context.formatMessage(I18nConstants.NEEDS_A_SNAPSHOT));
     }
     addStructureDefinitionMetadata(renderCanonicalResource(sd), sd);
-    Sheet sheet = wb.createSheet("Elements");
+    Sheet sheet = makeSheet("Elements");
 
     Row headerRow = sheet.createRow(0);
     for (int i = 0; i < titles.length; i++) {
@@ -114,6 +114,7 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
     configureSheet(sheet, sd);
     return this;
   }
+
 
   private void addStructureDefinitionMetadata(Sheet sheet, StructureDefinition sd) {
     for (Coding k : sd.getKeyword()) {

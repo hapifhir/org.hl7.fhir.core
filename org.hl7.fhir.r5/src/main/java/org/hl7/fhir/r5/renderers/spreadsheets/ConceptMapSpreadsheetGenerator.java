@@ -38,7 +38,7 @@ public class ConceptMapSpreadsheetGenerator extends CanonicalSpreadsheetGenerato
   }
 
   private void renderGroup(ConceptMapGroupComponent grp, int i) {
-    Sheet sheet = wb.createSheet("Mapping Table "+Integer.toString(i));
+    Sheet sheet = makeSheet("Mapping Table "+Integer.toString(i));
     addHeaders(sheet, "Source", "Display", "Relationship", "Target", "Display");
     addRow(sheet, grp.getSource(), "", "", grp.getTarget(), "");
     for (SourceElementComponent s : grp.getElement()) {

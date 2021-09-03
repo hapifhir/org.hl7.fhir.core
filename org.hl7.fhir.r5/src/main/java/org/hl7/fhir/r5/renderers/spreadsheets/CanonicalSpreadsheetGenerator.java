@@ -21,7 +21,7 @@ public class CanonicalSpreadsheetGenerator extends SpreadsheetGenerator {
   }
 
   protected Sheet renderCanonicalResource(CanonicalResource cr) {
-    Sheet sheet = wb.createSheet("Metadata");
+    Sheet sheet = makeSheet("Metadata");
 
     Row headerRow = sheet.createRow(0);
     addCell(headerRow, 0, "Property", styles.get("header"));
