@@ -95,7 +95,7 @@ public class FHIRToolingClient {
   private int maxResultSetSize = -1;//_count
   private CapabilityStatement capabilities;
   private Client client = new Client();
-  private ArrayList<Header> headers;
+  private ArrayList<Header> headers = new ArrayList<>();
 
   //Pass endpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl) throws URISyntaxException {
@@ -108,6 +108,14 @@ public class FHIRToolingClient {
     resourceAddress = new ResourceAddress(baseServiceUrl);
     this.maxResultSetSize = -1;
     checkCapabilities();
+  }
+
+  public Client getClient() {
+    return client;
+  }
+
+  public void setClient(Client client) {
+    this.client = client;
   }
 
   private void checkCapabilities() {
@@ -337,7 +345,10 @@ public class FHIRToolingClient {
   public <T extends Resource> OperationOutcome validate(Class<T> resourceClass, T resource, String id) {
     ResourceRequest<T> result = null;
     try {
-      result = client.issuePostRequest(resourceAddress.resolveValidateUri(resourceClass, id), ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), "POST " + resourceClass.getName() + (id != null ? "/" + id : "") + "/$validate", TIMEOUT_OPERATION_LONG);
+      result = client.issuePostRequest(resourceAddress.resolveValidateUri(resourceClass, id),
+        ByteUtils.resourceToByteArray(resource, false, isJson(getPreferredResourceFormat())),
+        getPreferredResourceFormat(), generateHeaders(),
+        "POST " + resourceClass.getName() + (id != null ? "/" + id : "") + "/$validate", TIMEOUT_OPERATION_LONG);
       if (result.isUnsuccessfulRequest()) {
         throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
       }
@@ -523,7 +534,9 @@ public class FHIRToolingClient {
 
   private Headers generateHeaders() {
     Headers.Builder builder = new Headers.Builder();
-    this.headers.forEach(header -> builder.add(header.toString()));
+    if(this.headers != null) {
+      this.headers.forEach(header -> builder.add(header.toString()));
+    }
     return builder.build();
   }
 }
