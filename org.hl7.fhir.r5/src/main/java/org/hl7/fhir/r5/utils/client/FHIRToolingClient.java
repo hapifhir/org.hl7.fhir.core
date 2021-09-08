@@ -46,10 +46,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Very Simple RESTful client. This is purely for use in the standalone
@@ -96,6 +93,8 @@ public class FHIRToolingClient {
   private CapabilityStatement capabilities;
   private Client client = new Client();
   private ArrayList<Header> headers = new ArrayList<>();
+  private String username;
+  private String password;
 
   //Pass endpoint for client - URI
   public FHIRToolingClient(String baseServiceUrl) throws URISyntaxException {
@@ -504,6 +503,22 @@ public class FHIRToolingClient {
     return result == null ? null : (ConceptMap) result.getPayload();
   }
 
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
   public long getTimeout() {
     return client.getTimeout();
   }
@@ -534,10 +549,25 @@ public class FHIRToolingClient {
 
   private Headers generateHeaders() {
     Headers.Builder builder = new Headers.Builder();
+    // Add basic auth header if it exists
+    if (basicAuthHeaderExists()) {
+      builder.add(getAuthorizationHeader().toString());
+    }
+    // Add any other headers
     if(this.headers != null) {
       this.headers.forEach(header -> builder.add(header.toString()));
     }
     return builder.build();
+  }
+
+  public boolean basicAuthHeaderExists() {
+    return (username != null) && (password != null);
+  }
+
+  public Header getAuthorizationHeader() {
+    String usernamePassword = username + ":" + password;
+    String base64usernamePassword = Base64.getEncoder().encodeToString(usernamePassword.getBytes());
+    return new Header("Authorization", "Basic " + base64usernamePassword);
   }
 }
 
