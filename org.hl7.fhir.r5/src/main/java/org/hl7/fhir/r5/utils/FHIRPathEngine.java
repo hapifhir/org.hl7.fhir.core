@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.rmi.server.LoaderHandler;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
@@ -251,7 +252,7 @@ public class FHIRPathEngine {
      * @param beforeContext - whether this is being called before the name is resolved locally, or not
      * @return the value of the reference (or null, if it's not valid, though can throw an exception if desired)
      */
-    public Base resolveConstant(Object appContext, String name, boolean beforeContext)  throws PathEngineException;
+    public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext)  throws PathEngineException;
     public TypeDetails resolveConstantType(Object appContext, String name) throws PathEngineException;
     
     /**
@@ -1366,10 +1367,7 @@ public class FHIRPathEngine {
       work.addAll(work2);
       break;
     case Constant:
-      Base b = resolveConstant(context, exp.getConstant(), false, exp);
-      if (b != null) {
-        work.add(b);
-      }
+      work.addAll(resolveConstant(context, exp.getConstant(), false, exp));
       break;
     case Group:
       work2 = execute(context, focus, exp.getGroup(), atEntry);
@@ -1507,15 +1505,18 @@ public class FHIRPathEngine {
     return result;
   }
 
-  private Base resolveConstant(ExecutionContext context, Base constant, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
+  private List<Base> resolveConstant(ExecutionContext context, Base constant, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
+    if (constant == null) {
+      return new ArrayList<Base>();
+    }
     if (!(constant instanceof FHIRConstant)) {
-      return constant;
+      return new ArrayList<Base>(Arrays.asList(constant));
     }
     FHIRConstant c = (FHIRConstant) constant;
     if (c.getValue().startsWith("%")) {
       return resolveConstant(context, c.getValue(), beforeContext, expr);
     } else if (c.getValue().startsWith("@")) {
-      return processDateConstant(context.appInfo, c.getValue().substring(1), expr);
+      return new ArrayList<Base>(Arrays.asList(processDateConstant(context.appInfo, c.getValue().substring(1), expr)));
     } else {
       throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, c.getValue());
     }
@@ -1585,33 +1586,33 @@ public class FHIRPathEngine {
   }
 
 
-  private Base resolveConstant(ExecutionContext context, String s, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
+  private List<Base> resolveConstant(ExecutionContext context, String s, boolean beforeContext, ExpressionNode expr) throws PathEngineException {
     if (s.equals("%sct")) {
-      return new StringType("http://snomed.info/sct").noExtensions();
+      return new ArrayList<Base>(Arrays.asList(new StringType("http://snomed.info/sct").noExtensions()));
     } else if (s.equals("%loinc")) {
-      return new StringType("http://loinc.org").noExtensions();
+      return new ArrayList<Base>(Arrays.asList(new StringType("http://loinc.org").noExtensions()));
     } else if (s.equals("%ucum")) {
-      return new StringType("http://unitsofmeasure.org").noExtensions();
+      return new ArrayList<Base>(Arrays.asList(new StringType("http://unitsofmeasure.org").noExtensions()));
     } else if (s.equals("%resource")) {
       if (context.focusResource == null) {
         throw makeException(expr, I18nConstants.FHIRPATH_CANNOT_USE, "%resource", "no focus resource");
       }
-      return context.focusResource;
+      return new ArrayList<Base>(Arrays.asList(context.focusResource));
     } else if (s.equals("%rootResource")) {
       if (context.rootResource == null) {
         throw makeException(expr, I18nConstants.FHIRPATH_CANNOT_USE, "%rootResource", "no focus resource");
       }
-      return context.rootResource;
+      return new ArrayList<Base>(Arrays.asList(context.rootResource));
     } else if (s.equals("%context")) {
-      return context.context;
+      return new ArrayList<Base>(Arrays.asList(context.context));
     } else if (s.equals("%us-zip")) {
-      return new StringType("[0-9]{5}(-[0-9]{4}){0,1}").noExtensions();
+      return new ArrayList<Base>(Arrays.asList(new StringType("[0-9]{5}(-[0-9]{4}){0,1}").noExtensions()));
     } else if (s.startsWith("%`vs-")) {
-      return new StringType("http://hl7.org/fhir/ValueSet/"+s.substring(5, s.length()-1)+"").noExtensions();
+      return new ArrayList<Base>(Arrays.asList(new StringType("http://hl7.org/fhir/ValueSet/"+s.substring(5, s.length()-1)+"").noExtensions()));
     } else if (s.startsWith("%`cs-")) {
-      return new StringType("http://hl7.org/fhir/"+s.substring(5, s.length()-1)+"").noExtensions();
+      return new ArrayList<Base>(Arrays.asList(new StringType("http://hl7.org/fhir/"+s.substring(5, s.length()-1)+"").noExtensions()));
     } else if (s.startsWith("%`ext-")) {
-      return new StringType("http://hl7.org/fhir/StructureDefinition/"+s.substring(6, s.length()-1)).noExtensions();
+      return new ArrayList<Base>(Arrays.asList(new StringType("http://hl7.org/fhir/StructureDefinition/"+s.substring(6, s.length()-1)).noExtensions()));
     } else if (hostServices == null) {
       throw makeException(expr, I18nConstants.FHIRPATH_UNKNOWN_CONSTANT, s);
     } else {
@@ -2886,9 +2887,9 @@ public class FHIRPathEngine {
     List<Base> result = new ArrayList<Base>(); 
     if (atEntry && context.appInfo != null && hostServices != null) {
       // we'll see if the name matches a constant known by the context.
-      Base temp = hostServices.resolveConstant(context.appInfo, exp.getName(), true);
-      if (temp != null) {
-        result.add(temp);
+      List<Base> temp = hostServices.resolveConstant(context.appInfo, exp.getName(), true);
+      if (!temp.isEmpty()) {
+        result.addAll(temp);
         return result;
       }
     }
@@ -2914,10 +2915,7 @@ public class FHIRPathEngine {
     if (atEntry && context.appInfo != null && hostServices != null && result.isEmpty()) {
       // well, we didn't get a match on the name - we'll see if the name matches a constant known by the context.
       // (if the name does match, and the user wants to get the constant value, they'll have to try harder...
-      Base temp = hostServices.resolveConstant(context.appInfo, exp.getName(), false);
-      if (temp != null) {
-        result.add(temp);
-      }
+      result.addAll(hostServices.resolveConstant(context.appInfo, exp.getName(), false));
     }
     return result;
   }	
@@ -5496,7 +5494,7 @@ public class FHIRPathEngine {
         List<ElementDefinition> childDefinitions = profileUtilities.getChildMap(sd, element);
         for (ElementDefinition t : childDefinitions) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
-            StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty()) ?
+            StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
               null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
             while (exsd != null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
               exsd = worker.fetchResource(StructureDefinition.class, exsd.getBaseDefinition());

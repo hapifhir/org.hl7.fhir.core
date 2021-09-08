@@ -212,6 +212,9 @@ public class ValidatorCli {
       case SNAPSHOT:
         validationService.generateSnapshot(cliContext, validator);
         break;
+      case SPREADSHEET:
+        validationService.generateSpreadsheet(cliContext, validator);
+        break;
       case CONVERT:
         validationService.convertSources(cliContext, validator);
         break;

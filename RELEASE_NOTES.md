@@ -1,1 +1,0 @@
-* Fixed ID verification issues for resources

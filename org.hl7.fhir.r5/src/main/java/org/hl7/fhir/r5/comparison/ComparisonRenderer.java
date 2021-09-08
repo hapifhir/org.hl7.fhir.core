@@ -212,10 +212,14 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public Base resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
     @SuppressWarnings("unchecked")
     Map<String, Base> vars = (Map<String, Base>) appContext;
-    return vars.get(name);
+    List<Base> res = new ArrayList<>();
+    if (vars.containsKey(name)) {
+      res.add(vars.get(name));
+    }
+    return res;
   }
 
   @Override

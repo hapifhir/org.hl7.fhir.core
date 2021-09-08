@@ -105,6 +105,7 @@ import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionComponent;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
 import org.hl7.fhir.r5.renderers.TerminologyRenderer;
+import org.hl7.fhir.r5.renderers.spreadsheets.SpreadsheetGenerator;
 import org.hl7.fhir.r5.terminologies.ValueSetExpander.ValueSetExpansionOutcome;
 import org.hl7.fhir.r5.utils.FHIRLexer;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
@@ -113,7 +114,6 @@ import org.hl7.fhir.r5.utils.TranslatingUtilities;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.r5.utils.XVerExtensionManager.XVerExtensionStatus;
 import org.hl7.fhir.r5.utils.formats.CSVWriter;
-import org.hl7.fhir.r5.utils.formats.XLSXWriter;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.MarkDownProcessor;
 import org.hl7.fhir.utilities.Utilities;
@@ -2033,19 +2033,18 @@ public class ProfileUtilities extends TranslatingUtilities {
     }
   }
 
-
   private void removeStatusExtensions(ElementDefinition outcome) {
     outcome.removeExtension(ToolingExtensions.EXT_FMM_LEVEL);
     outcome.removeExtension(ToolingExtensions.EXT_STANDARDS_STATUS);
     outcome.removeExtension(ToolingExtensions.EXT_NORMATIVE_VERSION);
     outcome.removeExtension(ToolingExtensions.EXT_WORKGROUP);    
+    outcome.removeExtension(ToolingExtensions.EXT_FMM_SUPPORT);
+    outcome.removeExtension(ToolingExtensions.EXT_FMM_DERIVED);
   }
-
 
   private String descED(List<ElementDefinition> list, int index) {
     return index >=0 && index < list.size() ? list.get(index).present() : "X";
   }
-
 
   private boolean baseHasChildren(StructureDefinitionSnapshotComponent base, ElementDefinition ed) {
     int index = base.getElement().indexOf(ed);
@@ -4113,7 +4112,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         if (extDefn == null) {
           res.add(genCardinality(gen, element, row, hasDef, used, null));
           res.add(addCell(row, gen.new Cell(null, null, "?gen-e1? "+element.getType().get(0).getProfile(), null, null)));
-          res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport));
+          res.add(generateDescription(gen, row, element, (ElementDefinition) element.getUserData(DERIVATION_POINTER), used.used, profile == null ? "" : profile.getUrl(), eurl, profile, corePath, imagePath, root, logicalModel, allInvariants, snapshot, mustSupport));
         } else {
           String name = urltail(eurl);
           nameCell.getPieces().get(0).setText(name);
@@ -4596,7 +4595,7 @@ public class ProfileUtilities extends TranslatingUtilities {
               c.getPieces().add(checkForNoChange(inv, gen.new Piece(null, gt(inv.getHumanElement()), null)));
             }
           }
-          if ((definition.hasBase() && definition.getBase().getMax().equals("*")) || (definition.hasMax() && definition.getMax().equals("*"))) {
+          if ((definition.hasBase() && "*".equals(definition.getBase().getMax())) || (definition.hasMax() && "*".equals(definition.getMax()))) {
             if (c.getPieces().size() > 0)
               c.addPiece(gen.new Piece("br"));
             if (definition.hasOrderMeaning()) {
@@ -5581,23 +5580,6 @@ public class ProfileUtilities extends TranslatingUtilities {
     csv.dump();
   }
   
-  // generate an Excel representation of the structure definition
-  public void generateXlsx(OutputStream dest, StructureDefinition structure, boolean asXml, boolean hideMustSupportFalse) throws IOException, DefinitionException, Exception {
-    if (structure == null) {
-      System.out.println("no structure!");
-    }
-    if (!structure.hasSnapshot()) {
-      throw new DefinitionException(context.formatMessage(I18nConstants.NEEDS_A_SNAPSHOT));
-    }
-
-    XLSXWriter xlsx = new XLSXWriter(dest, structure, asXml, hideMustSupportFalse);
-
-    for (ElementDefinition child : structure.getSnapshot().getElement()) {
-      xlsx.processElement(child);
-    }
-    xlsx.dump();
-    xlsx.close();
-  }
   
   private class Slicer extends ElementDefinitionSlicingComponent {
     String criteria = "";

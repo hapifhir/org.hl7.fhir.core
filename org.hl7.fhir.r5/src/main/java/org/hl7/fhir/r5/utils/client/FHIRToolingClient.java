@@ -304,15 +304,15 @@ public class FHIRToolingClient {
         if (p.getValue() instanceof PrimitiveType)
           ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
     ResourceRequest<T> result;
+    URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
     if (complex) {
-      result = client.issuePostRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps), ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(),
+      byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()));
+      client.getLogger().logRequest("POST", url.toString(), null, body);
+      result = client.issuePostRequest(url, body, getPreferredResourceFormat(),
           "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
     } else {
-      result = client.issueGetResourceRequest(resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps),
-        getPreferredResourceFormat(),
-        generateHeaders(),
-        "GET " + resourceClass.getName() + "/$" + name,
-        TIMEOUT_OPERATION_LONG);
+      client.getLogger().logRequest("GET", url.toString(), null, null);
+      result = client.issueGetResourceRequest(url, getPreferredResourceFormat(), "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
     }
     if (result.isUnsuccessfulRequest()) {
       throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());

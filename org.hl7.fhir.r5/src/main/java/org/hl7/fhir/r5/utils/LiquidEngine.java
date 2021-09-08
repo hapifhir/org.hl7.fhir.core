@@ -1,6 +1,7 @@
 package org.hl7.fhir.r5.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -592,12 +593,12 @@ public class LiquidEngine implements IEvaluationContext {
   }
 
   @Override
-  public Base resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
     LiquidEngineContext ctxt = (LiquidEngineContext) appContext;
     if (ctxt.vars.containsKey(name))
-      return ctxt.vars.get(name);
+      return new ArrayList<Base>(Arrays.asList(ctxt.vars.get(name)));
     if (externalHostServices == null)
-      return null;
+      return new ArrayList<Base>();
     return externalHostServices.resolveConstant(ctxt.externalContext, name, beforeContext);
   }
 

@@ -23,12 +23,15 @@ public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext 
     this.structureMapUtilities = structureMapUtilities;
   }
 
-  public Base resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
     Variables vars = (Variables) appContext;
     Base res = vars.get(VariableMode.INPUT, name);
     if (res == null)
       res = vars.get(VariableMode.OUTPUT, name);
-    return res;
+    List<Base> result = new ArrayList<Base>();
+    if (res != null)
+      result.add(res);
+    return result;
   }
 
   @Override
