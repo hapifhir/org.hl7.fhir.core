@@ -312,7 +312,7 @@ public class FHIRToolingClient {
           "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
     } else {
       client.getLogger().logRequest("GET", url.toString(), null, null);
-      result = client.issueGetResourceRequest(url, getPreferredResourceFormat(), "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
+      result = client.issueGetResourceRequest(url, getPreferredResourceFormat(), generateHeaders(), "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
     }
     if (result.isUnsuccessfulRequest()) {
       throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
