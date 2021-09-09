@@ -228,11 +228,14 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   public String getLatestVersion(String id) throws IOException {
     for (String nextPackageServer : getPackageServers()) {
-      CachingPackageClient pc = new CachingPackageClient(nextPackageServer);
-      try {
-        return pc.getLatestVersion(id);
-      } catch (IOException e) {
-        ourLog.info("Failed to determine latest version of package {} from server: {}", id, nextPackageServer);
+      // special case:
+      if (!("hl7.fhir.pubpack".equals(id) && PRIMARY_SERVER.equals(nextPackageServer))) {
+        CachingPackageClient pc = new CachingPackageClient(nextPackageServer);
+        try {
+          return pc.getLatestVersion(id);
+        } catch (IOException e) {
+          ourLog.info("Failed to determine latest version of package {} from server: {}", id, nextPackageServer);
+        }
       }
     }
 
@@ -474,6 +477,13 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       id = id.substring(0, id.indexOf("#"));
     }
 
+    if (version == null) {
+      try {
+        version = getLatestVersion(id);
+      } catch (Exception e) {
+        version = null;
+      }
+    }
     NpmPackage p = loadPackageFromCacheOnly(id, version);
     if (p != null) {
       if ("current".equals(version)) {
@@ -704,7 +714,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       String pv = Utilities.pathURL(url, v, "package.tgz");
       try {
         aurl = pv;
-        InputStreamWithSrc src = new InputStreamWithSrc(fetchFromUrlSpecific(pv, true), pv, v);
+        InputStreamWithSrc src = new InputStreamWithSrc(fetchFromUrlSpecific(pv, false), pv, v);
         return src;
       } catch (Exception e1) {
         throw new FHIRException("Error fetching package directly (" + pv + "), or fetching package list for " + id + " from " + pu + ": " + e1.getMessage(), e1);

@@ -213,12 +213,12 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     }
     if (content.has("profiles")) {
       for (JsonElement je : content.getAsJsonArray("profiles")) {
-        String filename = je.getAsString();
+        String filename = je.getAsString();    
         String contents = TestingUtilities.loadTestResource("validator", filename);
         StructureDefinition sd = loadProfile(filename, contents, messages);
         val.getContext().cacheResource(sd);
       }
-    }
+   }
     List<ValidationMessage> errors = new ArrayList<ValidationMessage>();
     if (content.getAsJsonObject("java").has("debug")) {
       val.setDebug(content.getAsJsonObject("java").get("debug").getAsBoolean());
@@ -249,6 +249,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("profile")) {
       System.out.print("** Profile: ");
       JsonObject profile = content.getAsJsonObject("profile");
+      if (profile.has("packages")) {
+        for (JsonElement e : profile.getAsJsonArray("packages")) {
+          igLoader.loadIg(vCurr.getIgs(), vCurr.getBinaries(), e.getAsString(), true);
+        }
+      }
       if (profile.getAsJsonObject("java").has("debug")) {
         val.setDebug(profile.getAsJsonObject("java").get("debug").getAsBoolean());
       }
@@ -263,12 +268,17 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
           }
         }
       }
+      StructureDefinition sd = null;
       String filename = profile.get("source").getAsString();
-      String contents = TestingUtilities.loadTestResource("validator", filename);
-      System.out.println("Name: " + name + " - profile : " + profile.get("source").getAsString());
-      version = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
-      StructureDefinition sd = loadProfile(filename, contents, messages);
-      val.getContext().cacheResource(sd);
+      if (Utilities.isAbsoluteUrl(filename)) {
+        sd = val.getContext().fetchResource(StructureDefinition.class, filename);
+      } else {
+        String contents = TestingUtilities.loadTestResource("validator", filename);
+        System.out.println("Name: " + name + " - profile : " + profile.get("source").getAsString());
+        version = content.has("version") ? content.get("version").getAsString() : Constants.VERSION;
+        sd = loadProfile(filename, contents, messages);
+        val.getContext().cacheResource(sd);
+      }
       val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
       if (JSONUtil.str(content, "file").endsWith(".json"))
