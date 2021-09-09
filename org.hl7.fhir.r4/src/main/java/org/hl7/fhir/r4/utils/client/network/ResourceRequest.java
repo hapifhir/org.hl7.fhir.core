@@ -1,4 +1,4 @@
-package org.hl7.fhir.r5.terminologies;
+package org.hl7.fhir.r4.utils.client.network;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -6,7 +6,7 @@ package org.hl7.fhir.r5.terminologies;
   
   Redistribution and use in source and binary forms, with or without modification, 
   are permitted provided that the following conditions are met:
-    
+  
    * Redistributions of source code must retain the above copyright notice, this 
      list of conditions and the following disclaimer.
    * Redistributions in binary form must reproduce the above copyright notice, 
@@ -26,32 +26,46 @@ package org.hl7.fhir.r5.terminologies;
   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
   POSSIBILITY OF SUCH DAMAGE.
-  
- */
+*/
 
+import org.hl7.fhir.r4.model.Resource;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.*;
-import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
-import org.hl7.fhir.utilities.ToolingClientLogger;
+public class ResourceRequest<T extends Resource> {
+  private T payload;
+  private int httpStatus = -1;
+  private String location;
 
-import java.util.Map;
+  public ResourceRequest(T payload, int httpStatus, String location) {
+    this.payload = payload;
+    this.httpStatus = httpStatus;
+    this.location = location;
+  }
 
-public interface TerminologyClient {
+  public int getHttpStatus() {
+    return httpStatus;
+  }
 
-  String getAddress();
-  TerminologyCapabilities getTerminologyCapabilities() throws FHIRException;
-  ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException;
-  Parameters validateCS(Parameters pin) throws FHIRException;
-  Parameters validateVS(Parameters pin) throws FHIRException;
-  TerminologyClient setTimeout(int i) throws FHIRException;
-  TerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
-  int getRetryCount() throws FHIRException;
-  TerminologyClient setRetryCount(int retryCount) throws FHIRException;
-  CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
-  Parameters lookupCode(Map<String, String> params) throws FHIRException;
-  Bundle validateBatch(Bundle batch);
-  CanonicalResource read(String type, String id);
-  ClientHeaders getClientHeaders();
-  TerminologyClient setClientHeaders(ClientHeaders clientHeaders);
+  public T getPayload() {
+    return payload;
+  }
+
+  public T getReference() {
+    T payloadResource = null;
+    if (payload != null) {
+      payloadResource = payload;
+    }
+    return payloadResource;
+  }
+
+  public boolean isSuccessfulRequest() {
+    return this.httpStatus / 100 == 2;
+  }
+
+  public boolean isUnsuccessfulRequest() {
+    return !isSuccessfulRequest();
+  }
+
+  public String getLocation() {
+    return location;
+  }
 }

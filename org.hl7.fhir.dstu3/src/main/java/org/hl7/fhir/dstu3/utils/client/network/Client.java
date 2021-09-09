@@ -1,12 +1,12 @@
-package org.hl7.fhir.r5.utils.client.network;
+package org.hl7.fhir.dstu3.utils.client.network;
 
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.utils.client.EFhirClientException;
+import org.hl7.fhir.dstu3.model.Bundle;
+import org.hl7.fhir.dstu3.model.Resource;
+import org.hl7.fhir.dstu3.utils.client.EFhirClientException;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 
 import java.io.IOException;

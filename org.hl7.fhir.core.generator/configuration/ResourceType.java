@@ -20,7 +20,7 @@ public enum ResourceType {
 
     public static ResourceType fromCode(String code) throws FHIRException {;
 {{types-fromCode}}
-    throw new FHIRException("Unknown resource type"+code);
+    throw new FHIRException("Unknown resource type "+code);
   }
 
 }
