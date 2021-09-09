@@ -714,7 +714,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       String pv = Utilities.pathURL(url, v, "package.tgz");
       try {
         aurl = pv;
-        InputStreamWithSrc src = new InputStreamWithSrc(fetchFromUrlSpecific(pv, true), pv, v);
+        InputStreamWithSrc src = new InputStreamWithSrc(fetchFromUrlSpecific(pv, false), pv, v);
         return src;
       } catch (Exception e1) {
         throw new FHIRException("Error fetching package directly (" + pv + "), or fetching package list for " + id + " from " + pu + ": " + e1.getMessage(), e1);
