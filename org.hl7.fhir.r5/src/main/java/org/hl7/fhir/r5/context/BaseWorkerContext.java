@@ -1038,8 +1038,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     for (CanonicalType c : inc.getValueSet()) {
       ValueSet vs = fetchResource(ValueSet.class, c.getValue());
       if (vs != null) {
+        pin.addParameter().setName("tx-resource").setResource(vs);
         if (isTxCaching && cacheId == null || !cached.contains(vs.getVUrl())) {
-          pin.addParameter().setName("tx-resource").setResource(vs);
           cached.add(vs.getVUrl());
           cache = true;
         }
@@ -1048,8 +1048,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     CodeSystem cs = fetchResource(CodeSystem.class, inc.getSystem());
     if (cs != null) {
+      pin.addParameter().setName("tx-resource").setResource(cs);
       if (isTxCaching && cacheId == null || !cached.contains(cs.getVUrl())) {
-        pin.addParameter().setName("tx-resource").setResource(cs);
         cached.add(cs.getVUrl());
         cache = true;
       }

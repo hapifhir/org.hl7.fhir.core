@@ -90,7 +90,9 @@ public class ValueSetValidator extends BaseValidator {
         Resource rs = context.fetchResource(Resource.class, v);
         if (rs != null) {
           warning(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_INVALID_TYPE, v, rs.fhirType());                      
-        } else {
+        } else { 
+          // todo: it's possible, at this point, that the txx server knows the value set, but it's not in scope
+          // should we handle this case?
           warning(errors, IssueType.BUSINESSRULE, ns.getLiteralPath(), false, I18nConstants.VALUESET_REFERENCE_UNKNOWN, v);            
         }
       }

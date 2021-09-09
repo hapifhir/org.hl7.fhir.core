@@ -56,7 +56,7 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
   }
 
   private void genExpansionParams(List<ValueSetExpansionParameterComponent> params) {
-    Sheet sheet = wb.createSheet("Expansion Parameters");
+    Sheet sheet = makeSheet("Expansion Parameters");
     addHeaders(sheet, "Parameter", "Value");
     for (ValueSetExpansionParameterComponent p : params) {
       addRow(sheet, p.getName(), dr.display(p.getValue()));          
@@ -64,7 +64,7 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
   }
 
   private void genExpansion(List<ValueSetExpansionContainsComponent> list) {
-    Sheet sheet = wb.createSheet("Expansion");
+    Sheet sheet = makeSheet("Expansion");
     addHeaders(sheet, "Level", "System", "version", "Code", "Display", "Abstract", "Inactive");
     genExpansionEntry(1, list, sheet);    
   }
@@ -108,13 +108,13 @@ public class ValueSetSpreadsheetGenerator extends CanonicalSpreadsheetGenerator 
   }
 
   private void genIncludeValueSets(ValueSet vs, ConceptSetComponent inc, String mode) {
-    Sheet sheet = wb.createSheet(mode+" ValueSets");
+    Sheet sheet = makeSheet(mode+" ValueSets");
     addValueSets(sheet, inc.getValueSet()); 
     configureSheet(sheet);
   }
 
   private void genIncludeSystem(ValueSet vs, ConceptSetComponent inc, String mode) {
-    Sheet sheet = wb.createSheet(mode+" from "+dr.displaySystem(inc.getSystem()));
+    Sheet sheet = makeSheet(mode+" from "+dr.displaySystem(inc.getSystem()));
     if (inc.hasValueSet()) {
       addValueSets(sheet, inc.getValueSet());
     }
