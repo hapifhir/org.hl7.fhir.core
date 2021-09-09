@@ -37,6 +37,7 @@ import org.hl7.fhir.dstu3.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -46,9 +47,16 @@ import java.util.Map;
 public class TerminologyClientR3 implements TerminologyClient {
 
   private final FHIRToolingClient client; // todo: use the R2 client
+  private ClientHeaders clientHeaders;
 
   public TerminologyClientR3(String address) throws URISyntaxException {
     client = new FHIRToolingClient(address);
+    setClientHeaders(new ClientHeaders());
+  }
+
+  public TerminologyClientR3(String address, ClientHeaders clientHeaders) throws URISyntaxException {
+    client = new FHIRToolingClient(address);
+    setClientHeaders(clientHeaders);
   }
 
   @Override
@@ -143,5 +151,15 @@ public class TerminologyClientR3 implements TerminologyClient {
     return (CanonicalResource) r5;
   }
 
+  @Override
+  public ClientHeaders getClientHeaders() {
+    return clientHeaders;
+  }
 
+  @Override
+  public TerminologyClient setClientHeaders(ClientHeaders clientHeaders) {
+    this.clientHeaders = clientHeaders;
+    this.client.setClientHeaders(this.clientHeaders.headers());
+    return this;
+  }
 }
