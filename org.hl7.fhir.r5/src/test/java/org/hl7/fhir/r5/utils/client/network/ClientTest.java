@@ -23,14 +23,14 @@ class ClientTest {
   private HttpUrl serverUrl;
   private Client client;
 
-  private Address address = new Address()
+  private final Address address = new Address()
     .setCity("Toronto")
     .setState("Ontario")
     .setCountry("Canada");
-  private HumanName humanName = new HumanName()
+  private final HumanName humanName = new HumanName()
     .addGiven("Mark")
     .setFamily("Iantorno");
-  private Patient patient = new Patient()
+  private final Patient patient = new Patient()
     .addName(humanName)
     .addAddress(address)
     .setGender(Enumerations.AdministrativeGender.MALE);
@@ -58,7 +58,7 @@ class ClientTest {
         .setBody(new String(generateResourceBytes(patient)))
     );
     ResourceRequest<Resource> resourceRequest = client.issueGetResourceRequest(new URI(serverUrl.toString()),
-      "json", null, TIMEOUT);
+      "json", null, null, TIMEOUT);
     Assertions.assertTrue(resourceRequest.isSuccessfulRequest());
     Assertions.assertTrue(patient.equalsDeep(resourceRequest.getPayload()),
       "GET request returned resource does not match expected.");
@@ -80,7 +80,7 @@ class ClientTest {
     client.setRetryCount(failedAttempts + 1);
 
     ResourceRequest<Resource> resourceRequest = client.issueGetResourceRequest(new URI(serverUrl.toString()),
-      "json", null, TIMEOUT);
+      "json", null, null, TIMEOUT);
     Assertions.assertTrue(resourceRequest.isSuccessfulRequest());
     Assertions.assertTrue(patient.equalsDeep(resourceRequest.getPayload()),
       "GET request returned resource does not match expected.");
@@ -102,7 +102,7 @@ class ClientTest {
     client.setRetryCount(failedAttempts + 1);
 
     ResourceRequest<Resource> resourceRequest = client.issueGetResourceRequest(new URI(serverUrl.toString()),
-      "json", null, TIMEOUT);
+      "json", null, null, TIMEOUT);
     Assertions.assertTrue(resourceRequest.isSuccessfulRequest());
     Assertions.assertTrue(patient.equalsDeep(resourceRequest.getPayload()),
       "GET request returned resource does not match expected.");
