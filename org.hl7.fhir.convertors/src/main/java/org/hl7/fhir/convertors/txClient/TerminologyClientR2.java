@@ -37,6 +37,7 @@ import org.hl7.fhir.dstu2.utils.client.FHIRToolingClient;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
+import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
 import org.hl7.fhir.utilities.ToolingClientLogger;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -143,5 +144,13 @@ public class TerminologyClientR2 implements TerminologyClient {
     return (CanonicalResource) r5;
   }
 
+  @Override
+  public ClientHeaders getClientHeaders() {
+    return null;
+  }
 
+  @Override
+  public TerminologyClient setClientHeaders(ClientHeaders clientHeaders) {
+    return null;
+  }
 }
