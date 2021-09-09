@@ -47,9 +47,16 @@ import java.util.Map;
 public class TerminologyClientR3 implements TerminologyClient {
 
   private final FHIRToolingClient client; // todo: use the R2 client
+  private ClientHeaders clientHeaders;
 
   public TerminologyClientR3(String address) throws URISyntaxException {
     client = new FHIRToolingClient(address);
+    setClientHeaders(new ClientHeaders());
+  }
+
+  public TerminologyClientR3(String address, ClientHeaders clientHeaders) throws URISyntaxException {
+    client = new FHIRToolingClient(address);
+    setClientHeaders(clientHeaders);
   }
 
   @Override
@@ -146,13 +153,13 @@ public class TerminologyClientR3 implements TerminologyClient {
 
   @Override
   public ClientHeaders getClientHeaders() {
-    return null;
+    return clientHeaders;
   }
 
   @Override
   public TerminologyClient setClientHeaders(ClientHeaders clientHeaders) {
-    return null;
+    this.clientHeaders = clientHeaders;
+    this.client.setClientHeaders(this.clientHeaders.headers());
+    return this;
   }
-
-
 }
