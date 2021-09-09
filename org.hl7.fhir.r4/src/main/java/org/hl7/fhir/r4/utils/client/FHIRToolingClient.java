@@ -1,6 +1,5 @@
 package org.hl7.fhir.r4.utils.client;
 
-import com.sun.tools.javac.util.Convert;
 import okhttp3.Headers;
 import okhttp3.internal.http2.Header;
 import org.hl7.fhir.exceptions.FHIRException;
