@@ -660,16 +660,17 @@ public class ValueSetCheckerSimple extends ValueSetWorker implements ValueSetChe
 
   private boolean codeInConceptFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) throws FHIRException {
     switch (f.getOp()) {
-    case ISA: return codeInConceptIsAFilter(cs, f, code);
-    case ISNOTA: return !codeInConceptIsAFilter(cs, f, code);
+    case ISA: return codeInConceptIsAFilter(cs, f, code, false);
+    case ISNOTA: return !codeInConceptIsAFilter(cs, f, code, false);
+    case DESCENDENTOF: return codeInConceptIsAFilter(cs, f, code, true); 
     default:
       System.out.println("todo: handle concept filters with op = "+f.getOp()); 
       throw new FHIRException(context.formatMessage(I18nConstants.UNABLE_TO_HANDLE_SYSTEM__CONCEPT_FILTER_WITH_OP__, cs.getUrl(), f.getOp()));
     }
   }
 
-  private boolean codeInConceptIsAFilter(CodeSystem cs, ConceptSetFilterComponent f, String code) {
-    if (code.equals(f.getProperty())) {
+  private boolean codeInConceptIsAFilter(CodeSystem cs, ConceptSetFilterComponent f, String code, boolean rootOnly) {
+    if (!rootOnly && code.equals(f.getProperty())) {
       return true;
     }
     ConceptDefinitionComponent cc = findCodeInConcept(cs.getConcept(), f.getValue());
