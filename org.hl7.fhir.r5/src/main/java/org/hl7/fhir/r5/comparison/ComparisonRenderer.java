@@ -111,11 +111,15 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   private void dumpBinaries() throws IOException {
-    for (String k : contextLeft.getBinaries().keySet()) {
-      TextFile.bytesToFile(contextLeft.getBinaries().get(k), Utilities.path(folder, k));
+    if (contextLeft != null && contextLeft.getBinaries() != null) {
+      for (String k : contextLeft.getBinaries().keySet()) {
+        TextFile.bytesToFile(contextLeft.getBinaries().get(k), Utilities.path(folder, k));
+      }
     }
-    for (String k : contextRight.getBinaries().keySet()) {
-      TextFile.bytesToFile(contextRight.getBinaries().get(k), Utilities.path(folder, k));
+    if (contextRight != null && contextRight.getBinaries() != null) {
+      for (String k : contextRight.getBinaries().keySet()) {
+        TextFile.bytesToFile(contextRight.getBinaries().get(k), Utilities.path(folder, k));
+      }
     }
   }
 
