@@ -88,7 +88,7 @@ public class FFHIRPathHostServices implements FHIRPathEngine.IEvaluationContext 
       return noErrorValidationMessages(valerrors);
     }
     if (item instanceof Element) {
-      val.validate(appContext, valerrors, (Element) item, url);
+      val.validate(appContext, valerrors, null, (Element) item, url);
       return noErrorValidationMessages(valerrors);
     }
     throw new NotImplementedException("Not done yet (FFHIRPathHostServices.conformsToProfile), when item is not element or not resource");
