@@ -30,11 +30,11 @@ public class NodeStack {
     this.context = context;
   }
 
-  public NodeStack(IWorkerContext context, Element element, String validationLanguage) {
+  public NodeStack(IWorkerContext context, String initialPath, Element element, String validationLanguage) {
     this.context = context;
     ids = new HashMap<>();
     this.element = element;
-    literalPath = element.getPath();
+    literalPath = (initialPath == null ? "" : initialPath+".") + element.getPath();
     workingLang = validationLanguage;
     if (!element.getName().equals(element.fhirType())) {
       logicalPaths = new ArrayList<>();

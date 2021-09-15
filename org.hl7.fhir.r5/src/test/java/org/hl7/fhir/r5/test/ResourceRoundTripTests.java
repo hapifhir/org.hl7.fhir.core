@@ -66,7 +66,7 @@ public class ResourceRoundTripTests {
    * verify that umlaut like äö etc are not encoded in UTF-8 in attributes
    */
   public void testSerializeUmlaut() throws IOException {
-    Element xml = Manager.parse(TestingUtilities.context(), TestingUtilities.loadTestResourceStream("r5", "unicode.xml"),
+    Element xml = Manager.parseSingle(TestingUtilities.context(), TestingUtilities.loadTestResourceStream("r5", "unicode.xml"),
         FhirFormat.XML);
     List<Element> concept = xml.getChildrenByName("concept");
     assertTrue(concept!=null && concept.size()==1);

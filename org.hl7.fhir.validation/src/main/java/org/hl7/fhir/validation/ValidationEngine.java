@@ -21,6 +21,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
+import org.hl7.fhir.r5.elementmodel.SHCParser;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -293,7 +294,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   // testing entry point
   public OperationOutcome validate(FhirFormat format, InputStream stream, List<String> profiles) throws FHIRException, IOException, EOperationOutcome {
     List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
-    InstanceValidator validator = getValidator();
+    InstanceValidator validator = getValidator(format);
     validator.validate(null, messages, stream, format, asSdList(profiles));
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
   }
@@ -350,7 +351,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   }
 
   public OperationOutcome validate(byte[] source, FhirFormat cntType, List<String> profiles, List<ValidationMessage> messages) throws FHIRException, IOException, EOperationOutcome {
-    InstanceValidator validator = getValidator();
+    InstanceValidator validator = getValidator(cntType);
 
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     return ValidatorUtils.messagesToOutcome(messages, context, fhirPathEngine);
@@ -361,7 +362,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (doNative) {
       SchemaValidator.validateSchema(location, cntType, messages);
     }
-    InstanceValidator validator = getValidator();
+    InstanceValidator validator = getValidator(cntType);
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     if (showTimes) {
       System.out.println(location + ": " + validator.reportTimes());
@@ -377,7 +378,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (doNative) {
       SchemaValidator.validateSchema(location, cntType, messages);
     }
-    InstanceValidator validator = getValidator();
+    InstanceValidator validator = getValidator(cntType);
     validator.setResourceIdRule(resourceIdRule);
     validator.setBestPracticeWarningLevel(bpWarnings);
     validator.setCheckDisplay(displayOption);
@@ -393,7 +394,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   public org.hl7.fhir.r5.elementmodel.Element transform(byte[] source, FhirFormat cntType, String mapUri) throws FHIRException, IOException {
     List<Base> outputs = new ArrayList<>();
     StructureMapUtilities scu = new StructureMapUtilities(context, new TransformSupportServices(outputs, mapLog, context));
-    org.hl7.fhir.r5.elementmodel.Element src = Manager.parse(context, new ByteArrayInputStream(source), cntType);
+    org.hl7.fhir.r5.elementmodel.Element src = Manager.parseSingle(context, new ByteArrayInputStream(source), cntType);
     StructureMap map = context.getTransform(mapUri);
     if (map == null) throw new Error("Unable to find map " + mapUri + " (Known Maps = " + context.listMapUrls() + ")");
     org.hl7.fhir.r5.elementmodel.Element resource = getTargetResourceFromStructureMap(map);
@@ -448,14 +449,14 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
 
   public void convert(String source, String output) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false);
-    Element e = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
     Manager.compose(context, e, new FileOutputStream(output), (output.endsWith(".json") ? FhirFormat.JSON : FhirFormat.XML), OutputStyle.PRETTY, null);
   }
 
   public String evaluateFhirPath(String source, String expression) throws FHIRException, IOException {
     Content cnt = igLoader.loadContent(source, "validate", false);
-    FHIRPathEngine fpe = this.getValidator().getFHIRPathEngine();
-    Element e = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+    FHIRPathEngine fpe = this.getValidator(null).getFHIRPathEngine();
+    Element e = Manager.parseSingle(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
     ExpressionNode exp = fpe.parse(expression);
     return fpe.evaluateToString(new ValidatorHostContext(context, e), e, e, e, exp);
   }
@@ -490,7 +491,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     context.dropResource(type, id);
   }
 
-  public InstanceValidator getValidator() {
+  public InstanceValidator getValidator(FhirFormat format) throws FHIRException, IOException {
     InstanceValidator validator = new InstanceValidator(context, null, null);
     validator.setHintAboutNonMustSupport(hintAboutNonMustSupport);
     validator.setAnyExtensionsAllowed(anyExtensionsAllowed);
@@ -512,6 +513,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.getBundleValidationRules().addAll(bundleValidationRules);
     validator.getValidationControl().putAll(validationControl);
     validator.setQuestionnaireMode(questionnaireMode);
+    if (format == FhirFormat.SHC) {
+      igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
+    }
+
     return validator;
   }
 
@@ -617,7 +622,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
 
   public byte[] transformVersion(String source, String targetVer, FhirFormat format, Boolean canDoNative) throws FHIRException, IOException, Exception {
     Content cnt = igLoader.loadContent(source, "validate", false);
-    org.hl7.fhir.r5.elementmodel.Element src = Manager.parse(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
+    org.hl7.fhir.r5.elementmodel.Element src = Manager.parseSingle(context, new ByteArrayInputStream(cnt.focus), cnt.cntType);
 
     // if the src has a url, we try to use the java code 
     if ((canDoNative == null && src.hasChild("url")) || (canDoNative != null && canDoNative)) {
