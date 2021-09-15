@@ -45,6 +45,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 public class JSONUtil {
 
@@ -137,6 +138,29 @@ public class JSONUtil {
     URL url = new URL(source);
     URLConnection c = url.openConnection();
     return (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(c.getInputStream()));
+  }
+
+  public static String type(JsonElement e) {
+    if (e == null) {
+      return "(null)";
+    }
+    if (e.isJsonObject()) {
+      return "Object";
+    }
+    if (e.isJsonArray()) {
+      return "Array";
+    }
+    if (e.isJsonNull()) {
+      return "Null";
+    }
+    JsonPrimitive p = (JsonPrimitive) e;
+    if (p.isBoolean()) {
+      return "Boolean";
+    }
+    if (p.isNumber()) {
+      return "Number";
+    }
+    return "String";
   }
 
 }

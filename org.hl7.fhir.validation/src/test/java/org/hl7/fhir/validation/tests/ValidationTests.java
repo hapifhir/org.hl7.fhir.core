@@ -1,11 +1,13 @@
 package org.hl7.fhir.validation.tests;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,6 +33,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
+import org.hl7.fhir.r5.elementmodel.SHCParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.Base;
@@ -162,8 +165,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("use-test") && !content.get("use-test").getAsBoolean())
       return;
 
-    String testCaseContent = TestingUtilities.loadTestResource("validator", JSONUtil.str(content, "file"));
-    InstanceValidator val = vCurr.getValidator();
+    byte[] testCaseContent = TestingUtilities.loadTestResource("validator", JSONUtil.str(content, "file")).getBytes(StandardCharsets.UTF_8);
+    // load and process content    
+    FhirFormat fmt = determineFormat(content, testCaseContent);
+    
+    InstanceValidator val = vCurr.getValidator(fmt);
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
     val.setDebug(false);
@@ -236,13 +242,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (content.has("security-checks")) {
       val.setSecurityChecks(content.get("security-checks").getAsBoolean());
     }
+    
     if (content.has("logical")==false) {
       val.setAssumeValidRestReferences(content.has("assumeValidRestReferences") ? content.get("assumeValidRestReferences").getAsBoolean() : false);
       System.out.println(String.format("Start Validating (%d to set up)", (System.nanoTime() - setup) / 1000000));
-      if (JSONUtil.str(content, "file").endsWith(".json"))
-        val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON);
-      else
-        val.validate(null, errors, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML);
+      val.validate(null, errors, new ByteArrayInputStream(testCaseContent), fmt);
       System.out.println(val.reportTimes());
       checkOutcomes(errors, content, null, name);
     }
@@ -281,10 +285,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       }
       val.setAssumeValidRestReferences(profile.has("assumeValidRestReferences") ? profile.get("assumeValidRestReferences").getAsBoolean() : false);
       List<ValidationMessage> errorsProfile = new ArrayList<ValidationMessage>();
-      if (JSONUtil.str(content, "file").endsWith(".json"))
-        val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.JSON, asSdList(sd));
-      else
-        val.validate(null, errorsProfile, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), FhirFormat.XML, asSdList(sd));
+      val.validate(null, errorsProfile, new ByteArrayInputStream(testCaseContent), fmt, asSdList(sd));
       System.out.println(val.reportTimes());
       checkOutcomes(errorsProfile, profile, filename, name);
     }
@@ -309,7 +310,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
         }
       }
       List<ValidationMessage> errorsLogical = new ArrayList<ValidationMessage>();
-      Element le = val.validate(null, errorsLogical, IOUtils.toInputStream(testCaseContent, Charsets.UTF_8), (name.endsWith(".json")) ? FhirFormat.JSON : FhirFormat.XML);
+      Element le = val.validate(null, errorsLogical, new ByteArrayInputStream(testCaseContent), fmt);
       if (logical.has("expressions")) {
         FHIRPathEngine fp = new FHIRPathEngine(val.getContext());
         for (JsonElement e : logical.getAsJsonArray("expressions")) {
@@ -319,6 +320,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       }
       checkOutcomes(errorsLogical, logical, "logical", name);
     }
+  }
+
+  private FhirFormat determineFormat(JsonObject config, byte[] cnt) throws IOException {
+    String name = JSONUtil.str(config, "file");
+    return org.hl7.fhir.validation.ResourceChecker.checkIsResource(vCurr.getContext(), true, cnt, name, !JSONUtil.bool(config, "guess-format")); 
   }
 
   private List<StructureDefinition> asSdList(StructureDefinition sd) {
@@ -482,16 +488,16 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     if (url.equals("Patient/test")) {
       res = new ObjectConverter(TestingUtilities.context(version)).convert(new Patient());
     } else if (TestingUtilities.findTestResource("validator", url.replace("/", "-").toLowerCase() + ".json")) {
-      res = Manager.makeParser(TestingUtilities.context(version), FhirFormat.JSON).parse(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase() + ".json"));
+      res = Manager.makeParser(TestingUtilities.context(version), FhirFormat.JSON).parseSingle(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase() + ".json"));
     } else if (TestingUtilities.findTestResource("validator", url.replace("/", "-").toLowerCase() + ".xml")) {
-      res = Manager.makeParser(TestingUtilities.context(version), FhirFormat.XML).parse(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase() + ".xml"));
+      res = Manager.makeParser(TestingUtilities.context(version), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("validator", url.replace("/", "-").toLowerCase() + ".xml"));
     }
     if (res == null && url.contains("/")) {
       String tail = url.substring(url.indexOf("/") + 1);
       if (TestingUtilities.findTestResource("validator", tail.replace("/", "-").toLowerCase() + ".json")) {
-        res = Manager.makeParser(TestingUtilities.context(version), FhirFormat.JSON).parse(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase() + ".json"));
+        res = Manager.makeParser(TestingUtilities.context(version), FhirFormat.JSON).parseSingle(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase() + ".json"));
       } else if (TestingUtilities.findTestResource("validator", tail.replace("/", "-").toLowerCase() + ".xml")) {
-        res = Manager.makeParser(TestingUtilities.context(version), FhirFormat.XML).parse(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase() + ".xml"));
+        res = Manager.makeParser(TestingUtilities.context(version), FhirFormat.XML).parseSingle(TestingUtilities.loadTestResourceStream("validator", tail.replace("/", "-").toLowerCase() + ".xml"));
       }
     }
     return res;

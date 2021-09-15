@@ -86,7 +86,7 @@ public class ResourceTest {
   }
 
   public Element testEM() throws Exception {
-  	Element resource = Manager.parse(TestingUtilities.context(), new FileInputStream(source), isJson() ? FhirFormat.JSON : FhirFormat.XML);
+  	Element resource = Manager.parseSingle(TestingUtilities.context(), new FileInputStream(source), isJson() ? FhirFormat.JSON : FhirFormat.XML);
   	Manager.compose(TestingUtilities.context(), resource, new FileOutputStream(source.getAbsoluteFile()+".out.json"), FhirFormat.JSON, OutputStyle.PRETTY, null);
   	Manager.compose(TestingUtilities.context(), resource, new FileOutputStream(source.getAbsoluteFile()+".out.json"), FhirFormat.XML, OutputStyle.PRETTY, null);
   	return resource;

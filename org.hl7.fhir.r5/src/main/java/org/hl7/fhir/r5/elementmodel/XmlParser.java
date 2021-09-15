@@ -53,6 +53,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.elementmodel.Element.SpecialElement;
+import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.DateTimeType;
@@ -106,7 +107,8 @@ public class XmlParser extends ParserBase {
     this.allowXsiLocation = allowXsiLocation;
   }
 
-  public Element parse(InputStream stream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+  public List<NamedElement> parse(InputStream stream) throws FHIRFormatError, DefinitionException, FHIRException, IOException {
+    List<NamedElement> res = new ArrayList<>();
 		Document doc = null;
   	try {
   		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -157,10 +159,13 @@ public class XmlParser extends ParserBase {
       logError(0, 0, "(syntax)", IssueType.INVALID, e.getMessage(), IssueSeverity.FATAL);
       doc = null;
   	}
-  	if (doc == null)
-  		return null;
-  	else
-      return parse(doc);
+  	if (doc != null) {
+  	  Element e = parse(doc);
+      if (e != null) {
+        res.add(new NamedElement(null, e));
+      }
+  	}
+  	return res;
   }
 
 
