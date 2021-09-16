@@ -975,4 +975,8 @@ public class Element extends Base {
   public List<ValidationMessage> getMessages() {
     return messages;
   }
+
+  public void removeChild(String name) {
+    children.removeIf(n -> name.equals(n.getName()));    
+  }
 }
