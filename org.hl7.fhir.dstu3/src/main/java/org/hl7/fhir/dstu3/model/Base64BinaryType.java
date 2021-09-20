@@ -93,7 +93,7 @@ public class Base64BinaryType extends PrimitiveType<byte[]> implements IPrimitiv
 
   @Override
   protected Type typedCopy() {
-    return null;
+    return copy();
   }
 
   public String fhirType() {
