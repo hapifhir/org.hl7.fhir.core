@@ -104,7 +104,6 @@ public class IntegerType extends PrimitiveType<Integer> implements IBaseIntegerD
 
   @Override
   public IntegerType copy() {
-//    IntegerType ret = getValue() == null ? new IntegerType() : new IntegerType(getValue());
     IntegerType ret = new IntegerType(getValue());
     copyValues(ret);
     return ret;
