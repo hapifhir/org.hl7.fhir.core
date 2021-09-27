@@ -395,25 +395,28 @@ public class ExpressionNode {
 					b.append(", ");
 				b.append(n.toString());
 			}
-			if (function == Function.Item) 
-				b.append("]");
-			else {
+			if (function == Function.Item) {
+        b.append("]");
+      } else {
 				b.append(")");
 			}
 			break;
 		case Constant:
-		  if (constant instanceof StringType)
-	      b.append("'"+Utilities.escapeJson(constant.primitiveValue())+"'");
-		  else if (constant instanceof Quantity) {
+      if (constant == null) {
+        b.append("{}");
+      } else if (constant instanceof StringType) {
+        b.append("'" + Utilities.escapeJson(constant.primitiveValue()) + "'");
+      } else if (constant instanceof Quantity) {
 		    Quantity q = (Quantity) constant;
         b.append(Utilities.escapeJson(q.getValue().toPlainString()));
         b.append(" '");
         b.append(Utilities.escapeJson(q.getUnit()));
         b.append("'");
-		  } else if (constant.primitiveValue() != null)
-		    b.append(Utilities.escapeJson(constant.primitiveValue()));
-		  else 
+		  } else if (constant.primitiveValue() != null) {
+        b.append(Utilities.escapeJson(constant.primitiveValue()));
+      } else {
         b.append(Utilities.escapeJson(constant.toString()));
+      }
 			break;
 		case Group:
 			b.append("(");
