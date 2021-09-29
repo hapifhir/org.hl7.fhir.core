@@ -40,6 +40,7 @@ import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.FormatUtilities;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -53,6 +54,23 @@ import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 
 public abstract class ParserBase {
+
+  public class NamedElement {
+    private String name;
+    private Element element;
+    public NamedElement(String name, Element element) {
+      super();
+      this.name = name;
+      this.element = element;
+    }
+    public String getName() {
+      return name;
+    }
+    public Element getElement() {
+      return element;
+    }
+    
+  }
 
   public interface ILinkResolver {
     String resolveType(String type);
@@ -86,7 +104,15 @@ public abstract class ParserBase {
 	  this.errors = errors;
 	}
 
-  public abstract Element parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException;
+  public abstract List<NamedElement> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException;
+  
+  public Element parseSingle(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+    List<NamedElement> res = parse(stream);
+    if (res.size() != 1) {
+      throw new FHIRException("Parsing FHIR content returned multiple elements in a context where only one element is allowed");
+    }
+    return res.get(0).getElement();
+  }
 
 	public abstract void compose(Element e, OutputStream destination, OutputStyle style, String base)  throws FHIRException, IOException;
 
@@ -159,6 +185,10 @@ public abstract class ParserBase {
 
   public void setShowDecorations(boolean showDecorations) {
     this.showDecorations = showDecorations;
+  }
+
+  public String getImpliedProfile() {
+    return null;
   }
 
 

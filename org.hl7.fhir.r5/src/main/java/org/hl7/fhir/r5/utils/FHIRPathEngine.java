@@ -5435,7 +5435,7 @@ public class FHIRPathEngine {
    * @throws PathEngineException 
    * @throws DefinitionException 
    */
-  public ElementDefinition evaluateDefinition(ExpressionNode expr, StructureDefinition profile, ElementDefinition element) throws DefinitionException {
+  public ElementDefinition evaluateDefinition(ExpressionNode expr, StructureDefinition profile, ElementDefinition element, StructureDefinition source) throws DefinitionException {
     StructureDefinition sd = profile;
     ElementDefinition focus = null;
     boolean okToNotResolve = false;
@@ -5494,6 +5494,7 @@ public class FHIRPathEngine {
         List<ElementDefinition> childDefinitions = profileUtilities.getChildMap(sd, element);
         for (ElementDefinition t : childDefinitions) {
           if (t.getPath().endsWith(".extension") && t.hasSliceName()) {
+            System.out.println("t: "+t.getId());
             StructureDefinition exsd = (t.getType() == null || t.getType().isEmpty() || t.getType().get(0).getProfile().isEmpty()) ?
               null : worker.fetchResource(StructureDefinition.class, t.getType().get(0).getProfile().get(0).getValue());
             while (exsd != null && !exsd.getBaseDefinition().equals("http://hl7.org/fhir/StructureDefinition/Extension")) {
@@ -5507,6 +5508,9 @@ public class FHIRPathEngine {
               break;
             }
           }
+        }
+        if (focus == null) { 
+          throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_CANT_FIND_EXTENSION, expr.toString(), targetUrl, element.getId(), sd.getUrl());
         }
       } else if ("ofType".equals(expr.getName())) {
         if (!element.hasType()) {
@@ -5537,12 +5541,12 @@ public class FHIRPathEngine {
       if (okToNotResolve) {
         return null;
       } else {
-        throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_CANT_FIND, expr.toString());
+        throw makeException(expr, I18nConstants.FHIRPATH_DISCRIMINATOR_CANT_FIND, expr.toString(), source.getUrl(), element.getId(), profile.getUrl());
       }
     } else if (expr.getInner() == null) {
       return focus;
     } else {
-      return evaluateDefinition(expr.getInner(), sd, focus);
+      return evaluateDefinition(expr.getInner(), sd, focus, profile);
     }
   }
 

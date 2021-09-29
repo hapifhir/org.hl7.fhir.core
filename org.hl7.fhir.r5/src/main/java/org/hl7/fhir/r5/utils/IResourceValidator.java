@@ -281,9 +281,9 @@ public interface IResourceValidator {
    * in addition, you can pass one or more profiles ti validate beyond the base standard - as structure definitions or canonical URLs 
    * @throws IOException 
    */
-  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.elementmodel.Element element) throws FHIRException;
-  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.elementmodel.Element element, String profile) throws FHIRException;
-  void validate(Object Context, List<ValidationMessage> errors, org.hl7.fhir.r5.elementmodel.Element element, List<StructureDefinition> profiles) throws FHIRException;
+  void validate(Object Context, List<ValidationMessage> errors, String initialPath, org.hl7.fhir.r5.elementmodel.Element element) throws FHIRException;
+  void validate(Object Context, List<ValidationMessage> errors, String initialPath, org.hl7.fhir.r5.elementmodel.Element element, String profile) throws FHIRException;
+  void validate(Object Context, List<ValidationMessage> errors, String initialPath, org.hl7.fhir.r5.elementmodel.Element element, List<StructureDefinition> profiles) throws FHIRException;
   
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format) throws FHIRException;
   org.hl7.fhir.r5.elementmodel.Element validate(Object Context, List<ValidationMessage> errors, InputStream stream, FhirFormat format, String profile) throws FHIRException;

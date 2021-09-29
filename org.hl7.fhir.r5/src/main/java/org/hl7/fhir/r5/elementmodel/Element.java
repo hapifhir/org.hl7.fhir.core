@@ -105,6 +105,8 @@ public class Element extends Base {
 	private boolean hasParentForValidator;
 	private String path;
 	private List<ValidationMessage> messages;
+	private boolean prohibited;
+	private boolean required;
 
 	public Element(String name) {
 		super();
@@ -975,4 +977,26 @@ public class Element extends Base {
   public List<ValidationMessage> getMessages() {
     return messages;
   }
+
+  public void removeChild(String name) {
+    children.removeIf(n -> name.equals(n.getName()));    
+  }
+
+  public boolean isProhibited() {
+    return prohibited;
+  }
+
+  public void setProhibited(boolean prohibited) {
+    this.prohibited = prohibited;
+  }
+
+  public boolean isRequired() {
+    return required;
+  }
+
+  public void setRequired(boolean required) {
+    this.required = required;
+  }
+  
+  
 }

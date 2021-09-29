@@ -36,6 +36,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -108,8 +109,9 @@ public class JsonParser extends ParserBase {
 
 
   @Override
-  public Element parse(InputStream stream) throws IOException, FHIRException {
+  public List<NamedElement> parse(InputStream stream) throws IOException, FHIRException {
     // if we're parsing at this point, then we're going to use the custom parser
+    List<NamedElement> res = new ArrayList<>();
     map = new IdentityHashMap<JsonElement, LocationData>();
     String source = TextFile.streamToString(stream);
     if (policy == ValidationPolicy.EVERYTHING) {
@@ -121,12 +123,19 @@ public class JsonParser extends ParserBase {
         return null;
       }
       assert (map.containsKey(obj));
-      return parse(obj);
+      Element e = parse(obj);
+      if (e != null) {
+        res.add(new NamedElement(null, e));
+      }
     } else {
       JsonObject obj = JsonTrackingParser.parse(source, null); // (JsonObject) new com.google.gson.JsonParser().parse(source);
       //			assert (map.containsKey(obj));
-      return parse(obj);
+      Element e = parse(obj);
+      if (e != null) {
+        res.add(new NamedElement(null, e));
+      }
     }
+    return res;
   }
 
   public Element parse(JsonObject object, Map<JsonElement, LocationData> map) throws FHIRException {

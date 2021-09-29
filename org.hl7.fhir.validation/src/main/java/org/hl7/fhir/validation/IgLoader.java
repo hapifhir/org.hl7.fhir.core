@@ -189,7 +189,7 @@ public class IgLoader {
         return readZip(new FileInputStream(src));
       if (src.endsWith("igpack.zip"))
         return readZip(new FileInputStream(src));
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), src);
+      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, byte[]> res = new HashMap<String, byte[]>();
         res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), TextFile.fileToBytesNCS(src));
@@ -321,7 +321,7 @@ public class IgLoader {
         return readZip(new FileInputStream(src));
       if (src.endsWith("igpack.zip"))
         return readZip(new FileInputStream(src));
-      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), src);
+      Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(f), src, true);
       if (fmt != null) {
         Map<String, byte[]> res = new HashMap<String, byte[]>();
         res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), TextFile.fileToBytesNCS(src));
@@ -470,7 +470,7 @@ public class IgLoader {
     else
       cnt = TextFile.streamToBytes(stream);
 
-    Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), cnt, src);
+    Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), cnt, src, true);
     if (fmt != null) {
       Map<String, byte[]> res = new HashMap<String, byte[]>();
       res.put(Utilities.changeFileExt(src, "." + fmt.getExtension()), cnt);
@@ -569,7 +569,7 @@ public class IgLoader {
       if (ff.isDirectory() && recursive) {
         res.putAll(scanDirectory(ff, true));
       } else if (!ff.isDirectory() && !isIgnoreFile(ff)) {
-        Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), ff.getAbsolutePath());
+        Manager.FhirFormat fmt = ResourceChecker.checkIsResource(getContext(), isDebug(), TextFile.fileToBytes(ff), ff.getAbsolutePath(), true);
         if (fmt != null) {
           res.put(Utilities.changeFileExt(ff.getName(), "." + fmt.getExtension()), TextFile.fileToBytes(ff.getAbsolutePath()));
         }
