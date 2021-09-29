@@ -207,14 +207,14 @@ public class CDARoundTripTests {
 	 * @throws IOException
 	 */
 	public void testClinicalDocumentXmlParser() throws IOException {
-		Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"),
+		Element cda = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"),
 				FhirFormat.XML);
 
 		assertsExample(cda);
 
 		ByteArrayOutputStream baosXml = new ByteArrayOutputStream();
 		Manager.compose(context, cda, baosXml, FhirFormat.XML, OutputStyle.PRETTY, null);
-		Element cdaXmlRoundtrip = Manager.parse(context, new ByteArrayInputStream(baosXml.toString().getBytes()), FhirFormat.XML);
+		Element cdaXmlRoundtrip = Manager.parseSingle(context, new ByteArrayInputStream(baosXml.toString().getBytes()), FhirFormat.XML);
 		assertsExample(cdaXmlRoundtrip);
 	}
 
@@ -226,14 +226,14 @@ public class CDARoundTripTests {
 	 * @throws IOException
 	 */
 	public void testClinicalDocumentJsonParser() throws IOException {
-		Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"),
+		Element cda = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"),
 				FhirFormat.XML);
 
 		assertsExample(cda);
 
 		ByteArrayOutputStream baosJson = new ByteArrayOutputStream();
 		Manager.compose(context, cda, baosJson, FhirFormat.JSON, OutputStyle.PRETTY, null);
-		Element cdaJsonRoundtrip = Manager.parse(context, new ByteArrayInputStream(baosJson.toString().getBytes()),
+		Element cdaJsonRoundtrip = Manager.parseSingle(context, new ByteArrayInputStream(baosJson.toString().getBytes()),
 				FhirFormat.JSON);
 		
 		assertsExample(cdaJsonRoundtrip);
@@ -245,7 +245,7 @@ public class CDARoundTripTests {
 	 * verify that umlaut like äö etc are not encoded in UTF-8 in attributes
 	 */
 	public void testSerializeUmlaut() throws IOException {
-	  Element xml = Manager.parse(context,
+	  Element xml = Manager.parseSingle(context,
 		  TestingUtilities.loadTestResourceStream("validator", "cda", "example.xml"), FhirFormat.XML);
 	  
 	  List<Element> title = xml.getChildrenByName("title");

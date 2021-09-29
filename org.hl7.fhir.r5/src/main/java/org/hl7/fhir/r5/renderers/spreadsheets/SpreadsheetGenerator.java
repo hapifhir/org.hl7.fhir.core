@@ -18,8 +18,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.renderers.DataRenderer;
+
+import com.microsoft.schemas.office.visio.x2012.main.ShapeSheetType;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -54,6 +57,8 @@ import org.hl7.fhir.r5.renderers.DataRenderer;
 
 public class SpreadsheetGenerator {
     
+  private static final int MAX_SENSITIVE_SHEET_NAME_LEN = 31;
+
   protected IWorkerContext context;
 
   protected XSSFWorkbook wb = new XSSFWorkbook();
@@ -76,6 +81,9 @@ public class SpreadsheetGenerator {
   }
   
   protected Sheet makeSheet(String name) {
+    if (name.length() > MAX_SENSITIVE_SHEET_NAME_LEN - 2) {
+      name = name.substring(0, MAX_SENSITIVE_SHEET_NAME_LEN - 2);
+    }
     String s = name;
     if (sheetNames.contains(s)) {
       int i = 1;

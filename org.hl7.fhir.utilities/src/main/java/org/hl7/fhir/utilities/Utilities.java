@@ -649,11 +649,13 @@ public class Utilities {
     StringBuilder s = new StringBuilder();
     boolean d = false;
     for (String arg : args) {
-      if (!d)
-        d = !noString(arg);
-      else if (!s.toString().endsWith("/") && !arg.startsWith("/"))
-        s.append("/");
-      s.append(arg);
+      if (args != null) {
+        if (!d)
+          d = !noString(arg);
+        else if (s.toString() != null && !s.toString().endsWith("/") && !arg.startsWith("/"))
+          s.append("/");
+        s.append(arg);
+      }
     }
     return s.toString();
   }

@@ -67,6 +67,7 @@ import org.hl7.fhir.r5.elementmodel.Manager;
 import org.hl7.fhir.r5.elementmodel.Manager.FhirFormat;
 import org.hl7.fhir.r5.elementmodel.ObjectConverter;
 import org.hl7.fhir.r5.elementmodel.ParserBase;
+import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.elementmodel.ParserBase.ValidationPolicy;
 import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.FormatUtilities;
@@ -296,13 +297,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         try {
           Element e = new ObjectConverter(context).convert((Resource) item);
           setParents(e);
-          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, e, validationLanguage));
+          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));
         } catch (IOException e1) {
           throw new FHIRException(e1);
         }
       } else if (item instanceof Element) {
         Element e = (Element) item;
-        self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, e, validationLanguage));
+        self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));
       } else
         throw new NotImplementedException(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCONFORMSTOPROFILE_WHEN_ITEM_IS_NOT_AN_ELEMENT));
       boolean ok = true;
@@ -566,16 +567,28 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       ((XmlParser) parser).setAllowXsiLocation(allowXsiLocation);
     parser.setupValidation(ValidationPolicy.EVERYTHING, errors);
     long t = System.nanoTime();
-    Element e;
+    List<NamedElement> list = null;
     try {
-      e = parser.parse(stream);
+      list = parser.parse(stream);
     } catch (IOException e1) {
       throw new FHIRException(e1);
     }
     timeTracker.load(t);
-    if (e != null)
-      validate(appContext, errors, e, profiles);
-    return e;
+    if (list != null && !list.isEmpty()) {
+      String url = parser.getImpliedProfile();
+      if (url != null) {
+        StructureDefinition sd = context.fetchResource(StructureDefinition.class, url);
+        if (sd == null) {
+          rule(errors, IssueType.NOTFOUND, "Payload", false, "Implied profile "+url+" not known to validator");          
+        } else {
+          profiles.add(sd);
+        }
+      }
+      for (NamedElement ne : list) {
+        validate(appContext, errors, ne.getName(), ne.getElement(), profiles);
+      }
+    }
+    return (list == null || list.isEmpty()) ? null : list.get(0).getElement(); // todo: this is broken, but fixing it really complicates things elsewhere, so we do this for now
   }
 
   @Override
@@ -602,7 +615,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       throw new FHIRException(e1);
     }
     timeTracker.load(t);
-    validate(appContext, errors, e, profiles);
+    validate(appContext, errors, null, e, profiles);
     return e;
   }
 
@@ -633,7 +646,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     timeTracker.load(t);
     if (e != null) {
-      validate(appContext, errors, e, profiles);
+      validate(appContext, errors, null, e, profiles);
     }
     return e;
   }
@@ -665,7 +678,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     timeTracker.load(t);
     if (e != null)
-      validate(appContext, errors, e, profiles);
+      validate(appContext, errors, null, e, profiles);
     return e;
   }
 
@@ -691,26 +704,26 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     Element e = parser.parse(object);
     timeTracker.load(t);
     if (e != null)
-      validate(appContext, errors, e, profiles);
+      validate(appContext, errors, null, e, profiles);
     return e;
   }
 
   @Override
-  public void validate(Object appContext, List<ValidationMessage> errors, Element element) throws FHIRException {
-    validate(appContext, errors, element, new ArrayList<>());
+  public void validate(Object appContext, List<ValidationMessage> errors, String initialPath, Element element) throws FHIRException {
+    validate(appContext, errors, initialPath, element, new ArrayList<>());
   }
 
   @Override
-  public void validate(Object appContext, List<ValidationMessage> errors, Element element, String profile) throws FHIRException {
+  public void validate(Object appContext, List<ValidationMessage> errors, String initialPath, Element element, String profile) throws FHIRException {
     ArrayList<StructureDefinition> profiles = new ArrayList<>();
     if (profile != null) {
       profiles.add(getSpecifiedProfile(profile));
     }
-    validate(appContext, errors, element, profiles);
+    validate(appContext, errors, initialPath, element, profiles);
   }
 
   @Override
-  public void validate(Object appContext, List<ValidationMessage> errors, Element element, List<StructureDefinition> profiles) throws FHIRException {
+  public void validate(Object appContext, List<ValidationMessage> errors, String path, Element element, List<StructureDefinition> profiles) throws FHIRException {
     // this is the main entry point; all the other public entry points end up here coming here...
     // so the first thing to do is to clear the internal state
     fetchCache.clear();
@@ -724,14 +737,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
     long t = System.nanoTime();
     if (profiles == null || profiles.isEmpty()) {
-      validateResource(new ValidatorHostContext(appContext, element), errors, element, element, null, resourceIdRule, new NodeStack(context, element, validationLanguage).resetIds());
+      validateResource(new ValidatorHostContext(appContext, element), errors, element, element, null, resourceIdRule, new NodeStack(context, path, element, validationLanguage).resetIds());
     } else {
       for (StructureDefinition defn : profiles) {
-        validateResource(new ValidatorHostContext(appContext, element), errors, element, element, defn, resourceIdRule, new NodeStack(context, element, validationLanguage).resetIds());
+        validateResource(new ValidatorHostContext(appContext, element), errors, element, element, defn, resourceIdRule, new NodeStack(context, path, element, validationLanguage).resetIds());
       }
     }
     if (hintAboutNonMustSupport) {
-      checkElementUsage(errors, element, new NodeStack(context, element, validationLanguage));
+      checkElementUsage(errors, element, new NodeStack(context, path, element, validationLanguage));
     }
     errors.removeAll(messagesToRemove);
     timeTracker.overall(t);
@@ -3049,7 +3062,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return context;
   }
 
-  private List<ElementDefinition> getCriteriaForDiscriminator(String path, ElementDefinition element, String discriminator, StructureDefinition profile, boolean removeResolve) throws FHIRException {
+  private List<ElementDefinition> getCriteriaForDiscriminator(String path, ElementDefinition element, String discriminator, StructureDefinition profile, boolean removeResolve, StructureDefinition srcProfile) throws FHIRException {
     List<ElementDefinition> elements = new ArrayList<ElementDefinition>();
     if ("value".equals(discriminator) && element.hasFixed()) {
       elements.add(element);
@@ -3075,7 +3088,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR_BAD_PATH, e.getMessage(), fp), e);
     }
     long t2 = System.nanoTime();
-    ed = fpe.evaluateDefinition(expr, profile, element);
+    ed = fpe.evaluateDefinition(expr, profile, element, srcProfile);
     timeTracker.sd(t2);
     if (ed != null)
       elements.add(ed);
@@ -3100,7 +3113,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         expr = fpe.parse(fp);
         t2 = System.nanoTime();
-        ed = fpe.evaluateDefinition(expr, profile, element);
+        ed = fpe.evaluateDefinition(expr, profile, element, srcProfile);
         timeTracker.sd(t2);
         if (ed != null)
           elements.add(ed);
@@ -3387,7 +3400,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           rr.setResource(res.getMatch());
           rr.setFocus(res.getMatch());
           rr.setExternal(false);
-          rr.setStack(new NodeStack(context, hostContext, validationLanguage).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
+          rr.setStack(new NodeStack(context, null, hostContext, validationLanguage).push(res.getEntry(), res.getIndex(), res.getEntry().getProperty().getDefinition(),
             res.getEntry().getProperty().getDefinition()).push(res.getMatch(), -1,
             res.getMatch().getProperty().getDefinition(), res.getMatch().getProperty().getDefinition()));
           rr.getStack().qualifyPath(".ofType("+rr.getResource().fhirType()+")");
@@ -3550,13 +3563,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * @param ed      - the slice for which to test membership
    * @param errors
    * @param stack
+   * @param srcProfile 
    * @return
    * @throws DefinitionException
    * @throws DefinitionException
    * @throws IOException
    * @throws FHIRException
    */
-  private boolean sliceMatches(ValidatorHostContext hostContext, Element element, String path, ElementDefinition slicer, ElementDefinition ed, StructureDefinition profile, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, NodeStack stack) throws DefinitionException, FHIRException {
+  private boolean sliceMatches(ValidatorHostContext hostContext, Element element, String path, ElementDefinition slicer, ElementDefinition ed, StructureDefinition profile, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, NodeStack stack, StructureDefinition srcProfile) throws DefinitionException, FHIRException {
     if (!slicer.getSlicing().hasDiscriminator())
       return false; // cannot validate in this case
 
@@ -3571,7 +3585,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String discriminator = s.getPath();
         discriminators.add(discriminator);
 
-        List<ElementDefinition> criteriaElements = getCriteriaForDiscriminator(path, ed, discriminator, profile, s.getType() == DiscriminatorType.PROFILE);
+        List<ElementDefinition> criteriaElements = getCriteriaForDiscriminator(path, ed, discriminator, profile, s.getType() == DiscriminatorType.PROFILE, srcProfile);
         boolean found = false;
         for (ElementDefinition criteriaElement : criteriaElements) {
           found = true;
@@ -4873,6 +4887,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     int last = -1;
+    ElementInfo lastei = null;
     int lastSlice = -1;
     for (ElementInfo ei : children) {
       String sliceInfo = "";
@@ -4911,13 +4926,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
       if (!ToolingExtensions.readBoolExtension(profile, "http://hl7.org/fhir/StructureDefinition/structuredefinition-xml-no-order")) {
         boolean ok = (ei.definition == null) || (ei.index >= last) || isXmlAttr;
-        rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), ok, I18nConstants.VALIDATION_VAL_PROFILE_OUTOFORDER, profile.getUrl(), ei.getName());
+        rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), ok, I18nConstants.VALIDATION_VAL_PROFILE_OUTOFORDER, profile.getUrl(), ei.getName(), lastei == null ? "(null)" : lastei.getName());
       }
       if (ei.slice != null && ei.index == last && ei.slice.getSlicing().getOrdered()) {
         rule(errors, IssueType.INVALID, ei.line(), ei.col(), ei.getPath(), (ei.definition == null) || (ei.sliceindex >= lastSlice) || isXmlAttr, I18nConstants.VALIDATION_VAL_PROFILE_SLICEORDER, profile.getUrl(), ei.getName());
       }
       if (ei.definition == null || !isXmlAttr) {
         last = ei.index;
+        lastei = ei;
       }
       if (ei.slice != null) {
         lastSlice = ei.sliceindex;
@@ -4950,7 +4966,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       if (nameMatches(ei.getName(), tail(ed.getPath())))
         try {
-          match = sliceMatches(hostContext, ei.getElement(), ei.getPath(), slicer, ed, profile, errors, sliceInfo, stack);
+          match = sliceMatches(hostContext, ei.getElement(), ei.getPath(), slicer, ed, profile, errors, sliceInfo, stack, profile);
           if (match) {
             ei.slice = slicer;
 

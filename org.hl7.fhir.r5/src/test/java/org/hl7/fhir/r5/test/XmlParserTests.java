@@ -51,7 +51,7 @@ public class XmlParserTests {
    * @throws IOException
    */
   public void testXsiDeserialiserXmlParser() throws IOException {
-    Element cda = Manager.parse(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example-xsi.xml"),
+    Element cda = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("validator", "cda", "example-xsi.xml"),
         FhirFormat.XML);
 
     ByteArrayOutputStream baosXml = new  ByteArrayOutputStream();

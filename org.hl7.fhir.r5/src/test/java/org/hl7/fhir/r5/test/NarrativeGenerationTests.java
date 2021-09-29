@@ -148,7 +148,7 @@ public class NarrativeGenerationTests {
     Assertions.assertTrue(output.equals(target), "Output does not match expected");
     
     if (test.isMeta()) {
-      org.hl7.fhir.r5.elementmodel.Element e = Manager.parse(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
+      org.hl7.fhir.r5.elementmodel.Element e = Manager.parseSingle(context, TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + ".xml"), FhirFormat.XML); 
       x = RendererFactory.factory(source, rc).render(new ElementWrappers.ResourceWrapperMetaElement(rc, e));
 
       target = TextFile.streamToString(TestingUtilities.loadTestResourceStream("r5", "narrative", test.getId() + "-meta.html"));
