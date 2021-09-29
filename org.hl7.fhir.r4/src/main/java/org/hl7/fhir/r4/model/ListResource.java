@@ -48,7 +48,7 @@ import org.hl7.fhir.exceptions.FHIRException;
 /**
  * A list is a curated collection of resources.
  */
-@ResourceDef(name="List", profile="http://hl7.org/fhir/StructureDefinition/ListResource")
+@ResourceDef(name="List", profile="http://hl7.org/fhir/StructureDefinition/List")
 public class ListResource extends DomainResource {
 
     public enum ListStatus {
