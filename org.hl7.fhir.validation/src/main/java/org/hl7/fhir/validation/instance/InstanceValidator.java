@@ -3062,7 +3062,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return context;
   }
 
-  private List<ElementDefinition> getCriteriaForDiscriminator(String path, ElementDefinition element, String discriminator, StructureDefinition profile, boolean removeResolve) throws FHIRException {
+  private List<ElementDefinition> getCriteriaForDiscriminator(String path, ElementDefinition element, String discriminator, StructureDefinition profile, boolean removeResolve, StructureDefinition srcProfile) throws FHIRException {
     List<ElementDefinition> elements = new ArrayList<ElementDefinition>();
     if ("value".equals(discriminator) && element.hasFixed()) {
       elements.add(element);
@@ -3088,7 +3088,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       throw new FHIRException(context.formatMessage(I18nConstants.DISCRIMINATOR_BAD_PATH, e.getMessage(), fp), e);
     }
     long t2 = System.nanoTime();
-    ed = fpe.evaluateDefinition(expr, profile, element);
+    ed = fpe.evaluateDefinition(expr, profile, element, srcProfile);
     timeTracker.sd(t2);
     if (ed != null)
       elements.add(ed);
@@ -3113,7 +3113,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
         expr = fpe.parse(fp);
         t2 = System.nanoTime();
-        ed = fpe.evaluateDefinition(expr, profile, element);
+        ed = fpe.evaluateDefinition(expr, profile, element, srcProfile);
         timeTracker.sd(t2);
         if (ed != null)
           elements.add(ed);
@@ -3563,13 +3563,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
    * @param ed      - the slice for which to test membership
    * @param errors
    * @param stack
+   * @param srcProfile 
    * @return
    * @throws DefinitionException
    * @throws DefinitionException
    * @throws IOException
    * @throws FHIRException
    */
-  private boolean sliceMatches(ValidatorHostContext hostContext, Element element, String path, ElementDefinition slicer, ElementDefinition ed, StructureDefinition profile, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, NodeStack stack) throws DefinitionException, FHIRException {
+  private boolean sliceMatches(ValidatorHostContext hostContext, Element element, String path, ElementDefinition slicer, ElementDefinition ed, StructureDefinition profile, List<ValidationMessage> errors, List<ValidationMessage> sliceInfo, NodeStack stack, StructureDefinition srcProfile) throws DefinitionException, FHIRException {
     if (!slicer.getSlicing().hasDiscriminator())
       return false; // cannot validate in this case
 
@@ -3584,7 +3585,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         String discriminator = s.getPath();
         discriminators.add(discriminator);
 
-        List<ElementDefinition> criteriaElements = getCriteriaForDiscriminator(path, ed, discriminator, profile, s.getType() == DiscriminatorType.PROFILE);
+        List<ElementDefinition> criteriaElements = getCriteriaForDiscriminator(path, ed, discriminator, profile, s.getType() == DiscriminatorType.PROFILE, srcProfile);
         boolean found = false;
         for (ElementDefinition criteriaElement : criteriaElements) {
           found = true;
@@ -4965,7 +4966,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       if (nameMatches(ei.getName(), tail(ed.getPath())))
         try {
-          match = sliceMatches(hostContext, ei.getElement(), ei.getPath(), slicer, ed, profile, errors, sliceInfo, stack);
+          match = sliceMatches(hostContext, ei.getElement(), ei.getPath(), slicer, ed, profile, errors, sliceInfo, stack, profile);
           if (match) {
             ei.slice = slicer;
 
