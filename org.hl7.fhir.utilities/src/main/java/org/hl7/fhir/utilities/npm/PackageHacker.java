@@ -138,6 +138,7 @@ public class PackageHacker {
     case "file://C:\\GitHub\\hl7.fhir.uv.mhealth-framework#0.1.0\\output":   return "http://hl7.org/fhir/uv/mhealth-framework/2020May"; 
     case "file://C:\\GitHub\\hl7.fhir.uv.security-label-ds4p#0.1.0\\output": return "http://hl7.org/fhir/uv/security-label-ds4p/2020May"; 
     case "file://C:\\GitHub\\hl7.fhir.uv.shorthand#0.12.0\\output":          return "http://hl7.org/fhir/uv/shorthand/2020May"; 
+    case "http://build.fhir.org/branches/R4B//":                             return "http://hl7.org/fhir/2021Mar"; 
     }
 
     // https://github.com/HL7/fhir-ig-publisher/issues/295
