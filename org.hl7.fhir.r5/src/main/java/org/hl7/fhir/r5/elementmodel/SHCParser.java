@@ -98,9 +98,10 @@ public class SHCParser extends ParserBase {
       }
       map = jwt.map;
       JsonTrackingParser.write(jwt.payload, "c:\\temp\\payload.json");
-      logError(1, 1, prefix+"JWT", IssueType.INFORMATIONAL, "The FHIR Validator does not check the JWT signature (see https://demo-portals.smarthealth.cards/VerifierPortal.html or https://github.com/smart-on-fhir/health-cards-dev-tools)", IssueSeverity.INFORMATION);
       checkNamedProperties(jwt.getPayload(), prefix+"payload", "iss", "nbf", "vc");
       checkProperty(jwt.getPayload(), prefix+"payload", "iss", true, "String");
+      logError(1, 1, prefix+"JWT", IssueType.INFORMATIONAL, "The FHIR Validator does not check the JWT signature "+
+          "(see https://demo-portals.smarthealth.cards/VerifierPortal.html or https://github.com/smart-on-fhir/health-cards-dev-tools) (Issuer = '"+jwt.getPayload().get("iss").getAsString()+"')", IssueSeverity.INFORMATION);
       checkProperty(jwt.getPayload(), prefix+"payload", "nbf", true, "Number");
       JsonObject vc = jwt.getPayload().getAsJsonObject("vc");
       if (vc == null) {
