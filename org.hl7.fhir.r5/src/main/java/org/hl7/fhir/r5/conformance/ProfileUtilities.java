@@ -2532,6 +2532,9 @@ public class ProfileUtilities extends TranslatingUtilities {
     if (VersionUtilities.isR2Ver(context.getVersion())) {
       return "http://hl7.org/fhir/DSTU2/";
     }
+    if (VersionUtilities.isR4BVer(context.getVersion())) {
+      return "http://hl7.org/fhir/2021Mar/";
+    }
     return "";
   }
 
