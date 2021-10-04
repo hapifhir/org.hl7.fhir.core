@@ -418,7 +418,11 @@ public class GraphQLSchemaGenerator {
 
   private void generateSearchParamType(BufferedWriter writer, String name) throws IOException, FHIRException {
     String gqlName = getGqlname(name);
-    if (gqlName.equals(name)) { 
+    if (gqlName.equals("date")) {
+      writer.write("# Search Param ");
+      writer.write(name);
+      writer.write(": already defined as Primitive with JSON Format: string ");
+    } else if (gqlName.equals(name)) { 
       writer.write("scalar ");
       writer.write(name);
       writer.write(" # JSON Format: string");
