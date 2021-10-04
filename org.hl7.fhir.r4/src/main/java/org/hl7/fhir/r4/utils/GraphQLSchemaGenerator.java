@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,6 +66,12 @@ public class GraphQLSchemaGenerator {
   public enum FHIROperationType {READ, SEARCH, CREATE, UPDATE, DELETE};
   
   private static final String INNER_TYPE_NAME = "gql.type.name";
+  private static final Set<String> JSON_NUMBER_TYPES = new HashSet<String>() {{
+    add("decimal");
+    add("positiveInt");
+    add("unsignedInt");
+  }};
+
   IWorkerContext context;
 
   public GraphQLSchemaGenerator(IWorkerContext context) {
@@ -411,7 +418,7 @@ public class GraphQLSchemaGenerator {
     if (gqlName.equals(name)) { 
       writer.write("scalar ");
       writer.write(name);
-      writer.write(" # JSON Format: String");
+      writer.write(" # JSON Format: string");
     } else  {
       writer.write("# Search Param ");
       writer.write(name);
@@ -426,7 +433,12 @@ public class GraphQLSchemaGenerator {
       if (!ed.getType().isEmpty() &&  ed.getType().get(0).getCodeElement().hasExtension("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type"))
         return ed.getType().get(0).getCodeElement().getExtensionString("http://hl7.org/fhir/StructureDefinition/structuredefinition-json-type");
     }
-    return "??";
+    // all primitives but JSON_NUMBER_TYPES are represented as JSON strings
+    if (JSON_NUMBER_TYPES.contains(sd.getName())) {
+      return "number";
+    } else {
+      return "string";
+    }
   }
 
   private String getGqlname(String name) {
