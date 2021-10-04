@@ -116,7 +116,7 @@ public class GraphQLSchemaGenerator {
   public void generateResource(OutputStream stream, StructureDefinition sd, List<SearchParameter> parameters, EnumSet<FHIROperationType> operations) throws IOException, FHIRException {
     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
     writer.write("# FHIR GraphQL Schema. Version "+version+"\r\n\r\n");
-    writer.write("# import the types from 'types.graphql'\r\n\r\n");
+    writer.write("# import * from 'types.graphql'\r\n\r\n");
     generateType(writer, sd);
     if (operations.contains(FHIROperationType.READ))
       generateIdAccess(writer, sd.getName());
