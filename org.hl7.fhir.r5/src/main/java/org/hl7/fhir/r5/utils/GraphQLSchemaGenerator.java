@@ -250,6 +250,11 @@ public class GraphQLSchemaGenerator {
     writer.write("}\r\n");
     writer.write("\r\n");
     
+    writer.write("input ElementBaseInput {\r\n");
+    writer.write("  id : ID\r\n");
+    writer.write("  extension: [ExtensionInput]\r\n");
+    writer.write("}\r\n");
+    writer.write("\r\n");
   }
 
   private void generateType(BufferedWriter writer, StructureDefinition sd) throws IOException {
@@ -329,10 +334,15 @@ public class GraphQLSchemaGenerator {
         b.append(tail(child.getPath(), suffix));
         if (suffix)
           b.append(Utilities.capitalize(typeDetails.getWorkingCode()));
-        if (!child.getMax().equals("1"))
-          b.append(": [ElementBase]\r\n");
-        else
-          b.append(": ElementBase\r\n");
+          if (!child.getMax().equals("1")) {
+            b.append(": [ElementBase");
+            b.append(suffixS);
+            b.append("]\r\n");
+          } else {
+            b.append(": ElementBase");
+            b.append(suffixS);
+            b.append("\r\n");
+          }
       } else
         b.append("\r\n");
     } else {
