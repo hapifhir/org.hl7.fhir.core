@@ -1,0 +1,17 @@
+{
+  "resourceType": "Patient",
+  "id": "PatientExample",
+  "text": {
+    "status": "extensions",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Generated Narrative</b></p><p><b>MultiVersionTestExtension</b>: <span title=\"{http://hl7.org/fhir/administrative-gender male}\">Male</span></p></div>"
+  },
+  "extension": [
+    {
+      "url": "http://example.org/validator-versions-test/StructureDefinition/multi-version-test-extension",
+      "valueCoding": {
+        "system": "http://hl7.org/fhir/administrative-gender",
+        "code": "male"
+      }
+    }
+  ]
+}
