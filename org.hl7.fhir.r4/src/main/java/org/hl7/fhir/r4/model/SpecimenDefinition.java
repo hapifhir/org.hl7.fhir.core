@@ -80,6 +80,7 @@ public class SpecimenDefinition extends DomainResource {
           switch (this) {
             case PREFERRED: return "preferred";
             case ALTERNATE: return "alternate";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -87,6 +88,7 @@ public class SpecimenDefinition extends DomainResource {
           switch (this) {
             case PREFERRED: return "http://hl7.org/fhir/specimen-contained-preference";
             case ALTERNATE: return "http://hl7.org/fhir/specimen-contained-preference";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -94,6 +96,7 @@ public class SpecimenDefinition extends DomainResource {
           switch (this) {
             case PREFERRED: return "This type of contained specimen is preferred to collect this kind of specimen.";
             case ALTERNATE: return "This type of conditioned specimen is an alternate.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +104,7 @@ public class SpecimenDefinition extends DomainResource {
           switch (this) {
             case PREFERRED: return "Preferred";
             case ALTERNATE: return "Alternate";
+            case NULL: return null;
             default: return "?";
           }
         }

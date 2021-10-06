@@ -120,6 +120,7 @@ public enum DataAbsentReason {
             case ERROR: return "error";
             case NAN: return "NaN";
             case NOTPERFORMED: return "not-performed";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum DataAbsentReason {
             case ERROR: return "Some system or workflow process error means that the information is not available.";
             case NAN: return "NaN, standing for not a number, is a numeric data type value representing an undefined or unrepresentable value.";
             case NOTPERFORMED: return "The value is not available because the observation procedure (test, etc.) was not performed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum DataAbsentReason {
             case ERROR: return "Error";
             case NAN: return "Not a Number";
             case NOTPERFORMED: return "Not Performed";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -1493,6 +1493,7 @@ public enum V3ActClass {
             case TFOOT: return "tfoot";
             case THEAD: return "thead";
             case UNORDERED: return "unordered";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1625,6 +1626,7 @@ public enum V3ActClass {
             case TFOOT: return "";
             case THEAD: return "";
             case UNORDERED: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1754,6 +1756,7 @@ public enum V3ActClass {
             case TFOOT: return "tfoot";
             case THEAD: return "thead";
             case UNORDERED: return "unordered";
+            case NULL: return null;
             default: return "?";
           }
     }

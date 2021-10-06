@@ -99,6 +99,7 @@ public enum V3ContainerCap {
             case FOIL: return "FOIL";
             case PUSH: return "PUSH";
             case SCR: return "SCR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum V3ContainerCap {
             case FOIL: return "A foil covering (type of foil not specified) over the opening of a container";
             case PUSH: return "A non-threaded cap that forms a tight-fitting closure on a container by pushing the fitted end into the conatiner opening";
             case SCR: return "A threaded cap that is screwed onto the opening of a container";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum V3ContainerCap {
             case FOIL: return "Foil";
             case PUSH: return "Push Cap";
             case SCR: return "Screw Cap";
+            case NULL: return null;
             default: return "?";
           }
     }

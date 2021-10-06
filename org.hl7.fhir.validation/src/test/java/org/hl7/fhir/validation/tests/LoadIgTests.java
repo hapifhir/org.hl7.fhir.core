@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.junit.Test;
 
@@ -21,9 +22,10 @@ public class LoadIgTests {
       final String definitions = VersionUtilities.packageForVersion(fhirSpecVersion) + "#" + VersionUtilities.getCurrentVersion(fhirSpecVersion);
 
       ValidationEngine hl7Validator = new ValidationEngine(definitions);
-      hl7Validator.setNative(false);
+      hl7Validator.setDoNative(false);
       hl7Validator.setAnyExtensionsAllowed(true);
       hl7Validator.prepare();
+      IgLoader igLoader = new IgLoader(hl7Validator.getPcm(), hl7Validator.getContext(), hl7Validator.getVersion(), true);
 
       for (int i = 0; i < DO_TIMES; i++) {
         System.gc();
@@ -32,7 +34,7 @@ public class LoadIgTests {
         System.out.println("max memory " + getTotalMemoryAsMbs() + " MB");
 
         // The method under test:
-        hl7Validator.loadIg(id + (version != null ? "#" + version : ""), true);
+        igLoader.loadIg(hl7Validator.getIgs(), hl7Validator.getBinaries(),id + (version != null ? "#" + version : ""), true);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -51,23 +53,24 @@ public class LoadIgTests {
       final String definitions = VersionUtilities.packageForVersion(fhirSpecVersion) + "#" + VersionUtilities.getCurrentVersion(fhirSpecVersion);
 
       ValidationEngine hl7Validator = new ValidationEngine(definitions);
-      hl7Validator.setNative(false);
+      hl7Validator.setDoNative(false);
       hl7Validator.setAnyExtensionsAllowed(true);
       hl7Validator.prepare();
+      IgLoader igLoader = new IgLoader(hl7Validator.getPcm(), hl7Validator.getContext(), hl7Validator.getVersion(), true);
 
       byte[] b = TextFile.streamToBytes(TestingUtilities.loadTestResourceStream("r5", "snapshot-generation", "t34-expected.xml")); // yes the choice of R5 is deliberate here - it's the same content as R4.
       for (int i = 0; i < DO_TIMES; i++) {
         System.gc();
         
         for (int j = 0; j < 100; j++) {
-          hl7Validator.loadResourceByVersion("4.0.1", b, "resource.xml");
+          igLoader.loadResourceByVersion("4.0.1", b, "resource.xml");
         }
         System.out.print("loading: allocated memory " + getUsedMemoryAsMbs() + " MB, ");
         System.out.print("free memory " + getFreeMemoryAsMbs() + " MB, ");
         System.out.println("max memory " + getTotalMemoryAsMbs() + " MB");
 
         // The method under test:
-        hl7Validator.loadIg(id + (version != null ? "#" + version : ""), true);
+        igLoader.loadIg(hl7Validator.getIgs(), hl7Validator.getBinaries(), id + (version != null ? "#" + version : ""), true);
       }
     } catch (Exception e) {
       e.printStackTrace();

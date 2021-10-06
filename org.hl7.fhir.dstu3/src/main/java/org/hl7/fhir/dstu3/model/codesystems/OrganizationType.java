@@ -127,6 +127,7 @@ public enum OrganizationType {
             case CG: return "cg";
             case BUS: return "bus";
             case OTHER: return "other";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public enum OrganizationType {
             case CG: return "An un-incorporated community group.";
             case BUS: return "An organization that is a registered business or corporation but not identified by other types.";
             case OTHER: return "Other type of organization not already specified.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public enum OrganizationType {
             case CG: return "Community Group";
             case BUS: return "Non-Healthcare Business or Corporation";
             case OTHER: return "Other";
+            case NULL: return null;
             default: return "?";
           }
     }

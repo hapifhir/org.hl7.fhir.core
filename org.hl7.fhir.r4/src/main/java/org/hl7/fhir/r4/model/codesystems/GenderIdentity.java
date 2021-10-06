@@ -99,6 +99,7 @@ public enum GenderIdentity {
             case FEMALE: return "female";
             case OTHER: return "other";
             case NONDISCLOSE: return "non-disclose";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum GenderIdentity {
             case FEMALE: return "the patient identifies as female";
             case OTHER: return "other gender identity";
             case NONDISCLOSE: return "the patient does not wish to disclose his gender identity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum GenderIdentity {
             case FEMALE: return "female";
             case OTHER: return "other";
             case NONDISCLOSE: return "does not wish to disclose";
+            case NULL: return null;
             default: return "?";
           }
     }

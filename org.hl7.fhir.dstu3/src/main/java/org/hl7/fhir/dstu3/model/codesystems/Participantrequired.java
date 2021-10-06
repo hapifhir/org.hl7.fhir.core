@@ -71,6 +71,7 @@ public enum Participantrequired {
             case REQUIRED: return "required";
             case OPTIONAL: return "optional";
             case INFORMATIONONLY: return "information-only";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum Participantrequired {
             case REQUIRED: return "The participant is required to attend the appointment.";
             case OPTIONAL: return "The participant may optionally attend the appointment.";
             case INFORMATIONONLY: return "The participant is excluded from the appointment, and may not be informed of the appointment taking place. (Appointment is about them, not for them - such as 2 doctors discussing results about a patient's test).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum Participantrequired {
             case REQUIRED: return "Required";
             case OPTIONAL: return "Optional";
             case INFORMATIONONLY: return "Information Only";
+            case NULL: return null;
             default: return "?";
           }
     }

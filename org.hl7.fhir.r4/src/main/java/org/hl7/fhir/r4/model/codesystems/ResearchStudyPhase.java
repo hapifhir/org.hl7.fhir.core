@@ -106,6 +106,7 @@ public enum ResearchStudyPhase {
             case PHASE2PHASE3: return "phase-2-phase-3";
             case PHASE3: return "phase-3";
             case PHASE4: return "phase-4";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum ResearchStudyPhase {
             case PHASE2PHASE3: return "Trials that are a combination of phases 2 and 3.";
             case PHASE3: return "Includes trials conducted after preliminary evidence suggesting effectiveness of the drug has been obtained, and are intended to gather additional information to evaluate the overall benefit-risk relationship of the drug.";
             case PHASE4: return "Studies of FDA-approved drugs to delineate additional information including the drug's risks, benefits, and optimal use.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum ResearchStudyPhase {
             case PHASE2PHASE3: return "Phase 2/Phase 3";
             case PHASE3: return "Phase 3";
             case PHASE4: return "Phase 4";
+            case NULL: return null;
             default: return "?";
           }
     }

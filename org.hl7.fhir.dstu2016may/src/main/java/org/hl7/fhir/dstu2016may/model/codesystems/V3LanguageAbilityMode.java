@@ -92,6 +92,7 @@ public enum V3LanguageAbilityMode {
             case RSGN: return "RSGN";
             case RSP: return "RSP";
             case RWR: return "RWR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum V3LanguageAbilityMode {
             case RSGN: return "Received signed";
             case RSP: return "Received spoken";
             case RWR: return "Received written";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum V3LanguageAbilityMode {
             case RSGN: return "Received signed";
             case RSP: return "Received spoken";
             case RWR: return "Received written";
+            case NULL: return null;
             default: return "?";
           }
     }

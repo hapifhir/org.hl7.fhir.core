@@ -5,7 +5,7 @@
     <parent>
         <groupId>ca.uhn.hapi.fhir</groupId>
         <artifactId>org.hl7.fhir.core</artifactId>
-        <version>5.2.15-SNAPSHOT</version>
+        <version>5.5.5-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -101,6 +101,11 @@
             <artifactId>httpclient</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+        <dependency>
             <groupId>org.fhir</groupId>
             <artifactId>ucum</artifactId>
             <version>1.0.3</version>
@@ -138,6 +143,22 @@
             <version>${info_cqframework_version}</version>
         </dependency>
 
+        <!-- OkHttpDependency -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.0</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Lombok Until I get Around to Rewriting Everything in Kotlin -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.16</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.hl7.fhir.testcases</groupId>
@@ -162,7 +183,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.10.3</version>
+            <version>2.10.5.1</version>
         </dependency>
         <dependency>
             <groupId>org.thymeleaf</groupId>
@@ -186,7 +207,7 @@
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
-            <version>5.6.2</version>
+            <version>${junit_jupiter_version}</version>
             <scope>test</scope>
         </dependency>
 

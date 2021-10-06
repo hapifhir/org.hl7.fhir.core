@@ -57,6 +57,7 @@ public enum ContractPartyRole {
         public String toCode() {
           switch (this) {
             case FLUNKY: return "flunky";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum ContractPartyRole {
         public String getDefinition() {
           switch (this) {
             case FLUNKY: return "To be completed";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case FLUNKY: return "FLunky";
+            case NULL: return null;
             default: return "?";
           }
     }

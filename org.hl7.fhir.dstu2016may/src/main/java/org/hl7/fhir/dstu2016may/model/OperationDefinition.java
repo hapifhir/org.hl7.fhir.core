@@ -84,6 +84,7 @@ public class OperationDefinition extends DomainResource {
           switch (this) {
             case OPERATION: return "operation";
             case QUERY: return "query";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -91,6 +92,7 @@ public class OperationDefinition extends DomainResource {
           switch (this) {
             case OPERATION: return "http://hl7.org/fhir/operation-kind";
             case QUERY: return "http://hl7.org/fhir/operation-kind";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +100,7 @@ public class OperationDefinition extends DomainResource {
           switch (this) {
             case OPERATION: return "This operation is invoked as an operation.";
             case QUERY: return "This operation is a named query, invoked using the search mechanism.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -105,6 +108,7 @@ public class OperationDefinition extends DomainResource {
           switch (this) {
             case OPERATION: return "Operation";
             case QUERY: return "Query";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +175,7 @@ public class OperationDefinition extends DomainResource {
           switch (this) {
             case IN: return "in";
             case OUT: return "out";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -178,6 +183,7 @@ public class OperationDefinition extends DomainResource {
           switch (this) {
             case IN: return "http://hl7.org/fhir/operation-parameter-use";
             case OUT: return "http://hl7.org/fhir/operation-parameter-use";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -185,6 +191,7 @@ public class OperationDefinition extends DomainResource {
           switch (this) {
             case IN: return "This is an input parameter.";
             case OUT: return "This is an output parameter.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -192,6 +199,7 @@ public class OperationDefinition extends DomainResource {
           switch (this) {
             case IN: return "In";
             case OUT: return "Out";
+            case NULL: return null;
             default: return "?";
           }
         }

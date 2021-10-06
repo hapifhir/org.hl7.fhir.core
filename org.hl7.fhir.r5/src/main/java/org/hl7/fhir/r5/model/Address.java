@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -361,7 +361,7 @@ public class Address extends DataType implements ICompositeType {
      * Country - a nation as commonly understood or generally accepted.
      */
     @Child(name = "country", type = {StringType.class}, order=8, min=0, max=1, modifier=false, summary=true)
-    @Description(shortDefinition="Country (e.g. can be ISO 3166 2 or 3 letter code)", formalDefinition="Country - a nation as commonly understood or generally accepted." )
+    @Description(shortDefinition="Country (e.g. may be ISO 3166 2 or 3 letter code)", formalDefinition="Country - a nation as commonly understood or generally accepted." )
     protected StringType country;
 
     /**

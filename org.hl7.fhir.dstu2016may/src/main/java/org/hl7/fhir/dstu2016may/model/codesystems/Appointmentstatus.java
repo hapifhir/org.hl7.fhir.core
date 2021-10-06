@@ -99,6 +99,7 @@ public enum Appointmentstatus {
             case FULFILLED: return "fulfilled";
             case CANCELLED: return "cancelled";
             case NOSHOW: return "noshow";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum Appointmentstatus {
             case FULFILLED: return "This appointment has completed and may have resulted in an encounter.";
             case CANCELLED: return "The appointment has been cancelled.";
             case NOSHOW: return "Some or all of the participant(s) have not/did not appear for the appointment (usually the patient).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum Appointmentstatus {
             case FULFILLED: return "Fulfilled";
             case CANCELLED: return "Cancelled";
             case NOSHOW: return "No Show";
+            case NULL: return null;
             default: return "?";
           }
     }

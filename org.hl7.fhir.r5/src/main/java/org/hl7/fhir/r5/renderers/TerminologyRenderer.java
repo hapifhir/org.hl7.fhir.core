@@ -256,7 +256,7 @@ public abstract class TerminologyRenderer extends ResourceRenderer {
     if (cs == null) {
       return null;
     }
-    ConceptDefinitionComponent cc = CodeSystemUtilities.getCode(cs, code);
+    ConceptDefinitionComponent cc = code == null ? null : CodeSystemUtilities.getCode(cs, code);
     return cc == null ? null : cc.getDisplay();
   }
 

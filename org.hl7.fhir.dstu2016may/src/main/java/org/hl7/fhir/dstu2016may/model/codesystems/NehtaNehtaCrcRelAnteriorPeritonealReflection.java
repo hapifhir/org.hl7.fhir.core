@@ -71,6 +71,7 @@ public enum NehtaNehtaCrcRelAnteriorPeritonealReflection {
             case ENTIRELYABOVE: return "entirely_above";
             case ASTRIDE: return "astride";
             case ENTIRELYBELOW: return "entirely_below";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum NehtaNehtaCrcRelAnteriorPeritonealReflection {
             case ENTIRELYABOVE: return "The rectal tumour is entirely above the level of the peritoneal reflection anteriorly";
             case ASTRIDE: return "The rectal tumour is astride (or at) the level of the peritoneal reflection anteriorly";
             case ENTIRELYBELOW: return "The rectal tumour is entirely below the level of the peritoneal reflection anteriorly";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum NehtaNehtaCrcRelAnteriorPeritonealReflection {
             case ENTIRELYABOVE: return "Entirely above";
             case ASTRIDE: return "Astride";
             case ENTIRELYBELOW: return "Entirely below";
+            case NULL: return null;
             default: return "?";
           }
     }

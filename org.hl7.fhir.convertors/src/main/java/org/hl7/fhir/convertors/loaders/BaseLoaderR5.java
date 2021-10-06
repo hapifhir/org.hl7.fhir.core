@@ -1,55 +1,24 @@
 package org.hl7.fhir.convertors.loaders;
 
+import com.google.gson.JsonSyntaxException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CanonicalType;
-import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Resource;
-import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.VersionUtilities;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
-import com.google.gson.JsonSyntaxException;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-public abstract class BaseLoaderR5 implements IContextResourceLoader  {
+public abstract class BaseLoaderR5 implements IContextResourceLoader {
 
-  public interface ILoaderKnowledgeProvider {
-    /** 
-     * get the path for references to this resource.
-     * @param resource
-     * @return null if not tracking paths
-     */
-    String getResourcePath(Resource resource);
-    ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) throws JsonSyntaxException, IOException;
-  }
-  
-  public static class NullLoaderKnowledgeProvider implements ILoaderKnowledgeProvider {
-    @Override
-    public String getResourcePath(Resource resource) {
-      return null;
-    }
-
-    @Override
-    public ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) {
-      return this;
-    }
-  }
   protected final String URL_BASE = "http://hl7.org/fhir/";
   protected final String URL_DSTU2 = "http://hl7.org/fhir/1.0/";
   protected final String URL_DSTU2016MAY = "http://hl7.org/fhir/1.4/";
   protected final String URL_DSTU3 = "http://hl7.org/fhir/3.0/";
   protected final String URL_R4 = "http://hl7.org/fhir/4.0/";
-
   protected final String URL_ELEMENT_DEF_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
-
   protected boolean patchUrls;
-  protected boolean killPrimitives;;
-
+  protected boolean killPrimitives;
   protected String[] types;
   protected ILoaderKnowledgeProvider lkp;
 
@@ -58,7 +27,7 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader  {
     this.types = types;
     this.lkp = lkp;
   }
-  
+
   public String[] getTypes() {
     return types;
   }
@@ -111,9 +80,31 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader  {
     } else if (VersionUtilities.isR2BVer(npm.fhirVersion())) {
       return new R2016MayToR5Loader(types, lkp.forNewPackage(npm));
     } else {
-      throw new FHIRException("Unsupported FHIR Version "+npm.fhirVersion());
+      throw new FHIRException("Unsupported FHIR Version " + npm.fhirVersion());
     }
   }
 
+  public interface ILoaderKnowledgeProvider {
+    /**
+     * get the path for references to this resource.
+     *
+     * @param resource
+     * @return null if not tracking paths
+     */
+    String getResourcePath(Resource resource);
 
+    ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) throws JsonSyntaxException, IOException;
+  }
+
+  public static class NullLoaderKnowledgeProvider implements ILoaderKnowledgeProvider {
+    @Override
+    public String getResourcePath(Resource resource) {
+      return null;
+    }
+
+    @Override
+    public ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) {
+      return this;
+    }
+  }
 }

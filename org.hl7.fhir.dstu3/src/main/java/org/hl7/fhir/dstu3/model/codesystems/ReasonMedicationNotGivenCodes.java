@@ -78,6 +78,7 @@ public enum ReasonMedicationNotGivenCodes {
             case B: return "b";
             case C: return "c";
             case D: return "d";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ReasonMedicationNotGivenCodes {
             case B: return "The patient was not available when the dose was scheduled.";
             case C: return "The patient was asleep when the dose was scheduled.";
             case D: return "The patient was given the medication and immediately vomited it back.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ReasonMedicationNotGivenCodes {
             case B: return "Away";
             case C: return "Asleep";
             case D: return "Vomit";
+            case NULL: return null;
             default: return "?";
           }
     }

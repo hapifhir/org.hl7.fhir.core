@@ -127,6 +127,7 @@ public enum MeasurementPrinciple {
             case MECHANICAL: return "mechanical";
             case ACOUSTICAL: return "acoustical";
             case MANUAL: return "manual";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public enum MeasurementPrinciple {
             case MECHANICAL: return "Measurement is done using the mechanical principle.";
             case ACOUSTICAL: return "Measurement is done using the acoustical principle.";
             case MANUAL: return "Measurement is done using the manual principle.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public enum MeasurementPrinciple {
             case MECHANICAL: return "MSP Mechanical";
             case ACOUSTICAL: return "MSP Acoustical";
             case MANUAL: return "MSP Manual";
+            case NULL: return null;
             default: return "?";
           }
     }

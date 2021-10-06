@@ -99,6 +99,7 @@ public enum EpisodeOfCareStatus {
             case FINISHED: return "finished";
             case CANCELLED: return "cancelled";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum EpisodeOfCareStatus {
             case FINISHED: return "This episode of care is finished and the organization is not expecting to be providing further care to the patient. Can also be known as \"closed\", \"completed\" or other similar terms.";
             case CANCELLED: return "The episode of care was cancelled, or withdrawn from service, often selected during the planned stage as the patient may have gone elsewhere, or the circumstances have changed and the organization is unable to provide the care. It indicates that services terminated outside the planned/expected workflow.";
             case ENTEREDINERROR: return "This instance should not have been part of this patient's medical record.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum EpisodeOfCareStatus {
             case FINISHED: return "Finished";
             case CANCELLED: return "Cancelled";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
     }

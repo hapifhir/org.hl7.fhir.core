@@ -288,6 +288,7 @@ public enum EventResourceTypes {
             case RISKASSESSMENT: return "RiskAssessment";
             case SUPPLYDELIVERY: return "SupplyDelivery";
             case TASK: return "Task";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -330,6 +331,7 @@ public enum EventResourceTypes {
             case RISKASSESSMENT: return "Potential outcomes for a subject with likelihood.";
             case SUPPLYDELIVERY: return "Delivery of bulk Supplies.";
             case TASK: return "A task to be performed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -369,6 +371,7 @@ public enum EventResourceTypes {
             case RISKASSESSMENT: return "RiskAssessment";
             case SUPPLYDELIVERY: return "SupplyDelivery";
             case TASK: return "Task";
+            case NULL: return null;
             default: return "?";
           }
     }

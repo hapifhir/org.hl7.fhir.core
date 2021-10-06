@@ -30,30 +30,28 @@ package org.hl7.fhir.r5.terminologies;
  */
 
 
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.utils.client.network.ClientHeaders;
+import org.hl7.fhir.utilities.ToolingClientLogger;
 
 import java.util.Map;
 
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.model.Bundle;
-import org.hl7.fhir.r5.model.CanonicalResource;
-import org.hl7.fhir.r5.model.CapabilityStatement;
-import org.hl7.fhir.r5.model.Parameters;
-import org.hl7.fhir.r5.model.TerminologyCapabilities;
-import org.hl7.fhir.r5.model.ValueSet;
-import org.hl7.fhir.utilities.ToolingClientLogger;
-
 public interface TerminologyClient {
-  public String getAddress();
-  public TerminologyCapabilities getTerminologyCapabilities() throws FHIRException;
-  public ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException;
-  public Parameters validateCS(Parameters pin) throws FHIRException;
-  public Parameters validateVS(Parameters pin) throws FHIRException;
-  public TerminologyClient setTimeout(int i) throws FHIRException;
-  public TerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
-  public int getRetryCount() throws FHIRException;
-  public TerminologyClient setRetryCount(int retryCount) throws FHIRException;
-  public CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
-  public Parameters lookupCode(Map<String, String> params) throws FHIRException;
-  public Bundle validateBatch(Bundle batch);
-  public CanonicalResource read(String type, String id);
+
+  String getAddress();
+  TerminologyCapabilities getTerminologyCapabilities() throws FHIRException;
+  ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException;
+  Parameters validateCS(Parameters pin) throws FHIRException;
+  Parameters validateVS(Parameters pin) throws FHIRException;
+  TerminologyClient setTimeout(int i) throws FHIRException;
+  TerminologyClient setLogger(ToolingClientLogger txLog) throws FHIRException;
+  int getRetryCount() throws FHIRException;
+  TerminologyClient setRetryCount(int retryCount) throws FHIRException;
+  CapabilityStatement getCapabilitiesStatementQuick() throws FHIRException;
+  Parameters lookupCode(Map<String, String> params) throws FHIRException;
+  Bundle validateBatch(Bundle batch);
+  CanonicalResource read(String type, String id);
+  ClientHeaders getClientHeaders();
+  TerminologyClient setClientHeaders(ClientHeaders clientHeaders);
 }

@@ -113,6 +113,7 @@ public enum V3DocumentCompletion {
             case NU: return "NU";
             case PA: return "PA";
             case UC: return "UC";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum V3DocumentCompletion {
             case NU: return "A completion status in which a document was created in error or was placed in the wrong chart. The document is no longer available.";
             case PA: return "A completion status in which a document is transcribed but not authenticated.";
             case UC: return "A completion status where the document is complete and there is no expectation that the document will be signed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum V3DocumentCompletion {
             case NU: return "nullified document";
             case PA: return "pre-authenticated";
             case UC: return "unsigned completed document";
+            case NULL: return null;
             default: return "?";
           }
     }

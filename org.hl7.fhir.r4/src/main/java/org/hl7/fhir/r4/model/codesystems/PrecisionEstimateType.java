@@ -78,6 +78,7 @@ public enum PrecisionEstimateType {
             case IQR: return "IQR";
             case SD: return "SD";
             case SE: return "SE";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum PrecisionEstimateType {
             case IQR: return "interquartile range.";
             case SD: return "standard deviation.";
             case SE: return "standard error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum PrecisionEstimateType {
             case IQR: return "interquartile range";
             case SD: return "standard deviation";
             case SE: return "standard error";
+            case NULL: return null;
             default: return "?";
           }
     }

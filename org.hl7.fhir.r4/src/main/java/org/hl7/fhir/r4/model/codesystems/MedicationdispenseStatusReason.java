@@ -197,6 +197,7 @@ public enum MedicationdispenseStatusReason {
             case WASHOUT: return "washout";
             case OUTOFSTOCK: return "outofstock";
             case OFFMARKET: return "offmarket";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -226,6 +227,7 @@ public enum MedicationdispenseStatusReason {
             case WASHOUT: return "The patient was previously receiving a medication contraindicated with the current medication. The current medication will remain on hold until the prior medication has been cleansed from their system.";
             case OUTOFSTOCK: return "Drug out of stock. Cannot supply.";
             case OFFMARKET: return "Drug no longer marketed Cannot supply.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -252,6 +254,7 @@ public enum MedicationdispenseStatusReason {
             case WASHOUT: return "Washout";
             case OUTOFSTOCK: return "Drug not available - out of stock";
             case OFFMARKET: return "Drug not available - off market";
+            case NULL: return null;
             default: return "?";
           }
     }

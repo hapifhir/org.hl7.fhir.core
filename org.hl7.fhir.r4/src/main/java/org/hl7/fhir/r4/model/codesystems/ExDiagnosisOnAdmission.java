@@ -78,6 +78,7 @@ public enum ExDiagnosisOnAdmission {
             case N: return "n";
             case U: return "u";
             case W: return "w";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ExDiagnosisOnAdmission {
             case N: return "Diagnosis was not present at time of inpatient admission.";
             case U: return "Documentation insufficient to determine if condition was present at the time of inpatient admission.";
             case W: return "Clinically undetermined. Provider unable to clinically determine whether the condition was present at the time of inpatient admission.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ExDiagnosisOnAdmission {
             case N: return "No";
             case U: return "Unknown";
             case W: return "Undetermined";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -280,6 +280,7 @@ Information for which the patient seeks heightened confidentiality. Sensitive in
             case C: return "C";
             case S: return "S";
             case T: return "T";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -308,6 +309,7 @@ Information for which the patient seeks heightened confidentiality. Sensitive in
             case C: return "Description: Celebrities are people of public interest (VIP) including employees, whose information require special protection.\r\n\n                        \n                           Deprecation Comment:Replced by ActCode.CEL";
             case S: return "Description: \n                        \r\nInformation for which the patient seeks heightened confidentiality. Sensitive information is not to be shared with family members.  Information reported by the patient about family members is sensitive by default. Flag can be set or cleared on patient's request.\n                           Deprecation Comment:Deprecated due to updated confidentiality codes under ActCode";
             case T: return "Description: Information not to be disclosed or discussed with patient except through physician assigned to patient in this case.  This is usually a temporary constraint only, example use is a new fatal diagnosis or finding, such as malignancy or HIV.\r\n\n                        \n                           Deprecation Note:Replced by ActCode.TBOO";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -333,6 +335,7 @@ Information for which the patient seeks heightened confidentiality. Sensitive in
             case C: return "celebrity";
             case S: return "sensitive";
             case T: return "taboo";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -36,11 +36,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
@@ -450,7 +453,7 @@ public class VerticalBarParser extends ParserBase {
   private Delimiters delimiters = new Delimiters();
   
   @Override
-  public Element parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
+  public List<NamedElement> parse(InputStream stream) throws IOException, FHIRFormatError, DefinitionException, FHIRException {
     StructureDefinition sd = context.fetchResource(StructureDefinition.class, "http://hl7.org/fhir/v2/StructureDefinition/Message");
     Element message = new Element("Message", new Property(context, sd.getSnapshot().getElementFirstRep(), sd));
     VerticalBarParserReader reader = new VerticalBarParserReader(new BufferedInputStream(stream), charset);
@@ -458,8 +461,9 @@ public class VerticalBarParser extends ParserBase {
     preDecode(reader);
     while (!reader.isFinished()) //  && (getOptions().getSegmentLimit() == 0 || getOptions().getSegmentLimit() > message.getSegments().size()))
       readSegment(message, reader);
-
-    return message;
+    List<NamedElement> res = new ArrayList<>();
+    res.add(new NamedElement(null, message));
+    return res;
   }
 
   private void preDecode(VerticalBarParserReader reader) throws FHIRException {

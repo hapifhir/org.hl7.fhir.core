@@ -99,6 +99,7 @@ public enum EncounterDiet {
             case VEGAN: return "vegan";
             case HALAL: return "halal";
             case KOSHER: return "kosher";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum EncounterDiet {
             case VEGAN: return "Food without meat, poultry, seafood, eggs, dairy products and other animal-derived substances.";
             case HALAL: return "Foods that conform to Islamic law.";
             case KOSHER: return "Foods that conform to Jewish dietary law.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum EncounterDiet {
             case VEGAN: return "Vegan";
             case HALAL: return "Halal";
             case KOSHER: return "Kosher";
+            case NULL: return null;
             default: return "?";
           }
     }

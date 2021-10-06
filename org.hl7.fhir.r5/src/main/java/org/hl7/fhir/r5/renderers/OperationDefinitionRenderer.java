@@ -50,6 +50,26 @@ public class OperationDefinitionRenderer extends TerminologyRenderer {
         x.para().tx("URL: [base]/"+c.getValue()+"/[id]/$"+opd.getCode());
     }
 
+    if (opd.hasInputProfile()) {
+      XhtmlNode p = x.para();
+      p.tx("Input parameters Profile: ");
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getInputProfile());
+      if (sd == null) {
+        p.pre().tx(opd.getInputProfile());        
+      } else {
+        p.ah(sd.getUserString("path")).tx(sd.present());                 
+      }      
+    }
+    if (opd.hasOutputProfile()) {
+      XhtmlNode p = x.para();
+      p.tx("Output parameters Profile: ");
+      StructureDefinition sd = context.getContext().fetchResource(StructureDefinition.class, opd.getOutputProfile());
+      if (sd == null) {
+        p.pre().tx(opd.getOutputProfile());        
+      } else {
+        p.ah(sd.getUserString("path")).tx(sd.present());                 
+      }      
+    }
     x.para().tx("Parameters");
     XhtmlNode tbl = x.table( "grid");
     XhtmlNode tr = tbl.tr();

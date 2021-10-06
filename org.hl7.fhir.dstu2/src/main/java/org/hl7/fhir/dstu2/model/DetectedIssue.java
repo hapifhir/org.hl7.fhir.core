@@ -84,6 +84,7 @@ public class DetectedIssue extends DomainResource {
             case HIGH: return "high";
             case MODERATE: return "moderate";
             case LOW: return "low";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -92,6 +93,7 @@ public class DetectedIssue extends DomainResource {
             case HIGH: return "http://hl7.org/fhir/detectedissue-severity";
             case MODERATE: return "http://hl7.org/fhir/detectedissue-severity";
             case LOW: return "http://hl7.org/fhir/detectedissue-severity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -100,6 +102,7 @@ public class DetectedIssue extends DomainResource {
             case HIGH: return "Indicates the issue may be life-threatening or has the potential to cause permanent injury.";
             case MODERATE: return "Indicates the issue may result in noticeable adverse consequences but is unlikely to be life-threatening or cause permanent injury.";
             case LOW: return "Indicates the issue may result in some adverse consequences but is unlikely to substantially affect the situation of the subject.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +111,7 @@ public class DetectedIssue extends DomainResource {
             case HIGH: return "High";
             case MODERATE: return "Moderate";
             case LOW: return "Low";
+            case NULL: return null;
             default: return "?";
           }
         }

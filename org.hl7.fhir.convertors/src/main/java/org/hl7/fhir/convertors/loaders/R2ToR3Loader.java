@@ -30,33 +30,29 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_30;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_30;
+import org.hl7.fhir.dstu2.formats.JsonParser;
+import org.hl7.fhir.dstu2.formats.XmlParser;
+import org.hl7.fhir.dstu2.model.Resource;
+import org.hl7.fhir.dstu3.model.Bundle;
+import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.dstu3.model.Bundle.BundleType;
+import org.hl7.fhir.dstu3.model.MetadataResource;
+import org.hl7.fhir.dstu3.model.StructureDefinition;
+import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.dstu3.model.UriType;
+import org.hl7.fhir.exceptions.FHIRException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor30;
-import org.hl7.fhir.convertors.VersionConvertor_10_30;
-import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
-import org.hl7.fhir.dstu2.formats.JsonParser;
-import org.hl7.fhir.dstu2.formats.XmlParser;
-import org.hl7.fhir.dstu2.model.Resource;
-import org.hl7.fhir.dstu3.context.SimpleWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.dstu3.model.Bundle;
-import org.hl7.fhir.dstu3.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.dstu3.model.Bundle.BundleType;
-import org.hl7.fhir.dstu3.model.CodeSystem;
-import org.hl7.fhir.dstu3.model.MetadataResource;
-import org.hl7.fhir.dstu3.model.StructureDefinition;
-import org.hl7.fhir.dstu3.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.dstu3.model.UriType;
-import org.hl7.fhir.dstu3.model.ValueSet;
-import org.hl7.fhir.exceptions.FHIRException;
+public class R2ToR3Loader extends BaseLoaderR3 {
 
-public class R2ToR3Loader extends BaseLoaderR3 implements VersionConvertorAdvisor30 {
-
-  private List<CodeSystem> cslist = new ArrayList<>();
+  private final BaseAdvisor_10_30 advisor_10_30 = new BaseAdvisor_10_30();
 
   public R2ToR3Loader() {
     super(new String[0], new NullLoaderKnowledgeProvider());
@@ -64,27 +60,27 @@ public class R2ToR3Loader extends BaseLoaderR3 implements VersionConvertorAdviso
 
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    Resource r2 = null;
+    Resource r2;
     if (isJson)
       r2 = new JsonParser().parse(stream);
     else
       r2 = new XmlParser().parse(stream);
-    org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertor_10_30.convertResource(r2, this);
+    org.hl7.fhir.dstu3.model.Resource r3 = VersionConvertorFactory_10_30.convertResource(r2, advisor_10_30);
     Bundle b;
-    if (r3 instanceof Bundle)
+    if (r3 instanceof Bundle) {
       b = (Bundle) r3;
-    else {
+    } else {
       b = new Bundle();
       b.setId(UUID.randomUUID().toString().toLowerCase());
       b.setType(BundleType.COLLECTION);
       b.addEntry().setResource(r3).setFullUrl(r3 instanceof MetadataResource ? ((MetadataResource) r3).getUrl() : null);
     }
-    for (CodeSystem cs : cslist) {
+    advisor_10_30.getCslist().forEach(cs -> {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
-    }
-    cslist.clear();
+    });
+    advisor_10_30.getCslist().clear();
     if (killPrimitives) {
       List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
       for (BundleEntryComponent be : b.getEntry()) {
@@ -97,37 +93,14 @@ public class R2ToR3Loader extends BaseLoaderR3 implements VersionConvertorAdviso
       b.getEntry().removeAll(remove);
     }
     if (patchUrls) {
-      for (BundleEntryComponent be : b.getEntry()) {
-        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-          StructureDefinition sd = (StructureDefinition) be.getResource();
+      b.getEntry().stream()
+        .filter(be -> be.hasResource() && be.getResource() instanceof StructureDefinition)
+        .map(be -> (StructureDefinition) be.getResource())
+        .forEach(sd -> {
           sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
           sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-        }
-      }
+        });
     }
     return b;
   }
-
-  @Override
-  public boolean ignoreEntry(BundleEntryComponent src) {
-    return false;
-  }
-
-  @Override
-  public Resource convert(org.hl7.fhir.dstu3.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public void handleCodeSystem(CodeSystem cs, ValueSet vs) {
-    cs.setId(vs.getId());
-    cs.setValueSet(vs.getUrl());
-    cslist.add(cs);
-  }
-
-  @Override
-  public CodeSystem getCodeSystem(ValueSet src) {
-    return null;
-  }
-
 }

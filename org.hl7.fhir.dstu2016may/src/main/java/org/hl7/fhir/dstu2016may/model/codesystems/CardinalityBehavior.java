@@ -64,6 +64,7 @@ public enum CardinalityBehavior {
           switch (this) {
             case SINGLE: return "single";
             case MULTIPLE: return "multiple";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum CardinalityBehavior {
           switch (this) {
             case SINGLE: return "The item may only be selected one time";
             case MULTIPLE: return "The item may be selected multiple times";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum CardinalityBehavior {
           switch (this) {
             case SINGLE: return "Single";
             case MULTIPLE: return "Multiple";
+            case NULL: return null;
             default: return "?";
           }
     }

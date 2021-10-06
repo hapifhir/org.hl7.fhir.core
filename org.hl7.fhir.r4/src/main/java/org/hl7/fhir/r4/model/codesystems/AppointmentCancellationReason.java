@@ -274,6 +274,7 @@ public enum AppointmentCancellationReason {
             case OTHOERR: return "oth-oerr";
             case OTHSWIE: return "oth-swie";
             case OTHWEATH: return "oth-weath";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -314,6 +315,7 @@ public enum AppointmentCancellationReason {
             case OTHOERR: return "";
             case OTHSWIE: return "";
             case OTHWEATH: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -351,6 +353,7 @@ public enum AppointmentCancellationReason {
             case OTHOERR: return "Other: Schedule Order Error";
             case OTHSWIE: return "Other: Silent Walk In Error";
             case OTHWEATH: return "Other: Weather";
+            case NULL: return null;
             default: return "?";
           }
     }

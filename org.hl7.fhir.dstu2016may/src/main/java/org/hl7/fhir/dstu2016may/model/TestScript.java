@@ -80,6 +80,7 @@ public class TestScript extends DomainResource {
           switch (this) {
             case XML: return "xml";
             case JSON: return "json";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -87,6 +88,7 @@ public class TestScript extends DomainResource {
           switch (this) {
             case XML: return "http://hl7.org/fhir/content-type";
             case JSON: return "http://hl7.org/fhir/content-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -94,6 +96,7 @@ public class TestScript extends DomainResource {
           switch (this) {
             case XML: return "XML content-type corresponding to the application/xml+fhir mime-type.";
             case JSON: return "JSON content-type corresponding to the application/json+fhir mime-type.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -101,6 +104,7 @@ public class TestScript extends DomainResource {
           switch (this) {
             case XML: return "xml";
             case JSON: return "json";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -167,6 +171,7 @@ public class TestScript extends DomainResource {
           switch (this) {
             case RESPONSE: return "response";
             case REQUEST: return "request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -174,6 +179,7 @@ public class TestScript extends DomainResource {
           switch (this) {
             case RESPONSE: return "http://hl7.org/fhir/assert-direction-codes";
             case REQUEST: return "http://hl7.org/fhir/assert-direction-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -181,6 +187,7 @@ public class TestScript extends DomainResource {
           switch (this) {
             case RESPONSE: return "The assertion is evaluated on the response. This is the default value.";
             case REQUEST: return "The assertion is evaluated on the request.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -188,6 +195,7 @@ public class TestScript extends DomainResource {
           switch (this) {
             case RESPONSE: return "response";
             case REQUEST: return "request";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -310,6 +318,7 @@ public class TestScript extends DomainResource {
             case NOTEMPTY: return "notEmpty";
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -325,6 +334,7 @@ public class TestScript extends DomainResource {
             case NOTEMPTY: return "http://hl7.org/fhir/assert-operator-codes";
             case CONTAINS: return "http://hl7.org/fhir/assert-operator-codes";
             case NOTCONTAINS: return "http://hl7.org/fhir/assert-operator-codes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -340,6 +350,7 @@ public class TestScript extends DomainResource {
             case NOTEMPTY: return "Compare value is not empty.";
             case CONTAINS: return "Compare value string contains a known value.";
             case NOTCONTAINS: return "Compare value string does not contain a known value.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -355,6 +366,7 @@ public class TestScript extends DomainResource {
             case NOTEMPTY: return "notEmpty";
             case CONTAINS: return "contains";
             case NOTCONTAINS: return "notContains";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -539,6 +551,7 @@ public class TestScript extends DomainResource {
             case GONE: return "gone";
             case PRECONDITIONFAILED: return "preconditionFailed";
             case UNPROCESSABLE: return "unprocessable";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -556,6 +569,7 @@ public class TestScript extends DomainResource {
             case GONE: return "http://hl7.org/fhir/assert-response-code-types";
             case PRECONDITIONFAILED: return "http://hl7.org/fhir/assert-response-code-types";
             case UNPROCESSABLE: return "http://hl7.org/fhir/assert-response-code-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -573,6 +587,7 @@ public class TestScript extends DomainResource {
             case GONE: return "Response code is 410.";
             case PRECONDITIONFAILED: return "Response code is 412.";
             case UNPROCESSABLE: return "Response code is 422.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -590,6 +605,7 @@ public class TestScript extends DomainResource {
             case GONE: return "gone";
             case PRECONDITIONFAILED: return "preconditionFailed";
             case UNPROCESSABLE: return "unprocessable";
+            case NULL: return null;
             default: return "?";
           }
         }

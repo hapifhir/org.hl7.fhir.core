@@ -30,6 +30,18 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_14_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_40;
+import org.hl7.fhir.dstu2016may.formats.JsonParser;
+import org.hl7.fhir.dstu2016may.formats.XmlParser;
+import org.hl7.fhir.dstu2016may.model.Resource;
+import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.conformance.ProfileUtilities;
+import org.hl7.fhir.r4.context.SimpleWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r4.model.Bundle.BundleType;
+import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,27 +49,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.hl7.fhir.convertors.VersionConvertorAdvisor40;
-import org.hl7.fhir.convertors.VersionConvertor_14_40;
-import org.hl7.fhir.dstu2016may.formats.JsonParser;
-import org.hl7.fhir.dstu2016may.formats.XmlParser;
-import org.hl7.fhir.dstu2016may.model.Resource;
-import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.conformance.ProfileUtilities;
-import org.hl7.fhir.r4.context.SimpleWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
-import org.hl7.fhir.r4.model.Bundle.BundleType;
-import org.hl7.fhir.r4.model.CodeSystem;
-import org.hl7.fhir.r4.model.MetadataResource;
-import org.hl7.fhir.r4.model.StructureDefinition;
-import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
-import org.hl7.fhir.r4.model.UriType;
-import org.hl7.fhir.r4.model.ValueSet;
+public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResourceLoader {
 
-public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResourceLoader, VersionConvertorAdvisor40 {
-
-  private List<CodeSystem> cslist = new ArrayList<>();
+  private final BaseAdvisor_14_40 advisor = new BaseAdvisor_14_40();
 
   public R2016MayToR4Loader() {
     super(new String[0], null);
@@ -70,8 +64,8 @@ public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResource
       r2016may = new JsonParser().parse(stream);
     else
       r2016may = new XmlParser().parse(stream);
-    org.hl7.fhir.r4.model.Resource r4 = VersionConvertor_14_40.convertResource(r2016may);
-    
+    org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_14_40.convertResource(r2016may, advisor);
+
     Bundle b;
     if (r4 instanceof Bundle)
       b = (Bundle) r4;
@@ -81,8 +75,8 @@ public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResource
       b.setType(BundleType.COLLECTION);
       b.addEntry().setResource(r4).setFullUrl(r4 instanceof MetadataResource ? ((MetadataResource) r4).getUrl() : null);
     }
-    
-    for (CodeSystem cs : cslist) {
+
+    for (CodeSystem cs : advisor.getCslist()) {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
@@ -110,38 +104,4 @@ public class R2016MayToR4Loader extends BaseLoaderR4 implements IContextResource
     }
     return b;
   }
-
-  @Override
-  public boolean ignoreEntry(BundleEntryComponent src) {
-    return false;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu2.model.Resource convertR2(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public Resource convertR2016May(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public org.hl7.fhir.dstu3.model.Resource convertR3(org.hl7.fhir.r4.model.Resource resource) throws FHIRException {
-    return null;
-  }
-
-  @Override
-  public void handleCodeSystem(CodeSystem cs, ValueSet vs) {
-    cs.setId(vs.getId());
-    cs.setValueSet(vs.getUrl());
-    cslist.add(cs);
-    
-  }
-
-  @Override
-  public CodeSystem getCodeSystem(ValueSet src) {
-    return null;
-  }
-
 }

@@ -71,6 +71,7 @@ public enum DocumentReferenceStatus {
             case CURRENT: return "current";
             case SUPERSEDED: return "superseded";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum DocumentReferenceStatus {
             case CURRENT: return "This is the current reference for this document.";
             case SUPERSEDED: return "This reference has been superseded by another reference.";
             case ENTEREDINERROR: return "This reference was created in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum DocumentReferenceStatus {
             case CURRENT: return "Current";
             case SUPERSEDED: return "Superseded";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
     }

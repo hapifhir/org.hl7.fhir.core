@@ -92,6 +92,7 @@ public enum CarePlanActivityStatus {
             case ONHOLD: return "on-hold";
             case COMPLETED: return "completed";
             case CANCELLED: return "cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum CarePlanActivityStatus {
             case ONHOLD: return "Activity was started but has temporarily ceased with an expectation of resumption at a future time.";
             case COMPLETED: return "The activities have been completed (more or less) as planned.";
             case CANCELLED: return "The activities have been ended prior to completion (perhaps even before they were started).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum CarePlanActivityStatus {
             case ONHOLD: return "On Hold";
             case COMPLETED: return "Completed";
             case CANCELLED: return "Cancelled";
+            case NULL: return null;
             default: return "?";
           }
     }

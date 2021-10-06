@@ -9332,6 +9332,7 @@ public enum AnzscoOccupations {
             case _899921: return "899921";
             case _899922: return "899922";
             case _899999: return "899999";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -10666,6 +10667,7 @@ public enum AnzscoOccupations {
             case _899921: return "Ticket Collector or Usher";
             case _899922: return "Trolley Collector";
             case _899999: return "Labourers not elsewhere classified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -11997,6 +11999,7 @@ public enum AnzscoOccupations {
             case _899921: return "Ticket Collector or Usher";
             case _899922: return "Trolley Collector";
             case _899999: return "Labourers nec";
+            case NULL: return null;
             default: return "?";
           }
     }

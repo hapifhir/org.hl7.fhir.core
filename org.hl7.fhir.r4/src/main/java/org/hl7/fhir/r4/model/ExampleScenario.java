@@ -82,6 +82,7 @@ public class ExampleScenario extends MetadataResource {
           switch (this) {
             case PERSON: return "person";
             case ENTITY: return "entity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -89,6 +90,7 @@ public class ExampleScenario extends MetadataResource {
           switch (this) {
             case PERSON: return "http://hl7.org/fhir/examplescenario-actor-type";
             case ENTITY: return "http://hl7.org/fhir/examplescenario-actor-type";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -96,6 +98,7 @@ public class ExampleScenario extends MetadataResource {
           switch (this) {
             case PERSON: return "A person.";
             case ENTITY: return "A system.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -103,6 +106,7 @@ public class ExampleScenario extends MetadataResource {
           switch (this) {
             case PERSON: return "Person";
             case ENTITY: return "System";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1199,6 +1203,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1352,6 +1357,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "http://hl7.org/fhir/resource-types";
             case VERIFICATIONRESULT: return "http://hl7.org/fhir/resource-types";
             case VISIONPRESCRIPTION: return "http://hl7.org/fhir/resource-types";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1505,6 +1511,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "A ValueSet resource instance specifies a set of codes drawn from one or more code systems, intended for use in a particular context. Value sets link between [[[CodeSystem]]] definitions and their use in [coded elements](terminologies.html).";
             case VERIFICATIONRESULT: return "Describes validation requirements, source(s), status and dates for one or more elements.";
             case VISIONPRESCRIPTION: return "An authorization for the provision of glasses and/or contact lenses to a patient.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -1658,6 +1665,7 @@ The primary difference between a medication statement and a medication administr
             case VALUESET: return "ValueSet";
             case VERIFICATIONRESULT: return "VerificationResult";
             case VISIONPRESCRIPTION: return "VisionPrescription";
+            case NULL: return null;
             default: return "?";
           }
         }

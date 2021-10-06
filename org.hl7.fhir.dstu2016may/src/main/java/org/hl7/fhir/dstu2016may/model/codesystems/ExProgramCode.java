@@ -71,6 +71,7 @@ public enum ExProgramCode {
             case AS: return "AS";
             case HD: return "HD";
             case AUSCR: return "AUSCR";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ExProgramCode {
             case AS: return "Child Asthma Program";
             case HD: return "Heamodialisis Program.";
             case AUSCR: return "Autism Screening Program.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ExProgramCode {
             case AS: return "Child Asthma";
             case HD: return "Heamodialisis";
             case AUSCR: return "Autism Screening";
+            case NULL: return null;
             default: return "?";
           }
     }

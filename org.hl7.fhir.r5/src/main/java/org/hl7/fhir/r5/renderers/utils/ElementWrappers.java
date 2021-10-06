@@ -2,6 +2,7 @@ package org.hl7.fhir.r5.renderers.utils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
+import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.r5.renderers.ResourceRenderer;
 import org.hl7.fhir.r5.renderers.utils.BaseWrappers.BaseWrapper;
@@ -65,14 +67,18 @@ public class ElementWrappers {
       if (context.getParser() == null) {
         throw new Error("No type parser provided to renderer context");
       } else {
-        return context.getParser().parseType(xml.toString(), type);
+        try {
+          return context.getParser().parseType(xml.toString(StandardCharsets.UTF_8), type);
+        } catch (Exception e) {
+          return new StringType("Illegal syntax: "+e.getMessage()); 
+        }
       }
     }
 
     @Override
     public List<PropertyWrapper> children() {
       if (list == null) {
-        children = context.getProfileUtilities().getChildList(structure, definition);
+        children = context.getProfileUtilities().getChildList(structure, definition, false, true);
         if (children.isEmpty() && !Utilities.noString(type)) {
           StructureDefinition sd = context.getWorker().fetchTypeDefinition(type);
           children = context.getProfileUtilities().getChildList(sd, sd.getSnapshot().getElementFirstRep());

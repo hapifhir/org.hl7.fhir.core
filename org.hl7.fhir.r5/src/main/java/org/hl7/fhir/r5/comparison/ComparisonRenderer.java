@@ -111,11 +111,15 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   private void dumpBinaries() throws IOException {
-    for (String k : contextLeft.getBinaries().keySet()) {
-      TextFile.bytesToFile(contextLeft.getBinaries().get(k), Utilities.path(folder, k));
+    if (contextLeft != null && contextLeft.getBinaries() != null) {
+      for (String k : contextLeft.getBinaries().keySet()) {
+        TextFile.bytesToFile(contextLeft.getBinaries().get(k), Utilities.path(folder, k));
+      }
     }
-    for (String k : contextRight.getBinaries().keySet()) {
-      TextFile.bytesToFile(contextRight.getBinaries().get(k), Utilities.path(folder, k));
+    if (contextRight != null && contextRight.getBinaries() != null) {
+      for (String k : contextRight.getBinaries().keySet()) {
+        TextFile.bytesToFile(contextRight.getBinaries().get(k), Utilities.path(folder, k));
+      }
     }
   }
 
@@ -212,10 +216,14 @@ public class ComparisonRenderer implements IEvaluationContext {
   }
 
   @Override
-  public Base resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
+  public List<Base> resolveConstant(Object appContext, String name, boolean beforeContext) throws PathEngineException {
     @SuppressWarnings("unchecked")
     Map<String, Base> vars = (Map<String, Base>) appContext;
-    return vars.get(name);
+    List<Base> res = new ArrayList<>();
+    if (vars.containsKey(name)) {
+      res.add(vars.get(name));
+    }
+    return res;
   }
 
   @Override

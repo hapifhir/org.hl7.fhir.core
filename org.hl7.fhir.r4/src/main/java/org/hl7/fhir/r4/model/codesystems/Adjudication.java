@@ -106,6 +106,7 @@ public enum Adjudication {
             case ELIGPERCENT: return "eligpercent";
             case TAX: return "tax";
             case BENEFIT: return "benefit";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum Adjudication {
             case ELIGPERCENT: return "Eligible Percentage.";
             case TAX: return "The amount of tax.";
             case BENEFIT: return "Amount payable under the coverage";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum Adjudication {
             case ELIGPERCENT: return "Eligible %";
             case TAX: return "Tax";
             case BENEFIT: return "Benefit Amount";
+            case NULL: return null;
             default: return "?";
           }
     }

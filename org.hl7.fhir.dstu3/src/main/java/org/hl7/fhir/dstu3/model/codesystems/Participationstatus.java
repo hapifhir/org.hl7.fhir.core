@@ -78,6 +78,7 @@ public enum Participationstatus {
             case DECLINED: return "declined";
             case TENTATIVE: return "tentative";
             case NEEDSACTION: return "needs-action";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum Participationstatus {
             case DECLINED: return "The participant has declined the appointment and will not participate in the appointment.";
             case TENTATIVE: return "The participant has  tentatively accepted the appointment. This could be automatically created by a system and requires further processing before it can be accepted. There is no commitment that attendance will occur.";
             case NEEDSACTION: return "The participant needs to indicate if they accept the appointment by changing this status to one of the other statuses.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum Participationstatus {
             case DECLINED: return "Declined";
             case TENTATIVE: return "Tentative";
             case NEEDSACTION: return "Needs Action";
+            case NULL: return null;
             default: return "?";
           }
     }

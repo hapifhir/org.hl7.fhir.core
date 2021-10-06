@@ -78,6 +78,7 @@ public enum MatchGrade {
             case PROBABLE: return "probable";
             case POSSIBLE: return "possible";
             case CERTAINLYNOT: return "certainly-not";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MatchGrade {
             case PROBABLE: return "This record is a close match, but not a certain match. Additional review (e.g. by a human) may be required before using this as a match.";
             case POSSIBLE: return "This record may be a matching one. Additional review (e.g. by a human) SHOULD be performed before using this as a match.";
             case CERTAINLYNOT: return "This record is known not to be a match. Note that usually non-matching records are not returned, but in some cases records previously or likely considered as a match may specifically be negated by the matching engine";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MatchGrade {
             case PROBABLE: return "Probable Match";
             case POSSIBLE: return "Possible Match";
             case CERTAINLYNOT: return "Certainly Not a Match";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -85,6 +85,7 @@ public enum PropertyRepresentation {
             case TYPEATTR: return "typeAttr";
             case CDATEXT: return "cdaText";
             case XHTML: return "xhtml";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum PropertyRepresentation {
             case TYPEATTR: return "The type of this element is indicated using xsi:type.";
             case CDATEXT: return "Use CDA narrative instead of XHTML.";
             case XHTML: return "The property is represented using XHTML.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum PropertyRepresentation {
             case TYPEATTR: return "Type Attribute";
             case CDATEXT: return "CDA Text Format";
             case XHTML: return "XHTML";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -34,18 +34,21 @@ package org.hl7.fhir.r5.elementmodel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.context.IWorkerContext;
+import org.hl7.fhir.r5.elementmodel.ParserBase.NamedElement;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.StructureDefinition;
 
 public class Manager {
 
   //TODO use EnumMap
-  public enum FhirFormat { XML, JSON, TURTLE, TEXT, VBAR;
+  public enum FhirFormat { XML, JSON, TURTLE, TEXT, VBAR, SHC; 
+    // SHC = smart health cards, including as text versions of QR codes
 
     public String getExtension() {
       switch (this) {
@@ -79,11 +82,17 @@ public class Manager {
       return null;
     }
 
+    
   }
   
-  public static Element parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
+  public static List<NamedElement> parse(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
     return makeParser(context, inputFormat).parse(source);
   }
+
+  public static Element parseSingle(IWorkerContext context, InputStream source, FhirFormat inputFormat) throws FHIRFormatError, DefinitionException, IOException, FHIRException {
+    return makeParser(context, inputFormat).parseSingle(source);
+  }
+  
 
   public static void compose(IWorkerContext context, Element e, OutputStream destination, FhirFormat outputFormat, OutputStyle style, String base) throws FHIRException, IOException {
     makeParser(context, outputFormat).compose(e, destination, style, base);
@@ -95,6 +104,7 @@ public class Manager {
     case XML : return new XmlParser(context);
     case TURTLE : return new TurtleParser(context);
     case VBAR : return new VerticalBarParser(context);
+    case SHC : return new SHCParser(context);
     case TEXT : throw new Error("Programming logic error: do not call makeParser for a text resource");
     }
     return null;

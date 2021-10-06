@@ -64,6 +64,7 @@ public enum V3IntegrityCheckAlgorithm {
           switch (this) {
             case SHA1: return "SHA-1";
             case SHA256: return "SHA-256";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum V3IntegrityCheckAlgorithm {
           switch (this) {
             case SHA1: return "This algorithm is defined in FIPS PUB 180-1: Secure Hash Standard.  As of April 17, 1995.";
             case SHA256: return "This algorithm is defined in FIPS PUB 180-2: Secure Hash Standard.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum V3IntegrityCheckAlgorithm {
           switch (this) {
             case SHA1: return "secure hash algorithm - 1";
             case SHA256: return "secure hash algorithm - 256";
+            case NULL: return null;
             default: return "?";
           }
     }

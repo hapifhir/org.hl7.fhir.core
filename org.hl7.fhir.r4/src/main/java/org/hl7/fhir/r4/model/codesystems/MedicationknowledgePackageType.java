@@ -204,6 +204,7 @@ public enum MedicationknowledgePackageType {
             case TUB: return "tub";
             case TUBE: return "tube";
             case VIAL: return "vial";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -234,6 +235,7 @@ public enum MedicationknowledgePackageType {
             case TUB: return "";
             case TUBE: return "";
             case VIAL: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -261,6 +263,7 @@ public enum MedicationknowledgePackageType {
             case TUB: return "Tub";
             case TUBE: return "Tube";
             case VIAL: return "Vial";
+            case NULL: return null;
             default: return "?";
           }
     }

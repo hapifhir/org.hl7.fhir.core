@@ -127,6 +127,7 @@ public enum CertaintySubcomponentRating {
             case CRITICALCONCERN: return "critical-concern";
             case PRESENT: return "present";
             case ABSENT: return "absent";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -146,6 +147,7 @@ public enum CertaintySubcomponentRating {
             case CRITICALCONCERN: return "critical concern.";
             case PRESENT: return "possible reason for increasing quality rating was checked and found to bepresent.";
             case ABSENT: return "possible reason for increasing quality rating was checked and found to be absent.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public enum CertaintySubcomponentRating {
             case CRITICALCONCERN: return "critical concern";
             case PRESENT: return "present";
             case ABSENT: return "absent";
+            case NULL: return null;
             default: return "?";
           }
     }

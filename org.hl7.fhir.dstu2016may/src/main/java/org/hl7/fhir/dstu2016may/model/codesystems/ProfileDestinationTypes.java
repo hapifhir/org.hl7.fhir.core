@@ -78,6 +78,7 @@ public enum ProfileDestinationTypes {
             case FHIRDSTU2SDCFORMMANAGER: return "FHIR-DSTU2-SDC-FormManager";
             case FHIRDSTU2SDCFORMRECEIVER: return "FHIR-DSTU2-SDC-FormReceiver";
             case FHIRDSTU2SDCFORMPROCESSOR: return "FHIR-DSTU2-SDC-FormProcessor";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum ProfileDestinationTypes {
             case FHIRDSTU2SDCFORMMANAGER: return "DSTU2 server that serves as an SDC-FormManager.";
             case FHIRDSTU2SDCFORMRECEIVER: return "DSTU2 server that serves as an SDC-FormReceiver.";
             case FHIRDSTU2SDCFORMPROCESSOR: return "DSTU2 server that serves as an SDC-FormProcessor.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum ProfileDestinationTypes {
             case FHIRDSTU2SDCFORMMANAGER: return "FHIR-DSTU2-SDC-FormManager";
             case FHIRDSTU2SDCFORMRECEIVER: return "FHIR-DSTU2-SDC-FormReceiver";
             case FHIRDSTU2SDCFORMPROCESSOR: return "FHIR-DSTU2-SDC-FormProcessor";
+            case NULL: return null;
             default: return "?";
           }
     }

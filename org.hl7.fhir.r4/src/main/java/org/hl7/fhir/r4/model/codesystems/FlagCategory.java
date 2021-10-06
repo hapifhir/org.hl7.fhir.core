@@ -120,6 +120,7 @@ public enum FlagCategory {
             case RESEARCH: return "research";
             case ADVANCEDIRECTIVE: return "advance-directive";
             case SAFETY: return "safety";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum FlagCategory {
             case RESEARCH: return "Flags related to research.";
             case ADVANCEDIRECTIVE: return "Flags related to subject's advance directives.";
             case SAFETY: return "Flags related to safety precautions.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum FlagCategory {
             case RESEARCH: return "Research";
             case ADVANCEDIRECTIVE: return "Advance Directive";
             case SAFETY: return "Safety";
+            case NULL: return null;
             default: return "?";
           }
     }

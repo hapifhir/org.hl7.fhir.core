@@ -78,6 +78,7 @@ public enum V3ActRelationshipSplit {
             case EW: return "EW";
             case I1: return "I1";
             case IW: return "IW";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum V3ActRelationshipSplit {
             case EW: return "A branch is selected as soon as the pre-condition associated with the branch evaluates to true.  If the condition is false, the branch may be entered later, when the condition turns true.  All other exclusive branches compete with each other and only one will be selected.  Each waiting branch executes in parallel with the default join code wait  (see below). The order in which the branches are considered may be specified in the Service_relationship.priority_nmb.";
             case I1: return "A branch is executed if its associated preconditions permit. If associated preconditions do not permit, the branch is dropped.  Inclusive branches are not suppressed and do not suppress other branches.";
             case IW: return "A branch is executed as soon as its associated conditions permit.  If the condition is false, the branch may be entered later, when the condition turns true.  Inclusive branches are not suppressed and do not suppress other branches.  Each waiting branch executes in parallel with the default join code wait  (see below).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum V3ActRelationshipSplit {
             case EW: return "exclusive wait";
             case I1: return "inclusive try once";
             case IW: return "inclusive wait";
+            case NULL: return null;
             default: return "?";
           }
     }

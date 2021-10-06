@@ -85,6 +85,7 @@ public enum NehtaPathologyTestResultStatusVa {
             case _3: return "3";
             case _4: return "4";
             case _5: return "5";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum NehtaPathologyTestResultStatusVa {
             case _3: return "The result is complete and verified by the responsible pathologist.";
             case _4: return "The result has been modified subsequent to being Final, and is complete and verified by the responsible pathologist.";
             case _5: return "The result is unavailable because the test was not started or not completed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum NehtaPathologyTestResultStatusVa {
             case _3: return "Final";
             case _4: return "Amended";
             case _5: return "Cancelled/Aborted";
+            case NULL: return null;
             default: return "?";
           }
     }

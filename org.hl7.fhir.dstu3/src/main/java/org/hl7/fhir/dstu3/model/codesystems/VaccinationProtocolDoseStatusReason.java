@@ -85,6 +85,7 @@ public enum VaccinationProtocolDoseStatusReason {
             case EXPLOT: return "explot";
             case OUTSIDESCHED: return "outsidesched";
             case PRODRECALL: return "prodrecall";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum VaccinationProtocolDoseStatusReason {
             case EXPLOT: return "The product was administered after the expiration date associated with lot of vaccine.";
             case OUTSIDESCHED: return "The product was administered at a time inconsistent with the documented schedule.";
             case PRODRECALL: return "The product administered has been recalled by the manufacturer.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum VaccinationProtocolDoseStatusReason {
             case EXPLOT: return "Expired lot";
             case OUTSIDESCHED: return "Administered outside recommended schedule";
             case PRODRECALL: return "Product recall";
+            case NULL: return null;
             default: return "?";
           }
     }

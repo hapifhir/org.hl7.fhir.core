@@ -99,6 +99,7 @@ public enum OperationalStatus {
             case TRANSDUCDISCON: return "transduc-discon";
             case HWDISCON: return "hw-discon";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum OperationalStatus {
             case TRANSDUCDISCON: return "The device transducer is diconnected.";
             case HWDISCON: return "The device hardware is disconnected.";
             case ENTEREDINERROR: return "The device was entered in error.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum OperationalStatus {
             case TRANSDUCDISCON: return "Transducer Diconnected";
             case HWDISCON: return "Hardware Disconnectd";
             case ENTEREDINERROR: return "Entered In Error";
+            case NULL: return null;
             default: return "?";
           }
     }

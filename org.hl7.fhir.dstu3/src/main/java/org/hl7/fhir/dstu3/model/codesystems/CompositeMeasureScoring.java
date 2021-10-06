@@ -78,6 +78,7 @@ public enum CompositeMeasureScoring {
             case ALLORNOTHING: return "all-or-nothing";
             case LINEAR: return "linear";
             case WEIGHTED: return "weighted";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum CompositeMeasureScoring {
             case ALLORNOTHING: return "All-or-nothing scoring includes an individual in the numerator of the composite measure if they are in the numerators of all of the component measures in which they are in the denominator";
             case LINEAR: return "Linear scoring gives an individual a score based on the number of numerators in which they appear";
             case WEIGHTED: return "Weighted scoring gives an individual a score based on a weighted factor for each component numerator in which they appear";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum CompositeMeasureScoring {
             case ALLORNOTHING: return "All-or-nothing";
             case LINEAR: return "Linear";
             case WEIGHTED: return "Weighted";
+            case NULL: return null;
             default: return "?";
           }
     }

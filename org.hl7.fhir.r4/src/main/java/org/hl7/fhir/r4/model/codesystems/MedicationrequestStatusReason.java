@@ -141,6 +141,7 @@ public enum MedicationrequestStatusReason {
             case SINTOL: return "sintol";
             case SURG: return "surg";
             case WASHOUT: return "washout";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +163,7 @@ public enum MedicationrequestStatusReason {
             case SINTOL: return "The drug interacts with a short-term treatment that is more urgently required. This order will be resumed when the short-term treatment is complete.";
             case SURG: return "The drug is contraindicated for patients receiving surgery and the patient is scheduled to be admitted for surgery in the near future. The drug will be resumed when the patient has sufficiently recovered from the surgery.";
             case WASHOUT: return "The patient was previously receiving a medication contraindicated with the current medication. The current medication will remain on hold until the prior medication has been cleansed from their system.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -180,6 +182,7 @@ public enum MedicationrequestStatusReason {
             case SINTOL: return "Suspected intolerance";
             case SURG: return "Patient scheduled for surgery.";
             case WASHOUT: return "Waiting for old drug to wash out";
+            case NULL: return null;
             default: return "?";
           }
     }

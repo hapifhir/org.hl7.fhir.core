@@ -113,6 +113,7 @@ public enum MeasurePopulation {
             case MEASUREPOPULATION: return "measure-population";
             case MEASUREPOPULATIONEXCLUSION: return "measure-population-exclusion";
             case MEASURESCORE: return "measure-score";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum MeasurePopulation {
             case MEASUREPOPULATION: return "The measure population for the measure";
             case MEASUREPOPULATIONEXCLUSION: return "The measure population exclusion for the measure";
             case MEASURESCORE: return "The measure score for the measure";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum MeasurePopulation {
             case MEASUREPOPULATION: return "Measure Population";
             case MEASUREPOPULATIONEXCLUSION: return "Measure Population Exclusion";
             case MEASURESCORE: return "Measure Score";
+            case NULL: return null;
             default: return "?";
           }
     }

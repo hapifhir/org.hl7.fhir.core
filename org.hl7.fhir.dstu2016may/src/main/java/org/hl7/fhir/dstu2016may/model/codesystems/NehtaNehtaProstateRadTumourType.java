@@ -64,6 +64,7 @@ public enum NehtaNehtaProstateRadTumourType {
           switch (this) {
             case ACINARVARIANT: return "acinar_variant";
             case PROSTATICDUCTALADENOCARCINOMA: return "prostatic_ductal_adenocarcinoma";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum NehtaNehtaProstateRadTumourType {
           switch (this) {
             case ACINARVARIANT: return "Adenocarcinoma (Acinar variant eg, foamy, pseudohyperplastic)";
             case PROSTATICDUCTALADENOCARCINOMA: return "Prostatic ductal adenocarcinoma";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum NehtaNehtaProstateRadTumourType {
           switch (this) {
             case ACINARVARIANT: return "Adenocarcinoma (Acinar variant eg, foamy, pseudohyperplastic)";
             case PROSTATICDUCTALADENOCARCINOMA: return "Prostatic ductal adenocarcinoma";
+            case NULL: return null;
             default: return "?";
           }
     }

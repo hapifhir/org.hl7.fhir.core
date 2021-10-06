@@ -78,6 +78,7 @@ public enum CodesystemContentMode {
             case EXAMPLAR: return "examplar";
             case FRAGMENT: return "fragment";
             case COMPLETE: return "complete";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum CodesystemContentMode {
             case EXAMPLAR: return "A few representative concepts are included in the code system resource";
             case FRAGMENT: return "A subset of the code system concepts are included in the code system resource";
             case COMPLETE: return "All the concepts defined by the code system are included in the code system resource";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum CodesystemContentMode {
             case EXAMPLAR: return "Examplar";
             case FRAGMENT: return "Fragment";
             case COMPLETE: return "Complete";
+            case NULL: return null;
             default: return "?";
           }
     }

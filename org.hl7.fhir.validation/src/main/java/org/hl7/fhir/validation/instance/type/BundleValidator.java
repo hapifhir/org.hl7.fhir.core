@@ -73,6 +73,9 @@ public class BundleValidator extends BaseValidator{
         }
         checkAllInterlinked(errors, entries, stack, bundle, VersionUtilities.isR5Ver(context.getVersion()));
       }
+      if (type.equals(SEARCHSET)) {
+        checkSearchSet(errors, bundle, entries, stack);
+      }
       // We do not yet have rules requiring that the id and fullUrl match when dealing with messaging Bundles
       //      validateResourceIds(errors, entries, stack);
     }
@@ -109,7 +112,9 @@ public class BundleValidator extends BaseValidator{
             } else {
               Element res = entry.getNamedChild(RESOURCE);
               NodeStack rstack = estack.push(res, -1, null, null);
-              signpost(errors, IssueType.INFORMATIONAL, res.line(), res.col(), stack.getLiteralPath(), !validator.isCrumbTrails(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM, defn.getUrl());
+              if (validator.isCrumbTrails()) {
+                res.addMessage(signpost(errors, IssueType.INFORMATIONAL, res.line(), res.col(), stack.getLiteralPath(), I18nConstants.VALIDATION_VAL_PROFILE_SIGNPOST_BUNDLE_PARAM, defn.getUrl()));
+              }
               stack.resetIds();
               validator.startInner(hostContext, errors, res, res, defn, rstack, false);
             }
@@ -120,6 +125,159 @@ public class BundleValidator extends BaseValidator{
       // todo: check specials
       count++;
     }
+  }
+
+  private void checkSearchSet(List<ValidationMessage> errors, Element bundle, List<Element> entries, NodeStack stack) {
+    // warning: should have self link
+    List<Element> links = new ArrayList<Element>();
+    bundle.getNamedChildren(LINK, links);
+    Element selfLink = getSelfLink(links);
+    List<String> types = new ArrayList<>();
+    if (selfLink == null) {
+      warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_NOSELF);
+    } else {
+      readSearchResourceTypes(selfLink.getNamedChildValue("url"), types);
+      if (types.size() == 0) {
+        hint(errors, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_SELF_NOT_UNDERSTOOD);
+      }
+    }
+
+    Boolean searchMode = readHasSearchMode(entries);
+    if (searchMode == false) { // if no resources have search mode
+      boolean typeProblem = false;
+      String rtype = null;
+      int count = 0;
+      for (Element entry : entries) {
+        NodeStack estack = stack.push(entry, count, null, null);
+        count++;
+        Element res = entry.getNamedChild("resource");
+        if (rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), res != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE)) {
+          NodeStack rstack = estack.push(res, -1, null, null);
+          String rt = res.fhirType();
+          Boolean ok = checkSearchType(types, rt);
+          if (ok == null) {
+            typeProblem = true;
+            hint(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), selfLink == null, I18nConstants.BUNDLE_SEARCH_ENTRY_TYPE_NOT_SURE);                       
+            String id = res.getNamedChildValue("id");
+            warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null || "OperationOutcome".equals(rt), I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
+          } else if (ok) {
+            if (!"OperationOutcome".equals(rt)) {
+              String id = res.getNamedChildValue("id");
+              warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
+              if (rtype != null && !rt.equals(rtype)) {
+                typeProblem = true;
+              } else if (rtype == null) {
+                rtype = rt;
+              }
+            }
+          } else {
+            typeProblem = true;
+            warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), false, I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_NO_MODE, rt, types);            
+          }
+        }
+      }      
+      if (typeProblem) {
+        warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), !typeProblem, I18nConstants.BUNDLE_SEARCH_NO_MODE);
+      } else {
+        hint(errors, IssueType.INVALID, bundle.line(), bundle.col(), stack.getLiteralPath(), !typeProblem, I18nConstants.BUNDLE_SEARCH_NO_MODE);        
+      }
+    } else {
+      int count = 0;
+      for (Element entry : entries) {
+        NodeStack estack = stack.push(entry, count, null, null);
+        count++;
+        Element res = entry.getNamedChild("resource");
+        String sm = null;
+        Element s = entry.getNamedChild("search");
+        if (s != null) {
+          sm = s.getNamedChildValue("mode");
+        }
+        warning(errors, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), sm != null, I18nConstants.BUNDLE_SEARCH_NO_MODE);
+        if (rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), estack.getLiteralPath(), res != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE)) {
+          NodeStack rstack = estack.push(res, -1, null, null);
+          String rt = res.fhirType();
+          String id = res.getNamedChildValue("id");
+          if (sm != null) {
+            if ("match".equals(sm)) {
+              rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
+              rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), types.size() == 0 || checkSearchType(types, rt), I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_MODE, rt, types);
+            } else if ("include".equals(sm)) {
+              rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), id != null, I18nConstants.BUNDLE_SEARCH_ENTRY_NO_RESOURCE_ID);
+            } else { // outcome
+              rule(errors, IssueType.INVALID, bundle.line(), bundle.col(), rstack.getLiteralPath(), "OperationOutcome".equals(rt), I18nConstants.BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_OUTCOME, rt);
+            }
+          }
+        }
+      }
+    }      
+  }
+
+  private Boolean checkSearchType(List<String> types, String rt) {
+    if (types.size() == 0) {
+      return null;
+    } else {      
+      return Utilities.existsInList(rt, types);
+    }
+  }
+
+  private Boolean readHasSearchMode(List<Element> entries) {
+    boolean all = true;
+    boolean any = false;
+    for (Element entry : entries) {
+      String sm = null;
+      Element s = entry.getNamedChild("search");
+      if (s != null) {
+        sm = s.getNamedChildValue("mode");
+      }
+      if (sm != null) {
+        any = true;
+      } else {
+        all = false;
+      }
+    }
+    if (all) {
+      return true;
+    } else if (any) {
+      return null;      
+    } else {
+      return false;
+    }
+  }
+
+  private void readSearchResourceTypes(String ref, List<String> types) {
+    if (ref == null) {
+      return;
+    }
+    String[] head = null;
+    String[] tail = null;
+    if (ref.contains("?")) {
+      head = ref.substring(0, ref.indexOf("?")).split("\\/");
+      tail = ref.substring(ref.indexOf("?")+1).split("\\&");
+    } else {
+      head = ref.split("\\/");
+    }
+    if (head == null || head.length == 0) {
+      return;
+    } else if (context.getResourceNames().contains(head[head.length-1])) {
+      types.add(head[head.length-1]);
+    } else if (tail != null) {
+      for (String s : tail) {
+        if (s.startsWith("_type=")) {
+          for (String t : s.substring(6).split("\\,")) {
+            types.add(t);
+          }
+        }
+      }      
+    }
+  }
+
+  private Element getSelfLink(List<Element> links) {
+    for (Element link : links) {
+      if ("self".equals(link.getNamedChildValue("relation"))) {
+        return link;
+      }
+    }
+    return null;
   }
 
   private void validateDocument(List<ValidationMessage> errors, List<Element> entries, Element composition, NodeStack stack, String fullUrl, String id) {

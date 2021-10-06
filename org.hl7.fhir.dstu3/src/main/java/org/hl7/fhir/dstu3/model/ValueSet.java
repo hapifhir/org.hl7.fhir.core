@@ -134,6 +134,7 @@ public class ValueSet extends MetadataResource {
             case NOTIN: return "not-in";
             case GENERALIZES: return "generalizes";
             case EXISTS: return "exists";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -148,6 +149,7 @@ public class ValueSet extends MetadataResource {
             case NOTIN: return "http://hl7.org/fhir/filter-operator";
             case GENERALIZES: return "http://hl7.org/fhir/filter-operator";
             case EXISTS: return "http://hl7.org/fhir/filter-operator";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -162,6 +164,7 @@ public class ValueSet extends MetadataResource {
             case NOTIN: return "The specified property of the code is not in the set of codes or concepts specified in the provided value (comma separated list).";
             case GENERALIZES: return "Includes all concept ids that have a transitive is-a relationship from the concept Id provided as the value, including the provided concept itself (e.g. include parent codes)";
             case EXISTS: return "The specified property of the code has at least one value (if the specified value is true; if the specified value is false, then matches when the specified property of the code has no values)";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -176,6 +179,7 @@ public class ValueSet extends MetadataResource {
             case NOTIN: return "Not in Set";
             case GENERALIZES: return "Generalizes (by Subsumption)";
             case EXISTS: return "Exists";
+            case NULL: return null;
             default: return "?";
           }
         }

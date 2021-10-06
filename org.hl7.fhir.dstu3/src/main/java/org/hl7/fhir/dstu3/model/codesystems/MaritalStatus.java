@@ -57,6 +57,7 @@ public enum MaritalStatus {
         public String toCode() {
           switch (this) {
             case U: return "U";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum MaritalStatus {
         public String getDefinition() {
           switch (this) {
             case U: return "The person is not presently married. The marital history is not known or stated.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case U: return "Unmarried";
+            case NULL: return null;
             default: return "?";
           }
     }

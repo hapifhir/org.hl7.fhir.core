@@ -85,6 +85,7 @@ public enum ClaimModifiers {
             case C: return "C";
             case E: return "E";
             case X: return "X";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -98,6 +99,7 @@ public enum ClaimModifiers {
             case C: return "Treatment associated with TMJ.";
             case E: return "Implant or associated with an implant.";
             case X: return "None.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +110,7 @@ public enum ClaimModifiers {
             case C: return "TMJ treatment";
             case E: return "Implant or associated with an implant";
             case X: return "None";
+            case NULL: return null;
             default: return "?";
           }
     }

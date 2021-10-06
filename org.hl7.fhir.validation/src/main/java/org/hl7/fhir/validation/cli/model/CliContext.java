@@ -26,6 +26,8 @@ public class CliContext {
   private boolean hintAboutNonMustSupport = false;
   @JsonProperty("recursive")
   private boolean recursive = false;
+  @JsonProperty("showMessagesFromReferences")
+  private boolean showMessagesFromReferences = false;
   @JsonProperty("doDebug")
   private boolean doDebug = false;
   @JsonProperty("assumeValidRestReferences")
@@ -36,6 +38,10 @@ public class CliContext {
   private boolean noInternalCaching = false; // internal, for when debugging terminology validation
   @JsonProperty("noExtensibleBindingMessages")
   private boolean noExtensibleBindingMessages = false;
+  @JsonProperty("noInvariants")
+  private boolean noInvariants = false;
+  @JsonProperty("wantInvariantsInMessages")
+  private boolean wantInvariantsInMessages = false;
 
   @JsonProperty("map")
   private String map = null;
@@ -78,6 +84,9 @@ public class CliContext {
   
   @JsonProperty("crumbTrails")
   private boolean crumbTrails = false;
+  
+  @JsonProperty("allowExampleUrls")
+  private boolean allowExampleUrls = false;
   
   @JsonProperty("showTimes")
   private boolean showTimes = false;
@@ -190,6 +199,17 @@ public class CliContext {
   @JsonProperty("recursive")
   public CliContext setRecursive(boolean recursive) {
     this.recursive = recursive;
+    return this;
+  }
+
+  @JsonProperty("showMessagesFromReferences")
+  public boolean isShowMessagesFromReferences() {
+    return showMessagesFromReferences;
+  }
+
+  @JsonProperty("showMessagesFromReferences")
+  public CliContext setShowMessagesFromReferences(boolean showMessagesFromReferences) {
+    this.showMessagesFromReferences = showMessagesFromReferences;
     return this;
   }
 
@@ -441,6 +461,26 @@ public class CliContext {
     this.noExtensibleBindingMessages = noExtensibleBindingMessages;
     return this;
   }
+  
+  @JsonProperty("noInvariants")
+  public boolean isNoInvariants() {
+    return noInvariants;
+  }
+
+  @JsonProperty("noInvariants")
+  public void setNoInvariants(boolean noInvariants) {
+    this.noInvariants = noInvariants;
+  }
+
+  @JsonProperty("wantInvariantsInMessages")
+  public boolean isWantInvariantsInMessages() {
+    return wantInvariantsInMessages;
+  }
+
+  @JsonProperty("wantInvariantsInMessages")
+  public void setWantInvariantsInMessages(boolean wantInvariantsInMessages) {
+    this.wantInvariantsInMessages = wantInvariantsInMessages;
+  }
 
   @JsonProperty("securityChecks")  
   public boolean isSecurityChecks() {
@@ -459,6 +499,14 @@ public class CliContext {
 
   public void setCrumbTrails(boolean crumbTrails) {
     this.crumbTrails = crumbTrails;
+  }
+
+  public boolean isAllowExampleUrls() {
+    return allowExampleUrls;
+  }
+
+  public void setAllowExampleUrls(boolean allowExampleUrls) {
+    this.allowExampleUrls = allowExampleUrls;
   }
 
   public boolean isShowTimes() {
@@ -483,6 +531,8 @@ public class CliContext {
       canDoNative == that.canDoNative &&
       noInternalCaching == that.noInternalCaching &&
       noExtensibleBindingMessages == that.noExtensibleBindingMessages &&
+      noInvariants == that.noInvariants &&
+      wantInvariantsInMessages == that.wantInvariantsInMessages &&
       Objects.equals(map, that.map) &&
       Objects.equals(output, that.output) &&
       Objects.equals(htmlOutput, that.htmlOutput) &&
@@ -499,6 +549,7 @@ public class CliContext {
       Objects.equals(profiles, that.profiles) &&
       Objects.equals(sources, that.sources) &&
       Objects.equals(crumbTrails, that.crumbTrails) &&
+      Objects.equals(allowExampleUrls, that.allowExampleUrls) &&
       Objects.equals(showTimes, that.showTimes) &&
       mode == that.mode &&
       Objects.equals(locale, that.locale) &&
@@ -507,7 +558,7 @@ public class CliContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes);
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls);
   }
 
   @Override
@@ -522,6 +573,8 @@ public class CliContext {
       ", canDoNative=" + canDoNative +
       ", noInternalCaching=" + noInternalCaching +
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
+      ", noInvariants=" + noInvariants +
+      ", wantInvariantsInMessages=" + wantInvariantsInMessages +
       ", map='" + map + '\'' +
       ", output='" + output + '\'' +
       ", htmlOutput='" + htmlOutput + '\'' +
@@ -540,6 +593,7 @@ public class CliContext {
       ", mode=" + mode +
       ", securityChecks=" + securityChecks +
       ", crumbTrails=" + crumbTrails +
+      ", allowExampleUrls=" + allowExampleUrls +
       ", showTimes=" + showTimes +
       ", locale='" + locale + '\'' +
       ", locations=" + locations +

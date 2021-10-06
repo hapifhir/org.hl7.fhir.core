@@ -78,6 +78,7 @@ public enum MedicationStatementCategory {
             case OUTPATIENT: return "outpatient";
             case COMMUNITY: return "community";
             case PATIENTSPECIFIED: return "patientspecified";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum MedicationStatementCategory {
             case OUTPATIENT: return "Includes orders for medications to be administered or consumed in an outpatient setting (for example, Emergency Department, Outpatient Clinic, Outpatient Surgery, Doctor's office)";
             case COMMUNITY: return "Includes orders for medications to be administered or consumed by the patient in their home (this would include long term care or nursing homes, hospices, etc.).";
             case PATIENTSPECIFIED: return "Includes statements about medication use, including over the counter medication, provided by the patient, agent or another provider";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum MedicationStatementCategory {
             case OUTPATIENT: return "Outpatient";
             case COMMUNITY: return "Community";
             case PATIENTSPECIFIED: return "Patient Specified";
+            case NULL: return null;
             default: return "?";
           }
     }

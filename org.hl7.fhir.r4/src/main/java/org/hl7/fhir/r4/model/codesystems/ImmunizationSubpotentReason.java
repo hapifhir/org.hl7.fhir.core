@@ -71,6 +71,7 @@ public enum ImmunizationSubpotentReason {
             case PARTIAL: return "partial";
             case COLDCHAINBREAK: return "coldchainbreak";
             case RECALL: return "recall";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ImmunizationSubpotentReason {
             case PARTIAL: return "The full volume of the dose was not administered to the patient.";
             case COLDCHAINBREAK: return "The vaccine experienced a cold chain break.";
             case RECALL: return "The vaccine was recalled by the manufacturer.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ImmunizationSubpotentReason {
             case PARTIAL: return "Partial Dose";
             case COLDCHAINBREAK: return "Cold Chain Break";
             case RECALL: return "Manufacturer Recall";
+            case NULL: return null;
             default: return "?";
           }
     }

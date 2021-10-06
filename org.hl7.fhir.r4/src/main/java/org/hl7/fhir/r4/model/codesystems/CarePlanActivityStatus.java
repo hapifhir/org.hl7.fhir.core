@@ -113,6 +113,7 @@ public enum CarePlanActivityStatus {
             case STOPPED: return "stopped";
             case UNKNOWN: return "unknown";
             case ENTEREDINERROR: return "entered-in-error";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum CarePlanActivityStatus {
             case STOPPED: return "The planned care plan activity has been ended prior to completion after the activity was started.";
             case UNKNOWN: return "The current state of the care plan activity is not known.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, but the authoring/source system does not know which one.";
             case ENTEREDINERROR: return "Care plan activity was entered in error and voided.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum CarePlanActivityStatus {
             case STOPPED: return "Stopped";
             case UNKNOWN: return "Unknown";
             case ENTEREDINERROR: return "Entered in Error";
+            case NULL: return null;
             default: return "?";
           }
     }

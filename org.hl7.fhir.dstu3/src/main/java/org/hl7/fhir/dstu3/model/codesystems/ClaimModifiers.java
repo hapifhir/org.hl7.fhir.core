@@ -92,6 +92,7 @@ public enum ClaimModifiers {
             case E: return "e";
             case ROOH: return "rooh";
             case X: return "x";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum ClaimModifiers {
             case E: return "Implant or associated with an implant.";
             case ROOH: return "A Rush service or service performed outside of normal office hours.";
             case X: return "None.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum ClaimModifiers {
             case E: return "Implant or associated with an implant";
             case ROOH: return "Rush or Outside of office hours";
             case X: return "None";
+            case NULL: return null;
             default: return "?";
           }
     }

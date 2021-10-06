@@ -91,6 +91,7 @@ public class ProcessRequest extends DomainResource {
             case POLL: return "poll";
             case REPROCESS: return "reprocess";
             case STATUS: return "status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -100,6 +101,7 @@ public class ProcessRequest extends DomainResource {
             case POLL: return "http://hl7.org/fhir/actionlist";
             case REPROCESS: return "http://hl7.org/fhir/actionlist";
             case STATUS: return "http://hl7.org/fhir/actionlist";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -109,6 +111,7 @@ public class ProcessRequest extends DomainResource {
             case POLL: return "Check for previously un-read/ not-retrieved resources.";
             case REPROCESS: return "Re-process the target resource.";
             case STATUS: return "Retrieve the processing status of the target resource.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -118,6 +121,7 @@ public class ProcessRequest extends DomainResource {
             case POLL: return "Poll";
             case REPROCESS: return "Re-Process";
             case STATUS: return "Status Check";
+            case NULL: return null;
             default: return "?";
           }
         }

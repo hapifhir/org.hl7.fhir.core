@@ -78,6 +78,7 @@ public enum HspcObservationHeightPrecond {
             case _84139: return "84139";
             case _84140: return "84140";
             case _84141: return "84141";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum HspcObservationHeightPrecond {
             case _84139: return "The individual's height was measured without the individual wearing shoes.";
             case _84140: return "The individual's height was measured while the individual was lying down.";
             case _84141: return "The individual's height was measured while the individual was standing up.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum HspcObservationHeightPrecond {
             case _84139: return "Height (body length) without shoes";
             case _84140: return "Height (body length) with patient reclining";
             case _84141: return "Height (body length) with patient standing";
+            case NULL: return null;
             default: return "?";
           }
     }

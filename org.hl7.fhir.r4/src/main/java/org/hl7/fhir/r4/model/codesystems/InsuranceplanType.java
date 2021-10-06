@@ -120,6 +120,7 @@ public enum InsuranceplanType {
             case LONGTERM: return "long-term";
             case HOSPICE: return "hospice";
             case HOME: return "home";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum InsuranceplanType {
             case LONGTERM: return "";
             case HOSPICE: return "";
             case HOME: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum InsuranceplanType {
             case LONGTERM: return "Long Term Care";
             case HOSPICE: return "Hospice";
             case HOME: return "Home Health";
+            case NULL: return null;
             default: return "?";
           }
     }

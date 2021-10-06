@@ -71,6 +71,7 @@ public enum AdverseEventSeriousness {
             case MILD: return "Mild";
             case MODERATE: return "Moderate";
             case SEVERE: return "Severe";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum AdverseEventSeriousness {
             case MILD: return "";
             case MODERATE: return "";
             case SEVERE: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum AdverseEventSeriousness {
             case MILD: return "Mild";
             case MODERATE: return "Moderate";
             case SEVERE: return "Severe";
+            case NULL: return null;
             default: return "?";
           }
     }

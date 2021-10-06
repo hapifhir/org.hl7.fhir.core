@@ -71,6 +71,7 @@ public enum HspcPractitionerTelecomSystem {
             case FAX: return "fax";
             case EMAIL: return "email";
             case PHONE: return "phone";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum HspcPractitionerTelecomSystem {
             case FAX: return "Method of communication which uses telephone lines to send and receive printed documents between facsimile devices.";
             case EMAIL: return "Electronic mail.";
             case PHONE: return "Telephone.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum HspcPractitionerTelecomSystem {
             case FAX: return "fax";
             case EMAIL: return "email";
             case PHONE: return "phone";
+            case NULL: return null;
             default: return "?";
           }
     }

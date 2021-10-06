@@ -64,6 +64,7 @@ public enum SupplyrequestReason {
           switch (this) {
             case PATIENTCARE: return "patient-care";
             case WARDSTOCK: return "ward-stock";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum SupplyrequestReason {
           switch (this) {
             case PATIENTCARE: return "The supply has been requested for use in direct patient care.";
             case WARDSTOCK: return "The supply has been requested for for creating or replenishing ward stock.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum SupplyrequestReason {
           switch (this) {
             case PATIENTCARE: return "Patient Care";
             case WARDSTOCK: return "Ward Stock";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -71,6 +71,7 @@ public enum ResourceAggregationMode {
             case CONTAINED: return "contained";
             case REFERENCED: return "referenced";
             case BUNDLED: return "bundled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ResourceAggregationMode {
             case CONTAINED: return "The reference is a local reference to a contained resource.";
             case REFERENCED: return "The reference to a resource that has to be resolved externally to the resource that includes the reference.";
             case BUNDLED: return "The resource the reference points to will be found in the same bundle as the resource that includes the reference.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ResourceAggregationMode {
             case CONTAINED: return "Contained";
             case REFERENCED: return "Referenced";
             case BUNDLED: return "Bundled";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -71,6 +71,7 @@ public enum ConditionState {
             case ACTIVE: return "active";
             case INACTIVE: return "inactive";
             case RESOLVED: return "resolved";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum ConditionState {
             case ACTIVE: return "The condition is active.";
             case INACTIVE: return "The condition is inactive, but not resolved.";
             case RESOLVED: return "The condition is resolved.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum ConditionState {
             case ACTIVE: return "Active";
             case INACTIVE: return "Inactive";
             case RESOLVED: return "Resolved";
+            case NULL: return null;
             default: return "?";
           }
     }

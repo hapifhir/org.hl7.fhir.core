@@ -120,6 +120,7 @@ public enum NehtaTumourStageGrouping {
             case IIIC: return "iiic";
             case IVA: return "iva";
             case IVB: return "ivb";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum NehtaTumourStageGrouping {
             case IIIC: return "";
             case IVA: return "";
             case IVB: return "";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum NehtaTumourStageGrouping {
             case IIIC: return "IIIC T4a       N2a      M0\n       T3-T4a N2b      M0\n       T4b       N1-N2 M0";
             case IVA: return "IVA Any T Any N M1a";
             case IVB: return "IVB Any T Any N M1b";
+            case NULL: return null;
             default: return "?";
           }
     }

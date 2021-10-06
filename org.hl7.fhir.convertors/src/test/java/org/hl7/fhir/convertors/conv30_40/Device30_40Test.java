@@ -1,6 +1,7 @@
 package org.hl7.fhir.convertors.conv30_40;
 
-import org.hl7.fhir.convertors.VersionConvertor_30_40;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class Device30_40Test {
     InputStream dstu3_expected_output = this.getClass().getResourceAsStream("/0_device_30.json");
 
     org.hl7.fhir.r4.model.Device r4_actual = (org.hl7.fhir.r4.model.Device) new org.hl7.fhir.r4.formats.JsonParser().parse(r4_input);
-    org.hl7.fhir.dstu3.model.Resource dstu3_conv = VersionConvertor_30_40.convertResource(r4_actual, true);
+    org.hl7.fhir.dstu3.model.Resource dstu3_conv = VersionConvertorFactory_30_40.convertResource(r4_actual, new BaseAdvisor_30_40(false));
 
     org.hl7.fhir.dstu3.formats.JsonParser dstu3_parser = new org.hl7.fhir.dstu3.formats.JsonParser();
     org.hl7.fhir.dstu3.model.Resource dstu3_expected = dstu3_parser.parse(dstu3_expected_output);
@@ -32,7 +33,7 @@ public class Device30_40Test {
     InputStream dstu3_expected_output = this.getClass().getResourceAsStream("/1_device_30.json");
 
     org.hl7.fhir.r4.model.Device r4_actual = (org.hl7.fhir.r4.model.Device) new org.hl7.fhir.r4.formats.JsonParser().parse(r4_input);
-    org.hl7.fhir.dstu3.model.Resource dstu3_conv = VersionConvertor_30_40.convertResource(r4_actual, true);
+    org.hl7.fhir.dstu3.model.Resource dstu3_conv = VersionConvertorFactory_30_40.convertResource(r4_actual, new BaseAdvisor_30_40(false));
 
     org.hl7.fhir.dstu3.formats.JsonParser dstu3_parser = new org.hl7.fhir.dstu3.formats.JsonParser();
     org.hl7.fhir.dstu3.model.Resource dstu3_expected = dstu3_parser.parse(dstu3_expected_output);

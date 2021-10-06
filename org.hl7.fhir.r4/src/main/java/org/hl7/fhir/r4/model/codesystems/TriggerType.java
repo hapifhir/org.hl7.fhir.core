@@ -106,6 +106,7 @@ public enum TriggerType {
             case DATAREMOVED: return "data-removed";
             case DATAACCESSED: return "data-accessed";
             case DATAACCESSENDED: return "data-access-ended";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum TriggerType {
             case DATAREMOVED: return "The trigger occurs whenever data of a particular type is removed.";
             case DATAACCESSED: return "The trigger occurs whenever data of a particular type is accessed.";
             case DATAACCESSENDED: return "The trigger occurs whenever access to data of a particular type is completed.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum TriggerType {
             case DATAREMOVED: return "Data Removed";
             case DATAACCESSED: return "Data Accessed";
             case DATAACCESSENDED: return "Data Access Ended";
+            case NULL: return null;
             default: return "?";
           }
     }

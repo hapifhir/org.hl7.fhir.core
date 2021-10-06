@@ -99,6 +99,7 @@ public enum ProcedureStatus {
             case COMPLETED: return "completed";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum ProcedureStatus {
             case COMPLETED: return "All actions involved in the procedure have taken place.";
             case ENTEREDINERROR: return "This electronic record should never have existed.";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this procedure.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum ProcedureStatus {
             case COMPLETED: return "Completed";
             case ENTEREDINERROR: return "Entered in Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

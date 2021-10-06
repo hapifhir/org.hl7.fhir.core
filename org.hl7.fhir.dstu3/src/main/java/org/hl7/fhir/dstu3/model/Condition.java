@@ -101,6 +101,7 @@ public class Condition extends DomainResource {
             case INACTIVE: return "inactive";
             case REMISSION: return "remission";
             case RESOLVED: return "resolved";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -111,6 +112,7 @@ public class Condition extends DomainResource {
             case INACTIVE: return "http://hl7.org/fhir/condition-clinical";
             case REMISSION: return "http://hl7.org/fhir/condition-clinical";
             case RESOLVED: return "http://hl7.org/fhir/condition-clinical";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -121,6 +123,7 @@ public class Condition extends DomainResource {
             case INACTIVE: return "The subject is no longer experiencing the symptoms of the condition or there is no longer evidence of the condition.";
             case REMISSION: return "The subject is no longer experiencing the symptoms of the condition, but there is a risk of the symptoms returning.";
             case RESOLVED: return "The subject is no longer experiencing the symptoms of the condition and there is a negligible perceived risk of the symptoms returning.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -131,6 +134,7 @@ public class Condition extends DomainResource {
             case INACTIVE: return "Inactive";
             case REMISSION: return "Remission";
             case RESOLVED: return "Resolved";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -248,6 +252,7 @@ public class Condition extends DomainResource {
             case REFUTED: return "refuted";
             case ENTEREDINERROR: return "entered-in-error";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -259,6 +264,7 @@ public class Condition extends DomainResource {
             case REFUTED: return "http://hl7.org/fhir/condition-ver-status";
             case ENTEREDINERROR: return "http://hl7.org/fhir/condition-ver-status";
             case UNKNOWN: return "http://hl7.org/fhir/condition-ver-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -270,6 +276,7 @@ public class Condition extends DomainResource {
             case REFUTED: return "This condition has been ruled out by diagnostic and clinical evidence.";
             case ENTEREDINERROR: return "The statement was entered in error and is not valid.";
             case UNKNOWN: return "The condition status is unknown.  Note that \"unknown\" is a value of last resort and every attempt should be made to provide a meaningful value other than \"unknown\".";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -281,6 +288,7 @@ public class Condition extends DomainResource {
             case REFUTED: return "Refuted";
             case ENTEREDINERROR: return "Entered In Error";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
         }

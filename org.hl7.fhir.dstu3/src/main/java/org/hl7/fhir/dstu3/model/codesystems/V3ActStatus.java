@@ -120,6 +120,7 @@ public enum V3ActStatus {
             case SUSPENDED: return "suspended";
             case NULLIFIED: return "nullified";
             case OBSOLETE: return "obsolete";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -138,6 +139,7 @@ public enum V3ActStatus {
             case SUSPENDED: return "An Act that has been activated (actions could or have been performed against it), but has been temporarily disabled.  No further action should be taken against it until it is released";
             case NULLIFIED: return "This Act instance was created in error and has been 'removed' and is treated as though it never existed.  A record is retained for audit purposes only.";
             case OBSOLETE: return "This Act instance has been replaced by a new instance.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -153,6 +155,7 @@ public enum V3ActStatus {
             case SUSPENDED: return "suspended";
             case NULLIFIED: return "nullified";
             case OBSOLETE: return "obsolete";
+            case NULL: return null;
             default: return "?";
           }
     }

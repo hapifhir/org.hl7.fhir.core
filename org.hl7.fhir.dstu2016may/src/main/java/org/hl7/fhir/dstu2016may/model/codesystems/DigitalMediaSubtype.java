@@ -106,6 +106,7 @@ public enum DigitalMediaSubtype {
             case IRIS: return "iris";
             case PALM: return "palm";
             case FACE: return "face";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -122,6 +123,7 @@ public enum DigitalMediaSubtype {
             case IRIS: return "An iris scan used for identification purposes";
             case PALM: return "A palm scan used for identification purposes";
             case FACE: return "A face scan used for identification purposes";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -135,6 +137,7 @@ public enum DigitalMediaSubtype {
             case IRIS: return "Iris";
             case PALM: return "Palm";
             case FACE: return "Face";
+            case NULL: return null;
             default: return "?";
           }
     }

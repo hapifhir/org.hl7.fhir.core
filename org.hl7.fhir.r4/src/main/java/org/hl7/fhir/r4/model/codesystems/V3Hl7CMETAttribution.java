@@ -99,6 +99,7 @@ public enum V3Hl7CMETAttribution {
             case INFORMATIONAL: return "informational";
             case MINIMAL: return "minimal";
             case UNIVERSAL: return "universal";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum V3Hl7CMETAttribution {
             case INFORMATIONAL: return "Description: Generally the same information content as \"contactable\", but with required (not mandatory) ids on entry point class. This flavor allows expression of the CMET even when mandatory information is not known.";
             case MINIMAL: return "Description: Provides more than identified, but not as much as universal. There are not expected to be many of these.";
             case UNIVERSAL: return "Description: This variant includes all attributes and associations present in the R-MIM. Any of non-mandatory and non-required attributes and/or associations may be present or absent, as permitted in the cardinality constraints.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum V3Hl7CMETAttribution {
             case INFORMATIONAL: return "informational";
             case MINIMAL: return "minimal";
             case UNIVERSAL: return "universal";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -64,6 +64,7 @@ public enum RestfulCapabilityMode {
           switch (this) {
             case CLIENT: return "client";
             case SERVER: return "server";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -74,6 +75,7 @@ public enum RestfulCapabilityMode {
           switch (this) {
             case CLIENT: return "The application acts as a client for this resource.";
             case SERVER: return "The application acts as a server for this resource.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -81,6 +83,7 @@ public enum RestfulCapabilityMode {
           switch (this) {
             case CLIENT: return "Client";
             case SERVER: return "Server";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -92,6 +92,7 @@ public enum PolicyholderRelationship {
             case COMMON: return "common";
             case OTHER: return "other";
             case SELF: return "self";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -106,6 +107,7 @@ public enum PolicyholderRelationship {
             case COMMON: return "The Beneficiary is a common law spouse or equivalent of the Policyholder";
             case OTHER: return "The Beneficiary has some other relationship the Policyholder";
             case SELF: return "The Beneficiary is the Policyholder";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -117,6 +119,7 @@ public enum PolicyholderRelationship {
             case COMMON: return "Common Law Spouse";
             case OTHER: return "Other";
             case SELF: return "Self";
+            case NULL: return null;
             default: return "?";
           }
     }

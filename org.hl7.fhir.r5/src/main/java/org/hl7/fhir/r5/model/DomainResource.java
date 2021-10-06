@@ -29,7 +29,7 @@ package org.hl7.fhir.r5.model;
   POSSIBILITY OF SUCH DAMAGE.
   */
 
-// Generated on Thu, Aug 20, 2020 19:42+1000 for FHIR vcurrent
+// Generated on Tue, May 4, 2021 07:17+1000 for FHIR v4.6.0
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -410,23 +410,23 @@ Modifier extensions SHALL NOT change the meaning of any elements on Resource or 
    * Search parameter: <b>_text</b>
    * <p>
    * Description: <b>Search on the narrative of the resource</b><br>
-   * Type: <b>string</b><br>
+   * Type: <b>special</b><br>
    * Path: <b>null</b><br>
    * </p>
    */
-  @SearchParamDefinition(name="_text", path="", description="Search on the narrative of the resource", type="string" )
+  @SearchParamDefinition(name="_text", path="", description="Search on the narrative of the resource", type="special" )
   public static final String SP_TEXT = "_text";
  /**
    * <b>Fluent Client</b> search parameter constant for <b>_text</b>
    * <p>
    * Description: <b>Search on the narrative of the resource</b><br>
-   * Type: <b>string</b><br>
+   * Type: <b>special</b><br>
    * Path: <b>null</b><br>
    * </p>
    */
-  public static final ca.uhn.fhir.rest.gclient.StringClientParam TEXT = new ca.uhn.fhir.rest.gclient.StringClientParam(SP_TEXT);
+  public static final ca.uhn.fhir.rest.gclient.SpecialClientParam TEXT = new ca.uhn.fhir.rest.gclient.SpecialClientParam(SP_TEXT);
 
-// Manual code (from Configuration.txt)t:
+// Manual code (from Configuration.txt):
 public void checkNoModifiers(String noun, String verb) throws FHIRException {
         if (hasModifierExtension()) {
           throw new FHIRException("Found unknown Modifier Exceptions on "+noun+" doing "+verb);

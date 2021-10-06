@@ -108,6 +108,7 @@ public class VerificationResult extends DomainResource {
             case REQREVALID: return "req-revalid";
             case VALFAIL: return "val-fail";
             case REVALFAIL: return "reval-fail";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -119,6 +120,7 @@ public class VerificationResult extends DomainResource {
             case REQREVALID: return "http://hl7.org/fhir/CodeSystem/status";
             case VALFAIL: return "http://hl7.org/fhir/CodeSystem/status";
             case REVALFAIL: return "http://hl7.org/fhir/CodeSystem/status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +132,7 @@ public class VerificationResult extends DomainResource {
             case REQREVALID: return "***TODO***";
             case VALFAIL: return "***TODO***";
             case REVALFAIL: return "***TODO***";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -141,6 +144,7 @@ public class VerificationResult extends DomainResource {
             case REQREVALID: return "Requires revalidation";
             case VALFAIL: return "Validation failed";
             case REVALFAIL: return "Re-Validation failed";
+            case NULL: return null;
             default: return "?";
           }
         }

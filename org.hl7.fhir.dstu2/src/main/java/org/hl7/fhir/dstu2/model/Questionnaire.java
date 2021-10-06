@@ -84,6 +84,7 @@ public class Questionnaire extends DomainResource {
             case DRAFT: return "draft";
             case PUBLISHED: return "published";
             case RETIRED: return "retired";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -92,6 +93,7 @@ public class Questionnaire extends DomainResource {
             case DRAFT: return "http://hl7.org/fhir/questionnaire-status";
             case PUBLISHED: return "http://hl7.org/fhir/questionnaire-status";
             case RETIRED: return "http://hl7.org/fhir/questionnaire-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -100,6 +102,7 @@ public class Questionnaire extends DomainResource {
             case DRAFT: return "This Questionnaire is not ready for official use.";
             case PUBLISHED: return "This Questionnaire is ready for use.";
             case RETIRED: return "This Questionnaire should no longer be used to gather data.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -108,6 +111,7 @@ public class Questionnaire extends DomainResource {
             case DRAFT: return "Draft";
             case PUBLISHED: return "Published";
             case RETIRED: return "Retired";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -268,6 +272,7 @@ public class Questionnaire extends DomainResource {
             case ATTACHMENT: return "attachment";
             case REFERENCE: return "reference";
             case QUANTITY: return "quantity";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -288,6 +293,7 @@ public class Questionnaire extends DomainResource {
             case ATTACHMENT: return "http://hl7.org/fhir/answer-format";
             case REFERENCE: return "http://hl7.org/fhir/answer-format";
             case QUANTITY: return "http://hl7.org/fhir/answer-format";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -308,6 +314,7 @@ public class Questionnaire extends DomainResource {
             case ATTACHMENT: return "Answer is binary content such as a image, PDF, etc.";
             case REFERENCE: return "Answer is a reference to another resource (practitioner, organization, etc.).";
             case QUANTITY: return "Answer is a combination of a numeric value and unit, potentially with a comparator (<, >, etc.).";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -328,6 +335,7 @@ public class Questionnaire extends DomainResource {
             case ATTACHMENT: return "Attachment";
             case REFERENCE: return "Reference";
             case QUANTITY: return "Quantity";
+            case NULL: return null;
             default: return "?";
           }
         }

@@ -506,8 +506,6 @@ public class StructureMapUtilities {
 
   private static void renderTarget(StringBuilder b, StructureMapGroupRuleTargetComponent rt, boolean abbreviate) {
     if (rt.hasContext()) {
-      if (rt.getContextType() == StructureMapContextType.TYPE)
-        b.append("@");
       b.append(rt.getContext());
       if (rt.hasElement()) {
         b.append('.');
@@ -1004,7 +1002,6 @@ public class StructureMapUtilities {
     String start = lexer.take();
     if (lexer.hasToken(".")) {
       target.setContext(start);
-      target.setContextType(StructureMapContextType.VARIABLE);
       start = null;
       lexer.token(".");
       target.setElement(lexer.take());

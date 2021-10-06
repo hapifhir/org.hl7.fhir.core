@@ -22,7 +22,7 @@ public class PackageCacheTests {
       System.out.println("remaining packages: "+list.toString());
     }
     Assertions.assertTrue(list.isEmpty(), "List should be true but is "+list.toString());
-    NpmPackage npm = cache.loadPackage("hl7.fhir.pubpack", "0.0.7");
+    NpmPackage npm = cache.loadPackage("hl7.fhir.pubpack", "0.0.9");
     npm.loadAllFiles();
     Assertions.assertNotNull(npm);
     File dir = new File(Utilities.path("[tmp]", "cache"));
@@ -46,5 +46,21 @@ public class PackageCacheTests {
     Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.1.1").version(), "3.1.1");
     Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.1.x").version(), "3.1.1");
     Assertions.assertEquals(cache.loadPackage("hl7.fhir.us.core", "3.0.x").version(), "3.0.1");
+  }
+
+  @Test
+  public void testNotCaseSensitive() throws IOException {
+    FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    cache.clear();    
+    Assertions.assertEquals(cache.loadPackage("KBV.Basis", "1.1.3").version(), "1.1.3");
+    Assertions.assertEquals(cache.loadPackage("kbv.basis", "1.1.3").version(), "1.1.3");    
+  }
+  
+  @Test
+  public void testLastReleasedVersion() throws IOException {
+    FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
+    cache.clear();
+    Assertions.assertEquals("0.0.8", cache.loadPackage("hl7.fhir.pubpack", "0.0.8").version());
+    Assertions.assertEquals("0.0.9", cache.loadPackage("hl7.fhir.pubpack").version());    
   }
 }

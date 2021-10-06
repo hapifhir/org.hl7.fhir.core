@@ -170,6 +170,31 @@ public interface IWorkerContext {
     }
   }
 
+  public class PackageDetails extends PackageVersion {
+    private String name;
+    private String canonical;
+    private String web;
+    public PackageDetails(String id, String version, String name, String canonical, String web) {
+      super(id, version);
+      this.name = name;
+      this.canonical = canonical;
+      this.web = web;
+    }
+    public String getName() {
+      return name;
+    }
+    public String getCanonical() {
+      return canonical;
+    }
+    public String getWeb() {
+      return web;
+    }
+    
+  }
+  public interface ICanonicalResourceLocator {
+    void findResource(Object caller, String url); // if it can be found, put it in the context
+  }
+  
   public interface IContextResourceLoader {
     /** 
      * @return List of the resource types that shoud be loaded
@@ -383,7 +408,7 @@ public interface IWorkerContext {
    *  
    * @param packageInfo
    */
-  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies);
+  public void cachePackage(PackageDetails packageDetails, List<PackageVersion> dependencies);
   
   // -- profile services ---------------------------------------------------------
   
@@ -513,6 +538,7 @@ public interface IWorkerContext {
 
   class ValidationResult {
     private ConceptDefinitionComponent definition;
+    private String system;
     private IssueSeverity severity;
     private String message;
     private TerminologyServiceErrorClass errorClass;
@@ -523,13 +549,15 @@ public interface IWorkerContext {
       this.message = message;
     }
     
-    public ValidationResult(ConceptDefinitionComponent definition) {
+    public ValidationResult(String system, ConceptDefinitionComponent definition) {
+      this.system = system;
       this.definition = definition;
     }
 
-    public ValidationResult(IssueSeverity severity, String message, ConceptDefinitionComponent definition) {
+    public ValidationResult(IssueSeverity severity, String message, String system, ConceptDefinitionComponent definition) {
       this.severity = severity;
       this.message = message;
+      this.system = system;
       this.definition = definition;
     }
     
@@ -543,10 +571,16 @@ public interface IWorkerContext {
       return severity == null || severity == IssueSeverity.INFORMATION || severity == IssueSeverity.WARNING;
     }
 
+    public String getSystem() {
+      return system;
+    }
+
     public String getDisplay() {
-// We don't want to return question-marks because that prevents something more useful from being displayed (e.g. the code) if there's no display value
-//      return definition == null ? "??" : definition.getDisplay();
       return definition == null ? null : definition.getDisplay();
+    }
+
+    public String getCode() {
+      return definition == null ? null : definition.getCode();
     }
 
     public ConceptDefinitionComponent asConceptDefinition() {
@@ -587,8 +621,18 @@ public interface IWorkerContext {
       this.txLink = txLink;
       return this;
     }
+
+    public boolean hasMessage() {
+      return message != null;
+    }
     
-    
+    public Coding asCoding() {
+      if (isOk() && definition != null && definition.getCode() != null) {
+        return new Coding(system, definition.getCode(), definition.getDisplay());
+      } else {
+        return null;
+      }
+    }
   }
 
   /**
@@ -771,10 +815,14 @@ public interface IWorkerContext {
    */
    int loadFromPackageAndDependencies(NpmPackage pi, IContextResourceLoader loader, BasePackageCacheManager pcm) throws FileNotFoundException, IOException, FHIRException;
 
-  public boolean hasPackage(String id, String ver);
+   public boolean hasPackage(String id, String ver);
+   public boolean hasPackage(PackageVersion pack);
+   public PackageDetails getPackage(PackageVersion pack);
 
   public int getClientRetryCount();
   public IWorkerContext setClientRetryCount(int value);
   
   public TimeTracker clock();
+
+  public PackageVersion getPackageForUrl(String url);
 }

@@ -260,6 +260,7 @@ public enum V3AddressPartType {
             case UNID: return "UNID";
             case UNIT: return "UNIT";
             case ZIP: return "ZIP";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -298,6 +299,7 @@ public enum V3AddressPartType {
             case UNID: return "The number or name of a specific unit contained within a building or complex, as assigned by that building or complex.";
             case UNIT: return "Indicates the type of specific unit contained within a building or complex.  E.g. Appartment, Floor";
             case ZIP: return "A postal code designating a region defined by the postal service.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -333,6 +335,7 @@ public enum V3AddressPartType {
             case UNID: return "unit identifier";
             case UNIT: return "unit designator";
             case ZIP: return "postal code";
+            case NULL: return null;
             default: return "?";
           }
     }

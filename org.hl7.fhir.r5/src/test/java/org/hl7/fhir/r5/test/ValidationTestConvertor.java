@@ -30,7 +30,7 @@ public class ValidationTestConvertor {
         if (!t.exists()) {
           try {
             System.out.print("Process " + f.getAbsolutePath());
-            Element e = Manager.parse(context, new FileInputStream(f), FhirFormat.XML);
+            Element e = Manager.parseSingle(context, new FileInputStream(f), FhirFormat.XML);
             Manager.compose(context, e, new FileOutputStream(t), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
             System.out.println("   .... success");
           } catch (Exception e) {
@@ -44,7 +44,7 @@ public class ValidationTestConvertor {
           if (!t.exists()) {
             try {
               System.out.print("Process " + f.getAbsolutePath());
-              Element e = Manager.parse(context, new FileInputStream(f), FhirFormat.JSON);
+              Element e = Manager.parseSingle(context, new FileInputStream(f), FhirFormat.JSON);
               Manager.compose(context, e, new FileOutputStream(t), FhirFormat.TURTLE, OutputStyle.PRETTY, null);
               System.out.println("   .... success");
             } catch (Exception e) {

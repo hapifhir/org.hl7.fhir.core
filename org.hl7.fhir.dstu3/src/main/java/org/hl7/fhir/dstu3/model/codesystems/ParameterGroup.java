@@ -113,6 +113,7 @@ public enum ParameterGroup {
             case FLUIDCHEMISTRY: return "fluid-chemistry";
             case BLOODCHEMISTRY: return "blood-chemistry";
             case MISCELLANEOUS: return "miscellaneous";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -130,6 +131,7 @@ public enum ParameterGroup {
             case FLUIDCHEMISTRY: return "Fluid Chemistry Parameter Group - MDC_PGRP_FLUID";
             case BLOODCHEMISTRY: return "Blood Chemistry Parameter Group - MDC_PGRP_BLOOD_CHEM";
             case MISCELLANEOUS: return "Miscellaneous Parameter Group - MDC_PGRP_MISC";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -144,6 +146,7 @@ public enum ParameterGroup {
             case FLUIDCHEMISTRY: return "Fluid Chemistry Parameter Group";
             case BLOODCHEMISTRY: return "Blood Chemistry Parameter Group";
             case MISCELLANEOUS: return "Miscellaneous Parameter Group";
+            case NULL: return null;
             default: return "?";
           }
     }

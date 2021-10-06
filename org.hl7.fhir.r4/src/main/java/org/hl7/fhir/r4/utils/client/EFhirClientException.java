@@ -33,10 +33,10 @@ package org.hl7.fhir.r4.utils.client;
   
 */
 
+import org.hl7.fhir.r4.model.OperationOutcome;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hl7.fhir.r4.model.OperationOutcome;
 
 /**
  * FHIR client exception.
@@ -99,7 +99,6 @@ public class EFhirClientException extends RuntimeException {
 	 * A default message of "One or more server side errors have occurred during this operation. Refer to e.getServerErrors() for additional details."
 	 * will be returned to users.
 	 * 
-	 * @param message
 	 * @param serverError
 	 */
 	public EFhirClientException(OperationOutcome serverError) {

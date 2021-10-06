@@ -78,6 +78,7 @@ public enum EligibilityresponsePurpose {
             case BENEFITS: return "benefits";
             case DISCOVERY: return "discovery";
             case VALIDATION: return "validation";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum EligibilityresponsePurpose {
             case BENEFITS: return "The plan benefits and optionally benefits consumed  for the listed, or discovered if specified, converages are requested.";
             case DISCOVERY: return "The insurer is requested to report on any coverages which they are aware of in addition to any specifed.";
             case VALIDATION: return "A check that the specified coverages are in-force is requested.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum EligibilityresponsePurpose {
             case BENEFITS: return "Coverage benefits";
             case DISCOVERY: return "Coverage Discovery";
             case VALIDATION: return "Coverage Validation";
+            case NULL: return null;
             default: return "?";
           }
     }

@@ -119,6 +119,7 @@ public class NutritionOrder extends DomainResource {
             case ONHOLD: return "on-hold";
             case COMPLETED: return "completed";
             case CANCELLED: return "cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -132,6 +133,7 @@ public class NutritionOrder extends DomainResource {
             case ONHOLD: return "http://hl7.org/fhir/nutrition-order-status";
             case COMPLETED: return "http://hl7.org/fhir/nutrition-order-status";
             case CANCELLED: return "http://hl7.org/fhir/nutrition-order-status";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -145,6 +147,7 @@ public class NutritionOrder extends DomainResource {
             case ONHOLD: return "Actions implied by the request have been temporarily halted, but are expected to continue later. May also be called \"suspended\".";
             case COMPLETED: return "All actions that are implied by the order have occurred and no continuation is planned (this will rarely be made explicit).";
             case CANCELLED: return "The request has been withdrawn and is no longer actionable.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -158,6 +161,7 @@ public class NutritionOrder extends DomainResource {
             case ONHOLD: return "On-Hold";
             case COMPLETED: return "Completed";
             case CANCELLED: return "Cancelled";
+            case NULL: return null;
             default: return "?";
           }
         }

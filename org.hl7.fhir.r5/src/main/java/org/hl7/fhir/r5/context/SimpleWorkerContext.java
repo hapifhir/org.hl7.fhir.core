@@ -54,6 +54,7 @@ import org.hl7.fhir.exceptions.FHIRFormatError;
 import org.hl7.fhir.r5.conformance.ProfileUtilities;
 import org.hl7.fhir.r5.conformance.ProfileUtilities.ProfileKnowledgeProvider;
 import org.hl7.fhir.r5.context.CanonicalResourceManager.CanonicalResourceProxy;
+import org.hl7.fhir.r5.context.IWorkerContext.PackageVersion;
 import org.hl7.fhir.r5.context.IWorkerContext.ILoggingService.LogCategory;
 import org.hl7.fhir.r5.context.SimpleWorkerContext.PackageResourceLoader;
 import org.hl7.fhir.r5.formats.IParser;
@@ -408,7 +409,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     for (String e : pi.dependencies()) {
       if (!loadedPackages.contains(e) && !VersionUtilities.isCorePackage(e)) {
         NpmPackage npm = pcm.loadPackage(e);
-        if (!version.equals(npm.fhirVersion())) {
+        if (!VersionUtilities.versionsMatch(version, npm.fhirVersion())) {
           System.out.println(formatMessage(I18nConstants.PACKAGE_VERSION_MISMATCH, e, version, npm.fhirVersion(), path));  
         }
         t = t + loadFromPackageAndDependenciesInt(npm, loader.getNewLoader(npm), pcm, path+" -> "+npm.name()+"#"+npm.version());
@@ -754,7 +755,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
   
   @Override
   public void generateSnapshot(StructureDefinition p, boolean logical) throws DefinitionException, FHIRException {
-    if (!p.hasSnapshot() && (logical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
+    if ((!p.hasSnapshot() || isProfileNeedsRegenerate(p) ) && (logical || p.getKind() != StructureDefinitionKind.LOGICAL)) {
       if (!p.hasBaseDefinition())
         throw new DefinitionException(formatMessage(I18nConstants.PROFILE___HAS_NO_BASE_AND_NO_SNAPSHOT, p.getName(), p.getUrl()));
       StructureDefinition sd = fetchResource(StructureDefinition.class, p.getBaseDefinition());
@@ -790,6 +791,15 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
     }
   }
 
+  // work around the fact that some Implementation guides were published with old snapshot generators that left invalid snapshots behind.
+  private boolean isProfileNeedsRegenerate(StructureDefinition p) {
+    boolean needs = !p.hasUserData("hack.regnerated") && Utilities.existsInList(p.getUrl(), "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaireresponse");
+    if (needs) {
+      p.setUserData("hack.regnerated", "yes");
+    }
+    return needs;
+  }
+
   public boolean isIgnoreProfileErrors() {
     return ignoreProfileErrors;
   }
@@ -808,15 +818,6 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
 
   public void setProgress(boolean progress) {
     this.progress = progress;
-  }
-
-  @Override
-  public boolean hasPackage(String id, String ver) {
-    return loadedPackages.contains(id+"#"+ver);
-  }
-
-  public boolean hasPackage(String idAndver) {
-    return loadedPackages.contains(idAndver);
   }
 
   public void setClock(TimeTracker tt) {
@@ -838,5 +839,33 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
    return xverManager;
   }
   
+  public void cachePackage(PackageVersion packageDetails, List<PackageVersion> dependencies) {
+    // nothing yet
+  }
+
+  @Override
+  public boolean hasPackage(String id, String ver) {
+    return loadedPackages.contains(id+"#"+ver);
+  }
+
+  public boolean hasPackage(String idAndver) {
+    return loadedPackages.contains(idAndver);
+  }
+
+  @Override
+  public void cachePackage(PackageDetails packageDetails, List<PackageVersion> dependencies) {
+    // TODO Auto-generated method stub    
+  }
+
+  @Override
+  public boolean hasPackage(PackageVersion pack) {
+    return false;
+  }
+
+  @Override
+  public PackageDetails getPackage(PackageVersion pack) {
+    return null;
+  }
+
 }
 

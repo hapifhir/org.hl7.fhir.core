@@ -871,10 +871,22 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
     return s.toString();
   }
   
+
+  private String readUntil(String sc) throws IOException
+  {
+    StringBuilder s = new StringBuilder();
+    while (peekChar() != 0 && sc.indexOf(peekChar()) == -1)
+      s.append(readChar());
+    readChar();
+    return s.toString();
+  }
+  
   private void parseLiteral(StringBuilder s) throws IOException, FHIRFormatError {
     // UInt16 w;
     readChar();
-    String c = readUntil(';');
+    String c = readUntil(";&'\"><");
+    if (c.isEmpty())
+      throw new FHIRFormatError("Invalid literal declaration following text: " + s);
     if (c.equals("apos"))
       s.append('\'');
     else if (c.equals("quot"))
@@ -1162,8 +1174,12 @@ private boolean elementIsOk(String name) throws FHIRFormatError  {
       s.append((char) 201D); 
     else if (entities.containsKey(c))
       s.append(entities.get(c));
-    else
+    else if (!mustBeWellFormed) {
+      // we guess that this is an accidentally unescaped &
+      s.append("&"+c);
+    } else {
       throw new FHIRFormatError("unable to parse character reference '" + c + "'' (last text = '" + lastText + "'" + descLoc());
+    }
   }
   
   private boolean isInteger(String s, int base) {

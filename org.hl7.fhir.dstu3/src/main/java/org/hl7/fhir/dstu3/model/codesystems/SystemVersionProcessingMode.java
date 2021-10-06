@@ -71,6 +71,7 @@ public enum SystemVersionProcessingMode {
             case DEFAULT: return "default";
             case CHECK: return "check";
             case OVERRIDE: return "override";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum SystemVersionProcessingMode {
             case DEFAULT: return "Use this version of the code system if a value set doesn't specify a version";
             case CHECK: return "Use this version of the code system. If a value set specifies a different version, the expansion operation should fail";
             case OVERRIDE: return "Use this version of the code system irrespective of which version is specified by a value set. Note that this has obvious safety issues, in that it may result in a value set expansion giving a different list of codes that is both wrong and unsafe, and implementers should only use this capability reluctantly. It primarily exists to deal with situations where specifications have fallen into decay as time passes. If a  version is override, the version used SHALL explicitly be represented in the expansion parameters";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum SystemVersionProcessingMode {
             case DEFAULT: return "Default Version";
             case CHECK: return "Check ValueSet Version";
             case OVERRIDE: return "Override ValueSet Version";
+            case NULL: return null;
             default: return "?";
           }
     }

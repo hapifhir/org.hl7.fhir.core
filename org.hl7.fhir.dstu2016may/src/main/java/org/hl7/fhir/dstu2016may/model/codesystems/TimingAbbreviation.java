@@ -78,6 +78,7 @@ public enum TimingAbbreviation {
             case QOD: return "QOD";
             case Q4H: return "Q4H";
             case Q6H: return "Q6H";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum TimingAbbreviation {
             case QOD: return "Every Other Day at institution specified times";
             case Q4H: return "Every 4 hours at institution specified times";
             case Q6H: return "Every 6 Hours  at institution specified times";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum TimingAbbreviation {
             case QOD: return "QOD";
             case Q4H: return "Q4H";
             case Q6H: return "Q6H";
+            case NULL: return null;
             default: return "?";
           }
     }

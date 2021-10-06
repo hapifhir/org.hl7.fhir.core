@@ -57,6 +57,7 @@ public enum CoverageSelfpay {
         public String toCode() {
           switch (this) {
             case PAY: return "pay";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -66,12 +67,14 @@ public enum CoverageSelfpay {
         public String getDefinition() {
           switch (this) {
             case PAY: return "An individual or organization is paying directly for goods and services.";
+            case NULL: return null;
             default: return "?";
           }
         }
         public String getDisplay() {
           switch (this) {
             case PAY: return "Pay";
+            case NULL: return null;
             default: return "?";
           }
     }

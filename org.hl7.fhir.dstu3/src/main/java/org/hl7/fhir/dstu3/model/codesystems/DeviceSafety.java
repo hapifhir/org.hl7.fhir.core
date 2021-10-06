@@ -99,6 +99,7 @@ public enum DeviceSafety {
             case MRUNSAFE: return "mr-unsafe";
             case MRCONDITIONAL: return "mr-conditional";
             case MRUNKNOWN: return "mr-unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -114,6 +115,7 @@ public enum DeviceSafety {
             case MRUNSAFE: return "An item that is known to pose hazards in all MRI environments. MR Unsafe items include magnetic items such as a pair of ferromagnetic scissors.";
             case MRCONDITIONAL: return "An item that has been demonstrated to pose no known hazards in a specified MRI environment with specified conditions of use. Field conditions that define the MRI environment include, for instance, static magnetic field or specific absorption rate (SAR).";
             case MRUNKNOWN: return "Labeling does not contain MRI Safety information";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -126,6 +128,7 @@ public enum DeviceSafety {
             case MRUNSAFE: return "MR Unsafe";
             case MRCONDITIONAL: return "MR Conditional";
             case MRUNKNOWN: return "MR Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }

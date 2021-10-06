@@ -155,6 +155,7 @@ public enum HspcOrganizationOrganizationtype {
             case _526758022: return "526758022";
             case _526758023: return "526758023";
             case _526758024: return "526758024";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -178,6 +179,7 @@ public enum HspcOrganizationOrganizationtype {
             case _526758022: return "A facility providing skilled, intermediate or custodial nursing care.";
             case _526758023: return "A store or a place in the hospital where drugs and medicines are dispensed and sold.";
             case _526758024: return "A center where outpatients are provided surgical services.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -198,6 +200,7 @@ public enum HspcOrganizationOrganizationtype {
             case _526758022: return "Nursing Care Facility";
             case _526758023: return "Pharmacy";
             case _526758024: return "Surgical Center";
+            case NULL: return null;
             default: return "?";
           }
     }

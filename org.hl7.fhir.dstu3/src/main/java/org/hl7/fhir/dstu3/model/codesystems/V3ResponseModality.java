@@ -71,6 +71,7 @@ public enum V3ResponseModality {
             case B: return "B";
             case R: return "R";
             case T: return "T";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum V3ResponseModality {
             case B: return "Query response to be sent as an HL7 Batch.";
             case R: return "Query response to occur in real time.";
             case T: return "Query response to sent as a series of responses at the same time without the use of batch formatting.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum V3ResponseModality {
             case B: return "Batch";
             case R: return "Real Time";
             case T: return "Bolus";
+            case NULL: return null;
             default: return "?";
           }
     }

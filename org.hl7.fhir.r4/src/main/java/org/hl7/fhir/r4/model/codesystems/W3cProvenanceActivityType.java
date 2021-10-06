@@ -134,6 +134,7 @@ public enum W3cProvenanceActivityType {
             case PRIMARYSOURCE: return "Primary-Source";
             case ATTRIBUTION: return "Attribution";
             case COLLECTION: return "Collection";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -154,6 +155,7 @@ public enum W3cProvenanceActivityType {
             case PRIMARYSOURCE: return "Refers to something produced by some agent with direct experience and knowledge about the topic, at the time of the topic's study, without benefit from hindsight. Because of the directness of primary sources, they 'speak for themselves' in ways that cannot be captured through the filter of secondary sources. As such, it is important for secondary sources to reference those primary sources from which they were derived, so that their reliability can be investigated. It is also important to note that a given entity might be a primary source for one entity but not another. It is the reason why Primary Source is defined as a relation as opposed to a subtype of Entity.";
             case ATTRIBUTION: return "Ascribing of an entity (object/document) to an agent.";
             case COLLECTION: return " An aggregating activity that results in composition of an entity, which provides a structure to some constituents that must themselves be entities. These constituents are said to be member of the collections.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -171,6 +173,7 @@ public enum W3cProvenanceActivityType {
             case PRIMARYSOURCE: return "wasPrimarySourceOf";
             case ATTRIBUTION: return "wasAttributedTo";
             case COLLECTION: return "isCollectionOf";
+            case NULL: return null;
             default: return "?";
           }
     }

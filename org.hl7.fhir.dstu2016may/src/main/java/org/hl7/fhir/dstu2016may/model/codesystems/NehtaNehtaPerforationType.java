@@ -71,6 +71,7 @@ public enum NehtaNehtaPerforationType {
             case THROUGHTUMOURPRIORTOSURGERY: return "through_tumour_prior_to_surgery";
             case THROUGHTUMOURDURINGSURGERYMOBILISATION: return "through_tumour_during_surgery_mobilisation";
             case AWAYFROMTUMOUR: return "away_from_tumour";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -82,6 +83,7 @@ public enum NehtaNehtaPerforationType {
             case THROUGHTUMOURPRIORTOSURGERY: return "The perforation was through tumour prior to surgery";
             case THROUGHTUMOURDURINGSURGERYMOBILISATION: return "The perforation was through tumour during surgery mobilisation";
             case AWAYFROMTUMOUR: return "The perforation was away from the tumour";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +92,7 @@ public enum NehtaNehtaPerforationType {
             case THROUGHTUMOURPRIORTOSURGERY: return "Through tumour prior to surgery";
             case THROUGHTUMOURDURINGSURGERYMOBILISATION: return "Through tumour during surgery mobilisation";
             case AWAYFROMTUMOUR: return "Away from tumour";
+            case NULL: return null;
             default: return "?";
           }
     }

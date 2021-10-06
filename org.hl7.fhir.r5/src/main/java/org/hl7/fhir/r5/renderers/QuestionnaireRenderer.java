@@ -14,6 +14,7 @@ import org.hl7.fhir.r5.model.Coding;
 import org.hl7.fhir.r5.model.DomainResource;
 import org.hl7.fhir.r5.model.Expression;
 import org.hl7.fhir.r5.model.Extension;
+import org.hl7.fhir.r5.model.PrimitiveType;
 import org.hl7.fhir.r5.model.Questionnaire;
 import org.hl7.fhir.r5.model.ValueSet;
 import org.hl7.fhir.r5.model.ValueSet.ValueSetExpansionContainsComponent;
@@ -37,6 +38,7 @@ import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.TableModel;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 
 public class QuestionnaireRenderer extends TerminologyRenderer {
+  public static final String EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL = "http://hl7.org/fhir/tools/StructureDefinition/original-item-type";
 
   public QuestionnaireRenderer(RenderingContext context) {
     super(context);
@@ -60,7 +62,11 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   
   public boolean renderTree(XhtmlNode x, Questionnaire q) throws UnsupportedEncodingException, IOException {
     boolean hasFlags = checkForFlags(q.getItem());
+    boolean doOpts = context.getDefinitionsTarget() == null && hasAnyOptions(q.getItem()); 
 
+    if (doOpts) {
+      x.b().tx("Structure");
+    }
     HierarchicalTableGenerator gen = new HierarchicalTableGenerator(context.getDestDir(), context.isInlineGraphics(), true);
     TableModel model = gen.new TableModel("qtree="+q.getId(), !forResource);    
     model.setAlternating(true);
@@ -83,7 +89,77 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     }
     XhtmlNode xn = gen.generate(model, context.getLocalPrefix(), 1, null);
     x.getChildNodes().add(xn);
+    if (doOpts) {
+      renderOptions(q, x);
+    }
     return hasExt;
+  }
+
+  private void renderOptions(Questionnaire q, XhtmlNode x) {
+    if (hasAnyOptions(q.getItem())) {
+      x.hr();
+      x.para().b().tx("Option Sets");
+      renderOptions(q.getItem(), x);
+    }    
+  }
+
+  private void renderOptions(List<QuestionnaireItemComponent> items, XhtmlNode x) {    
+    for (QuestionnaireItemComponent i : items) {
+      renderItemOptions(x, i);
+      renderOptions(i.getItem(), x);
+    }    
+  }
+
+  public void renderItemOptions(XhtmlNode x, QuestionnaireItemComponent i) {
+    if (i.hasAnswerOption()) {
+      boolean useSelect = false;
+      for (QuestionnaireItemAnswerOptionComponent opt : i.getAnswerOption()) {
+        useSelect = useSelect || opt.getInitialSelected(); 
+      }
+      x.an("opt-item."+i.getLinkId());
+      x.para().b().tx("Answer options for "+i.getLinkId());
+      XhtmlNode ul = x.ul();
+      for (QuestionnaireItemAnswerOptionComponent opt : i.getAnswerOption()) {
+        XhtmlNode li = ul.li();
+        li.style("font-size: 11px");
+        if (useSelect) {
+          if (opt.getInitialSelected()) {
+            li.img("icon-selected.png");
+          } else {
+            li.img("icon-not-selected.png");            
+          }
+        }
+        if (opt.getValue().isPrimitive()) {
+          li.tx(opt.getValue().primitiveValue());
+        } else if (opt.getValue() instanceof Coding) {
+          Coding c = (Coding) opt.getValue(); 
+          String link = c.hasSystem() ? context.getWorker().getLinkForUrl(context.getSpecificationLink(), c.getSystem()) : null;
+          if (link == null) {
+            li.tx(c.getSystem()+"#"+c.getCode());
+          } else {
+            li.ah(link).tx(describeSystem(c.getSystem()));
+            li.tx(": "+c.getCode());              
+          }
+          if (c.hasDisplay()) {
+            li.tx(" (\""+c.getDisplay()+"\")");              
+          }
+        } else {
+          li.tx("??");            
+        }
+      }
+    }
+  }
+
+  private boolean hasAnyOptions(List<QuestionnaireItemComponent> items) {
+    for (QuestionnaireItemComponent i : items) {
+      if (i.hasAnswerOption()) {
+        return true;
+      }
+      if (hasAnyOptions(i.getItem())) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean checkForFlags(List<QuestionnaireItemComponent> items) {
@@ -147,7 +223,12 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     String txt = (i.hasPrefix() ? i.getPrefix() + ". " : "") + i.getText();
     r.getCells().add(gen.new Cell(null, null, txt, null, null));
     r.getCells().add(gen.new Cell(null, null, (i.getRequired() ? "1" : "0")+".."+(i.getRepeats() ? "*" : "1"), null, null));
-    r.getCells().add(gen.new Cell(null, context.getSpecificationLink()+"codesystem-item-type.html#"+i.getType().toCode(), i.getType().toCode(), null, null));
+    if (i.getTypeElement().hasExtension(EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL)) {
+      String t = i.getTypeElement().getExtensionString(EXT_QUESTIONNAIRE_ITEM_TYPE_ORIGINAL);
+      r.getCells().add(gen.new Cell(null, context.getSpecificationLink()+"codesystem-item-type.html#item-type-"+t, t, null, null));
+    } else {
+      r.getCells().add(gen.new Cell(null, context.getSpecificationLink()+"codesystem-item-type.html#item-type-"+i.getType().toCode(), i.getType().toCode(), null, null));
+    }
 
     if (hasFlags) {
       // flags:
@@ -228,7 +309,12 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.hasAnswerOption()) {
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
       defn.getPieces().add(gen.new Piece(null, "Options: ", null));
-      defn.getPieces().add(gen.new Piece(context.getDefinitionsTarget()+"#item."+i.getLinkId(), Integer.toString(i.getAnswerOption().size())+" "+Utilities.pluralize("option", i.getAnswerOption().size()), null));            
+      if (context.getDefinitionsTarget() == null) {
+        // if we don't have a definitions target, we'll add them below. 
+        defn.getPieces().add(gen.new Piece("#opt-item."+i.getLinkId(), Integer.toString(i.getAnswerOption().size())+" "+Utilities.pluralize("option", i.getAnswerOption().size()), null));
+      } else {
+        defn.getPieces().add(gen.new Piece(context.getDefinitionsTarget()+"#item."+i.getLinkId(), Integer.toString(i.getAnswerOption().size())+" "+Utilities.pluralize("option", i.getAnswerOption().size()), null));
+      }
     }
     if (i.hasInitial()) {
       for (QuestionnaireItemInitialComponent v : i.getInitial()) {
@@ -520,7 +606,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
       p.tx(" ");
       input = p.input(i.getLinkId(), "checkbox", i.getType().getDisplay(), 1);
       break;
-    case CHOICE:
+    case CODING:
       input = p.select(i.getLinkId());
       listOptions(q, i, input);
       break;
@@ -544,8 +630,6 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     case INTEGER:
       p.tx(" ");
       input = p.input(i.getLinkId(), "number", i.getType().getDisplay(), 10);
-      break;
-    case OPENCHOICE:
       break;
     case QUANTITY:
       p.tx(" ");
@@ -727,7 +811,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         }
       }
     } else if (i.hasAnswerOption()) {
-      
+      renderItemOptions(select, i); 
     } 
     select.option("a", "??", false);    
   }

@@ -209,7 +209,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
     if (doSystem && allFromOneSystem(vs)) {
       doSystem = false;
       XhtmlNode p = x.para();
-      p.tx("All codes from system ");
+      p.tx("All codes in this table are from the system ");
       allCS = getContext().getWorker().fetchCodeSystem(vs.getExpansion().getContains().get(0).getSystem());
       String ref = null;
       if (allCS != null)
@@ -923,13 +923,21 @@ public class ValueSetRenderer extends TerminologyRenderer {
       }
     } else {
       li.tx("Import all the codes that are contained in ");
-      boolean first = true;
-      for (UriType vs : inc.getValueSet()) {
-        if (first)
-          first = false;
-        else
-          li.tx(", ");
-        AddVsRef(vs.asStringValue(), li);
+      if (inc.getValueSet().size() < 4) {
+        boolean first = true;
+        for (UriType vs : inc.getValueSet()) {
+          if (first)
+            first = false;
+          else
+            li.tx(", ");
+          AddVsRef(vs.asStringValue(), li);
+        }
+      } else {
+        XhtmlNode xul = li.ul();
+        for (UriType vs : inc.getValueSet()) {
+          AddVsRef(vs.asStringValue(), xul.li());
+        }
+        
       }
     }
     return hasExtensions;

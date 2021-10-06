@@ -78,6 +78,7 @@ public enum DefinitionStatus {
             case ACTIVE: return "active";
             case WITHDRAWN: return "withdrawn";
             case UNKNOWN: return "unknown";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -90,6 +91,7 @@ public enum DefinitionStatus {
             case ACTIVE: return "The definition is considered ready for use";
             case WITHDRAWN: return "The definition should no longer be used";
             case UNKNOWN: return "The authoring system does not know which of the status values currently applies for this request.  Note: This concept is not to be used for \"other\" - one of the listed statuses is presumed to apply, it's just not known which one.";
+            case NULL: return null;
             default: return "?";
           }
         }
@@ -99,6 +101,7 @@ public enum DefinitionStatus {
             case ACTIVE: return "Active";
             case WITHDRAWN: return "Withdrawn";
             case UNKNOWN: return "Unknown";
+            case NULL: return null;
             default: return "?";
           }
     }
