@@ -293,14 +293,10 @@ public class ValidationService {
     System.out.println((error == 0 ? "Success" : "*FAILURE*") + ": " + Integer.toString(error) + " errors, " + Integer.toString(warn) + " warnings, " + Integer.toString(info) + " notes");
     for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
       System.out.println(getIssueSummary(issue));
-      if (crumbs) {
-        ValidationMessage vm = (ValidationMessage) issue.getUserData("source.msg");
-        if (vm != null) {
-          if (vm.sliceText != null) {
-            for (String s : vm.sliceText) {
-              System.out.println("    slice info: "+s);          
-            }
-          }
+      ValidationMessage vm = (ValidationMessage) issue.getUserData("source.msg");
+      if (vm != null && vm.sliceText != null && (crumbs || vm.isCriticalSignpost())) {
+        for (String s : vm.sliceText) {
+          System.out.println("    slice info: "+s);          
         }
       }
     }

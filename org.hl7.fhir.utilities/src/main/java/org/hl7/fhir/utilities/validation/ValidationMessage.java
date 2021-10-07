@@ -514,6 +514,7 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
   public String[] sliceText;
   private boolean slicingHint;
   private boolean signpost;
+  private boolean criticalSignpost;
 
 
   /**
@@ -772,9 +773,10 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
     return sliceHtml;
   }
 
-  public void setSliceHtml(String sliceHtml, String[] text) {
+  public ValidationMessage setSliceHtml(String sliceHtml, String[] text) {
     this.sliceHtml = sliceHtml;
     this.sliceText = text;
+    return this;
   }
 
   public String getMessageId() {
@@ -792,6 +794,15 @@ public class ValidationMessage implements Comparator<ValidationMessage>, Compara
 
   public ValidationMessage setSignpost(boolean signpost) {
     this.signpost = signpost;
+    return this;
+  }
+
+  public boolean isCriticalSignpost() {
+    return criticalSignpost;
+  }
+
+  public ValidationMessage setCriticalSignpost(boolean criticalSignpost) {
+    this.criticalSignpost = criticalSignpost;
     return this;
   }
 
