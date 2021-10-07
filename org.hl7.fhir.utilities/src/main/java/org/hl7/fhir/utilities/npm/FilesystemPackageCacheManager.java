@@ -84,7 +84,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public static final String SECONDARY_SERVER = "https://packages2.fhir.org/packages";
   //  private static final String SECONDARY_SERVER = "http://local.fhir.org:960/packages";
   public static final String PACKAGE_REGEX = "^[a-zA-Z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+$";
-  public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*$";
+  public static final String PACKAGE_VERSION_REGEX = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+\\#[A-Za-z0-9\\-\\_\\$]+(\\.[A-Za-z0-9\\-\\_\\$]+)*$";
   public static final String PACKAGE_VERSION_REGEX_OPT = "^[A-Za-z][A-Za-z0-9\\_\\-]*(\\.[A-Za-z0-9\\_\\-]+)+(\\#[A-Za-z0-9\\-\\_]+(\\.[A-Za-z0-9\\-\\_]+)*)?$";
   private static final Logger ourLog = LoggerFactory.getLogger(FilesystemPackageCacheManager.class);
   private static final String CACHE_VERSION = "3"; // second version - see wiki page
@@ -195,7 +195,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal in this context");
     }
     for (char ch : version.toCharArray()) {
-      if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && !Utilities.existsInList(ch, '.', '-')) {
+      if (!Character.isAlphabetic(ch) && !Character.isDigit(ch) && !Utilities.existsInList(ch, '.', '-', '$')) {
         throw new FHIRException("Cannot add package " + id + " to the package cache - the version '" + version + "' is illegal (ch '" + ch + "'");
       }
     }
@@ -503,9 +503,9 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
     // nup, don't have it locally (or it's expired)
     FilesystemPackageCacheManager.InputStreamWithSrc source;
-    if ("current".equals(version)) {
+    if ("current".equals(version) || version.startsWith("current$")) {
       // special case - fetch from ci-build server
-      source = loadFromCIBuild(id);
+      source = loadFromCIBuild(id, version.startsWith("current$") ? version.substring(8) : null);
     } else {
       source = loadFromPackageServer(id, version);
     }
@@ -524,15 +524,20 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       if (optional)
         return null;
       else
-        throw new FHIRException(e.getMessage(), e);
+        throw new FHIRException("Unable to fetch: "+e.getMessage(), e);
     }
   }
 
-  private InputStreamWithSrc loadFromCIBuild(String id) throws IOException {
+  private InputStreamWithSrc loadFromCIBuild(String id, String branch) throws IOException {
     checkBuildLoaded();
     if (ciList.containsKey(id)) {
-      InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
-      return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"), "current");
+      if (branch == null) {
+        InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "package.tgz"), false);
+        return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "package.tgz"), "current");
+      } else {
+        InputStream stream = fetchFromUrlSpecific(Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), false);
+        return new InputStreamWithSrc(stream, Utilities.pathURL(ciList.get(id), "branches", branch, "package.tgz"), "current$"+branch);
+      }
     } else if (id.startsWith("hl7.fhir.r5")) {
       InputStream stream = fetchFromUrlSpecific(Utilities.pathURL("http://build.fhir.org", id + ".tgz"), false);
       return new InputStreamWithSrc(stream, Utilities.pathURL("http://build.fhir.org", id + ".tgz"), "current");
