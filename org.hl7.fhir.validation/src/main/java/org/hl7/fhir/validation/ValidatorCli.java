@@ -71,6 +71,8 @@ import org.hl7.fhir.validation.cli.utils.*;
 import java.io.File;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A executable class that will validate one or more FHIR resources against
@@ -101,6 +103,8 @@ public class ValidatorCli {
     TimeTracker tt = new TimeTracker();
     TimeTracker.Session tts = tt.start("Loading");
 
+    args = preProcessArgs(args);
+    
     Display.displayVersion();
     Display.displaySystemInfo();
 
@@ -158,6 +162,35 @@ public class ValidatorCli {
       Display.printCliArgumentsAndInfo(args);
       doValidation(tt, tts, cliContext);
     }
+  }
+
+  private static String[] preProcessArgs(String[] args) {
+    // ips$branch --> -version 4.0 -ig hl7.fhir.uv.ips#current$connectathon-2 -profile http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips
+    List<String> res = new ArrayList<>();
+    for (String a : args) {
+      if (a.equals("-ips")) {
+        res.add("-version");
+        res.add("4.0");
+        res.add("-ig");
+        res.add("hl7.fhir.uv.ips#current$connectathon-2");
+        res.add("-profile");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");
+      } else if (a.startsWith("-ips$")) {
+        res.add("-version");
+        res.add("4.0");
+        res.add("-ig");
+        res.add("hl7.fhir.uv.ips#current$"+a.substring(5));
+        res.add("-profile");
+        res.add("http://hl7.org/fhir/uv/ips/StructureDefinition/Bundle-uv-ips");        
+      } else {
+        res.add(a);
+      }
+    }
+    String[] r = new String[res.size()];
+    for (int i = 0; i < res.size(); i++) {
+      r[i] = res.get(i);
+    }
+    return r;
   }
 
   private static boolean destinationDirectoryValid(String dest) {

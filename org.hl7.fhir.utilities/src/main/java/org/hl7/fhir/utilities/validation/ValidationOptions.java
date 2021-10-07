@@ -11,6 +11,7 @@ public class ValidationOptions {
   private boolean useClient = true;
   private boolean guessSystem = false;
   private ValueSetMode valueSetMode = ValueSetMode.ALL_CHECKS;
+  private boolean vsAsUrl;
 
   public ValidationOptions() {
     super();
@@ -42,7 +43,8 @@ public class ValidationOptions {
     ValidationOptions n = new ValidationOptions(language);
     n.useServer = useServer;
     n.useClient = useClient;
-    n.guessSystem = guessSystem;    
+    n.guessSystem = guessSystem; 
+    n.vsAsUrl = vsAsUrl;
     return n;
   }
   
@@ -94,6 +96,15 @@ public class ValidationOptions {
 
   public ValueSetMode getValueSetMode() {
     return valueSetMode;
+  }
+
+  public ValidationOptions setVsAsUrl() {
+    vsAsUrl = true;
+    return this;
+  }
+
+  public boolean getVsAsUrl() {
+    return vsAsUrl;
   }
 
   
