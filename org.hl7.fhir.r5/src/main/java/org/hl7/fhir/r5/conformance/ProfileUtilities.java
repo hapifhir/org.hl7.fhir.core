@@ -2452,19 +2452,19 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (webUrl != null) {
         // also, must touch up the markdown
         if (element.hasDefinition())
-          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl));
+          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, baseSpecUrl()));
         if (element.hasComment())
-          element.setComment(processRelativeUrls(element.getComment(), webUrl));
+          element.setComment(processRelativeUrls(element.getComment(), webUrl, baseSpecUrl()));
         if (element.hasRequirements())
-          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl));
+          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, baseSpecUrl()));
         if (element.hasMeaningWhenMissing())
-          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl));
+          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, baseSpecUrl()));
       }
     }
     return element;
   }
 
-  private String processRelativeUrls(String markdown, String webUrl) {
+  public static String processRelativeUrls(String markdown, String webUrl, String basePath) {
     StringBuilder b = new StringBuilder();
     int i = 0;
     while (i < markdown.length()) {
@@ -2487,7 +2487,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             // 
             if (isLikelySourceURLReference(url)) {
               b.append("](");
-              b.append(baseSpecUrl());
+              b.append(basePath);
               i = i + 1;
             } else {
               b.append("](");
@@ -2507,11 +2507,13 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  private boolean isLikelySourceURLReference(String url) {
+  public static boolean isLikelySourceURLReference(String url) {
     return 
         url.startsWith("extensibility.html") || 
+        url.startsWith("terminologies.html") || 
         url.startsWith("observation.html") || 
         url.startsWith("datatypes.html") || 
+        url.startsWith("narrative.html") || 
         (url.startsWith("extension-") || url.contains(".html")) || 
         url.startsWith("resource-definitions.html");
   }
