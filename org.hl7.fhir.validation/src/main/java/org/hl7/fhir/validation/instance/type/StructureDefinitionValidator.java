@@ -215,7 +215,7 @@ public class StructureDefinitionValidator extends BaseValidator {
         
         // just because we can't resolve it directly doesn't mean that terminology server can't. Check with it
         
-        if (warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs != null || serversSupportsValueSet(ref), I18nConstants.SD_ED_BIND_UNKNOWN_VS, path, ref)) {
+        if (warning(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs != null || serverSupportsValueSet(ref), I18nConstants.SD_ED_BIND_UNKNOWN_VS, path, ref)) {
           if (vs != null) {
             rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), vs instanceof ValueSet, I18nConstants.SD_ED_BIND_NOT_VS, path, ref, vs.fhirType());
           }
@@ -224,7 +224,7 @@ public class StructureDefinitionValidator extends BaseValidator {
     } 
   }
 
-  private boolean serversSupportsValueSet(String ref) {
+  private boolean serverSupportsValueSet(String ref) {
     ValidationResult vr = context.validateCode(new ValidationOptions().checkValueSetOnly().setVsAsUrl().noClient(), new Coding("http://loinc.org", "5792-7", null), new ValueSet().setUrl(ref));
     return vr.getErrorClass() == null;
   }
