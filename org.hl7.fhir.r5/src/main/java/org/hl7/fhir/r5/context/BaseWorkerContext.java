@@ -906,9 +906,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
       }
       setTerminologyOptions(options, pIn);
-      res = validateOnServer(vs, pIn);
+      res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
-      res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId());
+      res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
     }
     if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
       unsupportedCodeSystems.add(code.getSystem());
@@ -967,7 +967,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       Parameters pIn = new Parameters();
       pIn.addParameter().setName("codeableConcept").setValue(code);
       setTerminologyOptions(options, pIn);
-      res = validateOnServer(vs, pIn);
+      res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog.getLastId());
     }
@@ -975,7 +975,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  private ValidationResult validateOnServer(ValueSet vs, Parameters pin) throws FHIRException {
+  private ValidationResult validateOnServer(ValueSet vs, Parameters pin, ValidationOptions options) throws FHIRException {
     boolean cache = false;
     if (vs != null) {
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
@@ -988,6 +988,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (vs != null) {
       if (isTxCaching && cacheId != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+(vs.hasVersion() ? "|"+vs.getVersion() : "")));        
+      } else if (options.getVsAsUrl()){
+        pin.addParameter().setName("url").setValue(new StringType(vs.getUrl()));
       } else {
         pin.addParameter().setName("valueSet").setResource(vs);
         cached.add(vs.getUrl()+"|"+vs.getVersion());

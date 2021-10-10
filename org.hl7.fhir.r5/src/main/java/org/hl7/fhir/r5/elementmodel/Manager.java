@@ -62,6 +62,8 @@ public class Manager {
           return "txt";
         case VBAR:
           return "hl7";
+        case SHC:
+          return "shc";
       }
       return null;
     }

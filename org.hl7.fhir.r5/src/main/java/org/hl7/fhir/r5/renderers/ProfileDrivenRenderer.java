@@ -450,8 +450,10 @@ public class ProfileDrivenRenderer extends ResourceRenderer {
       x.addText(((Enumeration<?>) e).getValue().toString()); // todo: look up a display name if there is one
       return true;
     } else if (e instanceof BooleanType) {
-      if (((BooleanType) e).getValue()) {
+      if (((BooleanType) e).hasValue()) {
         x.addText(name);
+        x.addText(": ");
+        x.addText(((BooleanType) e).getValueAsString());
         return true;
       }
     } else if (e instanceof CodeableReference) {

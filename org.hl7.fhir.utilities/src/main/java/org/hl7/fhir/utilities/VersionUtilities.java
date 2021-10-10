@@ -135,7 +135,7 @@ public class VersionUtilities {
   }
 
   public static boolean isR5Ver(String ver) {
-    return ver != null && ver.startsWith(CURRENT_VERSION);
+    return ver != null && (ver.startsWith(CURRENT_VERSION) || ver.equals("current"));
   }
 
   public static boolean isR4BVer(String ver) {

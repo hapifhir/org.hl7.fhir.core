@@ -93,6 +93,7 @@ import org.hl7.fhir.r5.model.ElementDefinition.DiscriminatorType;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionBindingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionConstraintComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionMappingComponent;
+import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.ElementDefinitionSlicingDiscriminatorComponent;
 import org.hl7.fhir.r5.model.ElementDefinition.PropertyRepresentation;
 import org.hl7.fhir.r5.model.ElementDefinition.TypeRefComponent;
@@ -303,7 +304,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         }
       } else if (item instanceof Element) {
         Element e = (Element) item;
-        self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));
+        if (e.getName().equals("contained")) {
+          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e, ctxt.getRootResource()), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));          
+        } else {
+          self.validateResource(new ValidatorHostContext(ctxt.getAppContext(), e), valerrors, e, e, sd, IdStatus.OPTIONAL, new NodeStack(context, null, e, validationLanguage));
+        }
       } else
         throw new NotImplementedException(context.formatMessage(I18nConstants.NOT_DONE_YET_VALIDATORHOSTSERVICESCONFORMSTOPROFILE_WHEN_ITEM_IS_NOT_AN_ELEMENT));
       boolean ok = true;
@@ -2753,7 +2758,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!isShowMessagesFromReferences()) {
                 rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path, areAllBaseProfiles(profiles), I18nConstants.REFERENCE_REF_CANTMATCHCHOICE, ref, asList(type.getTargetProfile()));
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false,
+                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, false, 
                     context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, ref, sd.getUrl()), 
                     errorSummaryForSlicingAsHtml(badProfiles.get(sd)), errorSummaryForSlicingAsText(badProfiles.get(sd)));
                 }
@@ -2771,7 +2776,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
               if (!isShowMessagesFromReferences()) {
                 warning(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, I18nConstants.REFERENCE_REF_MULTIPLEMATCHES, ref, asListByUrl(goodProfiles.keySet()));
                 for (StructureDefinition sd : badProfiles.keySet()) {
-                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, ref, sd.getUrl()), 
+                  slicingHint(errors, IssueType.STRUCTURE, element.line(), element.col(), path, false, false,  context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, ref, sd.getUrl()), 
                       errorSummaryForSlicingAsHtml(badProfiles.get(sd)), errorSummaryForSlicingAsText(badProfiles.get(sd)));
                 }
               } else {
@@ -2898,6 +2903,15 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return "<ul>" + b.toString() + "</ul>";
   }
 
+  private boolean isCritical(List<ValidationMessage> list) {
+    for (ValidationMessage vm : list) {
+      if (vm.isSlicingHint() && vm.isCriticalSignpost()) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   private String[] errorSummaryForSlicingAsText(List<ValidationMessage> list) {
     List<String> res = new ArrayList<String>();
     for (ValidationMessage vm : list) {
@@ -3305,7 +3319,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
             rr.setExternal(false);
             rr.setStack(nstack);
 //            rr.getStack().qualifyPath(".ofType("+nstack.getElement().fhirType()+")");
-            System.out.println("-->"+nstack.getLiteralPath());
+//            System.out.println("-->"+nstack.getLiteralPath());
             return rr;            
           }
           if (nstack.getElement().getSpecial() == SpecialElement.CONTAINED) {
@@ -3675,9 +3689,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     ValidatorHostContext shc = hostContext.forSlicing();
     boolean pass = evaluateSlicingExpression(shc, element, path, profile, n);
     if (!pass) {
-      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, (context.formatMessage(I18nConstants.DOES_NOT_MATCH_SLICE_, ed.getSliceName())), "discriminator = " + Utilities.escapeXml(n.toString()), null);
+      slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, isProfile(slicer), (context.formatMessage(I18nConstants.DOES_NOT_MATCH_SLICE_, ed.getSliceName())), "discriminator = " + Utilities.escapeXml(n.toString()), null);
       for (String url : shc.getSliceRecords().keySet()) {
-        slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false,
+        slicingHint(sliceInfo, IssueType.STRUCTURE, element.line(), element.col(), path, false, isProfile(slicer), 
          context.formatMessage(I18nConstants.DETAILS_FOR__MATCHING_AGAINST_PROFILE_, stack.getLiteralPath(), url),
           context.formatMessage(I18nConstants.PROFILE__DOES_NOT_MATCH_FOR__BECAUSE_OF_THE_FOLLOWING_PROFILE_ISSUES__,
               url,
@@ -3685,6 +3699,18 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     return pass;
+  }
+
+  private boolean isProfile(ElementDefinition slicer) {
+    if (slicer == null || !slicer.hasSlicing()) {
+      return false;
+    }
+    for (ElementDefinitionSlicingDiscriminatorComponent t : slicer.getSlicing().getDiscriminator()) {
+      if (t.getType() == DiscriminatorType.PROFILE) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public boolean evaluateSlicingExpression(ValidatorHostContext hostContext, Element element, String path, StructureDefinition profile, ExpressionNode n) throws FHIRException {
@@ -4898,7 +4924,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         if (ei.additionalSlice && ei.definition != null) {
           if (ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPEN) ||
             ei.definition.getSlicing().getRules().equals(ElementDefinition.SlicingRules.OPENATEND) && true /* TODO: replace "true" with condition to check that this element is at "end" */) {
-            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.getPath(), false,
+            slicingHint(errors, IssueType.INFORMATIONAL, ei.line(), ei.col(), ei.getPath(), false, isProfile(slicer) || isCritical(ei.sliceInfo), 
               context.formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_,
                 profile == null ? "" : " defined in the profile " + profile.getUrl()),
               context.formatMessage(I18nConstants.THIS_ELEMENT_DOES_NOT_MATCH_ANY_KNOWN_SLICE_, profile == null ? "" : I18nConstants.DEFINED_IN_THE_PROFILE + profile.getUrl()) + errorSummaryForSlicingAsHtml(ei.sliceInfo),
@@ -4943,6 +4969,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     return problematicPaths;
   }
+
 
   public List<ElementInfo> listChildren(Element element, NodeStack stack) {
     // 1. List the children, and remember their exact path (convenience)
@@ -5197,7 +5224,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       // todo: validate everything in this bundle.
     }
-    ok = rule(errors, IssueType.INVALID, -1, -1, stack.getLiteralPath(), typeMatchesDefn(resourceName, defn), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE, defn.getName(), resourceName);
+    ok = rule(errors, IssueType.INVALID, -1, -1, stack.getLiteralPath(), typeMatchesDefn(resourceName, defn), I18nConstants.VALIDATION_VAL_PROFILE_WRONGTYPE, defn.getType(), resourceName, defn.getName());
 
     if (ok) {
       if (idstatus == IdStatus.REQUIRED && (element.getNamedChild(ID) == null)) {

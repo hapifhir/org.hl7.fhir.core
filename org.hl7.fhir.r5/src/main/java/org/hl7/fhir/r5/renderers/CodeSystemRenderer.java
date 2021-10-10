@@ -422,7 +422,7 @@ public class CodeSystemRenderer extends TerminologyRenderer {
             if (first) first = false; else td.addText(", ");
             if (pcv.hasValueCoding()) { 
               td.addText(pcv.getValueCoding().getCode());
-            } else if (pcv.hasValueStringType() && Utilities.isAbsoluteUrl(pcv.getValue().primitiveValue())) {
+            } else if (pcv.hasValueStringType() && Utilities.isAbsoluteUrlLinkable(pcv.getValue().primitiveValue())) {
               td.ah(pcv.getValue().primitiveValue()).tx(pcv.getValue().primitiveValue());
             } else {
               td.addText(pcv.getValue().primitiveValue());
