@@ -139,6 +139,8 @@ public class IgLoader {
         res.cntType = Manager.FhirFormat.XML;
       else if (t.getKey().endsWith(".ttl"))
         res.cntType = Manager.FhirFormat.TURTLE;
+      else if (t.getKey().endsWith(".shc"))
+        res.cntType = Manager.FhirFormat.SHC;
       else if (t.getKey().endsWith(".txt") || t.getKey().endsWith(".map"))
         res.cntType = Manager.FhirFormat.TEXT;
       else

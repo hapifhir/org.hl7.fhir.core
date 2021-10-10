@@ -634,7 +634,14 @@ public class Element extends Base {
 
   @Override
   public String toString() {
-    return name+"="+fhirType() + "["+(children == null || hasValue() ? value : Integer.toString(children.size())+" children")+"]";
+    if (name.equals(fhirType()) && isResource()) {
+      return fhirType()+"/"+getIdBase() + "["+(children == null || hasValue() ? value : Integer.toString(children.size())+" children")+"]";
+      
+    } else if (isResource()) {
+      return name+"="+fhirType()+"/"+getIdBase()+ "["+(children == null || hasValue() ? value : Integer.toString(children.size())+" children")+"]";
+    } else {
+      return name+"="+fhirType() + "["+(children == null || hasValue() ? value : Integer.toString(children.size())+" children")+"]";
+    }
   }
 
   @Override

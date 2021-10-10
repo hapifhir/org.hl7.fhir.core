@@ -126,7 +126,9 @@ public class VersionConvertorContext<T> {
    */
   public T getVersionConvertor() {
     T result = threadLocalVersionConverter.get();
-    logger.debug(result.toString());
+    if (result != null && logger != null) {
+      logger.debug(result.toString());
+    }
     return result;
   }
 }

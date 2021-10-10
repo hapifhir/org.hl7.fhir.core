@@ -516,7 +516,7 @@ public class FHIRToolingClient {
   			return p_out;
   		}
   		} catch (Exception e) {
-  			handleException("Error performing operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);  		
+  			handleException("Error performing tx2 operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);  		
   		}
   		return null;
   }

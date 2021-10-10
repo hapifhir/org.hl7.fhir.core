@@ -613,6 +613,11 @@ public interface IWorkerContext {
       return this;
     }
 
+    public ValidationResult setErrorClass(TerminologyServiceErrorClass errorClass) {
+      this.errorClass = errorClass;
+      return this;
+    }
+
     public String getTxLink() {
       return txLink;
     }

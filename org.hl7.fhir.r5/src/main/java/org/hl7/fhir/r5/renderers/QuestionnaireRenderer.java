@@ -1013,7 +1013,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   private void defn(XhtmlNode tbl, String name, String url, Resource res) throws UnsupportedEncodingException, IOException {
     if (res != null && res.hasUserData("path")) {
       defn(tbl, "Definition", RendererFactory.factory(res, context).display(res), res.getUserString("path"));
-    } else if (Utilities.isAbsoluteUrl(url)) {
+    } else if (Utilities.isAbsoluteUrlLinkable(url)) {
       defn(tbl, "Definition", url, url);
     } {
       defn(tbl, "Definition", url);

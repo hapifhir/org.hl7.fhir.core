@@ -299,36 +299,39 @@ public class FHIRToolingClient {
     String ps = "";
     try {
       if (!complex)
-      for (ParametersParameterComponent p : params.getParameter())
-        if (p.getValue() instanceof PrimitiveType)
-          ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
-    ResourceRequest<T> result;
-    URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
-    if (complex) {
-      byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()));
-      client.getLogger().logRequest("POST", url.toString(), null, body);
-      result = client.issuePostRequest(url, body, getPreferredResourceFormat(),
-          "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
-    } else {
-      client.getLogger().logRequest("GET", url.toString(), null, null);
-      result = client.issueGetResourceRequest(url, getPreferredResourceFormat(), generateHeaders(), "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
-    }
-    if (result.isUnsuccessfulRequest()) {
-      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
-    }
-    if (result.getPayload() instanceof Parameters) {
-      return (Parameters) result.getPayload();
-    } else {
-      Parameters p_out = new Parameters();
-      p_out.addParameter().setName("return").setResource(result.getPayload());
-      return p_out;
-    }
+        for (ParametersParameterComponent p : params.getParameter())
+          if (p.getValue() instanceof PrimitiveType)
+            ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
+      ResourceRequest<T> result;
+      URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
+      if (complex) {
+        byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()));
+        if (client.getLogger() != null) {
+          client.getLogger().logRequest("POST", url.toString(), null, body);
+        }
+        result = client.issuePostRequest(url, body, getPreferredResourceFormat(),
+            "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
+      } else {
+        if (client.getLogger() != null) {
+          client.getLogger().logRequest("GET", url.toString(), null, null);
+        }
+        result = client.issueGetResourceRequest(url, getPreferredResourceFormat(), generateHeaders(), "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
+      }
+      if (result.isUnsuccessfulRequest()) {
+        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+      }
+      if (result.getPayload() instanceof Parameters) {
+        return (Parameters) result.getPayload();
+      } else {
+        Parameters p_out = new Parameters();
+        p_out.addParameter().setName("return").setResource(result.getPayload());
+        return p_out;
+      }
     } catch (Exception e) {
-  	  handleException("Error performing operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);  		
+      handleException("Error performing tx5 operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);  		
     }
     return null;
   }
-
 
   public Bundle transaction(Bundle batch) {
     Bundle transactionResult = null;

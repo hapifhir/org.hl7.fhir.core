@@ -277,11 +277,15 @@ public class FHIRToolingClient {
     URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
     if (complex) {
       byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()));
-      client.getLogger().logRequest("POST", url.toString(), null, body);
+      if (client.getLogger() != null) {
+        client.getLogger().logRequest("POST", url.toString(), null, body);
+      }
       result = client.issuePostRequest(url, body, getPreferredResourceFormat(),
           "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
     } else {
-      client.getLogger().logRequest("GET", url.toString(), null, null);
+      if (client.getLogger() != null) {
+        client.getLogger().logRequest("GET", url.toString(), null, null);
+      }
       result = client.issueGetResourceRequest(url, getPreferredResourceFormat(), generateHeaders(), "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
     }
     if (result.isUnsuccessfulRequest()) {
@@ -295,7 +299,7 @@ public class FHIRToolingClient {
       return p_out;
     }
     } catch (Exception e) {
-  	  handleException("Error performing operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);  		
+  	  handleException("Error performing tx3 operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);  		
     }
     return null;
   }
