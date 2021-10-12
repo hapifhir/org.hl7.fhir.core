@@ -400,8 +400,12 @@
                                     <goal>sign</goal>
                                 </goals>
                                 <configuration>
-                                    <keyname>${gpg.keyname}</keyname>
-                                    <passphraseServerId>${gpg.keyname}</passphraseServerId>
+					<keyname>${gpg.keyname}</keyname>
+					<passphraseServerId>${gpg.keyname}</passphraseServerId>
+					<gpgArguments>
+					    <arg>--pinentry-mode</arg>
+					    <arg>loopback</arg>
+					</gpgArguments>
                                 </configuration>
                             </execution>
                         </executions>
@@ -452,8 +456,12 @@
                                     <goal>sign</goal>
                                 </goals>
                                 <configuration>
-                                    <keyname>${gpg.keyname}</keyname>
-                                    <passphraseServerId>${gpg.keyname}</passphraseServerId>
+					<keyname>${gpg.keyname}</keyname>
+					<passphraseServerId>${gpg.keyname}</passphraseServerId>
+					<gpgArguments>
+					    <arg>--pinentry-mode</arg>
+					    <arg>loopback</arg>
+					</gpgArguments>
                                 </configuration>
                             </execution>
                         </executions>
