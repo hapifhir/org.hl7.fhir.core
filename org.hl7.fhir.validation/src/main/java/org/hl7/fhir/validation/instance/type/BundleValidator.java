@@ -143,7 +143,7 @@ public class BundleValidator extends BaseValidator{
     }
 
     Boolean searchMode = readHasSearchMode(entries);
-    if (searchMode == false) { // if no resources have search mode
+    if (searchMode != null && searchMode == false) { // if no resources have search mode
       boolean typeProblem = false;
       String rtype = null;
       int count = 0;
