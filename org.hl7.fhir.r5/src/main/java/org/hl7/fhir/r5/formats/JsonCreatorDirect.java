@@ -34,6 +34,8 @@ package org.hl7.fhir.r5.formats;
 import java.io.IOException;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hl7.fhir.utilities.Utilities;
 
@@ -48,7 +50,7 @@ public class JsonCreatorDirect implements JsonCreator {
   private Writer writer;
   private boolean pretty;
   private boolean named;
-  private boolean valued;
+  private List<Boolean> valued = new ArrayList<Boolean>();
   private int indent;
   
   public JsonCreatorDirect(Writer writer) {
@@ -66,6 +68,10 @@ public class JsonCreatorDirect implements JsonCreator {
     checkState();
     writer.write("{");
     stepIn();
+    if (!valued.isEmpty()) {
+      valued.set(0, true);      
+    }
+    valued.add(0, false);
   }
 
   public void stepIn() throws IOException {
@@ -96,7 +102,7 @@ public class JsonCreatorDirect implements JsonCreator {
         writer.write(":");
       named = false;
     }
-    if (valued) {
+    if (!valued.isEmpty() && valued.get(0)) {
       writer.write(",");
       if (pretty) {
         writer.write("\r\n");
@@ -104,7 +110,7 @@ public class JsonCreatorDirect implements JsonCreator {
           writer.write("  ");
         }        
       }
-      valued = false;
+      valued.set(0, false);
     }
   }
 
@@ -112,13 +118,14 @@ public class JsonCreatorDirect implements JsonCreator {
   public void endObject() throws IOException {
     stepOut();
     writer.write("}");    
+    valued.remove(0);
   }
 
   @Override
   public void nullValue() throws IOException {
     checkState();
     writer.write("null");
-    valued = true;
+    valued.set(0, true);
   }
 
   @Override
@@ -132,7 +139,7 @@ public class JsonCreatorDirect implements JsonCreator {
   public void value(String value) throws IOException {
     checkState();
     writer.write("\""+Utilities.escapeJson(value)+"\"");    
-    valued = true;
+    valued.set(0, true);
   }
 
   @Override
@@ -144,7 +151,7 @@ public class JsonCreatorDirect implements JsonCreator {
       writer.write("true");
     else
       writer.write("false");
-    valued = true;
+    valued.set(0, true);
   }
 
   @Override
@@ -154,7 +161,7 @@ public class JsonCreatorDirect implements JsonCreator {
       writer.write("null");
     else 
       writer.write(value.toString());    
-    valued = true;
+    valued.set(0, true);
   }
 
   @Override
@@ -164,7 +171,7 @@ public class JsonCreatorDirect implements JsonCreator {
       writer.write("null");
     else 
       writer.write(value);    
-    valued = true;
+    valued.set(0, true);
   }
 
   @Override
@@ -174,23 +181,28 @@ public class JsonCreatorDirect implements JsonCreator {
       writer.write("null");
     else 
       writer.write(value.toString());    
-    valued = true;
+    valued.set(0, true);
   }
 
   @Override
   public void beginArray() throws IOException {
     checkState();
     writer.write("[");    
+    if (!valued.isEmpty()) {
+      valued.set(0, true);      
+    }
+    valued.add(0, false);
   }
 
   @Override
   public void endArray() throws IOException {
     writer.write("]");        
+    valued.remove(0);
   }
 
   @Override
   public void finish() throws IOException {
-    // nothing
+    writer.flush();
   }
 
   @Override

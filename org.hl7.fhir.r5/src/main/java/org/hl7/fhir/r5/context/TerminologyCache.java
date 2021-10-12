@@ -354,6 +354,7 @@ public class TerminologyCache {
   private void load() throws FHIRException {
     for (String fn : new File(folder).list()) {
       if (fn.endsWith(".cache") && !fn.equals("validation.cache")) {
+        int c = 0;
         try {
           String title = fn.substring(0, fn.lastIndexOf("."));
           NamedCache nc = new NamedCache();
@@ -364,6 +365,7 @@ public class TerminologyCache {
             src = src.substring(1);
           int i = src.indexOf(ENTRY_MARKER); 
           while (i > -1) {
+            c++;
             String s = src.substring(0, i);
             src = src.substring(i+ENTRY_MARKER.length()+1);
             i = src.indexOf(ENTRY_MARKER);
@@ -395,7 +397,7 @@ public class TerminologyCache {
             }
           }        
         } catch (Exception e) {
-          throw new FHIRException("Error loading "+fn+": "+e.getMessage(), e);
+          throw new FHIRException("Error loading "+fn+": "+e.getMessage()+" entry "+c, e);
         }
       }
     }
