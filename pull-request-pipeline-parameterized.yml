@@ -1,0 +1,56 @@
+jobs:
+  - ${{ each imageName in parameters.imageName }}:
+    - ${{ each jdkVersion in parameters.jdkVersion }}:
+      - job:
+        trigger: none
+        
+        pr:
+        - master
+        - release
+        
+        pool:
+          vmImage: $(imageName)
+        
+        variables:
+          currentImage: $(imageName)
+          codecov: $(CODECOV_TOKEN)
+          VERSION:
+
+        steps:
+          # Runs 'mvn clean package'
+          - task: Maven@3
+            inputs:
+              mavenPomFile: 'pom.xml'
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(jdkVersion)
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: true
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              goals: 'package'
+
+          - task: Maven@3
+            inputs:
+              mavenPomFile: 'pom.xml'
+              mavenOptions: '-Xmx3072m'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '$(jdkVersion)'
+              jdkArchitectureOption: 'x64'
+              options: '-pl org.hl7.fhir.validation.cli'
+              publishJUnitResults: false
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+              goals: 'exec:exec'
+
+          # Upload test results to codecov    
+          - script: bash <(curl https://codecov.io/bash) -t $(codecov)
+            displayName: 'codecov Bash Uploader'
+            condition: eq(variables.currentImage, 'ubuntu-latest')
+
+          # Publishes the test results to build artifacts.
+          - task: PublishCodeCoverageResults@1
+            displayName: 'Publish JaCoCo test results'
+            condition: eq(variables.currentImage, 'ubuntu-latest')
+            inputs:
+              codeCoverageTool: 'JaCoCo'
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/jacoco.xml'
+              reportDirectory: '$(System.DefaultWorkingDirectory)/org.hl7.fhir.report/target/site/jacoco-aggregate/'
