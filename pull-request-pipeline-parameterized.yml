@@ -2,6 +2,8 @@ jobs:
   - ${{ each imageName in parameters.imageName }}:
     - ${{ each jdkVersion in parameters.jdkVersion }}:
       - job:
+
+        displayName: ${{imageName}}_${{jdkVersion}}
         
         pool:
           vmImage: ${{imageName}}
