@@ -1,12 +1,13 @@
+trigger: none
+        
+pr:
+- master
+- release
+
 jobs:
   - ${{ each imageName in parameters.imageName }}:
     - ${{ each jdkVersion in parameters.jdkVersion }}:
       - job:
-        trigger: none
-        
-        pr:
-        - master
-        - release
         
         pool:
           vmImage: $(imageName)
