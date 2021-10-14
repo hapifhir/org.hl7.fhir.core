@@ -1,3 +1,8 @@
+trigger: none
+        
+pr:
+- master
+- release
 
 jobs:
 - template: pull-request-pipeline-parameterized.yml
