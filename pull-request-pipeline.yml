@@ -8,4 +8,4 @@ jobs:
 - template: pull-request-pipeline-parameterized.yml
   parameters:
     imageName: [ 'ubuntu-latest', 'macos-latest', 'windows-2019' ]
-    jdkVersion: [ '1.8', '1.11']
+    jdkVersion: [ '1.8', '1.11', '1.17']
