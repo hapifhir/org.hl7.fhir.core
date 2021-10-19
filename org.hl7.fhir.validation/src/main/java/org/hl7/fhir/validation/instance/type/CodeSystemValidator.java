@@ -77,7 +77,7 @@ public class CodeSystemValidator  extends BaseValidator {
   private void validateSupplementConcept(List<ValidationMessage> errors, Element concept, NodeStack stack, String supp, ValidationOptions options) {
     String code = concept.getChildValue("code");
     if (!Utilities.noString(code)) {
-      org.hl7.fhir.r5.context.IWorkerContext.ValidationResult res = context.validateCode(options, supp, code, null);
+      org.hl7.fhir.r5.context.IWorkerContext.ValidationResult res = context.validateCode(options, systemFromCanonical(supp), versionFromCanonical(supp), code, null);
       rule(errors, IssueType.BUSINESSRULE, stack.getLiteralPath(), res.isOk(), I18nConstants.CODESYSTEM_CS_SUPP_INVALID_CODE, supp, code);
     }
     
