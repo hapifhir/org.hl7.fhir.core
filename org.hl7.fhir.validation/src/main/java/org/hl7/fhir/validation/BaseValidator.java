@@ -1007,4 +1007,24 @@ public class BaseValidator {
     }
     return null;
   }
+  
+  protected String versionFromCanonical(String system) {
+    if (system == null) {
+      return null;
+    } else if (system.contains("|")) {
+      return system.substring(0, system.indexOf("|"));
+    } else {
+      return system;
+    }
+  }
+
+  protected String systemFromCanonical(String system) {
+    if (system == null) {
+      return null;
+    } else if (system.contains("|")) {
+      return system.substring(system.indexOf("|")+1);
+    } else {
+      return system;
+    }
+  }
 }

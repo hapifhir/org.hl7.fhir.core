@@ -12,6 +12,7 @@ public class ValidationOptions {
   private boolean guessSystem = false;
   private ValueSetMode valueSetMode = ValueSetMode.ALL_CHECKS;
   private boolean vsAsUrl;
+  private boolean versionFlexible = true;
 
   public ValidationOptions() {
     super();
@@ -45,6 +46,7 @@ public class ValidationOptions {
     n.useClient = useClient;
     n.guessSystem = guessSystem; 
     n.vsAsUrl = vsAsUrl;
+    n.versionFlexible = versionFlexible;
     return n;
   }
   
@@ -75,7 +77,8 @@ public class ValidationOptions {
   
 
   public String toJson() {
-    return "\"lang\":\""+language+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", \"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"valueSetMode\":\""+valueSetMode.toString()+"\"";
+    return "\"lang\":\""+language+"\", \"useServer\":\""+Boolean.toString(useServer)+"\", \"useClient\":\""+Boolean.toString(useClient)+"\", "+
+       "\"guessSystem\":\""+Boolean.toString(guessSystem)+"\", \"valueSetMode\":\""+valueSetMode.toString()+"\", \"versionFlexible\":\""+Boolean.toString(versionFlexible)+"\"";
   }
 
   public static ValidationOptions defaults() {
@@ -105,6 +108,16 @@ public class ValidationOptions {
 
   public boolean getVsAsUrl() {
     return vsAsUrl;
+  }
+
+  public boolean versionFlexible() {
+    return versionFlexible;
+  }
+
+  public ValidationOptions setVersionFlexible(boolean value) {
+    ValidationOptions n = this.copy();
+    n.versionFlexible = value;
+    return n;
   }
 
   

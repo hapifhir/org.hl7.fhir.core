@@ -896,7 +896,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
                 li.ah(href).addText(f.getValue());
               } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
                 li.addText(f.getValue());
-                ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), f.getValue(), null);
+                ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), inc.getVersion(), f.getValue(), null);
                 if (vr.isOk()) {
                   li.tx(" ("+vr.getDisplay()+")");
                 }

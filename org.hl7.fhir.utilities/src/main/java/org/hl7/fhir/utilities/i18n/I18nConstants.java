@@ -105,8 +105,10 @@ public class I18nConstants {
   public static final String ERROR_READING__FROM_PACKAGE__ = "Error_reading__from_package__";
   public static final String ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES = "Error_validating_code_running_without_terminology_services";
   public static final String ERROR_WRITING_NUMBER__TO_JSON = "error_writing_number__to_JSON";
-  public static final String EXTENSION_EXT_CONTEXT_WRONG = "Extension_EXT_Context_Wrong";
-  public static final String EXTENSION_EXT_CONTEXT_WRONG_XVER = "EXTENSION_EXT_CONTEXT_WRONG_XVER";
+  public static final String EXTENSION_EXTP_CONTEXT_WRONG = "Extension_EXTP_Context_Wrong";
+  public static final String EXTENSION_EXTP_CONTEXT_WRONG_XVER = "EXTENSION_EXTP_CONTEXT_WRONG_XVER";
+  public static final String EXTENSION_EXTM_CONTEXT_WRONG = "Extension_EXTM_Context_Wrong";
+  public static final String EXTENSION_EXTM_CONTEXT_WRONG_XVER = "EXTENSION_EXTM_CONTEXT_WRONG_XVER";
   public static final String EXTENSION_EXT_COUNT_MISMATCH = "Extension_EXT_Count_Mismatch";
   public static final String EXTENSION_EXT_COUNT_NOTFOUND = "Extension_EXT_Count_NotFound";
   public static final String EXTENSION_EXT_FIXED_BANNED = "Extension_EXT_Fixed_Banned";

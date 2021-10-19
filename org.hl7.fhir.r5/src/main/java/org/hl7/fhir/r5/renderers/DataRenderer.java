@@ -191,8 +191,8 @@ public class DataRenderer extends Renderer {
     return b.toString();
   }
 
-  private String lookupCode(String system, String code) {
-    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), system, code, null);
+  private String lookupCode(String system, String version, String code) {
+    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().setVersionFlexible(true), system, version, code, null);
 
     if (t != null && t.getDisplay() != null)
       return t.getDisplay();
@@ -484,7 +484,7 @@ public class DataRenderer extends Renderer {
     if (c.hasDisplayElement())
       return c.getDisplay();
     if (Utilities.noString(s))
-      s = lookupCode(c.getSystem(), c.getCode());
+      s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
     if (Utilities.noString(s))
       s = c.getCode();
     return s;
@@ -507,7 +507,7 @@ public class DataRenderer extends Renderer {
     if (c.hasDisplayElement())
       s = c.getDisplay();
     if (Utilities.noString(s))
-      s = lookupCode(c.getSystem(), c.getCode());
+      s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
 
 
     String sn = describeSystem(c.getSystem());
@@ -539,13 +539,13 @@ public class DataRenderer extends Renderer {
     if (c.hasDisplayElement())
       s = c.getDisplay();
     if (Utilities.noString(s))
-      s = lookupCode(c.getSystem(), c.getCode());
+      s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
 
     if (Utilities.noString(s))
       s = c.getCode();
 
     if (showCodeDetails) {
-      x.addText(s+" (Details: "+TerminologyRenderer.describeSystem(c.getSystem())+" code "+c.getCode()+" = '"+lookupCode(c.getSystem(), c.getCode())+"', stated as '"+c.getDisplay()+"')");
+      x.addText(s+" (Details: "+TerminologyRenderer.describeSystem(c.getSystem())+" code "+c.getCode()+" = '"+lookupCode(c.getSystem(), c.getVersion(), c.getCode())+"', stated as '"+c.getDisplay()+"')");
     } else
       x.span(null, "{"+c.getSystem()+" "+c.getCode()+"}").addText(s);
   }
@@ -564,7 +564,7 @@ public class DataRenderer extends Renderer {
       // still? ok, let's try looking it up
       for (Coding c : cc.getCoding()) {
         if (c.hasCode() && c.hasSystem()) {
-          s = lookupCode(c.getSystem(), c.getCode());
+          s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
           if (!Utilities.noString(s))
             break;
         }
@@ -611,7 +611,7 @@ public class DataRenderer extends Renderer {
       // still? ok, let's try looking it up
       for (Coding c : cc.getCoding()) {
         if (c.hasCodeElement() && c.hasSystemElement()) {
-          s = lookupCode(c.getSystem(), c.getCode());
+          s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
           if (!Utilities.noString(s))
             break;
         }
@@ -636,7 +636,7 @@ public class DataRenderer extends Renderer {
           first = false;
         } else
           sp.tx("; ");
-        sp.tx("{"+TerminologyRenderer.describeSystem(c.getSystem())+" code '"+c.getCode()+"' = '"+lookupCode(c.getSystem(), c.getCode())+(c.hasDisplay() ? "', given as '"+c.getDisplay()+"'}" : ""));
+        sp.tx("{"+TerminologyRenderer.describeSystem(c.getSystem())+" code '"+c.getCode()+"' = '"+lookupCode(c.getSystem(), c.getVersion(), c.getCode())+(c.hasDisplay() ? "', given as '"+c.getDisplay()+"'}" : ""));
       }
       sp.tx(")");
     } else {
@@ -661,7 +661,7 @@ public class DataRenderer extends Renderer {
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
         s = ii.getType().getCoding().get(0).getDisplay()+": "+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
-        s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getCode())+": "+s;
+        s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+": "+s;
     } else {
       s = "id: "+s;      
     }
@@ -838,7 +838,7 @@ public class DataRenderer extends Renderer {
 
     s.append("(system = '").append(TerminologyRenderer.describeSystem(q.getSystem()))
     .append("' code ").append(q.getCode())
-    .append(" = '").append(lookupCode(q.getSystem(), q.getCode())).append("')");
+    .append(" = '").append(lookupCode(q.getSystem(), null, q.getCode())).append("')");
 
     return s.toString();
   }  
@@ -858,7 +858,7 @@ public class DataRenderer extends Renderer {
     else if (q.hasCode())
       x.tx(" "+q.getCode());
     if (showCodeDetails && q.hasCode()) {
-      x.span("background: LightGoldenRodYellow", null).tx(" (Details: "+TerminologyRenderer.describeSystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), q.getCode())+"')");
+      x.span("background: LightGoldenRodYellow", null).tx(" (Details: "+TerminologyRenderer.describeSystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
     }
   }
 
@@ -1159,5 +1159,26 @@ public class DataRenderer extends Renderer {
     }
     return b.toString();
   }
+
+  protected String versionFromCanonical(String system) {
+    if (system == null) {
+      return null;
+    } else if (system.contains("|")) {
+      return system.substring(0, system.indexOf("|"));
+    } else {
+      return system;
+    }
+  }
+
+  protected String systemFromCanonical(String system) {
+    if (system == null) {
+      return null;
+    } else if (system.contains("|")) {
+      return system.substring(system.indexOf("|")+1);
+    } else {
+      return system;
+    }
+  }
+
 
 }
