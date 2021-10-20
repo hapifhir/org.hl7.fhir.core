@@ -461,6 +461,7 @@ public class I18nConstants {
   public static final String TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT = "type_on_first_differential_element";
   public static final String TYPE_ON_FIRST_SNAPSHOT_ELEMENT_FOR__IN__FROM_ = "type_on_first_snapshot_element_for__in__from_";
   public static final String TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE = "TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE";
+  public static final String TYPE_SPECIFIC_CHECKS_CANONICAL_CONTAINED = "TYPE_SPECIFIC_CHECKS_CANONICAL_CONTAINED";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT = "TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER = "TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT = "TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT";

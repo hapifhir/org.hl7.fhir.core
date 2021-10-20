@@ -1093,6 +1093,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
               err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
             } else if (it == IssueType.NOTSUPPORTED) {
               err = TerminologyServiceErrorClass.VALUESET_UNSUPPORTED;
+            } else {
+              err = null;
             }
           } catch (FHIRException e) {
           }
