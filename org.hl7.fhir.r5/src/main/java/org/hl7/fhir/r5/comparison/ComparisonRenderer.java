@@ -1,5 +1,6 @@
 package org.hl7.fhir.r5.comparison;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -56,7 +57,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     return templates;
   }
   
-  public void render(String leftName, String rightName) throws IOException {
+  public File render(String leftName, String rightName) throws IOException {
     dumpBinaries();
     StringBuilder b = new StringBuilder();
     b.append("<table class=\"grid\">\r\n");
@@ -71,6 +72,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     processList(list, b, "CodeSystem");
     processList(list, b, "ValueSet");
     processList(list, b, "StructureDefinition");
+    processList(list, b, "CapabilityStatement");
     b.append("</table>\r\n");
 
     Map<String, Base> vars = new HashMap<>();
@@ -79,6 +81,7 @@ public class ComparisonRenderer implements IEvaluationContext {
     String template = templates.get("Index");
     String cnt = processTemplate(template, "CodeSystem", vars);
     TextFile.stringToFile(cnt, file("index.html"));
+    return new File(file("index.html"));
   }
 
   private void processList(List<String> list, StringBuilder b, String name) throws IOException {
