@@ -396,6 +396,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
   private boolean validateValueSetCodesOnTxServer = true;
   private QuestionnaireMode questionnaireMode;
+  private ValidationOptions baseOptions = new ValidationOptions();
 
   public InstanceValidator(IWorkerContext theContext, IEvaluationContext hostServices, XVerExtensionManager xverManager) {
     super(theContext, xverManager);
@@ -836,13 +837,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   // public API
-  private boolean checkCode(List<ValidationMessage> errors, Element element, String path, String code, String system, String display, boolean checkDisplay, NodeStack stack) throws TerminologyServiceException {
+  private boolean checkCode(List<ValidationMessage> errors, Element element, String path, String code, String system, String version, String display, boolean checkDisplay, NodeStack stack) throws TerminologyServiceException {
     long t = System.nanoTime();
     boolean ss = context.supportsSystem(system);
     timeTracker.tx(t, "ss "+system);
     if (ss) {
       t = System.nanoTime();
-      ValidationResult s = checkCodeOnServer(stack, code, system, display, checkDisplay);
+      ValidationResult s = checkCodeOnServer(stack, code, system, version, display, checkDisplay);
       timeTracker.tx(t, "vc "+system+"#"+code+" '"+display+"'");
       if (s == null)
         return true;
@@ -1251,8 +1252,9 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
                     for (Coding nextCoding : cc.getCoding()) {
                       String nextCode = nextCoding.getCode();
                       String nextSystem = nextCoding.getSystem();
+                      String nextVersion = nextCoding.getVersion();
                       if (isNotBlank(nextCode) && isNotBlank(nextSystem) && context.supportsSystem(nextSystem)) {
-                        ValidationResult vr = checkCodeOnServer(stack, nextCode, nextSystem, null, false);
+                        ValidationResult vr = checkCodeOnServer(stack, nextCode, nextSystem, nextVersion, null, false);
                         if (!vr.isOk()) {
                           txWarning(errors, vr.getTxLink(), IssueType.CODEINVALID, element.line(), element.col(), path, false, I18nConstants.TERMINOLOGY_TX_CODE_NOTVALID, nextCode, nextSystem);
                         }
@@ -1286,12 +1288,13 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     String code = c.getCode();
     String system = c.getSystem();
     String display = c.getDisplay();
+    String version = c.getVersion();
     rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE);
 
     if (system != null && code != null && !noTerminologyChecks) {
       rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(system), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, system);
       try {
-        if (checkCode(errors, element, path, code, system, display, checkDisplay, stack))
+        if (checkCode(errors, element, path, code, system, version, display, checkDisplay, stack))
           if (theElementCntext != null && theElementCntext.hasBinding()) {
             ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
             if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
@@ -1473,7 +1476,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, valueset != null, I18nConstants.TERMINOLOGY_TX_VALUESET_NOTFOUND, describeReference(maxVSUrl))) {
       try {
         long t = System.nanoTime();
-        ValidationResult vr = checkCodeOnServer(stack, valueset, value, new ValidationOptions(stack.getWorkingLang()));
+        ValidationResult vr = checkCodeOnServer(stack, valueset, value, baseOptions.setLanguage(stack.getWorkingLang()));
         timeTracker.tx(t, "vc "+value);
         if (!vr.isOk()) {
           if (vr.getErrorClass() != null && vr.getErrorClass().isInfrastructure())
@@ -1506,19 +1509,20 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private void checkCoding(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack) {
     String code = element.getNamedChildValue("code");
     String system = element.getNamedChildValue("system");
+    String version = element.getNamedChildValue("version");
     String display = element.getNamedChildValue("display");
-    checkCodedElement(errors, path, element, profile, theElementCntext, inCodeableConcept, checkDisplay, stack, code, system, display);
+    checkCodedElement(errors, path, element, profile, theElementCntext, inCodeableConcept, checkDisplay, stack, code, system, version, display);
   }
 
   private void checkCodedElement(List<ValidationMessage> errors, String path, Element element, StructureDefinition profile, ElementDefinition theElementCntext, boolean inCodeableConcept, boolean checkDisplay, NodeStack stack,
-      String theCode, String theSystem, String theDisplay) {
+      String theCode, String theSystem, String theVersion, String theDisplay) {
     rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, isAbsolute(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_RELATIVE);
     warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, Utilities.noString(theCode) || !Utilities.noString(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_NO_CODE);
 
     if (theSystem != null && theCode != null && !noTerminologyChecks) {
       rule(errors, IssueType.CODEINVALID, element.line(), element.col(), path, !isValueSet(theSystem), I18nConstants.TERMINOLOGY_TX_SYSTEM_VALUESET2, theSystem);
       try {
-        if (checkCode(errors, element, path, theCode, theSystem, theDisplay, checkDisplay, stack))
+        if (checkCode(errors, element, path, theCode, theSystem, theVersion, theDisplay, checkDisplay, stack))
           if (theElementCntext != null && theElementCntext.hasBinding()) {
             ElementDefinitionBindingComponent binding = theElementCntext.getBinding();
             if (warning(errors, IssueType.CODEINVALID, element.line(), element.col(), path, binding != null, I18nConstants.TERMINOLOGY_TX_BINDING_MISSING2, path)) {
@@ -1633,7 +1637,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
       // two questions
       // 1. can this extension be used here?
-      checkExtensionContext(errors, resource, container, ex, containerStack, hostContext);
+      checkExtensionContext(errors, resource, container, ex, containerStack, hostContext, isModifier);
 
       if (isModifier)
         rule(errors, IssueType.STRUCTURE, element.line(), element.col(), path + "[url='" + url + "']", ex.getSnapshot().getElement().get(0).getIsModifier(), I18nConstants.EXTENSION_EXT_MODIFIER_Y, url);
@@ -1697,7 +1701,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     return res;
   }
 
-  private boolean checkExtensionContext(List<ValidationMessage> errors, Element resource, Element container, StructureDefinition definition, NodeStack stack, ValidatorHostContext hostContext) {
+  private boolean checkExtensionContext(List<ValidationMessage> errors, Element resource, Element container, StructureDefinition definition, NodeStack stack, ValidatorHostContext hostContext, boolean modifier) {
     String extUrl = definition.getUrl();
     boolean ok = false;
     CommaSeparatedStringBuilder contexts = new CommaSeparatedStringBuilder();
@@ -1774,9 +1778,11 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     if (!ok) {
       if (definition.hasUserData(XVerExtensionManager.XVER_EXT_MARKER)) {
-        warning(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.EXTENSION_EXT_CONTEXT_WRONG_XVER, extUrl, contexts.toString(), plist.toString());
+        warning(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
+            modifier ? I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG_XVER : I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG_XVER, extUrl, contexts.toString(), plist.toString());
       } else {
-        rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false, I18nConstants.EXTENSION_EXT_CONTEXT_WRONG, extUrl, contexts.toString(), plist.toString());        
+        rule(errors, IssueType.STRUCTURE, container.line(), container.col(), stack.getLiteralPath(), false,
+            modifier ? I18nConstants.EXTENSION_EXTP_CONTEXT_WRONG : I18nConstants.EXTENSION_EXTM_CONTEXT_WRONG, extUrl, contexts.toString(), plist.toString());        
       }
       return false;
     } else {
@@ -2019,23 +2025,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength());
 
       if (type.equals("oid")) {
-        if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_START))
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(url.substring(8)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID);
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_START);
       }
       if (type.equals("uuid")) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:uuid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT);
-        try {
-          UUID.fromString(url.substring(8));
-        } catch (Exception ex) {
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VAID, ex.getMessage());
-        }
       }
       if (type.equals("canonical")) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("#") || Utilities.isAbsoluteUrl(url), I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url);        
       }
 
+      if (url != null && url.startsWith("urn:uuid:")) {
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isValidUUID(url.substring(9)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VAID);
+      }
+      if (url != null && url.startsWith("urn:oid:")) {
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(url.substring(8)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID);
+      }
+
       if (isCanonicalURLElement(e)) {
-        // for now, no validation. Need to think about authority.
+        // we get to here if this is a defining canonical URL (e.g. CodeSystem.url)
+        // the URL must be an IRI if present
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isAbsoluteUrl(url), 
+            node.isContained() ? I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_CONTAINED : I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url);                  
       } else {
         // now, do we check the URI target?
         if (fetcher != null && !type.equals("uuid")) {
@@ -2484,7 +2494,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         long t = System.nanoTime();
         ValidationResult vr = null;
         if (binding.getStrength() != BindingStrength.EXAMPLE) {
-          ValidationOptions options = new ValidationOptions(stack.getWorkingLang()).guessSystem();
+          ValidationOptions options = baseOptions.setLanguage(stack.getWorkingLang()).guessSystem();
           vr = checkCodeOnServer(stack, vs, value, options);
         }
         timeTracker.tx(t, "vc "+value+"");
@@ -2543,7 +2553,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     }
     
     if (system != null || code != null ) {
-      checkCodedElement(theErrors, thePath, element, theProfile, definition, false, false, theStack, code, system, unit);
+      checkCodedElement(theErrors, thePath, element, theProfile, definition, false, false, theStack, code, system, null, unit);
     }
     
     if (code != null && "http://unitsofmeasure.org".equals(system)) {
@@ -4188,7 +4198,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else if (element.getType().equals("CapabilityStatement")) {
       validateCapabilityStatement(errors, element, stack);
     } else if (element.getType().equals("CodeSystem")) {
-      new CodeSystemValidator(context, timeTracker, xverManager).validateCodeSystem(errors, element, stack, new ValidationOptions(stack.getWorkingLang()));
+      new CodeSystemValidator(context, timeTracker, xverManager).validateCodeSystem(errors, element, stack, baseOptions.setLanguage(stack.getWorkingLang()));
     } else if (element.getType().equals("SearchParameter")) {
       new SearchParameterValidator(context, timeTracker, fpe, xverManager).validateSearchParameter(errors, element, stack);
     } else if (element.getType().equals("StructureDefinition")) {
@@ -4311,6 +4321,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           idstatus = IdStatus.OPTIONAL;
           break;
         case CONTAINED:
+          stack.setContained(true);
           idstatus = IdStatus.REQUIRED;
           break;
         case PARAMETER:
@@ -4405,7 +4416,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
     }
     if (definition.getPath().equals("StructureDefinition.snapshot")) {
-      // work around a known issue in the spec, that idsa are duplicated in snapshot and differential 
+      // work around a known issue in the spec, that ids are duplicated in snapshot and differential 
       stack.resetIds();
     }
     
@@ -4993,6 +5004,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     } else {
       if (nameMatches(ei.getName(), tail(ed.getPath())))
         try {
+//          System.out.println("match slices for "+stack.getLiteralPath()+": "+slicer.getId()+" = "+slicingSummary(slicer.getSlicing()));
           match = sliceMatches(hostContext, ei.getElement(), ei.getPath(), slicer, ed, profile, errors, sliceInfo, stack, profile);
           if (match) {
             ei.slice = slicer;
@@ -5024,6 +5036,22 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       problematicPaths.add(ed.getPath());
     }
     return unsupportedSlicing;
+  }
+
+  private String slicingSummary(ElementDefinitionSlicingComponent slicing) {
+    StringBuilder b = new StringBuilder();
+    b.append('[');
+    boolean first = true;
+    for (ElementDefinitionSlicingDiscriminatorComponent t : slicing.getDiscriminator()) {
+      if (first) first = false; else b.append(","); 
+      b.append(t.getType().toCode());
+      b.append(":");
+      b.append(t.getPath());
+    }
+    b.append(']');
+    b.append(slicing.getOrdered() ? ";ordered" : "");
+    b.append(slicing.getRules().toString());
+    return b.toString();
   }
 
   private ElementDefinition getElementByTail(StructureDefinition p, String tail) throws DefinitionException {
@@ -5349,6 +5377,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if ("probability is decimal implies (probability as decimal) <= 100".equals(expr)) {
       return "probablility.empty() or ((probability is decimal) implies ((probability as decimal) <= 100))";
     }
+        
     if ("enableWhen.count() > 2 implies enableBehavior.exists()".equals(expr)) {
       return "enableWhen.count() >= 2 implies enableBehavior.exists()";
     }
@@ -5451,23 +5480,23 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   }
 
   // no delay on this one? 
-  public ValidationResult checkCodeOnServer(NodeStack stack, String code, String system, String display, boolean checkDisplay) {
-    return context.validateCode(new ValidationOptions(stack.getWorkingLang()), system, code, checkDisplay ? display : null);
+  public ValidationResult checkCodeOnServer(NodeStack stack, String code, String system, String version, String display, boolean checkDisplay) {
+    return context.validateCode(baseOptions.setLanguage(stack.getWorkingLang()), system, version, code, checkDisplay ? display : null);
   }
 
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, Coding c, boolean checkMembership) {
     if (checkMembership) {
-      return context.validateCode(new ValidationOptions(stack.getWorkingLang()).checkValueSetOnly(), c, valueset);   
+      return context.validateCode(baseOptions.setLanguage(stack.getWorkingLang()).checkValueSetOnly(), c, valueset);   
     } else {
-      return context.validateCode(new ValidationOptions(stack.getWorkingLang()).noCheckValueSetMembership(), c, valueset);
+      return context.validateCode(baseOptions.setLanguage(stack.getWorkingLang()).noCheckValueSetMembership(), c, valueset);
     }
   }
   
   public ValidationResult checkCodeOnServer(NodeStack stack, ValueSet valueset, CodeableConcept cc, boolean vsOnly) {
     if (vsOnly) {
-      return context.validateCode(new ValidationOptions(stack.getWorkingLang()).checkValueSetOnly(), cc, valueset);
+      return context.validateCode(baseOptions.setLanguage(stack.getWorkingLang()).checkValueSetOnly(), cc, valueset);
     } else {
-      return context.validateCode(new ValidationOptions(stack.getWorkingLang()), cc, valueset);
+      return context.validateCode(baseOptions.setLanguage(stack.getWorkingLang()), cc, valueset);
     }
   }
 
@@ -5532,6 +5561,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setWantCheckSnapshotUnchanged(boolean wantCheckSnapshotUnchanged) {
     this.wantCheckSnapshotUnchanged = wantCheckSnapshotUnchanged;
+  }
+
+  public ValidationOptions getBaseOptions() {
+    return baseOptions;
+  }
+
+  public void setBaseOptions(ValidationOptions baseOptions) {
+    this.baseOptions = baseOptions;
   }
 
 }

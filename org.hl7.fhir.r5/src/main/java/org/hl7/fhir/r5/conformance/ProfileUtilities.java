@@ -4887,13 +4887,13 @@ public class ProfileUtilities extends TranslatingUtilities {
   private Piece describeCoded(HierarchicalTableGenerator gen, DataType fixed) {
     if (fixed instanceof Coding) {
       Coding c = (Coding) fixed;
-      ValidationResult vr = context.validateCode(terminologyServiceOptions , c.getSystem(), c.getCode(), c.getDisplay());
+      ValidationResult vr = context.validateCode(terminologyServiceOptions , c.getSystem(), c.getVersion(), c.getCode(), c.getDisplay());
       if (vr.getDisplay() != null)
         return gen.new Piece(null, " ("+vr.getDisplay()+")", null).addStyle("color: darkgreen");
     } else if (fixed instanceof CodeableConcept) {
       CodeableConcept cc = (CodeableConcept) fixed;
       for (Coding c : cc.getCoding()) {
-        ValidationResult vr = context.validateCode(terminologyServiceOptions, c.getSystem(), c.getCode(), c.getDisplay());
+        ValidationResult vr = context.validateCode(terminologyServiceOptions, c.getSystem(), c.getVersion(), c.getCode(), c.getDisplay());
         if (vr.getDisplay() != null)
           return gen.new Piece(null, " ("+vr.getDisplay()+")", null).addStyle("color: darkgreen");
       }

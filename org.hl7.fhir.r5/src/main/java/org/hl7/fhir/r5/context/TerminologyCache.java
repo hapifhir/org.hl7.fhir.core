@@ -124,6 +124,9 @@ public class TerminologyCache {
       load();
   }
   
+  public void clear() {
+    caches.clear();
+  }
   public CacheToken generateValidationToken(ValidationOptions options, Coding code, ValueSet vs) {
     CacheToken ct = new CacheToken();
     if (code.hasSystem())
@@ -337,11 +340,36 @@ public class TerminologyCache {
           sw.write("  \"error\" : \""+Utilities.escapeJson(ce.e.getError()).trim()+"\"\r\n}\r\n");
         } else {
           sw.write("v: {\r\n");
-          sw.write("  \"display\" : \""+Utilities.escapeJson(ce.v.getDisplay()).trim()+"\",\r\n");
-          sw.write("  \"code\" : \""+Utilities.escapeJson(ce.v.getCode()).trim()+"\",\r\n");
-          sw.write("  \"system\" : \""+Utilities.escapeJson(ce.v.getSystem()).trim()+"\",\r\n");
-          sw.write("  \"severity\" : "+(ce.v.getSeverity() == null ? "null" : "\""+ce.v.getSeverity().toCode().trim()+"\"")+",\r\n");
-          sw.write("  \"error\" : \""+Utilities.escapeJson(ce.v.getMessage()).trim()+"\"\r\n}\r\n");
+          boolean first = true;
+          if (ce.v.getDisplay() != null) {            
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"display\" : \""+Utilities.escapeJson(ce.v.getDisplay()).trim()+"\"");
+          }
+          if (ce.v.getCode() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"code\" : \""+Utilities.escapeJson(ce.v.getCode()).trim()+"\"");
+          }
+          if (ce.v.getSystem() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"system\" : \""+Utilities.escapeJson(ce.v.getSystem()).trim()+"\"");
+          }
+          if (ce.v.getSeverity() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"severity\" : "+"\""+ce.v.getSeverity().toCode().trim()+"\""+"");
+          }
+          if (ce.v.getMessage() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"error\" : \""+Utilities.escapeJson(ce.v.getMessage()).trim()+"\"");
+          }
+          if (ce.v.getErrorClass() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"class\" : \""+Utilities.escapeJson(ce.v.getErrorClass().toString())+"\"");
+          }
+          if (ce.v.getDefinition() != null) {
+            if (first) first = false; else sw.write(",\r\n");
+            sw.write("  \"definition\" : \""+Utilities.escapeJson(ce.v.getDefinition()).trim()+"\"");
+          }
+          sw.write("\r\n}\r\n");
         }
         sw.write(ENTRY_MARKER+"\r\n");
       }      
@@ -386,11 +414,15 @@ public class TerminologyCache {
                 else
                   ce.e = new ValueSetExpansionOutcome(error, TerminologyServiceErrorClass.UNKNOWN);
               } else {
-                IssueSeverity severity = o.get("severity") instanceof JsonNull ? null :  IssueSeverity.fromCode(o.get("severity").getAsString());
+                String t = loadJS(o.get("severity"));
+                IssueSeverity severity = t == null ? null :  IssueSeverity.fromCode(t);
                 String display = loadJS(o.get("display"));
                 String code = loadJS(o.get("code"));
                 String system = loadJS(o.get("system"));
-                ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setCode(code));
+                String definition = loadJS(o.get("definition"));
+                t = loadJS(o.get("class"));
+                TerminologyServiceErrorClass errorClass = t == null ? null : TerminologyServiceErrorClass.valueOf(t) ;
+                ce.v = new ValidationResult(severity, error, system, new ConceptDefinitionComponent().setDisplay(display).setDefinition(definition).setCode(code)).setErrorClass(errorClass);
               }
               nc.map.put(String.valueOf(hashNWS(ce.request)), ce);
               nc.list.add(ce);
