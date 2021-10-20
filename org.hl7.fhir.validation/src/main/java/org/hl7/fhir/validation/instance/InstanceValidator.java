@@ -2025,23 +2025,27 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       rule(errors, IssueType.INVALID, e.line(), e.col(), path, !context.hasMaxLength() || context.getMaxLength() == 0 || e.primitiveValue().length() <= context.getMaxLength(), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_PRIMITIVE_LENGTH, context.getMaxLength());
 
       if (type.equals("oid")) {
-        if (rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_START))
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(url.substring(8)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID);
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:oid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_START);
       }
       if (type.equals("uuid")) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("urn:uuid:"), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT);
-        try {
-          UUID.fromString(url.substring(8));
-        } catch (Exception ex) {
-          rule(errors, IssueType.INVALID, e.line(), e.col(), path, false, I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VAID, ex.getMessage());
-        }
       }
       if (type.equals("canonical")) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, url.startsWith("#") || Utilities.isAbsoluteUrl(url), I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url);        
       }
 
+      if (url != null && url.startsWith("urn:uuid:")) {
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isValidUUID(url.substring(9)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VAID);
+      }
+      if (url != null && url.startsWith("urn:oid:")) {
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(url.substring(8)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID);
+      }
+
       if (isCanonicalURLElement(e)) {
-        // for now, no validation. Need to think about authority.
+        // we get to here if this is a defining canonical URL (e.g. CodeSystem.url)
+        // the URL must be an IRI if present
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isAbsoluteUrl(url), 
+            node.isContained() ? I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_CONTAINED : I18nConstants.TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE, url);                  
       } else {
         // now, do we check the URI target?
         if (fetcher != null && !type.equals("uuid")) {
@@ -4317,6 +4321,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
           idstatus = IdStatus.OPTIONAL;
           break;
         case CONTAINED:
+          stack.setContained(true);
           idstatus = IdStatus.REQUIRED;
           break;
         case PARAMETER:
@@ -5372,6 +5377,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     if ("probability is decimal implies (probability as decimal) <= 100".equals(expr)) {
       return "probablility.empty() or ((probability is decimal) implies ((probability as decimal) <= 100))";
     }
+        
     if ("enableWhen.count() > 2 implies enableBehavior.exists()".equals(expr)) {
       return "enableWhen.count() >= 2 implies enableBehavior.exists()";
     }
