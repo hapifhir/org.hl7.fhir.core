@@ -173,6 +173,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
     val.setDebug(false);
+    
     if (content.has("fetcher") && "standalone".equals(JSONUtil.str(content, "fetcher"))) {
       val.setFetcher(vCurr);
       vCurr.setFetcher(new StandAloneValidatorFetcher(vCurr.getPcm(), vCurr.getContext(), vCurr));
@@ -188,6 +189,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       val.setValidationLanguage(content.get("language").getAsString());
     else
       val.setValidationLanguage(null);
+    if (content.has("default-version")) {
+      val.setBaseOptions(val.getBaseOptions().setVersionFlexible(content.get("default-version").getAsBoolean()));
+    } else {
+      val.setBaseOptions(val.getBaseOptions().setVersionFlexible(false));
+    }
     if (content.has("packages")) {
       for (JsonElement e : content.getAsJsonArray("packages")) {
         String n = e.getAsString();

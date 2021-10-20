@@ -322,16 +322,9 @@ public class NPMPackageGenerator {
 
   public void addFile(Category cat, String name, byte[] content) throws IOException {
     String path = cat.getDirectory()+name;
-    if (!path.startsWith("package/")) {
-      path = "package/" +path;
-    }
     if (path.length() > 100) {
       name = name.substring(0, name.indexOf("-"))+"-"+UUID.randomUUID().toString();
-      path = cat.getDirectory()+name;
-      if (!path.startsWith("package/")) {
-        path = "package/" +path;
-      }
-      
+      path = cat.getDirectory()+name;      
     }
       
     if (created.contains(path)) {
