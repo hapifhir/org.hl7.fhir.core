@@ -1722,6 +1722,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       transforms.listAllM(result);
       plans.listAllM(result);
       questionnaires.listAllM(result);
+      systems.listAllM(result);
       return result;
     }
   }

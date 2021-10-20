@@ -8,6 +8,7 @@ import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
@@ -315,15 +316,19 @@ public class ValidationService {
     if (issue.hasExpression()) {
       int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
       int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);
-      loc = issue.getExpression().get(0).asStringValue() + (line >= 0 && col >= 0 ? " (line " + Integer.toString(line) + ", col" + Integer.toString(col) + ")" : "");
+      loc = " @ "+issue.getExpression().get(0).asStringValue() + (line >= 0 && col >= 0 ? " (line " + Integer.toString(line) + ", col" + Integer.toString(col) + ")" : "");
     } else if (issue.hasLocation()) {
-      loc = issue.getLocation().get(0).asStringValue();
+      loc = " @ "+issue.getLocation().get(0).asStringValue();
     } else {
       int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
       int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);
-      loc = (line >= 0 && col >= 0 ? "line " + Integer.toString(line) + ", col" + Integer.toString(col) : "??");
+      if (issue.getSeverity() == IssueSeverity.INFORMATION && (line == -1 || col == -1)) {
+        loc = "";
+      } else {
+        loc = " @ "+(line >= 0 && col >= 0 ? "line " + Integer.toString(line) + ", col" + Integer.toString(col) : "??");
+      }
     }
-    return "  " + issue.getSeverity().getDisplay() + " @ " + loc + " : " + issue.getDetails().getText();
+    return "  " + issue.getSeverity().getDisplay() + loc + ": " + issue.getDetails().getText();
   }
 
   public String determineVersion(CliContext cliContext) throws Exception {
