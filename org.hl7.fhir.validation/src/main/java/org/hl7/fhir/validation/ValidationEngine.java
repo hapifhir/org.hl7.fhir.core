@@ -28,6 +28,8 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
+import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
@@ -760,6 +762,13 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (Utilities.existsInList(url, "http://loinc.org", "http://unitsofmeasure.org", "http://snomed.info/sct")) {
       return true;
     }
+    for (CanonicalResource cr : context.allConformanceResources()) {
+      if (cr instanceof NamingSystem) {
+        if (hasURL((NamingSystem) cr, url)) {
+          return true;
+        }
+      }
+    }
     if (url.contains("example.org") || url.contains("acme.com")) {
       return false; // todo... how to access settings from here?
     }
@@ -768,6 +777,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
         return fetcher.resolveURL(validator, appContext, path, url, type);
       } catch (Exception e) {
         return false;
+      }
+    }
+    return false;
+  }
+
+  private boolean hasURL(NamingSystem ns, String url) {
+    for (NamingSystemUniqueIdComponent uid : ns.getUniqueId()) {
+      if (uid.getType() == NamingSystemIdentifierType.URI && uid.hasValue() && uid.getValue().equals(url)) {
+        return true;
       }
     }
     return false;
