@@ -222,6 +222,7 @@ public class ValidatorCli {
     String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
     ValidationEngine validator = validationService.initializeValidator(cliContext, definitions, tt);
+    validator.loadPackage("hl7.fhir.pubpack", null);
     ComparisonService.doLeftRightComparison(args, Params.getParam(args, Params.DESTINATION), validator);
   }
 
