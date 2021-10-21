@@ -97,6 +97,9 @@ public class CliContext {
   @JsonProperty("locations")
   private Map<String, String> locations = new HashMap<String, String>();
 
+  @JsonProperty("outputStyle")
+  private String outputStyle = null;
+  
   // TODO: Mark what goes here?
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
 
@@ -517,6 +520,14 @@ public class CliContext {
     this.showTimes = showTimes;
   }
 
+  public String getOutputStyle() {
+    return outputStyle;
+  }
+
+  public void setOutputStyle(String outputStyle) {
+    this.outputStyle = outputStyle;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -553,12 +564,13 @@ public class CliContext {
       Objects.equals(showTimes, that.showTimes) &&
       mode == that.mode &&
       Objects.equals(locale, that.locale) &&
+      Objects.equals(outputStyle, that.outputStyle) &&
       Objects.equals(locations, that.locations);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls);
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle);
   }
 
   @Override
@@ -593,6 +605,7 @@ public class CliContext {
       ", mode=" + mode +
       ", securityChecks=" + securityChecks +
       ", crumbTrails=" + crumbTrails +
+      ", outputStyle=" + outputStyle +
       ", allowExampleUrls=" + allowExampleUrls +
       ", showTimes=" + showTimes +
       ", locale='" + locale + '\'' +
