@@ -61,6 +61,7 @@ public class Params {
   public static final String VERBOSE = "-verbose";
   public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
+  public static final String OUTPUT_STYLE = "-output-style";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -203,6 +204,8 @@ public class Params {
         }          
       } else if (args[i].equals(SHOW_TIMES)) {
         cliContext.setShowTimes(true);
+      } else if (args[i].equals(OUTPUT_STYLE)) {
+        cliContext.setOutputStyle(args[++i]);
       } else if (args[i].equals(SCAN)) {
         cliContext.setMode(EngineMode.SCAN);
       } else if (args[i].equals(TERMINOLOGY)) {
