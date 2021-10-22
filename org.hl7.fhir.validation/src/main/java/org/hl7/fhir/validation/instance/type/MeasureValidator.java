@@ -244,6 +244,11 @@ public class MeasureValidator extends BaseValidator {
   }
 
   private void validateMeasureReportGroups(ValidatorHostContext hostContext, MeasureContext m, List<ValidationMessage> errors, Element mr, NodeStack stack, boolean inProgress) {
+    if (m.groups().size() == 0) {
+      // only validate the report groups if the measure has groups.
+      return;
+    }
+
     List<MeasureGroupComponent> groups = new ArrayList<MeasureGroupComponent>();
 
     List<Element> glist = mr.getChildrenByName("group");
