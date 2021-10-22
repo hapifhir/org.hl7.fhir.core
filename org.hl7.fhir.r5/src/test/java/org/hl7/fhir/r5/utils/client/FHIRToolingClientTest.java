@@ -65,7 +65,7 @@ class FHIRToolingClientTest {
     Mockito.when(mockClient.executeBundleRequest(Mockito.any(Request.Builder.class), Mockito.anyString(),
       Mockito.any(Headers.class), Mockito.anyString(), Mockito.anyInt(), Mockito.anyLong()))
       .thenReturn(generateBundle());
-    toolingClient = new FHIRToolingClient(TX_ADDR);
+    toolingClient = new FHIRToolingClient(TX_ADDR, "fhir/test-cases");
     toolingClient.setClient(mockClient);
   }
 

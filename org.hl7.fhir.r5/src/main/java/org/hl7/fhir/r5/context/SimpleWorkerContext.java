@@ -296,6 +296,7 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
         txLog = new HTMLClientLogger(log);
       }
       txClient.setLogger(txLog);
+      txClient.setUserAgent(userAgent);
       CapabilityStatement cps = txClient.getCapabilitiesStatementQuick();
       setTxCaps(txClient.getTerminologyCapabilities());
       return cps.getSoftware().getVersion();

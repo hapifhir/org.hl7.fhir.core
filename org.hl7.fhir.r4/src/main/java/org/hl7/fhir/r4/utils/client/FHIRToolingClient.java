@@ -63,10 +63,12 @@ public class FHIRToolingClient {
   private ArrayList<Header> headers = new ArrayList<>();
   private String username;
   private String password;
+  private String userAgent;
 
   //Pass endpoint for client - URI
-  public FHIRToolingClient(String baseServiceUrl) throws URISyntaxException {
+  public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
+    this.userAgent = userAgent;
     initialize(baseServiceUrl);
   }
 
@@ -277,7 +279,7 @@ public class FHIRToolingClient {
         if (client.getLogger() != null) {
           client.getLogger().logRequest("POST", url.toString(), null, body);
         }
-        result = client.issuePostRequest(url, body, getPreferredResourceFormat(),
+        result = client.issuePostRequest(url, body, getPreferredResourceFormat(), generateHeaders(),
             "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
       } else {
         if (client.getLogger() != null) {
@@ -528,6 +530,9 @@ public class FHIRToolingClient {
     if(this.headers != null) {
       this.headers.forEach(header -> builder.add(header.toString()));
     }
+    if (!Utilities.noString(userAgent)) {
+      builder.add("User-Agent: "+userAgent);
+    }
     return builder.build();
   }
 
@@ -539,6 +544,14 @@ public class FHIRToolingClient {
     String usernamePassword = username + ":" + password;
     String base64usernamePassword = Base64.getEncoder().encodeToString(usernamePassword.getBytes());
     return new Header("Authorization", "Basic " + base64usernamePassword);
+  }
+  
+  public String getUserAgent() {
+    return userAgent;
+  }
+
+  public void setUserAgent(String userAgent) {
+    this.userAgent = userAgent;
   }
 }
 
