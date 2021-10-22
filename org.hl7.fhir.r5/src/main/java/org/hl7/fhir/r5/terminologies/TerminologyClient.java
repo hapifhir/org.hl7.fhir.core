@@ -54,4 +54,5 @@ public interface TerminologyClient {
   CanonicalResource read(String type, String id);
   ClientHeaders getClientHeaders();
   TerminologyClient setClientHeaders(ClientHeaders clientHeaders);
+  TerminologyClient setUserAgent(String userAgent);
 }

@@ -117,7 +117,7 @@ public class BatchLoader {
   
 	private static int loadBundle(String server, Bundle b, int size, int start, int end) throws URISyntaxException {
 		System.out.println("Post to "+server+". size = "+Integer.toString(size)+", start = "+Integer.toString(start)+", total = "+Integer.toString(b.getEntry().size()));
-		FHIRToolingClient client = new FHIRToolingClient(server);
+		FHIRToolingClient client = new FHIRToolingClient(server, "fhir/batch-loader");
 	  int c = start;
 	  if (end == -1)
 	    end = b.getEntry().size();

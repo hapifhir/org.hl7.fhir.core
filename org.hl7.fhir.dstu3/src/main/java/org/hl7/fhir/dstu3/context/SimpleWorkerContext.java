@@ -218,8 +218,8 @@ public class SimpleWorkerContext extends BaseWorkerContext implements IWorkerCon
       loadBytes(name, stream);
   }
 
-	public String connectToTSServer(String url) throws URISyntaxException {
-	  txServer = new FHIRToolingClient(url);
+	public String connectToTSServer(String url, String userAgent) throws URISyntaxException {
+	  txServer = new FHIRToolingClient(url, userAgent);
 	  txServer.setTimeout(30000);
 	  return txServer.getCapabilitiesStatementQuick().getSoftware().getVersion();
 	}
