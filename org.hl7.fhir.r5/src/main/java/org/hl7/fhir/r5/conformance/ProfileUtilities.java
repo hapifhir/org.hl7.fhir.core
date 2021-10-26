@@ -2514,7 +2514,7 @@ public class ProfileUtilities extends TranslatingUtilities {
         url.startsWith("observation.html") || 
         url.startsWith("datatypes.html") || 
         url.startsWith("narrative.html") || 
-        (url.startsWith("extension-") || url.contains(".html")) || 
+        (url.startsWith("extension-") && url.contains(".html")) || 
         url.startsWith("resource-definitions.html");
   }
 
