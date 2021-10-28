@@ -30,6 +30,7 @@ package org.hl7.fhir.convertors.misc.adl;
  */
 
 
+import lombok.Data;
 import org.apache.commons.lang3.CharUtils;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.formats.XmlParser;
@@ -133,20 +134,20 @@ public class ADLImporter {
     // load data and protocol
     Element definition = XMLUtil.getNamedChild(adl, "definition");
     NodeTreeEntry root = new NodeTreeEntry();
-    root.typeName = XMLUtil.getNamedChild(definition, "rm_type_name").getTextContent();
-    root.atCode = XMLUtil.getNamedChild(definition, "node_id").getTextContent();
-    root.name = generateToken(root.atCode, true);
-    sd.setName(root.name);
-    root.cardinality = readCardinality("root", XMLUtil.getNamedChild(definition, "occurrences"));
+    root.setTypeName(XMLUtil.getNamedChild(definition, "rm_type_name").getTextContent());
+    root.setAtCode(XMLUtil.getNamedChild(definition, "node_id").getTextContent());
+    root.setName(generateToken(root.getAtCode(), true));
+    sd.setName(root.getName());
+    root.setCardinality(readCardinality("root", XMLUtil.getNamedChild(definition, "occurrences")));
     set.clear();
     XMLUtil.getNamedChildren(definition, "attributes", set);
     for (Element item : set) {
       // we're actually skipping this level - we don't care about data protocol etc.
       Element attributes = item; // XMLUtil.getNamedChild(XMLUtil.getNamedChild(item, "children"), "attributes");
-      loadChildren(root.atCode, root, attributes);
+      loadChildren(root.getAtCode(), root, attributes);
     }
     dumpChildren("", root);
-    genElements(sd, root.name, root);
+    genElements(sd, root.getName(), root);
 
     // save
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(dest), sd);
@@ -156,20 +157,20 @@ public class ADLImporter {
   private void genElements(StructureDefinition sd, String path, NodeTreeEntry item) throws Exception {
     ElementDefinition ed = sd.getSnapshot().addElement();
     ed.setPath(path);
-    ed.setMax(item.cardinality.max);
-    ed.setMin(Integer.parseInt(item.cardinality.min));
-    ed.setShort(texts.get(item.atCode).text);
-    ed.setDefinition(texts.get(item.atCode).description);
-    ed.setComment(texts.get(item.atCode).comment);
-    Element te = findTypeElement(item.typeName);
+    ed.setMax(item.getCardinality().getMax());
+    ed.setMin(Integer.parseInt(item.getCardinality().getMin()));
+    ed.setShort(texts.get(item.getAtCode()).getText());
+    ed.setDefinition(texts.get(item.getAtCode()).getDescription());
+    ed.setComment(texts.get(item.getAtCode()).getComment());
+    Element te = findTypeElement(item.getTypeName());
     if (te.hasAttribute("profile"))
       ed.addType().setCode(te.getAttribute("fhir")).setProfile(te.getAttribute("profile"));
     else
       ed.addType().setCode(te.getAttribute("fhir"));
     ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
 
-    for (NodeTreeEntry child : item.children) {
-      genElements(sd, path + "." + child.name, child);
+    for (NodeTreeEntry child : item.getChildren()) {
+      genElements(sd, path + "." + child.getName(), child);
     }
   }
 
@@ -185,13 +186,13 @@ public class ADLImporter {
   }
 
   private void dumpChildren(String prefix, NodeTreeEntry item) throws Exception {
-    Element te = findTypeElement(item.typeName);
+    Element te = findTypeElement(item.getTypeName());
     if (te.hasAttribute("profile"))
-      System.out.println(prefix + item.atCode + " [" + item.cardinality.min + ".." + item.cardinality.max + "]:" + te.getAttribute("fhir") + "{" + te.getAttribute("profile") + "} // " + item.name + " = " + texts.get(item.atCode).text);
+      System.out.println(prefix + item.getAtCode() + " [" + item.getCardinality().getMin() + ".." + item.getCardinality().getMax() + "]:" + te.getAttribute("fhir") + "{" + te.getAttribute("profile") + "} // " + item.getName() + " = " + texts.get(item.getAtCode()).getText());
     else
-      System.out.println(prefix + item.atCode + " [" + item.cardinality.min + ".." + item.cardinality.max + "]:" + te.getAttribute("fhir") + " // " + item.name + " = " + texts.get(item.atCode).text);
+      System.out.println(prefix + item.getAtCode() + " [" + item.getCardinality().getMin() + ".." + item.getCardinality().getMax() + "]:" + te.getAttribute("fhir") + " // " + item.getName() + " = " + texts.get(item.getAtCode()).getText());
 
-    for (NodeTreeEntry child : item.children)
+    for (NodeTreeEntry child : item.getChildren())
       dumpChildren(prefix + "  ", child);
   }
 
@@ -200,22 +201,22 @@ public class ADLImporter {
     XMLUtil.getNamedChildren(attributes, "children", set);
     for (Element e : set) {
       NodeTreeEntry item = new NodeTreeEntry();
-      item.typeName = XMLUtil.getNamedChild(e, "rm_type_name").getTextContent();
-      item.atCode = XMLUtil.getNamedChild(e, "node_id").getTextContent();
-      item.name = generateToken(item.atCode, false);
-      item.cardinality = readCardinality(path + "/" + item.atCode, XMLUtil.getNamedChild(e, "occurrences"));
-      parent.children.add(item);
+      item.setTypeName(XMLUtil.getNamedChild(e, "rm_type_name").getTextContent());
+      item.setAtCode(XMLUtil.getNamedChild(e, "node_id").getTextContent());
+      item.setName(generateToken(item.getAtCode(), false));
+      item.setCardinality(readCardinality(path + "/" + item.getAtCode(), XMLUtil.getNamedChild(e, "occurrences")));
+      parent.getChildren().add(item);
       Element attr = XMLUtil.getNamedChild(e, "attributes");
       String type = attr.getAttribute("xsi:type");
       if ("C_SINGLE_ATTRIBUTE".equals(type)) {
-        check(path, item.typeName, "ELEMENT", "type for simple element: " + item.typeName);
+        check(path, item.getTypeName(), "ELEMENT", "type for simple element: " + item.getTypeName());
         checkCardSingle(path, XMLUtil.getNamedChild(attr, "existence"));
         Element c = XMLUtil.getNamedChild(attr, "children");
         checkCardSingle(path, XMLUtil.getNamedChild(c, "occurrences"));
-        item.typeName = XMLUtil.getNamedChild(c, "rm_type_name").getTextContent();
+        item.setTypeName(XMLUtil.getNamedChild(c, "rm_type_name").getTextContent());
       } else {
-        check(path, item.typeName, "CLUSTER", "type for complex element");
-        loadChildren(path + "/" + item.atCode, item, attr);
+        check(path, item.getTypeName(), "CLUSTER", "type for complex element");
+        loadChildren(path + "/" + item.getAtCode(), item, attr);
       }
     }
   }
@@ -261,11 +262,11 @@ public class ADLImporter {
       check(path, XMLUtil.getNamedChild(element, "upper_included").getTextContent(), "true", "Cardinality check");
     check(path, XMLUtil.getNamedChild(element, "lower_unbounded").getTextContent(), "false", "Cardinality check");
     Cardinality card = new Cardinality();
-    card.min = XMLUtil.getNamedChild(element, "lower").getTextContent();
+    card.setMin(XMLUtil.getNamedChild(element, "lower").getTextContent());
     if ("true".equals(XMLUtil.getNamedChild(element, "upper_unbounded").getTextContent()))
-      card.max = "*";
+      card.setMax("*");
     else
-      card.max = XMLUtil.getNamedChild(element, "upper").getTextContent();
+      card.setMax(XMLUtil.getNamedChild(element, "upper").getTextContent());
     return card;
   }
 
@@ -293,44 +294,21 @@ public class ADLImporter {
       throw new Exception(message + ". Expected '" + expected + "' but found '" + found.trim() + "', at " + path);
   }
 
+  @Data
   public class Cardinality {
     private String min;
     private String max;
   }
 
+  @Data
   public class TextSet {
 
     private String text;
     private String description;
     private String comment;
-
-
-    public String getText() {
-      return text;
-    }
-
-    public void setText(String value) {
-      this.text = value;
-    }
-
-    public String getDescription() {
-      return description;
-    }
-
-    public void setDescription(String value) {
-      this.description = value;
-    }
-
-    public String getComment() {
-      return comment;
-    }
-
-    public void setComment(String value) {
-      this.comment = value;
-    }
-
   }
 
+ @Data
   public class NodeTreeEntry {
     private final List<NodeTreeEntry> children = new ArrayList<NodeTreeEntry>();
     private String name;
