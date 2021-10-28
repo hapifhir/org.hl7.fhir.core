@@ -2035,7 +2035,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
       }
 
       if (url != null && url.startsWith("urn:uuid:")) {
-        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isValidUUID(url.substring(9)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VAID);
+        rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isValidUUID(url.substring(9)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_UUID_VALID);
       }
       if (url != null && url.startsWith("urn:oid:")) {
         rule(errors, IssueType.INVALID, e.line(), e.col(), path, Utilities.isOid(url.substring(8)), I18nConstants.TYPE_SPECIFIC_CHECKS_DT_OID_VALID);
