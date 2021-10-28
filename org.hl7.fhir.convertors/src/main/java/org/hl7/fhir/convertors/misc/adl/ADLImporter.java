@@ -30,7 +30,6 @@ package org.hl7.fhir.convertors.misc.adl;
  */
 
 
-import lombok.Data;
 import org.apache.commons.lang3.CharUtils;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.formats.XmlParser;
@@ -292,29 +291,6 @@ public class ADLImporter {
   private void check(String path, String found, String expected, String message) throws Exception {
     if (!expected.equals(found.trim()))
       throw new Exception(message + ". Expected '" + expected + "' but found '" + found.trim() + "', at " + path);
-  }
-
-  @Data
-  public class Cardinality {
-    private String min;
-    private String max;
-  }
-
-  @Data
-  public class TextSet {
-
-    private String text;
-    private String description;
-    private String comment;
-  }
-
- @Data
-  public class NodeTreeEntry {
-    private final List<NodeTreeEntry> children = new ArrayList<NodeTreeEntry>();
-    private String name;
-    private String atCode;
-    private String typeName;
-    private Cardinality cardinality;
   }
 
 }
