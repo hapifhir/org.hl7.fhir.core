@@ -1,9 +1,9 @@
-package org.hl7.fhir.convertors.loaders;
+package org.hl7.fhir.convertors.loaders.loaderR3;
 
-import org.hl7.fhir.r4.context.SimpleWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.dstu3.context.SimpleWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.dstu3.model.Resource;
 
-public abstract class BaseLoaderR4 implements IContextResourceLoader {
+public abstract class BaseLoaderR3 implements IContextResourceLoader {
 
   protected final String URL_BASE = "http://hl7.org/fhir/";
   protected final String URL_DSTU2 = "http://hl7.org/fhir/1.0/";
@@ -16,7 +16,7 @@ public abstract class BaseLoaderR4 implements IContextResourceLoader {
   protected boolean patchUrls;
   protected boolean killPrimitives;
 
-  public BaseLoaderR4(String[] types, ILoaderKnowledgeProvider lkp) {
+  public BaseLoaderR3(String[] types, ILoaderKnowledgeProvider lkp) {
     super();
     this.types = types;
     this.lkp = lkp;
@@ -30,7 +30,7 @@ public abstract class BaseLoaderR4 implements IContextResourceLoader {
     return patchUrls;
   }
 
-  public BaseLoaderR4 setPatchUrls(boolean patchUrls) {
+  public BaseLoaderR3 setPatchUrls(boolean patchUrls) {
     this.patchUrls = patchUrls;
     return this;
   }
@@ -39,7 +39,7 @@ public abstract class BaseLoaderR4 implements IContextResourceLoader {
     return killPrimitives;
   }
 
-  public BaseLoaderR4 setKillPrimitives(boolean killPrimitives) {
+  public BaseLoaderR3 setKillPrimitives(boolean killPrimitives) {
     this.killPrimitives = killPrimitives;
     return this;
   }

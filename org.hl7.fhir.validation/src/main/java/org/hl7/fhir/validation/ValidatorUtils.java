@@ -1,6 +1,6 @@
 package org.hl7.fhir.validation;
 
-import org.hl7.fhir.convertors.loaders.*;
+import org.hl7.fhir.convertors.loaders.loaderR5.*;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.SimpleWorkerContext;

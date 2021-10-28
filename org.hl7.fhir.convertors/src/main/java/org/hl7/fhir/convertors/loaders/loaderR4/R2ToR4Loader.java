@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.loaders;
+package org.hl7.fhir.convertors.loaders.loaderR4;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -30,18 +30,19 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
-import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_40;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_40;
-import org.hl7.fhir.dstu3.formats.JsonParser;
-import org.hl7.fhir.dstu3.formats.XmlParser;
-import org.hl7.fhir.dstu3.model.Resource;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_40;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_40;
+import org.hl7.fhir.dstu2.formats.JsonParser;
+import org.hl7.fhir.dstu2.formats.XmlParser;
+import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r4.context.SimpleWorkerContext.IContextResourceLoader;
-import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
-import org.hl7.fhir.r4.model.ElementDefinition.TypeRefComponent;
+import org.hl7.fhir.r4.model.MetadataResource;
+import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.StructureDefinition.StructureDefinitionKind;
+import org.hl7.fhir.r4.model.UriType;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,37 +50,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader {
+public class R2ToR4Loader extends BaseLoaderR4 {
 
-  private final BaseAdvisor_30_40 advisor = new BaseAdvisor_30_40();
+  private final BaseAdvisor_10_40 advisor = new BaseAdvisor_10_40();
 
-  public R3ToR4Loader() {
+  public R2ToR4Loader() {
     super(new String[0], new NullLoaderKnowledgeProvider());
   }
 
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    Resource r3 = null;
+    Resource r2 = null;
     if (isJson)
-      r3 = new JsonParser().parse(stream);
+      r2 = new JsonParser().parse(stream);
     else
-      r3 = new XmlParser().parse(stream);
-    org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_30_40.convertResource(r3, advisor);
-
+      r2 = new XmlParser().parse(stream);
+    org.hl7.fhir.r4.model.Resource r4 = VersionConvertorFactory_10_40.convertResource(r2, advisor);
     Bundle b;
-    if (r4 instanceof Bundle)
+    if (r4 instanceof Bundle) {
       b = (Bundle) r4;
-    else {
+    } else {
       b = new Bundle();
       b.setId(UUID.randomUUID().toString().toLowerCase());
       b.setType(BundleType.COLLECTION);
       b.addEntry().setResource(r4).setFullUrl(r4 instanceof MetadataResource ? ((MetadataResource) r4).getUrl() : null);
     }
-    for (CodeSystem cs : advisor.getCslist()) {
+    // Add any code systems defined as part of processing value sets to the end of the converted Bundle
+    advisor.getCslist().forEach(cs -> {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
-    }
+    });
+    advisor.getCslist().clear();
+
     if (killPrimitives) {
       List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
       for (BundleEntryComponent be : b.getEntry()) {
@@ -92,29 +95,14 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
       b.getEntry().removeAll(remove);
     }
     if (patchUrls) {
-      for (BundleEntryComponent be : b.getEntry()) {
-        if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
-          StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU3));
+      b.getEntry().stream()
+        .filter(be -> be.hasResource() && be.getResource() instanceof StructureDefinition)
+        .map(be -> (StructureDefinition) be.getResource())
+        .forEach(sd -> {
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
           sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
-          for (ElementDefinition ed : sd.getSnapshot().getElement())
-            patchUrl(ed);
-          for (ElementDefinition ed : sd.getDifferential().getElement())
-            patchUrl(ed);
-        }
-      }
+        });
     }
     return b;
-  }
-
-  private void patchUrl(ElementDefinition ed) {
-    for (TypeRefComponent tr : ed.getType()) {
-      for (CanonicalType s : tr.getTargetProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU3));
-      }
-      for (CanonicalType s : tr.getProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU3));
-      }
-    }
   }
 }

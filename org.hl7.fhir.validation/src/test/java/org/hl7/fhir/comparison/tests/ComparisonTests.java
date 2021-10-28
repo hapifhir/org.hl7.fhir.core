@@ -14,15 +14,12 @@ import java.util.Map.Entry;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
-import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
-import org.hl7.fhir.convertors.loaders.R4ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.BaseLoaderR5.NullLoaderKnowledgeProvider;
+import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;

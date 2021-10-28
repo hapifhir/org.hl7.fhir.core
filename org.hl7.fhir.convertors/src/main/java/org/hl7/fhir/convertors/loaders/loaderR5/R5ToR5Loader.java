@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.loaders;
+package org.hl7.fhir.convertors.loaders.loaderR5;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -30,13 +30,9 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
-import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_10_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
-import org.hl7.fhir.dstu2.formats.JsonParser;
-import org.hl7.fhir.dstu2.formats.XmlParser;
-import org.hl7.fhir.dstu2.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
@@ -49,40 +45,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
+public class R5ToR5Loader extends BaseLoaderR5 {
 
-  private final BaseAdvisor_10_50 advisor = new BaseAdvisor_10_50();
+  // TODO Grahame, will this ever be populated? No conversion is being done?
+  private final List<CodeSystem> cslist = new ArrayList<>();
 
-  public R2ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
+  public R5ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
     super(types, lkp);
   }
 
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    Resource r2 = null;
+    Resource r5 = null;
     if (isJson)
-      r2 = new JsonParser().parse(stream);
+      r5 = new JsonParser().parse(stream);
     else
-      r2 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_10_50.convertResource(r2, advisor);
+      r5 = new XmlParser().parse(stream);
+
     Bundle b;
-    if (r5 instanceof Bundle) {
+    if (r5 instanceof Bundle)
       b = (Bundle) r5;
-    } else {
+    else {
       b = new Bundle();
       b.setId(UUID.randomUUID().toString().toLowerCase());
       b.setType(BundleType.COLLECTION);
       b.addEntry().setResource(r5).setFullUrl(r5 instanceof CanonicalResource ? ((CanonicalResource) r5).getUrl() : null);
     }
-    // Add any code systems defined as part of processing value sets to the end of the converted Bundle
-    for (CodeSystem cs : advisor.getCslist()) {
+    for (CodeSystem cs : cslist) {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
     }
-
-    advisor.getCslist().clear();
-
     if (killPrimitives) {
       List<BundleEntryComponent> remove = new ArrayList<BundleEntryComponent>();
       for (BundleEntryComponent be : b.getEntry()) {
@@ -98,25 +91,28 @@ public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU2));
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
           sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+          for (ElementDefinition ed : sd.getSnapshot().getElement())
+            patchUrl(ed);
+          for (ElementDefinition ed : sd.getDifferential().getElement())
+            patchUrl(ed);
         }
       }
     }
     return b;
   }
 
-
   @Override
-  public org.hl7.fhir.r5.model.Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    Resource r2 = null;
+  public Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
+    Resource r5 = null;
     if (isJson)
-      r2 = new JsonParser().parse(stream);
+      r5 = new JsonParser().parse(stream);
     else
-      r2 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_10_50.convertResource(r2, advisor);
+      r5 = new XmlParser().parse(stream);
     setPath(r5);
-    if (!advisor.getCslist().isEmpty()) {
+
+    if (!cslist.isEmpty()) {
       throw new FHIRException("Error: Cannot have included code systems");
     }
     if (killPrimitives) {
@@ -139,10 +135,10 @@ public class R2ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
   private void patchUrl(ElementDefinition ed) {
     for (TypeRefComponent tr : ed.getType()) {
       for (CanonicalType s : tr.getTargetProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU2));
+        s.setValue(s.getValue().replace(URL_BASE, URL_R4));
       }
       for (CanonicalType s : tr.getProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU2));
+        s.setValue(s.getValue().replace(URL_BASE, URL_R4));
       }
     }
   }

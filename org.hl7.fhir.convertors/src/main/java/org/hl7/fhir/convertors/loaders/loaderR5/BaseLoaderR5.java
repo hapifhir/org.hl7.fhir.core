@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.loaders;
+package org.hl7.fhir.convertors.loaders.loaderR5;
 
 import com.google.gson.JsonSyntaxException;
 import org.hl7.fhir.exceptions.FHIRException;
