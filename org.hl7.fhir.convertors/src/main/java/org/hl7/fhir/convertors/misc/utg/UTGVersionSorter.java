@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.misc;
+package org.hl7.fhir.convertors.misc.utg;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;

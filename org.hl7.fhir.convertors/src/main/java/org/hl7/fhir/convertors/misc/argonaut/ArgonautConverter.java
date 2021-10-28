@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.misc;
+package org.hl7.fhir.convertors.misc.argonaut;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -33,6 +33,10 @@ package org.hl7.fhir.convertors.misc;
 import org.apache.commons.io.IOUtils;
 import org.fhir.ucum.UcumEssenceService;
 import org.fhir.ucum.UcumService;
+import org.hl7.fhir.convertors.misc.CDAUtilities;
+import org.hl7.fhir.convertors.misc.ccda.CcdaExtensions;
+import org.hl7.fhir.convertors.misc.Convert;
+import org.hl7.fhir.convertors.misc.ConverterBase;
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
 import org.hl7.fhir.dstu3.formats.JsonParser;

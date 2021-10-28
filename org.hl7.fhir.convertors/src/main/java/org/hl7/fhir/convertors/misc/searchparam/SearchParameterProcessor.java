@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.misc;
+package org.hl7.fhir.convertors.misc.searchparam;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
