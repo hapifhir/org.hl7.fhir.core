@@ -1,8 +1,14 @@
 package org.hl7.fhir.convertors.loaders.loaderR3;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.dstu3.model.Resource;
 
+import javax.annotation.Nonnull;
+
+@Accessors(chain = true)
 public abstract class BaseLoaderR3 implements IContextResourceLoader {
 
   protected final String URL_BASE = "http://hl7.org/fhir/";
@@ -11,37 +17,16 @@ public abstract class BaseLoaderR3 implements IContextResourceLoader {
   protected final String URL_DSTU3 = "http://hl7.org/fhir/3.0/";
   protected final String URL_R4 = "http://hl7.org/fhir/4.0/";
   protected final String URL_ELEMENT_DEF_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
-  private final String[] types;
+  @Getter private final String[] types;
   private final ILoaderKnowledgeProviderR3 lkp;
-  protected boolean patchUrls;
-  protected boolean killPrimitives;
 
-  public BaseLoaderR3(String[] types, ILoaderKnowledgeProviderR3 lkp) {
+  @Getter @Setter protected boolean patchUrls;
+  @Getter @Setter protected boolean killPrimitives;
+
+  public BaseLoaderR3(@Nonnull String[] types, @Nonnull ILoaderKnowledgeProviderR3 lkp) {
     super();
     this.types = types;
     this.lkp = lkp;
-  }
-
-  public String[] getTypes() {
-    return types;
-  }
-
-  public boolean isPatchUrls() {
-    return patchUrls;
-  }
-
-  public BaseLoaderR3 setPatchUrls(boolean patchUrls) {
-    this.patchUrls = patchUrls;
-    return this;
-  }
-
-  public boolean isKillPrimitives() {
-    return killPrimitives;
-  }
-
-  public BaseLoaderR3 setKillPrimitives(boolean killPrimitives) {
-    this.killPrimitives = killPrimitives;
-    return this;
   }
 
   public String getResourcePath(Resource resource) {
