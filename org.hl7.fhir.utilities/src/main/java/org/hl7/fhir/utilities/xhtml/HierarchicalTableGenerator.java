@@ -598,7 +598,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     TableModel model = new TableModel(id, isActive);
     
     model.setAlternating(alternating);
-    model.setDocoImg(prefix+"help16.png");
+    model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Flags"), translate("sd.hint", "Information about the use of the element"), null, 0));
@@ -615,7 +615,7 @@ public class HierarchicalTableGenerator extends TranslatingUtilities {
     TableModel model = new TableModel(id, true);
     
     model.setAlternating(true);
-    model.setDocoImg(prefix+"help16.png");
+    model.setDocoImg(Utilities.pathURL(prefix, "help16.png"));
     model.setDocoRef(Utilities.pathURL(prefix, "formats.html#table"));    
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "Name"), translate("sd.hint", "The logical name of the element"), null, 0));
     model.getTitles().add(new Title(null, model.getDocoRef(), translate("sd.head", "L Flags"), translate("sd.hint", "Information about the use of the element - Left Structure"), null, 0).setStyle("border-left: 1px grey solid"));
