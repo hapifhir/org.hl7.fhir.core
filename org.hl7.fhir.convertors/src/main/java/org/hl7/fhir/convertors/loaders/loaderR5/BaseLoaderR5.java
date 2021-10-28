@@ -20,9 +20,9 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
   protected boolean patchUrls;
   protected boolean killPrimitives;
   protected String[] types;
-  protected ILoaderKnowledgeProvider lkp;
+  protected ILoaderKnowledgeProviderR5 lkp;
 
-  public BaseLoaderR5(String[] types, ILoaderKnowledgeProvider lkp) {
+  public BaseLoaderR5(String[] types, ILoaderKnowledgeProviderR5 lkp) {
     super();
     this.types = types;
     this.lkp = lkp;
@@ -84,27 +84,4 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
     }
   }
 
-  public interface ILoaderKnowledgeProvider {
-    /**
-     * get the path for references to this resource.
-     *
-     * @param resource
-     * @return null if not tracking paths
-     */
-    String getResourcePath(Resource resource);
-
-    ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) throws JsonSyntaxException, IOException;
-  }
-
-  public static class NullLoaderKnowledgeProvider implements ILoaderKnowledgeProvider {
-    @Override
-    public String getResourcePath(Resource resource) {
-      return null;
-    }
-
-    @Override
-    public ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) {
-      return this;
-    }
-  }
 }

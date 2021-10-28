@@ -18,7 +18,7 @@ import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.convertors.loaders.loaderR5.BaseLoaderR5.NullLoaderKnowledgeProvider;
+import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
 import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
@@ -113,7 +113,7 @@ public class ComparisonTests {
       BaseWorkerContext bc = (BaseWorkerContext) context;
       boolean dupl = bc.isAllowLoadingDuplicates();
       bc.setAllowLoadingDuplicates(true);
-      context.loadFromPackage(npm, new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider()));
+      context.loadFromPackage(npm, new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5()));
       bc.setAllowLoadingDuplicates(dupl);
     }
 

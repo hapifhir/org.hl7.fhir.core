@@ -55,7 +55,7 @@ public class R2ToR3Loader extends BaseLoaderR3 {
   private final BaseAdvisor_10_30 advisor_10_30 = new BaseAdvisor_10_30();
 
   public R2ToR3Loader() {
-    super(new String[0], new NullLoaderKnowledgeProvider());
+    super(new String[0], new NullLoaderKnowledgeProviderR3());
   }
 
   @Override

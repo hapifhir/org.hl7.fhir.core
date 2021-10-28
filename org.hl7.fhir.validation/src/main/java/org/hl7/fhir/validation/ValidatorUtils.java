@@ -42,15 +42,15 @@ public class ValidatorUtils {
     if (Utilities.noString(version))
       return null;
     if (version.startsWith("1.0"))
-      return new R2ToR5Loader(new String[]{"Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new BaseLoaderR5.NullLoaderKnowledgeProvider());
+      return new R2ToR5Loader(new String[]{"Conformance", "StructureDefinition", "ValueSet", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5());
     if (version.startsWith("1.4"))
-      return new R2016MayToR5Loader(new String[]{"Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new BaseLoaderR5.NullLoaderKnowledgeProvider()); // special case
+      return new R2016MayToR5Loader(new String[]{"Conformance", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5()); // special case
     if (version.startsWith("3.0"))
-      return new R3ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new BaseLoaderR5.NullLoaderKnowledgeProvider());
+      return new R3ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5());
     if (version.startsWith("4.0"))
-      return new R4ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new BaseLoaderR5.NullLoaderKnowledgeProvider());
+      return new R4ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5());
     if (version.startsWith("5.0"))
-      return new R5ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new BaseLoaderR5.NullLoaderKnowledgeProvider());
+      return new R5ToR5Loader(new String[]{"CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire", "ConceptMap", "StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5());
     return null;
   }
 

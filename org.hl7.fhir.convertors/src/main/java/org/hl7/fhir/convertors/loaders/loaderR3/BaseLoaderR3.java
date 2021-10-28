@@ -12,11 +12,11 @@ public abstract class BaseLoaderR3 implements IContextResourceLoader {
   protected final String URL_R4 = "http://hl7.org/fhir/4.0/";
   protected final String URL_ELEMENT_DEF_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
   private final String[] types;
-  private final ILoaderKnowledgeProvider lkp;
+  private final ILoaderKnowledgeProviderR3 lkp;
   protected boolean patchUrls;
   protected boolean killPrimitives;
 
-  public BaseLoaderR3(String[] types, ILoaderKnowledgeProvider lkp) {
+  public BaseLoaderR3(String[] types, ILoaderKnowledgeProviderR3 lkp) {
     super();
     this.types = types;
     this.lkp = lkp;
@@ -55,20 +55,4 @@ public abstract class BaseLoaderR3 implements IContextResourceLoader {
     }
   }
 
-  public interface ILoaderKnowledgeProvider {
-    /**
-     * get the path for references to this resource.
-     *
-     * @param resource
-     * @return null if not tracking paths
-     */
-    String getResourcePath(Resource resource);
-  }
-
-  public static class NullLoaderKnowledgeProvider implements ILoaderKnowledgeProvider {
-    @Override
-    public String getResourcePath(Resource resource) {
-      return null;
-    }
-  }
 }

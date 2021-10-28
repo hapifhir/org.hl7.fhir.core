@@ -54,7 +54,7 @@ public class R3ToR4Loader extends BaseLoaderR4 implements IContextResourceLoader
   private final BaseAdvisor_30_40 advisor = new BaseAdvisor_30_40();
 
   public R3ToR4Loader() {
-    super(new String[0], new NullLoaderKnowledgeProvider());
+    super(new String[0], new NullLoaderKnowledgeProviderR4());
   }
 
   @Override

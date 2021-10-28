@@ -50,7 +50,7 @@ public class R5ToR5Loader extends BaseLoaderR5 {
   // TODO Grahame, will this ever be populated? No conversion is being done?
   private final List<CodeSystem> cslist = new ArrayList<>();
 
-  public R5ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
+  public R5ToR5Loader(String[] types, ILoaderKnowledgeProviderR5 lkp) {
     super(types, lkp);
   }
 
