@@ -17,8 +17,8 @@ import org.junit.jupiter.api.Test;
 
 public class ValidationEngineTests {
 
-//  public static final String DEF_TX = "http://tx.fhir.org";
-  public static final String DEF_TX = "http://local.fhir.org:960";
+  public static final String DEF_TX = "http://tx.fhir.org";
+//  public static final String DEF_TX = "http://local.fhir.org:960";
 
   public static boolean inbuild;
 
