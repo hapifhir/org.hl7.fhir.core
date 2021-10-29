@@ -30,7 +30,6 @@ package org.hl7.fhir.convertors.misc.argonaut;
  */
 
 
-import lombok.Data;
 import org.apache.commons.io.IOUtils;
 import org.fhir.ucum.UcumEssenceService;
 import org.fhir.ucum.UcumService;
@@ -1376,22 +1375,4 @@ public class ArgonautConverter extends ConverterBase {
     System.out.println();
   }
 
-  @Data
-  public class Context {
-    private String baseId;
-    private Reference authorRef;
-    private Encounter encounter;
-    private Coding encClass;
-    private int obsId;
-    private DateTimeType now = DateTimeType.now();
-    private int orgId;
-    private Reference subjectRef;
-  }
-
-  @Data
-  public class Stats {
-    private int instances;
-    private int errors;
-    private int warnings;
-  }
 }

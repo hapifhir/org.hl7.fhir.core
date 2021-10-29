@@ -30,7 +30,6 @@ package org.hl7.fhir.convertors.misc.iso21090;
  */
 
 
-import lombok.Data;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
@@ -320,32 +319,4 @@ public class ISO21090Importer {
     schema = doc.getDocumentElement();
   }
 
-  @Data
-  private class Property {
-    private boolean isattr;
-    private String name;
-    private int min;
-    private int max;
-    private String type;
-    private String doco;
-    private String binding;
-  }
-
-  @Data
-  private class DataType {
-    private final List<Property> properties = new ArrayList<Property>();
-    private boolean isAbstract;
-    private String name;
-    private String doco;
-    private String parent;
-  }
-
-  @Data
-  public class EnumValueSet {
-    private final List<String> codes = new ArrayList<String>();
-    private final Map<String, String> members = new HashMap<String, String>();
-    private String name;
-    private String template;
-    private String system;
-  }
 }
