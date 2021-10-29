@@ -62,8 +62,8 @@ import java.util.*;
 
 public class ISO21090Importer {
 
-  private final Map<String, EnumValueSet> bindings = new HashMap<String, EnumValueSet>();
-  private final Map<String, DataType> types = new HashMap<String, DataType>();
+  private final Map<String, EnumValueSet> bindings = new HashMap<>();
+  private final Map<String, DataType> types = new HashMap<>();
   private IWorkerContext ctxt;
   private Element schema;
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 class DataType {
-  private final List<Property> properties = new ArrayList<Property>();
+  private final List<Property> properties = new ArrayList<>();
   private boolean isAbstract;
   private String name;
   private String doco;

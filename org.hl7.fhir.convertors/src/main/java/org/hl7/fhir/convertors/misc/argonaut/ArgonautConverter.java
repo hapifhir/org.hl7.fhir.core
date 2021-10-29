@@ -88,18 +88,18 @@ public class ArgonautConverter extends ConverterBase {
   private final UcumService ucumSvc;
   //	private ValidationEngine validator;
   private final SimpleWorkerContext context;
-  private final Map<String, Map<String, Integer>> sections = new HashMap<String, Map<String, Integer>>();
-  private final Map<String, Practitioner> practitionerCache = new HashMap<String, Practitioner>();
-  private final Set<String> oids = new HashSet<String>();
-  private final Map<String, ZipGenerator> zipsX = new HashMap<String, ZipGenerator>();
-  private final Map<String, ZipGenerator> zipsJ = new HashMap<String, ZipGenerator>();
-  private final Map<String, Stats> stats = new HashMap<String, Stats>();
+  private final Map<String, Map<String, Integer>> sections = new HashMap<>();
+  private final Map<String, Practitioner> practitionerCache = new HashMap<>();
+  private final Set<String> oids = new HashSet<>();
+  private final Map<String, ZipGenerator> zipsX = new HashMap<>();
+  private final Map<String, ZipGenerator> zipsJ = new HashMap<>();
+  private final Map<String, Stats> stats = new HashMap<>();
   public int perfCount;
   int errors = 0;
   int warnings = 0;
-  Map<String, Integer> procCodes = new HashMap<String, Integer>();
-  Map<String, Integer> condCodes = new HashMap<String, Integer>();
-  Map<String, Integer> allergyCodes = new HashMap<String, Integer>();
+  Map<String, Integer> procCodes = new HashMap<>();
+  Map<String, Integer> condCodes = new HashMap<>();
+  Map<String, Integer> allergyCodes = new HashMap<>();
   private String destFolder;
   private ZipGenerator zipJ;
   private ZipGenerator zipX;
@@ -173,7 +173,7 @@ public class ArgonautConverter extends ConverterBase {
   }
 
   private List<String> sorted(Set<String> keys) {
-    List<String> names = new ArrayList<String>();
+    List<String> names = new ArrayList<>();
     names.addAll(keys);
     Collections.sort(names);
     return names;
@@ -253,7 +253,7 @@ public class ArgonautConverter extends ConverterBase {
     if (sections.containsKey(name))
       section = sections.get(name);
     else {
-      section = new HashMap<String, Integer>();
+      section = new HashMap<>();
       sections.put(name, section);
     }
     iterateChildren(section, "/", child);

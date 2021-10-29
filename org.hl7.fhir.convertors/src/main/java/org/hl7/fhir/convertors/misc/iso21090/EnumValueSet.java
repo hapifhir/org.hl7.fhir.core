@@ -9,8 +9,8 @@ import java.util.Map;
 
 @Data
 public class EnumValueSet {
-  private final List<String> codes = new ArrayList<String>();
-  private final Map<String, String> members = new HashMap<String, String>();
+  private final List<String> codes = new ArrayList<>();
+  private final Map<String, String> members = new HashMap<>();
   private String name;
   private String template;
   private String system;
