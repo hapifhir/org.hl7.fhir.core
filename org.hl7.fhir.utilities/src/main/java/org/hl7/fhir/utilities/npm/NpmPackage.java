@@ -64,6 +64,7 @@ import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.json.JSONUtil;
 import org.hl7.fhir.utilities.json.JsonTrackingParser;
+import org.hl7.fhir.utilities.npm.NpmPackage.ITransformingLoader;
 import org.hl7.fhir.utilities.npm.NpmPackage.PackageResourceInformationSorter;
 import org.hl7.fhir.utilities.npm.PackageGenerator.PackageType;
 
@@ -83,6 +84,12 @@ import com.google.gson.JsonObject;
  *
  */
 public class NpmPackage {
+
+  public interface ITransformingLoader {
+
+    byte[] load(File f);
+
+  }
 
   public class PackageResourceInformationSorter implements Comparator<PackageResourceInformation> {
     @Override
@@ -1049,6 +1056,18 @@ public class NpmPackage {
       for (File f : new File(p).listFiles()) {
         if (!f.isDirectory() && !isInternalExemptFile(f)) {
           pf.getContent().put(f.getName(), TextFile.fileToBytes(f));
+        }
+      }
+    }
+  }
+
+  public void loadAllFiles(ITransformingLoader loader) throws IOException {
+    for (String folder : folders.keySet()) {
+      NpmPackageFolder pf = folders.get(folder);
+      String p = folder.contains("$") ? path : Utilities.path(path, folder);
+      for (File f : new File(p).listFiles()) {
+        if (!f.isDirectory() && !isInternalExemptFile(f)) {
+          pf.getContent().put(f.getName(), loader.load(f));
         }
       }
     }

@@ -19,7 +19,7 @@ class FhirRequestBuilderTest {
   @DisplayName("Test default headers are added correctly.")
   void addDefaultHeaders() {
     Request.Builder request = new Request.Builder().url("http://www.google.com");
-    FhirRequestBuilder.addDefaultHeaders(request);
+    FhirRequestBuilder.addDefaultHeaders(request, null);
 
     Map<String, List<String>> headersMap = request.build().headers().toMultimap();
     Assertions.assertNotNull(headersMap.get("User-Agent"), "User-Agent header null.");

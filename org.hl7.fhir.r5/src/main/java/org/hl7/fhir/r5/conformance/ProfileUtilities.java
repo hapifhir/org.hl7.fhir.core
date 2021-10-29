@@ -2452,19 +2452,19 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (webUrl != null) {
         // also, must touch up the markdown
         if (element.hasDefinition())
-          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, baseSpecUrl()));
+          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, baseSpecUrl(), context.getResourceNames()));
         if (element.hasComment())
-          element.setComment(processRelativeUrls(element.getComment(), webUrl, baseSpecUrl()));
+          element.setComment(processRelativeUrls(element.getComment(), webUrl, baseSpecUrl(), context.getResourceNames()));
         if (element.hasRequirements())
-          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, baseSpecUrl()));
+          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, baseSpecUrl(), context.getResourceNames()));
         if (element.hasMeaningWhenMissing())
-          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, baseSpecUrl()));
+          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, baseSpecUrl(), context.getResourceNames()));
       }
     }
     return element;
   }
 
-  public static String processRelativeUrls(String markdown, String webUrl, String basePath) {
+  public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames) {
     StringBuilder b = new StringBuilder();
     int i = 0;
     while (i < markdown.length()) {
@@ -2485,7 +2485,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             // This code is trying to guess which relative references are actually to the
             // base specification.
             // 
-            if (isLikelySourceURLReference(url)) {
+            if (isLikelySourceURLReference(url, resourceNames)) {
               b.append("](");
               b.append(basePath);
               i = i + 1;
@@ -2507,14 +2507,36 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  public static boolean isLikelySourceURLReference(String url) {
+  public static boolean isLikelySourceURLReference(String url, List<String> resourceNames) {
+    if (resourceNames != null) {
+      for (String n : resourceNames) {
+        if (url.startsWith(n.toLowerCase()+".html")) {
+          return true;
+        }
+        if (url.startsWith(n.toLowerCase()+"-definitions.html")) {
+          return true;
+        }
+      }
+    }
     return 
         url.startsWith("extensibility.html") || 
         url.startsWith("terminologies.html") || 
         url.startsWith("observation.html") || 
+        url.startsWith("codesystem.html") || 
+        url.startsWith("fhirpath.html") || 
         url.startsWith("datatypes.html") || 
+        url.startsWith("operations.html") || 
+        url.startsWith("resource.html") || 
+        url.startsWith("elementdefinition.html") ||
+        url.startsWith("element-definitions.html") ||
+        url.startsWith("snomedct.html") ||
+        url.startsWith("loinc.html") ||
+        url.startsWith("http.html") ||
+        url.startsWith("references") ||
         url.startsWith("narrative.html") || 
-        (url.startsWith("extension-") || url.contains(".html")) || 
+        url.startsWith("search.html") ||
+        url.startsWith("patient-operation-match.html") ||
+        (url.startsWith("extension-") && url.contains(".html")) || 
         url.startsWith("resource-definitions.html");
   }
 

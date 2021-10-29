@@ -63,7 +63,7 @@ public class FhirRequestBuilder {
    * @param headers Any additional {@link Headers} to add to the request.
    */
   protected static void formatHeaders(Request.Builder request, String format, Headers headers) {
-    addDefaultHeaders(request);
+    addDefaultHeaders(request, headers);
     if (format != null) addResourceFormatHeaders(request, format);
     if (headers != null) addHeaders(request, headers);
   }
@@ -75,8 +75,10 @@ public class FhirRequestBuilder {
    *
    * @param request {@link Request.Builder} to add default headers to.
    */
-  protected static void addDefaultHeaders(Request.Builder request) {
-    request.addHeader("User-Agent", "hapi-fhir-tooling-client");
+  protected static void addDefaultHeaders(Request.Builder request, Headers headers) {
+    if (headers == null || !headers.names().contains("User-Agent")) {
+      request.addHeader("User-Agent", "hapi-fhir-tooling-client");
+    }
     request.addHeader("Accept-Charset", DEFAULT_CHARSET);
   }
 
@@ -203,7 +205,7 @@ public class FhirRequestBuilder {
   }
 
   public <T extends Resource> ResourceRequest<T> execute() throws IOException {
-    formatHeaders(httpRequest, resourceFormat, null);
+    formatHeaders(httpRequest, resourceFormat, headers);
     Response response = getHttpClient().newCall(httpRequest.build()).execute();
     T resource = unmarshalReference(response, resourceFormat);
     return new ResourceRequest<T>(resource, response.code(), getLocationHeader(response.headers()));

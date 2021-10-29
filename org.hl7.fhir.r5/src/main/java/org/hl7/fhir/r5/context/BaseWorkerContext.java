@@ -207,6 +207,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected TimeTracker clock;
   private boolean tlogging = true;
   private ICanonicalResourceLocator locator;
+  protected String userAgent;
   
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     txCache = new TerminologyCache(lock, null);
@@ -2098,6 +2099,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void setLocator(ICanonicalResourceLocator locator) {
     this.locator = locator;
+  }
+
+  public String getUserAgent() {
+    return userAgent;
+  }
+
+  public void setUserAgent(String userAgent) {
+    this.userAgent = userAgent;
+    if (txClient != null)
+      txClient.setUserAgent(userAgent);
   }
 
 }

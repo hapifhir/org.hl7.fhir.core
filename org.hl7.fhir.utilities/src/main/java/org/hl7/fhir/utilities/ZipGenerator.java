@@ -121,19 +121,23 @@ public class ZipGenerator {
 		File f = new CSFile(actualDir);
 
 		String files[] = f.list();
-		for (int i = 0; i < files.length; i++) {
-			if ( new CSFile(actualDir + files[i]).isFile() && ((ext == null || files[i].endsWith(ext)) && (noExt == null || !files[i].endsWith(noExt)))) {
-				FileInputStream fi = new FileInputStream(actualDir + files[i]);
-				BufferedInputStream origin = new BufferedInputStream(fi, BUFFER);
-				ZipEntry entry = new ZipEntry(statedDir + files[i]);
-				names.add(statedDir + files[i]);
-				out.putNextEntry(entry);
-				int count;
-				while ((count = origin.read(data, 0, BUFFER)) != -1) {
-					out.write(data, 0, count);
-				}
-				origin.close();
-			}
+		if (files == null) {
+      System.out.println("no files found in "+f.getName());
+		} else {
+		  for (int i = 0; i < files.length; i++) {
+		    if ( new CSFile(actualDir + files[i]).isFile() && ((ext == null || files[i].endsWith(ext)) && (noExt == null || !files[i].endsWith(noExt)))) {
+		      FileInputStream fi = new FileInputStream(actualDir + files[i]);
+		      BufferedInputStream origin = new BufferedInputStream(fi, BUFFER);
+		      ZipEntry entry = new ZipEntry(statedDir + files[i]);
+		      names.add(statedDir + files[i]);
+		      out.putNextEntry(entry);
+		      int count;
+		      while ((count = origin.read(data, 0, BUFFER)) != -1) {
+		        out.write(data, 0, count);
+		      }
+		      origin.close();
+		    }
+		  }
 		}
 	}
 
