@@ -100,14 +100,16 @@ public class FHIRToolingClient {
 	private ClientUtils utils = new ClientUtils();
 	
 	//Pass enpoint for client - URI
-	public FHIRToolingClient(String baseServiceUrl) throws URISyntaxException {
+	public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
 		preferredResourceFormat = ResourceFormat.RESOURCE_XML;
+    utils.setUserAgent(userAgent);
     detectProxy();
     initialize(baseServiceUrl);
 	}
 
-  public FHIRToolingClient(String baseServiceUrl, String username, String password) throws URISyntaxException {
+  public FHIRToolingClient(String baseServiceUrl, String userAgent, String username, String password) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
+    utils.setUserAgent(userAgent);
     utils.setUsername(username);
     utils.setPassword(password);
     detectProxy();
@@ -857,5 +859,11 @@ public class FHIRToolingClient {
     utils.setRetryCount(retryCount);
   }
 
+  public String getUserAgent() {
+    return utils.getUserAgent();
+  }
 
+  public void setUserAgent(String userAgent) {
+    utils.setUserAgent(userAgent);
+  }
 }

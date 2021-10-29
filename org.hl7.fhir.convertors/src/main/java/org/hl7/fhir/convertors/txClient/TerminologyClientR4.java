@@ -49,13 +49,13 @@ public class TerminologyClientR4 implements TerminologyClient {
   private final FHIRToolingClient client; // todo: use the R2 client
   private ClientHeaders clientHeaders;
 
-  public TerminologyClientR4(String address) throws URISyntaxException {
-    this.client = new FHIRToolingClient(address);
+  public TerminologyClientR4(String address, String userAgent) throws URISyntaxException {
+    this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(new ClientHeaders());
   }
 
-  public TerminologyClientR4(String address, ClientHeaders clientHeaders) throws URISyntaxException {
-    this.client = new FHIRToolingClient(address);
+  public TerminologyClientR4(String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
+    this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(clientHeaders);
   }
 
@@ -160,6 +160,12 @@ public class TerminologyClientR4 implements TerminologyClient {
   public TerminologyClient setClientHeaders(ClientHeaders clientHeaders) {
     this.clientHeaders = clientHeaders;
     this.client.setClientHeaders(this.clientHeaders.headers());
+    return this;
+  }
+
+  @Override
+  public TerminologyClient setUserAgent(String userAgent) {
+    client.setUserAgent(userAgent);
     return this;
   }
 }

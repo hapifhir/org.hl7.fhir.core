@@ -38,6 +38,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Stack;
 
@@ -674,6 +675,16 @@ public class JsonTrackingParser {
     return gson.toJson(json);    
   }
 
+  public static byte[] writeBytes(JsonObject json, boolean pretty) {
+    if (pretty) {
+      Gson gson = new GsonBuilder().setPrettyPrinting().create();
+      return gson.toJson(json).getBytes(StandardCharsets.UTF_8);    
+    } else {
+      Gson gson = new GsonBuilder().create();
+      return gson.toJson(json).getBytes(StandardCharsets.UTF_8);    
+    }    
+  }
+  
   public static JsonObject fetchJson(String source) throws IOException {
     URL url = new URL(source+"?nocache=" + System.currentTimeMillis());
     HttpURLConnection c = (HttpURLConnection) url.openConnection();

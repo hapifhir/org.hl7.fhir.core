@@ -105,6 +105,7 @@ public class ClientUtils {
   private String password;
   private ToolingClientLogger logger;
   private int retryCount;
+  private String userAgent;
 
   public HttpHost getProxy() {
     return proxy;
@@ -258,7 +259,9 @@ public class ClientUtils {
    * @param request
    */
   protected void configureFhirRequest(HttpRequest request, String format, List<Header> headers) {
-    request.addHeader("User-Agent", "Java FHIR Client for FHIR");
+    if (!Utilities.noString(userAgent)) {
+      request.addHeader("User-Agent", userAgent);
+    }
 
     if (format != null) {		
       request.addHeader("Accept",format);
@@ -661,6 +664,14 @@ public class ClientUtils {
 
   public void setRetryCount(int retryCount) {
     this.retryCount = retryCount;
+  }
+
+  public String getUserAgent() {
+    return userAgent;
+  }
+
+  public void setUserAgent(String userAgent) {
+    this.userAgent = userAgent;
   }
 
 
