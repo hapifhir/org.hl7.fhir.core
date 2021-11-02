@@ -1,7 +1,5 @@
 package org.hl7.fhir.utilities.i18n;
 
-import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
-
 public class I18nConstants {
 
   
@@ -354,6 +352,7 @@ public class I18nConstants {
   public static final String RESOURCE_RES_ID_MISSING = "Resource_RES_ID_Missing";
   public static final String RESOURCE_RES_ID_PROHIBITED = "Resource_RES_ID_Prohibited";
   public static final String RESOURCE_TYPE_MISMATCH_FOR___ = "Resource_type_mismatch_for___";
+  public static final String RISKASSESSMENT_PROBABILITYDECIMAL_INVALID = "RISKASSESSMENT_PROBABILITYDECIMAL_INVALID";
   public static final String SAME_ID_ON_MULTIPLE_ELEMENTS__IN_ = "Same_id_on_multiple_elements__in_";
   public static final String SD_MUST_HAVE_DERIVATION = "SD_MUST_HAVE_DERIVATION";
   public static final String SD_NESTED_MUST_SUPPORT_DIFF = "SD_NESTED_MUST_SUPPORT_DIFF";

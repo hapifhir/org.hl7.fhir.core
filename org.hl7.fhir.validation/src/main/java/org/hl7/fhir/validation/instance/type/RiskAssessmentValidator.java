@@ -5,6 +5,7 @@ import org.hl7.fhir.r5.elementmodel.Element;
 import org.hl7.fhir.r5.model.DecimalType;
 import org.hl7.fhir.r5.utils.FHIRPathEngine;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
+import org.hl7.fhir.utilities.i18n.I18nConstants;
 import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.validation.ValidationMessage.Source;
 import org.hl7.fhir.validation.BaseValidator;
@@ -14,8 +15,6 @@ import org.hl7.fhir.validation.instance.utils.NodeStack;
 import java.util.List;
 
 public class RiskAssessmentValidator extends BaseValidator {
-
-
 
   private FHIRPathEngine fpe;
 
@@ -39,11 +38,9 @@ public class RiskAssessmentValidator extends BaseValidator {
         DecimalType probabilityValue = new DecimalType(probability.getValue());
         if (probabilityValue.compareTo(new DecimalType(100)) > 0) {
 
-          rule(errors, ValidationMessage.IssueType.PROCESSING, prediction.line(), prediction.col(), prediction.getPath(), false, "", "");
-          System.out.print("");
+          rule(errors, ValidationMessage.IssueType.PROCESSING, prediction.line(), prediction.col(), prediction.getPath(), false, I18nConstants.RISKASSESSMENT_PROBABILITYDECIMAL_INVALID, "ras-2", "Must be <= 100");
         }
       }
     }
-    System.out.print("");
   }
 }
