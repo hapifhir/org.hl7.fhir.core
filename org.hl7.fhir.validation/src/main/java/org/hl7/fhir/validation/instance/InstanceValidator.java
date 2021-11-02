@@ -140,6 +140,7 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.CommaSeparatedStringBuilder;
 import org.hl7.fhir.utilities.SIDUtilities;
+import org.hl7.fhir.utilities.UnicodeUtilities;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.Utilities.DecimalStatus;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -363,6 +364,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
   private boolean baseOnly;
   private boolean noCheckAggregation;
   private boolean wantCheckSnapshotUnchanged;
+  private boolean noUnicodeBiDiControlChars;
  
   private List<ImplementationGuide> igs = new ArrayList<>();
   private List<String> extensionDomains = new ArrayList<String>();
@@ -1997,6 +1999,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
         rule(errors, IssueType.CODEINVALID, e.line(), e.col(), path, context.getBinding().getStrength() != BindingStrength.REQUIRED, I18nConstants.Terminology_TX_Code_ValueSet_MISSING);
       }
       return;
+    } else {
+      boolean hasBiDiControls = UnicodeUtilities.hasBiDiChars(e.primitiveValue());
+      if (hasBiDiControls) {
+        if (rule(errors, IssueType.CODEINVALID, e.line(), e.col(), path, !noUnicodeBiDiControlChars, I18nConstants.UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED, UnicodeUtilities.replaceBiDiChars(e.primitiveValue()))) {
+          String msg = UnicodeUtilities.checkUnicodeWellFormed(e.primitiveValue());
+          warning(errors, IssueType.INVALID, e.line(), e.col(), path, msg == null, I18nConstants.UNICODE_BIDI_CONTROLS_CHARS_MATCH, msg);
+        }
+      }
     }
     String regex = context.getExtensionString(ToolingExtensions.EXT_REGEX);
     if (regex != null) {
@@ -5569,6 +5579,14 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
 
   public void setBaseOptions(ValidationOptions baseOptions) {
     this.baseOptions = baseOptions;
+  }
+
+  public boolean isNoUnicodeBiDiControlChars() {
+    return noUnicodeBiDiControlChars;
+  }
+
+  public void setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
+    this.noUnicodeBiDiControlChars = noUnicodeBiDiControlChars;
   }
 
 }
