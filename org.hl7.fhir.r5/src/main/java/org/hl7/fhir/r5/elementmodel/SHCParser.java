@@ -1,19 +1,9 @@
 package org.hl7.fhir.r5.elementmodel;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.zip.DataFormatException;
-import java.util.zip.Inflater;
-
-import org.apache.commons.io.IOUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -28,11 +18,11 @@ import org.hl7.fhir.utilities.json.JsonTrackingParser.LocationData;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import java.io.*;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
 
 /**
  * this class is actually a smart health cards validator. 
@@ -97,56 +87,64 @@ public class SHCParser extends ParserBase {
         return res;      
       }
       map = jwt.map;
-      JsonTrackingParser.write(jwt.payload, "c:\\temp\\payload.json");
-      checkNamedProperties(jwt.getPayload(), prefix+"payload", "iss", "nbf", "vc");
-      checkProperty(jwt.getPayload(), prefix+"payload", "iss", true, "String");
-      logError(1, 1, prefix+"JWT", IssueType.INFORMATIONAL, "The FHIR Validator does not check the JWT signature "+
-          "(see https://demo-portals.smarthealth.cards/VerifierPortal.html or https://github.com/smart-on-fhir/health-cards-dev-tools) (Issuer = '"+jwt.getPayload().get("iss").getAsString()+"')", IssueSeverity.INFORMATION);
-      checkProperty(jwt.getPayload(), prefix+"payload", "nbf", true, "Number");
-      JsonObject vc = jwt.getPayload().getAsJsonObject("vc");
-      if (vc == null) {
-        logError(1, 1, "JWT", IssueType.STRUCTURE, "Unable to find property 'vc' in the payload", IssueSeverity.ERROR);        
-        return res;
-      }
-      String path = prefix+"payload.vc";
-      checkNamedProperties(vc, path, "type", "credentialSubject");
-      if (!checkProperty(vc, path, "type", true, "Array")) { 
-        return res; 
-      }
-      JsonArray type = vc.getAsJsonArray("type");
-      int i = 0;
-      for (JsonElement e : type) {
-        if (!(e instanceof JsonPrimitive)) {
-          logError(line(e), col(e), path+".type["+i+"]", IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : String but found "+JSONUtil.type(e), IssueSeverity.ERROR);                
-        } else {
-          types.add(e.getAsString());
+
+      File tempFile = File.createTempFile("payload", ".json");
+      try {
+        JsonTrackingParser.write(jwt.payload, tempFile.getAbsolutePath());
+
+        checkNamedProperties(jwt.getPayload(), prefix + "payload", "iss", "nbf", "vc");
+        checkProperty(jwt.getPayload(), prefix + "payload", "iss", true, "String");
+        logError(1, 1, prefix + "JWT", IssueType.INFORMATIONAL, "The FHIR Validator does not check the JWT signature " +
+          "(see https://demo-portals.smarthealth.cards/VerifierPortal.html or https://github.com/smart-on-fhir/health-cards-dev-tools) (Issuer = '" + jwt.getPayload().get("iss").getAsString() + "')", IssueSeverity.INFORMATION);
+        checkProperty(jwt.getPayload(), prefix + "payload", "nbf", true, "Number");
+        JsonObject vc = jwt.getPayload().getAsJsonObject("vc");
+        if (vc == null) {
+          logError(1, 1, "JWT", IssueType.STRUCTURE, "Unable to find property 'vc' in the payload", IssueSeverity.ERROR);
+          return res;
         }
-        i++;
+        String path = prefix + "payload.vc";
+        checkNamedProperties(vc, path, "type", "credentialSubject");
+        if (!checkProperty(vc, path, "type", true, "Array")) {
+          return res;
+        }
+        JsonArray type = vc.getAsJsonArray("type");
+        int i = 0;
+        for (JsonElement e : type) {
+          if (!(e instanceof JsonPrimitive)) {
+            logError(line(e), col(e), path + ".type[" + i + "]", IssueType.STRUCTURE, "Wrong Property Type in JSON Payload. Expected : String but found " + JSONUtil.type(e), IssueSeverity.ERROR);
+          } else {
+            types.add(e.getAsString());
+          }
+          i++;
+        }
+        if (!types.contains("https://smarthealth.cards#health-card")) {
+          logError(line(vc), col(vc), path, IssueType.STRUCTURE, "Card does not claim to be of type https://smarthealth.cards#health-card, cannot validate", IssueSeverity.ERROR);
+          return res;
+        }
+        if (!checkProperty(vc, path, "credentialSubject", true, "Object")) {
+          return res;
+        }
+        JsonObject cs = vc.getAsJsonObject("credentialSubject");
+        path = path + ".credentialSubject";
+        if (!checkProperty(cs, path, "fhirVersion", true, "String")) {
+          return res;
+        }
+        JsonElement fv = cs.get("fhirVersion");
+        if (!VersionUtilities.versionsCompatible(context.getVersion(), fv.getAsString())) {
+          logError(line(fv), col(fv), path + ".fhirVersion", IssueType.STRUCTURE, "Card claims to be of version " + fv.getAsString() + ", cannot be validated against version " + context.getVersion(), IssueSeverity.ERROR);
+          return res;
+        }
+        if (!checkProperty(cs, path, "fhirBundle", true, "Object")) {
+          return res;
+        }
+        // ok. all checks passed, we can now validate the bundle
+        Element e = jsonParser.parse(cs.getAsJsonObject("fhirBundle"), map);
+        if (e != null) {
+          res.add(new NamedElement(path, e));
+        }
       }
-      if (!types.contains("https://smarthealth.cards#health-card")) {
-        logError(line(vc), col(vc), path, IssueType.STRUCTURE, "Card does not claim to be of type https://smarthealth.cards#health-card, cannot validate", IssueSeverity.ERROR);                
-        return res;
-      }
-      if (!checkProperty(vc, path, "credentialSubject", true, "Object")) { 
-        return res; 
-      }
-      JsonObject cs = vc.getAsJsonObject("credentialSubject");
-      path = path+".credentialSubject";
-      if (!checkProperty(cs, path, "fhirVersion", true, "String")) { 
-        return res; 
-      }
-      JsonElement fv = cs.get("fhirVersion");
-      if (!VersionUtilities.versionsCompatible(context.getVersion(), fv.getAsString())) {
-        logError(line(fv), col(fv), path+".fhirVersion", IssueType.STRUCTURE, "Card claims to be of version "+fv.getAsString()+", cannot be validated against version "+context.getVersion(), IssueSeverity.ERROR);                      
-        return res; 
-      }    
-      if (!checkProperty(cs, path, "fhirBundle", true, "Object")) { 
-        return res; 
-      }
-      // ok. all checks passed, we can now validate the bundle
-      Element e = jsonParser.parse(cs.getAsJsonObject("fhirBundle"), map);
-      if (e != null) {
-        res.add(new NamedElement(path, e));
+      finally {
+        if (tempFile.exists()) {tempFile.delete();}
       }
     }
     return res;
