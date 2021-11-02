@@ -79,7 +79,7 @@ public class VersionConvertorContext<T> {
       stack = new Stack<>();
     }
     stack.push(path);
-    logger.debug("Pushing path <" + path + "> onto stack. Current path -> " + String.join(",", stack));
+    // logger.debug("Pushing path <" + path + "> onto stack. Current path -> " + String.join(",", stack));
     threadLocalPath.set(stack);
   }
 
@@ -96,7 +96,7 @@ public class VersionConvertorContext<T> {
       throw new FHIRException("Cannot close path <" + path + ">. Reached unstable state, no stack path available.");
     }
     String currentPath = stack.pop();
-    logger.debug("Popping path <" + currentPath + "> off stack. Current path -> " + String.join(",", stack));
+//    logger.debug("Popping path <" + currentPath + "> off stack. Current path -> " + String.join(",", stack));
     if (!path.equals(currentPath)) {
       throw new FHIRException("Reached unstable state, current path doesn't match expected path.");
     }
@@ -127,7 +127,7 @@ public class VersionConvertorContext<T> {
   public T getVersionConvertor() {
     T result = threadLocalVersionConverter.get();
     if (result != null && logger != null) {
-      logger.debug(result.toString());
+//      logger.debug(result.toString());
     }
     return result;
   }

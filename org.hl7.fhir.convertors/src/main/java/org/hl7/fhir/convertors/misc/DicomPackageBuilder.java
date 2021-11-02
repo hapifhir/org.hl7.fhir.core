@@ -36,6 +36,7 @@ public class DicomPackageBuilder {
   private String version;
   private String dest;
   private String source;
+  private String pattern = "fhir.dicom#{version}.tgz";
 
   public static void main(String[] args) throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
     if (args.length == 0 || args[0].equals("-help")) {
@@ -55,12 +56,16 @@ public class DicomPackageBuilder {
     DicomPackageBuilder self = new DicomPackageBuilder();
     self.setSource(source);
     self.setDest(dest);
+    self.setPattern("{version}/package.tgz");
     self.execute();
   }
 
-  private void execute() throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
+  public void execute() throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
     CodeSystem cs = buildCodeSystem();
-    NPMPackageGenerator gen = new NPMPackageGenerator(Utilities.path(dest, "fhir.dicom#"+version+".tgz"), buildPackage());
+    String fn = Utilities.path(dest, pattern.replace("{version}", version));
+    Utilities.createDirectory(Utilities.getDirectoryForFile(fn));
+    
+    NPMPackageGenerator gen = new NPMPackageGenerator(fn, buildPackage());
     int i = 2;
     gen.addFile(Category.RESOURCE, "CodeSystem-"+cs.getId()+".json", new JsonParser().setOutputStyle(OutputStyle.NORMAL).composeBytes(cs));
     ValueSet vs = buildAllValueSet();
@@ -168,15 +173,16 @@ public class DicomPackageBuilder {
     return p[0].substring(0, 4)+"."+(1+(p[0].charAt(4) - 'a'))+"."+p[1];
   }
 
-  private void setVersion(String version) {
-    this.version = version;    
-  }
-
-  private void setDest(String dest) {
+  public void setDest(String dest) {
     this.dest = dest;    
   }
 
-  private void setSource(String source) {
+  public void setSource(String source) {
     this.source = source;
+  }
+
+  public void setPattern(String pattern) {
+    this.pattern  = pattern;
+    
   }
 }
