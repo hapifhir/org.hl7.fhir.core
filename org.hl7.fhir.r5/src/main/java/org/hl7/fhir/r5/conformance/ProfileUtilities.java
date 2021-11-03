@@ -335,6 +335,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean autoFixSliceNames;
   private XVerExtensionManager xver;
   private boolean wantFixDifferentialFirstElementType;
+  private List<String> masterSourceFileNames;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
@@ -2452,19 +2453,19 @@ public class ProfileUtilities extends TranslatingUtilities {
       if (webUrl != null) {
         // also, must touch up the markdown
         if (element.hasDefinition())
-          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, baseSpecUrl(), context.getResourceNames()));
+          element.setDefinition(processRelativeUrls(element.getDefinition(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames));
         if (element.hasComment())
-          element.setComment(processRelativeUrls(element.getComment(), webUrl, baseSpecUrl(), context.getResourceNames()));
+          element.setComment(processRelativeUrls(element.getComment(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames));
         if (element.hasRequirements())
-          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, baseSpecUrl(), context.getResourceNames()));
+          element.setRequirements(processRelativeUrls(element.getRequirements(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames));
         if (element.hasMeaningWhenMissing())
-          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, baseSpecUrl(), context.getResourceNames()));
+          element.setMeaningWhenMissing(processRelativeUrls(element.getMeaningWhenMissing(), webUrl, baseSpecUrl(), context.getResourceNames(), masterSourceFileNames));
       }
     }
     return element;
   }
 
-  public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames) {
+  public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, List<String> filenames) {
     StringBuilder b = new StringBuilder();
     int i = 0;
     while (i < markdown.length()) {
@@ -2485,7 +2486,7 @@ public class ProfileUtilities extends TranslatingUtilities {
             // This code is trying to guess which relative references are actually to the
             // base specification.
             // 
-            if (isLikelySourceURLReference(url, resourceNames)) {
+            if (isLikelySourceURLReference(url, resourceNames, filenames)) {
               b.append("](");
               b.append(basePath);
               i = i + 1;
@@ -2507,13 +2508,20 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  public static boolean isLikelySourceURLReference(String url, List<String> resourceNames) {
+  public static boolean isLikelySourceURLReference(String url, List<String> resourceNames, List<String> filenames) {
     if (resourceNames != null) {
       for (String n : resourceNames) {
         if (url.startsWith(n.toLowerCase()+".html")) {
           return true;
         }
         if (url.startsWith(n.toLowerCase()+"-definitions.html")) {
+          return true;
+        }
+      }
+    }
+    if (filenames != null) {
+      for (String n : filenames) {
+        if (url.startsWith(n.toLowerCase())) {
           return true;
         }
       }
@@ -6660,5 +6668,14 @@ public class ProfileUtilities extends TranslatingUtilities {
   public ElementDefinitionResolution resolveContentRef(StructureDefinition structure, ElementDefinition element) {
     return getElementById(structure, structure.getSnapshot().getElement(), element.getContentReference());
   }
+
+  public List<String> getMasterSourceFileNames() {
+    return masterSourceFileNames;
+  }
+
+  public void setMasterSourceFileNames(List<String> masterSourceFileNames) {
+    this.masterSourceFileNames = masterSourceFileNames;
+  }
+
   
 }

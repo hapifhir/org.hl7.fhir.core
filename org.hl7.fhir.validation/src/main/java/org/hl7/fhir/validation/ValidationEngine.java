@@ -149,6 +149,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   @Getter @Setter private ICanonicalResourceLocator locator;
   @Getter @Setter private boolean assumeValidRestReferences;
   @Getter @Setter private boolean noExtensibleBindingMessages;
+  @Getter @Setter private boolean noUnicodeBiDiControlChars;
   @Getter @Setter private boolean securityChecks;
   @Getter @Setter private boolean crumbTrails;
   @Getter @Setter private boolean allowExampleUrls;
@@ -518,6 +519,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.getBundleValidationRules().addAll(bundleValidationRules);
     validator.getValidationControl().putAll(validationControl);
     validator.setQuestionnaireMode(questionnaireMode);
+    validator.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }
