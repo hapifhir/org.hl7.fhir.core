@@ -5386,7 +5386,7 @@ public class InstanceValidator extends BaseValidator implements IResourceValidat
     // waiting for 4.0.2
     //TODO is this expression below correct? @grahamegrieve
     if ("probability is decimal implies (probability as decimal) <= 100".equals(expr)) {
-      return "probablility.empty() or ((probability is decimal) implies ((probability as decimal) <= 100))";
+      return "probability.empty() or ((probability is decimal) implies ((probability as decimal) <= 100))";
     }
     if ("enableWhen.count() > 2 implies enableBehavior.exists()".equals(expr)) {
       return "enableWhen.count() >= 2 implies enableBehavior.exists()";
