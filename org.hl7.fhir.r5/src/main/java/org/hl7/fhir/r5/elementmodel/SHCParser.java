@@ -1,9 +1,16 @@
 package org.hl7.fhir.r5.elementmodel;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.zip.DataFormatException;
+import java.util.zip.Inflater;
+
+import org.apache.commons.io.IOUtils;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -18,11 +25,11 @@ import org.hl7.fhir.utilities.json.JsonTrackingParser.LocationData;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueSeverity;
 import org.hl7.fhir.utilities.validation.ValidationMessage.IssueType;
 
-import java.io.*;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.zip.DataFormatException;
-import java.util.zip.Inflater;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 /**
  * this class is actually a smart health cards validator. 
