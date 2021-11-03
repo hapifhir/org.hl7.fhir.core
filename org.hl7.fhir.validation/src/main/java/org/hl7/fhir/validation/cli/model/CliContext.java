@@ -38,6 +38,8 @@ public class CliContext {
   private boolean noInternalCaching = false; // internal, for when debugging terminology validation
   @JsonProperty("noExtensibleBindingMessages")
   private boolean noExtensibleBindingMessages = false;
+  @JsonProperty("noUnicodeBiDiControlChars")
+  private boolean noUnicodeBiDiControlChars = false;
   @JsonProperty("noInvariants")
   private boolean noInvariants = false;
   @JsonProperty("wantInvariantsInMessages")
@@ -528,6 +530,14 @@ public class CliContext {
     this.outputStyle = outputStyle;
   }
 
+  public boolean isNoUnicodeBiDiControlChars() {
+    return noUnicodeBiDiControlChars;
+  }
+
+  public void setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
+    this.noUnicodeBiDiControlChars = noUnicodeBiDiControlChars;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -542,6 +552,7 @@ public class CliContext {
       canDoNative == that.canDoNative &&
       noInternalCaching == that.noInternalCaching &&
       noExtensibleBindingMessages == that.noExtensibleBindingMessages &&
+      noUnicodeBiDiControlChars == that.noUnicodeBiDiControlChars &&
       noInvariants == that.noInvariants &&
       wantInvariantsInMessages == that.wantInvariantsInMessages &&
       Objects.equals(map, that.map) &&
@@ -570,7 +581,9 @@ public class CliContext {
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle);
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
+            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, 
+            targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, noUnicodeBiDiControlChars);
   }
 
   @Override
@@ -585,6 +598,7 @@ public class CliContext {
       ", canDoNative=" + canDoNative +
       ", noInternalCaching=" + noInternalCaching +
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
+      ", noUnicodeBiDiControlChars=" + noUnicodeBiDiControlChars +
       ", noInvariants=" + noInvariants +
       ", wantInvariantsInMessages=" + wantInvariantsInMessages +
       ", map='" + map + '\'' +

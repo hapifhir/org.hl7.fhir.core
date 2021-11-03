@@ -149,6 +149,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   @Getter @Setter private ICanonicalResourceLocator locator;
   @Getter @Setter private boolean assumeValidRestReferences;
   @Getter @Setter private boolean noExtensibleBindingMessages;
+  @Getter @Setter private boolean noUnicodeBiDiControlChars;
   @Getter @Setter private boolean securityChecks;
   @Getter @Setter private boolean crumbTrails;
   @Getter @Setter private boolean allowExampleUrls;
@@ -189,23 +190,26 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, null);
+    getContext().setUserAgent(userAgent);
     getContext().setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
     setTerminologyServer(txsrvr, txLog, version);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, null);
+    getContext().setUserAgent(userAgent);
     setTerminologyServer(txsrvr, txLog, version);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, String vString, TimeTracker tt) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String vString, TimeTracker tt, String userAgent) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, tt);
+    getContext().setUserAgent(userAgent);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
@@ -271,7 +275,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       return "n/a: No Terminology Server";
     } else {
       try {
-        return context.connectToTSServer(TerminologyClientFactory.makeClient(url, version), log);
+        return context.connectToTSServer(TerminologyClientFactory.makeClient(url, context.getUserAgent(), version), log);
       } catch (Exception e) {
         if (context.isCanRunWithoutTerminology()) {
           return "n/a: Running without Terminology Server (error: " + e.getMessage() + ")";
@@ -515,6 +519,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.getBundleValidationRules().addAll(bundleValidationRules);
     validator.getValidationControl().putAll(validationControl);
     validator.setQuestionnaireMode(questionnaireMode);
+    validator.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }

@@ -54,6 +54,7 @@ public class Params {
   public static final String RIGHT = "-right";
   public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
   public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
+  public static final String NO_UNICODE_BIDI_CONTROL_CHARS = "-no_unicode_bidi_control_chars";
   public static final String NO_INVARIANTS = "-no-invariants";
   public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String SECURITY_CHECKS = "-security-checks";
@@ -165,6 +166,8 @@ public class Params {
         cliContext.setNoInternalCaching(true);
       } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
         cliContext.setNoExtensibleBindingMessages(true);
+      } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
+        cliContext.setNoUnicodeBiDiControlChars(true);
       } else if (args[i].equals(NO_INVARIANTS)) {
         cliContext.setNoInvariants(true);
       } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {

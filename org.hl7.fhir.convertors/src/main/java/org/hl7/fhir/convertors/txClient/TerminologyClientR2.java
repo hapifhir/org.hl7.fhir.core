@@ -48,8 +48,8 @@ public class TerminologyClientR2 implements TerminologyClient {
 
   private final FHIRToolingClient client; // todo: use the R2 client
 
-  public TerminologyClientR2(String address) throws URISyntaxException {
-    client = new FHIRToolingClient(address);
+  public TerminologyClientR2(String address, String userAgent) throws URISyntaxException {
+    client = new FHIRToolingClient(address, userAgent);
   }
 
   @Override
@@ -152,5 +152,11 @@ public class TerminologyClientR2 implements TerminologyClient {
   @Override
   public TerminologyClient setClientHeaders(ClientHeaders clientHeaders) {
     return null;
+  }
+
+  @Override
+  public TerminologyClient setUserAgent(String userAgent) {
+    client.setUserAgent(userAgent);
+    return this;
   }
 }

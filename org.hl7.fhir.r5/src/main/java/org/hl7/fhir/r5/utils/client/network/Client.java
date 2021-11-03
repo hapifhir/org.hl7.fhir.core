@@ -149,6 +149,7 @@ public class Client {
   public Bundle postBatchRequest(URI resourceUri,
                                  byte[] payload,
                                  String resourceFormat,
+                                 Headers headers,
                                  String message,
                                  int timeout) throws IOException {
     if (payload == null) throw new EFhirClientException("POST requests require a non-null payload");
@@ -157,7 +158,7 @@ public class Client {
       .url(resourceUri.toURL())
       .post(body);
 
-    return executeBundleRequest(request, resourceFormat, new Headers.Builder().build(), message, retryCount, timeout);
+    return executeBundleRequest(request, resourceFormat, headers, message, retryCount, timeout);
   }
 
   public <T extends Resource> Bundle executeBundleRequest(Request.Builder request,
