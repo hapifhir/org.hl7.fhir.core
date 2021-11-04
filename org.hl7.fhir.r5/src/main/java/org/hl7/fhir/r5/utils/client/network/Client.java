@@ -21,6 +21,7 @@ public class Client {
   private ToolingClientLogger logger;
   private int retryCount;
   private long timeout = DEFAULT_TIMEOUT;
+  private byte[] payload;
 
   public ToolingClientLogger getLogger() {
     return logger;
@@ -50,6 +51,7 @@ public class Client {
                                                                      String resourceFormat,
                                                                      String message,
                                                                      long timeout) throws IOException {
+    this.payload = null;
     Request.Builder request = new Request.Builder()
       .method("OPTIONS", null)
       .url(optionsUri.toURL());
@@ -62,6 +64,7 @@ public class Client {
                                                                          Headers headers,
                                                                          String message,
                                                                          long timeout) throws IOException {
+    this.payload = null;
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL());
 
@@ -86,6 +89,7 @@ public class Client {
                                                                  String message,
                                                                  long timeout) throws IOException {
     if (payload == null) throw new EFhirClientException("PUT requests require a non-null payload");
+    this.payload = payload;
     RequestBody body = RequestBody.create(payload);
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL())
@@ -109,6 +113,7 @@ public class Client {
                                                                   String message,
                                                                   long timeout) throws IOException {
     if (payload == null) throw new EFhirClientException("POST requests require a non-null payload");
+    this.payload = payload;
     RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL())
@@ -174,7 +179,7 @@ public class Client {
       .withMessage(message)
       .withHeaders(headers == null ? new Headers.Builder().build() : headers)
       .withTimeout(timeout, TimeUnit.MILLISECONDS)
-      .executeAsBatch();
+      .executeAsBatch(payload);
   }
 
   public <T extends Resource> ResourceRequest<T> executeFhirRequest(Request.Builder request,
@@ -190,6 +195,6 @@ public class Client {
       .withMessage(message)
       .withHeaders(headers == null ? new Headers.Builder().build() : headers)
       .withTimeout(timeout, TimeUnit.MILLISECONDS)
-      .execute();
+      .execute(payload);
   }
 }

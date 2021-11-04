@@ -1,6 +1,8 @@
 package org.hl7.fhir.r5.utils.client.network;
 
 import okhttp3.*;
+import okio.RealBufferedSink;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
@@ -201,18 +203,30 @@ public class FhirRequestBuilder {
   }
 
   protected Request buildRequest() {
-    return httpRequest.build();
+    Request req = httpRequest.build();
+    return req;
   }
 
-  public <T extends Resource> ResourceRequest<T> execute() throws IOException {
+  public <T extends Resource> ResourceRequest<T> execute(byte[] payload) throws IOException {
     formatHeaders(httpRequest, resourceFormat, headers);
+    logRequest(payload);
     Response response = getHttpClient().newCall(httpRequest.build()).execute();
     T resource = unmarshalReference(response, resourceFormat);
     return new ResourceRequest<T>(resource, response.code(), getLocationHeader(response.headers()));
   }
 
-  public Bundle executeAsBatch() throws IOException {
+  public void logRequest(byte[] payload) {
+    if (logger != null) {
+      List<String> headerList = new ArrayList<>(Collections.emptyList());
+      Map<String, List<String>> headerMap = headers.toMultimap();
+      headerMap.keySet().forEach(key -> headerMap.get(key).forEach(value -> headerList.add(key + ":" + value)));
+      logger.logRequest(httpRequest.getMethod$okhttp().toString(), httpRequest.getUrl$okhttp().toString(), headerList, payload);
+    }
+  }
+
+  public Bundle executeAsBatch(byte[] payload) throws IOException {
     formatHeaders(httpRequest, resourceFormat, null);
+    logRequest(payload);
     Response response = getHttpClient().newCall(httpRequest.build()).execute();
     return unmarshalFeed(response, resourceFormat);
   }
@@ -301,6 +315,7 @@ public class FhirRequestBuilder {
       throw new EFhirClientException("Invalid format: " + format);
     }
   }
+
 
   /**
    * Logs the given {@link Response}, using the current {@link ToolingClientLogger}. If the current
