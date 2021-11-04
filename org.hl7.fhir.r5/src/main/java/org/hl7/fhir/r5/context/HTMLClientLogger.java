@@ -44,6 +44,7 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
 
   private static final boolean DEBUG = false;
   
+  private boolean req = false;
   private PrintStream file;
   
   public HTMLClientLogger(String log) {
@@ -80,6 +81,7 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
       }
     }
     file.println("</pre>");
+    req = true;
   }
 
   @Override
@@ -87,6 +89,10 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
     if (DEBUG) {
       System.out.println(" txlog resp: " +outcome+" "+present(body));
     }
+    if (!req) {
+      System.out.println("Record Response without request");
+    }
+    req = false;
     if (file == null)
       return;
     file.println("<pre>");
