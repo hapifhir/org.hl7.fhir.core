@@ -9920,7 +9920,7 @@ public class PlanDefinition extends MetadataResource {
    * Path: <b>PlanDefinition.action.definition[x]</b><br>
    * </p>
    */
-  @SearchParamDefinition(name = "definition", path = "PlanDefinition.action.definition", description = "Activity or plan definitions used by plan definition", type = "reference", target = {
+  @SearchParamDefinition(name = "definition", path = "PlanDefinition.repeat(action).definition", description = "Activity or plan definitions used by plan definition", type = "reference", target = {
       ActivityDefinition.class, PlanDefinition.class, Questionnaire.class })
   public static final String SP_DEFINITION = "definition";
   /**
