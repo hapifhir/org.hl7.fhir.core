@@ -89,12 +89,12 @@ public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger 
     if (DEBUG) {
       System.out.println(" txlog resp: " +outcome+" "+present(body));
     }
-    if (!req) {
-      System.out.println("Record Response without request");
-    }
     req = false;
     if (file == null)
       return;
+    if (!req) {
+      System.out.println("Record Response without request");
+    }
     file.println("<pre>");
     file.println(outcome);
     for (String s : headers)  
