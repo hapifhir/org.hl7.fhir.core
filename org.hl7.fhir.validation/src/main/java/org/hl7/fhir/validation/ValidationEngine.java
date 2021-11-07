@@ -48,6 +48,7 @@ import org.hl7.fhir.utilities.validation.ValidationMessage;
 import org.hl7.fhir.utilities.xhtml.XhtmlComposer;
 import org.hl7.fhir.validation.BaseValidator.ValidationControl;
 import org.hl7.fhir.validation.cli.services.IPackageInstaller;
+import org.hl7.fhir.validation.cli.services.StandAloneValidatorFetcher;
 import org.hl7.fhir.validation.cli.utils.*;
 import org.hl7.fhir.validation.instance.InstanceValidator;
 import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
@@ -368,6 +369,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       SchemaValidator.validateSchema(location, cntType, messages);
     }
     InstanceValidator validator = getValidator(cntType);
+    if (fetcher instanceof StandAloneValidatorFetcher) {
+      File refAsFile = new File(location);
+      ((StandAloneValidatorFetcher) fetcher).setReferenceBaseDir(refAsFile.getParentFile());
+    }
     validator.validate(null, messages, new ByteArrayInputStream(source), cntType, asSdList(profiles));
     if (showTimes) {
       System.out.println(location + ": " + validator.reportTimes());
