@@ -6,7 +6,13 @@ import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext;
 import org.hl7.fhir.r5.context.IWorkerContext.ICanonicalResourceLocator;
 import org.hl7.fhir.r5.elementmodel.Element;
+import org.hl7.fhir.r5.elementmodel.ObjectConverter;
+import org.hl7.fhir.r5.formats.IParser;
+import org.hl7.fhir.r5.formats.JsonParser;
+import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.CanonicalResource;
+import org.hl7.fhir.r5.model.Resource;
+import org.hl7.fhir.r5.model.ResourceType;
 import org.hl7.fhir.r5.terminologies.TerminologyClient;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
@@ -19,6 +25,8 @@ import org.hl7.fhir.utilities.json.JsonTrackingParser;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -37,6 +45,7 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IC
   private Map<String, Boolean> urlList = new HashMap<>();
   private Map<String, String> pidList = new HashMap<>();
   private Map<String, NpmPackage> pidMap = new HashMap<>();
+  private File referenceBaseDir;
 
   public StandAloneValidatorFetcher(FilesystemPackageCacheManager pcm, IWorkerContext context, IPackageInstaller installer) {
     super();
@@ -45,9 +54,68 @@ public class StandAloneValidatorFetcher implements IValidatorResourceFetcher, IC
     this.installer = installer;
   }
 
+  public void setReferenceBaseDir(File referenceBaseDir) {
+    this.referenceBaseDir = referenceBaseDir;
+  }
+
   @Override
   public Element fetch(IResourceValidator validator, Object appContext, String url) throws FHIRException {
-    throw new FHIRException("The URL '" + url + "' is not known to the FHIR validator, and has not been provided as part of the setup / parameters");
+    String[] urlParts = url.split("/", 2);
+    if (urlParts.length != 2) {
+      throw new FHIRException("The URL '" + url + "' cannot be resolved as a local reference");
+    }
+
+    // Possible target file names: [id] or [ResourceType]-[id] (case insensitive)
+    List<String> targets = new ArrayList<String>();
+    targets.add(urlParts[1].toLowerCase());
+    targets.add(urlParts[0].toLowerCase().concat("-").concat(urlParts[1].toLowerCase()));
+
+    // Filter files that match the required file name
+    List<File> fileNameMatches = new ArrayList<File>();
+    for (File file: this.referenceBaseDir.listFiles()) {
+      if (targets.contains(file.getName().substring(0, file.getName().lastIndexOf(".")).toLowerCase())) {
+        fileNameMatches.add(file);
+      }
+    }
+
+    // Read the target files as resources to find their resource type and id
+    List<Resource> matches = new ArrayList<Resource>();
+    ResourceType targetResource = ResourceType.fromCode(urlParts[0]);
+    for (File file: fileNameMatches) {
+      String extension = file.getName().substring(file.getName().lastIndexOf(".")).toLowerCase();
+      IParser parser = null;
+      if (extension.matches(".xml")) {
+        parser = new XmlParser();
+      } else if (extension.matches(".json")) {
+        parser = new JsonParser();
+      }
+      if (parser != null) {
+        // Check is the resource and id match
+        try {
+          Resource resource = parser.parse(new FileInputStream(file));
+          if (resource.getResourceType() == targetResource && resource.getId().matches(urlParts[1])) {
+            matches.add(resource);
+          }
+        } catch (IOException e) {
+          System.out.println("Pasing error");
+          throw new FHIRException(e);
+        }
+      }
+    }
+
+    if (matches.size() == 0) {
+      throw new FHIRException("The URL '" + url + "' cannot be resolved as a local reference");
+    } else if (matches.size() > 1) {
+      throw new FHIRException("The URL '" + url + "' matches multiple files in the same folder");
+    }
+
+    // return as Element;
+    ObjectConverter converter = new ObjectConverter(context);
+    try {
+      return converter.convert(matches.get(0));
+    } catch (IOException e) {
+      throw new FHIRException("IOException occured");
+    }
   }
 
   @Override
