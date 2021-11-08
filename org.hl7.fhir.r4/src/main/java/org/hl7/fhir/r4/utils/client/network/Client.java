@@ -19,6 +19,7 @@ public class Client {
   public static final String DEFAULT_CHARSET = "UTF-8";
   private static final long DEFAULT_TIMEOUT = 5000;
   private ToolingClientLogger logger;
+  private FhirLoggingInterceptor fhirLoggingInterceptor;
   private int retryCount;
   private long timeout = DEFAULT_TIMEOUT;
 
@@ -28,6 +29,7 @@ public class Client {
 
   public void setLogger(ToolingClientLogger logger) {
     this.logger = logger;
+    this.fhirLoggingInterceptor = new FhirLoggingInterceptor(logger);
   }
 
   public int getRetryCount() {
@@ -167,7 +169,7 @@ public class Client {
                                                              int retryCount,
                                                              long timeout) throws IOException {
     return new FhirRequestBuilder(request)
-      .withLogger(logger)
+      .withLogger(fhirLoggingInterceptor)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
       .withMessage(message)
@@ -183,7 +185,7 @@ public class Client {
                                                                        int retryCount,
                                                                        long timeout) throws IOException {
     return new FhirRequestBuilder(request)
-      .withLogger(logger)
+      .withLogger(fhirLoggingInterceptor)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
       .withMessage(message)
