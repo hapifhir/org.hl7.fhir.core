@@ -34,6 +34,7 @@ package org.hl7.fhir.convertors.misc;
 */
 
 import org.fhir.ucum.UcumEssenceService;
+import org.hl7.fhir.convertors.misc.ccda.CCDAConverter;
 import org.hl7.fhir.dstu3.context.SimpleWorkerContext;
 import org.hl7.fhir.dstu3.formats.IParser;
 import org.hl7.fhir.dstu3.formats.IParser.OutputStyle;
