@@ -866,4 +866,8 @@ public class FHIRToolingClient {
   public void setUserAgent(String userAgent) {
     utils.setUserAgent(userAgent);
   }
+
+  public String getServerVersion() {
+    return conf == null ? null : conf.getSoftware().getVersion();
+  }
 }

@@ -40,6 +40,7 @@ import java.util.Map;
 public interface TerminologyClient {
 
   String getAddress();
+  String getServerVersion();
   TerminologyCapabilities getTerminologyCapabilities() throws FHIRException;
   ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException;
   Parameters validateCS(Parameters pin) throws FHIRException;
