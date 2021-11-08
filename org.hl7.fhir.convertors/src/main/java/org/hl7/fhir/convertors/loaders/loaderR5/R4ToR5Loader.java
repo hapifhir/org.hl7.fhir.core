@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.loaders;
+package org.hl7.fhir.convertors.loaders.loaderR5;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -30,12 +30,12 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
-import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_50;
-import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
-import org.hl7.fhir.dstu3.formats.JsonParser;
-import org.hl7.fhir.dstu3.formats.XmlParser;
-import org.hl7.fhir.dstu3.model.Resource;
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_40_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.r4.formats.JsonParser;
+import org.hl7.fhir.r4.formats.XmlParser;
+import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
@@ -49,22 +49,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
+public class R4ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
 
-  private final BaseAdvisor_30_50 advisor = new BaseAdvisor_30_50();
+  private final BaseAdvisor_40_50 advisor = new BaseAdvisor_40_50();
 
-  public R3ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
+  public R4ToR5Loader(String[] types, ILoaderKnowledgeProviderR5 lkp) {
     super(types, lkp);
   }
 
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    Resource r3 = null;
+    Resource r4 = null;
     if (isJson)
-      r3 = new JsonParser().parse(stream);
+      r4 = new JsonParser().parse(stream);
     else
-      r3 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_30_50.convertResource(r3, advisor);
+      r4 = new XmlParser().parse(stream);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_40_50.convertResource(r4, advisor);
 
     Bundle b;
     if (r5 instanceof Bundle)
@@ -95,7 +95,7 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU3));
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
           sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
           for (ElementDefinition ed : sd.getSnapshot().getElement())
             patchUrl(ed);
@@ -109,12 +109,12 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
 
   @Override
   public org.hl7.fhir.r5.model.Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    Resource r3 = null;
+    Resource r4 = null;
     if (isJson)
-      r3 = new JsonParser().parse(stream);
+      r4 = new JsonParser().parse(stream);
     else
-      r3 = new XmlParser().parse(stream);
-    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_30_50.convertResource(r3);
+      r4 = new XmlParser().parse(stream);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_40_50.convertResource(r4);
     setPath(r5);
 
     if (!advisor.getCslist().isEmpty()) {
@@ -126,8 +126,8 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
     if (patchUrls) {
       if (r5 instanceof StructureDefinition) {
         StructureDefinition sd = (StructureDefinition) r5;
-        sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
-        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
+        sd.setUrl(sd.getUrl().replace(URL_BASE, "http://hl7.org/fhir/4.0/"));
+        sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType("http://hl7.org/fhir"));
         for (ElementDefinition ed : sd.getSnapshot().getElement())
           patchUrl(ed);
         for (ElementDefinition ed : sd.getDifferential().getElement())
@@ -140,10 +140,10 @@ public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader
   private void patchUrl(ElementDefinition ed) {
     for (TypeRefComponent tr : ed.getType()) {
       for (CanonicalType s : tr.getTargetProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU3));
+        s.setValue(s.getValue().replace(URL_BASE, "http://hl7.org/fhir/4.0/"));
       }
       for (CanonicalType s : tr.getProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU3));
+        s.setValue(s.getValue().replace(URL_BASE, "http://hl7.org/fhir/4.0/"));
       }
     }
   }
