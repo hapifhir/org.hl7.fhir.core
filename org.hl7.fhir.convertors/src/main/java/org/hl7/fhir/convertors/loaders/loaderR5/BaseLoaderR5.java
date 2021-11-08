@@ -1,6 +1,9 @@
-package org.hl7.fhir.convertors.loaders;
+package org.hl7.fhir.convertors.loaders.loaderR5;
 
 import com.google.gson.JsonSyntaxException;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.model.Resource;
@@ -9,6 +12,7 @@ import org.hl7.fhir.utilities.npm.NpmPackage;
 
 import java.io.IOException;
 
+@Accessors(chain = true)
 public abstract class BaseLoaderR5 implements IContextResourceLoader {
 
   protected final String URL_BASE = "http://hl7.org/fhir/";
@@ -17,37 +21,15 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
   protected final String URL_DSTU3 = "http://hl7.org/fhir/3.0/";
   protected final String URL_R4 = "http://hl7.org/fhir/4.0/";
   protected final String URL_ELEMENT_DEF_NAMESPACE = "http://hl7.org/fhir/StructureDefinition/elementdefinition-namespace";
-  protected boolean patchUrls;
-  protected boolean killPrimitives;
-  protected String[] types;
-  protected ILoaderKnowledgeProvider lkp;
+  @Getter @Setter protected boolean patchUrls;
+  @Getter @Setter protected boolean killPrimitives;
+  @Getter protected String[] types;
+  protected ILoaderKnowledgeProviderR5 lkp;
 
-  public BaseLoaderR5(String[] types, ILoaderKnowledgeProvider lkp) {
+  public BaseLoaderR5(String[] types, ILoaderKnowledgeProviderR5 lkp) {
     super();
     this.types = types;
     this.lkp = lkp;
-  }
-
-  public String[] getTypes() {
-    return types;
-  }
-
-  public boolean isPatchUrls() {
-    return patchUrls;
-  }
-
-  public BaseLoaderR5 setPatchUrls(boolean patchUrls) {
-    this.patchUrls = patchUrls;
-    return this;
-  }
-
-  public boolean isKillPrimitives() {
-    return killPrimitives;
-  }
-
-  public BaseLoaderR5 setKillPrimitives(boolean killPrimitives) {
-    this.killPrimitives = killPrimitives;
-    return this;
   }
 
   public String getResourcePath(Resource resource) {
@@ -84,27 +66,4 @@ public abstract class BaseLoaderR5 implements IContextResourceLoader {
     }
   }
 
-  public interface ILoaderKnowledgeProvider {
-    /**
-     * get the path for references to this resource.
-     *
-     * @param resource
-     * @return null if not tracking paths
-     */
-    String getResourcePath(Resource resource);
-
-    ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) throws JsonSyntaxException, IOException;
-  }
-
-  public static class NullLoaderKnowledgeProvider implements ILoaderKnowledgeProvider {
-    @Override
-    public String getResourcePath(Resource resource) {
-      return null;
-    }
-
-    @Override
-    public ILoaderKnowledgeProvider forNewPackage(NpmPackage npm) {
-      return this;
-    }
-  }
 }
