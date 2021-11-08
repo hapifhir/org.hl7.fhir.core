@@ -1,0 +1,1 @@
+* Updating client logger to log both req and resp
