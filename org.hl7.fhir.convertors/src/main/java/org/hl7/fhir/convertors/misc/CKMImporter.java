@@ -30,6 +30,7 @@ package org.hl7.fhir.convertors.misc;
  */
 
 
+import org.hl7.fhir.convertors.misc.adl.ADLImporter;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.xml.XMLUtil;

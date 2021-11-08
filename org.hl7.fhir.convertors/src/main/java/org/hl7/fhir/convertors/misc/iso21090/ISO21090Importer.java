@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.misc;
+package org.hl7.fhir.convertors.misc.iso21090;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -62,8 +62,8 @@ import java.util.*;
 
 public class ISO21090Importer {
 
-  private final Map<String, EnumValueSet> bindings = new HashMap<String, EnumValueSet>();
-  private final Map<String, DataType> types = new HashMap<String, DataType>();
+  private final Map<String, EnumValueSet> bindings = new HashMap<>();
+  private final Map<String, DataType> types = new HashMap<>();
   private IWorkerContext ctxt;
   private Element schema;
 
@@ -92,64 +92,64 @@ public class ISO21090Importer {
 
   private void generateType(DataType dt) throws Exception {
     StructureDefinition sd = new StructureDefinition();
-    sd.setId(dt.name);
+    sd.setId(dt.getName());
     sd.setUrl("http://hl7.org/fhir/iso21090/StructureDefinition/" + sd.getId());
-    sd.setName(dt.name + " data type");
+    sd.setName(dt.getName() + " data type");
     sd.setStatus(PublicationStatus.ACTIVE);
     sd.setExperimental(false);
     sd.setPublisher("HL7 / ISO");
     sd.setDate(new Date());
-    sd.setDescription(dt.doco);
+    sd.setDescription(dt.getDoco());
     sd.setKind(StructureDefinitionKind.LOGICAL);
-    sd.setAbstract(Utilities.existsInList(dt.name, "HXIT", "QTY"));
+    sd.setAbstract(Utilities.existsInList(dt.getName(), "HXIT", "QTY"));
     sd.setType("Element");
-    if (dt.parent == null)
+    if (dt.getParent() == null)
       sd.setBaseDefinition("http://hl7.org/fhir/StructureDefinition/Element");
     else
-      sd.setBaseDefinition("http://hl7.org/fhir/iso21090/StructureDefinition/" + dt.parent);
+      sd.setBaseDefinition("http://hl7.org/fhir/iso21090/StructureDefinition/" + dt.getParent());
     sd.setDerivation(TypeDerivationRule.SPECIALIZATION);
     ElementDefinition ed = sd.getDifferential().addElement();
-    ed.setPath(dt.name);
-    produceProperties(sd.getDifferential().getElement(), dt.name, dt.properties, true, false);
-    produceProperties(sd.getDifferential().getElement(), dt.name, dt.properties, false, false);
+    ed.setPath(dt.getName());
+    produceProperties(sd.getDifferential().getElement(), dt.getName(), dt.getProperties(), true, false);
+    produceProperties(sd.getDifferential().getElement(), dt.getName(), dt.getProperties(), false, false);
     ed = sd.getSnapshot().addElement();
-    ed.setPath(dt.name);
-    if (dt.parent != null)
-      addParentProperties(sd.getSnapshot().getElement(), dt.name, dt.parent, true, true);
-    produceProperties(sd.getSnapshot().getElement(), dt.name, dt.properties, true, true);
-    if (dt.parent != null)
-      addParentProperties(sd.getSnapshot().getElement(), dt.name, dt.parent, false, true);
-    produceProperties(sd.getSnapshot().getElement(), dt.name, dt.properties, false, true);
+    ed.setPath(dt.getName());
+    if (dt.getParent() != null)
+      addParentProperties(sd.getSnapshot().getElement(), dt.getName(), dt.getParent(), true, true);
+    produceProperties(sd.getSnapshot().getElement(), dt.getName(), dt.getProperties(), true, true);
+    if (dt.getParent() != null)
+      addParentProperties(sd.getSnapshot().getElement(), dt.getName(), dt.getParent(), false, true);
+    produceProperties(sd.getSnapshot().getElement(), dt.getName(), dt.getProperties(), false, true);
     ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\iso21090\\StructureDefinition-" + dt.name + ".xml"), sd);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\iso21090\\StructureDefinition-" + dt.getName() + ".xml"), sd);
   }
 
   private void addParentProperties(List<ElementDefinition> elements, String name, String parent, boolean attrMode, boolean snapshot) throws FHIRFormatError {
     DataType dt = types.get(parent);
     if (dt == null)
       throw new Error("No find " + parent);
-    if (dt.parent != null)
-      addParentProperties(elements, name, dt.parent, attrMode, snapshot);
-    produceProperties(elements, name, dt.properties, attrMode, snapshot);
+    if (dt.getParent() != null)
+      addParentProperties(elements, name, dt.getParent(), attrMode, snapshot);
+    produceProperties(elements, name, dt.getProperties(), attrMode, snapshot);
   }
 
   private void produceProperties(List<ElementDefinition> elements, String name, List<Property> properties, boolean attrMode, boolean snapshot) throws FHIRFormatError {
     for (Property p : properties) {
-      if (p.isattr == attrMode) {
+      if (p.isIsattr() == attrMode) {
         ElementDefinition ed = new ElementDefinition();
         elements.add(ed);
-        ed.setPath(name + "." + p.name);
-        if (p.type.startsWith("xsd:"))
-          ToolingExtensions.addStringExtension(ed.addType(), ToolingExtensions.EXT_XML_TYPE, p.type);
+        ed.setPath(name + "." + p.getName());
+        if (p.getType().startsWith("xsd:"))
+          ToolingExtensions.addStringExtension(ed.addType(), ToolingExtensions.EXT_XML_TYPE, p.getType());
         else
-          ed.addType().setCode(p.type);
-        ed.setMin(p.min);
-        ed.setMax(p.max == Integer.MAX_VALUE ? "*" : Integer.toString(p.max));
-        ed.setDefinition(p.doco);
-        if (p.isattr)
+          ed.addType().setCode(p.getType());
+        ed.setMin(p.getMin());
+        ed.setMax(p.getMax() == Integer.MAX_VALUE ? "*" : Integer.toString(p.getMax()));
+        ed.setDefinition(p.getDoco());
+        if (p.isIsattr())
           ed.addRepresentation(PropertyRepresentation.XMLATTR);
-        if (p.binding != null)
-          ed.getBinding().setStrength(BindingStrength.REQUIRED).setValueSet(new UriType("http://hl7.org/fhir/iso21090/ValueSet/" + p.binding));
+        if (p.getBinding() != null)
+          ed.getBinding().setStrength(BindingStrength.REQUIRED).setValueSet(new UriType("http://hl7.org/fhir/iso21090/ValueSet/" + p.getBinding()));
         if (snapshot)
           ed.getBase().setPath(ed.getPath()).setMin(ed.getMin()).setMax(ed.getMax());
       }
@@ -157,22 +157,22 @@ public class ISO21090Importer {
   }
 
   private void generateValueSet(EnumValueSet evs) throws Exception {
-    ValueSet bvs = ctxt.fetchResource(ValueSet.class, evs.template);
+    ValueSet bvs = ctxt.fetchResource(ValueSet.class, evs.getTemplate());
     if (bvs == null)
-      throw new Exception("Did not find template value set " + evs.template);
+      throw new Exception("Did not find template value set " + evs.getTemplate());
     ValueSet vs = bvs.copy();
     vs.getCompose().getInclude().clear();
     vs.getIdentifier().clear();
-    vs.setName("ISO 20190 " + evs.name + " Enumeration");
-    vs.setId(evs.name);
+    vs.setName("ISO 20190 " + evs.getName() + " Enumeration");
+    vs.setId(evs.getName());
     vs.setUrl("http://hl7.org/fhir/iso21090/ValueSet/" + vs.getId());
     vs.setDate(new Date());
     vs.setExperimental(false);
-    ConceptSetComponent inc = vs.getCompose().addInclude().setSystem(evs.system);
-    for (String code : evs.codes) {
+    ConceptSetComponent inc = vs.getCompose().addInclude().setSystem(evs.getSystem());
+    for (String code : evs.getCodes()) {
       inc.addConcept().setCode(code);
     }
-    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\iso21090\\ValueSet-" + evs.name + ".xml"), vs);
+    new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream("c:\\temp\\iso21090\\ValueSet-" + evs.getName() + ".xml"), vs);
   }
 
   private void processDataTypes() {
@@ -190,19 +190,19 @@ public class ISO21090Importer {
   private void processDataType(String n, Element type) {
     DataType dt = new DataType();
     types.put(n, dt);
-    dt.name = n;
-    dt.doco = getDoco(type);
+    dt.setName(n);
+    dt.setDoco(getDoco(type));
     Element cnt;
     Element ext = XMLUtil.getNamedChild(XMLUtil.getNamedChild(type, "xsd:complexContent"), "xsd:extension");
     if (ext != null) {
-      dt.parent = ext.getAttribute("base");
+      dt.setParent(ext.getAttribute("base"));
       cnt = XMLUtil.getFirstChild(ext);
     } else {
       cnt = XMLUtil.getFirstChild(type);
     }
     if (cnt.getTagName().equals("xsd:annotation"))
       cnt = XMLUtil.getNextSibling(cnt);
-    System.out.println(n + " (" + dt.parent + ")");
+    System.out.println(n + " (" + dt.getParent() + ")");
     while (cnt != null) {
       if (cnt.getTagName().equals("xsd:attribute")) {
         processAttribute(dt, cnt);
@@ -224,44 +224,44 @@ public class ISO21090Importer {
 
   private void processElement(DataType dt, Element elem) {
     Property prop = new Property();
-    prop.name = elem.getAttribute("name");
-    prop.min = Integer.parseInt(elem.getAttribute("minOccurs"));
-    prop.max = "unbounded".equals(elem.getAttribute("maxOccurs")) ? Integer.MAX_VALUE : Integer.parseInt(elem.getAttribute("maxOccurs"));
-    prop.type = elem.getAttribute("type");
-    prop.doco = getDoco(elem);
-    dt.properties.add(prop);
-    System.out.println("  " + prop.name + " : " + prop.type + " [" + prop.min + ".." + prop.max + "]");
+    prop.setName(elem.getAttribute("name"));
+    prop.setMin(Integer.parseInt(elem.getAttribute("minOccurs")));
+    prop.setMax("unbounded".equals(elem.getAttribute("maxOccurs")) ? Integer.MAX_VALUE : Integer.parseInt(elem.getAttribute("maxOccurs")));
+    prop.setType(elem.getAttribute("type"));
+    prop.setDoco(getDoco(elem));
+    dt.getProperties().add(prop);
+    System.out.println("  " + prop.getName() + " : " + prop.getType() + " [" + prop.getMin() + ".." + prop.getMax() + "]");
   }
 
   private void processAttribute(DataType dt, Element attr) {
     Property prop = new Property();
-    prop.name = attr.getAttribute("name");
-    prop.type = attr.getAttribute("type");
-    if (!prop.type.startsWith("xsd:")) {
-      if (Utilities.noString(prop.type))
-        prop.type = "xsd:string";
-      else if (bindings.containsKey(prop.type)) {
-        prop.binding = prop.type;
-        prop.type = "xsd:string";
-      } else if (prop.type.startsWith("set_") && bindings.containsKey(prop.type.substring(4))) {
-        prop.binding = prop.type.substring(4);
-        prop.type = "xsd:string";
-        prop.max = Integer.MAX_VALUE;
-      } else if ("Uid".equals(prop.type))
-        prop.type = "xsd:string";
-      else if ("Code".equals(prop.type))
-        prop.type = "xsd:token";
-      else if ("Decimal".equals(prop.type))
-        prop.type = "xsd:decimal";
+    prop.setName(attr.getAttribute("name"));
+    prop.setType(attr.getAttribute("type"));
+    if (!prop.getType().startsWith("xsd:")) {
+      if (Utilities.noString(prop.getType()))
+        prop.setType("xsd:string");
+      else if (bindings.containsKey(prop.getType())) {
+        prop.setBinding(prop.getType());
+        prop.setType("xsd:string");
+      } else if (prop.getType().startsWith("set_") && bindings.containsKey(prop.getType().substring(4))) {
+        prop.setBinding(prop.getType().substring(4));
+        prop.setType("xsd:string");
+        prop.setMax(Integer.MAX_VALUE);
+      } else if ("Uid".equals(prop.getType()))
+        prop.setType("xsd:string");
+      else if ("Code".equals(prop.getType()))
+        prop.setType("xsd:token");
+      else if ("Decimal".equals(prop.getType()))
+        prop.setType("xsd:decimal");
       else
-        throw new Error("Unknown type " + prop.type + " on " + dt.name + "." + prop.name);
+        throw new Error("Unknown type " + prop.getType() + " on " + dt.getName() + "." + prop.getName());
     }
-    prop.min = "optional".equals(attr.getAttribute("use")) ? 0 : 1;
-    prop.max = 1;
-    prop.doco = getDoco(attr);
-    prop.isattr = true;
-    dt.properties.add(prop);
-    System.out.println("  " + prop.name + " : " + prop.type + " [" + prop.min + ".." + prop.max + "]");
+    prop.setMin("optional".equals(attr.getAttribute("use")) ? 0 : 1);
+    prop.setMax(1);
+    prop.setDoco(getDoco(attr));
+    prop.setIsattr(true);
+    dt.getProperties().add(prop);
+    System.out.println("  " + prop.getName() + " : " + prop.getType() + " [" + prop.getMin() + ".." + prop.getMax() + "]");
   }
 
   private void processEnums() {
@@ -280,7 +280,7 @@ public class ISO21090Importer {
   private void processEnum(String n, Element en) {
     EnumValueSet vs = new EnumValueSet();
     bindings.put(n, vs);
-    vs.name = n;
+    vs.setName(n);
     String v3n;
     if (n.contains("EntityName"))
       v3n = n + "R2";
@@ -296,12 +296,12 @@ public class ISO21090Importer {
       v3n = "TelecommunicationCapabilities";
     else
       v3n = n;
-    vs.system = "http://hl7.org/fhir/v3-" + v3n;
-    vs.template = "http://hl7.org/fhir/ValueSet/v3-" + v3n;
-    System.out.println("Enum: " + n + " == " + vs.system);
+    vs.setSystem("http://hl7.org/fhir/v3-" + v3n);
+    vs.setTemplate("http://hl7.org/fhir/ValueSet/v3-" + v3n);
+    System.out.println("Enum: " + n + " == " + vs.getSystem());
     while (en != null) {
-      vs.codes.add(en.getAttribute("value"));
-      vs.members.put(en.getAttribute("value"), getDoco(en));
+      vs.getCodes().add(en.getAttribute("value"));
+      vs.getMembers().put(en.getAttribute("value"), getDoco(en));
       en = XMLUtil.getNextSibling(en);
     }
   }
@@ -319,30 +319,4 @@ public class ISO21090Importer {
     schema = doc.getDocumentElement();
   }
 
-  private class Property {
-    private boolean isattr;
-    private String name;
-    private int min;
-    private int max;
-    private String type;
-    private String doco;
-    private String binding;
-  }
-
-  private class DataType {
-    private final List<Property> properties = new ArrayList<Property>();
-    private boolean isAbstract;
-    private String name;
-    private String doco;
-    private String parent;
-
-  }
-
-  public class EnumValueSet {
-    private final List<String> codes = new ArrayList<String>();
-    private final Map<String, String> members = new HashMap<String, String>();
-    private String name;
-    private String template;
-    private String system;
-  }
 }

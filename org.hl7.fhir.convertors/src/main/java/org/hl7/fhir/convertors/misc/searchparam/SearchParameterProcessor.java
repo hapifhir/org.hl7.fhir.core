@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.misc;
+package org.hl7.fhir.convertors.misc.searchparam;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -135,17 +135,17 @@ public class SearchParameterProcessor {
     for (String s : list4) {
       boolean ok = false;
       for (SPRelationship t : list) {
-        if (s.equals(t.r4))
+        if (s.equals(t.getR4()))
           ok = true;
       }
       if (!ok)
         System.out.println("R4 missing : " + s);
     }
     for (SPRelationship sp : list) {
-      if (!Utilities.noString(sp.r4)) {
-        boolean ok = list4.contains(sp.r4);
+      if (!Utilities.noString(sp.getR4())) {
+        boolean ok = list4.contains(sp.getR4());
         if (!ok)
-          System.out.println("R4 extra : " + sp.r4);
+          System.out.println("R4 extra : " + sp.getR4());
       }
     }
   }
@@ -154,17 +154,17 @@ public class SearchParameterProcessor {
     for (String s : list3) {
       boolean ok = false;
       for (SPRelationship t : list) {
-        if (s.equals(t.r3))
+        if (s.equals(t.getR3()))
           ok = true;
       }
       if (!ok)
         System.out.println("R3 : " + s);
     }
     for (SPRelationship sp : list) {
-      if (!Utilities.noString(sp.r3)) {
-        boolean ok = list3.contains(sp.r3);
+      if (!Utilities.noString(sp.getR3())) {
+        boolean ok = list3.contains(sp.getR3());
         if (!ok)
-          System.out.println("R3 extra : " + sp.r3);
+          System.out.println("R3 extra : " + sp.getR3());
       }
     }
   }
@@ -173,17 +173,17 @@ public class SearchParameterProcessor {
     for (String s : list2b) {
       boolean ok = false;
       for (SPRelationship t : list) {
-        if (s.equals(t.r2b))
+        if (s.equals(t.getR2b()))
           ok = true;
       }
       if (!ok)
         System.out.println("R2b : " + s);
     }
     for (SPRelationship sp : list) {
-      if (!Utilities.noString(sp.r2b)) {
-        boolean ok = list2b.contains(sp.r2b);
+      if (!Utilities.noString(sp.getR2b())) {
+        boolean ok = list2b.contains(sp.getR2b());
         if (!ok)
-          System.out.println("R2b extra : " + sp.r2b);
+          System.out.println("R2b extra : " + sp.getR2b());
       }
     }
   }
@@ -192,17 +192,17 @@ public class SearchParameterProcessor {
     for (String s : list2) {
       boolean ok = false;
       for (SPRelationship t : list) {
-        if (s.equals(t.r2))
+        if (s.equals(t.getR2()))
           ok = true;
       }
       if (!ok)
         System.out.println("R2 : " + s);
     }
     for (SPRelationship sp : list) {
-      if (!Utilities.noString(sp.r2)) {
-        boolean ok = list2.contains(sp.r2);
+      if (!Utilities.noString(sp.getR2())) {
+        boolean ok = list2.contains(sp.getR2());
         if (!ok)
-          System.out.println("R2 extra : " + sp.r2);
+          System.out.println("R2 extra : " + sp.getR2());
       }
     }
   }
@@ -276,50 +276,6 @@ public class SearchParameterProcessor {
       }
     }
     System.out.println("Map loaded - " + list.size() + " entries");
-  }
-
-  public class SPRelationship {
-    private final String r4;
-    private final String r3;
-    private final String r2b;
-    private final String r2;
-
-    public SPRelationship(String r4, String r3, String r2b, String r2) {
-      super();
-      this.r4 = r4;
-      this.r3 = r3;
-      this.r2b = r2b;
-      this.r2 = r2;
-    }
-
-    public String getR4() {
-      return r4;
-    }
-
-    public String getR3() {
-      return r3;
-    }
-
-    public String getR2b() {
-      return r2b;
-    }
-
-    public String getR2() {
-      return r2;
-    }
-
-    public String getByCode(String code) {
-      if ("R4".equals(code))
-        return r4;
-      if ("R3".equals(code))
-        return r3;
-      if ("R2b".equals(code))
-        return r2b;
-      if ("R2".equals(code))
-        return r2;
-      return null;
-    }
-
   }
 
 
