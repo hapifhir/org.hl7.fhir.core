@@ -122,7 +122,10 @@ public class DicomPackageBuilder {
     npm.addProperty("version", version);
     JsonArray fv = new JsonArray();
     npm.add("fhirVersions", fv);
-    fv.add("4.0");
+    fv.add("4.0.1");
+    JsonObject dep = new JsonObject();
+    npm.add("dependencies", dep);
+    dep.addProperty("hl7.fhir.r4.core", "4.0.1");
     return npm;
   }
 

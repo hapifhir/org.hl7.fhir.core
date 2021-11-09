@@ -107,6 +107,11 @@ public class XhtmlNodeTest {
     Assertions.assertThrows(FHIRException.class, () -> new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "bad-link.html"), "div"));
   }
 
+  @Test
+  public void testParseEntities() throws FHIRFormatError, IOException {
+    XhtmlNode x = new XhtmlParser().parse(BaseTestingUtilities.loadTestResource("xhtml", "entities.html"), "div");
+  }
+    
 
 
 }

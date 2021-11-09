@@ -127,7 +127,7 @@ public class NarrativeGenerationTests {
   @ParameterizedTest(name = "{index}: file {0}")
   @MethodSource("data")
   public void test(String id, TestDetails test) throws Exception {
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
     rc.setDestDir("");
     rc.setHeader(test.isHeader());
     rc.setDefinitionsTarget("test.html");

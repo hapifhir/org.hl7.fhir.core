@@ -524,7 +524,7 @@ public class SnapShotGenerationXTests {
       throw e;
     }
     if (output.getDifferential().hasElement()) {
-      RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
+      RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
       rc.setDestDir(makeTempDir());
       rc.setProfileUtilities(new ProfileUtilities(TestingUtilities.context(), null, new TestPKP()));
       RendererFactory.factory(output, rc).render(output);

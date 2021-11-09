@@ -23,19 +23,37 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 
 public class RenderingContext {
 
+  // provides liquid templates, if they are available for the content
   public interface ILiquidTemplateProvider {
     String findTemplate(RenderingContext rcontext, DomainResource r);
     String findTemplate(RenderingContext rcontext, String resourceName);
   }
 
+  // parses xml to an XML instance. Whatever codes provides this needs to provide something that parses the right version 
   public interface ITypeParser {
     Base parseType(String xml, String type) throws FHIRFormatError, IOException, FHIRException ;
   }
 
-  public enum ResourceRendererMode{
-    RESOURCE, IG
+  /**
+   * What kind of user the renderer is targeting - end users, or technical users
+   * 
+   * This affects the way codes and references are rendered
+   * 
+   * @author graha
+   *
+   */
+  public enum ResourceRendererMode {
+    /**
+     * The user has no interest in the contents of the FHIR resource, and just wants to see the data
+     * 
+     */
+    END_USER,
+    
+    /**
+     * The user wants to see the resource, but a technical view so they can see what's going on with the content
+     */
+    TECHNICAL
   }
-
 
   public enum QuestionnaireRendererMode {
     /**
@@ -403,6 +421,10 @@ public class RenderingContext {
 
   public void setTargetVersion(FhirPublication targetVersion) {
     this.targetVersion = targetVersion;
+  }
+
+  public boolean isTechnicalMode() {
+    return mode == ResourceRendererMode.TECHNICAL;
   }
 
 }
