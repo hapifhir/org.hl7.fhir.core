@@ -63,6 +63,7 @@ import org.hl7.fhir.r5.model.StructureDefinition;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.validation.cli.model.CliContext;
 import org.hl7.fhir.validation.cli.services.ComparisonService;
 import org.hl7.fhir.validation.cli.services.ValidationService;
@@ -222,7 +223,7 @@ public class ValidatorCli {
     String v = VersionUtilities.getCurrentVersion(cliContext.getSv());
     String definitions = VersionUtilities.packageForVersion(v) + "#" + v;
     ValidationEngine validator = validationService.initializeValidator(cliContext, definitions, tt);
-    validator.loadPackage("hl7.fhir.pubpack", null);
+    validator.loadPackage(CommonPackages.ID_PUBPACK, null);
     ComparisonService.doLeftRightComparison(args, Params.getParam(args, Params.DESTINATION), validator);
   }
 
