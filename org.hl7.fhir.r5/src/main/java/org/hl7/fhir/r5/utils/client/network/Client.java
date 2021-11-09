@@ -4,6 +4,7 @@ import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
@@ -19,6 +20,7 @@ public class Client {
   public static final String DEFAULT_CHARSET = "UTF-8";
   private static final long DEFAULT_TIMEOUT = 5000;
   private ToolingClientLogger logger;
+  private FhirLoggingInterceptor fhirLoggingInterceptor;
   private int retryCount;
   private long timeout = DEFAULT_TIMEOUT;
   private byte[] payload;
@@ -29,6 +31,7 @@ public class Client {
 
   public void setLogger(ToolingClientLogger logger) {
     this.logger = logger;
+    this.fhirLoggingInterceptor = new FhirLoggingInterceptor(logger);
   }
 
   public int getRetryCount() {
@@ -173,7 +176,7 @@ public class Client {
                                                              int retryCount,
                                                              long timeout) throws IOException {
     return new FhirRequestBuilder(request)
-      .withLogger(logger)
+      .withLogger(fhirLoggingInterceptor)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
       .withMessage(message)
@@ -189,7 +192,7 @@ public class Client {
                                                                        int retryCount,
                                                                        long timeout) throws IOException {
     return new FhirRequestBuilder(request)
-      .withLogger(logger)
+      .withLogger(fhirLoggingInterceptor)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
       .withMessage(message)

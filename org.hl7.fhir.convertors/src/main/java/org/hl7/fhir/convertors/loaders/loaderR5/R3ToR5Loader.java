@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.loaders;
+package org.hl7.fhir.convertors.loaders.loaderR5;
 
 /*
   Copyright (c) 2011+, HL7, Inc.
@@ -30,9 +30,13 @@ package org.hl7.fhir.convertors.loaders;
  */
 
 
+import org.hl7.fhir.convertors.advisors.impl.BaseAdvisor_30_50;
+import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
+import org.hl7.fhir.dstu3.formats.JsonParser;
+import org.hl7.fhir.dstu3.formats.XmlParser;
+import org.hl7.fhir.dstu3.model.Resource;
 import org.hl7.fhir.exceptions.FHIRException;
-import org.hl7.fhir.r5.formats.JsonParser;
-import org.hl7.fhir.r5.formats.XmlParser;
+import org.hl7.fhir.r5.context.IWorkerContext.IContextResourceLoader;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
 import org.hl7.fhir.r5.model.Bundle.BundleType;
@@ -45,22 +49,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class R5ToR5Loader extends BaseLoaderR5 {
+public class R3ToR5Loader extends BaseLoaderR5 implements IContextResourceLoader {
 
-  // TODO Grahame, will this ever be populated? No conversion is being done?
-  private final List<CodeSystem> cslist = new ArrayList<>();
+  private final BaseAdvisor_30_50 advisor = new BaseAdvisor_30_50();
 
-  public R5ToR5Loader(String[] types, ILoaderKnowledgeProvider lkp) {
+  public R3ToR5Loader(String[] types, ILoaderKnowledgeProviderR5 lkp) {
     super(types, lkp);
   }
 
   @Override
   public Bundle loadBundle(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    Resource r5 = null;
+    Resource r3 = null;
     if (isJson)
-      r5 = new JsonParser().parse(stream);
+      r3 = new JsonParser().parse(stream);
     else
-      r5 = new XmlParser().parse(stream);
+      r3 = new XmlParser().parse(stream);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_30_50.convertResource(r3, advisor);
 
     Bundle b;
     if (r5 instanceof Bundle)
@@ -71,7 +75,7 @@ public class R5ToR5Loader extends BaseLoaderR5 {
       b.setType(BundleType.COLLECTION);
       b.addEntry().setResource(r5).setFullUrl(r5 instanceof CanonicalResource ? ((CanonicalResource) r5).getUrl() : null);
     }
-    for (CodeSystem cs : cslist) {
+    for (CodeSystem cs : advisor.getCslist()) {
       BundleEntryComponent be = b.addEntry();
       be.setFullUrl(cs.getUrl());
       be.setResource(cs);
@@ -91,7 +95,7 @@ public class R5ToR5Loader extends BaseLoaderR5 {
       for (BundleEntryComponent be : b.getEntry()) {
         if (be.hasResource() && be.getResource() instanceof StructureDefinition) {
           StructureDefinition sd = (StructureDefinition) be.getResource();
-          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_R4));
+          sd.setUrl(sd.getUrl().replace(URL_BASE, URL_DSTU3));
           sd.addExtension().setUrl(URL_ELEMENT_DEF_NAMESPACE).setValue(new UriType(URL_BASE));
           for (ElementDefinition ed : sd.getSnapshot().getElement())
             patchUrl(ed);
@@ -104,15 +108,16 @@ public class R5ToR5Loader extends BaseLoaderR5 {
   }
 
   @Override
-  public Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
-    Resource r5 = null;
+  public org.hl7.fhir.r5.model.Resource loadResource(InputStream stream, boolean isJson) throws FHIRException, IOException {
+    Resource r3 = null;
     if (isJson)
-      r5 = new JsonParser().parse(stream);
+      r3 = new JsonParser().parse(stream);
     else
-      r5 = new XmlParser().parse(stream);
+      r3 = new XmlParser().parse(stream);
+    org.hl7.fhir.r5.model.Resource r5 = VersionConvertorFactory_30_50.convertResource(r3);
     setPath(r5);
 
-    if (!cslist.isEmpty()) {
+    if (!advisor.getCslist().isEmpty()) {
       throw new FHIRException("Error: Cannot have included code systems");
     }
     if (killPrimitives) {
@@ -135,10 +140,10 @@ public class R5ToR5Loader extends BaseLoaderR5 {
   private void patchUrl(ElementDefinition ed) {
     for (TypeRefComponent tr : ed.getType()) {
       for (CanonicalType s : tr.getTargetProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_R4));
+        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU3));
       }
       for (CanonicalType s : tr.getProfile()) {
-        s.setValue(s.getValue().replace(URL_BASE, URL_R4));
+        s.setValue(s.getValue().replace(URL_BASE, URL_DSTU3));
       }
     }
   }
