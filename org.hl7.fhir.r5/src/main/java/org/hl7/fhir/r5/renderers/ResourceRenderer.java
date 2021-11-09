@@ -389,7 +389,8 @@ public abstract class ResourceRenderer extends DataRenderer {
   }
 
   protected void renderResourceHeader(ResourceWrapper r, XhtmlNode x) throws UnsupportedEncodingException, FHIRException, IOException {
-    XhtmlNode div = x.div().style("display: inline-block").style("background-color: #d9e0e7").style("padding: 6px").style("margin: 4px").style("border: 1px solid #8da1b4")
+    XhtmlNode div = x.div().style("display: inline-block").style("background-color: #d9e0e7").style("padding: 6px")
+         .style("margin: 4px").style("border: 1px solid #8da1b4")
          .style("border-radius: 5px").style("line-height: 60%");
 
     String id = getPrimitiveValue(r, "id"); 
