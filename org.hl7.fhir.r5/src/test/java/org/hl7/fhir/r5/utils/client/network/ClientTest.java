@@ -4,9 +4,11 @@ import okhttp3.HttpUrl;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.hl7.fhir.r5.context.HTMLClientLogger;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.model.*;
 import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.net.URI;
@@ -142,5 +144,25 @@ class ClientTest {
     RecordedRequest recordedRequest = server.takeRequest();
     Assertions.assertArrayEquals(payload, recordedRequest.getBody().readByteArray(),
       "POST request payload does not match send data.");
+  }
+
+  @Test
+  @DisplayName("Testing the logger works.")
+  void test_logger() throws IOException, URISyntaxException, InterruptedException {
+    byte[] payload = ByteUtils.resourceToByteArray(patient, true, false);
+    server.enqueue(
+      new MockResponse()
+        .setResponseCode(200)
+        .setBody(new String(payload))
+    );
+    HTMLClientLogger mockLogger = Mockito.mock(HTMLClientLogger.class);
+    client.setLogger(mockLogger);
+    client.issuePostRequest(new URI(serverUrl.toString()), payload,
+      "xml", null, TIMEOUT);
+    server.takeRequest();
+    Mockito.verify(mockLogger, Mockito.times(1))
+      .logRequest(Mockito.anyString(), Mockito.anyString(), Mockito.anyList(), Mockito.any());
+    Mockito.verify(mockLogger, Mockito.times(1))
+      .logResponse(Mockito.anyString(), Mockito.anyList(), Mockito.any());
   }
 }

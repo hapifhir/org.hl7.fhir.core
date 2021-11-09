@@ -35,7 +35,7 @@ public class ResourceRoundTripTests {
   @Test
   public void test() throws IOException, FHIRException, EOperationOutcome {
     DomainResource res = (DomainResource) new XmlParser().parse(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"));
-    RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
     RendererFactory.factory(res, rc).render(res);
     IOUtils.copy(TestingUtilities.loadTestResourceStream("r5", "unicode.xml"), new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.xml")));
     new XmlParser().setOutputStyle(OutputStyle.PRETTY).compose(new FileOutputStream(TestingUtilities.tempFile("gen", "unicode.out.xml")), res);

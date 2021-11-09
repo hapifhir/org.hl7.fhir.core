@@ -16,6 +16,7 @@ import org.hl7.fhir.r5.elementmodel.XmlParser;
 import org.hl7.fhir.r5.formats.IParser.OutputStyle;
 import org.hl7.fhir.r5.model.Base;
 import org.hl7.fhir.r5.model.ElementDefinition;
+import org.hl7.fhir.r5.model.Property;
 import org.hl7.fhir.r5.model.Narrative.NarrativeStatus;
 import org.hl7.fhir.r5.model.StringType;
 import org.hl7.fhir.r5.model.StructureDefinition;
@@ -157,6 +158,27 @@ public class ElementWrappers {
       return wrapped.getName();
     }
 
+    @Override
+    public String getNameFromResource() {
+      Property name = wrapped.getChildByName("name");
+      if (name != null && name.hasValues()) {
+        Base b = name.getValues().get(0);
+        if (b.isPrimitive()) {
+          return b.primitiveValue();          
+        } else if (b.fhirType().equals("HumanName")) {
+          Property family = b.getChildByName("family");
+          Property given = wrapped.getChildByName("given");
+          String s = given != null && given.hasValues() ? given.getValues().get(0).primitiveValue() : "";
+          if (family != null && family.hasValues())
+            s = s + " " + family.getValues().get(0).primitiveValue().toUpperCase();
+          return s;
+        } else {
+          throw new Error("Now what? ("+b.fhirType()+")");
+        }
+      }
+      return null;
+    }
+    
     @Override
     public List<PropertyWrapper> children() {
       if (list2 == null) {
