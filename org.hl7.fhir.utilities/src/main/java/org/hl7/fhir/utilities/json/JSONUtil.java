@@ -1,9 +1,7 @@
 package org.hl7.fhir.utilities.json;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -132,12 +130,6 @@ public class JSONUtil {
         target.add(pp.getKey(), pp.getValue());
       }
     }
-  }
-
-  public static JsonObject fetchJson(String source) throws IOException {
-    URL url = new URL(source);
-    URLConnection c = url.openConnection();
-    return (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(c.getInputStream()));
   }
 
   public static String type(JsonElement e) {

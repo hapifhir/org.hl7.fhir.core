@@ -1,5 +1,8 @@
 package org.hl7.fhir.convertors.misc;
 
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+
 /*
   Copyright (c) 2011+, HL7, Inc.
   All rights reserved.
@@ -38,10 +41,10 @@ import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,13 +124,10 @@ public class CKMImporter {
   }
 
   private Document loadXml(String address) throws Exception {
-    URL url = new URL(address);
-    HttpURLConnection connection =
-      (HttpURLConnection) url.openConnection();
-    connection.setRequestMethod("GET");
-    connection.setRequestProperty("Accept", "application/xml");
-
-    InputStream xml = connection.getInputStream();
+    SimpleHTTPClient http = new SimpleHTTPClient();
+    HTTPResult res = http.get(address, "application/xml");
+    res.checkThrowException();
+    InputStream xml = new ByteArrayInputStream(res.getContent());
 
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     DocumentBuilder db = dbf.newDocumentBuilder();

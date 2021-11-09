@@ -36,6 +36,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.FileUtils;
 import org.hl7.fhir.exceptions.FHIRException;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -47,6 +49,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
+
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -54,7 +58,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.sql.Timestamp;
@@ -146,12 +149,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     return pi;
   }
 
-  private JsonObject fetchJson(String source) throws IOException {
-    URL url = new URL(source);
-    URLConnection c = url.openConnection();
-    return (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(c.getInputStream()));
-  }
-
   private void clearCache() throws IOException {
     for (File f : new File(cacheFolder).listFiles()) {
       if (f.isDirectory()) {
@@ -229,7 +226,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   public String getLatestVersion(String id) throws IOException {
     for (String nextPackageServer : getPackageServers()) {
       // special case:
-      if (!("hl7.fhir.pubpack".equals(id) && PRIMARY_SERVER.equals(nextPackageServer))) {
+      if (!(CommonPackages.ID_PUBPACK.equals(id) && PRIMARY_SERVER.equals(nextPackageServer))) {
         CachingPackageClient pc = new CachingPackageClient(nextPackageServer);
         try {
           return pc.getLatestVersion(id);
@@ -517,9 +514,10 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException {
     try {
-      URL url = new URL(source);
-      URLConnection c = url.openConnection();
-      return c.getInputStream();
+      SimpleHTTPClient http = new SimpleHTTPClient();
+      HTTPResult res = http.get(source);
+      res.checkThrowException();
+      return new ByteArrayInputStream(res.getContent());
     } catch (Exception e) {
       if (optional)
         return null;
@@ -627,7 +625,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     // special case: current versions roll over, and we have to check their currency
     try {
       String url = ciList.get(id);
-      JsonObject json = fetchJson(Utilities.pathURL(url, "package.manifest.json"));
+      JsonObject json = JsonTrackingParser.fetchJson(Utilities.pathURL(url, "package.manifest.json"));
       String currDate = JSONUtil.str(json, "date");
       String packDate = p.date();
       if (!currDate.equals(packDate))
@@ -651,13 +649,11 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private void loadFromBuildServer() throws IOException {
-    URL url = new URL("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
-    SSLCertTruster.trustAllHosts();
-    HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-    connection.setHostnameVerifier(SSLCertTruster.DO_NOT_VERIFY);
-    connection.setRequestMethod("GET");
-    InputStream json = connection.getInputStream();
-    buildInfo = (JsonArray) new com.google.gson.JsonParser().parse(TextFile.streamToString(json));
+    SimpleHTTPClient http = new SimpleHTTPClient();
+    http.trustAllhosts();
+    HTTPResult res = http.get("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
+    res.checkThrowException();
+    buildInfo = (JsonArray) new com.google.gson.JsonParser().parse(TextFile.bytesToString(res.getContent()));
 
     List<BuildRecord> builds = new ArrayList<>();
 
@@ -714,7 +710,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     String aurl = pu;
     JsonObject json;
     try {
-      json = fetchJson(pu);
+      json = JsonTrackingParser.fetchJson(pu);
     } catch (Exception e) {
       String pv = Utilities.pathURL(url, v, "package.tgz");
       try {
@@ -755,7 +751,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
       throw new FHIRException("Unable to resolve package id " + id);
     }
     String pu = Utilities.pathURL(url, "package-list.json");
-    JsonObject json = fetchJson(pu);
+    JsonObject json = JsonTrackingParser.fetchJson(pu);
     if (!id.equals(JSONUtil.str(json, "package-id")))
       throw new FHIRException("Package ids do not match in " + pu + ": " + id + " vs " + JSONUtil.str(json, "package-id"));
     for (JsonElement e : json.getAsJsonArray("list")) {
@@ -769,7 +765,7 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
   }
 
   private String getUrlForPackage(String id) {
-    if ("hl7.fhir.xver-extensions".equals(id)) {
+    if (CommonPackages.ID_XVER.equals(id)) {
       return "http://fhir.org/packages/hl7.fhir.xver-extensions";
     }
     return null;
