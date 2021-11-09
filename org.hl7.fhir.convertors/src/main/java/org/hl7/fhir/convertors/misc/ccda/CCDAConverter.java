@@ -1,4 +1,4 @@
-package org.hl7.fhir.convertors.misc;
+package org.hl7.fhir.convertors.misc.ccda;
 
 
 
@@ -35,6 +35,8 @@ package org.hl7.fhir.convertors.misc;
 
 
 import org.fhir.ucum.UcumService;
+import org.hl7.fhir.convertors.misc.CDAUtilities;
+import org.hl7.fhir.convertors.misc.Convert;
 import org.hl7.fhir.dstu3.context.IWorkerContext;
 import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.dstu3.model.AllergyIntolerance.*;

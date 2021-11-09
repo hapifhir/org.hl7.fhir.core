@@ -55,6 +55,7 @@ public class BaseWrappers {
     public PropertyWrapper getChildByName(String tail);
     public StructureDefinition getDefinition();
     public boolean hasNarrative();
+    public String getNameFromResource();
   }
 
   public interface BaseWrapper extends WrapperBase {

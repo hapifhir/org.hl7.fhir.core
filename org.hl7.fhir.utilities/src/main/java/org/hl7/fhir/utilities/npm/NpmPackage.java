@@ -727,16 +727,19 @@ public class NpmPackage {
     if ("hl7.fhir.core".equals(JSONUtil.str(npm, "name")))
       return JSONUtil.str(npm, "version");
     else if (JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r2b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r3.") || 
-          JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r5."))
+        JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r4b.") || JSONUtil.str(npm, "name").startsWith("hl7.fhir.r5."))
       return JSONUtil.str(npm, "version");
-    else {        
-      JsonObject dep = npm.getAsJsonObject("dependencies");
-      if (dep != null) {
-        for (Entry<String, JsonElement> e : dep.entrySet()) {
-          if (Utilities.existsInList(e.getKey(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core"))
-            return e.getValue().getAsString();
-          if (Utilities.existsInList(e.getKey(), "hl7.fhir.core")) // while all packages are updated
-            return e.getValue().getAsString();
+    else {
+      JsonObject dep = null;
+      if (npm.has("dependencies") && npm.get("dependencies").isJsonObject()) {
+        dep = npm.getAsJsonObject("dependencies");
+        if (dep != null) {
+          for (Entry<String, JsonElement> e : dep.entrySet()) {
+            if (Utilities.existsInList(e.getKey(), "hl7.fhir.r2.core", "hl7.fhir.r2b.core", "hl7.fhir.r3.core", "hl7.fhir.r4.core"))
+              return e.getValue().getAsString();
+            if (Utilities.existsInList(e.getKey(), "hl7.fhir.core")) // while all packages are updated
+              return e.getValue().getAsString();
+          }
         }
       }
       if (npm.has("fhirVersions")) {
@@ -955,8 +958,13 @@ public class NpmPackage {
   public String fhirVersionList() {
     if (npm.has("fhirVersions")) {
       CommaSeparatedStringBuilder b = new CommaSeparatedStringBuilder();
-      for (JsonElement n : npm.getAsJsonArray("fhirVersions")) {
-        b.append(n.getAsString());
+      if (npm.get("fhirVersions").isJsonArray()) {
+        for (JsonElement n : npm.getAsJsonArray("fhirVersions")) {
+          b.append(n.getAsString());
+        }
+      }
+      if (npm.get("fhirVersions").isJsonPrimitive()) {
+        b.append(npm.get("fhirVersions").getAsString());
       }
       return b.toString();
     } else
