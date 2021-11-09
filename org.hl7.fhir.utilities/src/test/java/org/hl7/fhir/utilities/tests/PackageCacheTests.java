@@ -1,6 +1,7 @@
 package org.hl7.fhir.utilities.tests;
 
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -22,7 +23,7 @@ public class PackageCacheTests {
       System.out.println("remaining packages: "+list.toString());
     }
     Assertions.assertTrue(list.isEmpty(), "List should be true but is "+list.toString());
-    NpmPackage npm = cache.loadPackage("hl7.fhir.pubpack", "0.0.9");
+    NpmPackage npm = cache.loadPackage(CommonPackages.ID_PUBPACK, CommonPackages.VER_PUBPACK);
     npm.loadAllFiles();
     Assertions.assertNotNull(npm);
     File dir = new File(Utilities.path("[tmp]", "cache"));
@@ -32,7 +33,7 @@ public class PackageCacheTests {
       Utilities.createDirectory(dir.getAbsolutePath());
     }
     npm.save(dir);
-    NpmPackage npm2 = cache.loadPackage("hl7.fhir.pubpack", "file:" + dir.getAbsolutePath());
+    NpmPackage npm2 = cache.loadPackage(CommonPackages.ID_PUBPACK, "file:" + dir.getAbsolutePath());
     Assertions.assertNotNull(npm2);
     list = cache.listPackages();
     Assertions.assertFalse(list.isEmpty());
@@ -60,7 +61,7 @@ public class PackageCacheTests {
   public void testLastReleasedVersion() throws IOException {
     FilesystemPackageCacheManager cache = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
     cache.clear();
-    Assertions.assertEquals("0.0.8", cache.loadPackage("hl7.fhir.pubpack", "0.0.8").version());
-    Assertions.assertEquals("0.0.9", cache.loadPackage("hl7.fhir.pubpack").version());    
+    Assertions.assertEquals("0.0.8", cache.loadPackage(CommonPackages.ID_PUBPACK, "0.0.8").version());
+    Assertions.assertEquals(CommonPackages.VER_PUBPACK, cache.loadPackage(CommonPackages.ID_PUBPACK).version());    
   }
 }

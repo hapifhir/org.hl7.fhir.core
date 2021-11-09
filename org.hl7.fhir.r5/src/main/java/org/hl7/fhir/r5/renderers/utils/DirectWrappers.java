@@ -209,6 +209,28 @@ public class DirectWrappers {
     }
 
     @Override
+    public String getNameFromResource() {
+      Property name = wrapped.getChildByName("name");
+      if (name != null && name.hasValues()) {
+        Base b = name.getValues().get(0);
+        if (b.isPrimitive()) {
+          return b.primitiveValue();          
+        } else if (b.fhirType().equals("HumanName")) {
+          Property family = b.getChildByName("family");
+          Property given = wrapped.getChildByName("given");
+          String s = given != null && given.hasValues() ? given.getValues().get(0).primitiveValue() : "";
+          if (family != null && family.hasValues())
+            s = s + " " + family.getValues().get(0).primitiveValue().toUpperCase();
+          return s;
+        } else {
+          // it might be a human name?
+          throw new Error("What to do?");
+        }
+      }
+      return null;
+    }
+
+    @Override
     public List<PropertyWrapper> children() {
       List<PropertyWrapper> list = new ArrayList<PropertyWrapper>();
       if (wrapped.children() != null) {

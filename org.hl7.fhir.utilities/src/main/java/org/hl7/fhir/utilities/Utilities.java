@@ -1501,5 +1501,14 @@ public class Utilities {
     return oid.matches(OID_REGEX);
   }
 
+  public static int findinList(String[] list, String val) {
+    for (int i = 0; i < list.length; i++) {
+      if (val.equals(list[i])) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
 
 }

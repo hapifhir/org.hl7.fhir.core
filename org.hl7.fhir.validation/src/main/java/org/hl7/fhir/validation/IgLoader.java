@@ -18,6 +18,8 @@ import org.hl7.fhir.r5.model.Constants;
 import org.hl7.fhir.r5.model.ImplementationGuide;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.IniFile;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
@@ -33,9 +35,7 @@ import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 import org.w3c.dom.Document;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -273,9 +273,10 @@ public class IgLoader {
 
   private InputStream fetchFromUrlSpecific(String source, boolean optional) throws FHIRException, IOException {
     try {
-      URL url = new URL(source + "?nocache=" + System.currentTimeMillis());
-      URLConnection c = url.openConnection();
-      return c.getInputStream();
+      SimpleHTTPClient http = new SimpleHTTPClient();
+      HTTPResult res = http.get(source + "?nocache=" + System.currentTimeMillis());
+      res.checkThrowException();
+      return new ByteArrayInputStream(res.getContent());
     } catch (IOException e) {
       if (optional)
         return null;
@@ -412,17 +413,16 @@ public class IgLoader {
 
   private byte[] fetchFromUrlSpecific(String source, String contentType, boolean optional, List<String> errors) throws FHIRException, IOException {
     try {
+      SimpleHTTPClient http = new SimpleHTTPClient();
       try {
         // try with cache-busting option and then try withhout in case the server doesn't support that
-        URL url = new URL(source + "?nocache=" + System.currentTimeMillis());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestProperty("Accept", contentType);
-        return TextFile.streamToBytes(conn.getInputStream());
+        HTTPResult res = http.get(source + "?nocache=" + System.currentTimeMillis(), contentType);
+        res.checkThrowException();
+        return res.getContent();
       } catch (Exception e) {
-        URL url = new URL(source);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestProperty("Accept", contentType);
-        return TextFile.streamToBytes(conn.getInputStream());
+        HTTPResult res = http.get(source, contentType);
+        res.checkThrowException();
+        return res.getContent();
       }
     } catch (IOException e) {
       if (errors != null) {

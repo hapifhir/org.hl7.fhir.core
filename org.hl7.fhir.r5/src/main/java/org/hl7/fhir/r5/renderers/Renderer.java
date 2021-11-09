@@ -33,7 +33,7 @@ public class Renderer {
   }
 
   public Renderer(IWorkerContext worker) {
-    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R5", "", null, ResourceRendererMode.RESOURCE);
+    this.context = new RenderingContext(worker, new MarkDownProcessor(Dialect.COMMON_MARK), ValidationOptions.defaults(), "http://hl7.org/fhir/R5", "", null, ResourceRendererMode.END_USER);
   }
 
 

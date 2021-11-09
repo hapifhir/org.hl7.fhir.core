@@ -325,7 +325,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         if (v.getValue().isPrimitive()) {
           defn.getPieces().add(gen.new Piece(null, v.getValue().primitiveValue(), null));
         } else {
-          defn.getPieces().add(gen.new Piece(null, "{todo}", null));          
+          renderCoding(gen, defn.getPieces(), v.getValueCoding());          
         }
       }
     }
@@ -499,7 +499,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         if (v.getValue().isPrimitive()) {
           defn.getPieces().add(gen.new Piece(null, v.getValue().primitiveValue(), null));
         } else {
-          defn.getPieces().add(gen.new Piece(null, "{todo}", null));          
+          renderCoding(gen, defn.getPieces(), v.getValueCoding());          
         }
       }
     }
@@ -730,7 +730,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
         if (v.getValue().isPrimitive()) {
           vi.tx(v.getValue().primitiveValue());
         } else {
-          vi.tx("{todo}");          
+          renderCoding(vi, v.getValueCoding(), true);           
         }
       }
     }

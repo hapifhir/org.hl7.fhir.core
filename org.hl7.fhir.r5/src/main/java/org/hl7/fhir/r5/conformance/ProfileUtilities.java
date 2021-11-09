@@ -335,7 +335,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   private boolean autoFixSliceNames;
   private XVerExtensionManager xver;
   private boolean wantFixDifferentialFirstElementType;
-  private List<String> masterSourceFileNames;
+  private Set<String> masterSourceFileNames;
 
   public ProfileUtilities(IWorkerContext context, List<ValidationMessage> messages, ProfileKnowledgeProvider pkp, FHIRPathEngine fpe) {
     super();
@@ -2465,7 +2465,7 @@ public class ProfileUtilities extends TranslatingUtilities {
     return element;
   }
 
-  public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, List<String> filenames) {
+  public static String processRelativeUrls(String markdown, String webUrl, String basePath, List<String> resourceNames, Set<String> filenames) {
     StringBuilder b = new StringBuilder();
     int i = 0;
     while (i < markdown.length()) {
@@ -2508,7 +2508,7 @@ public class ProfileUtilities extends TranslatingUtilities {
   }
 
 
-  public static boolean isLikelySourceURLReference(String url, List<String> resourceNames, List<String> filenames) {
+  public static boolean isLikelySourceURLReference(String url, List<String> resourceNames, Set<String> filenames) {
     if (resourceNames != null) {
       for (String n : resourceNames) {
         if (url.startsWith(n.toLowerCase()+".html")) {
@@ -6669,11 +6669,11 @@ public class ProfileUtilities extends TranslatingUtilities {
     return getElementById(structure, structure.getSnapshot().getElement(), element.getContentReference());
   }
 
-  public List<String> getMasterSourceFileNames() {
+  public Set<String> getMasterSourceFileNames() {
     return masterSourceFileNames;
   }
 
-  public void setMasterSourceFileNames(List<String> masterSourceFileNames) {
+  public void setMasterSourceFileNames(Set<String> masterSourceFileNames) {
     this.masterSourceFileNames = masterSourceFileNames;
   }
 
