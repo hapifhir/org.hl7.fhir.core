@@ -352,7 +352,7 @@
 
     <profiles>
         <profile>
-            <id>surefire-java8</id>
+            <id>surefire-java-8</id>
             <activation>
                 <jdk>(,1.8]</jdk>
             </activation>
@@ -368,7 +368,10 @@
                             <trimStackTrace>false</trimStackTrace>
                             <testFailureIgnore>false</testFailureIgnore>
                             <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
-                             Surefire testing run. This may appear as an error in some IDEs, but it will run regardless. -->
+                             Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
+                            -->
+                            <!-- UseConcMarkSweepGC is required for Java 8 builds, or else garbage collection will fail
+                            for forked tests -->
                             <argLine>${argLine} -Xmx4096m -XX:+UseConcMarkSweepGC</argLine>
                             <redirectTestOutputToFile>false</redirectTestOutputToFile>
                             <excludes>
@@ -396,7 +399,8 @@
                             <trimStackTrace>false</trimStackTrace>
                             <testFailureIgnore>false</testFailureIgnore>
                             <!-- We need to include the ${argLine} here so the Jacoco test arguments are included in the
-                             Surefire testing run. This may appear as an error in some IDEs, but it will run regardless. -->
+                             Surefire testing run. This may appear as an error in some IDEs, but it will run regardless.
+                            -->
                             <argLine>${argLine} -Xmx4096m</argLine>
                             <redirectTestOutputToFile>false</redirectTestOutputToFile>
                             <excludes>
