@@ -36,12 +36,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Stack;
 
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 
@@ -663,7 +663,7 @@ public class JsonTrackingParser {
     String jcnt = gson.toJson(json);
     TextFile.stringToFile(jcnt, file);    
   }
-  
+    
   public static void write(JsonObject json, String fileName) throws IOException {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String jcnt = gson.toJson(json);
@@ -672,6 +672,11 @@ public class JsonTrackingParser {
   
   public static String write(JsonObject json) {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    return gson.toJson(json);    
+  }
+
+  public static String writeDense(JsonObject json) {
+    Gson gson = new GsonBuilder().create();
     return gson.toJson(json);    
   }
 
@@ -686,10 +691,10 @@ public class JsonTrackingParser {
   }
   
   public static JsonObject fetchJson(String source) throws IOException {
-    URL url = new URL(source+"?nocache=" + System.currentTimeMillis());
-    HttpURLConnection c = (HttpURLConnection) url.openConnection();
-    c.setInstanceFollowRedirects(true);
-    return parseJson(c.getInputStream());
+    SimpleHTTPClient fetcher = new SimpleHTTPClient();
+    HTTPResult res = fetcher.get(source+"?nocache=" + System.currentTimeMillis());
+    res.checkThrowException();
+    return parseJson(res.getContent());
   }
   
 	

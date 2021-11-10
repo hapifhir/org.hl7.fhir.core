@@ -308,15 +308,9 @@ public class FHIRToolingClient {
       URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
       if (complex) {
         byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()));
-        if (client.getLogger() != null) {
-          client.getLogger().logRequest("POST", url.toString(), null, body);
-        }
         result = client.issuePostRequest(url, body, getPreferredResourceFormat(), generateHeaders(),
             "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
       } else {
-        if (client.getLogger() != null) {
-          client.getLogger().logRequest("GET", url.toString(), null, null);
-        }
         result = client.issueGetResourceRequest(url, getPreferredResourceFormat(), generateHeaders(), "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
       }
       if (result.isUnsuccessfulRequest()) {
@@ -586,6 +580,10 @@ public class FHIRToolingClient {
 
   public void setUserAgent(String userAgent) {
     this.userAgent = userAgent;
+  }
+
+  public String getServerVersion() {
+    return capabilities == null ? null : capabilities.getSoftware().getVersion();
   }
   
   

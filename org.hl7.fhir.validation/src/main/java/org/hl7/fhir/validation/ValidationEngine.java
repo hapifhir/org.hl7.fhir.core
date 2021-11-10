@@ -41,6 +41,8 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -54,10 +56,8 @@ import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.xml.sax.SAXException;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.*;
 
 /*
@@ -238,7 +238,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (tt != null) {
       context.setClock(tt);
     }
-    NpmPackage npmX = getPcm().loadPackage("hl7.fhir.xver-extensions", "0.0.4");
+    NpmPackage npmX = getPcm().loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
     context.loadFromPackage(npmX, null);
 
     this.fhirPathEngine = new FHIRPathEngine(context);
@@ -435,7 +435,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = igLoader.loadContent(source, "validate", false);
     Resource res = igLoader.loadResourceByVersion(version, cnt.focus, source);
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
     genResource(res, rc);
     return (Resource) res;
   }
@@ -554,19 +554,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (output.startsWith("http://")) {
       ByteArrayOutputStream bs = new ByteArrayOutputStream();
       handleOutputToStream(r, output, bs, version);
-      URL url = new URL(output);
-      HttpURLConnection c = (HttpURLConnection) url.openConnection();
-      c.setDoOutput(true);
-      c.setDoInput(true);
-      c.setRequestMethod("POST");
-      c.setRequestProperty("Content-type", "application/fhir+xml");
-      c.setRequestProperty("Accept", "application/fhir+xml");
-      c.getOutputStream().write(bs.toByteArray());
-      c.getOutputStream().close();
-
-      if (c.getResponseCode() >= 300) {
-        throw new IOException("Unable to PUT to " + output + ": " + c.getResponseMessage());
-      }
+      SimpleHTTPClient http = new SimpleHTTPClient();
+      HTTPResult res = http.post(output, "application/fhir+xml", bs.toByteArray(), "application/fhir+xml");
+      res.checkThrowException();
     } else {
       FileOutputStream s = new FileOutputStream(output);
       handleOutputToStream(r, output, s, version);
@@ -711,9 +701,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
 
   @Override
   public byte[] fetchRaw(IResourceValidator validator, String source) throws IOException {
-    URL url = new URL(source);
-    URLConnection c = url.openConnection();
-    return TextFile.streamToBytes(c.getInputStream());
+    SimpleHTTPClient http = new SimpleHTTPClient();
+    HTTPResult res = http.get(source);
+    res.checkThrowException();
+    return res.getContent();
   }
 
   @Override

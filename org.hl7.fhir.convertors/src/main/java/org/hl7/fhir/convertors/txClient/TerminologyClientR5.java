@@ -154,4 +154,9 @@ public class TerminologyClientR5 implements TerminologyClient {
     client.setUserAgent(userAgent);
     return this;
   }
+
+  @Override
+  public String getServerVersion() {
+    return client.getServerVersion();
+  }
 }
