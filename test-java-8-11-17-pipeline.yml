@@ -7,5 +7,10 @@ pr:
 jobs:
 - template: pull-request-pipeline-parameterized.yml
   parameters:
-    imageName: [ 'ubuntu-latest', 'macos-latest', 'windows-2019' ]
-    jdkVersion: [ '1.8', '1.11', '1.17']
+    images:
+    - name: ubuntu-latest
+      jdkVersions:  [ '1.8', '1.11' ]
+    - name: macos-latest
+      jdkVersions: [ '1.8', '1.11', '1.17']
+    - name: windows-2019
+      jdkVersions: [ '1.8', '1.11', '1.17']
