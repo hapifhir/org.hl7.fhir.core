@@ -9,5 +9,3 @@ jobs:
   parameters:
     imageName: [ 'ubuntu-latest', 'macos-latest', 'windows-2019' ]
     jdkVersion: [ '1.8', '1.11', '1.17']
-  strategy:
-    parallel: 9
