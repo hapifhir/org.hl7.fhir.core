@@ -290,7 +290,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.hasAnswerValueSet()) {
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
       defn.getPieces().add(gen.new Piece(null, "Value Set: ", null));
-      if (i.getAnswerValueSet().startsWith("#")) {
+      if (!Utilities.noString(i.getAnswerValueSet()) && i.getAnswerValueSet().startsWith("#")) {
         ValueSet vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1));
         if (vs == null) {
           defn.getPieces().add(gen.new Piece(null, i.getAnswerValueSet(), null));                    
@@ -469,7 +469,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     if (i.hasAnswerValueSet()) {
       if (!defn.getPieces().isEmpty()) defn.addPiece(gen.new Piece("br"));
       defn.getPieces().add(gen.new Piece(null, "Value Set: ", null));
-      if (i.getAnswerValueSet().startsWith("#")) {
+      if (Utilities.noString(i.getAnswerValueSet()) && i.getAnswerValueSet().startsWith("#")) {
         ValueSet vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1));
         if (vs == null) {
           defn.getPieces().add(gen.new Piece(null, i.getAnswerValueSet(), null));                    
@@ -703,7 +703,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
     }
     if (i.hasAnswerValueSet()) {
       XhtmlNode ans = item(ul, "Answers");
-      if (i.getAnswerValueSet().startsWith("#")) {
+      if (Utilities.noString(i.getAnswerValueSet()) && i.getAnswerValueSet().startsWith("#")) {
         ValueSet vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1));
         if (vs == null) {
           ans.tx(i.getAnswerValueSet());                    
@@ -792,7 +792,7 @@ public class QuestionnaireRenderer extends TerminologyRenderer {
   private void listOptions(Questionnaire q, QuestionnaireItemComponent i, XhtmlNode select) {
     if (i.hasAnswerValueSet()) {
       ValueSet vs = null;
-      if (i.getAnswerValueSet().startsWith("#")) {
+      if (Utilities.noString(i.getAnswerValueSet()) && i.getAnswerValueSet().startsWith("#")) {
         vs = (ValueSet) q.getContained(i.getAnswerValueSet().substring(1));
         if (vs != null && !vs.hasUrl()) {
           vs = vs.copy();
