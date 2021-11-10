@@ -105,8 +105,10 @@ public class I18nConstants {
   public static final String ERROR_READING__FROM_PACKAGE__ = "Error_reading__from_package__";
   public static final String ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES = "Error_validating_code_running_without_terminology_services";
   public static final String ERROR_WRITING_NUMBER__TO_JSON = "error_writing_number__to_JSON";
-  public static final String EXTENSION_EXT_CONTEXT_WRONG = "Extension_EXT_Context_Wrong";
-  public static final String EXTENSION_EXT_CONTEXT_WRONG_XVER = "EXTENSION_EXT_CONTEXT_WRONG_XVER";
+  public static final String EXTENSION_EXTP_CONTEXT_WRONG = "Extension_EXTP_Context_Wrong";
+  public static final String EXTENSION_EXTP_CONTEXT_WRONG_XVER = "EXTENSION_EXTP_CONTEXT_WRONG_XVER";
+  public static final String EXTENSION_EXTM_CONTEXT_WRONG = "Extension_EXTM_Context_Wrong";
+  public static final String EXTENSION_EXTM_CONTEXT_WRONG_XVER = "EXTENSION_EXTM_CONTEXT_WRONG_XVER";
   public static final String EXTENSION_EXT_COUNT_MISMATCH = "Extension_EXT_Count_Mismatch";
   public static final String EXTENSION_EXT_COUNT_NOTFOUND = "Extension_EXT_Count_NotFound";
   public static final String EXTENSION_EXT_FIXED_BANNED = "Extension_EXT_Fixed_Banned";
@@ -459,6 +461,7 @@ public class I18nConstants {
   public static final String TYPE_ON_FIRST_DIFFERENTIAL_ELEMENT = "type_on_first_differential_element";
   public static final String TYPE_ON_FIRST_SNAPSHOT_ELEMENT_FOR__IN__FROM_ = "type_on_first_snapshot_element_for__in__from_";
   public static final String TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE = "TYPE_SPECIFIC_CHECKS_CANONICAL_ABSOLUTE";
+  public static final String TYPE_SPECIFIC_CHECKS_CANONICAL_CONTAINED = "TYPE_SPECIFIC_CHECKS_CANONICAL_CONTAINED";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT = "TYPE_SPECIFIC_CHECKS_DT_ATT_NO_CONTENT";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER = "TYPE_SPECIFIC_CHECKS_DT_ATT_NO_FETCHER";
   public static final String TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT = "TYPE_SPECIFIC_CHECKS_DT_ATT_SIZE_CORRECT";
@@ -507,7 +510,7 @@ public class I18nConstants {
   public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_TYPE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE = "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE";
   public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_STRAT = "Type_Specific_Checks_DT_UUID_Strat";
-  public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_VAID = "Type_Specific_Checks_DT_UUID_Vaid";
+  public static final String TYPE_SPECIFIC_CHECKS_DT_UUID_VALID = "Type_Specific_Checks_DT_UUID_Valid";
   public static final String UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER = "Unable_to_connect_to_terminology_server";
   public static final String UNABLE_TO_CONNECT_TO_TERMINOLOGY_SERVER_USE_PARAMETER_TX_NA_TUN_RUN_WITHOUT_USING_TERMINOLOGY_SERVICES_TO_VALIDATE_LOINC_SNOMED_ICDX_ETC_ERROR__ = "Unable_to_connect_to_terminology_server_Use_parameter_tx_na_tun_run_without_using_terminology_services_to_validate_LOINC_SNOMED_ICDX_etc_Error__";
   public static final String UNABLE_TO_FIND_BASE_DEFINITION_FOR_LOGICAL_MODEL__FROM_ = "Unable_to_find_base_definition_for_logical_model__from_";
@@ -646,6 +649,8 @@ public class I18nConstants {
   public static final String BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_NO_MODE = "BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_NO_MODE";
   public static final String BUNDLE_SEARCH_NO_MODE = "BUNDLE_SEARCH_NO_MODE";
   public static final String BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_OUTCOME = "BUNDLE_SEARCH_ENTRY_WRONG_RESOURCE_TYPE_OUTCOME";
+  public static final String UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED = "UNICODE_BIDI_CONTROLS_CHARS_DISALLOWED";
+  public static final String UNICODE_BIDI_CONTROLS_CHARS_MATCH = "UNICODE_BIDI_CONTROLS_CHARS_MATCH";
 }
 
 

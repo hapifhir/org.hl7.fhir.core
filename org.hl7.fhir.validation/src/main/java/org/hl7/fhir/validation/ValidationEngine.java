@@ -28,6 +28,8 @@ import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
 import org.hl7.fhir.r5.model.Bundle.BundleEntryComponent;
+import org.hl7.fhir.r5.model.NamingSystem.NamingSystemIdentifierType;
+import org.hl7.fhir.r5.model.NamingSystem.NamingSystemUniqueIdComponent;
 import org.hl7.fhir.r5.renderers.RendererFactory;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext;
 import org.hl7.fhir.r5.renderers.utils.RenderingContext.ResourceRendererMode;
@@ -39,6 +41,8 @@ import org.hl7.fhir.r5.utils.ToolingExtensions;
 import org.hl7.fhir.r5.utils.structuremap.StructureMapUtilities;
 import org.hl7.fhir.utilities.TimeTracker;
 import org.hl7.fhir.utilities.*;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -52,10 +56,8 @@ import org.hl7.fhir.validation.instance.utils.ValidatorHostContext;
 import org.xml.sax.SAXException;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.*;
 
 /*
@@ -147,6 +149,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   @Getter @Setter private ICanonicalResourceLocator locator;
   @Getter @Setter private boolean assumeValidRestReferences;
   @Getter @Setter private boolean noExtensibleBindingMessages;
+  @Getter @Setter private boolean noUnicodeBiDiControlChars;
   @Getter @Setter private boolean securityChecks;
   @Getter @Setter private boolean crumbTrails;
   @Getter @Setter private boolean allowExampleUrls;
@@ -187,23 +190,26 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, boolean canRunWithoutTerminologyServer, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, null);
+    getContext().setUserAgent(userAgent);
     getContext().setCanRunWithoutTerminology(canRunWithoutTerminologyServer);
     setTerminologyServer(txsrvr, txLog, version);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String txsrvr, String txLog, FhirPublication version, String vString, String userAgent) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, null);
+    getContext().setUserAgent(userAgent);
     setTerminologyServer(txsrvr, txLog, version);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
 
-  public ValidationEngine(String src, String vString, TimeTracker tt) throws FHIRException, IOException, URISyntaxException {
+  public ValidationEngine(String src, String vString, TimeTracker tt, String userAgent) throws FHIRException, IOException, URISyntaxException {
     loadCoreDefinitions(src, false, tt);
+    getContext().setUserAgent(userAgent);
     setVersion(vString);
     igLoader = new IgLoader(getPcm(), getContext(), getVersion(), isDebug());
   }
@@ -232,7 +238,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (tt != null) {
       context.setClock(tt);
     }
-    NpmPackage npmX = getPcm().loadPackage("hl7.fhir.xver-extensions", "0.0.4");
+    NpmPackage npmX = getPcm().loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
     context.loadFromPackage(npmX, null);
 
     this.fhirPathEngine = new FHIRPathEngine(context);
@@ -269,7 +275,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
       return "n/a: No Terminology Server";
     } else {
       try {
-        return context.connectToTSServer(TerminologyClientFactory.makeClient(url, version), log);
+        return context.connectToTSServer(TerminologyClientFactory.makeClient(url, context.getUserAgent(), version), log);
       } catch (Exception e) {
         if (context.isCanRunWithoutTerminology()) {
           return "n/a: Running without Terminology Server (error: " + e.getMessage() + ")";
@@ -429,7 +435,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
   public Resource generate(String source, String version) throws FHIRException, IOException, EOperationOutcome {
     Content cnt = igLoader.loadContent(source, "validate", false);
     Resource res = igLoader.loadResourceByVersion(version, cnt.focus, source);
-    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
+    RenderingContext rc = new RenderingContext(context, null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
     genResource(res, rc);
     return (Resource) res;
   }
@@ -513,6 +519,7 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     validator.getBundleValidationRules().addAll(bundleValidationRules);
     validator.getValidationControl().putAll(validationControl);
     validator.setQuestionnaireMode(questionnaireMode);
+    validator.setNoUnicodeBiDiControlChars(noUnicodeBiDiControlChars);
     if (format == FhirFormat.SHC) {
       igLoader.loadIg(getIgs(), getBinaries(), SHCParser.CURRENT_PACKAGE, true);      
     }
@@ -547,19 +554,9 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (output.startsWith("http://")) {
       ByteArrayOutputStream bs = new ByteArrayOutputStream();
       handleOutputToStream(r, output, bs, version);
-      URL url = new URL(output);
-      HttpURLConnection c = (HttpURLConnection) url.openConnection();
-      c.setDoOutput(true);
-      c.setDoInput(true);
-      c.setRequestMethod("POST");
-      c.setRequestProperty("Content-type", "application/fhir+xml");
-      c.setRequestProperty("Accept", "application/fhir+xml");
-      c.getOutputStream().write(bs.toByteArray());
-      c.getOutputStream().close();
-
-      if (c.getResponseCode() >= 300) {
-        throw new IOException("Unable to PUT to " + output + ": " + c.getResponseMessage());
-      }
+      SimpleHTTPClient http = new SimpleHTTPClient();
+      HTTPResult res = http.post(output, "application/fhir+xml", bs.toByteArray(), "application/fhir+xml");
+      res.checkThrowException();
     } else {
       FileOutputStream s = new FileOutputStream(output);
       handleOutputToStream(r, output, s, version);
@@ -704,9 +701,10 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
 
   @Override
   public byte[] fetchRaw(IResourceValidator validator, String source) throws IOException {
-    URL url = new URL(source);
-    URLConnection c = url.openConnection();
-    return TextFile.streamToBytes(c.getInputStream());
+    SimpleHTTPClient http = new SimpleHTTPClient();
+    HTTPResult res = http.get(source);
+    res.checkThrowException();
+    return res.getContent();
   }
 
   @Override
@@ -760,6 +758,13 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
     if (Utilities.existsInList(url, "http://loinc.org", "http://unitsofmeasure.org", "http://snomed.info/sct")) {
       return true;
     }
+    for (CanonicalResource cr : context.allConformanceResources()) {
+      if (cr instanceof NamingSystem) {
+        if (hasURL((NamingSystem) cr, url)) {
+          return true;
+        }
+      }
+    }
     if (url.contains("example.org") || url.contains("acme.com")) {
       return false; // todo... how to access settings from here?
     }
@@ -768,6 +773,15 @@ public class ValidationEngine implements IValidatorResourceFetcher, IPackageInst
         return fetcher.resolveURL(validator, appContext, path, url, type);
       } catch (Exception e) {
         return false;
+      }
+    }
+    return false;
+  }
+
+  private boolean hasURL(NamingSystem ns, String url) {
+    for (NamingSystemUniqueIdComponent uid : ns.getUniqueId()) {
+      if (uid.getType() == NamingSystemIdentifierType.URI && uid.hasValue() && uid.getValue().equals(url)) {
+        return true;
       }
     }
     return false;

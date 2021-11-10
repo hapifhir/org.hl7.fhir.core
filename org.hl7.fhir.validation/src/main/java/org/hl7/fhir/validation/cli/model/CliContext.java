@@ -38,6 +38,8 @@ public class CliContext {
   private boolean noInternalCaching = false; // internal, for when debugging terminology validation
   @JsonProperty("noExtensibleBindingMessages")
   private boolean noExtensibleBindingMessages = false;
+  @JsonProperty("noUnicodeBiDiControlChars")
+  private boolean noUnicodeBiDiControlChars = false;
   @JsonProperty("noInvariants")
   private boolean noInvariants = false;
   @JsonProperty("wantInvariantsInMessages")
@@ -97,6 +99,9 @@ public class CliContext {
   @JsonProperty("locations")
   private Map<String, String> locations = new HashMap<String, String>();
 
+  @JsonProperty("outputStyle")
+  private String outputStyle = null;
+  
   // TODO: Mark what goes here?
   private List<BundleValidationRule> bundleValidationRules = new ArrayList<>();
 
@@ -517,6 +522,22 @@ public class CliContext {
     this.showTimes = showTimes;
   }
 
+  public String getOutputStyle() {
+    return outputStyle;
+  }
+
+  public void setOutputStyle(String outputStyle) {
+    this.outputStyle = outputStyle;
+  }
+
+  public boolean isNoUnicodeBiDiControlChars() {
+    return noUnicodeBiDiControlChars;
+  }
+
+  public void setNoUnicodeBiDiControlChars(boolean noUnicodeBiDiControlChars) {
+    this.noUnicodeBiDiControlChars = noUnicodeBiDiControlChars;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -531,6 +552,7 @@ public class CliContext {
       canDoNative == that.canDoNative &&
       noInternalCaching == that.noInternalCaching &&
       noExtensibleBindingMessages == that.noExtensibleBindingMessages &&
+      noUnicodeBiDiControlChars == that.noUnicodeBiDiControlChars &&
       noInvariants == that.noInvariants &&
       wantInvariantsInMessages == that.wantInvariantsInMessages &&
       Objects.equals(map, that.map) &&
@@ -553,12 +575,15 @@ public class CliContext {
       Objects.equals(showTimes, that.showTimes) &&
       mode == that.mode &&
       Objects.equals(locale, that.locale) &&
+      Objects.equals(outputStyle, that.outputStyle) &&
       Objects.equals(locations, that.locations);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls);
+    return Objects.hash(doNative, anyExtensionsAllowed, hintAboutNonMustSupport, recursive, doDebug, assumeValidRestReferences, canDoNative, noInternalCaching, 
+            noExtensibleBindingMessages, noInvariants, wantInvariantsInMessages, map, output, htmlOutput, txServer, sv, txLog, mapLog, lang, fhirpath, snomedCT, 
+            targetVer, igs, questionnaireMode, profiles, sources, mode, locale, locations, crumbTrails, showTimes, allowExampleUrls, outputStyle, noUnicodeBiDiControlChars);
   }
 
   @Override
@@ -573,6 +598,7 @@ public class CliContext {
       ", canDoNative=" + canDoNative +
       ", noInternalCaching=" + noInternalCaching +
       ", noExtensibleBindingMessages=" + noExtensibleBindingMessages +
+      ", noUnicodeBiDiControlChars=" + noUnicodeBiDiControlChars +
       ", noInvariants=" + noInvariants +
       ", wantInvariantsInMessages=" + wantInvariantsInMessages +
       ", map='" + map + '\'' +
@@ -593,6 +619,7 @@ public class CliContext {
       ", mode=" + mode +
       ", securityChecks=" + securityChecks +
       ", crumbTrails=" + crumbTrails +
+      ", outputStyle=" + outputStyle +
       ", allowExampleUrls=" + allowExampleUrls +
       ", showTimes=" + showTimes +
       ", locale='" + locale + '\'' +

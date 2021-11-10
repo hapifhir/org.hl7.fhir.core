@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +53,8 @@ import org.hl7.fhir.r5.utils.IResourceValidator.BestPracticeWarningLevel;
 import org.hl7.fhir.r5.utils.IResourceValidator.BundleValidationRule;
 import org.hl7.fhir.r5.utils.IResourceValidator.IValidatorResourceFetcher;
 import org.hl7.fhir.r5.utils.IResourceValidator.ReferenceValidationPolicy;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
@@ -100,7 +101,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
     List<Object[]> objects = new ArrayList<Object[]>(examples.size());
     for (String id : names) {
-      //if (id.equals("bundle-documentation-miss-last-updated"))
         objects.add(new Object[]{id, examples.get(id)});
     }
     return objects;
@@ -111,8 +111,6 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
   private String version;
   private String name;
 
-  private static final String DEF_TX = "http://tx.fhir.org";
-//  private static final String DEF_TX = "http://local.fhir.org:960";
   private static Map<String, ValidationEngine> ve = new HashMap<>();
   private static ValidationEngine vCurr;
   private static IgLoader igLoader;
@@ -143,19 +141,20 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     version = VersionUtilities.getMajMin(version);
     if (!ve.containsKey(version)) {
       if (version.startsWith("5.0"))
-        ve.put(version, new ValidationEngine("hl7.fhir.r5.core#4.5.0", DEF_TX, txLog, FhirPublication.R5, true, "4.5.0"));
+        ve.put(version, new ValidationEngine("hl7.fhir.r5.core#4.5.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R5, true, "4.5.0", "fhir/test-cases"));
       else if (version.startsWith("3.0"))
-        ve.put(version, new ValidationEngine("hl7.fhir.r3.core#3.0.2", DEF_TX, txLog, FhirPublication.STU3, true, "3.0.2"));
+        ve.put(version, new ValidationEngine("hl7.fhir.r3.core#3.0.2", ValidationEngineTests.DEF_TX, txLog, FhirPublication.STU3, true, "3.0.2", "fhir/test-cases"));
       else if (version.startsWith("4.0"))
-        ve.put(version, new ValidationEngine("hl7.fhir.r4.core#4.0.1", DEF_TX, txLog, FhirPublication.R4, true, "4.0.1"));
+        ve.put(version, new ValidationEngine("hl7.fhir.r4.core#4.0.1", ValidationEngineTests.DEF_TX, txLog, FhirPublication.R4, true, "4.0.1", "fhir/test-cases"));
       else if (version.startsWith("1.0"))
-        ve.put(version, new ValidationEngine("hl7.fhir.r2.core#1.0.2", DEF_TX, txLog, FhirPublication.DSTU2, true, "1.0.2"));
+        ve.put(version, new ValidationEngine("hl7.fhir.r2.core#1.0.2", ValidationEngineTests.DEF_TX, txLog, FhirPublication.DSTU2, true, "1.0.2", "fhir/test-cases"));
       else if (version.startsWith("1.4"))
-        ve.put(version, new ValidationEngine("hl7.fhir.r2b.core#1.4.0", DEF_TX, txLog, FhirPublication.DSTU2016May, true, "1.4.0"));
+        ve.put(version, new ValidationEngine("hl7.fhir.r2b.core#1.4.0", ValidationEngineTests.DEF_TX, txLog, FhirPublication.DSTU2016May, true, "1.4.0", "fhir/test-cases"));
       else
         throw new Exception("unknown version " + version);
     }
     vCurr = ve.get(version);
+    vCurr.getContext().setUserAgent("fhir/test-cases");
     igLoader = new IgLoader(vCurr.getPcm(), vCurr.getContext(), vCurr.getVersion(), true);
     if (TestingUtilities.fcontexts == null) {
       TestingUtilities.fcontexts = new HashMap<>();
@@ -173,6 +172,7 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
     val.setWantCheckSnapshotUnchanged(true);
     val.getContext().setClientRetryCount(4);
     val.setDebug(false);
+    
     if (content.has("fetcher") && "standalone".equals(JSONUtil.str(content, "fetcher"))) {
       val.setFetcher(vCurr);
       vCurr.setFetcher(new StandAloneValidatorFetcher(vCurr.getPcm(), vCurr.getContext(), vCurr));
@@ -188,6 +188,11 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
       val.setValidationLanguage(content.get("language").getAsString());
     else
       val.setValidationLanguage(null);
+    if (content.has("default-version")) {
+      val.setBaseOptions(val.getBaseOptions().setVersionFlexible(content.get("default-version").getAsBoolean()));
+    } else {
+      val.setBaseOptions(val.getBaseOptions().setVersionFlexible(false));
+    }
     if (content.has("packages")) {
       for (JsonElement e : content.getAsJsonArray("packages")) {
         String n = e.getAsString();
@@ -550,9 +555,10 @@ public class ValidationTests implements IEvaluationContext, IValidatorResourceFe
 
   @Override
   public byte[] fetchRaw(IResourceValidator validator, String source) throws MalformedURLException, IOException {
-    URL url = new URL(source);
-    URLConnection c = url.openConnection();
-    return TextFile.streamToBytes(c.getInputStream());
+    SimpleHTTPClient http = new SimpleHTTPClient();
+    HTTPResult res = http.get(source);
+    res.checkThrowException();
+    return res.getContent();
   }
 
   @Override

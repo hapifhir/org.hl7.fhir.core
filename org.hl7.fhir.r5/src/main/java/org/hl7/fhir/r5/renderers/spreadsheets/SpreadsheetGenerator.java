@@ -84,7 +84,7 @@ public class SpreadsheetGenerator {
     if (name.length() > MAX_SENSITIVE_SHEET_NAME_LEN - 2) {
       name = name.substring(0, MAX_SENSITIVE_SHEET_NAME_LEN - 2);
     }
-    String s = name;
+    String s = fixSheetNameChars(name);
     if (sheetNames.contains(s)) {
       int i = 1;
       do {
@@ -94,6 +94,26 @@ public class SpreadsheetGenerator {
     }
     sheetNames.add(s);
     return wb.createSheet(s);
+  }
+
+  private String fixSheetNameChars(String name) {
+    StringBuilder b = new StringBuilder();
+    for (char ch : name.toCharArray()) {
+      switch (ch) {
+        case '/':
+        case '\\':
+        case '?':
+        case '*':
+        case ']':
+        case '[':
+        case ':':
+          b.append('_');
+          break;
+        default:
+          b.append(ch);
+      }
+    }
+    return b.toString();
   }
 
   private static Map<String, CellStyle> createStyles(Workbook wb){

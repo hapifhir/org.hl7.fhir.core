@@ -712,7 +712,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
   public String sctLink(String code) {
 //    if (snomedEdition != null)
 //      http://browser.ihtsdotools.org/?perspective=full&conceptId1=428041000124106&edition=us-edition&release=v20180301&server=https://prod-browser-exten.ihtsdotools.org/api/snomed&langRefset=900000000000509007
-    return "http://browser.ihtsdotools.org/?perspective=full&conceptId1="+code;
+    return "http://snomed.info/id/"+code;
   }
 
   private void addRefToCode(XhtmlNode td, String target, String vslink, String code) {
@@ -896,7 +896,7 @@ public class ValueSetRenderer extends TerminologyRenderer {
                 li.ah(href).addText(f.getValue());
               } else if ("concept".equals(f.getProperty()) && inc.hasSystem()) {
                 li.addText(f.getValue());
-                ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), f.getValue(), null);
+                ValidationResult vr = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), inc.getSystem(), inc.getVersion(), f.getValue(), null);
                 if (vr.isOk()) {
                   li.tx(" ("+vr.getDisplay()+")");
                 }

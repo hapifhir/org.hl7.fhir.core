@@ -25,6 +25,7 @@ public class NodeStack {
   private String workingLang;
   private Map<String, Element> ids;
   private boolean resetPoint = false;
+  private boolean contained = false; 
 
   public NodeStack(IWorkerContext context) {
     this.context = context;
@@ -101,6 +102,7 @@ public class NodeStack {
     res.workingLang = this.workingLang;
     res.element = element;
     res.definition = definition;
+    res.contained = contained;
     res.literalPath = getLiteralPath() + sep + element.getName();
     if (count > -1)
       res.literalPath = res.literalPath + "[" + Integer.toString(count) + "]";
@@ -193,6 +195,14 @@ public class NodeStack {
     } else {
       return parent.depth()+1;
     }
+  }
+
+  public boolean isContained() {
+    return contained;
+  }
+
+  public void setContained(boolean contained) {
+    this.contained = contained;
   }
 
 

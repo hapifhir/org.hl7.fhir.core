@@ -63,6 +63,8 @@ import org.hl7.fhir.utilities.validation.ValidationOptions;
 import org.hl7.fhir.utilities.xhtml.NodeType;
 import org.hl7.fhir.utilities.xhtml.XhtmlNode;
 import org.hl7.fhir.utilities.xhtml.XhtmlParser;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator;
+import org.hl7.fhir.utilities.xhtml.HierarchicalTableGenerator.Piece;
 
 public class DataRenderer extends Renderer {
   
@@ -129,6 +131,56 @@ public class DataRenderer extends Renderer {
  
   // -- 3. General Purpose Terminology Support -----------------------------------------
 
+  private static String month(String m) {
+    switch (m) {
+    case "1" : return "Jan";
+    case "2" : return "Feb";
+    case "3" : return "Mar";
+    case "4" : return "Apr";
+    case "5" : return "May";
+    case "6" : return "Jun";
+    case "7" : return "Jul";
+    case "8" : return "Aug";
+    case "9" : return "Sep";
+    case "10" : return "Oct";
+    case "11" : return "Nov";
+    case "12" : return "Dec";
+    default: return null;
+    }
+  }
+  
+  public static String describeVersion(String version) {
+    if (version.startsWith("http://snomed.info/sct")) {
+      String[] p = version.split("\\/");
+      String ed = null;
+      String dt = "";
+
+      if (p[p.length-2].equals("version")) {
+        ed = p[p.length-3];
+        String y = p[p.length-3].substring(4, 8);
+        String m = p[p.length-3].substring(2, 4); 
+        dt = " rel. "+month(m)+" "+y;
+      } else {
+        ed = p[p.length-1];
+      }
+      switch (ed) {
+      case "900000000000207008": return "Intl"+dt; 
+      case "731000124108": return "US"+dt; 
+      case "32506021000036107": return "AU"+dt; 
+      case "449081005": return "ES"+dt; 
+      case "554471000005108": return "DK"+dt; 
+      case "11000146104": return "NL"+dt; 
+      case "45991000052106": return "SE"+dt; 
+      case "999000041000000102": return "UK"+dt; 
+      case "20611000087101": return "CA"+dt; 
+      case "11000172109": return "BE"+dt; 
+      default: return "??"+dt; 
+      }      
+    } else {
+      return version;
+    }
+  }
+  
   public static String describeSystem(String system) {
     if (system == null)
       return "[not stated]";
@@ -191,8 +243,8 @@ public class DataRenderer extends Renderer {
     return b.toString();
   }
 
-  private String lookupCode(String system, String code) {
-    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions(), system, code, null);
+  private String lookupCode(String system, String version, String code) {
+    ValidationResult t = getContext().getWorker().validateCode(getContext().getTerminologyServiceOptions().setVersionFlexible(true), system, version, code, null);
 
     if (t != null && t.getDisplay() != null)
       return t.getDisplay();
@@ -282,7 +334,7 @@ public class DataRenderer extends Renderer {
   // -- 5. Data type Rendering ---------------------------------------------- 
 
   public static String display(IWorkerContext context, DataType type) {
-    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.RESOURCE)).display(type);
+    return new DataRenderer(new RenderingContext(context, null, null, "http://hl7.org/fhir/R4", "", null, ResourceRendererMode.END_USER)).display(type);
   }
   
   public String displayBase(Base b) {
@@ -412,6 +464,13 @@ public class DataRenderer extends Renderer {
     }
   }
 
+  public void renderDateTime(XhtmlNode x, String s) {
+    if (s != null) {
+      DateTimeType dt = new DateTimeType(s);
+      x.addText(dt.toHumanDisplay());
+    }
+  }
+
   protected void renderUri(XhtmlNode x, UriType uri) {
     if (uri.getValue().startsWith("mailto:")) {
       x.ah(uri.getValue()).addText(uri.getValue().substring(7));
@@ -481,13 +540,51 @@ public class DataRenderer extends Renderer {
 
   public String displayCoding(Coding c) {
     String s = "";
+    if (context.isTechnicalMode()) {
+      s = c.getDisplay();
+      if (Utilities.noString(s)) {
+        s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());        
+      }
+      if (Utilities.noString(s)) {
+        s = displayCodeTriple(c.getSystem(), c.getVersion(), c.getCode());
+      } else if (c.hasSystem()) {
+        s = s + " ("+displayCodeTriple(c.getSystem(), c.getVersion(), c.getCode())+")";
+      } else if (c.hasCode()) {
+        s = s + " ("+c.getCode()+")";
+      }
+    } else {
     if (c.hasDisplayElement())
       return c.getDisplay();
     if (Utilities.noString(s))
-      s = lookupCode(c.getSystem(), c.getCode());
+      s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
     if (Utilities.noString(s))
       s = c.getCode();
+    }
     return s;
+  }
+
+  private String displayCodeSource(String system, String version) {
+    String s = displaySystem(system);
+    if (version != null) {
+      s = s + "["+describeVersion(version)+"]";
+    }
+    return s;    
+  }
+  
+  private String displayCodeTriple(String system, String version, String code) {
+    if (system == null) {
+      if (code == null) {
+        return "";
+      } else {
+        return "#"+code;
+      }
+    } else {
+      String s = displayCodeSource(system, version);
+      if (code != null) {
+        s = s + "#"+code;
+      }
+      return s;
+    }
   }
 
   public String displayCoding(List<Coding> list) {
@@ -502,17 +599,63 @@ public class DataRenderer extends Renderer {
     renderCoding(x, c, false);
   }
   
+  protected void renderCoding(HierarchicalTableGenerator gen, List<Piece> pieces, Coding c) {
+    if (c.isEmpty()) {
+      return;
+    }
+
+    String url = getLinkForSystem(c.getSystem(), c.getVersion());
+    String name = displayCodeSource(c.getSystem(), c.getVersion());
+    if (!Utilities.noString(url)) {
+      pieces.add(gen.new Piece(url, name, c.getSystem()+(c.hasVersion() ? "#"+c.getVersion() : "")));
+    } else { 
+      pieces.add(gen.new Piece(null, name, c.getSystem()+(c.hasVersion() ? "#"+c.getVersion() : "")));
+    }
+    pieces.add(gen.new Piece(null, "#"+c.getCode(), null));
+    String s = c.getDisplay();
+    if (Utilities.noString(s)) {
+      s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
+    }
+    if (!Utilities.noString(s)) {
+      pieces.add(gen.new Piece(null, " \""+s+"\"", null));
+    }
+  }
+  
+  private String getLinkForSystem(String system, String version) {
+    if ("http://snomed.info/sct".equals(system)) {
+      return "https://browser.ihtsdotools.org/";      
+    } else if ("http://loinc.org".equals(system)) {
+      return "https://loinc.org/";            
+    } else if ("http://unitsofmeasure.org".equals(system)) {
+      return "http://ucum.org";            
+    } else {
+      String url = system;
+      if (version != null) {
+        url = url + "|"+version;
+      }
+      CodeSystem cs = context.getWorker().fetchCodeSystem(url);
+      if (cs != null && cs.hasUserData("path")) {
+        return cs.getUserString("path");
+      }
+      return null;
+    }
+  }
+  
   protected void renderCodingWithDetails(XhtmlNode x, Coding c) {
     String s = "";
     if (c.hasDisplayElement())
       s = c.getDisplay();
     if (Utilities.noString(s))
-      s = lookupCode(c.getSystem(), c.getCode());
+      s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
 
 
     String sn = describeSystem(c.getSystem());
     if ("http://snomed.info/sct".equals(c.getSystem())) {
-      x.ah("https://browser.ihtsdotools.org/").tx(sn);      
+      if (c.hasCode()) {
+        x.ah("http://snomed.info/id/"+c.getCode()).tx(sn);        
+      } else {
+        x.ah("https://browser.ihtsdotools.org/").tx(sn);
+      }
     } else if ("http://loinc.org".equals(c.getSystem())) {
       x.ah("https://loinc.org/").tx(sn);            
     } else {
@@ -539,13 +682,13 @@ public class DataRenderer extends Renderer {
     if (c.hasDisplayElement())
       s = c.getDisplay();
     if (Utilities.noString(s))
-      s = lookupCode(c.getSystem(), c.getCode());
+      s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
 
     if (Utilities.noString(s))
       s = c.getCode();
 
     if (showCodeDetails) {
-      x.addText(s+" (Details: "+TerminologyRenderer.describeSystem(c.getSystem())+" code "+c.getCode()+" = '"+lookupCode(c.getSystem(), c.getCode())+"', stated as '"+c.getDisplay()+"')");
+      x.addText(s+" (Details: "+TerminologyRenderer.describeSystem(c.getSystem())+" code "+c.getCode()+" = '"+lookupCode(c.getSystem(), c.getVersion(), c.getCode())+"', stated as '"+c.getDisplay()+"')");
     } else
       x.span(null, "{"+c.getSystem()+" "+c.getCode()+"}").addText(s);
   }
@@ -564,7 +707,7 @@ public class DataRenderer extends Renderer {
       // still? ok, let's try looking it up
       for (Coding c : cc.getCoding()) {
         if (c.hasCode() && c.hasSystem()) {
-          s = lookupCode(c.getSystem(), c.getCode());
+          s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
           if (!Utilities.noString(s))
             break;
         }
@@ -611,7 +754,7 @@ public class DataRenderer extends Renderer {
       // still? ok, let's try looking it up
       for (Coding c : cc.getCoding()) {
         if (c.hasCodeElement() && c.hasSystemElement()) {
-          s = lookupCode(c.getSystem(), c.getCode());
+          s = lookupCode(c.getSystem(), c.getVersion(), c.getCode());
           if (!Utilities.noString(s))
             break;
         }
@@ -627,16 +770,27 @@ public class DataRenderer extends Renderer {
 
     if (showCodeDetails) {
       x.addText(s+" ");
-      XhtmlNode sp = x.span("background: LightGoldenRodYellow", null);
-      sp.tx("(Details ");
+      XhtmlNode sp = x.span("background: LightGoldenRodYellow; margin: 4px; border: 1px solid khaki", null);
+      sp.tx(" (");
       boolean first = true;
       for (Coding c : cc.getCoding()) {
         if (first) {
-          sp.tx(": ");
           first = false;
-        } else
+        } else {
           sp.tx("; ");
-        sp.tx("{"+TerminologyRenderer.describeSystem(c.getSystem())+" code '"+c.getCode()+"' = '"+lookupCode(c.getSystem(), c.getCode())+(c.hasDisplay() ? "', given as '"+c.getDisplay()+"'}" : ""));
+        }
+        String url = getLinkForSystem(c.getSystem(), c.getVersion());
+        if (url != null) {
+          sp.ah(url).tx(displayCodeSource(c.getSystem(), c.getVersion()));
+        } else {
+          sp.tx(displayCodeSource(c.getSystem(), c.getVersion()));
+        }
+        if (c.hasCode()) {
+          sp.tx("#"+c.getCode());
+        }
+        if (c.hasDisplay() && !s.equals(c.getDisplay())) {
+          sp.tx(" \""+c.getDisplay()+"\"");
+        }
       }
       sp.tx(")");
     } else {
@@ -661,7 +815,7 @@ public class DataRenderer extends Renderer {
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasDisplay())
         s = ii.getType().getCoding().get(0).getDisplay()+": "+s;
       else if (ii.getType().hasCoding() && ii.getType().getCoding().get(0).hasCode())
-        s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getCode())+": "+s;
+        s = lookupCode(ii.getType().getCoding().get(0).getSystem(), ii.getType().getCoding().get(0).getVersion(), ii.getType().getCoding().get(0).getCode())+": "+s;
     } else {
       s = "id: "+s;      
     }
@@ -838,7 +992,7 @@ public class DataRenderer extends Renderer {
 
     s.append("(system = '").append(TerminologyRenderer.describeSystem(q.getSystem()))
     .append("' code ").append(q.getCode())
-    .append(" = '").append(lookupCode(q.getSystem(), q.getCode())).append("')");
+    .append(" = '").append(lookupCode(q.getSystem(), null, q.getCode())).append("')");
 
     return s.toString();
   }  
@@ -858,7 +1012,7 @@ public class DataRenderer extends Renderer {
     else if (q.hasCode())
       x.tx(" "+q.getCode());
     if (showCodeDetails && q.hasCode()) {
-      x.span("background: LightGoldenRodYellow", null).tx(" (Details: "+TerminologyRenderer.describeSystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), q.getCode())+"')");
+      x.span("background: LightGoldenRodYellow", null).tx(" (Details: "+TerminologyRenderer.describeSystem(q.getSystem())+" code "+q.getCode()+" = '"+lookupCode(q.getSystem(), null, q.getCode())+"')");
     }
   }
 
@@ -1159,5 +1313,26 @@ public class DataRenderer extends Renderer {
     }
     return b.toString();
   }
+
+  protected String versionFromCanonical(String system) {
+    if (system == null) {
+      return null;
+    } else if (system.contains("|")) {
+      return system.substring(0, system.indexOf("|"));
+    } else {
+      return system;
+    }
+  }
+
+  protected String systemFromCanonical(String system) {
+    if (system == null) {
+      return null;
+    } else if (system.contains("|")) {
+      return system.substring(system.indexOf("|")+1);
+    } else {
+      return system;
+    }
+  }
+
 
 }

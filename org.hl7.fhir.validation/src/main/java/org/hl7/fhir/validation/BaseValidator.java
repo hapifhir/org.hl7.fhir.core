@@ -2,7 +2,11 @@ package org.hl7.fhir.validation;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /*
@@ -262,9 +266,9 @@ public class BaseValidator {
    * @return Returns <code>thePass</code> (in other words, returns <code>true</code> if the rule did not fail validation)
    */
   //FIXME: formatMessage should be done here
-  protected boolean slicingHint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, String msg, String html, String[] text) {
+  protected boolean slicingHint(List<ValidationMessage> errors, IssueType type, int line, int col, String path, boolean thePass, boolean isCritical, String msg, String html, String[] text) {
     if (!thePass) {
-      addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION, null).setSlicingHint(true).setSliceHtml(html, text);
+      addValidationMessage(errors, type, line, col, path, msg, IssueSeverity.INFORMATION, null).setSlicingHint(true).setSliceHtml(html, text).setCriticalSignpost(isCritical);
     }
     return thePass;
   }
@@ -1002,5 +1006,25 @@ public class BaseValidator {
       }
     }
     return null;
+  }
+  
+  protected String versionFromCanonical(String system) {
+    if (system == null) {
+      return null;
+    } else if (system.contains("|")) {
+      return system.substring(0, system.indexOf("|"));
+    } else {
+      return system;
+    }
+  }
+
+  protected String systemFromCanonical(String system) {
+    if (system == null) {
+      return null;
+    } else if (system.contains("|")) {
+      return system.substring(system.indexOf("|")+1);
+    } else {
+      return system;
+    }
   }
 }

@@ -95,10 +95,12 @@ public class FHIRToolingClient {
   private ArrayList<Header> headers = new ArrayList<>();
   private String username;
   private String password;
+  private String userAgent;
 
   //Pass endpoint for client - URI
-  public FHIRToolingClient(String baseServiceUrl) throws URISyntaxException {
+  public FHIRToolingClient(String baseServiceUrl, String userAgent) throws URISyntaxException {
     preferredResourceFormat = ResourceFormat.RESOURCE_XML;
+    this.userAgent = userAgent;
     initialize(baseServiceUrl);
   }
 
@@ -299,41 +301,40 @@ public class FHIRToolingClient {
     String ps = "";
     try {
       if (!complex)
-      for (ParametersParameterComponent p : params.getParameter())
-        if (p.getValue() instanceof PrimitiveType)
-          ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
-    ResourceRequest<T> result;
-    URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
-    if (complex) {
-      byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()));
-      client.getLogger().logRequest("POST", url.toString(), null, body);
-      result = client.issuePostRequest(url, body, getPreferredResourceFormat(),
-          "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
-    } else {
-      client.getLogger().logRequest("GET", url.toString(), null, null);
-      result = client.issueGetResourceRequest(url, getPreferredResourceFormat(), generateHeaders(), "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
-    }
-    if (result.isUnsuccessfulRequest()) {
-      throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
-    }
-    if (result.getPayload() instanceof Parameters) {
-      return (Parameters) result.getPayload();
-    } else {
-      Parameters p_out = new Parameters();
-      p_out.addParameter().setName("return").setResource(result.getPayload());
-      return p_out;
-    }
+        for (ParametersParameterComponent p : params.getParameter())
+          if (p.getValue() instanceof PrimitiveType)
+            ps += p.getName() + "=" + Utilities.encodeUri(((PrimitiveType) p.getValue()).asStringValue()) + "&";
+      ResourceRequest<T> result;
+      URI url = resourceAddress.resolveOperationURLFromClass(resourceClass, name, ps);
+      if (complex) {
+        byte[] body = ByteUtils.resourceToByteArray(params, false, isJson(getPreferredResourceFormat()));
+        result = client.issuePostRequest(url, body, getPreferredResourceFormat(), generateHeaders(),
+            "POST " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
+      } else {
+        result = client.issueGetResourceRequest(url, getPreferredResourceFormat(), generateHeaders(), "GET " + resourceClass.getName() + "/$" + name, TIMEOUT_OPERATION_LONG);
+      }
+      if (result.isUnsuccessfulRequest()) {
+        throw new EFhirClientException("Server returned error code " + result.getHttpStatus(), (OperationOutcome) result.getPayload());
+      }
+      if (result.getPayload() instanceof Parameters) {
+        return (Parameters) result.getPayload();
+      } else {
+        Parameters p_out = new Parameters();
+        p_out.addParameter().setName("return").setResource(result.getPayload());
+        return p_out;
+      }
     } catch (Exception e) {
-  	  handleException("Error performing operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);  		
+      handleException("Error performing tx5 operation '"+name+": "+e.getMessage()+"' (parameters = \"" + ps+"\")", e);  		
     }
     return null;
   }
 
-
   public Bundle transaction(Bundle batch) {
     Bundle transactionResult = null;
     try {
-      transactionResult = client.postBatchRequest(resourceAddress.getBaseServiceUri(), ByteUtils.resourceToByteArray(batch, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(), "transaction", TIMEOUT_OPERATION + (TIMEOUT_ENTRY * batch.getEntry().size()));
+      transactionResult = client.postBatchRequest(resourceAddress.getBaseServiceUri(), ByteUtils.resourceToByteArray(batch, false, isJson(getPreferredResourceFormat())), getPreferredResourceFormat(),
+          generateHeaders(),
+          "transaction", TIMEOUT_OPERATION + (TIMEOUT_ENTRY * batch.getEntry().size()));
     } catch (Exception e) {
       handleException("An error occurred trying to process this transaction request", e);
     }
@@ -557,6 +558,9 @@ public class FHIRToolingClient {
     if(this.headers != null) {
       this.headers.forEach(header -> builder.add(header.toString()));
     }
+    if (!Utilities.noString(userAgent)) {
+      builder.add("User-Agent: "+userAgent);
+    }
     return builder.build();
   }
 
@@ -569,5 +573,19 @@ public class FHIRToolingClient {
     String base64usernamePassword = Base64.getEncoder().encodeToString(usernamePassword.getBytes());
     return new Header("Authorization", "Basic " + base64usernamePassword);
   }
+
+  public String getUserAgent() {
+    return userAgent;
+  }
+
+  public void setUserAgent(String userAgent) {
+    this.userAgent = userAgent;
+  }
+
+  public String getServerVersion() {
+    return capabilities == null ? null : capabilities.getSoftware().getVersion();
+  }
+  
+  
 }
 

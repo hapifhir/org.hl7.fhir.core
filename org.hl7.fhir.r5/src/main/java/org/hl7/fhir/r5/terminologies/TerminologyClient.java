@@ -40,6 +40,7 @@ import java.util.Map;
 public interface TerminologyClient {
 
   String getAddress();
+  String getServerVersion();
   TerminologyCapabilities getTerminologyCapabilities() throws FHIRException;
   ValueSet expandValueset(ValueSet vs, Parameters p, Map<String, String> params) throws FHIRException;
   Parameters validateCS(Parameters pin) throws FHIRException;
@@ -54,4 +55,5 @@ public interface TerminologyClient {
   CanonicalResource read(String type, String id);
   ClientHeaders getClientHeaders();
   TerminologyClient setClientHeaders(ClientHeaders clientHeaders);
+  TerminologyClient setUserAgent(String userAgent);
 }

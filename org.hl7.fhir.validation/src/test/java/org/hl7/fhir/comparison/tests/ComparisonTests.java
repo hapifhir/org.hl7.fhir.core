@@ -14,15 +14,12 @@ import java.util.Map.Entry;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.IOUtils;
-import org.hl7.fhir.convertors.conv10_50.VersionConvertor_10_50;
-import org.hl7.fhir.convertors.conv14_50.VersionConvertor_14_50;
-import org.hl7.fhir.convertors.conv30_50.VersionConvertor_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_10_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_14_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_30_50;
 import org.hl7.fhir.convertors.factory.VersionConvertorFactory_40_50;
-import org.hl7.fhir.convertors.loaders.BaseLoaderR5.NullLoaderKnowledgeProvider;
-import org.hl7.fhir.convertors.loaders.R4ToR5Loader;
+import org.hl7.fhir.convertors.loaders.loaderR5.NullLoaderKnowledgeProviderR5;
+import org.hl7.fhir.convertors.loaders.loaderR5.R4ToR5Loader;
 import org.hl7.fhir.exceptions.DefinitionException;
 import org.hl7.fhir.exceptions.FHIRException;
 import org.hl7.fhir.exceptions.FHIRFormatError;
@@ -52,6 +49,7 @@ import org.hl7.fhir.r5.test.utils.TestingUtilities;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
 import org.hl7.fhir.utilities.VersionUtilities;
+import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -116,7 +114,7 @@ public class ComparisonTests {
       BaseWorkerContext bc = (BaseWorkerContext) context;
       boolean dupl = bc.isAllowLoadingDuplicates();
       bc.setAllowLoadingDuplicates(true);
-      context.loadFromPackage(npm, new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProvider()));
+      context.loadFromPackage(npm, new R4ToR5Loader(new String[] { "CapabilityStatement", "StructureDefinition", "ValueSet", "CodeSystem", "SearchParameter", "OperationDefinition", "Questionnaire","ConceptMap","StructureMap", "NamingSystem"}, new NullLoaderKnowledgeProviderR5()));
       bc.setAllowLoadingDuplicates(dupl);
     }
 
@@ -124,7 +122,7 @@ public class ComparisonTests {
       System.out.println("---- Set up Output ----------------------------------------------------------");
       Utilities.createDirectory(Utilities.path("[tmp]", "comparison"));
       FilesystemPackageCacheManager pcm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION);
-      NpmPackage npm = pcm.loadPackage("hl7.fhir.pubpack", "0.0.9");
+      NpmPackage npm = pcm.loadPackage(CommonPackages.ID_PUBPACK, CommonPackages.VER_PUBPACK);
       for (String f : npm.list("other")) {
         TextFile.streamToFile(npm.load("other", f), Utilities.path("[tmp]", "comparison", f));
       }

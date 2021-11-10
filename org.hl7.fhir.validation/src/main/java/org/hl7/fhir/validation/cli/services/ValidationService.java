@@ -8,6 +8,7 @@ import org.hl7.fhir.r5.formats.IParser;
 import org.hl7.fhir.r5.formats.JsonParser;
 import org.hl7.fhir.r5.formats.XmlParser;
 import org.hl7.fhir.r5.model.*;
+import org.hl7.fhir.r5.model.OperationOutcome.IssueSeverity;
 import org.hl7.fhir.r5.model.StructureDefinition.StructureDefinitionKind;
 import org.hl7.fhir.r5.renderers.spreadsheets.CodeSystemSpreadsheetGenerator;
 import org.hl7.fhir.r5.renderers.spreadsheets.ConceptMapSpreadsheetGenerator;
@@ -25,6 +26,9 @@ import org.hl7.fhir.validation.IgLoader;
 import org.hl7.fhir.validation.ValidationEngine;
 import org.hl7.fhir.validation.ValidationRecord;
 import org.hl7.fhir.validation.cli.model.*;
+import org.hl7.fhir.validation.cli.renderers.DefaultRenderer;
+import org.hl7.fhir.validation.cli.renderers.ESLintCompactRenderer;
+import org.hl7.fhir.validation.cli.renderers.ValidationOutputRenderer;
 import org.hl7.fhir.validation.cli.utils.EngineMode;
 import org.hl7.fhir.validation.cli.utils.VersionSourceInformation;
 
@@ -95,20 +99,32 @@ public class ValidationService {
     long start = System.currentTimeMillis();
     List<ValidationRecord> records = new ArrayList<>();
     Resource r = validator.validate(cliContext.getSources(), cliContext.getProfiles(), records);
-    int ec = 0;
     MemoryMXBean mbean = ManagementFactory.getMemoryMXBean();
     System.out.println("Done. " + validator.getContext().clock().report()+". Memory = "+Utilities.describeSize(mbean.getHeapMemoryUsage().getUsed()+mbean.getNonHeapMemoryUsage().getUsed()));
     System.out.println();
 
+    ValidationOutputRenderer renderer = makeValidationOutputRenderer(cliContext);
+    renderer.setCrumbTrails(validator.isCrumbTrails());
+    
+    int ec = 0;
     if (cliContext.getOutput() == null) {
-      if (r instanceof Bundle)
-        for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry())
-          ec = ec + displayOperationOutcome((OperationOutcome) e.getResource(), ((Bundle) r).getEntry().size() > 1, validator.isCrumbTrails()) + ec;
-      else if (r == null) {
+      if (r instanceof Bundle) {
+        renderer.start(((Bundle) r).getEntry().size() > 1);
+        for (Bundle.BundleEntryComponent e : ((Bundle) r).getEntry()) {
+          OperationOutcome op = (OperationOutcome) e.getResource();
+          ec = ec + countErrors(op); 
+          renderer.render(op);
+        }
+        renderer.finish();
+      } else if (r == null) {
         ec = ec + 1;
         System.out.println("No output from validation - nothing to validate");
       } else {
-        ec = displayOperationOutcome((OperationOutcome) r, false, validator.isCrumbTrails());
+        renderer.start(false);
+        OperationOutcome op = (OperationOutcome) r;
+        ec = countErrors(op);
+        renderer.render((OperationOutcome) r);
+        renderer.finish();
       }
     } else {
       IParser x;
@@ -128,6 +144,30 @@ public class ValidationService {
       System.out.println("HTML Summary in " + cliContext.getHtmlOutput());
     }
     System.exit(ec > 0 ? 1 : 0);
+  }
+
+  private int countErrors(OperationOutcome oo) {
+    int error = 0;
+    for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
+      if (issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL || issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR)
+        error++;
+    }
+    return error;    
+  }
+
+  private ValidationOutputRenderer makeValidationOutputRenderer(CliContext cliContext) {
+    String style = cliContext.getOutputStyle();
+    // adding to this list? 
+    // Must document the option at https://confluence.hl7.org/display/FHIR/Using+the+FHIR+Validator#UsingtheFHIRValidator-ManagingOutput
+    // if you're going to make a PR, document the link where the outputstyle is documented, along with a sentence that describes it, in the PR notes 
+    if (Utilities.noString(style)) {
+      return new DefaultRenderer();
+    } else if (Utilities.existsInList(style, "eslint-compact")) {
+      return new ESLintCompactRenderer();
+    } else {
+      System.out.println("Unknown output style '"+style+"'");
+      return new DefaultRenderer();      
+    }
   }
 
   public void convertSources(CliContext cliContext, ValidationEngine validator) throws Exception {
@@ -225,7 +265,7 @@ public class ValidationService {
         System.out.println("No such cached session exists for session id " + sessionId + ", re-instantiating validator.");
       }
       System.out.print("  Load FHIR v" + cliContext.getSv() + " from " + definitions);
-      ValidationEngine validator = new ValidationEngine(definitions, cliContext.getSv(), tt);
+      ValidationEngine validator = new ValidationEngine(definitions, cliContext.getSv(), tt, "fhir/validator");
       sessionId = sessionCache.cacheSession(validator);
 
       FhirPublication ver = FhirPublication.fromCode(cliContext.getSv());
@@ -250,6 +290,7 @@ public class ValidationService {
       validator.setAssumeValidRestReferences(cliContext.isAssumeValidRestReferences());
       validator.setShowMessagesFromReferences(cliContext.isShowMessagesFromReferences());
       validator.setNoExtensibleBindingMessages(cliContext.isNoExtensibleBindingMessages());
+      validator.setNoUnicodeBiDiControlChars(cliContext.isNoUnicodeBiDiControlChars());
       validator.setNoInvariantChecks(cliContext.isNoInvariants());
       validator.setWantInvariantInMessage(cliContext.isWantInvariantsInMessages());
       validator.setSecurityChecks(cliContext.isSecurityChecks());
@@ -267,67 +308,6 @@ public class ValidationService {
       System.out.println("Cached session exists for session id " + sessionId + ", returning stored validator session id.");
     }
     return sessionId;
-  }
-
-  public int displayOperationOutcome(OperationOutcome oo, boolean hasMultiples, boolean crumbs) {
-    int error = 0;
-    int warn = 0;
-    int info = 0;
-    String file = ToolingExtensions.readStringExtension(oo, ToolingExtensions.EXT_OO_FILE);
-
-    for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
-      if (issue.getSeverity() == OperationOutcome.IssueSeverity.FATAL || issue.getSeverity() == OperationOutcome.IssueSeverity.ERROR)
-        error++;
-      else if (issue.getSeverity() == OperationOutcome.IssueSeverity.WARNING)
-        warn++;
-      else
-        info++;
-    }
-
-    if (hasMultiples) {
-      System.out.print("-- ");
-      System.out.print(file);
-      System.out.print(" --");
-      System.out.println(Utilities.padLeft("", '-', Integer.max(38, file.length() + 6)));
-    }
-    System.out.println((error == 0 ? "Success" : "*FAILURE*") + ": " + Integer.toString(error) + " errors, " + Integer.toString(warn) + " warnings, " + Integer.toString(info) + " notes");
-    for (OperationOutcome.OperationOutcomeIssueComponent issue : oo.getIssue()) {
-      System.out.println(getIssueSummary(issue));
-      if (crumbs) {
-        ValidationMessage vm = (ValidationMessage) issue.getUserData("source.msg");
-        if (vm != null) {
-          if (vm.sliceText != null) {
-            for (String s : vm.sliceText) {
-              System.out.println("    slice info: "+s);          
-            }
-          }
-        }
-      }
-    }
-    if (hasMultiples) {
-      System.out.print("---");
-      System.out.print(Utilities.padLeft("", '-', file.length()));
-      System.out.print("---");
-      System.out.println(Utilities.padLeft("", '-', Integer.max(38, file.length() + 6)));
-      System.out.println();
-    }
-    return error;
-  }
-
-  private String getIssueSummary(OperationOutcome.OperationOutcomeIssueComponent issue) {
-    String loc;
-    if (issue.hasExpression()) {
-      int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
-      int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);
-      loc = issue.getExpression().get(0).asStringValue() + (line >= 0 && col >= 0 ? " (line " + Integer.toString(line) + ", col" + Integer.toString(col) + ")" : "");
-    } else if (issue.hasLocation()) {
-      loc = issue.getLocation().get(0).asStringValue();
-    } else {
-      int line = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_LINE, -1);
-      int col = ToolingExtensions.readIntegerExtension(issue, ToolingExtensions.EXT_ISSUE_COL, -1);
-      loc = (line >= 0 && col >= 0 ? "line " + Integer.toString(line) + ", col" + Integer.toString(col) : "??");
-    }
-    return "  " + issue.getSeverity().getDisplay() + " @ " + loc + " : " + issue.getDetails().getText();
   }
 
   public String determineVersion(CliContext cliContext) throws Exception {

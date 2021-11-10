@@ -17,11 +17,13 @@ import org.hl7.fhir.r4.terminologies.CodeSystemUtilities;
 import org.hl7.fhir.r4.utils.ToolingExtensions;
 import org.hl7.fhir.utilities.TextFile;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.SimpleHTTPClient;
+import org.hl7.fhir.utilities.SimpleHTTPClient.HTTPResult;
+import org.hl7.fhir.utilities.json.JsonTrackingParser;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -388,12 +390,12 @@ public class ICD11Generator {
 
 
   private JsonObject fetchJson(String source) throws IOException {
-    URL url = new URL(source);
-    URLConnection c = url.openConnection();
-    c.addRequestProperty("Accept", "application/json");
-    c.addRequestProperty("API-Version", "v2");
-    c.addRequestProperty("Accept-Language", "en");
-    return (JsonObject) new com.google.gson.JsonParser().parse(TextFile.streamToString(c.getInputStream()));
+    SimpleHTTPClient http = new SimpleHTTPClient();
+    http.addHeader("API-Version", "v2");
+    http.addHeader("Accept-Language", "en");
+    HTTPResult res = http.get(source, "application/json");
+    res.checkThrowException();
+    return JsonTrackingParser.parseJson(res.getContent());
   }
 
 

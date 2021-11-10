@@ -46,13 +46,13 @@ public class TerminologyClientR5 implements TerminologyClient {
   private final FHIRToolingClient client;
   private ClientHeaders clientHeaders;
 
-  public TerminologyClientR5(String address) throws URISyntaxException {
-    this.client = new FHIRToolingClient(address);
+  public TerminologyClientR5(String address, String userAgent) throws URISyntaxException {
+    this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(new ClientHeaders());
   }
 
-  public TerminologyClientR5(String address, ClientHeaders clientHeaders) throws URISyntaxException {
-    this.client = new FHIRToolingClient(address);
+  public TerminologyClientR5(String address, String userAgent, ClientHeaders clientHeaders) throws URISyntaxException {
+    this.client = new FHIRToolingClient(address, userAgent);
     setClientHeaders(clientHeaders);
   }
 
@@ -147,5 +147,16 @@ public class TerminologyClientR5 implements TerminologyClient {
     this.clientHeaders = clientHeaders;
     this.client.setClientHeaders(this.clientHeaders.headers());
     return this;
+  }
+
+  @Override
+  public TerminologyClient setUserAgent(String userAgent) {
+    client.setUserAgent(userAgent);
+    return this;
+  }
+
+  @Override
+  public String getServerVersion() {
+    return client.getServerVersion();
   }
 }

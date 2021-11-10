@@ -207,6 +207,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   protected TimeTracker clock;
   private boolean tlogging = true;
   private ICanonicalResourceLocator locator;
+  protected String userAgent;
   
   public BaseWorkerContext() throws FileNotFoundException, IOException, FHIRException {
     txCache = new TerminologyCache(lock, null);
@@ -726,16 +727,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
   // --- validate code -------------------------------------------------------------------------------
   
   @Override
-  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display) {
+  public ValidationResult validateCode(ValidationOptions options, String system, String version, String code, String display) {
     assert options != null;
-    Coding c = new Coding(system, code, display);
+    Coding c = new Coding(system, version, code, display);
     return validateCode(options, c, null);
   }
 
   @Override
-  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display, ValueSet vs) {
+  public ValidationResult validateCode(ValidationOptions options, String system, String version, String code, String display, ValueSet vs) {
     assert options != null;
-    Coding c = new Coding(system, code, display);
+    Coding c = new Coding(system, version, code, display);
     return validateCode(options, c, vs);
   }
 
@@ -782,9 +783,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
     for (CodingValidationRequest t : codes) {
       if (!t.hasResult()) {
+        String codeKey = t.getCoding().hasVersion() ? t.getCoding().getSystem()+"|"+t.getCoding().getVersion() : t.getCoding().getSystem();
         if (!options.isUseServer()) {
          t.setResult(new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS));
-        } else if (unsupportedCodeSystems.contains(t.getCoding().getSystem())) {
+        } else if (unsupportedCodeSystems.contains(codeKey)) {
           t.setResult(new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, t.getCoding().getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED));      
         } else if (noTerminologyServer) {
           t.setResult(new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.ERROR_VALIDATING_CODE_RUNNING_WITHOUT_TERMINOLOGY_SERVICES), TerminologyServiceErrorClass.NOSERVICE));
@@ -882,10 +884,11 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       }
     }
     
+    String codeKey = code.hasVersion() ? code.getSystem()+"|"+code.getVersion() : code.getSystem();
     if (!options.isUseServer()) {
       return new ValidationResult(IssueSeverity.WARNING,formatMessage(I18nConstants.UNABLE_TO_VALIDATE_CODE_WITHOUT_USING_SERVER), TerminologyServiceErrorClass.BLOCKED_BY_OPTIONS);
     }
-    if (unsupportedCodeSystems.contains(code.getSystem())) {
+    if (unsupportedCodeSystems.contains(codeKey)) {
       return new ValidationResult(IssueSeverity.ERROR,formatMessage(I18nConstants.TERMINOLOGY_TX_SYSTEM_NOTKNOWN, code.getSystem()), TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED);      
     }
     
@@ -906,12 +909,12 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
         pIn.addParameter().setName("implySystem").setValue(new BooleanType(true));
       }
       setTerminologyOptions(options, pIn);
-      res = validateOnServer(vs, pIn);
+      res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
-      res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId());
+      res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog == null ? null : txLog.getLastId()).setErrorClass(TerminologyServiceErrorClass.SERVER_ERROR);
     }
-    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED) {
-      unsupportedCodeSystems.add(code.getSystem());
+    if (res.getErrorClass() == TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED && !code.hasVersion()) {
+      unsupportedCodeSystems.add(codeKey);
     } else if (txCache != null) { // we never cache unsuppoted code systems - we always keep trying (but only once per run)
       txCache.cacheValidation(cacheToken, res, TerminologyCache.PERMANENT);
     }
@@ -924,6 +927,9 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     }
     if (options.getValueSetMode() != ValueSetMode.ALL_CHECKS) {
       pIn.addParameter("valueSetMode", options.getValueSetMode().toString());
+    }
+    if (options.versionFlexible()) {
+      pIn.addParameter("default-to-latest-version", true);     
     }
   }
 
@@ -967,7 +973,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       Parameters pIn = new Parameters();
       pIn.addParameter().setName("codeableConcept").setValue(code);
       setTerminologyOptions(options, pIn);
-      res = validateOnServer(vs, pIn);
+      res = validateOnServer(vs, pIn, options);
     } catch (Exception e) {
       res = new ValidationResult(IssueSeverity.ERROR, e.getMessage() == null ? e.getClass().getName() : e.getMessage()).setTxLink(txLog.getLastId());
     }
@@ -975,7 +981,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     return res;
   }
 
-  private ValidationResult validateOnServer(ValueSet vs, Parameters pin) throws FHIRException {
+  private ValidationResult validateOnServer(ValueSet vs, Parameters pin, ValidationOptions options) throws FHIRException {
     boolean cache = false;
     if (vs != null) {
       for (ConceptSetComponent inc : vs.getCompose().getInclude()) {
@@ -988,6 +994,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
     if (vs != null) {
       if (isTxCaching && cacheId != null && cached.contains(vs.getUrl()+"|"+vs.getVersion())) {
         pin.addParameter().setName("url").setValue(new UriType(vs.getUrl()+(vs.hasVersion() ? "|"+vs.getVersion() : "")));        
+      } else if (options.getVsAsUrl()){
+        pin.addParameter().setName("url").setValue(new StringType(vs.getUrl()));
       } else {
         pin.addParameter().setName("valueSet").setResource(vs);
         cached.add(vs.getUrl()+"|"+vs.getVersion());
@@ -1086,6 +1094,8 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
               err = TerminologyServiceErrorClass.CODESYSTEM_UNSUPPORTED;
             } else if (it == IssueType.NOTSUPPORTED) {
               err = TerminologyServiceErrorClass.VALUESET_UNSUPPORTED;
+            } else {
+              err = null;
             }
           } catch (FHIRException e) {
           }
@@ -1114,6 +1124,10 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void clearTSCache(String url) throws Exception {
     txCache.removeCS(url);
+  }
+
+  public void clearTS() {
+    txCache.clear();
   }
 
   
@@ -1709,6 +1723,7 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
       transforms.listAllM(result);
       plans.listAllM(result);
       questionnaires.listAllM(result);
+      systems.listAllM(result);
       return result;
     }
   }
@@ -2084,6 +2099,16 @@ public abstract class BaseWorkerContext extends I18nBase implements IWorkerConte
 
   public void setLocator(ICanonicalResourceLocator locator) {
     this.locator = locator;
+  }
+
+  public String getUserAgent() {
+    return userAgent;
+  }
+
+  public void setUserAgent(String userAgent) {
+    this.userAgent = userAgent;
+    if (txClient != null)
+      txClient.setUserAgent(userAgent);
   }
 
 }

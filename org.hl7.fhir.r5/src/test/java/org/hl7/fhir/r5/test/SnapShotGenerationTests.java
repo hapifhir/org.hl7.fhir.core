@@ -42,6 +42,7 @@ import org.hl7.fhir.r5.utils.FHIRPathEngine.IEvaluationContext;
 import org.hl7.fhir.r5.utils.IResourceValidator;
 import org.hl7.fhir.r5.utils.XVerExtensionManager;
 import org.hl7.fhir.utilities.Utilities;
+import org.hl7.fhir.utilities.npm.CommonPackages;
 import org.hl7.fhir.utilities.npm.FilesystemPackageCacheManager;
 import org.hl7.fhir.utilities.npm.NpmPackage;
 import org.hl7.fhir.utilities.npm.ToolsVersion;
@@ -546,8 +547,8 @@ public class SnapShotGenerationTests {
     pu.setThrowException(false);
     pu.setDebug(test.isDebug());
     pu.setIds(test.getSource(), false);
-    if (!TestingUtilities.context().hasPackage("hl7.fhir.xver-extensions", "0.0.4")) {
-      NpmPackage npm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage("hl7.fhir.xver-extensions", "0.0.4");
+    if (!TestingUtilities.context().hasPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER)) {
+      NpmPackage npm = new FilesystemPackageCacheManager(true, ToolsVersion.TOOLS_VERSION).loadPackage(CommonPackages.ID_XVER, CommonPackages.VER_XVER);
       TestingUtilities.context().loadFromPackage(npm, new TestLoader(new String[]{"StructureDefinition"}), new String[]{"StructureDefinition"});
     }
     pu.setXver(new XVerExtensionManager(TestingUtilities.context()));
@@ -575,7 +576,7 @@ public class SnapShotGenerationTests {
       throw e;
     }
     if (output.getDifferential().hasElement()) {
-      RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.RESOURCE);
+      RenderingContext rc = new RenderingContext(TestingUtilities.context(), null, null, "http://hl7.org/fhir", "", null, ResourceRendererMode.END_USER);
       rc.setDestDir(Utilities.path("[tmp]", "snapshot"));
       rc.setProfileUtilities(new ProfileUtilities(TestingUtilities.context(), null, new TestPKP()));
       RendererFactory.factory(output, rc).render(output);

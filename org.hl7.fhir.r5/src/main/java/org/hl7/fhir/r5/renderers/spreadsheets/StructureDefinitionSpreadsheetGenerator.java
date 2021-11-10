@@ -82,9 +82,9 @@ public class StructureDefinitionSpreadsheetGenerator extends CanonicalSpreadshee
       "Slicing Discriminator", "Slicing Description", "Slicing Ordered", "Slicing Rules", "Base Path", "Base Min", "Base Max",
       "Condition(s)", "Constraint(s)"};
 
-  public StructureDefinitionSpreadsheetGenerator(IWorkerContext context, boolean asXml, boolean hideMustSupportFalse) {
+  public StructureDefinitionSpreadsheetGenerator(IWorkerContext context, boolean valuesAsXml, boolean hideMustSupportFalse) {
     super(context);
-    this.asXml = asXml;
+    this.asXml = valuesAsXml;
     this.hideMustSupportFalse = hideMustSupportFalse;
   }
 

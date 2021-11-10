@@ -29,7 +29,7 @@ public class VSACImporter extends OIDBasedValueSetImporter {
     CSVReader csv = new CSVReader(new FileInputStream(source));
     csv.readHeaders();
 
-    FHIRToolingClient fhirToolingClient = new FHIRToolingClient("https://cts.nlm.nih.gov/fhir");
+    FHIRToolingClient fhirToolingClient = new FHIRToolingClient("https://cts.nlm.nih.gov/fhir", "fhir/vsac");
     fhirToolingClient.setUsername(username);
     fhirToolingClient.setPassword(password);
 

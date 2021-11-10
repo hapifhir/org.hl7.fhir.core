@@ -544,6 +544,12 @@ public interface IWorkerContext {
     private TerminologyServiceErrorClass errorClass;
     private String txLink;
     
+    @Override
+    public String toString() {
+      return "ValidationResult [definition=" + definition + ", system=" + system + ", severity=" + severity + ", message=" + message + ", errorClass="
+          + errorClass + ", txLink=" + txLink + "]";
+    }
+
     public ValidationResult(IssueSeverity severity, String message) {
       this.severity = severity;
       this.message = message;
@@ -583,6 +589,10 @@ public interface IWorkerContext {
       return definition == null ? null : definition.getCode();
     }
 
+    public String getDefinition() {
+      return definition == null ? null : definition.getDefinition();
+    }
+
     public ConceptDefinitionComponent asConceptDefinition() {
       return definition;
     }
@@ -610,6 +620,11 @@ public interface IWorkerContext {
 
     public ValidationResult setMessage(String message) {
       this.message = message;
+      return this;
+    }
+
+    public ValidationResult setErrorClass(TerminologyServiceErrorClass errorClass) {
+      this.errorClass = errorClass;
       return this;
     }
 
@@ -666,7 +681,7 @@ public interface IWorkerContext {
    * @param display - equals Coding.display (optional)
    * @return
    */
-  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display);
+  public ValidationResult validateCode(ValidationOptions options, String system, String version, String code, String display);
   
   /**
    * Validation of a code - consult the terminology infrstructure and/or service 
@@ -683,7 +698,7 @@ public interface IWorkerContext {
    * @param vs the applicable valueset (optional)
    * @return
    */
-  public ValidationResult validateCode(ValidationOptions options, String system, String code, String display, ValueSet vs);
+  public ValidationResult validateCode(ValidationOptions options, String system, String version, String code, String display, ValueSet vs);
 
   /**
    * Validation of a code - consult the terminology infrstructure and/or service 

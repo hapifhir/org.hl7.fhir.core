@@ -4,6 +4,7 @@ import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import org.hl7.fhir.r5.model.Bundle;
 import org.hl7.fhir.r5.model.Resource;
 import org.hl7.fhir.r5.utils.client.EFhirClientException;
@@ -19,8 +20,10 @@ public class Client {
   public static final String DEFAULT_CHARSET = "UTF-8";
   private static final long DEFAULT_TIMEOUT = 5000;
   private ToolingClientLogger logger;
+  private FhirLoggingInterceptor fhirLoggingInterceptor;
   private int retryCount;
   private long timeout = DEFAULT_TIMEOUT;
+  private byte[] payload;
 
   public ToolingClientLogger getLogger() {
     return logger;
@@ -28,6 +31,7 @@ public class Client {
 
   public void setLogger(ToolingClientLogger logger) {
     this.logger = logger;
+    this.fhirLoggingInterceptor = new FhirLoggingInterceptor(logger);
   }
 
   public int getRetryCount() {
@@ -50,6 +54,7 @@ public class Client {
                                                                      String resourceFormat,
                                                                      String message,
                                                                      long timeout) throws IOException {
+    this.payload = null;
     Request.Builder request = new Request.Builder()
       .method("OPTIONS", null)
       .url(optionsUri.toURL());
@@ -62,6 +67,7 @@ public class Client {
                                                                          Headers headers,
                                                                          String message,
                                                                          long timeout) throws IOException {
+    this.payload = null;
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL());
 
@@ -86,6 +92,7 @@ public class Client {
                                                                  String message,
                                                                  long timeout) throws IOException {
     if (payload == null) throw new EFhirClientException("PUT requests require a non-null payload");
+    this.payload = payload;
     RequestBody body = RequestBody.create(payload);
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL())
@@ -109,6 +116,7 @@ public class Client {
                                                                   String message,
                                                                   long timeout) throws IOException {
     if (payload == null) throw new EFhirClientException("POST requests require a non-null payload");
+    this.payload = payload;
     RequestBody body = RequestBody.create(MediaType.parse(resourceFormat + ";charset=" + DEFAULT_CHARSET), payload);
     Request.Builder request = new Request.Builder()
       .url(resourceUri.toURL())
@@ -149,6 +157,7 @@ public class Client {
   public Bundle postBatchRequest(URI resourceUri,
                                  byte[] payload,
                                  String resourceFormat,
+                                 Headers headers,
                                  String message,
                                  int timeout) throws IOException {
     if (payload == null) throw new EFhirClientException("POST requests require a non-null payload");
@@ -157,7 +166,7 @@ public class Client {
       .url(resourceUri.toURL())
       .post(body);
 
-    return executeBundleRequest(request, resourceFormat, new Headers.Builder().build(), message, retryCount, timeout);
+    return executeBundleRequest(request, resourceFormat, headers, message, retryCount, timeout);
   }
 
   public <T extends Resource> Bundle executeBundleRequest(Request.Builder request,
@@ -167,7 +176,7 @@ public class Client {
                                                              int retryCount,
                                                              long timeout) throws IOException {
     return new FhirRequestBuilder(request)
-      .withLogger(logger)
+      .withLogger(fhirLoggingInterceptor)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
       .withMessage(message)
@@ -183,7 +192,7 @@ public class Client {
                                                                        int retryCount,
                                                                        long timeout) throws IOException {
     return new FhirRequestBuilder(request)
-      .withLogger(logger)
+      .withLogger(fhirLoggingInterceptor)
       .withResourceFormat(resourceFormat)
       .withRetryCount(retryCount)
       .withMessage(message)

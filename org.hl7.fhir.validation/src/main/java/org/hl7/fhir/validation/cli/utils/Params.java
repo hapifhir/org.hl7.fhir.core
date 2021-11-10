@@ -54,6 +54,7 @@ public class Params {
   public static final String RIGHT = "-right";
   public static final String NO_INTERNAL_CACHING = "-no-internal-caching";
   public static final String NO_EXTENSIBLE_BINDING_WARNINGS = "-no-extensible-binding-warnings";
+  public static final String NO_UNICODE_BIDI_CONTROL_CHARS = "-no_unicode_bidi_control_chars";
   public static final String NO_INVARIANTS = "-no-invariants";
   public static final String WANT_INVARIANTS_IN_MESSAGES = "-want-invariants-in-messages";
   public static final String SECURITY_CHECKS = "-security-checks";
@@ -61,6 +62,7 @@ public class Params {
   public static final String VERBOSE = "-verbose";
   public static final String SHOW_TIMES = "-show-times";
   public static final String ALLOW_EXAMPLE_URLS = "-allow-example-urls";
+  public static final String OUTPUT_STYLE = "-output-style";
 
   /**
    * Checks the list of passed in params to see if it contains the passed in param.
@@ -164,6 +166,8 @@ public class Params {
         cliContext.setNoInternalCaching(true);
       } else if (args[i].equals(NO_EXTENSIBLE_BINDING_WARNINGS)) {
         cliContext.setNoExtensibleBindingMessages(true);
+      } else if (args[i].equals(NO_UNICODE_BIDI_CONTROL_CHARS)) {
+        cliContext.setNoUnicodeBiDiControlChars(true);
       } else if (args[i].equals(NO_INVARIANTS)) {
         cliContext.setNoInvariants(true);
       } else if (args[i].equals(WANT_INVARIANTS_IN_MESSAGES)) {
@@ -203,6 +207,8 @@ public class Params {
         }          
       } else if (args[i].equals(SHOW_TIMES)) {
         cliContext.setShowTimes(true);
+      } else if (args[i].equals(OUTPUT_STYLE)) {
+        cliContext.setOutputStyle(args[++i]);
       } else if (args[i].equals(SCAN)) {
         cliContext.setMode(EngineMode.SCAN);
       } else if (args[i].equals(TERMINOLOGY)) {
