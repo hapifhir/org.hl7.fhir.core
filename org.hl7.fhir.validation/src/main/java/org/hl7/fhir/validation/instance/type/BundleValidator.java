@@ -396,20 +396,30 @@ public class BundleValidator extends BaseValidator{
 
   private void checkAllInterlinked(List<ValidationMessage> errors, List<Element> entries, NodeStack stack, Element bundle, boolean isError) {
     List<EntrySummary> entryList = new ArrayList<>();
+    int i = 0;
     for (Element entry : entries) {
       Element r = entry.getNamedChild(RESOURCE);
       if (r != null) {
-        entryList.add(new EntrySummary(entry, r));
+        EntrySummary e = new EntrySummary(i, entry, r);
+        entryList.add(e);
+        System.out.println("Found entry "+e.dbg());
       }
+      i++;
     }
+    
     for (EntrySummary e : entryList) {
       Set<String> references = findReferences(e.getEntry());
       for (String ref : references) {
         Element tgt = resolveInBundle(entries, ref, e.getEntry().getChildValue(FULL_URL), e.getResource().fhirType(), e.getResource().getIdBase());
         if (tgt != null) {
           EntrySummary t = entryForTarget(entryList, tgt);
-          if (t != null) {
-            e.getTargets().add(t);
+          if (t != null ) {
+            if (t != e) {
+              System.out.println("Entry "+e.getIndex()+" refers to "+t.getIndex()+" by ref '"+ref+"'");
+              e.getTargets().add(t);
+            } else {
+              System.out.println("Entry "+e.getIndex()+" refers to itself by '"+ref+"'");             
+            }
           }
         }
       }
@@ -422,6 +432,7 @@ public class BundleValidator extends BaseValidator{
       foundRevLinks = false;
       for (EntrySummary e : entryList) {
         if (!visited.contains(e)) {
+          System.out.println("Not visited "+e.getIndex()+" - check for reverse links");             
           boolean add = false;
           for (EntrySummary t : e.getTargets()) {
             if (visited.contains(t)) {
@@ -429,6 +440,10 @@ public class BundleValidator extends BaseValidator{
             }
           }
           if (add) {
+            warning(errors, IssueType.INFORMATIONAL, e.getEntry().line(), e.getEntry().col(), 
+                stack.addToLiteralPath(ENTRY + '[' + (i + 1) + ']'), isExpectedToBeReverse(e.getResource().fhirType()), 
+                I18nConstants.BUNDLE_BUNDLE_ENTRY_REVERSE, (e.getEntry().getChildValue(FULL_URL) != null ? "'" + e.getEntry().getChildValue(FULL_URL) + "'" : ""));
+            System.out.println("Found reverse links for "+e.getIndex());             
             foundRevLinks = true;
             visitLinked(visited, e);
           }
@@ -436,7 +451,7 @@ public class BundleValidator extends BaseValidator{
       }
     } while (foundRevLinks);
 
-    int i = 0;
+    i = 0;
     for (EntrySummary e : entryList) {
       Element entry = e.getEntry();
       if (isError) {
@@ -449,6 +464,10 @@ public class BundleValidator extends BaseValidator{
   }
 
 
+
+  private boolean isExpectedToBeReverse(String fhirType) {
+    return Utilities.existsInList(fhirType, "Provenance");
+  }
 
   private String uriRegexForVersion() {
     if (VersionUtilities.isR3Ver(context.getVersion()))
