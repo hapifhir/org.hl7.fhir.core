@@ -42,7 +42,7 @@ import org.hl7.fhir.utilities.Utilities;
 
 public class HTMLClientLogger extends BaseLogger implements ToolingClientLogger {
 
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
   
   private boolean req = false;
   private PrintStream file;
