@@ -653,7 +653,6 @@ public class FilesystemPackageCacheManager extends BasePackageCacheManager imple
     http.trustAllhosts();
     HTTPResult res = http.get("https://build.fhir.org/ig/qas.json?nocache=" + System.currentTimeMillis());
     res.checkThrowException();
-    TextFile.bytesToFile(res.getContent(), "c:\\temp\\qa.json");
     buildInfo = (JsonArray) new com.google.gson.JsonParser().parse(TextFile.bytesToString(res.getContent()));
 
     List<BuildRecord> builds = new ArrayList<>();
