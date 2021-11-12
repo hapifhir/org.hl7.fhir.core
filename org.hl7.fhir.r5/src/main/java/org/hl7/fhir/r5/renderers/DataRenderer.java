@@ -1320,7 +1320,7 @@ public class DataRenderer extends Renderer {
     } else if (system.contains("|")) {
       return system.substring(0, system.indexOf("|"));
     } else {
-      return system;
+      return null;
     }
   }
 

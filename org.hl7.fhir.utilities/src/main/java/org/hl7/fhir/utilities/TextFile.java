@@ -166,11 +166,20 @@ public class TextFile {
     if (input== null) {
       return null;
     }
-    // Define a size if you have an idea of it.
     ByteArrayOutputStream r = new ByteArrayOutputStream(2048);
-    byte[] read = new byte[512]; // Your buffer size.
+    byte[] read = new byte[512]; 
     for (int i; -1 != (i = input.read(read)); r.write(read, 0, i));
     input.close();
+    return r.toByteArray();
+  }
+
+  public static byte[] streamToBytesNoClose(InputStream input) throws IOException  {
+    if (input== null) {
+      return null;
+    }
+    ByteArrayOutputStream r = new ByteArrayOutputStream(2048);
+    byte[] read = new byte[512]; 
+    for (int i; -1 != (i = input.read(read)); r.write(read, 0, i));
     return r.toByteArray();
   }
 
@@ -229,6 +238,11 @@ public class TextFile {
 
   public static void streamToFile(InputStream stream, String filename) throws IOException {
     byte[] cnt = streamToBytes(stream);
+    bytesToFile(cnt, filename);
+  }
+
+  public static void streamToFileNoClose(InputStream stream, String filename) throws IOException {
+    byte[] cnt = streamToBytesNoClose(stream);
     bytesToFile(cnt, filename);
   }
 }

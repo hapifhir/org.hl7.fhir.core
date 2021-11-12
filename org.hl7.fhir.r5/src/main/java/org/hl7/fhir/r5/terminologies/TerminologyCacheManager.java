@@ -104,7 +104,7 @@ public class TerminologyCacheManager {
           Utilities.createDirectory(path);
         } else {
           Utilities.createDirectory(Utilities.getDirectoryForFile(path));
-          TextFile.streamToFile(zipIn, path);
+          TextFile.streamToFileNoClose(zipIn, path);
         }
       }
     }
@@ -154,6 +154,8 @@ public class TerminologyCacheManager {
     String url = "https://tx.fhir.org/post/tx-cache/"+ghOrg+"/"+ghRepo+"/"+ghBranch+".zip";
     System.out.println("Sending tx-cache to "+url+" ("+Utilities.describeSize(bs.toByteArray().length)+")");
     SimpleHTTPClient http = new SimpleHTTPClient();
+    http.setUsername(token.substring(0, token.indexOf(':')));
+    http.setPassword(token.substring(token.indexOf(':')+1));
     HTTPResult res = http.put(url, "application/zip", bs.toByteArray(), null); // accept doesn't matter
     if (res.getCode() >= 300) {
       System.out.println("sending cache failed: "+res.getCode());
