@@ -12,9 +12,9 @@ included in this repo:
 * org.fhir.fhir.r4: Object models and utilities for R4
 * org.fhir.fhir.dstu3: Object models and utilities for STU3
 * org.fhir.fhir.dstu2: Object models and utilities for STU2
-* org.fhir.fhir.dstu2016may: Object models and utilities for an early STU3 candidate used by some implementers
-* org.fhir.fhir.convertors: Code to convert between versions, and other version indepedence code - uses all the above projects
-* org.fhir.fhir.validation: The FHIR Java validator
+* org.fhir.fhir.dstu2016may: Object models and utilities for an early STU3 candidate still used by some implementers
+* org.fhir.fhir.convertors: Code to convert between versions, and other version independence code - uses all the above projects
+* org.fhir.fhir.validation: The FHIR Java validator (note: based on R5 internally, but validates all the above versions)
 * org.fhir.fhir.validation.cli: Holder project for releasing the FHIR validator as as single fat jar (will be removed in the future)
 
 ### CI/CD
